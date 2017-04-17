@@ -553,4 +553,32 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 
 		return  StringUtil.converteCollectionToString(query.list());
 	}
+	
+	public Collection<FaixaSalarial> getCargosFaixaByAreaIdAndEmpresaId(Long areaOrganizacionalId, Long empresaId, Long faixaSalarialInativaId){
+		Criteria criteria = getSession().createCriteria(FaixaSalarial.class, "f");
+		criteria.createCriteria("f.cargo","c", Criteria.INNER_JOIN);
+		criteria.createCriteria("c.areasOrganizacionais","a", Criteria.INNER_JOIN);
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("f.id"), "id");
+		p.add(Projections.property("f.nome"), "nome");
+		p.add(Projections.property("c.nome"), "nomeCargo");
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("c.empresa.id", empresaId));
+		criteria.add(Expression.eq("a.id", areaOrganizacionalId));
+		
+		if(faixaSalarialInativaId == null)
+			criteria.add(Expression.eq("c.ativo", true));
+		else
+			criteria.add(Expression.or(Expression.eq("c.ativo", true), Expression.eq("f.id", faixaSalarialInativaId)));
+		
+		criteria.addOrder(Order.asc("c.nome"));
+		criteria.addOrder(Order.asc("f.nome"));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(FaixaSalarial.class));
+
+		return criteria.list();
+	}
 }

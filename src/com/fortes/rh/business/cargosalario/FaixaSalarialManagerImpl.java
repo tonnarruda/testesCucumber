@@ -402,6 +402,10 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 		return getDao().findComHistoricoAtualByEmpresa(empresaId, semCodigoAC);
 	}
 
+	public Collection<FaixaSalarial> getCargosFaixaByAreaIdAndEmpresaId(Long areaOrganizacionalId, Long empresaId, Long faixaSalarialInativaId) {
+		return getDao().getCargosFaixaByAreaIdAndEmpresaId(areaOrganizacionalId, empresaId, faixaSalarialInativaId);
+	}
+	
 	public void setConfiguracaoNivelCompetenciaManager(ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
 		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
 	}

@@ -177,7 +177,6 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
     	obrigaDadosComplementares = empresa.isSolPessoalObrigarDadosComplementares();
     	
     	this.estados = estadoManager.findAll(new String[]{"sigla"});
-		Long faixaInativaId = null;
 		Long areaInativaId = null;
 		
 		avaliacoes = avaliacaoManager.findAllSelect(null, null, getEmpresaSistema().getId(), true, TipoModeloAvaliacao.SOLICITACAO, null);
@@ -191,7 +190,6 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
             	colaboradoresSusbstituidos = solicitacao.getColaboradorSubstituido().split(", "); 
             
             estado = solicitacao.getCidade().getUf();
-            faixaInativaId = solicitacao.getFaixaSalarial().getId();
             areaInativaId = solicitacao.getAreaOrganizacional().getId();
 
             if(estado != null && estado.getId() != null)
@@ -222,6 +220,9 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 			qtdAvaliacoesRespondidas = colaboradorQuestionarioManager.findBySolicitacaoRespondidas(solicitacao.getId()).size();
 			
 			existeCompetenciaRespondida = configuracaoNivelCompetenciaManager.findByCandidatoAndSolicitacao(null, solicitacao.getId()).size() > 0;
+			
+			if(areaInativaId != null && solicitacao.getFaixaSalarial() != null && solicitacao.getFaixaSalarial().getId() != null)
+				faixaSalarials = faixaSalarialManager.getCargosFaixaByAreaIdAndEmpresaId(areaInativaId, getEmpresaSistema().getId(), solicitacao.getFaixaSalarial().getId());
         }
 
     	Usuario usuarioLogado = SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession());
@@ -234,10 +235,6 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 			areas = areaOrganizacionalManager.findAllSelectOrderDescricaoByUsuarioId(empresaSistemaId, usuarioLogado.getId(), AreaOrganizacional.ATIVA, areaInativaId);
 		
     	estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
-
-		CollectionUtil<FaixaSalarial> faixaSalarialUtil = new CollectionUtil<FaixaSalarial>();
-		faixaSalarials = faixaSalarialUtil.sortCollectionStringIgnoreCase(faixaSalarialManager.findFaixas(getEmpresaSistema(), Cargo.ATIVO, faixaInativaId), "cargo.nome");
-
         motivoSolicitacaos = motivoSolicitacaoManager.findAll();
         
         escolaridades = new Escolaridade();

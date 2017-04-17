@@ -39,6 +39,7 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/formataValores.js?version=${versao}"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/FaixaSalarialDWR.js?version=${versao}"/>'></script>
 
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/cssYui/fonts-min.css"/>');
@@ -273,6 +274,19 @@
 				content: 'A data da solicitação não pode ser editada, pois existem competências para os candidatos.'
 			});
 		});
+		
+		function getCargos(){
+			DWRUtil.useLoadingMessage('Carregando...');
+			FaixaSalarialDWR.getCargosFaixasByArea(optionsCargos, $("#area").val(), ${empresaId});
+		}
+
+		function optionsCargos(data){
+			$('#faixa').find('option').remove();
+			if(data != "" && Object.keys(data).length > 0)
+				addOptionsByMap('faixa', data, 'Selecione...');
+			else
+				$('#faixa').append('<option value="" selected="selected">Não existem cargos vinculados a área organizacional selecionada.</option>');
+		}
 	</script>
 
 	<#assign validarCampos="return validacaoFormulario(); "/>
@@ -308,18 +322,18 @@
 		</#if>
 
 		<#if !clone && possuiCandidatoSolicitacao && solicitacao.estabelecimento?exists && solicitacao.estabelecimento.id?exists || somenteLeitura>
-			<@ww.textfield readonly="true" label="Estabelecimento" name="solicitacao.estabelecimento.nome" id="estabelecimento" cssStyle="width: 347px;background: #EBEBEB;"/>
+			<@ww.textfield readonly="true" label="Estabelecimento" name="solicitacao.estabelecimento.nome" id="estabelecimento" cssStyle="width: 447px;background: #EBEBEB;"/>
 			<@ww.hidden name="solicitacao.estabelecimento.id"/>
 		<#else>
 			<#assign funcaoEstabelecimento="populaAmbiente(this.value);"/>
 			<@authz.authorize ifNotGranted="ROLE_COMPROU_SESMT">
 					<#assign funcaoEstabelecimento=""/>
 			</@authz.authorize>
-			<@ww.select label="Estabelecimento" name="solicitacao.estabelecimento.id" id="estabelecimento" list="estabelecimentos" onchange="${funcaoEstabelecimento}" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." required="true" cssStyle="width: 347px;"/>
+			<@ww.select label="Estabelecimento" name="solicitacao.estabelecimento.id" id="estabelecimento" list="estabelecimentos" onchange="${funcaoEstabelecimento}" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." required="true" cssStyle="width: 447px;"/>
 		</#if>
 
 		<#if !clone && possuiCandidatoSolicitacao && solicitacao.areaOrganizacional?exists && solicitacao.areaOrganizacional.id?exists || somenteLeitura>
-			<@ww.textfield readonly="true" label="Área" name="solicitacao.areaOrganizacional.nome" id="area" cssStyle="width: 347px;background: #EBEBEB;"/>
+			<@ww.textfield readonly="true" label="Área" name="solicitacao.areaOrganizacional.nome" id="area" cssStyle="width: 447px;background: #EBEBEB;"/>
 			<@ww.hidden name="solicitacao.areaOrganizacional.id"/>
 		<#else>
 			<#if solicitacao.id?exists>
@@ -327,28 +341,33 @@
 			<#else>
 				<#assign funcaoPopulaEmails="javascript:populaEmails(this.value);"/>
 			</#if>
-			<@ww.select label="Área Organizacional" name="solicitacao.areaOrganizacional.id" id="area" list="areas" listKey="id" listValue="descricao" headerKey="" headerValue="Selecione..." required="true" cssStyle="width: 347px;" onchange="${funcaoPopulaEmails}" />
+			<@ww.select label="Área Organizacional" name="solicitacao.areaOrganizacional.id" id="area" list="areas" listKey="id" listValue="descricao" headerKey="" headerValue="Selecione..." required="true" cssStyle="width: 447px;" onchange="getCargos();${funcaoPopulaEmails}" />
 		</#if>
 
 		<#if !clone && possuiCandidatoSolicitacao && solicitacao.faixaSalarial?exists && solicitacao.faixaSalarial.id?exists || somenteLeitura>
 			<@authz.authorize ifAllGranted="ROLE_COMPROU_SESMT">
-				<@ww.textfield readonly="true" label="Ambiente" name="solicitacao.ambiente.nome" id="ambiente" cssStyle="width: 347px;background: #EBEBEB;"/>
-				<@ww.textfield readonly="true" label="Cargo/Faixa" name="solicitacao.faixaSalarial.descricao" id="faixa" cssStyle="width: 347px;background: #EBEBEB;"/>
-				<@ww.textfield readonly="true" label="Função" name="solicitacao.funcao.nome" id="funcao" cssStyle="width: 347px;background: #EBEBEB;"/>
+				<@ww.textfield readonly="true" label="Ambiente" name="solicitacao.ambiente.nome" id="ambiente" cssStyle="width: 447px;background: #EBEBEB;"/>
+				<@ww.textfield readonly="true" label="Cargo/Faixa" name="solicitacao.faixaSalarial.descricao" id="faixa" cssStyle="width: 447px;background: #EBEBEB;"/>
+				<@ww.textfield readonly="true" label="Função" name="solicitacao.funcao.nome" id="funcao" cssStyle="width: 447px;background: #EBEBEB;"/>
 			</@authz.authorize>
 			<@authz.authorize ifNotGranted="ROLE_COMPROU_SESMT">
-				<@ww.textfield readonly="true" label="Cargo/Faixa" name="solicitacao.faixaSalarial.descricao" id="faixa" cssStyle="width: 347px;background: #EBEBEB;"/>
+				<@ww.textfield readonly="true" label="Cargo/Faixa" name="solicitacao.faixaSalarial.descricao" id="faixa" cssStyle="width: 447px;background: #EBEBEB;"/>
 				<@ww.hidden name="solicitacao.ambiente.id" id="ambiente"/>
 				<@ww.hidden name="solicitacao.funcao.id" id="funcao"/>
 			</@authz.authorize>
 		<#else>
+			<#if !faixaSalarials?exists || faixaSalarials?size == 0>
+				<#assign headerValueCargo="Selecione uma área organizacional..."/>
+			<#else>
+				<#assign headerValueCargo="Selecione..."/>
+			</#if>
 			<@authz.authorize ifAllGranted="ROLE_COMPROU_SESMT">
-				<@ww.select label="Ambiente" name="solicitacao.ambiente.id" id="ambiente" required="${obrigarAmbienteFuncao?string}" list="ambientes" listKey="id" listValue="nome" headerKey="" headerValue="Nenhum" cssStyle="width: 347px;"/>
-				<@ww.select label="Cargo/Faixa" name="solicitacao.faixaSalarial.id" onchange="javascript:calculaSalario();populaFuncao(this.value);" list="faixaSalarials" id="faixa" listKey="id" headerKey="" headerValue="Selecione..." listValue="descricao" required="true" cssStyle="width: 347px;"/>
-				<@ww.select label="Função" name="solicitacao.funcao.id" id="funcao" required="${obrigarAmbienteFuncao?string}" list="funcoes" listKey="id" listValue="nome" headerValue="Nenhuma" headerKey="" cssStyle="width: 347px;"/>
+				<@ww.select label="Ambiente" name="solicitacao.ambiente.id" id="ambiente" required="${obrigarAmbienteFuncao?string}" list="ambientes" listKey="id" listValue="nome" headerKey="" headerValue="Nenhum" cssStyle="width: 447px;"/>
+				<@ww.select label="Cargo/Faixa" name="solicitacao.faixaSalarial.id" onchange="javascript:calculaSalario();populaFuncao(this.value);" list="faixaSalarials" id="faixa" listKey="id" headerKey="" headerValue="${headerValueCargo}" listValue="descricao" required="true" cssStyle="width: 447px;"/>
+				<@ww.select label="Função" name="solicitacao.funcao.id" id="funcao" required="${obrigarAmbienteFuncao?string}" list="funcoes" listKey="id" listValue="nome" headerValue="Nenhuma" headerKey="" cssStyle="width: 447px;"/>
 			</@authz.authorize>
 			<@authz.authorize ifNotGranted="ROLE_COMPROU_SESMT">
-				<@ww.select label="Cargo/Faixa" name="solicitacao.faixaSalarial.id" onchange="javascript:calculaSalario();" list="faixaSalarials" id="faixa" listKey="id" headerKey="" headerValue="Selecione..." listValue="descricao" required="true" cssStyle="width: 347px;"/>
+				<@ww.select label="Cargo/Faixa" name="solicitacao.faixaSalarial.id" onchange="javascript:calculaSalario();" list="faixaSalarials" id="faixa" listKey="id" headerKey="" headerValue="${headerValueCargo}" listValue="descricao" required="true" cssStyle="width: 447px;"/>
 				<@ww.hidden name="solicitacao.ambiente.id" id="ambiente"/>
 				<@ww.hidden name="solicitacao.funcao.id" id="funcao"/>
 			</@authz.authorize>

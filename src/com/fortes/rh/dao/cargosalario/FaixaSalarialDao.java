@@ -33,4 +33,5 @@ public interface FaixaSalarialDao extends GenericDao<FaixaSalarial>
 	Collection<FaixaSalarial> findByCargos(Long[] cargosIds);
 	Collection<FaixaSalarial> findComHistoricoAtualByEmpresa(Long empresaId, boolean semCodigoAC);
 	public Collection<FaixaSalarial> findDistinctDescricao(Long[] empresaIds);
+	Collection<FaixaSalarial> getCargosFaixaByAreaIdAndEmpresaId(Long areaOrganizacionalId, Long empresaId, Long faixaSalarialInativaId);
 }

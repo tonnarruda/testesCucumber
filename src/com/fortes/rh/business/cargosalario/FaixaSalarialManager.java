@@ -50,4 +50,5 @@ public interface FaixaSalarialManager extends GenericManager<FaixaSalarial>
 	Collection<FaixaSalarial> findComHistoricoAtual(Long[] faixasSalariaisIds);
 	Collection<FaixaSalarial> findComHistoricoAtualByEmpresa(Long empresaId, boolean semCodigoAC);
 	public Collection<FaixaSalarial> geraDadosRelatorioResumidoColaboradoresPorCargoXLS(List<HistoricoColaborador> historicoColaboradores);
+	Collection<FaixaSalarial> getCargosFaixaByAreaIdAndEmpresaId(Long areaOrganizacionalId, Long empresaId, Long faixaSalarialInativaId);
 }

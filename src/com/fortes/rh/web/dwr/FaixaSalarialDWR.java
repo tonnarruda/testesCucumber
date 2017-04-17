@@ -73,7 +73,12 @@ public class FaixaSalarialDWR
 	{
 		return faixaSalarialManager.findByCargo(cargoId);
 	}
-
+	
+	public Map getCargosFaixasByArea(Long areaOrganizacionalId, Long empresaId){
+		Collection<FaixaSalarial> faixasSalariais = faixaSalarialManager.getCargosFaixaByAreaIdAndEmpresaId(areaOrganizacionalId, empresaId, null);
+		return new CollectionUtil<FaixaSalarial>().convertCollectionToMap(faixasSalariais, "getId", "getDescricao");
+	}
+	
 	public void setFaixaSalarialManager(FaixaSalarialManager faixaSalarialManager)
 	{
 		this.faixaSalarialManager = faixaSalarialManager;
