@@ -10,7 +10,12 @@
 		.indiferente { color: #555 !important; }
 		.contratado { color: #008000 !important; }
 		.btnTriagem, .btnInserirEtapasEmGrupo, .btnResultadoAvaliacao, .btnVoltar{margin: 5px 5px 0px 0px;}
+		.alterarAvaliacao {	display: none;}
 	</style>
+	
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/SolicitacaoDWR.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 
 	<script>
 		function marcarDesmarcar(frm)
@@ -72,6 +77,50 @@
 				return false;
 			}
 		}
+		
+		function submeter(){
+			if(verificaMarcados(formCand)) { 
+				DWRUtil.useLoadingMessage('Carregando...');
+				var candidatosSolicitacaoIds = [];
+				$('input:checkbox[name=candidatosId]:checked').each(function(){
+					candidatosSolicitacaoIds.push($(this).val());
+				});
+				
+				SolicitacaoDWR.verificaModeloAvaliacaoSolicitacaoDestinoExiste(solicitacaoDialog, ${solicitacao.id}, $('input[name=solicitacaoDestino.id]:checked').val(), candidatosSolicitacaoIds);
+			}
+		}
+		
+		function solicitacaoDialog(data){
+			if(data != ""){
+				$('#avaliacoes').text(data);
+				$('#alterarAvaliacao').dialog({ modal: true, 
+											width: 700,
+											height: 250,
+											title: 'Alerta',
+										    buttons: 
+											[
+											    {
+											        text: "Gravar",
+											        click: function() {
+														if($('input[id="atualizarModelo"]:checked').length > 0){
+															$('#atualizarModeloSubmit').val($('input[id="atualizarModelo"]:checked').val());
+															document.formCand.submit();
+														}else{
+															jAlert("Marque pelo menos uma opção.");
+														} 																							        
+											        }
+											    },
+											    {
+											        text: "Cancelar",
+											        click: function() { $(this).dialog("close"); }
+											    }
+											]
+										}); 
+			}else{
+				$('#atualizarModeloSubmit').val(true);
+				document.formCand.submit();
+			} 
+		}
 	</script>
 
 	<title>Mover Candidatos da Seleção</title>
@@ -91,7 +140,6 @@
 
 	<br/>
 	<@ww.form name="formCand" action="mover.action" method="POST" >
-		
 		<div id="legendas">
 			<span style='background-color: #0000FF;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Aptos
 			<span style='background-color: #555;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Indiferente
@@ -145,9 +193,23 @@
 			<@display.column property="solicitante.nome" title="Solicitante" />
 			<@display.column property="quantidade" title="Vagas" style="text-align: right;"/>
 		</@display.table>
+	
+		<@ww.hidden name="atualizarModelo" id="atualizarModeloSubmit" value="false"/>
+		<div id="alterarAvaliacao" class="alterarAvaliacao">
+			<@ww.div >
+				O(s) candidato(s) selecionado(s) que deseja mover possue(m) avaliações respondidas.<br/><br/>
+				A solicitação destino não possue(m) a(s) avaliação(ões): <label id="avaliacoes"></label><br/><br/>
+				<b>Você deseja:</b><br/>
+			</@ww.div>
+			<@ww.div id="divatualizarModelo" cssClass="radio">
+				<input id="atualizarModelo" type="radio" value="true"/><label>Vincular modelo de avaliação a solicitação destino e transportar respostas do(s) candidato(s).</label></br>
+				<input id="atualizarModelo" type="radio" value="false"/><label>Não vincular o modelo de avaliação a solicitação destino (Essa opção irá apagar as repostas do modelo de avaliação do(s) candidato(s)).</label>
+			</@ww.div>
+		</div>
 	</@ww.form>
+	
 	<div class="buttonGroup">
-		<button class="btnGravar" onclick="if(verificaMarcados(formCand)) { document.formCand.submit(); }" accesskey="G">
+		<button class="btnGravar" onclick="submeter();" accesskey="G">
 		</button>
 
 		<button onclick="window.location='list.action?solicitacao.id=${solicitacao.id}'" class="btnVoltar" accesskey="V">

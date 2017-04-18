@@ -58,6 +58,7 @@ import com.fortes.rh.test.business.captacao.HabilidadeManagerTest;
 import com.fortes.rh.test.business.captacao.HistoricoCandidatoManagerTest;
 import com.fortes.rh.test.business.captacao.NivelCompetenciaHistoricoManagerTest;
 import com.fortes.rh.test.business.captacao.NivelCompetenciaManagerTest;
+import com.fortes.rh.test.business.captacao.SolicitacaoAvaliacaoManagerTest;
 import com.fortes.rh.test.business.captacao.SolicitacaoBDSManagerTest;
 import com.fortes.rh.test.business.captacao.SolicitacaoManagerTest;
 import com.fortes.rh.test.business.captacao.SolicitacaoManagerTest_Junit4;
@@ -328,6 +329,7 @@ import com.fortes.rh.test.dao.hibernate.geral.UsuarioMensagemDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.pesquisa.AspectoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.pesquisa.AvaliacaoTurmaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.pesquisa.ColaboradorQuestionarioDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.pesquisa.ColaboradorQuestionarioDaoHibernateTest_JUnit4;
 import com.fortes.rh.test.dao.hibernate.pesquisa.ColaboradorRespostaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.pesquisa.EntrevistaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.pesquisa.FichaMedicaDaoHibernateTest;
@@ -783,6 +785,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	IdiomaDaoHibernateTest.class,
 	SolicitacaoDaoHibernateTest.class,
 	SolicitacaoDaoHibernateTest_JUnit4.class,
+	SolicitacaoAvaliacaoManagerTest.class,
 	SolicitacaoAvaliacaoDaoHibernateTest.class,
 	SolicitacaoManagerTest.class,
 	SolicitacaoManagerTest_Junit4.class,
@@ -1143,6 +1146,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	PesquisaEditActionTest.class,
 	LembretePesquisaTest.class,
 	ColaboradorQuestionarioDaoHibernateTest.class,
+	ColaboradorQuestionarioDaoHibernateTest_JUnit4.class,
 	ColaboradorQuestionarioManagerTest.class,
 	ColaboradorQuestionarioListActionTest.class,
 	ColaboradorQuestionarioEditActionTest.class,

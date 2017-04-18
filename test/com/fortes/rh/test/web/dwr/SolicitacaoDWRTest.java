@@ -1,18 +1,29 @@
 package com.fortes.rh.test.web.dwr;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
+import org.junit.Before;
+import org.junit.Test;
 
+import com.fortes.rh.business.captacao.SolicitacaoAvaliacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
+import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
+import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.captacao.SolicitacaoAvaliacao;
+import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
@@ -20,22 +31,29 @@ import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.web.dwr.SolicitacaoDWR;
 
-public class SolicitacaoDWRTest extends MockObjectTestCase
+public class SolicitacaoDWRTest
 {
 	private SolicitacaoDWR solicitacoaDWR;
-	private Mock solicitacaoManager;
+	private SolicitacaoManager solicitacaoManager;
+	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
+	private SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager;
 
-	protected void setUp() throws Exception
+	@Before
+	public void setUp() throws Exception
 	{
-		super.setUp();
 		solicitacoaDWR = new SolicitacaoDWR();
 
-		solicitacaoManager = new Mock(SolicitacaoManager.class);
-		solicitacoaDWR.setSolicitacaoManager((SolicitacaoManager) solicitacaoManager.proxy());
+		solicitacaoManager = mock(SolicitacaoManager.class);
+		solicitacoaDWR.setSolicitacaoManager(solicitacaoManager);
 		
+		colaboradorQuestionarioManager = mock(ColaboradorQuestionarioManager.class);
+		solicitacoaDWR.setColaboradorQuestionarioManager(colaboradorQuestionarioManager);
+		
+		solicitacaoAvaliacaoManager = mock(SolicitacaoAvaliacaoManager.class);
+		solicitacoaDWR.setSolicitacaoAvaliacaoManager(solicitacaoAvaliacaoManager);
 	}
 	
-	
+	@Test
 	public void testGetByEmpresaEstabelecimentosAreas()
 	{
 		
@@ -79,7 +97,7 @@ public class SolicitacaoDWRTest extends MockObjectTestCase
 		solicitacoes.add(sol2);
 		solicitacoes.add(sol3);
 
-		solicitacaoManager.expects(once()).method("findByEmpresaEstabelecimentosAreas").with(eq(empresa.getId()), ANYTHING, ANYTHING).will(returnValue(solicitacoes));
+		when(solicitacaoManager.findByEmpresaEstabelecimentosAreas(empresa.getId(), new Long[]{estabelecimento.getId()}, new Long[]{areaOrganizacional.getId()})).thenReturn(solicitacoes);
 		
 		Map<Long, String> result = solicitacoaDWR.getByEmpresaEstabelecimentosAreas(empresa.getId(), new Long[]{estabelecimento.getId()}, new Long[]{areaOrganizacional.getId()});
 		
@@ -88,6 +106,7 @@ public class SolicitacaoDWRTest extends MockObjectTestCase
 		assertEquals("3 - Três -  - "+ DateUtil.formataDiaMesAno(dataSol3)+" - "+areaOrganizacional.getNome(), result.get(3L));	
 	}
 	
+	@Test
 	public void testGetSolicitacoes()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
@@ -119,13 +138,54 @@ public class SolicitacaoDWRTest extends MockObjectTestCase
 		solicitacoes.add(sol2);
 		solicitacoes.add(sol3);
 		
-		solicitacaoManager.expects(once()).method("findSolicitacaoList").with(eq(empresa.getId()), ANYTHING, ANYTHING, ANYTHING).will(returnValue(solicitacoes));
+		when(solicitacaoManager.findSolicitacaoList(empresa.getId(), false, StatusAprovacaoSolicitacao.APROVADO, false)).thenReturn(solicitacoes);
 		
 		Map<Long, String> result = solicitacoaDWR.getSolicitacoes(empresa.getId());
 		
 		assertEquals("1 - Um -  - "+ DateUtil.formataDiaMesAno(dataSol1)+" - ", result.get(1L));	
 		assertEquals("2 - Dois -  - "+ DateUtil.formataDiaMesAno(dataSol2)+" - ", result.get(2L));	
 		assertEquals("3 - Três -  - "+ DateUtil.formataDiaMesAno(dataSol3)+" - ", result.get(3L));	
+	}
+	
+	@Test
+	public void testVerificaModeloAvaliacaoSolicitacaoDestinoExiste(){
+		Long solicitacaoOrigemId = 1L;
+		Long solicitacaoDestinoId = 2L;
+		Long[] candidatosSolicitacaoIds = new Long[]{1L,2L};
+			
+		Avaliacao avaliacao1 = AvaliacaoFactory.getEntity(1L);
+		Avaliacao avaliacao2 = AvaliacaoFactory.getEntity(2L);
+		Collection<Avaliacao> avliAvaliacaos = Arrays.asList(avaliacao1, avaliacao2);
+		
+		SolicitacaoAvaliacao solicitacaoAvaliacao = new SolicitacaoAvaliacao(solicitacaoDestinoId, avaliacao2.getId(), avaliacao2.getTitulo());
+		Collection<SolicitacaoAvaliacao> solicitacaoDestinoAvaliacaos = Arrays.asList(solicitacaoAvaliacao); 
+		
+		when(colaboradorQuestionarioManager.getAvaliacoesBySolicitacaoIdAndCandidatoSolicitacaoId(solicitacaoOrigemId, candidatosSolicitacaoIds)).thenReturn(avliAvaliacaos);
+		when(solicitacaoAvaliacaoManager.findBySolicitacaoId(solicitacaoDestinoId, null)).thenReturn(solicitacaoDestinoAvaliacaos);
+		
+		String retorno = solicitacoaDWR.verificaModeloAvaliacaoSolicitacaoDestinoExiste(solicitacaoOrigemId, solicitacaoDestinoId, candidatosSolicitacaoIds);
+		
+		assertEquals("Avaliação de Desempenho", retorno);
+	}
+	
+	@Test
+	public void testVerificaModeloAvaliacaoSolicitacaoDestinoExisteSemModelo(){
+		Long solicitacaoOrigemId = 1L;
+		Long solicitacaoDestinoId = 2L;
+		Long[] candidatosSolicitacaoIds = new Long[]{1L,2L};
+			
+		Avaliacao avaliacao1 = AvaliacaoFactory.getEntity(1L);
+		Collection<Avaliacao> avliAvaliacaos = Arrays.asList(avaliacao1);
+		
+		SolicitacaoAvaliacao solicitacaoAvaliacao = new SolicitacaoAvaliacao(solicitacaoDestinoId, avaliacao1.getId(), avaliacao1.getTitulo());
+		Collection<SolicitacaoAvaliacao> solicitacaoDestinoAvaliacaos = Arrays.asList(solicitacaoAvaliacao); 
+		
+		when(colaboradorQuestionarioManager.getAvaliacoesBySolicitacaoIdAndCandidatoSolicitacaoId(solicitacaoOrigemId, candidatosSolicitacaoIds)).thenReturn(avliAvaliacaos);
+		when(solicitacaoAvaliacaoManager.findBySolicitacaoId(solicitacaoDestinoId, null)).thenReturn(solicitacaoDestinoAvaliacaos);
+		
+		String retorno = solicitacoaDWR.verificaModeloAvaliacaoSolicitacaoDestinoExiste(solicitacaoOrigemId, solicitacaoDestinoId, candidatosSolicitacaoIds);
+		
+		assertEquals("", retorno);
 	}
 }
 	

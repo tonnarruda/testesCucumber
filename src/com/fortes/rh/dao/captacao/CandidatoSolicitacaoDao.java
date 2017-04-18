@@ -14,7 +14,7 @@ public interface CandidatoSolicitacaoDao extends GenericDao<CandidatoSolicitacao
 	Collection<CandidatoSolicitacao> getCandidatosBySolicitacao(Solicitacao solicitacao, ArrayList<Long> idCandidatosComHistoricos);
 	Collection<CandidatoSolicitacao> findNaoAptos(Long solicitacaoId);
 	void updateSolicitacaoCandidatos(Solicitacao solicitacao, Collection<Long> ids);
-	Collection findCandidatosAptosMover(Long[] candidatosSolicitacaoId, Solicitacao solicitacao);
+	Collection<Long> findCandidatosIdsAptosMover(Long[] candidatosSolicitacaoId, Solicitacao solicitacao);
 	CandidatoSolicitacao findByCandidatoSolicitacao(CandidatoSolicitacao cand);
 	CandidatoSolicitacao findCandidatoSolicitacaoById(Long candidatoSolicitacaoId);
 	Collection<CandidatoSolicitacao> findCandidatoSolicitacaoById(Long[] candidatoSolicitacaoIds);

@@ -1,9 +1,11 @@
 package com.fortes.rh.business.captacao;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.captacao.SolicitacaoAvaliacaoDao;
+import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.captacao.SolicitacaoAvaliacao;
 
 public class SolicitacaoAvaliacaoManagerImpl extends GenericManagerImpl<SolicitacaoAvaliacao, SolicitacaoAvaliacaoDao> implements SolicitacaoAvaliacaoManager
@@ -22,7 +24,7 @@ public class SolicitacaoAvaliacaoManagerImpl extends GenericManagerImpl<Solicita
 			save(solicitacaoAvaliacao);
 		}
 	}
-
+	
 	public Collection<SolicitacaoAvaliacao> findBySolicitacaoId(Long solicitacaoId, Boolean responderModuloExterno) 
 	{
 		return getDao().findBySolicitacaoId(solicitacaoId, responderModuloExterno);
@@ -44,5 +46,23 @@ public class SolicitacaoAvaliacaoManagerImpl extends GenericManagerImpl<Solicita
 	public void removeBySolicitacaoId(Long solicitacaoId) 
 	{
 		getDao().removeBySolicitacaoId(solicitacaoId);
+	}
+	
+	public void inserirNovasAvaliações(Long solicitacaoId, Collection<Avaliacao> avaliacoes){
+		Collection<SolicitacaoAvaliacao> solicitacaoAvaliacoesExistentes = getDao().findBySolicitacaoId(solicitacaoId, null);
+		Collection<Long> avaliacoesIdExistentes = new ArrayList<Long>(); 
+		
+		for (SolicitacaoAvaliacao solicitacaoAvaliacao : solicitacaoAvaliacoesExistentes)
+			avaliacoesIdExistentes.add(solicitacaoAvaliacao.getAvaliacaoId());
+		
+    	SolicitacaoAvaliacao solicitacaoAvaliacao;
+		for (Avaliacao avaliacao : avaliacoes){
+			if(!avaliacoesIdExistentes.contains(avaliacao.getId())){
+				solicitacaoAvaliacao = new SolicitacaoAvaliacao();
+				solicitacaoAvaliacao.setAvaliacao(avaliacao);
+				solicitacaoAvaliacao.setProjectionSolicitacaoId(solicitacaoId);
+				getDao().save(solicitacaoAvaliacao);
+			}
+		}
 	}
 }

@@ -21,7 +21,8 @@ public interface CandidatoSolicitacaoManager extends GenericManager<CandidatoSol
 {
 	CandidatoSolicitacao findByCandidatoSolicitacao(CandidatoSolicitacao cand);
 	void insertCandidatos(String[] candidatosId, Solicitacao solicitacao, char status, Empresa empresa, Usuario usuarioLogado);
-	void moverCandidatos(Long[] candidatosSolicitacaoId, Solicitacao solicitacao) throws ColecaoVaziaException;
+	@Audita(operacao="Transferir Candidatos entre Solicitações", auditor=CandidatoSolicitacaoAuditorCallbackImpl.class)
+	void moverCandidatos(Long[] candidatosSolicitacaoId, Solicitacao solicitacaoOrigem, Solicitacao solicitacaoDestino, boolean atualizarModelo) throws ColecaoVaziaException;
 	Collection<CandidatoSolicitacao> getCandidatosBySolicitacao(String[] etapaCheck, Long empresaId, char statusSolicitacao, char situacaoCandidato, Date dataIni, Date dataFim);
 	Collection<CandidatoSolicitacao> getCandidatosBySolicitacao(Solicitacao solicitacao, ArrayList<Long> idCandidatosComHistoricos);
 	String[] getEmailNaoAptos(Long solicitacaoId, Empresa empresa) throws Exception;

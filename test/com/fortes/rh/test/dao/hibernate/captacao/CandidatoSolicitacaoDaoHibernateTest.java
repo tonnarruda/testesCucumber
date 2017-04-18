@@ -382,7 +382,7 @@ public class CandidatoSolicitacaoDaoHibernateTest extends GenericDaoHibernateTes
 		candidatoSolicitacao2.setSolicitacao(solicitacao2);
 		candidatoSolicitacao2 = candidatoSolicitacaoDao.save(candidatoSolicitacao2);
 
-		Collection<CandidatoSolicitacao> candidatoSolicitacaos = candidatoSolicitacaoDao.findCandidatosAptosMover(new Long[]{candidatoSolicitacao.getId(),candidatoSolicitacao2.getId()}, solicitacao);
+		Collection<Long> candidatoSolicitacaos = candidatoSolicitacaoDao.findCandidatosIdsAptosMover(new Long[]{candidatoSolicitacao.getId(),candidatoSolicitacao2.getId()}, solicitacao);
 		assertEquals(1, candidatoSolicitacaos.size());
 	}
 

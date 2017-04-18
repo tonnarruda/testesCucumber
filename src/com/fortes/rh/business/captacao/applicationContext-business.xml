@@ -223,6 +223,9 @@
     <property name="parametrosDoSistemaManager">
       <ref bean="parametrosDoSistemaManager" />
     </property>
+    <property name="solicitacaoAvaliacaoManager">
+      <ref bean="solicitacaoAvaliacaoManager" />
+    </property>
   </bean>
   <bean id="candidatoSolicitacaoManager" parent="parentManager">
     <property name="proxyInterfaces">

@@ -56,6 +56,11 @@ public class Avaliacao extends AbstractModel implements Serializable, Cloneable
 		this.setId(id);
 	}
 	
+	public Avaliacao(Long id, String titulo){
+		this.setId(id);
+		this.setTitulo(titulo);
+	}
+	
 	@Override
 	public Object clone()
 	{

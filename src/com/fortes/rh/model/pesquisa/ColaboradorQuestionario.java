@@ -668,6 +668,14 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
 	{
 		this.avaliacao = avaliacao;
 	}
+	
+	public void setAvaliacaoId(Long avaliacaoId)
+	{
+		if(this.avaliacao == null)
+			this.avaliacao = new Avaliacao();
+		
+		this.avaliacao.setId(avaliacaoId);
+	}
 
 	public Double getPerformance() {
 		return performance;

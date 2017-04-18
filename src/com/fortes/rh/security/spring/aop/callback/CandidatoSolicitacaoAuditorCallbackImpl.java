@@ -9,6 +9,7 @@ import java.util.Map;
 
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
+import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.security.spring.aop.AuditavelImpl;
 import com.fortes.rh.security.spring.aop.DadosAuditados;
 import com.fortes.rh.util.DateUtil;
@@ -51,6 +52,47 @@ public class CandidatoSolicitacaoAuditorCallbackImpl implements AuditorCallback 
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), candidatoSolicitacaoAtual.getColaboradorNome(), dados);
 	}
 	
+	public Auditavel moverCandidatos(MetodoInterceptado metodo) throws Throwable{
+		Long[] candidatoSolicitacaoIds = (Long[]) metodo.getParametros()[0];
+		Solicitacao solicitacaoOrigem = (Solicitacao) metodo.getParametros()[1];
+		Solicitacao solicitacaoDestino = (Solicitacao) metodo.getParametros()[2];
+		Boolean atualizarModelo = (Boolean) metodo.getParametros()[3];
+		
+		String candidatos = findNomeCandidatosTransferidos(metodo, candidatoSolicitacaoIds);
+		
+		Collection<Map<String, Object>> DadosAtual = new ArrayList<Map<String,Object>>();
+		Map<String, Object> dadosMapAtual = new LinkedHashMap<String, Object>();
+		dadosMapAtual.put("Data", DateUtil.formataDiaMesAno(new Date()));
+		dadosMapAtual.put("Solicitação origem. Código", solicitacaoOrigem.getId());
+		dadosMapAtual.put("Solicitação destino. Código", solicitacaoDestino.getId());
+		dadosMapAtual.put("Transferiu respostas avaliação", atualizarModelo ? "Sim" : "Não");
+		dadosMapAtual.put("Cadidatos transferidos:", candidatos);
+		
+		DadosAtual.add(dadosMapAtual);
+		
+		String dados = new DadosAuditados(null, DadosAtual.toArray()).gera();
+		
+		if(candidatos.length() > 254)
+			candidatos = candidatos.substring(0, 254);
+		
+		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), candidatos, dados);
+	}
+
+	private String findNomeCandidatosTransferidos(MetodoInterceptado metodo,Long[] candidatoSolicitacaoIds) throws Throwable {
+		CandidatoSolicitacaoManager manager = (CandidatoSolicitacaoManager) metodo.getComponente();
+		Collection<CandidatoSolicitacao> CandidatoSolicitacoes = manager.findById(candidatoSolicitacaoIds);
+		metodo.processa();
+
+		String candidatos = "";
+		for (CandidatoSolicitacao candidatoSolicitacao : CandidatoSolicitacoes) 
+			candidatos += candidatoSolicitacao.getCandidatoNome() + ", ";
+		
+		if(!candidatos.isEmpty())
+			candidatos = candidatos.substring(0, candidatos.length() - 2);
+		
+		return candidatos;
+	}
+
 	private CandidatoSolicitacao carregaEntidade(MetodoInterceptado metodo, CandidatoSolicitacao candidatoSolicitacao) {
 		CandidatoSolicitacaoManager manager = (CandidatoSolicitacaoManager) metodo.getComponente();
 		return manager.findCandidatoSolicitacaoById(candidatoSolicitacao.getId());

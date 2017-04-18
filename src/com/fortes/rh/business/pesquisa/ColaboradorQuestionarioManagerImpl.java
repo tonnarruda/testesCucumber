@@ -554,4 +554,16 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 	public boolean isRespondeuPesquisaByColaboradorIdAndQuestionarioId(Long colaboradorId, Long questionarioId) {
 		return getDao().isRespondeuPesquisaByColaboradorIdAndQuestionarioId(colaboradorId, questionarioId);
 	}
+
+	public void updateByCandidatoSolicitacaoAndSoclicitacaoOrigemAndDestino(Collection<Long> candidatoSolicitacaoIds, Long solicitacaoOrigemId, Long solicitacaoDestinoId) {
+		getDao().updateByCandidatoSolicitacaoAndSoclicitacaoOrigemAndDestino(candidatoSolicitacaoIds, solicitacaoOrigemId, solicitacaoDestinoId);
+	}
+
+	public Collection<Avaliacao> getAvaliacoesBySolicitacaoIdAndCandidatoSolicitacaoId(Long solicitacaoOrigemId, Long[] candidatosSolicitacaoIds) {
+		return getDao().getAvaliacoesBySolicitacaoIdAndCandidatoSolicitacaoId(solicitacaoOrigemId, candidatosSolicitacaoIds);
+	}
+
+	public void removeByCandidatoSolicitacaoIdsAndSolicitacaoId(Collection<Long> candidatoSolicitacaoIds, Long solicitacaoId) {
+		getDao().removeByCandidatoSolicitacaoIdsAndSolicitacaoId(candidatoSolicitacaoIds, solicitacaoId);
+	}
 }

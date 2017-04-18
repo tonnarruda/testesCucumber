@@ -26,7 +26,7 @@ import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
 import com.fortes.rh.test.util.mockObjects.MockSpringUtil;
 import com.fortes.rh.util.SpringUtil;
 
-public class CandidatoSolicitacaoManagerTest extends MockObjectTestCase
+public class CopyOfCandidatoSolicitacaoManagerTest_JUnit4 extends MockObjectTestCase
 {
 	private CandidatoSolicitacaoManagerImpl candidatoSolicitacaoManager;
 	private Mock candidatoSolicitacaoDao;

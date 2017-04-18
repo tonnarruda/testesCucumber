@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import com.fortes.dao.GenericDao;
+import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
@@ -53,4 +54,7 @@ public interface ColaboradorQuestionarioDao extends GenericDao<ColaboradorQuesti
 	Collection<ColaboradorQuestionario> findByAvaliacaoComQtdDesempenhoEPeriodoExperiencia(Long avaliacaoId);
 	public void updateAvaliacaoFromColaboradorQuestionarioByAvaliacaoDesempenho(AvaliacaoDesempenho avaliacaoDesempenho);
 	boolean isRespondeuPesquisaByColaboradorIdAndQuestionarioId(Long colaboradorId, Long questionarioId);
+	void updateByCandidatoSolicitacaoAndSoclicitacaoOrigemAndDestino(Collection<Long> candidatoSolicitacaoIds, Long solicitacaoOrigemId, Long solicitacaoDestinoId);
+	Collection<Avaliacao> getAvaliacoesBySolicitacaoIdAndCandidatoSolicitacaoId(Long solicitacaoOrigemId, Long[] candidatosSolicitacaoIds);
+	void removeByCandidatoSolicitacaoIdsAndSolicitacaoId(Collection<Long> candidatoSolicitacaoIds, Long solicitacaoId);
 }

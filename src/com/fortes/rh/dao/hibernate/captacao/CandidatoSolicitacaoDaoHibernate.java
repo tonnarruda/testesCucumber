@@ -108,8 +108,7 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
         query.executeUpdate();
     }
 
-    @SuppressWarnings("rawtypes")
-	public Collection findCandidatosAptosMover(Long[] candidatosSolicitacaoId, Solicitacao solicitacao)
+	public Collection<Long> findCandidatosIdsAptosMover(Long[] candidatosSolicitacaoId, Solicitacao solicitacao)
     {
         String hql = "select cs.id from CandidatoSolicitacao cs where cs.id in (:ids) and cs.candidato.id not in " +
             "(select cs2.candidato.id from CandidatoSolicitacao cs2 where cs2.solicitacao = :solicitacao)";

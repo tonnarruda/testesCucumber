@@ -10,9 +10,11 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
+import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.dao.captacao.CandidatoSolicitacaoDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
@@ -26,10 +28,10 @@ import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.SpringUtil;
 
-@SuppressWarnings({"unchecked", "rawtypes"})
 public class CandidatoSolicitacaoManagerImpl extends GenericManagerImpl<CandidatoSolicitacao, CandidatoSolicitacaoDao> implements CandidatoSolicitacaoManager
 {
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	private SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager;
 	
     public CandidatoSolicitacao findByCandidatoSolicitacao(CandidatoSolicitacao cand)
     {
@@ -87,13 +89,23 @@ public class CandidatoSolicitacaoManagerImpl extends GenericManagerImpl<Candidat
 		return statusAutorizacaoGestor;
 	}
 
-    public void moverCandidatos(Long[] candidatosSolicitacaoId, Solicitacao solicitacao) throws ColecaoVaziaException
+    public void moverCandidatos(Long[] candidatosSolicitacaoId, Solicitacao solicitacaoOrigem, Solicitacao solicitacaoDestino, boolean atualizarModelo) throws ColecaoVaziaException
     {
-        Collection lista = getDao().findCandidatosAptosMover(candidatosSolicitacaoId, solicitacao);
-        if(lista.isEmpty())
+        Collection<Long> candidatoSolicitacaoIds = getDao().findCandidatosIdsAptosMover(candidatosSolicitacaoId, solicitacaoDestino);
+        if(candidatoSolicitacaoIds.isEmpty())
         	throw new ColecaoVaziaException("Candidato selecionado já está na solicitação.");
         
-        getDao().updateSolicitacaoCandidatos(solicitacao, lista);
+        ColaboradorQuestionarioManager colaboradorQuestionarioManager = (ColaboradorQuestionarioManager) SpringUtil.getBean("colaboradorQuestionarioManager");
+        if(atualizarModelo){
+        	Collection<Avaliacao> avaliacoes = colaboradorQuestionarioManager.getAvaliacoesBySolicitacaoIdAndCandidatoSolicitacaoId(solicitacaoOrigem.getId(), LongUtil.collectionStringToArrayLong(candidatoSolicitacaoIds));
+        	if(avaliacoes != null && avaliacoes.size() > 0)
+        		solicitacaoAvaliacaoManager.inserirNovasAvaliações(solicitacaoDestino.getId(), avaliacoes);
+    		colaboradorQuestionarioManager.updateByCandidatoSolicitacaoAndSoclicitacaoOrigemAndDestino(candidatoSolicitacaoIds, solicitacaoOrigem.getId(), solicitacaoDestino.getId());
+        }else{
+        	colaboradorQuestionarioManager.removeByCandidatoSolicitacaoIdsAndSolicitacaoId(candidatoSolicitacaoIds, solicitacaoOrigem.getId());
+        }
+        
+        getDao().updateSolicitacaoCandidatos(solicitacaoDestino, candidatoSolicitacaoIds);
     }
 
     public Collection<CandidatoSolicitacao> getCandidatosBySolicitacao(String[] etapaCheck, Long empresaId, char statusSolicitacao, char situacaoCandidato, Date dataIni, Date dataFim)
@@ -243,5 +255,9 @@ public class CandidatoSolicitacaoManagerImpl extends GenericManagerImpl<Candidat
 
 	public void updateStatusSolicitacoesEmAndamentoByColaboradorId(Character status, Long... colaboradoresIds) {
 		getDao().updateStatusSolicitacoesEmAndamentoByColaboradorId(status, colaboradoresIds);
+	}
+
+	public void setSolicitacaoAvaliacaoManager(SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager) {
+		this.solicitacaoAvaliacaoManager = solicitacaoAvaliacaoManager;
 	}
 }

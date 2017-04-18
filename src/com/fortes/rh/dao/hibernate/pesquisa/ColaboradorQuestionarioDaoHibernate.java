@@ -22,6 +22,7 @@ import org.hibernate.type.Type;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.pesquisa.ColaboradorQuestionarioDao;
+import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.FiltroSituacaoAvaliacao;
@@ -1222,5 +1223,54 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		criteria.add(Expression.eq("q.tipo", TipoQuestionario.PESQUISA));
 		
 		return (Boolean) criteria.uniqueResult();
+	}
+
+	public void updateByCandidatoSolicitacaoAndSoclicitacaoOrigemAndDestino(Collection<Long> candidatoSolicitacaoIds, Long solicitacaoOrigemId, Long solicitacaoDestinoId) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("update ColaboradorQuestionario set solicitacao.id = :solicitacaoDestinoId where solicitacao.id = :solicitacaoOrigemId "); 
+		hql.append("and candidato.id in (select cs.candidato.id from CandidatoSolicitacao cs where cs.id in (:candidatoSolicitacaoIds)) ");
+		
+		Query query = getSession().createQuery(hql.toString());
+		query.setParameterList("candidatoSolicitacaoIds", candidatoSolicitacaoIds);
+		query.setLong("solicitacaoOrigemId", solicitacaoOrigemId);
+		query.setLong("solicitacaoDestinoId", solicitacaoDestinoId);
+		
+		query.executeUpdate();
+	}
+
+	public Collection<Avaliacao> getAvaliacoesBySolicitacaoIdAndCandidatoSolicitacaoId(Long solicitacaoOrigemId, Long[] candidatosSolicitacaoIds) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("select distinct new Avaliacao(av.id, av.titulo) "); 
+		hql.append("from ColaboradorQuestionario cq ");
+		hql.append("inner join cq.avaliacao av ");
+		hql.append("where cq.solicitacao.id = :solicitacaoOrigemId  ");
+		hql.append("and cq.candidato.id in (select candidato.id from CandidatoSolicitacao where id in (:candidatosSolicitacaoIds))  ");
+
+		Query query = getSession().createQuery(hql.toString());
+		
+		query.setLong("solicitacaoOrigemId", solicitacaoOrigemId);
+		query.setParameterList("candidatosSolicitacaoIds", candidatosSolicitacaoIds, Hibernate.LONG);
+		
+		return query.list();
+	}
+
+	public void removeByCandidatoSolicitacaoIdsAndSolicitacaoId(Collection<Long> candidatoSolicitacaoIds, Long solicitacaoId) {
+		String hql = "delete from ColaboradorResposta where colaboradorQuestionario.id in (select id from  ColaboradorQuestionario where solicitacao.id = :solicitacaoId "
+				+ "and candidato.id in (select cs.candidato.id from CandidatoSolicitacao cs where cs.id in (:candidatoSolicitacaoIds) ))";
+
+		Query query = getSession().createQuery(hql);
+
+		query.setLong("solicitacaoId", solicitacaoId);
+		query.setParameterList("candidatoSolicitacaoIds", candidatoSolicitacaoIds);
+		query.executeUpdate();
+	
+		hql = "delete from ColaboradorQuestionario where solicitacao.id = :solicitacaoId "
+				+ "and candidato.id in (select cs.candidato.id from CandidatoSolicitacao cs where cs.id in (:candidatoSolicitacaoIds) ))";
+
+		query = getSession().createQuery(hql);
+
+		query.setLong("solicitacaoId", solicitacaoId);
+		query.setParameterList("candidatoSolicitacaoIds", candidatoSolicitacaoIds);
+		query.executeUpdate();
 	}
 }

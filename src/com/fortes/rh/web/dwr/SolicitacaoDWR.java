@@ -7,6 +7,8 @@ import java.util.Map;
 import com.fortes.rh.business.captacao.AnuncioManager;
 import com.fortes.rh.business.captacao.SolicitacaoAvaliacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
+import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
+import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.SolicitacaoAvaliacao;
 import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
@@ -19,6 +21,7 @@ public class SolicitacaoDWR {
 	private SolicitacaoManager solicitacaoManager;
 	private SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager;
 	private AnuncioManager anuncioManager;
+	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
 
 	public Map<Long, String> getSolicitacoes(Long empresaId) 
 	{
@@ -62,6 +65,33 @@ public class SolicitacaoDWR {
 		return "Anúncio de vaga enviado com sucesso";
 	}
 	
+	public String verificaModeloAvaliacaoSolicitacaoDestinoExiste(Long solicitacaoOrigemId, Long solicitacaoDestinoId, Long[] candidatosSolicitacaoIds){
+		String avaliacoesNome = "";
+		Collection<Avaliacao> avaliacoes = colaboradorQuestionarioManager.getAvaliacoesBySolicitacaoIdAndCandidatoSolicitacaoId(solicitacaoOrigemId, candidatosSolicitacaoIds);
+		
+		if(avaliacoes.size() > 0){
+			Collection<SolicitacaoAvaliacao> solicitacaoDestinoAvaliacaos = solicitacaoAvaliacaoManager.findBySolicitacaoId(solicitacaoDestinoId, null);
+			for (Avaliacao avaliacao : avaliacoes){
+				boolean solicitcaoDestinoPossuiAvaliacao = false;
+
+				for (SolicitacaoAvaliacao solicitacaoDestinoAvaliacao : solicitacaoDestinoAvaliacaos) {
+					if(avaliacao.getId().equals(solicitacaoDestinoAvaliacao.getAvaliacao().getId())){
+						solicitcaoDestinoPossuiAvaliacao = true;
+						break;
+					}
+				}
+				
+				if(!solicitcaoDestinoPossuiAvaliacao)
+					avaliacoesNome += avaliacao.getTipoModeloAvaliacaoDescricao() + ", ";
+			}
+		}		
+
+		if(avaliacoesNome.equals(""))
+			return "";
+		
+		return avaliacoesNome.substring(0, avaliacoesNome.length()-2);
+	}
+	
 	public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager) 
 	{
 		this.solicitacaoManager = solicitacaoManager;
@@ -75,5 +105,9 @@ public class SolicitacaoDWR {
 	public void setAnuncioManager(AnuncioManager anuncioManager) 
 	{
 		this.anuncioManager = anuncioManager;
+	}
+
+	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager) {
+		this.colaboradorQuestionarioManager = colaboradorQuestionarioManager;
 	}
 }

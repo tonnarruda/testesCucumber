@@ -73,6 +73,7 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 	private char statusBusca = 'T';
 	private String solicitacaoDescricaoBusca;
 	private String colaboradorNomeBusca;
+	private Boolean atualizarModelo;
 
 	// Utilizado no ftl para escapar nomes de candidatos contendo apóstrofos
 	private StringUtil stringUtil = new StringUtil();
@@ -198,15 +199,12 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 
 	public String mover() throws Exception
 	{
-		try
-		{
-			candidatoSolicitacaoManager.moverCandidatos(candidatosId, solicitacaoDestino);			
-		} catch (ColecaoVaziaException e)
-		{
-			//faz nada
+		try{
+			candidatoSolicitacaoManager.moverCandidatos(candidatosId, solicitacao, solicitacaoDestino, atualizarModelo);			
+		} catch (ColecaoVaziaException e){
 			e.printStackTrace();
-		} catch (Exception e)
-		{
+			setActionMsg(e.getMessage());
+		} catch (Exception e){
 			e.printStackTrace();
 			addActionError("Erro ao mover candidatos.");
 		}
@@ -525,8 +523,15 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 		this.visualizar = visualizar;
 	}
 
-	public void setGerenciadorComunicacaoManager(
-			GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
+	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
 		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
+	}
+
+	public Boolean getAtualizarModelo() {
+		return atualizarModelo;
+	}
+
+	public void setAtualizarModelo(Boolean atualizarModelo) {
+		this.atualizarModelo = atualizarModelo;
 	}
 }
