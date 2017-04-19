@@ -1636,23 +1636,23 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		sql.append("                       and ct2.colaborador_id = ct.colaborador_id ");
 		
 		if(colaboradorCertificacaoId != null){
-			sql.append("and ");
-			sql.append("(t2.dataPrevFim between ");
-			sql.append("			coalesce( ");
-			sql.append("						(select data from colaboradorcertificacao where data = (select max(data) from colaboradorcertificacao ");
-			sql.append("								where data < (select data from colaboradorcertificacao where id = :colaboradorCertificacaoId) ");
-			sql.append("								and certificacao_id = :certificacaoId and colaborador_id = ct.colaborador_id ");
-			sql.append("						) and certificacao_id = :certificacaoId and colaborador_id = ct.colaborador_id) ");
-			sql.append("					, '01/01/2000' ");
-			sql.append("					) ");
-			sql.append("	and (select data from colaboradorcertificacao where id = :colaboradorCertificacaoId) ");
-			sql.append(") ");
+			sql.append("                   and ");
+			sql.append("                   (t2.dataPrevFim between ");
+			sql.append("                   			coalesce( ");
+			sql.append("                   						(select data from colaboradorcertificacao where data = (select max(data) from colaboradorcertificacao ");
+			sql.append("                   								where data < (select data from colaboradorcertificacao where id = :colaboradorCertificacaoId) ");
+			sql.append("                   								and certificacao_id = :certificacaoId and colaborador_id = ct.colaborador_id ");
+			sql.append("                   						) and certificacao_id = :certificacaoId and colaborador_id = ct.colaborador_id) ");
+			sql.append("                   					, '2000-01-01' ");
+			sql.append("                   					) ");
+			sql.append("                   	and (select data from colaboradorcertificacao where id = :colaboradorCertificacaoId) ");
+			sql.append("                   ) ");
 		}else{
-			sql.append("and ");
-			sql.append("t2.dataPrevFim  > coalesce((select max(data) from colaboradorcertificacao where certificacao_id = :certificacaoId and colaborador_id = ct.colaborador_id),'01/01/2000') ");
+			sql.append("                   and ");
+			sql.append("                   t2.dataPrevFim  > coalesce((select max(data) from colaboradorcertificacao where certificacao_id = :certificacaoId and colaborador_id = ct.colaborador_id),'2000-01-01') ");
 		}	
 		
-		sql.append("                     ) ");
+		sql.append("                   ) ");
 		sql.append("order by c.nome, t.descricao ");
 		
 		Query query = getSession().createSQLQuery(sql.toString());

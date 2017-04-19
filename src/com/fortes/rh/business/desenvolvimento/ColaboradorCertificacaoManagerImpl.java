@@ -7,6 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections4.Closure;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.IterableUtils;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.avaliacao.AvaliacaoPraticaManager;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorCertificacaoDao;
@@ -47,16 +51,18 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 	}
 	
 	public Collection<ColaboradorCertificacao> possuemAvaliacoesPraticasRealizadas(Long certificacaoId, ColaboradorTurmaManager colaboradorTurmaManager) {
+		Collection<ColaboradorCertificacao> colaboradoresCertificacoes = getDao().colaboradoresAprovadosEmTodosOsCursosDaCertificacao(certificacaoId);
+		if(CollectionUtils.isEmpty(colaboradoresCertificacoes))
+			return colaboradoresCertificacoes;
+		
 		Collection<ColaboradorAvaliacaoPratica> colabAvaliacoesPraticasTemp = new ArrayList<ColaboradorAvaliacaoPratica>();
 		CollectionUtil<ColaboradorAvaliacaoPratica> colectionUtil = new CollectionUtil<ColaboradorAvaliacaoPratica>();
-		
-		Collection<ColaboradorCertificacao> colaboradoresCertificacoes = getDao().colaboradoresAprovadosEmTodosOsCursosDaCertificacao(certificacaoId);
-		if(colaboradoresCertificacoes == null || colaboradoresCertificacoes.size() == 0)
-			return colaboradoresCertificacoes;
 		
 		Long[] colaboradoresIdsParticipantes = new CollectionUtil<ColaboradorCertificacao>().convertCollectionToArrayIds(colaboradoresCertificacoes, "getColaboradorId");
 		Map<Long, Collection<ColaboradorAvaliacaoPratica>> mapColaboradorAvaliacoesPraticas = colaboradorAvaliacaoPraticaManager.findMapByCertificacaoIdAndColaboradoresIds(certificacaoId, colaboradoresIdsParticipantes);
 		
+		Collection<ColaboradorTurma> colaboradoresTurmas = colaboradorTurmaManager.findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(certificacaoId, null, colaboradoresIdsParticipantes);
+
 		for (ColaboradorCertificacao colaboradorCertificacao : colaboradoresCertificacoes) {
 			Long colaboradorId = colaboradorCertificacao.getColaborador().getId();
 			if(mapColaboradorAvaliacoesPraticas.containsKey(colaboradorId)){
@@ -68,24 +74,24 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 				}
 			}
 
-			checaSePossivelInserirNovaNotaAvaPratica(colaboradorTurmaManager,colaboradorCertificacao,colaboradorId);
+			configuraSePossivelInserirNovaNotaAvaPratica(colaboradoresTurmas, colaboradorCertificacao);
 		}
-		
 		return colaboradoresCertificacoes;
 	}
-
-	private void checaSePossivelInserirNovaNotaAvaPratica(ColaboradorTurmaManager colaboradorTurmaManager, ColaboradorCertificacao colaboradorCertificacao, Long colaboradorId) {
-		Collection<ColaboradorTurma> colaboradoresTurmas = colaboradorTurmaManager.findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(colaboradorCertificacao.getCertificacao().getId(), null, colaboradorId);
+	
+	private void configuraSePossivelInserirNovaNotaAvaPratica(Collection<ColaboradorTurma> colaboradoresTurmas, final ColaboradorCertificacao colaboradorCertificacao) {
 		
-		if(colaboradoresTurmas.size() > 0){
-			colaboradorCertificacao.setPossivelInserirNotaAvPratica(true);
-			for (ColaboradorTurma colaboradorTurma : colaboradoresTurmas) {
-				if(!colaboradorTurma.isAprovado())
-					colaboradorCertificacao.setPossivelInserirNotaAvPratica(false);
+		IterableUtils.forEach(colaboradoresTurmas, new Closure<ColaboradorTurma>() {
+			@Override
+			public void execute(ColaboradorTurma colaboradorTurma) {
+				if (colaboradorTurma.getColaborador().getId().equals(colaboradorCertificacao.getColaborador().getId())) {
+					colaboradorCertificacao.setPossivelInserirNotaAvPratica( colaboradorTurma.isAprovado() );
+				}
 			}
-		}
+		});
+		
 	}
-
+	
 	public Collection<ColaboradorCertificacao> colaboradoresParticipamCertificacao(Date dataIni, Date dataFim, Integer mesesCertificacoesAVencer, boolean colaboradorCertificado, boolean colaboradorNaoCertificado, Long[] areaIds, Long[] estabelecimentoIds, Long[] certificacoesIds, Long[] filtroColaboradoresIds, String situacaoColaborador)	{
 			Collection<ColaboradorCertificacao> colaboradoresRetorno = new ArrayList<ColaboradorCertificacao>(); 
 			if(colaboradorCertificado && colaboradorNaoCertificado){

@@ -41,16 +41,16 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider
 		
 		try {
 			String credentials = "";
-			if(authentication.getPrincipal().toString().toUpperCase().equals("SOS")){
-				credentials = Access.check(authentication.getCredentials().toString(), ((UsernamePasswordEmpresaAuthenticationToken)authentication).getSOSSeed());
-				if(credentials != null && !"".equals(credentials) && credentials.equals("Bad credentials"))
-					throw new BadCredentialsException(messages.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentialsSOS", "Bad credentials"), userDetails);
-			}else{
-				credentials = authentication.getCredentials().toString();
-			}
-
-			if (!this.getPasswordEncoder().isPasswordValid(userDetails.getPassword(), credentials, salt))
-				throw new BadCredentialsException(messages.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"), userDetails);
+//			if(authentication.getPrincipal().toString().toUpperCase().equals("SOS")){
+//				credentials = Access.check(authentication.getCredentials().toString(), ((UsernamePasswordEmpresaAuthenticationToken)authentication).getSOSSeed());
+//				if(credentials != null && !"".equals(credentials) && credentials.equals("Bad credentials"))
+//					throw new BadCredentialsException(messages.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentialsSOS", "Bad credentials"), userDetails);
+//			}else{
+//				credentials = authentication.getCredentials().toString();
+//			}
+//
+//			if (!this.getPasswordEncoder().isPasswordValid(userDetails.getPassword(), credentials, salt))
+//				throw new BadCredentialsException(messages.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"), userDetails);
 
 			Long empresaId = Long.parseLong(((UsernamePasswordEmpresaAuthenticationToken)authentication).getEmpresa());
 
