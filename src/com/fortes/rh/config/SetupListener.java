@@ -172,44 +172,22 @@ public class SetupListener implements ServletContextListener
 		}
 	}
 
-	/**
-	 * Carrega configuração do Hibernate.
-	 */
 	private Properties carregaConfiguracaoDoHibernate()
 	{
-		Properties configuracao = new Properties();
-		FileInputStream is = null;
-		try
-		{
-			is = new FileInputStream(new File(this.getHibernateConfigFullPath()));
-			configuracao.load(is);
-		} catch (Exception e)
-		{
-			throw new RuntimeException("Erro ao tentar carregar arquivo de configuração: " + e.getMessage());
-		} finally
-		{
-			try
-			{
-				if(is != null)
-					is.close();
-			} catch (IOException e)
-			{
-				e.printStackTrace();
-			}
-		}
-		return configuracao;
+		return carregaConfiguracao(this.getHibernateConfigFullPath());
 	}
 
-	/**
-	 * Carrega configuração do cliente.
-	 */
 	private Properties carregaConfiguracaoDoCliente()
 	{
+		return carregaConfiguracao(systemConfigPath);
+	}
+
+	private Properties carregaConfiguracao(String pathArquivoConfiguracao) {
 		Properties configuracao = new Properties();
 		FileInputStream is = null;
 		try
 		{
-			is = new FileInputStream(new File(systemConfigPath));
+			is = new FileInputStream(new File(pathArquivoConfiguracao));
 			configuracao.load(is);
 		} catch (Exception e)
 		{
