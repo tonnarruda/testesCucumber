@@ -480,7 +480,7 @@
 								        			<input type="hidden" nameTmp="colaboradorQuestionarios[${countColaboradorQuestionarios}].avaliacao.id" value="${avaliacaoDesempenho.avaliacao.id}"/>
 								        		</#if>
 								        		<input type="hidden" nameTmp="colaboradorQuestionarios[${countColaboradorQuestionarios}].avaliacaoDesempenho.id" value="${avaliacaoDesempenho.id}"/>
-								        		<#if avaliado.colaboradorQuestionario.respondida>
+								        		<#if avaliado.colaboradorQuestionario.respondida || avaliado.colaboradorQuestionario.respondidaParcialmente>
 								        			<i class="fa fa-check respondida" title="Respondida"></i>
 								        		</#if>
 								        		<#assign countColaboradorQuestionarios = countColaboradorQuestionarios + 1/>
