@@ -351,7 +351,7 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 		}
 	}
 
-	public void saveOrUpdateRespostaAvDesempenho(Usuario usuario, Empresa empresa, Colaborador colaborador, ColaboradorQuestionario colaboradorQuestionario, AvaliacaoDesempenho avaliacaoDesempenho, ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial, Collection<Pergunta> perguntas, Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariais) {
+	public void saveOrUpdateRespostaAvDesempenho(Usuario usuario, Empresa empresa, Colaborador colaborador, ColaboradorQuestionario colaboradorQuestionario, AvaliacaoDesempenho avaliacaoDesempenho, ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial, Collection<Pergunta> perguntas, Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariais) throws FortesException {
 		Collection<ColaboradorResposta> colaboradorRespostasDasPerguntas = new ArrayList<ColaboradorResposta>();
 		if(colaboradorQuestionario.getAvaliacao()!=null)
 			colaboradorRespostasDasPerguntas = perguntaManager.getColaboradorRespostasDasPerguntas(perguntas);	
@@ -359,9 +359,11 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 		colaboradorRespostaManager.update(colaboradorRespostasDasPerguntas, colaboradorQuestionario, usuario.getId(), empresa.getId(), niveisCompetenciaFaixaSalariais);
 		if (colaboradorQuestionario.getAvaliacao()==null || colaboradorQuestionario.getAvaliacao().isAvaliarCompetenciasCargo()) {
 			ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador = null;
-			if(colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador() != null && colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador().getId() != null)
+			if(colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador() != null && colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador().getId() != null){
 				configuracaoNivelCompetenciaColaborador = configuracaoNivelCompetenciaColaboradorManager.findById(colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador().getId());
-			else{
+				if(configuracaoNivelCompetenciaColaborador == null)
+					throw new FortesException("As configurações do nível de competência foram removidas ou não existe.");
+			}else{
 				configuracaoNivelCompetenciaColaborador = new ConfiguracaoNivelCompetenciaColaborador();
 				configuracaoNivelCompetenciaColaborador.setData(new Date());
 				configuracaoNivelCompetenciaColaborador.setColaborador(colaborador);
