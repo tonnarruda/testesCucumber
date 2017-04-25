@@ -1,1 +1,0 @@
-ALTER TABLE riscomedicaorisco ALTER COLUMN intensidademedida TYPE character varying(100);--.go

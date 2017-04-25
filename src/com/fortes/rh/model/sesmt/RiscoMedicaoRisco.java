@@ -29,7 +29,7 @@ public class RiscoMedicaoRisco extends AbstractModel implements Serializable
 	@Column(length=100)
 	private String tecnicaUtilizada = "";
 	
-	@Column(length=20)
+	@Column(length=100)
 	private String intensidadeMedida = "";
 	
 	@ManyToOne(fetch=FetchType.LAZY)
