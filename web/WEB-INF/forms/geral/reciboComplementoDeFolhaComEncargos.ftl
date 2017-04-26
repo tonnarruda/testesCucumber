@@ -4,8 +4,8 @@
 		<title>Recibo de Pagamento - Complemento de Folha com Encargos</title>
 		
 		<#include "../ftl/mascarasImports.ftl" />
-	
-		<#assign validarCampos="return validaFormulario('form', new Array('mesAno'), new Array('mesAno') )"/>
+		<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
+		<#assign validarCampos="return validaFormulario('form', new Array('mesAno'), new Array('mesAno'), false, '${urlImgs}')"/>	
 	</head>
 	<body>
 		<@ww.actionerror />

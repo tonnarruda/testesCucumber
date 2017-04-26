@@ -4,8 +4,8 @@
 		<title>Recibo de Pagamento - 13º Salário</title>
 		
 		<#include "../ftl/mascarasImports.ftl" />
-	
-		<#assign validarCampos="return validaFormulario('form', new Array('dataCalculo'), new Array('dataCalculo') )"/>
+		<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
+		<#assign validarCampos="return validaFormulario('form', new Array('dataCalculo'), new Array('dataCalculo'), false, '${urlImgs}')"/>
 	</head>
 	<body>
 		<@ww.actionerror />

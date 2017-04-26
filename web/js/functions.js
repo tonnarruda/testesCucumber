@@ -1378,6 +1378,7 @@ function checkListBoxSearch(name)
 var processandoTime = "";
 function processando(urlImg){
 	processandoTime = getCookieProcessando();
+	$( ":button" ).attr('disabled','disabled');
 	
 	var background = document.createElement('div');
 	background.style.cssText = 'position: fixed; z-index: 4000; background-color: black; opacity: 0.1; bottom: 0; right: 0; top: 0; left: 0;'
@@ -1399,9 +1400,10 @@ function processando(urlImg){
 }
 
 function checkProcessandoTime(){
-	if(processandoTime != getCookieProcessando())
+	if(processandoTime != getCookieProcessando()){
 		$('.processando').remove();
-	else
+		$( ":button" ).removeAttr('disabled');
+	}else
 		setTimeout("checkProcessandoTime()",500);
 }
 

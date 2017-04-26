@@ -4,6 +4,7 @@
 		<title>Recibo de Pagamento - Férias</title>
 		
 		<#include "../ftl/mascarasImports.ftl" />
+		<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 		
 		<style type="text/css">
 			.info{height: 50px !important;padding: 30px 8px 0px 60px;}
@@ -15,7 +16,7 @@
 				console.log(intervaloDeDatas);
 				$("input[name=dataInicioGozo]").val(intervaloDeDatas[0]);
 				$("input[name=dataFimGozo]").val(intervaloDeDatas[2]);
-				return validaFormulario('form', new Array('dataCalculo'), new Array('dataCalculo') );
+				return validaFormulario('form', new Array('dataCalculo'), new Array('dataCalculo'), false, '${urlImgs}');
 			}
 		</script>
 	
