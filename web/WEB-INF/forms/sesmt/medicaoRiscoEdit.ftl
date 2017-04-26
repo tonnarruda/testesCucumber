@@ -17,6 +17,7 @@
 	</style>
 	
 	<#include "../ftl/mascarasImports.ftl" />
+	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AmbienteDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/FuncaoDWR.js?version=${versao}"/>'></script>
@@ -205,9 +206,9 @@
 	    	document.form.action = formAction;
 	    	
 	    	<#if controlaRiscoPor == 'A'>
-	    		validaFormulario('form', new Array('data','ambiente'), new Array('data'));
+	    		validaFormulario('form', new Array('data','ambiente'), new Array('data'), false, '${urlImgs}');
 			<#else>
-	    		validaFormulario('form', new Array('data','funcao'), new Array('data'));
+	    		validaFormulario('form', new Array('data','funcao'), new Array('data'), false, '${urlImgs}');
 	    	</#if>
 	    }
     </script>
