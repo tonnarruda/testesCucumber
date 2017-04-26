@@ -7035,12 +7035,6 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<
 		Collection<Colaborador> retorno = colaboradorDao.findAniversariantesPorTempoDeEmpresa(3, false, new Long[]{empresa.getId()}, new Long[]{}, new Long[]{});
 		assertEquals(0, retorno.size());
 	}
-	
-	private Empresa saveEmpresa(){
-		Empresa empresa = EmpresaFactory.getEmpresa();
-		empresaDao.save(empresa);
-		return empresa;
-	}
 
 	@Test
 	public void testFindByAreasIds(){
@@ -7117,6 +7111,12 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<
 		Collection<Colaborador> colaboradoresSemTreinamento = colaboradorDao.findColaboradoresQueNuncaRealizaramTreinamento(new Long[]{empresa.getId()}, areasIds, estabelecimentosIds);
 		assertEquals(1, colaboradoresSemTreinamento.size());
 		assertEquals(colaborador2.getNome(), colaboradoresSemTreinamento.iterator().next().getNome());
+	}
+	
+	private Empresa saveEmpresa(){
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		return empresa;
 	}
 	
 	private FaixaSalarial saveFaixaSalarial(Cargo cargo){

@@ -27,6 +27,7 @@ import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
+import com.fortes.rh.model.dicionario.MotivoReprovacao;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.StatusAprovacao;
 import com.fortes.rh.model.dicionario.StatusTreinamento;
@@ -48,6 +49,9 @@ public class ColaboradorTurmaManagerTest_Junit4
 	public void setUp() throws Exception
 	{
 		colaboradorTurmaDao = mock(ColaboradorTurmaDao.class);
+		colaboradorManager = mock(ColaboradorManager.class);
+		cursoManager = mock(CursoManager.class);
+		
 		colaboradorTurmaManager.setDao(colaboradorTurmaDao);
 		
 		colaboradorManager = mock(ColaboradorManager.class);
@@ -268,5 +272,40 @@ public class ColaboradorTurmaManagerTest_Junit4
 		
 		Collection<ColaboradorTurma> colaboradoresTurmasRetorno = colaboradorTurmaManager.findRelatorioColaboradoresQueNuncaRealizaramOsCursosSelecioandos(empresaId, cursosIds, areaIds, estabelecimentoIds, SituacaoColaborador.ATIVO);
 		assertEquals(1, colaboradoresTurmasRetorno.size());
+	}
+	
+	@Test
+	public void testMontaExibicaoAprovadosReprovados() throws Exception
+	{
+		Collection<ColaboradorTurma> colaboradorTurmas = montaColaboradoresTurmasAprovadosEReprovados(); 
+		
+		long turmaId = 1;
+		
+		when(colaboradorTurmaDao.findByTurmaId(turmaId)).thenReturn(colaboradorTurmas);
+		Collection<Colaborador> colaboradores = colaboradorTurmaManager.montaExibicaoAprovadosReprovados(turmaId);
+		
+		assertEquals(5, colaboradores.size());
+		 
+		assertEquals("Colaborador Aprovado", ((Colaborador) colaboradores.toArray()[0]).getNome());
+		assertEquals("<span style='color: red;'>Colaborador Reprovado (" + MotivoReprovacao.REPROVADO.getDescricao() + ") </span>", ((Colaborador) colaboradores.toArray()[1]).getNome());
+		assertEquals("<span style='color: red;'>Colaborador Reprovado Por Frequencia (" + MotivoReprovacao.FREQUENCIA.getDescricao() + ") </span>" , ((Colaborador) colaboradores.toArray()[2]).getNome());
+		assertEquals("<span style='color: red;'>Colaborador Reprovado Por Nota (" +  MotivoReprovacao.NOTA.getDescricao() + ") </span>" , ((Colaborador) colaboradores.toArray()[3]).getNome());
+		assertEquals("<span style='color: red;'>Colaborador Reprovado Por Nota E Frequencia ("  + MotivoReprovacao.NOTA_FREQUENCIA.getDescricao() + ") </span>" , ((Colaborador) colaboradores.toArray()[4]).getNome());
+	}
+	
+	private Collection<ColaboradorTurma> montaColaboradoresTurmasAprovadosEReprovados(){
+		ColaboradorTurma colaboradorTurmaAprovado = criarColaboradorTurma("Colaborador Aprovado", true, null);
+		ColaboradorTurma colaboradorTurmaReprovadoPorNota = criarColaboradorTurma("Colaborador Reprovado Por Nota", false, MotivoReprovacao.NOTA.getMotivo());
+		ColaboradorTurma colaboradorTurmaReprovadoPorFrequencia = criarColaboradorTurma("Colaborador Reprovado Por Frequencia", false, MotivoReprovacao.FREQUENCIA.getMotivo());
+		ColaboradorTurma colaboradorTurmaReprovadoPorNotaEFrequencia = criarColaboradorTurma("Colaborador Reprovado Por Nota E Frequencia", false, MotivoReprovacao.NOTA_FREQUENCIA.getMotivo());
+		ColaboradorTurma colaboradorTurmaReprovado = criarColaboradorTurma("Colaborador Reprovado", false, MotivoReprovacao.REPROVADO.getMotivo());
+		
+		Collection<ColaboradorTurma> colaboradoresTurma = Arrays.asList(colaboradorTurmaAprovado, colaboradorTurmaReprovado, colaboradorTurmaReprovadoPorFrequencia, colaboradorTurmaReprovadoPorNota, colaboradorTurmaReprovadoPorNotaEFrequencia);
+		return colaboradoresTurma;
+	}
+
+	private ColaboradorTurma criarColaboradorTurma(String nomeColaborador, boolean aprovado, String motivoReprovacao ){
+		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(nomeColaborador, aprovado, motivoReprovacao);
+		return colaboradorTurma;
 	}
 }

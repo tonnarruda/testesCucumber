@@ -347,4 +347,8 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 	public void setCursoLntManager(CursoLntManager cursoLntManager) {
 		this.cursoLntManager = cursoLntManager;
 	}
+
+	public boolean existeTurmaRealizada(Long cursoId) {
+		return getDao().existeTurmaRealizada(cursoId);
+	}
 }

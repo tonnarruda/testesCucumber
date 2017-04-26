@@ -1124,6 +1124,26 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		assertEquals(4, result/60);
 	}
 	
+	public void testExisteTurmaRealizadaTrue(){
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Curso curso = saveCurso("Curso", empresa, 60);
+		saveTurma(curso, new Date(), new Date(), true, 0.0);
+		
+		assertTrue("Existe turma realizada", cursoDao.existeTurmaRealizada(curso.getId()));
+	}
+	
+	public void testExisteTurmaRealizadaFalse(){
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Curso curso = saveCurso("Curso", empresa, 60);
+		saveTurma(curso, new Date(), new Date(), false, 0.0);
+		
+		assertFalse("Não existe turma realizada", cursoDao.existeTurmaRealizada(curso.getId()));
+	}
+	
 	private Curso criaCurso(char tipoAvaliacaoCurso, boolean comResposta, Double valorResposta)
 	{
 		Curso curso = CursoFactory.getEntity();

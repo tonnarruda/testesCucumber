@@ -376,7 +376,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		if (diaTurmas.isEmpty())
 			addActionMessage("Não existe previsão de dias para esta turma.");
 
-		colaboradorTurmasLista = colaboradorTurmaManager.findByTurma(turma.getId(), null, true, null, null, getEmpresaSistema().isControlarVencimentoPorCertificacao());
+		colaboradorTurmasLista = colaboradorTurmaManager.findByTurma(turma.getId(), null, true, null, null, getEmpresaSistema().isControlarVencimentoPorCertificacao(), null);
 
 		if(getEmpresaSistema().isControlarVencimentoPorCertificacao())
 			colaboradorCertificacaoManager.setCertificaçõesNomesInColaboradorTurmas(colaboradorTurmasLista);
@@ -436,7 +436,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	{
 		if(certificadoDe == 'T')
 		{
-			colaboradores = colaboradorTurmaManager.montaExibicaoAprovadosReprovados(null, turma.getId());
+			colaboradores = colaboradorTurmaManager.montaExibicaoAprovadosReprovados(turma.getId());
 			turma = turmaManager.findByIdProjection(turma.getId());
 			certificado = new Certificado(turma, empresaManager.findCidade(getEmpresaSistema().getId()), true, true);
 		}

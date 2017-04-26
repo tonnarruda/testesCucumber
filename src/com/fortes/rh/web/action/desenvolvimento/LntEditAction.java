@@ -469,7 +469,7 @@ public class LntEditAction extends MyActionSupportList
 		try {
 			if (turma != null && participantesCheck != null){
 				if (turma.getId() != null){
-					Collection<ColaboradorTurma> colaboradoresTurmas = colaboradorTurmaManager.findByTurma(turma.getId(), null, true, null, null, false);
+					Collection<ColaboradorTurma> colaboradoresTurmas = colaboradorTurmaManager.findByTurma(turma.getId(), null, true, null, null, false, null);
 					colaboradorTurmaManager.insereColaboradorTurmas(participantesCheck, colaboradoresTurmas, turma, null, 0, null, getEmpresaSistema().isControlarVencimentoPorCertificacao(), new CursoLnt(cursoLntId));
 					msg = "Participantes salvos com sucesso.";
 				}else{

@@ -2,7 +2,6 @@ package com.fortes.rh.test.web.action.desenvolvimento;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -170,7 +169,7 @@ public class TurmaEditActionTest_Junit4
 		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
 		colaboradorTurmas.add(colaboradorTurma);
 
-		when(colaboradorTurmaManager.montaExibicaoAprovadosReprovados(anyLong(), eq(turma.getId()))).thenReturn(colaboradors);
+		when(colaboradorTurmaManager.montaExibicaoAprovadosReprovados(eq(turma.getId()))).thenReturn(colaboradors);
 		when(turmaManager.findByIdProjection(turma.getId())).thenReturn(turma);
 		when(empresaManager.findCidade(eq(1L))).thenReturn("Fortaleza");
 

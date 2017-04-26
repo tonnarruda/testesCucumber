@@ -83,10 +83,10 @@
 		<@ww.textarea label="Conteúdo Programático" name="curso.conteudoProgramatico" cssStyle="width:500px;"/>
 		<@ww.textarea label="Critérios de Avaliação" name="curso.criterioAvaliacao" cssStyle="width:500px;"/>
 		
-		<#if avaliacaoAlunoRespondida>
+		<#if avaliacaoAlunoRespondida || existeTurmaRealizada>
 			<@frt.checkListBox label="Avaliações dos Alunos" name="avaliacaoCursoCheck" id="avaliacaoCursoCheck" list="avaliacaoCursoCheckList" readonly=true />
 			<div style="width: 500px;">
-				<strong>Não é possível modificar as avaliações dos alunos, pois já existe resposta para pelo menos uma das avaliações acima.</strong>
+				<strong>Não é possível modificar as avaliações dos alunos, pois já existe pelo menos uma turma realizada ou existem respostas para pelo menos uma das avaliações acima.</strong>
 			</div>
 		<#else>
 			<@frt.checkListBox label="Avaliações dos Alunos" name="avaliacaoCursoCheck" id="avaliacaoCursoCheck" list="avaliacaoCursoCheckList" filtro="true" readonly=false tooltipHelp="true"/>

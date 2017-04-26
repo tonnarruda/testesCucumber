@@ -87,6 +87,7 @@ public class CursoEditActionTest extends MockObjectTestCase
     	cursoManager.expects(once()).method("existeAvaliacaoAlunoDeTipoAvaliacaoRespondida").with(eq(curso.getId())).will(returnValue(false));
     	empresaManager.expects(once()).method("findEmpresasPermitidas").with(eq(true),eq(empresa.getId()),eq(usuario.getId()),ANYTHING).will(returnValue(new ArrayList<Empresa>()));
     	cursoManager.expects(once()).method("existePresenca").with(eq(curso.getId())).will(returnValue(true));
+    	cursoManager.expects(once()).method("existeTurmaRealizada").with(eq(curso.getId())).will(returnValue(true));
     	
     	ParametrosDoSistema params = new ParametrosDoSistema();
     	params.setId(1L);
@@ -116,6 +117,7 @@ public class CursoEditActionTest extends MockObjectTestCase
     	cursoManager.expects(once()).method("existeAvaliacaoAlunoDeTipoAvaliacaoRespondida").with(eq(curso.getId())).will(returnValue(false));
     	empresaManager.expects(once()).method("findEmpresasPermitidas").with(eq(true),eq(empresaSistema.getId()),eq(usuario.getId()),ANYTHING).will(returnValue(new ArrayList<Empresa>()));
     	cursoManager.expects(once()).method("existePresenca").with(eq(curso.getId())).will(returnValue(false));
+    	cursoManager.expects(once()).method("existeTurmaRealizada").with(eq(curso.getId())).will(returnValue(false));
     	
     	ParametrosDoSistema params = new ParametrosDoSistema();
     	params.setId(1L);
@@ -187,6 +189,7 @@ public class CursoEditActionTest extends MockObjectTestCase
     	cursoManager.expects(once()).method("existeAvaliacaoAlunoDeTipoAvaliacaoRespondida").with(eq(curso.getId())).will(returnValue(false));
     	empresaManager.expects(once()).method("findEmpresasPermitidas").with(eq(true),eq(empresa.getId()),eq(usuario.getId()),ANYTHING).will(returnValue(new ArrayList<Empresa>()));
     	cursoManager.expects(once()).method("existePresenca").with(eq(curso.getId())).will(returnValue(true));
+    	cursoManager.expects(once()).method("existeTurmaRealizada").with(eq(curso.getId())).will(returnValue(true));
     	
     	ParametrosDoSistema params = new ParametrosDoSistema();
     	params.setId(1L);

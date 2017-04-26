@@ -569,7 +569,7 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	colaboradorTurma2.setTurma(turma);
     	colaboradorTurmaDao.save(colaboradorTurma2);
     	
-    	assertEquals(new Integer(2), colaboradorTurmaDao.getCount(turma.getId(), null, null, null, null));
+    	assertEquals(new Integer(2), colaboradorTurmaDao.getCount(turma.getId(), null, null, null, null, false));
     }
     
     public void testGetCountComEmpresa()
@@ -614,7 +614,7 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	joaoTurma.setTurma(turma);
     	colaboradorTurmaDao.save(joaoTurma);
     	
-    	assertEquals(new Integer(1), colaboradorTurmaDao.getCount(turma.getId(), fortes.getId(), null, null, null));
+    	assertEquals(new Integer(1), colaboradorTurmaDao.getCount(turma.getId(), fortes.getId(), null, null, null, null));
     }
     
     public void testFindColaboradorByTurma()
@@ -752,7 +752,7 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
         colaboradorTurma.setColaborador(colaborador);
         colaboradorTurma = colaboradorTurmaDao.save(colaboradorTurma);
 
-        Collection<ColaboradorTurma> retornos = colaboradorTurmaDao.findByTurma(turma.getId(), null, null, null, null, true, null, null);
+        Collection<ColaboradorTurma> retornos = colaboradorTurmaDao.findByTurma(turma.getId(), null, null, null, null, true, null, null, null);
 
         ColaboradorTurma colaboradorTurmaRetorno = (ColaboradorTurma) retornos.toArray()[0];
 
@@ -793,8 +793,8 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	PrioridadeTreinamento prioridadeTreinamento = new PrioridadeTreinamento();
     	prioridadeTreinamento = prioridadeTreinamentoDao.save(prioridadeTreinamento);
     	
-    	ColaboradorTurma colaboradorTurma = getEntity();
-    	colaboradorTurma.setTurma(turma);
+    	ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(colaborador, curso, turma);
+    	colaboradorTurma.setAprovado(true);
     	colaboradorTurma.setColaborador(colaborador);
     	colaboradorTurma = colaboradorTurmaDao.save(colaboradorTurma);
 
@@ -810,12 +810,11 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	colaborador2.setHistoricoColaborador(historicoColaborador2);
     	colaborador2 = colaboradorDao.save(colaborador2);
     	
-    	ColaboradorTurma colaboradorTurma2 = getEntity();
-    	colaboradorTurma2.setTurma(turma);
-    	colaboradorTurma2.setColaborador(colaborador2);
+    	ColaboradorTurma colaboradorTurma2 = ColaboradorTurmaFactory.getEntity(colaborador2, curso, turma);
+    	colaboradorTurma2.setAprovado(true);
     	colaboradorTurma2 = colaboradorTurmaDao.save(colaboradorTurma2);
     	
-    	Collection<ColaboradorTurma> retornosFiltroEstabelecimento = colaboradorTurmaDao.findByTurma(turma.getId(), null, null,  new Long[]{estabelecimento.getId()}, null, true, null, null);
+    	Collection<ColaboradorTurma> retornosFiltroEstabelecimento = colaboradorTurmaDao.findByTurma(turma.getId(), null, null,  new Long[]{estabelecimento.getId()}, null, true, null, null, true);
     	assertEquals(1, retornosFiltroEstabelecimento.size());
     }
 
@@ -1121,18 +1120,35 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
         }
     }
 	
+	@SuppressWarnings("unchecked")
 	public void testFindAprovadosReprovados()
 	{
-		Date dataIni = DateUtil.montaDataByString("01/01/2008");
-		Date dataFim = DateUtil.montaDataByString("01/01/2020");
+		Date dataIni = DateUtil.montaDataByString("01/01/2017");
+		Date dataFim = DateUtil.montaDataByString("08/02/2017");
 		
-		try {
-			colaboradorTurmaDao.findAprovadosReprovados(dataIni, dataFim, null, null, null, null);	
-			assertTrue(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-			fail("Erro na consulta do SQL");
-		}
+		Empresa empresa =  EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional);
+		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento);
+		
+		Curso curso1 = saveCurso(empresa);
+		Turma turma1 = saveTurma(curso1, DateUtil.criarDataMesAno(01, 01, 2017), DateUtil.criarDataMesAno(05, 02, 2017), true);
+		
+		Colaborador colaborador1 = saveColaboradorComHistorico("Colaborador 1", empresa, estabelecimento, areaOrganizacional, null, DateUtil.criarDataMesAno(01, 12, 2016), StatusRetornoAC.CONFIRMADO);
+		
+		saveColaboradorTurma(curso1, turma1, colaborador1, true);
+		
+		colaboradorTurmaDao.getHibernateTemplateByGenericDao().flush();
+		
+		HashMap<String, Integer> aprovadosAndReprovados = colaboradorTurmaDao.findAprovadosReprovados(dataIni, dataFim, new Long[]{empresa.getId()}, new Long[]{areaOrganizacional.getId()},
+				new Long[]{curso1.getId()}, new Long[]{estabelecimento.getId()});
+		assertEquals( new Integer(1), aprovadosAndReprovados.get("qtdAprovados"));
+		assertEquals( new Integer(0), aprovadosAndReprovados.get("qtdReprovados"));
+		
 	}
 	
 	public void testFindAprovadosReprovadosFiltroEstabelecimento (){
@@ -2302,7 +2318,7 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 		
 		colaboradorTurmaDao.getHibernateTemplateByGenericDao().flush();
 		
-    	Collection<ColaboradorTurma> retorno = colaboradorTurmaDao.findAprovadosReprovados(empresa.getId(), certificacao, null, new Long[]{areaOrganizacional.getId()}, new Long[]{estabelecimento.getId()}, hoje, dataFim, " e.nome, areaNome, co.nome, c.nome ", true, null);
+    	Collection<ColaboradorTurma> retorno = colaboradorTurmaDao.findAprovadosReprovados(empresa.getId(), certificacao, new Long[]{areaOrganizacional.getId()}, new Long[]{estabelecimento.getId()}, hoje, dataFim, " e.nome, areaNome, co.nome, c.nome ", true, null);
     	assertEquals(1, retorno.size());
     }
 	
@@ -2674,119 +2690,7 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 		assertEquals(1, colaboradoresTurma1.size());
 		assertEquals(0, colaboradoresTurma2.size());
 	}
-	
-	private Colaborador setColaborador(String nome, Empresa empresa){
-		Colaborador colaborador = ColaboradorFactory.getEntity();
-		colaborador.setNome(nome);
-		colaborador.setEmpresa(empresa);
-		return colaborador;
-	}
-	
-	private Colaborador saveColaborador(String nome){
-		Colaborador colaborador = ColaboradorFactory.getEntity();
-		colaborador.setNome(nome);
-		colaboradorDao.save(colaborador);
-		return colaborador;
-	}
-	
-	private Colaborador saveColaboradorComHistorico(String nome, Empresa empresa, Estabelecimento estabelecimento, AreaOrganizacional areaOrganizacional, FaixaSalarial faixaSalarial, Date data, int status){
-		Colaborador colaborador = setColaborador(nome, empresa);
-		colaboradorDao.save(colaborador);
-		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(colaborador, data, faixaSalarial, estabelecimento, areaOrganizacional, null, null, status);
-		historicoColaboradorDao.save(historicoColaborador);
-		return colaborador;
-	}
-	
-	private Turma saveTurma(Curso curso, Date dataInicio, Date dataFim, boolean realizada){
-		Turma turma = TurmaFactory.getEntity();
-		turma.setCurso(curso);
-		turma.setDataPrevIni(dataInicio);
-		turma.setDataPrevFim(dataFim);
-		turma.setRealizada(realizada);
-		turmaDao.save(turma);
-		return turma;
-	}
-	
-	private Curso saveCurso(String nome){
-		Curso curso = setCurso(nome, null, null);
-		curso.setNome(nome);
-		curso.setCargaHoraria(260);
-		cursoDao.save(curso);
-		return curso;
-	}
-	
-	private Curso saveCurso(String nome, Double percentualMinimoFrequencia){
-		Curso curso = setCurso(nome, percentualMinimoFrequencia, null);
-		cursoDao.save(curso);
-		return curso;
-	}
-	
-	private Curso saveCurso(String nome, Double percentualMinimoFrequencia, Collection<AvaliacaoCurso> avaliacoesCurso){
-		Curso curso = setCurso(nome, percentualMinimoFrequencia, avaliacoesCurso);
-		cursoDao.save(curso);
-		return curso;
-	}
-	
-	private Curso setCurso(String nome, Double percentualMinimoFrequencia, Collection<AvaliacaoCurso> avaliacoesCurso ){
-		Curso curso = CursoFactory.getEntity();
-		curso.setNome(nome);
-		curso.setPercentualMinimoFrequencia(percentualMinimoFrequencia);
-		curso.setAvaliacaoCursos(avaliacoesCurso);
-		return curso;
-	}
-	
-	private ColaboradorTurma saveColaboradorTurma(Curso curso, Turma turma, Colaborador colaborador, boolean aprovado){
-		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity();
-		colaboradorTurma.setColaborador(colaborador);
-		colaboradorTurma.setCurso(curso);
-		colaboradorTurma.setTurma(turma);
-		colaboradorTurma.setAprovado(aprovado);
-		colaboradorTurmaDao.save(colaboradorTurma);
-		return colaboradorTurma;
-	}
-	
-	private DiaTurma saveDiaTurma(Turma turma, Date data){
-		DiaTurma diaTurma = DiaTurmaFactory.getEntity();
-		diaTurma.setTurma(turma);
-		diaTurma.setDia(data);
-		diaTurmaDao.save(diaTurma);
-		return diaTurma;
-	}
-	
-	private ColaboradorPresenca saveColaboradorPresenca(ColaboradorTurma colaboradorTurma, DiaTurma diaTurma, boolean presenca){
-		ColaboradorPresenca colaboradorPresenca = ColaboradorPresencaFactory.getEntity();
-		colaboradorPresenca.setColaboradorTurma(colaboradorTurma);
-		colaboradorPresenca.setDiaTurma(diaTurma);
-		colaboradorPresenca.setPresenca(presenca);
-		colaboradorPresencaDao.save(colaboradorPresenca);
-		return colaboradorPresenca;
-	}
-
-	private Avaliacao saveAvaliacao(String titulo, Double percentualAprovacao){
-		Avaliacao avaliacao = new Avaliacao();
-		avaliacao.setTitulo(titulo);
-		avaliacao.setPercentualAprovacao(percentualAprovacao);
-		avaliacaoDao.save(avaliacao);
-		return avaliacao;
-	}
-	
-	private AvaliacaoCurso saveAvaliacaoCurso(char tipoAvaliacao, Avaliacao avaliacao){
-		AvaliacaoCurso avaliacaoCurso = AvaliacaoCursoFactory.getEntity();
-		avaliacaoCurso.setTipo(tipoAvaliacao);
-		avaliacaoCurso.setAvaliacao(avaliacao);
-		avaliacaoCursoDao.save(avaliacaoCurso);
-		return avaliacaoCurso;
-	}
-	
-	private AproveitamentoAvaliacaoCurso saveAproveitamentoAvaliacaoCurso(AvaliacaoCurso avaliacaoCurso, ColaboradorTurma colaboradorTurma, Double valor){
-		AproveitamentoAvaliacaoCurso aproveitamentoAvaliacaoCurso = new AproveitamentoAvaliacaoCurso();
-		aproveitamentoAvaliacaoCurso.setAvaliacaoCurso(avaliacaoCurso);
-		aproveitamentoAvaliacaoCurso.setColaboradorTurma(colaboradorTurma);
-		aproveitamentoAvaliacaoCurso.setValor(valor);
-		aproveitamentoAvaliacaoCursoDao.save(aproveitamentoAvaliacaoCurso);
-		return aproveitamentoAvaliacaoCurso;
-	}
-	
+		
 	public void testFindByCursoLntId() {
 		Colaborador colaborador1 = ColaboradorFactory.getEntity(null, "Colab 1");
 		colaboradorDao.save(colaborador1);
@@ -2909,6 +2813,126 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 		assertNull(colabTurmaRetorno.getCursoLnt().getId());
 	}
 	
+
+	private Colaborador setColaborador(String nome, Empresa empresa){
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setNome(nome);
+		colaborador.setEmpresa(empresa);
+		return colaborador;
+	}
+	
+	private Colaborador saveColaborador(String nome){
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setNome(nome);
+		colaboradorDao.save(colaborador);
+		return colaborador;
+	}
+	
+	private Colaborador saveColaboradorComHistorico(String nome, Empresa empresa, Estabelecimento estabelecimento, AreaOrganizacional areaOrganizacional, FaixaSalarial faixaSalarial, Date data, int status){
+		Colaborador colaborador = setColaborador(nome, empresa);
+		colaboradorDao.save(colaborador);
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(colaborador, data, faixaSalarial, estabelecimento, areaOrganizacional, null, null, status);
+		historicoColaboradorDao.save(historicoColaborador);
+		return colaborador;
+	}
+	
+	private Turma saveTurma(Curso curso, Date dataInicio, Date dataFim, boolean realizada){
+		Turma turma = TurmaFactory.getEntity();
+		turma.setCurso(curso);
+		turma.setDataPrevIni(dataInicio);
+		turma.setDataPrevFim(dataFim);
+		turma.setRealizada(realizada);
+		turmaDao.save(turma);
+		return turma;
+	}
+	
+	private Curso saveCurso(Empresa empresa){
+		Curso curso = CursoFactory.getEntity();
+		curso.setEmpresa(empresa);
+		cursoDao.save(curso);
+		return curso;
+	}
+	
+	private Curso saveCurso(String nome){
+		Curso curso = setCurso(nome, null, null);
+		curso.setNome(nome);
+		curso.setCargaHoraria(260);
+		cursoDao.save(curso);
+		return curso;
+	}
+	
+	private Curso saveCurso(String nome, Double percentualMinimoFrequencia){
+		Curso curso = setCurso(nome, percentualMinimoFrequencia, null);
+		cursoDao.save(curso);
+		return curso;
+	}
+	
+	private Curso saveCurso(String nome, Double percentualMinimoFrequencia, Collection<AvaliacaoCurso> avaliacoesCurso){
+		Curso curso = setCurso(nome, percentualMinimoFrequencia, avaliacoesCurso);
+		cursoDao.save(curso);
+		return curso;
+	}
+	
+	private Curso setCurso(String nome, Double percentualMinimoFrequencia, Collection<AvaliacaoCurso> avaliacoesCurso ){
+		Curso curso = CursoFactory.getEntity();
+		curso.setNome(nome);
+		curso.setPercentualMinimoFrequencia(percentualMinimoFrequencia);
+		curso.setAvaliacaoCursos(avaliacoesCurso);
+		return curso;
+	}
+	
+	private ColaboradorTurma saveColaboradorTurma(Curso curso, Turma turma, Colaborador colaborador, boolean aprovado){
+		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity();
+		colaboradorTurma.setColaborador(colaborador);
+		colaboradorTurma.setCurso(curso);
+		colaboradorTurma.setTurma(turma);
+		colaboradorTurma.setAprovado(aprovado);
+		colaboradorTurmaDao.save(colaboradorTurma);
+		return colaboradorTurma;
+	}
+	
+	private DiaTurma saveDiaTurma(Turma turma, Date data){
+		DiaTurma diaTurma = DiaTurmaFactory.getEntity();
+		diaTurma.setTurma(turma);
+		diaTurma.setDia(data);
+		diaTurmaDao.save(diaTurma);
+		return diaTurma;
+	}
+	
+	private ColaboradorPresenca saveColaboradorPresenca(ColaboradorTurma colaboradorTurma, DiaTurma diaTurma, boolean presenca){
+		ColaboradorPresenca colaboradorPresenca = ColaboradorPresencaFactory.getEntity();
+		colaboradorPresenca.setColaboradorTurma(colaboradorTurma);
+		colaboradorPresenca.setDiaTurma(diaTurma);
+		colaboradorPresenca.setPresenca(presenca);
+		colaboradorPresencaDao.save(colaboradorPresenca);
+		return colaboradorPresenca;
+	}
+
+	private Avaliacao saveAvaliacao(String titulo, Double percentualAprovacao){
+		Avaliacao avaliacao = new Avaliacao();
+		avaliacao.setTitulo(titulo);
+		avaliacao.setPercentualAprovacao(percentualAprovacao);
+		avaliacaoDao.save(avaliacao);
+		return avaliacao;
+	}
+	
+	private AvaliacaoCurso saveAvaliacaoCurso(char tipoAvaliacao, Avaliacao avaliacao){
+		AvaliacaoCurso avaliacaoCurso = AvaliacaoCursoFactory.getEntity();
+		avaliacaoCurso.setTipo(tipoAvaliacao);
+		avaliacaoCurso.setAvaliacao(avaliacao);
+		avaliacaoCursoDao.save(avaliacaoCurso);
+		return avaliacaoCurso;
+	}
+	
+	private AproveitamentoAvaliacaoCurso saveAproveitamentoAvaliacaoCurso(AvaliacaoCurso avaliacaoCurso, ColaboradorTurma colaboradorTurma, Double valor){
+		AproveitamentoAvaliacaoCurso aproveitamentoAvaliacaoCurso = new AproveitamentoAvaliacaoCurso();
+		aproveitamentoAvaliacaoCurso.setAvaliacaoCurso(avaliacaoCurso);
+		aproveitamentoAvaliacaoCurso.setColaboradorTurma(colaboradorTurma);
+		aproveitamentoAvaliacaoCurso.setValor(valor);
+		aproveitamentoAvaliacaoCursoDao.save(aproveitamentoAvaliacaoCurso);
+		return aproveitamentoAvaliacaoCurso;
+	}
+
     public GenericDao<ColaboradorTurma> getGenericDao()
     {
         return colaboradorTurmaDao;

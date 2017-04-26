@@ -885,4 +885,16 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
   		hql.append("            				) ");
         hql.append("        group by turma_id)  as dt2 on dt2.turma_id = t.id    ");
 	}
+
+	public boolean existeTurmaRealizada(Long cursoId) {
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("t.id"), "id");
+		
+		Criteria criteria = getSession().createCriteria(Turma.class, "t");
+		criteria.add(Expression.eq("t.curso.id", cursoId));
+		criteria.add(Expression.eq("t.realizada", true));
+		
+		criteria.setProjection(p);
+		return criteria.list().size() > 0;
+	}
 }

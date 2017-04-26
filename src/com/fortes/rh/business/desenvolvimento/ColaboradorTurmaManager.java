@@ -37,16 +37,15 @@ public interface ColaboradorTurmaManager extends GenericManager<ColaboradorTurma
 	public Collection<SomatorioCursoMatriz> getSomaPontuacao(Collection<ColaboradorCursoMatriz> colaboradorCursoMatrizs);
 	public Collection<ColaboradorTurma> findByDNTColaboradores(DNT dnt, Collection<Colaborador> colaboradors);
 	public boolean verifcaExisteNoCurso(Colaborador colaborador, Curso curso, DNT dnt);
-	public Collection<ColaboradorTurma> findByTurma(Long turmaId, Long empresaId, boolean exibirSituacaoAtualColaborador, Integer page, Integer pagingSize, boolean controlaVencimentoPorCertificacao);
-	public Collection<ColaboradorTurma> findByTurmaColaborador(Long turmaId, Long empresaId, String colaboradorNome, Long[] estabelecimentoIds, Long[] cargoIds, Integer page, Integer pagingSize);
-	public Collection<Colaborador> montaExibicaoAprovadosReprovados(Long empresaId, Long turmaId);
+	public Collection<ColaboradorTurma> findByTurma(Long turmaId, Long empresaId, boolean exibirSituacaoAtualColaborador, Integer page, Integer pagingSize, boolean controlaVencimentoPorCertificacao, Boolean aprovado);
+	public Collection<ColaboradorTurma> findByTurmaColaborador(Long turmaId, Long empresaId, String colaboradorNome, Long[] estabelecimentoIds, Long[] cargoIds, Integer page, Integer pagingSize, Boolean aprovado);
 	public Map<String, Object> getDadosTurma(Collection<ColaboradorTurma> colaboradorTurmas, Map<String, Object> parametros) throws Exception;
 	public void saveUpdate(Collection<Long> colaboradoresId, boolean aprovado) throws Exception;
 	public Collection<ColaboradorTurma> setCustoRateado(Collection<ColaboradorTurma> colaboradorTurmasLista);
 	public Collection<ColaboradorTurma> setFamiliaAreas(Collection<ColaboradorTurma> colaboradorTurmas, Long empresaId) throws Exception;
-	public Integer getCount(Long turmaId, Long empresaId, String colaboradorNome, Long[] estabelecimentoIds, Long[] cargoIds);
 	public Collection<ColaboradorTurma> findRelatorioSemTreinamentoAprovadosOrReprovados(Long[] empresasIds, Long[] cursosIds, Long[] areaIds, Long[] estabelecimentoIds, Integer qtdMesesSemCurso, String situacaoColaborador, String filtroStatusTreinamento) throws Exception;
 	public Collection<ColaboradorTurma> findRelatorioColaboradoresQueNuncaRealizaramOsCursosSelecioandos(Long[] empresasIds, Long[] cursosIds, Long[] areaIds, Long[] estabelecimentoIds, String situacaoColaborador) throws Exception;
+	public Integer getCount(Long turmaId, Long empresaId, String colaboradorNome, Long[] estabelecimentoIds, Long[] cargoIds, Boolean aprovado);
 	public Collection<ColaboradorTurma> findRelatorioComTreinamento(Long empresaId, Long[] cursosIds, Long[] areaIds, Long[] estabelecimentoIds, Date dataIni, Date dataFim, char aprovado, String situacao) throws Exception;
 	public Collection<ColaboradorTurma> findByTurmaSemPresenca(Long turmaId, Long diaTurmaId);
 	public Collection<ColaboradorTurma> findByTurmaPresenteNoDiaTurmaId(Long turmaId, Long diaTurmaId);
@@ -62,9 +61,7 @@ public interface ColaboradorTurmaManager extends GenericManager<ColaboradorTurma
 	public Collection<ColaboradorTurma> findHistoricoTreinamentosByColaborador(Long empresaId, Date dataIni, Date dataFim, Long... colaboradorIds) throws Exception;
 	public Collection<ColaboradorTurma> findColaboradorByTurma(Long turmaId, Long avaliacaoCursoId, boolean controlaVencimentoPorCertificacao);
 	public Double percentualFrequencia(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds, Long[] areasIds, Long[] estabelecimentosIds);
-	public void carregaResultados(Collection<ColaboradorTurma> colaboradorTurmas);
 	public HashMap<String, Integer> getResultado(Date dataIni, Date dataFim, Long[] empresaIds, Long[] areasIds, Long[] cursoIds, Long[] estabelecimentosIds);
-	public Collection<Colaborador> findAprovadosByTurma(Collection<Long> turmaId);
 	public Collection<ColaboradorTurma> findAprovadosByTurma(Long turmaId);
 	public Collection<ColaboradorTurma> findColaboradoresComCustoTreinamentos(Long colaboradorId, Date dataIni, Date dataFim, Boolean realizada);
 	public String checaColaboradorInscritoEmOutraTurma(Long[] colaboradoresId, Collection<ColaboradorTurma> colaboradoresTurmas, Long turmaId);
@@ -72,7 +69,6 @@ public interface ColaboradorTurmaManager extends GenericManager<ColaboradorTurma
 	public Collection<ColaboradorTurma> findColaboradoresComEmailByTurma(Long turmaId, boolean somentePresentes);
 	public Collection<ColaboradorTurma> findColabTreinamentos(Long empresaId, Long[] estabelecimentoIds,	Long[] areaIds, Long[] cursoIds, Long[] turmaIds, boolean considerarSomenteDiasPresente);
 	public Collection<Colaborador> findColaboradorByCurso(Long[] cursosIds, Long[] turmasIds);
-	public Collection<ColaboradorTurma> filtraAprovadoReprovado(Collection<ColaboradorTurma> colaboradorTurmaIds, char aprovado);
 	public TAula[] getTreinamentosPrevistoParaTRU(String colaboradorCodigoAC, Empresa empresa, String periodoIni, String periodoFim);
 	public TAula[] getTreinamentosRealizadosParaTRU(String colaboradorCodigoAC, Empresa empresa, String periodoIni, String periodoFim);
 	public Collection<ColaboradorTurma> findCursosVencidosAVencer(Date dataIni, Date dataFim, Long[] empresasIds, Long[] cursosIds, char filtroAgrupamento, char filtroSituacao, char filtroAprovado);
@@ -88,4 +84,5 @@ public interface ColaboradorTurmaManager extends GenericManager<ColaboradorTurma
 	public Collection<Turma> findParticipantesCursoLntAgrupadoNaTurma(Long cursoLntId);
 	public void removeAllCursoLntByLnt(Long lntId);
 	public void removeCursoLntByParticipantesCursoLnt(Long[] participantesRemovidos);
+	public Collection<Colaborador> montaExibicaoAprovadosReprovados(Long turmaId);
 }

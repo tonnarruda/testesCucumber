@@ -44,4 +44,5 @@ public interface CursoManager extends GenericManager<Curso>
 	public Collection<CheckBox> populaCheckListCurso(Long empresaId);
 	public boolean existePresenca(Long cursoId);
 	public Collection<AutoCompleteVO> getAutoComplete(String descricao, Long empresaId);
+	public boolean existeTurmaRealizada(Long cursoId);
 }

@@ -17,6 +17,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
+import org.joda.time.Period;
+import org.joda.time.PeriodType;
 
 @SuppressWarnings("deprecation")
 public class DateUtil
@@ -983,11 +986,28 @@ public class DateUtil
 		return tempoExtenso.trim();
 	}
 	
-	public static void main(String[] args) {
-		
-		Date inicio = new Date(1990, 1, 01);
-		Date fim = new Date(2015, 01, 01);
-		
-		System.out.println(DateUtil.formataTempoExtenso(inicio, fim));
+	public static String formataPeriodoPorExtenso(Date inicio, Date fim){
+		StringBuilder tempoExtenso = new StringBuilder("");
+		if(inicio != null && fim != null){
+	        DateTime dateTime1 = new DateTime(inicio);
+	        DateTime dateTime2 = new DateTime(fim);
+			
+			Period periodo = new Period(dateTime1, dateTime2, PeriodType.yearMonthDayTime());
+			
+			if(periodo.getYears() > 0)
+				tempoExtenso.append(periodo.getYears() == 1 ? periodo.getYears() + " ano " : periodo.getYears() + " anos ");
+			if(periodo.getMonths() > 0){
+				tempoExtenso.append(tempoExtenso.length() > 0 && periodo.getDays() == 0 ? " e ": "" ); 
+				tempoExtenso.append(periodo.getMonths() == 1 ? periodo.getMonths() + " mês " : periodo.getMonths() + " meses");
+			}
+			if(periodo.getDays() > 0){
+				tempoExtenso.append(tempoExtenso.length() > 0 ? " e ": "" );
+				tempoExtenso.append((periodo.getDays() ) == 1 ? (periodo.getDays())  + " dia" : periodo.getDays() + " dias");
+			}
+			
+			if(tempoExtenso.length() == 0)
+				tempoExtenso.append("0 dia");
+		}
+		return tempoExtenso.toString();
 	}
 }

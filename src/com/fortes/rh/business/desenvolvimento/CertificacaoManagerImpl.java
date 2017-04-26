@@ -138,25 +138,21 @@ public class CertificacaoManagerImpl extends GenericManagerImpl<Certificacao, Ce
 
 	public Collection<MatrizTreinamento> montaMatriz(boolean imprimirMatriz, String[] faixaSalarialId, Collection<ColaboradorTurma> colaboradorTurmas)
 	{
-		if (imprimirMatriz)
+		Collection<MatrizTreinamento> matrizTreinamentos = getByFaixasOrCargos(faixaSalarialId, null);
+		
+		for (MatrizTreinamento matrizTreinamento : matrizTreinamentos)
 		{
-			Collection<MatrizTreinamento> matrizTreinamentos = getByFaixasOrCargos(faixaSalarialId, null);
-			for (MatrizTreinamento matrizTreinamento : matrizTreinamentos)
+			for (ColaboradorTurma ct : colaboradorTurmas)
 			{
-				for (ColaboradorTurma ct : colaboradorTurmas)
+				if (ct.getCurso().getId().equals(matrizTreinamento.getCursoId()))
 				{
-					if (ct.getCurso().getId().equals(matrizTreinamento.getCursoId()))
-					{
-						matrizTreinamento.setRealizado(ct.isAprovado());
-						break;
-					}
+					matrizTreinamento.setRealizado(ct.isAprovado());
+					break;
 				}
 			}
-
-			return matrizTreinamentos;
 		}
-		else
-			return null;
+
+		return matrizTreinamentos;
 	}
 
 	public Collection<Certificacao> findAllSelect(Integer page, Integer pagingSize, Long id, String nomeBusca) {

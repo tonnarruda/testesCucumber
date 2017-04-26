@@ -255,7 +255,7 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		Collection<Turma> turmas = getDao().findPlanosDeTreinamento(page, pagingSize, cursoId, dataIni, dataFim, realizadaValue(realizada), empresaId);
 		for (Turma turma : turmas)
 		{
-			turma.setQtdPessoas(colaboradorTurmaManager.getCount(turma.getId(), null, null, null, null));
+			turma.setQtdPessoas(colaboradorTurmaManager.getCount(turma.getId(), null, null, null, null, null));
 		}
 
 		return  turmas;

@@ -167,21 +167,23 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 		estabelecimentosCheckList = CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, estabelecimentosCheck);
 		turma = turmaManager.findById(turma.getId()); // precisa da colecao de avaliacaoTurmas
 		
-		setTotalSize(colaboradorTurmaManager.getCount(turma.getId(), empresaId, nomeBusca, LongUtil.arrayStringToArrayLong(estabelecimentosCheck), null));
-		colaboradorTurmas = colaboradorTurmaManager.findByTurmaColaborador(turma.getId(), empresaId, nomeBusca, LongUtil.arrayStringToArrayLong(estabelecimentosCheck), null, getPage(), getPagingSize());
+		setTotalSize(colaboradorTurmaManager.getCount(turma.getId(), empresaId, nomeBusca, LongUtil.arrayStringToArrayLong(estabelecimentosCheck), null, getStatusAprovado()));
+		colaboradorTurmas = colaboradorTurmaManager.findByTurmaColaborador(turma.getId(), empresaId, nomeBusca, LongUtil.arrayStringToArrayLong(estabelecimentosCheck), null, getPage(), getPagingSize(), getStatusAprovado());
 		colaboradorTurmas = colaboradorTurmaManager.setFamiliaAreas(colaboradorTurmas, empresaId);
-		
-		if(aprovado == 'S' || aprovado == 'N')
-		{
-			colaboradorTurmas = colaboradorTurmaManager.filtraAprovadoReprovado(colaboradorTurmas, aprovado);
-			setTotalSize((colaboradorTurmaManager.filtraAprovadoReprovado(colaboradorTurmaManager.findByTurmaColaborador(turma.getId(), empresaId, nomeBusca, LongUtil.arrayStringToArrayLong(estabelecimentosCheck), null, null, null), aprovado)).size());
-		}
 		
 		colaboradorQuestionarios = colaboradorQuestionarioManager.findRespondidasByColaboradorETurma(null, turma.getId(), empresaId);
 
 		return Action.SUCCESS;
 	}
 
+	private Boolean getStatusAprovado(){
+		if(aprovado == 'S')
+			return true;
+		else if(aprovado == 'N')
+			return false;
+		return null;
+	}
+	
 	private void populaEmpresa(String... roles)
 	{
 		compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
@@ -224,24 +226,32 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 		try {
 			colaboradorTurmas = colaboradorTurmaManager.findRelatorioHistoricoTreinamentos(getEmpresaSistema().getId(), colaboradoresCheck, dataIni, dataFim);
 			parametros = RelatorioUtil.getParametrosRelatorio("Histórico de Treinamentos", getEmpresaSistema(), null);
-			
-			String[] faixaSalarialId;
-			if(colaboradorTurmas != null && !colaboradorTurmas.isEmpty()){
-				for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) {
-					faixaSalarialId = new String[]{colaboradorTurma.getColaborador().getFaixaSalarial().getId().toString()};
-					Collection<MatrizTreinamento> matrizTreinamentos = certificacaoManager.montaMatriz(imprimirMatriz, faixaSalarialId, colaboradorTurmas);
-					colaboradorTurma.setMatrizTreinamentos(matrizTreinamentos);
+				String[] faixaSalarialId;
+				Long colaboradorIdTemp = null;
+				Collection<MatrizTreinamento> matrizTreinamentos = new ArrayList<MatrizTreinamento>();
+				if(colaboradorTurmas != null && !colaboradorTurmas.isEmpty()){
+					if(imprimirMatriz){
+						for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) {
+							faixaSalarialId = new String[]{colaboradorTurma.getColaborador().getFaixaSalarial().getId().toString()};
+							if(!colaboradorTurma.getColaborador().getId().equals(colaboradorIdTemp)){
+								matrizTreinamentos = null;
+								matrizTreinamentos = certificacaoManager.montaMatriz(imprimirMatriz, faixaSalarialId, colaboradorTurmas);
+							}
+							colaboradorTurma.setMatrizTreinamentos(matrizTreinamentos);
+							colaboradorIdTemp = colaboradorTurma.getColaborador().getId();
+						}
+					}
+					matrizTreinamentos = null;
+				} else {
+					for (Long colaboradorId : colaboradoresCheck) {
+						colaborador = colaboradorManager.findByIdComHistorico(colaboradorId);
+						colaborador.setFaixaSalarial(colaborador.getHistoricoColaborador().getFaixaSalarial());
+						ColaboradorTurma colaboradorTurma = new ColaboradorTurma();
+						colaboradorTurma.setColaborador(colaborador);
+						colaboradorTurma.setMatrizTreinamentos(null);
+						colaboradorTurmas.add(colaboradorTurma);
+					}
 				}
-			} else {
-				for (Long colaboradorId : colaboradoresCheck) {
-					colaborador = colaboradorManager.findByIdComHistorico(colaboradorId);
-					colaborador.setFaixaSalarial(colaborador.getHistoricoColaborador().getFaixaSalarial());
-					ColaboradorTurma colaboradorTurma = new ColaboradorTurma();
-					colaboradorTurma.setColaborador(colaborador);
-					colaboradorTurma.setMatrizTreinamentos(null);
-					colaboradorTurmas.add(colaboradorTurma);
-				}
-			}
 			parametros.put("IMPRIMIR_MATRIZ", imprimirMatriz);
 
 			return SUCCESS;

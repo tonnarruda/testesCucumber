@@ -37,4 +37,12 @@ public class ColaboradorTurmaFactory
 		return colaboradorTurma;
 	}
 	
+	public static ColaboradorTurma getEntity(String nomeColaborador, boolean aprovado, String motivoReprovacao)
+	{
+		ColaboradorTurma colaboradorTurma = new ColaboradorTurma();
+		colaboradorTurma.setColaboradorNome(nomeColaborador);
+		colaboradorTurma.setAprovado(aprovado);
+		colaboradorTurma.setMotivoReprovacao(motivoReprovacao);
+		return colaboradorTurma;
+	}
 }

@@ -1,7 +1,10 @@
 package com.fortes.rh.test.business.desenvolvimento;
 
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.only;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.junit.Before;
@@ -62,5 +65,13 @@ public class CursoManagerTest_Junit4
 			exception = e;
 		}
     	assertNull(exception);
+	}
+
+	@Test
+	public void testExisteTurmaRealizada() {
+		Long cursoId = 2L;
+		when(cursoDao.existeTurmaRealizada(cursoId)).thenReturn(true);
+		assertTrue(cursoManager.existeTurmaRealizada(cursoId));
+		verify(cursoDao, only()).existeTurmaRealizada(cursoId);
 	}
 }

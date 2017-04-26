@@ -53,6 +53,7 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 
 	private boolean origemDnt;
 	private boolean aprovado;
+	private String motivoReprovacao;
 
 	@Transient
 	private Double custoRateado;
@@ -735,7 +736,7 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 
 	public String getTempoSemCurso(){
 		if(turma != null)
-			return DateUtil.formataTempoExtenso(turma.getDataPrevFim(), new Date());
+			return DateUtil.formataPeriodoPorExtenso(new Date(turma.getDataPrevFim().getTime()), new Date());
 		else
 			return "";
 	}
@@ -1092,4 +1093,16 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 	public void setPossuiLntASerVinculado(Boolean possuiLntASerVinculado) {
 		this.possuiLntASerVinculado = possuiLntASerVinculado;
 	}
+	
+	public String getMotivoReprovacao() {
+		return motivoReprovacao;
+	}
+
+	public void setMotivoReprovacao(String motivoReprovacao) {
+		this.motivoReprovacao = motivoReprovacao;
+	}
+	
+	public String getTextoMotivoReprovacao() {
+		return motivoReprovacao;
+	} 
 }

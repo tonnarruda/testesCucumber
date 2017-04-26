@@ -4882,7 +4882,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		return criteria.list();	
 	}
-	
+		
 	public void desvinculaCandidato(Long candidatoId) 
 	{
 		String hql = "update Colaborador set candidato.id = null where candidato.id = :candidatoId";

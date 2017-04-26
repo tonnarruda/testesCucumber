@@ -12,7 +12,6 @@
 	
 	<script type="text/javascript">
 		$(function() {
-			$('#wwctrl_certificacoesCheck * span').eq(0).removeAttr('onclick').css('color', '#6E7B8B').css('cursor', 'default');
 
 			$('#tooltipHelpPeriodo').qtip({
 				content: 'Os campos "Período Certificado" e "Com certificação a vencer em até" só serão habilitados ao marcar a opção "Certificados".'
@@ -81,7 +80,7 @@
 		    if($("input[name='certificacoesCheck']:checked").size() >= 15)
 		        $("input[name='certificacoesCheck']").not(':checked').attr('disabled','disabled').parent().css('color', '#DEDEDE');
 		    else
-		        $("input[name='certificacoesCheck']").removeAttr('disabled').parent().css('color', '#5C5C5A');
+		    	$("input[name='certificacoesCheck']").removeAttr('disabled').parent().css('color', '#5C5C5A');
 		}
 	</script>
 	
