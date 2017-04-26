@@ -4,7 +4,11 @@
 		<div id="expandeMsg">
 			<ul>
 				<#list actionErrors as msg>
-					<li>${msg}</li>
+					<#if msg?exists>
+						<li>${msg}</li>
+					<#else>
+						<li>Infelizmente ocorreu uma inconsistência insperada.</li>
+					</#if>
 				</#list>
 			</ul>
 		</div>
