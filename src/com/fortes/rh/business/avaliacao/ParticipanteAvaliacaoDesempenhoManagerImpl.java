@@ -64,7 +64,8 @@ public class ParticipanteAvaliacaoDesempenhoManagerImpl extends GenericManagerIm
 		return getDao().findByAvalDesempenhoIdAbadColaboradorId(avaliacaoDesempenhoId, avaliadoId, tipoParticipanteAvaliacao);
 	}
 	
-	public void save(AvaliacaoDesempenho avaliacaoDesempenho,Collection<ParticipanteAvaliacaoDesempenho> participantesAvaliados,Collection<ParticipanteAvaliacaoDesempenho> participantesAvaliadores,Collection<ColaboradorQuestionario> colaboradorQuestionarios, Long[] colaboradorQuestionariosRemovidos, Long[] participantesAvaliadosRemovidos, Long[] participantesAvaliadoresRemovidos) throws Exception {
+	public void save(AvaliacaoDesempenho avaliacaoDesempenho,Collection<ParticipanteAvaliacaoDesempenho> participantesAvaliados,Collection<ParticipanteAvaliacaoDesempenho> participantesAvaliadores,
+			Collection<ColaboradorQuestionario> colaboradorQuestionarios, Long[] colaboradorQuestionariosRemovidos, Long[] participantesAvaliadosRemovidos, Long[] participantesAvaliadoresRemovidos) throws Exception {
 		participantesAvaliados.removeAll(Collections.singleton(null));
 		this.saveOrUpdate(participantesAvaliados);
 			

@@ -110,6 +110,20 @@ $(function() {
 			$(".portlet-toggle").hide();
 		else
 			$(".portlet-toggle").show();
+		
+		$(".pesoAvaliador, .peso").each(function(){
+			if ( $(this).parent().hasClass("has-respondida") ){
+				$(this).addClass("peso-disabled");
+				$(this).attr("disabled", "disabled");
+			}
+		});
+		
+		$(".ui-droppable").each(function(){
+			if($(this).find(".peso").size() == $(this).find(".peso-disabled").size()){
+				$(this).parent().parent().find(".help-peso").hide();
+				$($(this).parent().parent().find(".pesoAvaliador")[0]).hide();
+			}
+		});
 	});
 	
 	function togglePeso(className){
@@ -140,9 +154,14 @@ $(function() {
 	
 	$(".pesoAvaliador, .peso").live("click", function(event) { event.stopPropagation(); });
 	$(".portlet-header .pesoAvaliador").live("keyup", function(event) { 
-		$(this).parents(".portlet").find(".peso").val($(this).val());
-		$(this).parents(".portlet").find("input").each(function(){
-			$(this).attr("name", $(this).attr("nameTmp"));
+		var valor = $(this).val();
+		$(this).parents(".portlet").find(".peso").each(function(){
+			if($(this).attr("disabled") == false ){
+				$(this).val(valor);
+				$(this).parent().find("input").each(function(){
+					$(this).attr("name", $(this).attr("nameTmp"));
+				});
+			}
 		});
 	});
 	

@@ -520,7 +520,7 @@
 					var target = $(this);
 				    if (target.data('qtip')) { return false; }
 				    target.qtip({
-						content: 'Insere o mesmo peso para todos os avaliados. Exceto quando for autoavaliação.'
+						content: 'Insere o mesmo peso para todos os avaliados, exceto quando for autoavaliação ou existem respostas para os avaliados.'
 					});
 				    target.trigger('mouseover');
 				});
