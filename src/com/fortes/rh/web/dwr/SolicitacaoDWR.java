@@ -82,7 +82,7 @@ public class SolicitacaoDWR {
 				}
 				
 				if(!solicitcaoDestinoPossuiAvaliacao)
-					avaliacoesNome += avaliacao.getTipoModeloAvaliacaoDescricao() + ", ";
+					avaliacoesNome += avaliacao.getTitulo() + ", ";
 			}
 		}		
 

@@ -24,6 +24,7 @@ import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
+import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
@@ -53,6 +54,7 @@ public class CandidatoSolicitacaoListActionTest_JUnit4
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
 
 	@Before
     public void setUp() throws Exception
@@ -67,6 +69,7 @@ public class CandidatoSolicitacaoListActionTest_JUnit4
         areaOrganizacionalManager = mock(AreaOrganizacionalManager.class);
         candidatoSolicitacaoManager = mock(CandidatoSolicitacaoManager.class);
         gerenciadorComunicacaoManager= mock(GerenciadorComunicacaoManager.class);
+        colaboradorQuestionarioManager = mock(ColaboradorQuestionarioManager.class);
         
         action.setCandidatoSolicitacaoManager(manager);
         action.setEtapaSeletivaManager(etapaSeletivaManager);
@@ -78,6 +81,7 @@ public class CandidatoSolicitacaoListActionTest_JUnit4
         action.setAreaOrganizacionalManager(areaOrganizacionalManager);
         action.setCandidatoSolicitacaoManager(candidatoSolicitacaoManager);
         action.setGerenciadorComunicacaoManager(gerenciadorComunicacaoManager);
+        action.setColaboradorQuestionarioManager(colaboradorQuestionarioManager);
         
         Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
     }

@@ -1,6 +1,7 @@
 package com.fortes.rh.web.action.captacao;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -14,6 +15,7 @@ import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
+import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
@@ -45,6 +47,7 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 	private SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
 	
 	private Collection<CandidatoSolicitacao> candidatoSolicitacaos;
 	private Collection<Solicitacao> solicitacaos;
@@ -138,6 +141,7 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 			historicoColaboradorManager.removeVinculoCandidatoSolicitacao(candidatoSolicitacao.getId());
 			historicoCandidatoManager.removeByCandidatoSolicitacao(candidatoSolicitacao.getId());
 			configuracaoNivelCompetenciaManager.removeByCandidatoAndSolicitacao(candidatoSolicitacao.getCandidato().getId(), candidatoSolicitacao.getSolicitacao().getId());
+			colaboradorQuestionarioManager.removeByCandidatoSolicitacaoIdsAndSolicitacaoId(Arrays.asList(candidatoSolicitacao.getId()), candidatoSolicitacao.getSolicitacao().getId());
 			
 			candidatoSolicitacaoManager.remove(new Long[]{candidatoSolicitacao.getId()});
 			solicitacao = candidatoSolicitacao.getSolicitacao();
@@ -533,5 +537,10 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 
 	public void setAtualizarModelo(Boolean atualizarModelo) {
 		this.atualizarModelo = atualizarModelo;
+	}
+
+	public void setColaboradorQuestionarioManager(
+			ColaboradorQuestionarioManager colaboradorQuestionarioManager) {
+		this.colaboradorQuestionarioManager = colaboradorQuestionarioManager;
 	}
 }

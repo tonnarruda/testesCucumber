@@ -154,7 +154,11 @@ public class SolicitacaoDWRTest
 		Long[] candidatosSolicitacaoIds = new Long[]{1L,2L};
 			
 		Avaliacao avaliacao1 = AvaliacaoFactory.getEntity(1L);
+		avaliacao1.setTitulo("Avaliação 1");
+		
 		Avaliacao avaliacao2 = AvaliacaoFactory.getEntity(2L);
+		avaliacao2.setTitulo("Avaliação 2");
+		
 		Collection<Avaliacao> avliAvaliacaos = Arrays.asList(avaliacao1, avaliacao2);
 		
 		SolicitacaoAvaliacao solicitacaoAvaliacao = new SolicitacaoAvaliacao(solicitacaoDestinoId, avaliacao2.getId(), avaliacao2.getTitulo());
@@ -165,7 +169,7 @@ public class SolicitacaoDWRTest
 		
 		String retorno = solicitacoaDWR.verificaModeloAvaliacaoSolicitacaoDestinoExiste(solicitacaoOrigemId, solicitacaoDestinoId, candidatosSolicitacaoIds);
 		
-		assertEquals("Avaliação de Desempenho", retorno);
+		assertEquals("Avaliação 1", retorno);
 	}
 	
 	@Test

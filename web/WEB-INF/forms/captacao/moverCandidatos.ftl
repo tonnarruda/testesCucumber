@@ -198,12 +198,12 @@
 		<div id="alterarAvaliacao" class="alterarAvaliacao">
 			<@ww.div >
 				O(s) candidato(s) selecionado(s) que deseja mover possue(m) avaliações respondidas.<br/><br/>
-				A solicitação destino não possue(m) a(s) avaliação(ões): <label id="avaliacoes"></label><br/><br/>
+				A solicitação destino não possue a(s) avaliação(ões): <label id="avaliacoes"></label><br/><br/>
 				<b>Você deseja:</b><br/>
 			</@ww.div>
 			<@ww.div id="divatualizarModelo" cssClass="radio">
-				<input id="atualizarModelo" type="radio" value="true"/><label>Vincular modelo de avaliação a solicitação destino e transportar respostas do(s) candidato(s).</label></br>
-				<input id="atualizarModelo" type="radio" value="false"/><label>Não vincular o modelo de avaliação a solicitação destino (Essa opção irá apagar as repostas do modelo de avaliação do(s) candidato(s)).</label>
+				<input id="atualizarModelo" type="radio" value="true" name="atualizarModelo"/><label>Vincular o modelo da avaliação a solicitação destino e transportar respostas do(s) candidato(s).</label></br>
+				<input id="atualizarModelo" type="radio" value="false" name="atualizarModelo"/><label>Não vincular o modelo da avaliação a solicitação destino (Essa opção irá apagar as repostas do modelo de avaliação do(s) candidato(s)).</label>
 			</@ww.div>
 		</div>
 	</@ww.form>

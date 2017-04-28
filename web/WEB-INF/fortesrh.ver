@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
 	<Versao id="1.1.17x.2xx" db="" data="xx/xx/2017">
+		<Item visivel="S" motivo="S16100000059"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Transf. Candidatos: Nova implementação para transferir respostas das avaliações do candidato para a solicitação destino.]]></Item>
 		<Item visivel="S" motivo="S16020000117"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Inserir/Editar: Apresentar somente cargos/faixas relacionados a área organizacional selecionada.]]></Item>
 		<Item visivel="S" motivo="P17030000411"><![CDATA[T&D > Relatórios > Colaboradores sem treinamento: Ajuste no relatório para informar a quantos dias o colaborador está sem o curso. E nova opção para gerar o relatório de colaboradores que 'Nunca realizaram os cursos selecionados'.]]></Item>
 		<Item visivel="S" motivo="S17040000067"><![CDATA[T&D > Relatórios > Colaboradores sem treinamento: Nova opção para gerar o relatório de colaboradores que 'Nunca realizou nenhum curso na empresa.]]></Item>
