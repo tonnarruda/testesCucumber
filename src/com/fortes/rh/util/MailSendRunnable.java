@@ -21,6 +21,7 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
@@ -88,7 +89,7 @@ public class MailSendRunnable implements Runnable {
 	{
 		Session session;
 
-		BodyMessage bodyMessage = new BodyMessage(body, urlImg != null);
+		BodyMessage bodyMessage = new BodyMessage(body, StringUtils.isNotBlank(urlImg));
 
 		message = (SimpleMailMessage) SpringUtil.getBeanOld("mailMessage");
 		mailSender = (JavaMailSenderImpl) SpringUtil.getBeanOld("mailSender");
@@ -131,7 +132,8 @@ public class MailSendRunnable implements Runnable {
 
         mimesContainer.addBodyPart(text);
 
-        if(urlImg != null){
+        
+        if(StringUtils.isNotBlank(urlImg)){
         	try {
         	MimeBodyPart imagePart = new MimeBodyPart();
 				imagePart.attachFile(urlImg);
