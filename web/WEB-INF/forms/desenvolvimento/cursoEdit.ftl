@@ -32,7 +32,7 @@
 </script>
 
 <style>
-	<#if avaliacaoAlunoRespondida>
+	<#if avaliacaoAlunoRespondida || existeTurmaRealizada>
 		#listCheckBoxavaliacaoCursoCheck { background-color: #E9E9E9; }
 	</#if>
 </style>

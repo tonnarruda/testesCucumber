@@ -995,13 +995,13 @@ public class DateUtil
 			Period periodo = new Period(dateTime1, dateTime2, PeriodType.yearMonthDayTime());
 			
 			if(periodo.getYears() > 0)
-				tempoExtenso.append(periodo.getYears() == 1 ? periodo.getYears() + " ano " : periodo.getYears() + " anos ");
+				tempoExtenso.append(periodo.getYears() == 1 ? periodo.getYears() + " ano" : periodo.getYears() + " anos");
 			if(periodo.getMonths() > 0){
-				tempoExtenso.append(tempoExtenso.length() > 0 && periodo.getDays() == 0 ? " e ": "" ); 
-				tempoExtenso.append(periodo.getMonths() == 1 ? periodo.getMonths() + " mês " : periodo.getMonths() + " meses");
+				tempoExtenso.append(tempoExtenso.length() > 0 && periodo.getDays() == 0 ? " e ": (periodo.getYears() > 0 ? ", " : "") ); 
+				tempoExtenso.append(periodo.getMonths() == 1 ? periodo.getMonths() + " mês" : periodo.getMonths() + " meses");
 			}
 			if(periodo.getDays() > 0){
-				tempoExtenso.append(tempoExtenso.length() > 0 ? " e ": "" );
+				tempoExtenso.append(tempoExtenso.length() > 0 ? " e ": (periodo.getYears() > 0 || periodo.getMonths() > 0 ? " " : "") );
 				tempoExtenso.append((periodo.getDays() ) == 1 ? (periodo.getDays())  + " dia" : periodo.getDays() + " dias");
 			}
 			

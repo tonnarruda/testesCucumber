@@ -40,13 +40,10 @@ BEGIN
 	RETURN 1;  
 END;  
 $$ LANGUAGE plpgsql;--.go
-
 select insertMotivoReprovacao();--.go
 drop function insertMotivoReprovacao();--.go
 
-drop function verifica_aprovacao(bigint, bigint, bigint)
-
-
+drop function verifica_aprovacao(bigint, bigint, bigint);--.go
 CREATE OR REPLACE FUNCTION verifica_aprovacao(id_curso bigint, id_turma bigint, id_colaboradorturma bigint)
   RETURNS table(turmaRealizada Boolean, aprovadoPorNota Boolean, aprovadoPorFalta Boolean) AS $$
 BEGIN
@@ -61,4 +58,4 @@ BEGIN
 			/        cast(coalesce((select count(dia) from diaturma where turma_id = id_turma group by turma_id), 0) as DOUBLE PRECISION)      ) * 100  ) >= 
 			coalesce((select percentualMinimoFrequencia from curso where id = id_curso), 0)    else      true    end) as aprovadoPorFalta;
 END;
-$$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql;--.go

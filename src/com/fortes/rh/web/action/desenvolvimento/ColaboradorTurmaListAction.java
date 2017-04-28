@@ -224,7 +224,7 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 
 	public String relatorioHistoricoTreinamentos() {
 		try {
-			colaboradorTurmas = colaboradorTurmaManager.findRelatorioHistoricoTreinamentos(getEmpresaSistema().getId(), colaboradoresCheck, dataIni, dataFim);
+			colaboradorTurmas = colaboradorTurmaManager.findHistoricoTreinamentosByColaborador(getEmpresaSistema().getId(), dataIni, dataFim, colaboradoresCheck);
 			parametros = RelatorioUtil.getParametrosRelatorio("Histórico de Treinamentos", getEmpresaSistema(), null);
 				String[] faixaSalarialId;
 				Long colaboradorIdTemp = null;
@@ -243,14 +243,7 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 					}
 					matrizTreinamentos = null;
 				} else {
-					for (Long colaboradorId : colaboradoresCheck) {
-						colaborador = colaboradorManager.findByIdComHistorico(colaboradorId);
-						colaborador.setFaixaSalarial(colaborador.getHistoricoColaborador().getFaixaSalarial());
-						ColaboradorTurma colaboradorTurma = new ColaboradorTurma();
-						colaboradorTurma.setColaborador(colaborador);
-						colaboradorTurma.setMatrizTreinamentos(null);
-						colaboradorTurmas.add(colaboradorTurma);
-					}
+					colaboradorTurmas.addAll(colaboradorTurmaManager.findByColaboradoresForMatrizHistoricoTreinamento(colaboradoresCheck));
 				}
 			parametros.put("IMPRIMIR_MATRIZ", imprimirMatriz);
 

@@ -39,7 +39,7 @@ public interface ColaboradorTurmaDao extends GenericDao<ColaboradorTurma>
 	Collection<ColaboradorTurma> findRelatorioSemIndicacaoDeTreinamento(Long empresaId, Long[] areas, Long[] estabelecimentos, Date data);
 	Collection<ColaboradorTurma> findHistoricoTreinamentosByColaborador(Long empresaId, Date dataIni, Date dataFim, Long... colaboradorIds);
 	Collection<Long> findColaboradoresSemAvaliacao(Long empresaId, Date dataIni, Date dataFim);
-	Collection<ColaboradorTurma> findAprovadosReprovados(Long empresaId, Certificacao certificacao, Long[] areaIds, Long[] estabelecimentoIds, Date dataIni, Date dataFim, String orderBy, boolean comHistColaboradorFuturo, String situacao);
+	Collection<ColaboradorTurma> findAprovadosReprovados(Long empresaId, Certificacao certificacao, Long[] areaIds, Long[] estabelecimentoIds, Date dataIni, Date dataFim, String orderBy, boolean comHistColaboradorFuturo);
 	public HashMap findAprovadosReprovados(Date dataIni, Date dataFim, Long[] empresaIds, Long[] areasIds, Long[] cursoIds, Long[] estabelecimentosIds);
 	Collection<ColaboradorTurma> findAprovadosReprovados(Long[] colaboradorTurmaIds);
 	ColaboradorTurma findByColaboradorAndTurma(Long turmaId, Long colaboradorId);
@@ -68,4 +68,5 @@ public interface ColaboradorTurmaDao extends GenericDao<ColaboradorTurma>
 	Collection<ColaboradorTurma> findParticipantesCursoLnt(Long cursoLntId);
 	void removeAllCursoLntByLnt(Long lntId);
 	void removeCursoLntByParticipantesCursoLnt(Long[] participantesRemovidos);
+	Collection<ColaboradorTurma> findByColaboradoresForMatrizHistoricoTreinamento(Long[] colaboradoresCheck);
 }

@@ -915,7 +915,7 @@ jQuery.fn.insertAtCaret = function (tagName) {
   
 // VALIDAÇÃO DE FORMS COM PERÍODOS (2 CAMPOS DATA)
 // LEMBRAR DE ADICIONAR AS CLASSES validaDataIni E validaDataFim NOS CAMPOS.
-  function validaFormularioEPeriodo(formulario, camposObrigatorios, camposValidos, noSubmit) 
+  function validaFormularioEPeriodo(formulario, camposObrigatorios, camposValidos, noSubmit, urlImg) 
   {
 	var data1 = jQuery(".validaDataFim").val();
 	var data2 = jQuery(".validaDataIni").val();
@@ -933,12 +933,12 @@ jQuery.fn.insertAtCaret = function (tagName) {
 		}
 		else
 		{
-			return validaFormulario(formulario, camposObrigatorios, camposValidos, noSubmit);
+			return validaFormulario(formulario, camposObrigatorios, camposValidos, noSubmit, urlImg);
 		}
 	}
 	else
 	{
-		return validaFormulario(formulario, camposObrigatorios, camposValidos, noSubmit);
+		return validaFormulario(formulario, camposObrigatorios, camposValidos, noSubmit, urlImg);
 	}
 }
 // VALIDAÇÃO DE FORMS COM PERÍODOS (2 CAMPOS DATA) SOMENTE MES E ANO

@@ -519,6 +519,21 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 		colaborador.setCodigoAC(codigoAc);
 	}
 	
+	public void setColaboradorFaixaSalarialId(Long faixaSalarialId){
+		inicializaColaborador();
+		colaborador.setFaixaSalarialIdProjection(faixaSalarialId);
+	}
+	
+	public void setColaboradorFaixaSalarialNome(String faixaSalarialNome){
+		inicializaColaborador();
+		colaborador.setFaixaSalarialNomeProjection(faixaSalarialNome);
+	}
+	
+	public void setColaboradorCargoNome(String cargoNome){
+		inicializaColaborador();
+		colaborador.setCargoNomeProjection(cargoNome);
+	}
+	
 	private void inicializaTurma() {
 		if(turma == null)
 			this.turma = new Turma();

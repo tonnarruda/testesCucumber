@@ -26,6 +26,7 @@ import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.GrupoOcupacional;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.desenvolvimento.AproveitamentoAvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
@@ -44,6 +45,7 @@ import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
+import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CertificacaoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
@@ -471,13 +473,44 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	action.setDataIni(DateUtil.criarDataMesAno(01, 01, 2010));
     	action.setDataFim(DateUtil.criarDataMesAno(01, 01, 2010));
     	
-    	colaboradorTurmaManager.expects(once()).method("findRelatorioHistoricoTreinamentos").with(ANYTHING, eq(null), eq(DateUtil.criarAnoMesDia(2010, 01, 01)), eq(DateUtil.criarAnoMesDia(2010, 01, 01))).will(returnValue(colabTurmaCollection));
+    	colaboradorTurmaManager.expects(once()).method("findHistoricoTreinamentosByColaborador").with(ANYTHING, eq(DateUtil.criarAnoMesDia(2010, 01, 01)), eq(DateUtil.criarAnoMesDia(2010, 01, 01)), ANYTHING).will(returnValue(colabTurmaCollection));
     	certificacaoManager.expects(once()).method("montaMatriz").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<MatrizTreinamento>()));
     	
     	assertEquals("success", action.relatorioHistoricoTreinamentos());
     }
 
-
+    public void testRelatorioHistoricoTreinamentosVazio() throws Exception
+    {
+    	Cargo cargo = CargoFactory.getEntity(1L);
+    	cargo.setNome("Desenvolvedor");
+    	
+    	FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
+    	faixaSalarial.setCargo(cargo);
+    	faixaSalarial.setDescricao("faixaSalarial");
+    	
+    	HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1L);
+    	
+    	Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+    	colaborador.setNome("Karina");
+    	colaborador.setFaixaSalarial(faixaSalarial);
+    	colaborador.setHistoricoColaborador(historicoColaborador);
+    	
+    	ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(1L);
+    	colaboradorTurma.setColaborador(colaborador);
+    	
+    	Collection<ColaboradorTurma> colabTurmaCollection = new ArrayList<ColaboradorTurma>();
+    	
+    	action.setColaborador(colaborador);
+    	action.setColaboradoresCheck(new Long[]{colaborador.getId()});
+    	action.setDataIni(DateUtil.criarDataMesAno(01, 01, 2010));
+    	action.setDataFim(DateUtil.criarDataMesAno(01, 01, 2010));
+    	
+    	colaboradorTurmaManager.expects(once()).method("findHistoricoTreinamentosByColaborador").with(ANYTHING, eq(DateUtil.criarAnoMesDia(2010, 01, 01)), eq(DateUtil.criarAnoMesDia(2010, 01, 01)), ANYTHING).will(returnValue(colabTurmaCollection));
+    	colaboradorTurmaManager.expects(once()).method("findByColaboradoresForMatrizHistoricoTreinamento").withAnyArguments().will(returnValue(colabTurmaCollection));
+    	
+    	assertEquals("success", action.relatorioHistoricoTreinamentos());
+    }
+    
     public void testDeleteComDnt() throws Exception
     {
     	ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(1L);

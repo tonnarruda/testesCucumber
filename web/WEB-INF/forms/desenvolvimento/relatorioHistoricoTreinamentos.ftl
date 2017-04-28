@@ -46,7 +46,8 @@
 
 	</@ww.form>
 	<br>
-	<#assign validarCampos="return validaFormularioEPeriodo('formRelatorio',new Array('@colaboradoresCheck'), new Array('dataIni','dataFim'))"/>
+	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
+	<#assign validarCampos="return validaFormularioEPeriodo('formRelatorio',new Array('@colaboradoresCheck'), new Array('dataIni','dataFim'), false, '${urlImgs}')"/>
 
 	<@ww.form id="formRelatorio" name="formRelatorio" action="relatorioHistoricoTreinamentos.action" onsubmit="${validarCampos}" method="POST" >
 		

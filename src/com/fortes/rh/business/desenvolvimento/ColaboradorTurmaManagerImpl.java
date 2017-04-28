@@ -31,7 +31,6 @@ import com.fortes.rh.model.desenvolvimento.relatorio.ColaboradorCursoMatriz;
 import com.fortes.rh.model.desenvolvimento.relatorio.CursoPontuacaoMatriz;
 import com.fortes.rh.model.desenvolvimento.relatorio.SomatorioCursoMatriz;
 import com.fortes.rh.model.dicionario.MotivoReprovacao;
-import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.StatusTreinamento;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
@@ -604,13 +603,6 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		return colaboradorTurmas;
 	}
 	
-	public Collection<ColaboradorTurma> findRelatorioHistoricoTreinamentos(Long empresaId, Long[] colaboradorIds, Date dataIni, Date dataFim) throws Exception
-	{
-		Collection<ColaboradorTurma> colaboradorTurmas = findHistoricoTreinamentosByColaborador(empresaId, dataIni, dataFim, colaboradorIds);
-
-		return colaboradorTurmas;
-	}
-	
 	public Collection<ColaboradorTurma> findHistoricoTreinamentosByColaborador(Long empresaId, Date dataIni, Date dataFim, Long... colaboradorIds) throws Exception
 	{
 		return getDao().findHistoricoTreinamentosByColaborador(empresaId, dataIni, dataFim, colaboradorIds);
@@ -712,7 +704,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 			ordenacao = " c.nome, e.nome, areaNome, co.nome ";
 		}
 		
-		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findAprovadosReprovados(empresaId, certificacao, areaIds, estabelecimentoIds, dataInicio, dataFim, ordenacao, true, SituacaoColaborador.ATIVO);
+		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findAprovadosReprovados(empresaId, certificacao, areaIds, estabelecimentoIds, dataInicio, dataFim, ordenacao, true);
 		
 		if (colaboradorTurmas == null || colaboradorTurmas.isEmpty())
 			throw new ColecaoVaziaException();
@@ -929,6 +921,9 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		return turmasComParticipantes.values();
 	}
 
+	public Collection<ColaboradorTurma> findByColaboradoresForMatrizHistoricoTreinamento(Long[] colaboradoresCheck) {
+		return getDao().findByColaboradoresForMatrizHistoricoTreinamento(colaboradoresCheck);
+	}
 	
 	public void setColaboradorCertificacaoManager(ColaboradorCertificacaoManager colaboradorCertificacaoManager) {
 		this.colaboradorCertificacaoManager = colaboradorCertificacaoManager;

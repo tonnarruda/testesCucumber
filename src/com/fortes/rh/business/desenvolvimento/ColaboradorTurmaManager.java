@@ -53,7 +53,6 @@ public interface ColaboradorTurmaManager extends GenericManager<ColaboradorTurma
 	public String insereColaboradorTurmas(Long[] colaboradoresId, Collection<ColaboradorTurma> colaboradoresTurmas, Turma turma, DNT dnt, int filtrarPor, String[] selectPrioridades, boolean validarCertificacao, CursoLnt cursoLnt);
 	public void remove(ColaboradorTurma colaboradorTurma);
 	public Collection<ColaboradorTurma> montaColunas(Collection<ColaboradorTurma> colaboradorTurmas, boolean exibirNomeComercial, boolean exibirCargo, boolean exibirEstabelecimento, boolean exibirAssinatura, boolean exibirArea, boolean exibirCPF);
-	public Collection<ColaboradorTurma> findRelatorioHistoricoTreinamentos(Long empresaId, Long[] colaboradoresCheck, Date dataIni, Date dataFim) throws ColecaoVaziaException, Exception;
 	public Collection<Certificado> montaCertificados(Collection<Colaborador> colaboradores, Certificado certificado, Long empresaId);
 	public Collection<Colaborador> findAprovadosByCertificacao(Certificacao certificacao, int qtdCursos, boolean controlarVencimentoPorCertificacao);
 	public Collection<ColaboradorCertificacaoRelatorio> montaRelatorioColaboradorCertificacao(Long empresaId, Certificacao certificacao, Long[] areaIds, Long[] estabelecimentoIds, Date dataInicio, Date dataFim, char tipoAgrupamento) throws Exception;
@@ -85,4 +84,5 @@ public interface ColaboradorTurmaManager extends GenericManager<ColaboradorTurma
 	public void removeAllCursoLntByLnt(Long lntId);
 	public void removeCursoLntByParticipantesCursoLnt(Long[] participantesRemovidos);
 	public Collection<Colaborador> montaExibicaoAprovadosReprovados(Long turmaId);
+	public Collection<ColaboradorTurma> findByColaboradoresForMatrizHistoricoTreinamento(Long[] colaboradoresCheck);
 }

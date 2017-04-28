@@ -910,7 +910,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		return p;
 	}
 	
-	public Collection<ColaboradorTurma> findAprovadosReprovados(Long empresaId, Certificacao certificacao, Long[] areaIds, Long[] estabelecimentoIds, Date dataIni, Date dataFim, String orderBy, boolean comHistColaboradorFuturo, String situacao)
+	public Collection<ColaboradorTurma> findAprovadosReprovados(Long empresaId, Certificacao certificacao, Long[] areaIds, Long[] estabelecimentoIds, Date dataIni, Date dataFim, String orderBy, boolean comHistColaboradorFuturo)
 	{
 		StringBuilder sql = new StringBuilder();		
 		sql.append("select distinct co.id as colaborador, co.nome as colaboradornome, co.matricula as colaboradormatricula, e.id as estabelecimentoId, e.nome as estabelecimento, a.id as area, monta_familia_area(a.id) as areaNome, ");
@@ -927,7 +927,6 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		sql.append("left join turma t on t.id=ct.turma_id ");
 		sql.append("left join curso c on c.id=t.curso_id ");
 		sql.append("left join certificacao_curso cc on cc.cursos_id=c.id ");
-		
 		sql.append("left join View_CursoNota as rct on rct.colaboradorturma_id = ct.id ");
 		
 		sql.append("where hc.data = ( ");
@@ -1800,7 +1799,6 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		return colaboradorTurmas;	
 	}
 
-	
 	public boolean aprovarOrReprovarColaboradorTurma(Long colaboradorTurmaId, Long turmaId, Long cursoId) {
 		HashMap<String, Boolean> map = verificaAprovacao(colaboradorTurmaId, turmaId, cursoId);
 		
@@ -1809,7 +1807,6 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		
 		if(!aprovado)
 			motivoReprovacao = getMotivoReprovacao(map);
-		
 			
 		String queryHQL = "update ColaboradorTurma ct set ct.aprovado = :aprovado, ct.motivoReprovacao = :motivoReprovacao where ct.id = :colaboradorTurmaId";
 
@@ -1834,7 +1831,6 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 			return MotivoReprovacao.FREQUENCIA.getMotivo();
 			
 		return MotivoReprovacao.REPROVADO.getMotivo();
-		
 	}
 
 	private HashMap<String, Boolean> verificaAprovacao(Long colaboradorTurmaId, Long turmaId, Long cursoId){
@@ -1845,17 +1841,12 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		query.setLong("turmaId", turmaId);
 		query.setLong("colaboradorTurmaId", colaboradorTurmaId);
 		
-		List resultado = query.list();
+		Object[] resultado = (Object[]) query.uniqueResult();
 		
 		HashMap<String, Boolean> map = new HashMap<String, Boolean>(); 
-	
-		for(Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
-		{
-			Object[] res = it.next();
-			map.put("turmaRealizada", (Boolean)res[0]);
-			map.put(MotivoReprovacao.NOTA.getMotivo(), (Boolean)res[1]);
-			map.put(MotivoReprovacao.FREQUENCIA.getMotivo(), (Boolean)res[2]);
-		}
+		map.put("turmaRealizada", (Boolean)resultado[0]);
+		map.put(MotivoReprovacao.NOTA.getMotivo(), (Boolean)resultado[1]);
+		map.put(MotivoReprovacao.FREQUENCIA.getMotivo(), (Boolean)resultado[2]);
 		
 		return map;
 	}
@@ -2029,5 +2020,27 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 				.add(Restrictions.eqProperty("hc2.colaborador.id", "c.id"))
 				.add(Restrictions.le("hc2.data", data))
 				.add(Restrictions.eq("hc2.status", status));
+	}
+
+	public Collection<ColaboradorTurma> findByColaboradoresForMatrizHistoricoTreinamento(Long[] colaboradoresCheck) {
+		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
+		criteria.createCriteria("c.historicoColaboradors", "hc", Criteria.INNER_JOIN);
+		criteria.createCriteria("hc.faixaSalarial", "fs", Criteria.INNER_JOIN);
+		criteria.createCriteria("fs.cargo", "cg", Criteria.INNER_JOIN);
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("c.nome"), "colaboradorNome");
+		p.add(Projections.property("fs.id"), "colaboradorFaixaSalarialId");
+		p.add(Projections.property("fs.nome"), "colaboradorFaixaSalarialNome");
+		p.add(Projections.property("cg.nome"), "colaboradorCargoNome");
+		criteria.setProjection(Projections.distinct(p));
+		
+		criteria.add(Subqueries.propertyEq("hc.data", montaSubQueryHistoricoColaborador(new Date(), StatusRetornoAC.CONFIRMADO)));
+
+		criteria.add(Expression.in("c.id", colaboradoresCheck));		
+		criteria.addOrder(Order.asc("c.nome"));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorTurma.class));
+		
+	    return criteria.list();
 	}
 }

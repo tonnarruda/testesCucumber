@@ -450,4 +450,17 @@ public class DateUtilTest extends TestCase
 		assertEquals(22, DateUtil.contaDiasUteisMes(DateUtil.montaDataByString("26/05/2011"), false, false));
 		assertEquals(22, DateUtil.contaDiasUteisMes(DateUtil.montaDataByString("26/06/2011"), false, false));
 	}
+	
+	public void testFormataPeriodoPorExtenso()
+	{
+		assertEquals("1 dia", DateUtil.formataPeriodoPorExtenso(DateUtil.criarDataMesAno(1, 1, 2018), DateUtil.criarDataMesAno(2, 1, 2018)));
+		assertEquals("24 dias", DateUtil.formataPeriodoPorExtenso(DateUtil.criarDataMesAno(1, 1, 2018), DateUtil.criarDataMesAno(25, 1, 2018)));
+		assertEquals("2 meses", DateUtil.formataPeriodoPorExtenso(DateUtil.criarDataMesAno(1, 1, 2018), DateUtil.criarDataMesAno(1, 3, 2018)));
+		assertEquals("1 ano", DateUtil.formataPeriodoPorExtenso(DateUtil.criarDataMesAno(1, 1, 2017), DateUtil.criarDataMesAno(1, 1, 2018)));
+		assertEquals("1 ano e 3 meses", DateUtil.formataPeriodoPorExtenso(DateUtil.criarDataMesAno(1, 1, 2017), DateUtil.criarDataMesAno(1, 4, 2018)));
+		assertEquals("1 ano e 7 dias", DateUtil.formataPeriodoPorExtenso(DateUtil.criarDataMesAno(1, 1, 2017), DateUtil.criarDataMesAno(8, 1, 2018)));
+		assertEquals("3 anos e 1 dia", DateUtil.formataPeriodoPorExtenso(DateUtil.criarDataMesAno(1, 1, 2015), DateUtil.criarDataMesAno(2, 1, 2018)));
+		assertEquals("1 ano, 1 mês e 1 dia", DateUtil.formataPeriodoPorExtenso(DateUtil.criarDataMesAno(1, 1, 2016), DateUtil.criarDataMesAno(2, 2, 2017)));
+		assertEquals("1 ano, 4 meses e 30 dias", DateUtil.formataPeriodoPorExtenso(DateUtil.criarDataMesAno(1, 1, 2017), DateUtil.criarDataMesAno(31, 5, 2018)));
+	}
 }
