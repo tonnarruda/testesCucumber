@@ -62,40 +62,32 @@ public class FaixaSalarialDaoHibernateTest_JUnit4 extends GenericDaoHibernateTes
 		Collection<AreaOrganizacional> areas = new ArrayList<AreaOrganizacional>();
 		areas.add(area);
 		
-		Cargo cargo1 = CargoFactory.getEntity();
-		cargo1.setEmpresa(empresa);
-		cargo1.setAreasOrganizacionais(areas);
-		cargo1.setAtivo(true);
-		cargoDao.save(cargo1);
+		Cargo cargo1 = saveCargo(empresa, true, areas);
+		Cargo cargo2 = saveCargo(empresa, false, areas);
+		Cargo cargo3 = saveCargo(empresa, true, null);
 		
-		Cargo cargo2 = CargoFactory.getEntity();
-		cargo2.setEmpresa(empresa);
-		cargo2.setAreasOrganizacionais(areas);
-		cargo2.setAtivo(false);
-		cargoDao.save(cargo2);
-		
-		Cargo cargo3 = CargoFactory.getEntity();
-		cargo3.setEmpresa(empresa);
-		cargo3.setAtivo(true);
-		cargoDao.save(cargo3);
-		
-		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
-		faixaSalarial.setCargo(cargo1);
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity("F1", cargo1);
 		faixaSalarialDao.save(faixaSalarial);
 		
-		FaixaSalarial faixaSalarial2 = FaixaSalarialFactory.getEntity();
-		faixaSalarial2.setCargo(cargo1);
+		FaixaSalarial faixaSalarial2 = FaixaSalarialFactory.getEntity("F2", cargo1);
 		faixaSalarialDao.save(faixaSalarial2);
 
-		FaixaSalarial faixaSalarial3 = FaixaSalarialFactory.getEntity();
-		faixaSalarial3.setCargo(cargo2);
+		FaixaSalarial faixaSalarial3 = FaixaSalarialFactory.getEntity("F3", cargo2);
 		faixaSalarialDao.save(faixaSalarial3);
 		
-		FaixaSalarial faixaSalarial4 = FaixaSalarialFactory.getEntity();
-		faixaSalarial4.setCargo(cargo3);
+		FaixaSalarial faixaSalarial4 = FaixaSalarialFactory.getEntity("F4", cargo3);
 		faixaSalarialDao.save(faixaSalarial4);
 		
 		assertEquals(2,faixaSalarialDao.getCargosFaixaByAreaIdAndEmpresaId(area.getId(), empresa.getId(), null).size());
 		assertEquals(3,faixaSalarialDao.getCargosFaixaByAreaIdAndEmpresaId(area.getId(), empresa.getId(), faixaSalarial3.getId()).size());
 	}
+    
+    private Cargo saveCargo(Empresa empresa, boolean ativo, Collection<AreaOrganizacional> areas){
+    	Cargo cargo = CargoFactory.getEntity();
+		cargo.setEmpresa(empresa);
+		cargo.setAreasOrganizacionais(areas);
+		cargo.setAtivo(ativo);
+		cargoDao.save(cargo);
+		return cargo;
+    }
 }
