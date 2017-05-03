@@ -118,10 +118,10 @@ $(function() {
 			}
 		});
 		
-		$(".ui-droppable").each(function(){
-			if($(this).find(".peso").size() == $(this).find(".peso-disabled").size()){
-				$(this).parent().parent().find(".help-peso").hide();
-				$($(this).parent().parent().find(".pesoAvaliador")[0]).hide();
+		$("#avaliadores-list > .portlet").each(function(){
+			if($(this).find(".peso").not('.pesoAvaliador').size() == $(this).find(".peso-disabled").not('.pesoAvaliador').size()){
+				$($(this).find('.pesoAvaliador')[0]).parent().find(".help-peso").hide();
+				$($(this).find('.pesoAvaliador')[0]).hide();
 			}
 		});
 	});

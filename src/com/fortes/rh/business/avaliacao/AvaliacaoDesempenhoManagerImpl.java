@@ -362,7 +362,7 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 			if(colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador() != null && colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador().getId() != null){
 				configuracaoNivelCompetenciaColaborador = configuracaoNivelCompetenciaColaboradorManager.findById(colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador().getId());
 				if(configuracaoNivelCompetenciaColaborador == null)
-					throw new FortesException("As configurações do nível de competência foram removidas ou não existe.");
+					throw new FortesException("As configurações do nível de competência foram removidas ou não existem.");
 			}else{
 				configuracaoNivelCompetenciaColaborador = new ConfiguracaoNivelCompetenciaColaborador();
 				configuracaoNivelCompetenciaColaborador.setData(new Date());
