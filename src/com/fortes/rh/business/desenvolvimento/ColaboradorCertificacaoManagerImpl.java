@@ -7,9 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.collections4.Closure;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.IterableUtils;
+import org.apache.commons.collections4.Predicate;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.avaliacao.AvaliacaoPraticaManager;
@@ -73,23 +72,32 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 					colaboradorCertificacao.setColaboradorAvaliacaoPraticaAtual((ColaboradorAvaliacaoPratica)colabAvaliacoesPraticasTemp.toArray()[0]);
 				}
 			}
-
-			configuraSePossivelInserirNovaNotaAvaPratica(colaboradoresTurmas, colaboradorCertificacao);
+			if(CollectionUtils.isNotEmpty(colaboradoresTurmas))
+				colaboradoresTurmas = configuraSePossivelInserirNovaNotaAvaPratica(colaboradoresTurmas, colaboradorCertificacao);
 		}
 		return colaboradoresCertificacoes;
 	}
 	
-	private void configuraSePossivelInserirNovaNotaAvaPratica(Collection<ColaboradorTurma> colaboradoresTurmas, final ColaboradorCertificacao colaboradorCertificacao) {
-		
-		IterableUtils.forEach(colaboradoresTurmas, new Closure<ColaboradorTurma>() {
-			@Override
-			public void execute(ColaboradorTurma colaboradorTurma) {
-				if (colaboradorTurma.getColaborador().getId().equals(colaboradorCertificacao.getColaborador().getId())) {
-					colaboradorCertificacao.setPossivelInserirNotaAvPratica( colaboradorTurma.isAprovado() );
+	private Collection<ColaboradorTurma> configuraSePossivelInserirNovaNotaAvaPratica(Collection<ColaboradorTurma> colaboradoresTurmas, final ColaboradorCertificacao colaboradorCertificacao) {
+		Collection<ColaboradorTurma> colaboradoresTurmasDoColaboradorCertificacao = new ArrayList<>();
+		Collection<ColaboradorTurma> colaboradoresTurmasRetorno = new ArrayList<>();
+
+		CollectionUtils.select(colaboradoresTurmas, new Predicate<ColaboradorTurma>() {
+			public boolean evaluate(ColaboradorTurma colaboradorTurma) {
+				return colaboradorTurma.getColaborador().getId().equals(colaboradorCertificacao.getColaborador().getId());
+			}
+		}, colaboradoresTurmasDoColaboradorCertificacao, colaboradoresTurmasRetorno);
+
+		if(CollectionUtils.isNotEmpty(colaboradoresTurmasDoColaboradorCertificacao)){
+			colaboradorCertificacao.setPossivelInserirNotaAvPratica(true);
+			for (ColaboradorTurma colaboradorTurma : colaboradoresTurmasDoColaboradorCertificacao) {
+				if(!colaboradorTurma.isAprovado()){
+					colaboradorCertificacao.setPossivelInserirNotaAvPratica(false);
+					break;
 				}
 			}
-		});
-		
+		}
+		return colaboradoresTurmasRetorno;
 	}
 	
 	public Collection<ColaboradorCertificacao> colaboradoresParticipamCertificacao(Date dataIni, Date dataFim, Integer mesesCertificacoesAVencer, boolean colaboradorCertificado, boolean colaboradorNaoCertificado, Long[] areaIds, Long[] estabelecimentoIds, Long[] certificacoesIds, Long[] filtroColaboradoresIds, String situacaoColaborador)	{

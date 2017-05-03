@@ -260,7 +260,7 @@
 			<#else>	
 				<div class="info">
 					<ul>
-						<li>Não existem colaboradores participantes nessa certificação</li>
+						<li>Não existem colaboradores participando dessa certificação</li>
 					</ul>
 				</div>
 			</#if>

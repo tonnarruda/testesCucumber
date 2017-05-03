@@ -8,6 +8,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -424,6 +425,7 @@ public class ColaboradorCertificacaoManagerTest
 		Certificacao certificacao = CertificacaoFactory.getEntity(1L);
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
 		ColaboradorCertificacao colaboradorCertificacao = ColaboradorCertificacaoFactory.getEntity(colaborador, certificacao, DateUtil.criarDataMesAno(1, 1, 2016));
+		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(1L, colaborador);
 		
 		Collection<ColaboradorCertificacao> colaboradorCertificacaos = new ArrayList<ColaboradorCertificacao>();
 		colaboradorCertificacaos.add(colaboradorCertificacao);
@@ -448,8 +450,9 @@ public class ColaboradorCertificacaoManagerTest
 
 		when(colaboradorCertificacaoDao.colaboradoresAprovadosEmTodosOsCursosDaCertificacao(certificacao.getId())).thenReturn(colaboradorCertificacaos);
 		when(colaboradorAvaliacaoPraticaManager.findMapByCertificacaoIdAndColaboradoresIds(certificacao.getId(), colaboradoresIds)).thenReturn(mapColaboradorAvaliacoesPraticas);
-		when(colaboradorTurmaManager.findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(certificacao.getId(), null, colaborador.getId())).thenReturn(java.util.Arrays.asList(ColaboradorTurmaFactory.getEntity()));
-		
+		when(colaboradorTurmaManager.findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(certificacao.getId(), null, colaborador.getId())).
+		thenReturn(Arrays.asList(colaboradorTurma));
+									
 		Collection<ColaboradorCertificacao> colaboradorescertificacoes = colaboradorCertificacaoManager.possuemAvaliacoesPraticasRealizadas(certificacao.getId(), colaboradorTurmaManager);
 		ColaboradorCertificacao colabCertificacao = (ColaboradorCertificacao) colaboradorescertificacoes.toArray()[0];
 
