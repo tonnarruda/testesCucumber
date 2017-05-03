@@ -10,6 +10,7 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/populaEstabAreaCargo.js?version=${versao}"/>"></script>
+	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 	
 	<script type='text/javascript'>
 		var empresaIds = new Array();
@@ -51,7 +52,7 @@
 		function submeterAction(action)
 		{
 			$('form[name=form]').attr('action', action);
-			return validaFormulario('form', new Array('data'), new Array('data'));
+			return validaFormulario('form', new Array('data'), new Array('data'), false, '${urlImgs}');
 		}
 		
 		function populaAreaComfuncaoCargo(empresaId,empresaIds)

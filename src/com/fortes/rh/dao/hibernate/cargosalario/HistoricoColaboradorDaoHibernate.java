@@ -1009,7 +1009,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		hql.append("			from HistoricoColaborador as hc2 ");
 		hql.append("			where hc2.colaborador.id = co.id ");
 		hql.append("			and hc2.data <= :data and hc2.status = :status ) ");
-		hql.append("order by emp.nome, c.nome, fs.nome, fs.id, co.nome ");
+		hql.append("order by emp.nome, emp.id, c.nome, c.id, fs.nome, fs.id, co.nome, co.id ");
 
 		Query query = getSession().createQuery(hql.toString());
 		query.setDate("data", dataHistorico);
