@@ -241,8 +241,10 @@ $(function() {
 							createAvaliadoForAvaliador(avaliador, $(this));
 						});
 	
-						if(contador == countParticipantesAvaliadores)
+						if(contador == countParticipantesAvaliadores){
 							$('.processando').remove();
+							$( ":button" ).removeAttr('disabled');
+						}
 						
 						contador++;
 					});
@@ -286,8 +288,11 @@ $(function() {
 							createAvaliadoForAvaliador(avaliador, $(this));
 						});
 	
-						if(contador == qtdAvaliadoresSelecionados)
+						if(contador == qtdAvaliadoresSelecionados){
 							$('.processando').remove();
+							$( ":button" ).removeAttr('disabled');
+						}
+							
 						
 						contador++;
 					});

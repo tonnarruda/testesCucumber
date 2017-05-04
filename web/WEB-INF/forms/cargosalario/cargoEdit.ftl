@@ -100,7 +100,7 @@
 	<@ww.hidden name="cargo.codigoAC" />
 	<@ww.hidden name="page" />
 
-	<@ww.textfield label="Nomenclatura" name="cargo.nome" id="nome" required="true" cssStyle="width:180px;" maxLength="30"/>
+	<@ww.textfield label="Nomenclatura" name="cargo.nome" id="nome" required="true" cssStyle="width:500px;" maxLength="100"/>
 	<@ww.checkbox labelPosition="right" label="Exibir no modulo externo" name="cargo.exibirModuloExterno" />
 	<@ww.textfield label="Nomenclatura de Mercado" name="cargo.nomeMercado" id="nomeMercado" required="true" cssStyle="width:500px;" maxLength="100"/>
 	

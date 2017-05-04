@@ -37,7 +37,7 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 {
 	@Column(length=30)
 	private String nome;
-	@Column(length=30)
+	@Column(length=100)
 	private String nomeACPessoal;
 	@ManyToOne
 	private Cargo cargo;

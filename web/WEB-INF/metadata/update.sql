@@ -25115,3 +25115,108 @@ CREATE OR REPLACE VIEW situacaosolicitacaoepi AS
   sub;--.go
 insert into migrations values('20170404103400');--.go
 update parametrosdosistema set appversao = '1.1.178.210';--.go
+-- versao 1.1.179.211
+
+ALTER TABLE riscomedicaorisco ALTER COLUMN intensidademedida TYPE character varying(100);--.go
+insert into migrations values('20170425102905');--.go
+
+delete FROM  aproveitamentoavaliacaocurso where id not in( 
+select distinct on(colaboradorturma_id, avaliacaocurso_id)id from aproveitamentoavaliacaocurso where colaboradorturma_id in( 
+select colaboradorturma_id from aproveitamentoavaliacaocurso group by colaboradorturma_id, avaliacaocurso_id having count(*) >= 1) 
+and avaliacaocurso_id in(select avaliacaocurso_id from aproveitamentoavaliacaocurso group by colaboradorturma_id, avaliacaocurso_id having count(*) >= 1));--.go 
+
+ALTER TABLE colaboradorturma ADD COLUMN motivoReprovacao CHARACTER VARYING(20);--.go 
+
+CREATE OR REPLACE FUNCTION insertMotivoReprovacao() RETURNS integer AS $$    
+DECLARE   
+reprovadoPorFalta BOOLEAN; 
+reprovadoPorNota BOOLEAN;  
+mv RECORD;   
+BEGIN   
+	FOR mv IN   
+		select ct.colaborador_id as colabId, ct.turma_id as turmaId, ct.curso_id as cursoId, ct.id as colabTurmaId, * from colaboradorturma ct where ct.aprovado = false 
+	LOOP  	 
+		select (coalesce(cast( (select count(avaliacaocursos_id) from curso_avaliacaocurso where cursos_id = mv.cursoId group by cursos_id) as Integer ), 0) = 0       
+		 or coalesce(( select count(avaliacaocursos_id) from curso_avaliacaocurso where cursos_id = mv.cursoId group by cursos_id), 0)  =     
+		 coalesce((select rct.qtdavaliacoesaprovadaspornota from View_CursoNota as rct where colaboradorturma_id = mv.colabTurmaId), 0)) = false into reprovadoPorNota; 
+
+		select  case when (coalesce((select count(dia) from diaturma where turma_id = mv.turmaId group by turma_id), 0)) > 0   
+			THEN    (     (       cast(coalesce((select count(id) from colaboradorpresenca  
+			where presenca=true and colaboradorturma_id = mv.colabTurmaId group by colaboradorturma_id), 0) as DOUBLE PRECISION)  
+			/        cast(coalesce((select count(dia) from diaturma where turma_id = mv.turmaId group by turma_id), 0) as DOUBLE PRECISION)      ) * 100     ) >=  
+			coalesce((select percentualMinimoFrequencia from curso where id = mv.cursoId), 0)    else      true    end  = false into reprovadoPorFalta; 
+
+		if reprovadoPorNota and reprovadoPorFalta then 
+			update colaboradorturma set motivoReprovacao = 'NOTA_FREQUENCIA' where id = mv.colabTurmaId; 
+		elseif reprovadoPorNota then 
+			update colaboradorturma set motivoReprovacao = 'NOTA' where id = mv.colabTurmaId; 
+		elseif reprovadoPorFalta then 
+			update colaboradorturma set motivoReprovacao = 'FREQUENCIA' where id = mv.colabTurmaId; 
+		else  
+			update colaboradorturma set motivoReprovacao = 'REPROVADO' where id = mv.colabTurmaId; 
+		end if;
+		
+	END LOOP;  
+	RETURN 1;  
+END;  
+$$ LANGUAGE plpgsql;--.go
+select insertMotivoReprovacao();--.go
+drop function insertMotivoReprovacao();--.go
+
+drop function verifica_aprovacao(bigint, bigint, bigint);--.go 
+CREATE OR REPLACE FUNCTION verifica_aprovacao(id_curso bigint, id_turma bigint, id_colaboradorturma bigint) 
+  RETURNS table(turmaRealizada Boolean, aprovadoPorNota Boolean, aprovadoPorFalta Boolean) AS $$ 
+BEGIN 
+  RETURN Query select (SELECT cast(t.realizada as Boolean) from turma t where t.id = id_turma) as turmaRealizada, (select (coalesce(cast( (select count(avaliacaocursos_id)  
+	from curso_avaliacaocurso where cursos_id = id_curso group by cursos_id) as Integer ), 0) = 0       
+  		 or coalesce(( select count(avaliacaocursos_id) from curso_avaliacaocurso where cursos_id = id_curso group by cursos_id), 0)  =     
+  		 coalesce((select rct.qtdavaliacoesaprovadaspornota from View_CursoNota as rct where colaboradorturma_id = id_colaboradorturma), 0))) as aprovadoPorNota, 
+  		 (  
+  select  case when (coalesce((select count(dia) from diaturma where turma_id = id_turma group by turma_id), 0)) > 0  
+			THEN    (     (       cast(coalesce((select count(id) from colaboradorpresenca  
+			where presenca=true and colaboradorturma_id = id_colaboradorturma group by colaboradorturma_id), 0) as DOUBLE PRECISION)  
+			/        cast(coalesce((select count(dia) from diaturma where turma_id = id_turma group by turma_id), 0) as DOUBLE PRECISION)      ) * 100  ) >=  
+			coalesce((select percentualMinimoFrequencia from curso where id = id_curso), 0)    else      true    end) as aprovadoPorFalta;
+END;
+$$ LANGUAGE plpgsql;--.go
+insert into migrations values('20170428113753');--.go
+DROP VIEW situacaosolicitacaoepi;--.go
+ALTER TABLE cargo ALTER COLUMN nome TYPE character varying(100);--.go
+ALTER TABLE faixasalarial ALTER COLUMN nomeacpessoal TYPE character varying(100);--.go
+
+CREATE OR REPLACE VIEW situacaosolicitacaoepi AS 
+ SELECT sub.solicitacaoepiid, sub.empresaid, sub.estabelecimentoid, sub.estabelecimentonome, sub.colaboradorid, sub.colaboradormatricula, sub.colaboradornome, sub.colaboradordesligado, sub.solicitacaoepidata, sub.cargonome, sub.qtdsolicitado, sub.qtdentregue, 
+        CASE
+            WHEN sub.qtdsolicitado <= sub.qtdentregue THEN 'E'::text
+            WHEN sub.qtdentregue > 0 AND sub.qtdentregue < sub.qtdsolicitado THEN 'P'::text
+            WHEN sub.qtdentregue = 0 THEN 'A'::text
+            ELSE NULL::text
+        END AS solicitacaoepisituacaoEntregue,
+        sub.qtdDevolvida,
+        CASE
+            WHEN sub.qtdDevolvida != 0 and sub.qtdDevolvida = sub.qtdentregue THEN 'D'::text
+            WHEN sub.qtdDevolvida > 0 AND sub.qtdDevolvida < sub.qtdentregue THEN 'DP'::text
+            WHEN sub.qtdDevolvida = 0 and  sub.qtdentregue > 0 THEN 'S'::text
+            ELSE NULL::text
+        END AS solicitacaoepisituacaoDevolvido
+        
+   FROM ( SELECT se.id AS solicitacaoepiid, se.empresa_id AS empresaid, est.id AS estabelecimentoid, est.nome AS estabelecimentonome, c.id AS colaboradorid, c.matricula AS colaboradormatricula, c.nome AS colaboradornome, c.desligado AS colaboradordesligado, se.data AS solicitacaoepidata, ca.nome AS cargonome, ( SELECT sum(sei2.qtdsolicitado) AS sum
+                   FROM solicitacaoepi_item sei2
+                  WHERE sei2.solicitacaoepi_id = se.id) AS qtdsolicitado, COALESCE(sum(seie.qtdentregue), 0::bigint) AS qtdentregue, COALESCE(sum(seid.qtddevolvida), 0::bigint) AS qtddevolvida
+           FROM solicitacaoepi se
+      LEFT JOIN solicitacaoepi_item sei ON sei.solicitacaoepi_id = se.id
+   LEFT JOIN solicitacaoepiitementrega seie ON seie.solicitacaoepiitem_id = sei.id
+   LEFT JOIN solicitacaoepiitemdevolucao seid ON seid.solicitacaoepiitem_id = sei.id
+   LEFT JOIN colaborador c ON se.colaborador_id = c.id
+   LEFT JOIN historicocolaborador hc ON c.id = hc.colaborador_id
+   LEFT JOIN estabelecimento est ON se.estabelecimento_id = est.id
+   LEFT JOIN cargo ca ON se.cargo_id = ca.id
+  WHERE hc.data = (( SELECT max(hc2.data) AS max
+   FROM historicocolaborador hc2
+  WHERE hc2.colaborador_id = c.id AND hc2.status = 1 AND hc2.data <= 'now'::text::date)) AND hc.status = 1
+  GROUP BY se.id, se.empresa_id, est.id, est.nome, c.matricula, c.id, c.nome, c.desligado, se.data, ca.id, ca.nome) 
+  sub;--.go
+insert into migrations values('20170504082459');--.go
+update parametrosdosistema set acversaowebservicecompativel = '1.1.63.1';--.go
+insert into migrations values('20170504104713');--.go
+update parametrosdosistema set appversao = '1.1.179.211';--.go

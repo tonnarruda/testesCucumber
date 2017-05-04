@@ -38,8 +38,10 @@
 
 				if(validaFormulario('form', new Array(), arrayDataValida, true))
 					return	document.form.submit();
-				else
+				else{
 					$('.processando').remove();
+					$( ":button" ).removeAttr('disabled');
+				}
 			}
 		}
 		

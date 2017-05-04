@@ -2,26 +2,17 @@
 -- PostgreSQL database dump
 --
 
+-- Dumped from database version 9.0.18
+-- Dumped by pg_dump version 9.5.6
+
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET client_encoding = 'UTF8';
-SET standard_conforming_strings = on;
+SET standard_conforming_strings = off;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
-
---
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
---
-
-CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
-
-
---
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
---
-
-COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
-
+SET escape_string_warning = off;
+SET row_security = off;
 
 SET search_path = public, pg_catalog;
 
@@ -276,33 +267,21 @@ ALTER FUNCTION public.validade_certificacao(id_certificado bigint, id_colaborado
 -- Name: verifica_aprovacao(bigint, bigint, bigint); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
-CREATE FUNCTION verifica_aprovacao(id_curso bigint, id_turma bigint, id_colaboradorturma bigint) RETURNS boolean
+CREATE FUNCTION verifica_aprovacao(id_curso bigint, id_turma bigint, id_colaboradorturma bigint) RETURNS TABLE(turmarealizada boolean, aprovadopornota boolean, aprovadoporfalta boolean)
     LANGUAGE plpgsql
-    AS $$  
-	DECLARE aprovado BOOLEAN; 
-	BEGIN 
-	select (
-			(select realizada from turma where id = id_turma)
-			and
-			(
-				coalesce(cast( (select count(avaliacaocursos_id) from curso_avaliacaocurso where cursos_id = id_curso group by cursos_id) as Integer ), 0) = 0 
-			 	or coalesce(( select count(avaliacaocursos_id) from curso_avaliacaocurso where cursos_id = id_curso group by cursos_id), 0)  =
-				coalesce((select rct.qtdavaliacoesaprovadaspornota from View_CursoNota as rct where colaboradorturma_id = id_colaboradorturma), 0) 
-			 ) 
-			 and 
-				case when (coalesce((select count(dia) from diaturma where turma_id = id_turma group by turma_id), 0)) > 0 THEN
-				(
-					(
-						 cast(coalesce((select count(id) from colaboradorpresenca where presenca=true and colaboradorturma_id = id_colaboradorturma group by colaboradorturma_id), 0) as DOUBLE PRECISION) / 
-						 cast(coalesce((select count(dia) from diaturma where turma_id = id_turma group by turma_id), 0) as DOUBLE PRECISION)
-					 ) * 100 
-				) >= coalesce((select percentualMinimoFrequencia from curso where id = id_curso), 0)
-				else 
-					true
-				end 
-			) as situacao INTO aprovado;
-	RETURN aprovado;
-END; 
+    AS $$ 
+BEGIN 
+  RETURN Query select (SELECT cast(t.realizada as Boolean) from turma t where t.id = id_turma) as turmaRealizada, (select (coalesce(cast( (select count(avaliacaocursos_id)  
+	from curso_avaliacaocurso where cursos_id = id_curso group by cursos_id) as Integer ), 0) = 0       
+  		 or coalesce(( select count(avaliacaocursos_id) from curso_avaliacaocurso where cursos_id = id_curso group by cursos_id), 0)  =     
+  		 coalesce((select rct.qtdavaliacoesaprovadaspornota from View_CursoNota as rct where colaboradorturma_id = id_colaboradorturma), 0))) as aprovadoPorNota, 
+  		 (  
+  select  case when (coalesce((select count(dia) from diaturma where turma_id = id_turma group by turma_id), 0)) > 0  
+			THEN    (     (       cast(coalesce((select count(id) from colaboradorpresenca  
+			where presenca=true and colaboradorturma_id = id_colaboradorturma group by colaboradorturma_id), 0) as DOUBLE PRECISION)  
+			/        cast(coalesce((select count(dia) from diaturma where turma_id = id_turma group by turma_id), 0) as DOUBLE PRECISION)      ) * 100  ) >=  
+			coalesce((select percentualMinimoFrequencia from curso where id = id_curso), 0)    else      true    end) as aprovadoPorFalta;
+END;
 $$;
 
 
@@ -360,7 +339,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: afastamento; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: afastamento; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE afastamento (
@@ -388,7 +367,7 @@ CREATE SEQUENCE afastamento_sequence
 ALTER TABLE afastamento_sequence OWNER TO postgres;
 
 --
--- Name: agenda; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: agenda; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE agenda (
@@ -416,7 +395,7 @@ CREATE SEQUENCE agenda_sequence
 ALTER TABLE agenda_sequence OWNER TO postgres;
 
 --
--- Name: ambiente; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: ambiente; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE ambiente (
@@ -444,7 +423,7 @@ CREATE SEQUENCE ambiente_sequence
 ALTER TABLE ambiente_sequence OWNER TO postgres;
 
 --
--- Name: anexo; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: anexo; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE anexo (
@@ -474,7 +453,7 @@ CREATE SEQUENCE anexo_sequence
 ALTER TABLE anexo_sequence OWNER TO postgres;
 
 --
--- Name: anuncio; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: anuncio; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE anuncio (
@@ -511,7 +490,7 @@ CREATE SEQUENCE anuncio_sequence
 ALTER TABLE anuncio_sequence OWNER TO postgres;
 
 --
--- Name: aproveitamentoavaliacaocurso; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: aproveitamentoavaliacaocurso; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE aproveitamentoavaliacaocurso (
@@ -539,7 +518,7 @@ CREATE SEQUENCE aproveitamentoavaliacaocurso_sequence
 ALTER TABLE aproveitamentoavaliacaocurso_sequence OWNER TO postgres;
 
 --
--- Name: areaformacao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: areaformacao; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE areaformacao (
@@ -565,7 +544,7 @@ CREATE SEQUENCE areaformacao_sequence
 ALTER TABLE areaformacao_sequence OWNER TO postgres;
 
 --
--- Name: areainteresse; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: areainteresse; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE areainteresse (
@@ -579,7 +558,7 @@ CREATE TABLE areainteresse (
 ALTER TABLE areainteresse OWNER TO postgres;
 
 --
--- Name: areainteresse_areaorganizacional; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: areainteresse_areaorganizacional; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE areainteresse_areaorganizacional (
@@ -605,7 +584,7 @@ CREATE SEQUENCE areainteresse_sequence
 ALTER TABLE areainteresse_sequence OWNER TO postgres;
 
 --
--- Name: areaorganizacional; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: areaorganizacional; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE areaorganizacional (
@@ -639,7 +618,7 @@ CREATE SEQUENCE areaorganizacional_sequence
 ALTER TABLE areaorganizacional_sequence OWNER TO postgres;
 
 --
--- Name: areavivencia; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: areavivencia; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE areavivencia (
@@ -666,7 +645,7 @@ CREATE SEQUENCE areavivencia_sequence
 ALTER TABLE areavivencia_sequence OWNER TO postgres;
 
 --
--- Name: areavivenciapcmat; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: areavivenciapcmat; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE areavivenciapcmat (
@@ -694,7 +673,7 @@ CREATE SEQUENCE areavivenciapcmat_sequence
 ALTER TABLE areavivenciapcmat_sequence OWNER TO postgres;
 
 --
--- Name: aspecto; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: aspecto; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE aspecto (
@@ -722,7 +701,7 @@ CREATE SEQUENCE aspecto_sequence
 ALTER TABLE aspecto_sequence OWNER TO postgres;
 
 --
--- Name: atitude; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: atitude; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE atitude (
@@ -736,7 +715,7 @@ CREATE TABLE atitude (
 ALTER TABLE atitude OWNER TO postgres;
 
 --
--- Name: atitude_areaorganizacional; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: atitude_areaorganizacional; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE atitude_areaorganizacional (
@@ -748,7 +727,7 @@ CREATE TABLE atitude_areaorganizacional (
 ALTER TABLE atitude_areaorganizacional OWNER TO postgres;
 
 --
--- Name: atitude_curso; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: atitude_curso; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE atitude_curso (
@@ -774,7 +753,7 @@ CREATE SEQUENCE atitude_sequence
 ALTER TABLE atitude_sequence OWNER TO postgres;
 
 --
--- Name: atividadesegurancapcmat; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: atividadesegurancapcmat; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE atividadesegurancapcmat (
@@ -803,7 +782,7 @@ CREATE SEQUENCE atividadesegurancapcmat_sequence
 ALTER TABLE atividadesegurancapcmat_sequence OWNER TO postgres;
 
 --
--- Name: auditoria; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: auditoria; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE auditoria (
@@ -835,7 +814,7 @@ CREATE SEQUENCE auditoria_sequence
 ALTER TABLE auditoria_sequence OWNER TO postgres;
 
 --
--- Name: avaliacao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: avaliacao; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE avaliacao (
@@ -856,7 +835,7 @@ CREATE TABLE avaliacao (
 ALTER TABLE avaliacao OWNER TO postgres;
 
 --
--- Name: avaliacaocurso; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: avaliacaocurso; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE avaliacaocurso (
@@ -885,7 +864,7 @@ CREATE SEQUENCE avaliacaocurso_sequence
 ALTER TABLE avaliacaocurso_sequence OWNER TO postgres;
 
 --
--- Name: avaliacaodesempenho; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: avaliacaodesempenho; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE avaliacaodesempenho (
@@ -921,7 +900,7 @@ CREATE SEQUENCE avaliacaodesempenho_sequence
 ALTER TABLE avaliacaodesempenho_sequence OWNER TO postgres;
 
 --
--- Name: avaliacaopratica; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: avaliacaopratica; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE avaliacaopratica (
@@ -949,7 +928,7 @@ CREATE SEQUENCE avaliacaopratica_sequence
 ALTER TABLE avaliacaopratica_sequence OWNER TO postgres;
 
 --
--- Name: avaliacaoturma; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: avaliacaoturma; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE avaliacaoturma (
@@ -976,7 +955,7 @@ CREATE SEQUENCE avaliacaoturma_sequence
 ALTER TABLE avaliacaoturma_sequence OWNER TO postgres;
 
 --
--- Name: bairro; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: bairro; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE bairro (
@@ -1003,7 +982,7 @@ CREATE SEQUENCE bairro_sequence
 ALTER TABLE bairro_sequence OWNER TO postgres;
 
 --
--- Name: beneficio; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: beneficio; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE beneficio (
@@ -1030,7 +1009,7 @@ CREATE SEQUENCE beneficio_sequence
 ALTER TABLE beneficio_sequence OWNER TO postgres;
 
 --
--- Name: camposextras; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: camposextras; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE camposextras (
@@ -1071,7 +1050,7 @@ CREATE SEQUENCE camposextras_sequence
 ALTER TABLE camposextras_sequence OWNER TO postgres;
 
 --
--- Name: candidato; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: candidato; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE candidato (
@@ -1161,7 +1140,7 @@ CREATE TABLE candidato (
 ALTER TABLE candidato OWNER TO postgres;
 
 --
--- Name: candidato_areainteresse; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: candidato_areainteresse; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE candidato_areainteresse (
@@ -1173,7 +1152,7 @@ CREATE TABLE candidato_areainteresse (
 ALTER TABLE candidato_areainteresse OWNER TO postgres;
 
 --
--- Name: candidato_cargo; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: candidato_cargo; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE candidato_cargo (
@@ -1185,7 +1164,7 @@ CREATE TABLE candidato_cargo (
 ALTER TABLE candidato_cargo OWNER TO postgres;
 
 --
--- Name: candidato_conhecimento; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: candidato_conhecimento; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE candidato_conhecimento (
@@ -1211,7 +1190,7 @@ CREATE SEQUENCE candidato_sequence
 ALTER TABLE candidato_sequence OWNER TO postgres;
 
 --
--- Name: candidatocurriculo; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: candidatocurriculo; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE candidatocurriculo (
@@ -1238,7 +1217,7 @@ CREATE SEQUENCE candidatocurriculo_sequence
 ALTER TABLE candidatocurriculo_sequence OWNER TO postgres;
 
 --
--- Name: candidatoeleicao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: candidatoeleicao; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE candidatoeleicao (
@@ -1267,7 +1246,7 @@ CREATE SEQUENCE candidatoeleicao_sequence
 ALTER TABLE candidatoeleicao_sequence OWNER TO postgres;
 
 --
--- Name: candidatoidioma; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: candidatoidioma; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE candidatoidioma (
@@ -1295,7 +1274,7 @@ CREATE SEQUENCE candidatoidioma_sequence
 ALTER TABLE candidatoidioma_sequence OWNER TO postgres;
 
 --
--- Name: candidatosolicitacao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: candidatosolicitacao; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE candidatosolicitacao (
@@ -1329,12 +1308,12 @@ CREATE SEQUENCE candidatosolicitacao_sequence
 ALTER TABLE candidatosolicitacao_sequence OWNER TO postgres;
 
 --
--- Name: cargo; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: cargo; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE cargo (
     id bigint NOT NULL,
-    nome character varying(30),
+    nome character varying(100),
     nomemercado character varying(100) NOT NULL,
     missao text,
     competencias text,
@@ -1357,7 +1336,7 @@ CREATE TABLE cargo (
 ALTER TABLE cargo OWNER TO postgres;
 
 --
--- Name: cargo_areaformacao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: cargo_areaformacao; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE cargo_areaformacao (
@@ -1369,7 +1348,7 @@ CREATE TABLE cargo_areaformacao (
 ALTER TABLE cargo_areaformacao OWNER TO postgres;
 
 --
--- Name: cargo_areaorganizacional; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: cargo_areaorganizacional; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE cargo_areaorganizacional (
@@ -1381,7 +1360,7 @@ CREATE TABLE cargo_areaorganizacional (
 ALTER TABLE cargo_areaorganizacional OWNER TO postgres;
 
 --
--- Name: cargo_atitude; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: cargo_atitude; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE cargo_atitude (
@@ -1393,7 +1372,7 @@ CREATE TABLE cargo_atitude (
 ALTER TABLE cargo_atitude OWNER TO postgres;
 
 --
--- Name: cargo_conhecimento; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: cargo_conhecimento; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE cargo_conhecimento (
@@ -1405,7 +1384,7 @@ CREATE TABLE cargo_conhecimento (
 ALTER TABLE cargo_conhecimento OWNER TO postgres;
 
 --
--- Name: cargo_etapaseletiva; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: cargo_etapaseletiva; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE cargo_etapaseletiva (
@@ -1417,7 +1396,7 @@ CREATE TABLE cargo_etapaseletiva (
 ALTER TABLE cargo_etapaseletiva OWNER TO postgres;
 
 --
--- Name: cargo_habilidade; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: cargo_habilidade; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE cargo_habilidade (
@@ -1443,7 +1422,7 @@ CREATE SEQUENCE cargo_sequence
 ALTER TABLE cargo_sequence OWNER TO postgres;
 
 --
--- Name: cartao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: cartao; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE cartao (
@@ -1472,7 +1451,7 @@ CREATE SEQUENCE cartao_sequence
 ALTER TABLE cartao_sequence OWNER TO postgres;
 
 --
--- Name: cat; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: cat; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE cat (
@@ -1507,7 +1486,7 @@ CREATE TABLE cat (
 ALTER TABLE cat OWNER TO postgres;
 
 --
--- Name: cat_epi; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: cat_epi; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE cat_epi (
@@ -1533,7 +1512,7 @@ CREATE SEQUENCE cat_sequence
 ALTER TABLE cat_sequence OWNER TO postgres;
 
 --
--- Name: certificacao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: certificacao; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE certificacao (
@@ -1548,7 +1527,7 @@ CREATE TABLE certificacao (
 ALTER TABLE certificacao OWNER TO postgres;
 
 --
--- Name: certificacao_avaliacaopratica; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: certificacao_avaliacaopratica; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE certificacao_avaliacaopratica (
@@ -1574,7 +1553,7 @@ CREATE SEQUENCE certificacao_avaliacaopratica_sequence
 ALTER TABLE certificacao_avaliacaopratica_sequence OWNER TO postgres;
 
 --
--- Name: certificacao_curso; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: certificacao_curso; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE certificacao_curso (
@@ -1600,7 +1579,7 @@ CREATE SEQUENCE certificacao_sequence
 ALTER TABLE certificacao_sequence OWNER TO postgres;
 
 --
--- Name: cid; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: cid; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE cid (
@@ -1612,7 +1591,7 @@ CREATE TABLE cid (
 ALTER TABLE cid OWNER TO postgres;
 
 --
--- Name: cidade; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: cidade; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE cidade (
@@ -1640,7 +1619,7 @@ CREATE SEQUENCE cidade_sequence
 ALTER TABLE cidade_sequence OWNER TO postgres;
 
 --
--- Name: cliente; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: cliente; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE cliente (
@@ -1675,7 +1654,7 @@ CREATE SEQUENCE cliente_sequence
 ALTER TABLE cliente_sequence OWNER TO postgres;
 
 --
--- Name: clinicaautorizada; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: clinicaautorizada; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE clinicaautorizada (
@@ -1697,7 +1676,7 @@ CREATE TABLE clinicaautorizada (
 ALTER TABLE clinicaautorizada OWNER TO postgres;
 
 --
--- Name: clinicaautorizada_exame; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: clinicaautorizada_exame; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE clinicaautorizada_exame (
@@ -1723,7 +1702,7 @@ CREATE SEQUENCE clinicaautorizada_sequence
 ALTER TABLE clinicaautorizada_sequence OWNER TO postgres;
 
 --
--- Name: codigocbo; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: codigocbo; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE codigocbo (
@@ -1735,7 +1714,7 @@ CREATE TABLE codigocbo (
 ALTER TABLE codigocbo OWNER TO postgres;
 
 --
--- Name: colaborador; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: colaborador; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE colaborador (
@@ -1840,7 +1819,7 @@ CREATE SEQUENCE colaborador_sequence
 ALTER TABLE colaborador_sequence OWNER TO postgres;
 
 --
--- Name: colaboradorafastamento; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: colaboradorafastamento; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE colaboradorafastamento (
@@ -1873,7 +1852,7 @@ CREATE SEQUENCE colaboradorafastamento_sequence
 ALTER TABLE colaboradorafastamento_sequence OWNER TO postgres;
 
 --
--- Name: colaboradoravaliacaopratica; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: colaboradoravaliacaopratica; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE colaboradoravaliacaopratica (
@@ -1904,7 +1883,7 @@ CREATE SEQUENCE colaboradoravaliacaopratica_sequence
 ALTER TABLE colaboradoravaliacaopratica_sequence OWNER TO postgres;
 
 --
--- Name: colaboradorcertificacao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: colaboradorcertificacao; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE colaboradorcertificacao (
@@ -1919,7 +1898,7 @@ CREATE TABLE colaboradorcertificacao (
 ALTER TABLE colaboradorcertificacao OWNER TO postgres;
 
 --
--- Name: colaboradorcertificacao_colaboradorturma; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: colaboradorcertificacao_colaboradorturma; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE colaboradorcertificacao_colaboradorturma (
@@ -1945,7 +1924,7 @@ CREATE SEQUENCE colaboradorcertificacao_sequence
 ALTER TABLE colaboradorcertificacao_sequence OWNER TO postgres;
 
 --
--- Name: colaboradoridioma; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: colaboradoridioma; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE colaboradoridioma (
@@ -1973,7 +1952,7 @@ CREATE SEQUENCE colaboradoridioma_sequence
 ALTER TABLE colaboradoridioma_sequence OWNER TO postgres;
 
 --
--- Name: colaboradorocorrencia; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: colaboradorocorrencia; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE colaboradorocorrencia (
@@ -2004,7 +1983,7 @@ CREATE SEQUENCE colaboradorocorrencia_sequence
 ALTER TABLE colaboradorocorrencia_sequence OWNER TO postgres;
 
 --
--- Name: colaboradorperiodoexperienciaavaliacao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: colaboradorperiodoexperienciaavaliacao; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE colaboradorperiodoexperienciaavaliacao (
@@ -2033,7 +2012,7 @@ CREATE SEQUENCE colaboradorperiodoexperienciaavaliacao_sequence
 ALTER TABLE colaboradorperiodoexperienciaavaliacao_sequence OWNER TO postgres;
 
 --
--- Name: colaboradorpresenca; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: colaboradorpresenca; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE colaboradorpresenca (
@@ -2061,7 +2040,7 @@ CREATE SEQUENCE colaboradorpresenca_sequence
 ALTER TABLE colaboradorpresenca_sequence OWNER TO postgres;
 
 --
--- Name: colaboradorquestionario; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: colaboradorquestionario; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE colaboradorquestionario (
@@ -2103,7 +2082,7 @@ CREATE SEQUENCE colaboradorquestionario_sequence
 ALTER TABLE colaboradorquestionario_sequence OWNER TO postgres;
 
 --
--- Name: colaboradorresposta; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: colaboradorresposta; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE colaboradorresposta (
@@ -2136,7 +2115,7 @@ CREATE SEQUENCE colaboradorresposta_sequence
 ALTER TABLE colaboradorresposta_sequence OWNER TO postgres;
 
 --
--- Name: colaboradorturma; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: colaboradorturma; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE colaboradorturma (
@@ -2148,7 +2127,8 @@ CREATE TABLE colaboradorturma (
     turma_id bigint,
     curso_id bigint,
     dnt_id bigint,
-    cursolnt_id bigint
+    cursolnt_id bigint,
+    motivoreprovacao character varying(20)
 );
 
 
@@ -2169,7 +2149,7 @@ CREATE SEQUENCE colaboradorturma_sequence
 ALTER TABLE colaboradorturma_sequence OWNER TO postgres;
 
 --
--- Name: comissao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: comissao; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE comissao (
@@ -2199,7 +2179,7 @@ CREATE SEQUENCE comissao_sequence
 ALTER TABLE comissao_sequence OWNER TO postgres;
 
 --
--- Name: comissaoeleicao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: comissaoeleicao; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE comissaoeleicao (
@@ -2227,7 +2207,7 @@ CREATE SEQUENCE comissaoeleicao_sequence
 ALTER TABLE comissaoeleicao_sequence OWNER TO postgres;
 
 --
--- Name: comissaomembro; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: comissaomembro; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE comissaomembro (
@@ -2256,7 +2236,7 @@ CREATE SEQUENCE comissaomembro_sequence
 ALTER TABLE comissaomembro_sequence OWNER TO postgres;
 
 --
--- Name: comissaoperiodo; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: comissaoperiodo; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE comissaoperiodo (
@@ -2283,7 +2263,7 @@ CREATE SEQUENCE comissaoperiodo_sequence
 ALTER TABLE comissaoperiodo_sequence OWNER TO postgres;
 
 --
--- Name: comissaoplanotrabalho; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: comissaoplanotrabalho; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE comissaoplanotrabalho (
@@ -2317,7 +2297,7 @@ CREATE SEQUENCE comissaoplanotrabalho_sequence
 ALTER TABLE comissaoplanotrabalho_sequence OWNER TO postgres;
 
 --
--- Name: comissaoreuniao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: comissaoreuniao; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE comissaoreuniao (
@@ -2350,7 +2330,7 @@ CREATE SEQUENCE comissaoreuniao_sequence
 ALTER TABLE comissaoreuniao_sequence OWNER TO postgres;
 
 --
--- Name: comissaoreuniaopresenca; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: comissaoreuniaopresenca; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE comissaoreuniaopresenca (
@@ -2379,7 +2359,7 @@ CREATE SEQUENCE comissaoreuniaopresenca_sequence
 ALTER TABLE comissaoreuniaopresenca_sequence OWNER TO postgres;
 
 --
--- Name: comoficousabendovaga; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: comoficousabendovaga; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE comoficousabendovaga (
@@ -2405,7 +2385,7 @@ CREATE SEQUENCE comoficousabendovaga_sequence
 ALTER TABLE comoficousabendovaga_sequence OWNER TO postgres;
 
 --
--- Name: conhecimento; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: conhecimento; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE conhecimento (
@@ -2419,7 +2399,7 @@ CREATE TABLE conhecimento (
 ALTER TABLE conhecimento OWNER TO postgres;
 
 --
--- Name: habilidade; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: habilidade; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE habilidade (
@@ -2437,33 +2417,13 @@ ALTER TABLE habilidade OWNER TO postgres;
 --
 
 CREATE VIEW competencia AS
- SELECT conhecimento.id,
-    conhecimento.nome,
-    conhecimento.empresa_id,
-    conhecimento.observacao,
-    'C'::text AS tipo
-   FROM conhecimento
-UNION
- SELECT habilidade.id,
-    habilidade.nome,
-    habilidade.empresa_id,
-    habilidade.observacao,
-    'H'::text AS tipo
-   FROM habilidade
-UNION
- SELECT atitude.id,
-    atitude.nome,
-    atitude.empresa_id,
-    atitude.observacao,
-    'A'::text AS tipo
-   FROM atitude
-  ORDER BY 1;
+(SELECT conhecimento.id, conhecimento.nome, conhecimento.empresa_id, conhecimento.observacao, 'C'::text AS tipo FROM conhecimento UNION SELECT habilidade.id, habilidade.nome, habilidade.empresa_id, habilidade.observacao, 'H'::text AS tipo FROM habilidade) UNION SELECT atitude.id, atitude.nome, atitude.empresa_id, atitude.observacao, 'A'::text AS tipo FROM atitude ORDER BY 1;
 
 
 ALTER TABLE competencia OWNER TO postgres;
 
 --
--- Name: composicaosesmt; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: composicaosesmt; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE composicaosesmt (
@@ -2495,7 +2455,7 @@ CREATE SEQUENCE composicaosesmt_sequence
 ALTER TABLE composicaosesmt_sequence OWNER TO postgres;
 
 --
--- Name: confighistoriconivel; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: confighistoriconivel; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE confighistoriconivel (
@@ -2524,7 +2484,7 @@ CREATE SEQUENCE confighistoriconivel_sequence
 ALTER TABLE confighistoriconivel_sequence OWNER TO postgres;
 
 --
--- Name: configuracaocampoextra; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: configuracaocampoextra; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE configuracaocampoextra (
@@ -2558,7 +2518,7 @@ CREATE SEQUENCE configuracaocampoextra_sequence
 ALTER TABLE configuracaocampoextra_sequence OWNER TO postgres;
 
 --
--- Name: configuracaocampoextravisivelobrigadotorio; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: configuracaocampoextravisivelobrigadotorio; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE configuracaocampoextravisivelobrigadotorio (
@@ -2587,7 +2547,7 @@ CREATE SEQUENCE configuracaocampoextravisivelobrigadotorio_sequence
 ALTER TABLE configuracaocampoextravisivelobrigadotorio_sequence OWNER TO postgres;
 
 --
--- Name: configuracaocompetenciaavaliacaodesempenho; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: configuracaocompetenciaavaliacaodesempenho; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE configuracaocompetenciaavaliacaodesempenho (
@@ -2617,7 +2577,7 @@ CREATE SEQUENCE configuracaocompetenciaavaliacaodesempenho_sequence
 ALTER TABLE configuracaocompetenciaavaliacaodesempenho_sequence OWNER TO postgres;
 
 --
--- Name: configuracaoimpressaocurriculo; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: configuracaoimpressaocurriculo; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE configuracaoimpressaocurriculo (
@@ -2664,7 +2624,7 @@ CREATE SEQUENCE configuracaoimpressaocurriculo_sequence
 ALTER TABLE configuracaoimpressaocurriculo_sequence OWNER TO postgres;
 
 --
--- Name: configuracaolimitecolaborador; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: configuracaolimitecolaborador; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE configuracaolimitecolaborador (
@@ -2691,7 +2651,7 @@ CREATE SEQUENCE configuracaolimitecolaborador_sequence
 ALTER TABLE configuracaolimitecolaborador_sequence OWNER TO postgres;
 
 --
--- Name: configuracaonivelcompetencia; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: configuracaonivelcompetencia; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE configuracaonivelcompetencia (
@@ -2724,7 +2684,7 @@ CREATE SEQUENCE configuracaonivelcompetencia_sequence
 ALTER TABLE configuracaonivelcompetencia_sequence OWNER TO postgres;
 
 --
--- Name: configuracaonivelcompetenciacandidato; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: configuracaonivelcompetenciacandidato; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE configuracaonivelcompetenciacandidato (
@@ -2753,7 +2713,7 @@ CREATE SEQUENCE configuracaonivelcompetenciacandidato_sequence
 ALTER TABLE configuracaonivelcompetenciacandidato_sequence OWNER TO postgres;
 
 --
--- Name: configuracaonivelcompetenciacolaborador; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: configuracaonivelcompetenciacolaborador; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE configuracaonivelcompetenciacolaborador (
@@ -2784,7 +2744,7 @@ CREATE SEQUENCE configuracaonivelcompetenciacolaborador_sequence
 ALTER TABLE configuracaonivelcompetenciacolaborador_sequence OWNER TO postgres;
 
 --
--- Name: configuracaonivelcompetenciacriterio; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: configuracaonivelcompetenciacriterio; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE configuracaonivelcompetenciacriterio (
@@ -2813,7 +2773,7 @@ CREATE SEQUENCE configuracaonivelcompetenciacriterio_sequence
 ALTER TABLE configuracaonivelcompetenciacriterio_sequence OWNER TO postgres;
 
 --
--- Name: configuracaonivelcompetenciafaixasalarial; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: configuracaonivelcompetenciafaixasalarial; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE configuracaonivelcompetenciafaixasalarial (
@@ -2841,7 +2801,7 @@ CREATE SEQUENCE configuracaonivelcompetenciafaixasalarial_sequence
 ALTER TABLE configuracaonivelcompetenciafaixasalarial_sequence OWNER TO postgres;
 
 --
--- Name: configuracaoperformance; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: configuracaoperformance; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE configuracaoperformance (
@@ -2870,7 +2830,7 @@ CREATE SEQUENCE configuracaoperformance_sequence
 ALTER TABLE configuracaoperformance_sequence OWNER TO postgres;
 
 --
--- Name: configuracaorelatoriodinamico; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: configuracaorelatoriodinamico; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE configuracaorelatoriodinamico (
@@ -2898,7 +2858,7 @@ CREATE SEQUENCE configuracaorelatoriodinamico_sequence
 ALTER TABLE configuracaorelatoriodinamico_sequence OWNER TO postgres;
 
 --
--- Name: conhecimento_areaorganizacional; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: conhecimento_areaorganizacional; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE conhecimento_areaorganizacional (
@@ -2910,7 +2870,7 @@ CREATE TABLE conhecimento_areaorganizacional (
 ALTER TABLE conhecimento_areaorganizacional OWNER TO postgres;
 
 --
--- Name: conhecimento_curso; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: conhecimento_curso; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE conhecimento_curso (
@@ -2936,7 +2896,7 @@ CREATE SEQUENCE conhecimento_sequence
 ALTER TABLE conhecimento_sequence OWNER TO postgres;
 
 --
--- Name: criterioavaliacaocompetencia; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: criterioavaliacaocompetencia; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE criterioavaliacaocompetencia (
@@ -2965,7 +2925,7 @@ CREATE SEQUENCE criterioavaliacaocompetencia_sequence
 ALTER TABLE criterioavaliacaocompetencia_sequence OWNER TO postgres;
 
 --
--- Name: curso; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: curso; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE curso (
@@ -2984,7 +2944,7 @@ CREATE TABLE curso (
 ALTER TABLE curso OWNER TO postgres;
 
 --
--- Name: curso_avaliacaocurso; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: curso_avaliacaocurso; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE curso_avaliacaocurso (
@@ -2996,7 +2956,7 @@ CREATE TABLE curso_avaliacaocurso (
 ALTER TABLE curso_avaliacaocurso OWNER TO postgres;
 
 --
--- Name: curso_empresa; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: curso_empresa; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE curso_empresa (
@@ -3022,7 +2982,7 @@ CREATE SEQUENCE curso_sequence
 ALTER TABLE curso_sequence OWNER TO postgres;
 
 --
--- Name: cursolnt; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: cursolnt; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE cursolnt (
@@ -3054,7 +3014,7 @@ CREATE SEQUENCE cursolnt_sequence
 ALTER TABLE cursolnt_sequence OWNER TO postgres;
 
 --
--- Name: dependente; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: dependente; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE dependente (
@@ -3083,7 +3043,7 @@ CREATE SEQUENCE dependente_sequence
 ALTER TABLE dependente_sequence OWNER TO postgres;
 
 --
--- Name: diaturma; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: diaturma; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE diaturma (
@@ -3113,7 +3073,7 @@ CREATE SEQUENCE diaturma_sequence
 ALTER TABLE diaturma_sequence OWNER TO postgres;
 
 --
--- Name: dnt; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: dnt; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE dnt (
@@ -3141,7 +3101,7 @@ CREATE SEQUENCE dnt_sequence
 ALTER TABLE dnt_sequence OWNER TO postgres;
 
 --
--- Name: documentoanexo; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: documentoanexo; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE documentoanexo (
@@ -3175,7 +3135,7 @@ CREATE SEQUENCE documentoanexo_sequence
 ALTER TABLE documentoanexo_sequence OWNER TO postgres;
 
 --
--- Name: eleicao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: eleicao; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE eleicao (
@@ -3223,7 +3183,7 @@ CREATE SEQUENCE eleicao_sequence
 ALTER TABLE eleicao_sequence OWNER TO postgres;
 
 --
--- Name: empresa; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: empresa; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE empresa (
@@ -3302,7 +3262,7 @@ CREATE SEQUENCE empresa_sequence
 ALTER TABLE empresa_sequence OWNER TO postgres;
 
 --
--- Name: empresabds; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: empresabds; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE empresabds (
@@ -3333,7 +3293,7 @@ CREATE SEQUENCE empresabds_sequence
 ALTER TABLE empresabds_sequence OWNER TO postgres;
 
 --
--- Name: engenheiroresponsavel; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: engenheiroresponsavel; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE engenheiroresponsavel (
@@ -3364,7 +3324,7 @@ CREATE SEQUENCE engenheiroresponsavel_sequence
 ALTER TABLE engenheiroresponsavel_sequence OWNER TO postgres;
 
 --
--- Name: entrevista; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: entrevista; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE entrevista (
@@ -3391,7 +3351,7 @@ CREATE SEQUENCE entrevista_sequence
 ALTER TABLE entrevista_sequence OWNER TO postgres;
 
 --
--- Name: epc; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: epc; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE epc (
@@ -3419,7 +3379,7 @@ CREATE SEQUENCE epc_sequence
 ALTER TABLE epc_sequence OWNER TO postgres;
 
 --
--- Name: epcpcmat; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: epcpcmat; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE epcpcmat (
@@ -3447,7 +3407,7 @@ CREATE SEQUENCE epcpcmat_sequence
 ALTER TABLE epcpcmat_sequence OWNER TO postgres;
 
 --
--- Name: epi; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: epi; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE epi (
@@ -3480,7 +3440,7 @@ CREATE SEQUENCE epi_sequence
 ALTER TABLE epi_sequence OWNER TO postgres;
 
 --
--- Name: epihistorico; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: epihistorico; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE epihistorico (
@@ -3511,7 +3471,7 @@ CREATE SEQUENCE epihistorico_sequence
 ALTER TABLE epihistorico_sequence OWNER TO postgres;
 
 --
--- Name: epipcmat; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: epipcmat; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE epipcmat (
@@ -3539,7 +3499,7 @@ CREATE SEQUENCE epipcmat_sequence
 ALTER TABLE epipcmat_sequence OWNER TO postgres;
 
 --
--- Name: estabelecimento; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: estabelecimento; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE estabelecimento (
@@ -3576,7 +3536,7 @@ CREATE SEQUENCE estabelecimento_sequence
 ALTER TABLE estabelecimento_sequence OWNER TO postgres;
 
 --
--- Name: estado; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: estado; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE estado (
@@ -3603,7 +3563,7 @@ CREATE SEQUENCE estado_sequence
 ALTER TABLE estado_sequence OWNER TO postgres;
 
 --
--- Name: etapaprocessoeleitoral; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: etapaprocessoeleitoral; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE etapaprocessoeleitoral (
@@ -3634,7 +3594,7 @@ CREATE SEQUENCE etapaprocessoeleitoral_sequence
 ALTER TABLE etapaprocessoeleitoral_sequence OWNER TO postgres;
 
 --
--- Name: etapaseletiva; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: etapaseletiva; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE etapaseletiva (
@@ -3662,7 +3622,7 @@ CREATE SEQUENCE etapaseletiva_sequence
 ALTER TABLE etapaseletiva_sequence OWNER TO postgres;
 
 --
--- Name: evento; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: evento; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE evento (
@@ -3688,7 +3648,7 @@ CREATE SEQUENCE evento_sequence
 ALTER TABLE evento_sequence OWNER TO postgres;
 
 --
--- Name: exame; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: exame; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE exame (
@@ -3718,7 +3678,7 @@ CREATE SEQUENCE exame_sequence
 ALTER TABLE exame_sequence OWNER TO postgres;
 
 --
--- Name: examesolicitacaoexame; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: examesolicitacaoexame; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE examesolicitacaoexame (
@@ -3748,7 +3708,7 @@ CREATE SEQUENCE examesolicitacaoexame_sequence
 ALTER TABLE examesolicitacaoexame_sequence OWNER TO postgres;
 
 --
--- Name: experiencia; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: experiencia; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE experiencia (
@@ -3784,7 +3744,7 @@ CREATE SEQUENCE experiencia_sequence
 ALTER TABLE experiencia_sequence OWNER TO postgres;
 
 --
--- Name: extintor; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: extintor; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE extintor (
@@ -3818,7 +3778,7 @@ CREATE SEQUENCE extintor_sequence
 ALTER TABLE extintor_sequence OWNER TO postgres;
 
 --
--- Name: extintorinspecao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: extintorinspecao; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE extintorinspecao (
@@ -3834,7 +3794,7 @@ CREATE TABLE extintorinspecao (
 ALTER TABLE extintorinspecao OWNER TO postgres;
 
 --
--- Name: extintorinspecao_extintorinspecaoitem; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: extintorinspecao_extintorinspecaoitem; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE extintorinspecao_extintorinspecaoitem (
@@ -3860,7 +3820,7 @@ CREATE SEQUENCE extintorinspecao_sequence
 ALTER TABLE extintorinspecao_sequence OWNER TO postgres;
 
 --
--- Name: extintorinspecaoitem; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: extintorinspecaoitem; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE extintorinspecaoitem (
@@ -3886,7 +3846,7 @@ CREATE SEQUENCE extintorinspecaoitem_sequence
 ALTER TABLE extintorinspecaoitem_sequence OWNER TO postgres;
 
 --
--- Name: extintormanutencao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: extintormanutencao; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE extintormanutencao (
@@ -3903,7 +3863,7 @@ CREATE TABLE extintormanutencao (
 ALTER TABLE extintormanutencao OWNER TO postgres;
 
 --
--- Name: extintormanutencao_extintormanutencaoservico; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: extintormanutencao_extintormanutencaoservico; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE extintormanutencao_extintormanutencaoservico (
@@ -3929,7 +3889,7 @@ CREATE SEQUENCE extintormanutencao_sequence
 ALTER TABLE extintormanutencao_sequence OWNER TO postgres;
 
 --
--- Name: extintormanutencaoservico; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: extintormanutencaoservico; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE extintormanutencaoservico (
@@ -3955,7 +3915,7 @@ CREATE SEQUENCE extintormanutencaoservico_sequence
 ALTER TABLE extintormanutencaoservico_sequence OWNER TO postgres;
 
 --
--- Name: faixasalarial; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: faixasalarial; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE faixasalarial (
@@ -3971,7 +3931,7 @@ CREATE TABLE faixasalarial (
 ALTER TABLE faixasalarial OWNER TO postgres;
 
 --
--- Name: faixasalarial_certificacao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: faixasalarial_certificacao; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE faixasalarial_certificacao (
@@ -3997,7 +3957,7 @@ CREATE SEQUENCE faixasalarial_sequence
 ALTER TABLE faixasalarial_sequence OWNER TO postgres;
 
 --
--- Name: faixasalarialhistorico; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: faixasalarialhistorico; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE faixasalarialhistorico (
@@ -4030,7 +3990,7 @@ CREATE SEQUENCE faixasalarialhistorico_sequence
 ALTER TABLE faixasalarialhistorico_sequence OWNER TO postgres;
 
 --
--- Name: fase; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: fase; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE fase (
@@ -4057,7 +4017,7 @@ CREATE SEQUENCE fase_sequence
 ALTER TABLE fase_sequence OWNER TO postgres;
 
 --
--- Name: fasepcmat; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: fasepcmat; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE fasepcmat (
@@ -4087,7 +4047,7 @@ CREATE SEQUENCE fasepcmat_sequence
 ALTER TABLE fasepcmat_sequence OWNER TO postgres;
 
 --
--- Name: faturamentomensal; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: faturamentomensal; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE faturamentomensal (
@@ -4115,7 +4075,7 @@ CREATE SEQUENCE faturamentomensal_sequence
 ALTER TABLE faturamentomensal_sequence OWNER TO postgres;
 
 --
--- Name: fichamedica; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: fichamedica; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE fichamedica (
@@ -4143,7 +4103,7 @@ CREATE SEQUENCE fichamedica_sequence
 ALTER TABLE fichamedica_sequence OWNER TO postgres;
 
 --
--- Name: formacao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: formacao; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE formacao (
@@ -4176,7 +4136,7 @@ CREATE SEQUENCE formacao_sequence
 ALTER TABLE formacao_sequence OWNER TO postgres;
 
 --
--- Name: funcao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: funcao; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE funcao (
@@ -4203,7 +4163,7 @@ CREATE SEQUENCE funcao_sequence
 ALTER TABLE funcao_sequence OWNER TO postgres;
 
 --
--- Name: gasto; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: gasto; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE gasto (
@@ -4233,7 +4193,7 @@ CREATE SEQUENCE gasto_sequence
 ALTER TABLE gasto_sequence OWNER TO postgres;
 
 --
--- Name: gastoempresa; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: gastoempresa; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE gastoempresa (
@@ -4261,7 +4221,7 @@ CREATE SEQUENCE gastoempresa_sequence
 ALTER TABLE gastoempresa_sequence OWNER TO postgres;
 
 --
--- Name: gastoempresaitem; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: gastoempresaitem; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE gastoempresaitem (
@@ -4289,7 +4249,7 @@ CREATE SEQUENCE gastoempresaitem_sequence
 ALTER TABLE gastoempresaitem_sequence OWNER TO postgres;
 
 --
--- Name: gerenciadorcomunicacao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: gerenciadorcomunicacao; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE gerenciadorcomunicacao (
@@ -4321,7 +4281,7 @@ CREATE SEQUENCE gerenciadorcomunicacao_sequence
 ALTER TABLE gerenciadorcomunicacao_sequence OWNER TO postgres;
 
 --
--- Name: gerenciadorcomunicacao_usuario; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: gerenciadorcomunicacao_usuario; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE gerenciadorcomunicacao_usuario (
@@ -4333,7 +4293,7 @@ CREATE TABLE gerenciadorcomunicacao_usuario (
 ALTER TABLE gerenciadorcomunicacao_usuario OWNER TO postgres;
 
 --
--- Name: grupoac; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: grupoac; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE grupoac (
@@ -4364,7 +4324,7 @@ CREATE SEQUENCE grupoac_sequence
 ALTER TABLE grupoac_sequence OWNER TO postgres;
 
 --
--- Name: grupogasto; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: grupogasto; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE grupogasto (
@@ -4391,7 +4351,7 @@ CREATE SEQUENCE grupogasto_sequence
 ALTER TABLE grupogasto_sequence OWNER TO postgres;
 
 --
--- Name: grupoocupacional; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: grupoocupacional; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE grupoocupacional (
@@ -4418,7 +4378,7 @@ CREATE SEQUENCE grupoocupacional_sequence
 ALTER TABLE grupoocupacional_sequence OWNER TO postgres;
 
 --
--- Name: habilidade_areaorganizacional; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: habilidade_areaorganizacional; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE habilidade_areaorganizacional (
@@ -4430,7 +4390,7 @@ CREATE TABLE habilidade_areaorganizacional (
 ALTER TABLE habilidade_areaorganizacional OWNER TO postgres;
 
 --
--- Name: habilidade_curso; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: habilidade_curso; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE habilidade_curso (
@@ -4456,7 +4416,7 @@ CREATE SEQUENCE habilidade_sequence
 ALTER TABLE habilidade_sequence OWNER TO postgres;
 
 --
--- Name: historicoambiente; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: historicoambiente; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE historicoambiente (
@@ -4472,7 +4432,7 @@ CREATE TABLE historicoambiente (
 ALTER TABLE historicoambiente OWNER TO postgres;
 
 --
--- Name: historicoambiente_epc; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: historicoambiente_epc; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE historicoambiente_epc (
@@ -4498,7 +4458,7 @@ CREATE SEQUENCE historicoambiente_sequence
 ALTER TABLE historicoambiente_sequence OWNER TO postgres;
 
 --
--- Name: historicobeneficio; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: historicobeneficio; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE historicobeneficio (
@@ -4529,7 +4489,7 @@ CREATE SEQUENCE historicobeneficio_sequence
 ALTER TABLE historicobeneficio_sequence OWNER TO postgres;
 
 --
--- Name: historicocandidato; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: historicocandidato; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE historicocandidato (
@@ -4563,7 +4523,7 @@ CREATE SEQUENCE historicocandidato_sequence
 ALTER TABLE historicocandidato_sequence OWNER TO postgres;
 
 --
--- Name: historicocolaborador; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: historicocolaborador; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE historicocolaborador (
@@ -4606,7 +4566,7 @@ CREATE SEQUENCE historicocolaborador_sequence
 ALTER TABLE historicocolaborador_sequence OWNER TO postgres;
 
 --
--- Name: historicocolaboradorbeneficio; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: historicocolaboradorbeneficio; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE historicocolaboradorbeneficio (
@@ -4620,7 +4580,7 @@ CREATE TABLE historicocolaboradorbeneficio (
 ALTER TABLE historicocolaboradorbeneficio OWNER TO postgres;
 
 --
--- Name: historicocolaboradorbeneficio_beneficio; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: historicocolaboradorbeneficio_beneficio; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE historicocolaboradorbeneficio_beneficio (
@@ -4660,7 +4620,7 @@ CREATE SEQUENCE historicoextintor_sequence
 ALTER TABLE historicoextintor_sequence OWNER TO postgres;
 
 --
--- Name: historicoextintor; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: historicoextintor; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE historicoextintor (
@@ -4675,7 +4635,7 @@ CREATE TABLE historicoextintor (
 ALTER TABLE historicoextintor OWNER TO postgres;
 
 --
--- Name: historicofuncao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: historicofuncao; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE historicofuncao (
@@ -4690,7 +4650,7 @@ CREATE TABLE historicofuncao (
 ALTER TABLE historicofuncao OWNER TO postgres;
 
 --
--- Name: historicofuncao_curso; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: historicofuncao_curso; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE historicofuncao_curso (
@@ -4702,7 +4662,7 @@ CREATE TABLE historicofuncao_curso (
 ALTER TABLE historicofuncao_curso OWNER TO postgres;
 
 --
--- Name: historicofuncao_epi; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: historicofuncao_epi; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE historicofuncao_epi (
@@ -4714,7 +4674,7 @@ CREATE TABLE historicofuncao_epi (
 ALTER TABLE historicofuncao_epi OWNER TO postgres;
 
 --
--- Name: historicofuncao_exame; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: historicofuncao_exame; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE historicofuncao_exame (
@@ -4740,7 +4700,7 @@ CREATE SEQUENCE historicofuncao_sequence
 ALTER TABLE historicofuncao_sequence OWNER TO postgres;
 
 --
--- Name: idioma; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: idioma; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE idioma (
@@ -4766,7 +4726,7 @@ CREATE SEQUENCE idioma_sequence
 ALTER TABLE idioma_sequence OWNER TO postgres;
 
 --
--- Name: indice; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: indice; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE indice (
@@ -4796,7 +4756,7 @@ CREATE SEQUENCE indice_sequence
 ALTER TABLE indice_sequence OWNER TO postgres;
 
 --
--- Name: indicehistorico; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: indicehistorico; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE indicehistorico (
@@ -4825,7 +4785,7 @@ CREATE SEQUENCE indicehistorico_sequence
 ALTER TABLE indicehistorico_sequence OWNER TO postgres;
 
 --
--- Name: lnt; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: lnt; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE lnt (
@@ -4840,7 +4800,7 @@ CREATE TABLE lnt (
 ALTER TABLE lnt OWNER TO postgres;
 
 --
--- Name: lnt_areaorganizacional; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: lnt_areaorganizacional; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE lnt_areaorganizacional (
@@ -4852,7 +4812,7 @@ CREATE TABLE lnt_areaorganizacional (
 ALTER TABLE lnt_areaorganizacional OWNER TO postgres;
 
 --
--- Name: lnt_empresa; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: lnt_empresa; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE lnt_empresa (
@@ -4878,7 +4838,7 @@ CREATE SEQUENCE lnt_sequence
 ALTER TABLE lnt_sequence OWNER TO postgres;
 
 --
--- Name: medicaorisco; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: medicaorisco; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE medicaorisco (
@@ -4906,7 +4866,7 @@ CREATE SEQUENCE medicaorisco_sequence
 ALTER TABLE medicaorisco_sequence OWNER TO postgres;
 
 --
--- Name: medicocoordenador; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: medicocoordenador; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE medicocoordenador (
@@ -4943,7 +4903,7 @@ CREATE SEQUENCE medicocoordenador_sequence
 ALTER TABLE medicocoordenador_sequence OWNER TO postgres;
 
 --
--- Name: medidariscofasepcmat; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: medidariscofasepcmat; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE medidariscofasepcmat (
@@ -4970,7 +4930,7 @@ CREATE SEQUENCE medidariscofasepcmat_sequence
 ALTER TABLE medidariscofasepcmat_sequence OWNER TO postgres;
 
 --
--- Name: medidaseguranca; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: medidaseguranca; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE medidaseguranca (
@@ -4997,7 +4957,7 @@ CREATE SEQUENCE medidaseguranca_sequence
 ALTER TABLE medidaseguranca_sequence OWNER TO postgres;
 
 --
--- Name: mensagem; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: mensagem; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE mensagem (
@@ -5029,7 +4989,7 @@ CREATE SEQUENCE mensagem_sequence
 ALTER TABLE mensagem_sequence OWNER TO postgres;
 
 --
--- Name: migrations; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: migrations; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE migrations (
@@ -5040,7 +5000,7 @@ CREATE TABLE migrations (
 ALTER TABLE migrations OWNER TO postgres;
 
 --
--- Name: motivodemissao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: motivodemissao; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE motivodemissao (
@@ -5069,7 +5029,7 @@ CREATE SEQUENCE motivodemissao_sequence
 ALTER TABLE motivodemissao_sequence OWNER TO postgres;
 
 --
--- Name: motivosolicitacao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: motivosolicitacao; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE motivosolicitacao (
@@ -5096,7 +5056,7 @@ CREATE SEQUENCE motivosolicitacao_sequence
 ALTER TABLE motivosolicitacao_sequence OWNER TO postgres;
 
 --
--- Name: motivosolicitacaoepi; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: motivosolicitacaoepi; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE motivosolicitacaoepi (
@@ -5122,7 +5082,7 @@ CREATE SEQUENCE motivosolicitacaoepi_sequence
 ALTER TABLE motivosolicitacaoepi_sequence OWNER TO postgres;
 
 --
--- Name: naturezalesao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: naturezalesao; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE naturezalesao (
@@ -5149,7 +5109,7 @@ CREATE SEQUENCE naturezalesao_sequence
 ALTER TABLE naturezalesao_sequence OWNER TO postgres;
 
 --
--- Name: nivelcompetencia; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: nivelcompetencia; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE nivelcompetencia (
@@ -5176,7 +5136,7 @@ CREATE SEQUENCE nivelcompetencia_sequence
 ALTER TABLE nivelcompetencia_sequence OWNER TO postgres;
 
 --
--- Name: nivelcompetenciahistorico; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: nivelcompetenciahistorico; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE nivelcompetenciahistorico (
@@ -5203,7 +5163,7 @@ CREATE SEQUENCE nivelcompetenciahistorico_sequence
 ALTER TABLE nivelcompetenciahistorico_sequence OWNER TO postgres;
 
 --
--- Name: noticia; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: noticia; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE noticia (
@@ -5232,7 +5192,7 @@ CREATE SEQUENCE noticia_sequence
 ALTER TABLE noticia_sequence OWNER TO postgres;
 
 --
--- Name: obra; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: obra; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE obra (
@@ -5267,7 +5227,7 @@ CREATE SEQUENCE obra_sequence
 ALTER TABLE obra_sequence OWNER TO postgres;
 
 --
--- Name: ocorrencia; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: ocorrencia; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE ocorrencia (
@@ -5300,7 +5260,7 @@ CREATE SEQUENCE ocorrencia_sequence
 ALTER TABLE ocorrencia_sequence OWNER TO postgres;
 
 --
--- Name: ordemdeservico; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: ordemdeservico; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE ordemdeservico (
@@ -5348,7 +5308,7 @@ CREATE SEQUENCE ordemdeservico_sequence
 ALTER TABLE ordemdeservico_sequence OWNER TO postgres;
 
 --
--- Name: papel; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: papel; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE papel (
@@ -5381,7 +5341,7 @@ CREATE SEQUENCE papel_sequence
 ALTER TABLE papel_sequence OWNER TO postgres;
 
 --
--- Name: parametrosdosistema; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: parametrosdosistema; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE parametrosdosistema (
@@ -5451,7 +5411,7 @@ CREATE SEQUENCE parametrosdosistema_sequence
 ALTER TABLE parametrosdosistema_sequence OWNER TO postgres;
 
 --
--- Name: participanteavaliacaodesempenho; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: participanteavaliacaodesempenho; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE participanteavaliacaodesempenho (
@@ -5480,7 +5440,7 @@ CREATE SEQUENCE participanteavaliacaodesempenho_sequence
 ALTER TABLE participanteavaliacaodesempenho_sequence OWNER TO postgres;
 
 --
--- Name: participantecursolnt; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: participantecursolnt; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE participantecursolnt (
@@ -5508,7 +5468,7 @@ CREATE SEQUENCE participantecursolnt_sequence
 ALTER TABLE participantecursolnt_sequence OWNER TO postgres;
 
 --
--- Name: pausapreenchimentovagas; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: pausapreenchimentovagas; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE pausapreenchimentovagas (
@@ -5536,7 +5496,7 @@ CREATE SEQUENCE pausapreenchimentovagas_sequence
 ALTER TABLE pausapreenchimentovagas_sequence OWNER TO postgres;
 
 --
--- Name: pcmat; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: pcmat; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE pcmat (
@@ -5573,7 +5533,7 @@ CREATE SEQUENCE pcmat_sequence
 ALTER TABLE pcmat_sequence OWNER TO postgres;
 
 --
--- Name: perfil; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: perfil; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE perfil (
@@ -5585,7 +5545,7 @@ CREATE TABLE perfil (
 ALTER TABLE perfil OWNER TO postgres;
 
 --
--- Name: perfil_papel; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: perfil_papel; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE perfil_papel (
@@ -5611,7 +5571,7 @@ CREATE SEQUENCE perfil_sequence
 ALTER TABLE perfil_sequence OWNER TO postgres;
 
 --
--- Name: pergunta; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: pergunta; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE pergunta (
@@ -5647,7 +5607,7 @@ CREATE SEQUENCE pergunta_sequence
 ALTER TABLE pergunta_sequence OWNER TO postgres;
 
 --
--- Name: periodoexperiencia; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: periodoexperiencia; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE periodoexperiencia (
@@ -5676,7 +5636,7 @@ CREATE SEQUENCE periodoexperiencia_sequence
 ALTER TABLE periodoexperiencia_sequence OWNER TO postgres;
 
 --
--- Name: pesquisa; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: pesquisa; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE pesquisa (
@@ -5703,7 +5663,7 @@ CREATE SEQUENCE pesquisa_sequence
 ALTER TABLE pesquisa_sequence OWNER TO postgres;
 
 --
--- Name: prioridadetreinamento; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: prioridadetreinamento; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE prioridadetreinamento (
@@ -5731,7 +5691,7 @@ CREATE SEQUENCE prioridadetreinamento_sequence
 ALTER TABLE prioridadetreinamento_sequence OWNER TO postgres;
 
 --
--- Name: prontuario; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: prontuario; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE prontuario (
@@ -5760,7 +5720,7 @@ CREATE SEQUENCE prontuario_sequence
 ALTER TABLE prontuario_sequence OWNER TO postgres;
 
 --
--- Name: providencia; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: providencia; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE providencia (
@@ -5787,7 +5747,7 @@ CREATE SEQUENCE providencia_sequence
 ALTER TABLE providencia_sequence OWNER TO postgres;
 
 --
--- Name: quantidadelimitecolaboradoresporcargo; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: quantidadelimitecolaboradoresporcargo; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE quantidadelimitecolaboradoresporcargo (
@@ -5815,7 +5775,7 @@ CREATE SEQUENCE quantidadelimitecolaboradoresporcargo_sequence
 ALTER TABLE quantidadelimitecolaboradoresporcargo_sequence OWNER TO postgres;
 
 --
--- Name: questionario; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: questionario; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE questionario (
@@ -5849,7 +5809,7 @@ CREATE SEQUENCE questionario_sequence
 ALTER TABLE questionario_sequence OWNER TO postgres;
 
 --
--- Name: reajustecolaborador; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: reajustecolaborador; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE reajustecolaborador (
@@ -5895,7 +5855,7 @@ CREATE SEQUENCE reajustecolaborador_sequence
 ALTER TABLE reajustecolaborador_sequence OWNER TO postgres;
 
 --
--- Name: reajustefaixasalarial; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: reajustefaixasalarial; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE reajustefaixasalarial (
@@ -5924,7 +5884,7 @@ CREATE SEQUENCE reajustefaixasalarial_sequence
 ALTER TABLE reajustefaixasalarial_sequence OWNER TO postgres;
 
 --
--- Name: reajusteindice; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: reajusteindice; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE reajusteindice (
@@ -5953,7 +5913,7 @@ CREATE SEQUENCE reajusteindice_sequence
 ALTER TABLE reajusteindice_sequence OWNER TO postgres;
 
 --
--- Name: realizacaoexame; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: realizacaoexame; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE realizacaoexame (
@@ -5981,7 +5941,7 @@ CREATE SEQUENCE realizacaoexame_sequence
 ALTER TABLE realizacaoexame_sequence OWNER TO postgres;
 
 --
--- Name: resposta; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: resposta; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE resposta (
@@ -6010,7 +5970,7 @@ CREATE SEQUENCE resposta_sequence
 ALTER TABLE resposta_sequence OWNER TO postgres;
 
 --
--- Name: risco; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: risco; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE risco (
@@ -6024,7 +5984,7 @@ CREATE TABLE risco (
 ALTER TABLE risco OWNER TO postgres;
 
 --
--- Name: risco_epi; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: risco_epi; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE risco_epi (
@@ -6050,7 +6010,7 @@ CREATE SEQUENCE risco_sequence
 ALTER TABLE risco_sequence OWNER TO postgres;
 
 --
--- Name: riscoambiente; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: riscoambiente; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE riscoambiente (
@@ -6081,7 +6041,7 @@ CREATE SEQUENCE riscoambiente_sequence
 ALTER TABLE riscoambiente_sequence OWNER TO postgres;
 
 --
--- Name: riscofasepcmat; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: riscofasepcmat; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE riscofasepcmat (
@@ -6108,7 +6068,7 @@ CREATE SEQUENCE riscofasepcmat_sequence
 ALTER TABLE riscofasepcmat_sequence OWNER TO postgres;
 
 --
--- Name: riscofuncao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: riscofuncao; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE riscofuncao (
@@ -6138,14 +6098,14 @@ CREATE SEQUENCE riscofuncao_sequence
 ALTER TABLE riscofuncao_sequence OWNER TO postgres;
 
 --
--- Name: riscomedicaorisco; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: riscomedicaorisco; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE riscomedicaorisco (
     id bigint NOT NULL,
     descricaoppra text,
     descricaoltcat text,
-    intensidademedida character varying(20),
+    intensidademedida character varying(100),
     tecnicautilizada character varying(100),
     medicaorisco_id bigint,
     risco_id bigint
@@ -6169,7 +6129,7 @@ CREATE SEQUENCE riscomedicaorisco_sequence
 ALTER TABLE riscomedicaorisco_sequence OWNER TO postgres;
 
 --
--- Name: sinalizacaopcmat; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: sinalizacaopcmat; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE sinalizacaopcmat (
@@ -6196,7 +6156,7 @@ CREATE SEQUENCE sinalizacaopcmat_sequence
 ALTER TABLE sinalizacaopcmat_sequence OWNER TO postgres;
 
 --
--- Name: turma; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: turma; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE turma (
@@ -6220,7 +6180,7 @@ CREATE TABLE turma (
 ALTER TABLE turma OWNER TO postgres;
 
 --
--- Name: turma_avaliacaoturma; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: turma_avaliacaoturma; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE turma_avaliacaoturma (
@@ -6238,21 +6198,7 @@ ALTER TABLE turma_avaliacaoturma OWNER TO postgres;
 --
 
 CREATE VIEW situacaoavaliacaoturma AS
- SELECT totais.id AS turma_id,
-        CASE
-            WHEN (totais.qtdavaliacoes = totais.qtdliberada) THEN 'L'::text
-            WHEN (totais.qtdliberada > 0) THEN 'P'::text
-            ELSE 'B'::text
-        END AS status
-   FROM ( SELECT t.id,
-            count(a.id) AS qtdavaliacoes,
-            ( SELECT count(tat3.id) AS count
-                   FROM turma_avaliacaoturma tat3
-                  WHERE ((tat3.turma_id = t.id) AND (tat3.liberada = true))) AS qtdliberada
-           FROM ((turma t
-             LEFT JOIN turma_avaliacaoturma tat ON ((tat.turma_id = t.id)))
-             LEFT JOIN avaliacaoturma a ON ((tat.avaliacaoturma_id = a.id)))
-          GROUP BY t.id) totais;
+SELECT totais.id AS turma_id, CASE WHEN (totais.qtdavaliacoes = totais.qtdliberada) THEN 'L'::text WHEN (totais.qtdliberada > 0) THEN 'P'::text ELSE 'B'::text END AS status FROM (SELECT t.id, count(a.id) AS qtdavaliacoes, (SELECT count(tat3.id) AS count FROM turma_avaliacaoturma tat3 WHERE ((tat3.turma_id = t.id) AND (tat3.liberada = true))) AS qtdliberada FROM ((turma t LEFT JOIN turma_avaliacaoturma tat ON ((tat.turma_id = t.id))) LEFT JOIN avaliacaoturma a ON ((tat.avaliacaoturma_id = a.id))) GROUP BY t.id) totais;
 
 
 ALTER TABLE situacaoavaliacaoturma OWNER TO postgres;
@@ -6262,69 +6208,13 @@ ALTER TABLE situacaoavaliacaoturma OWNER TO postgres;
 --
 
 CREATE VIEW situacaocolaborador AS
- SELECT hc.id AS historicocolaboradorid,
-    GREATEST(hc.data, hfs_hc.data, hi_hfs_hc.data, hi_hc.data) AS data,
-    hc.tiposalario AS tipo,
-    COALESCE((hfs_hc.quantidade * hi_hfs_hc.valor), hfs_hc.valor, (hc.quantidadeindice * hi_hc.valor), hc.salario) AS salario,
-    c.id AS cargo_id,
-    hc.faixasalarial_id,
-    hc.estabelecimento_id,
-    hc.areaorganizacional_id,
-    hc.colaborador_id,
-    hc.motivo
-   FROM ((((((((((((historicocolaborador hc
-     LEFT JOIN faixasalarial fs_hc ON ((fs_hc.id = hc.faixasalarial_id)))
-     LEFT JOIN faixasalarialhistorico hfs_hc ON (((hfs_hc.faixasalarial_id = fs_hc.id) AND (hc.tiposalario = 1))))
-     LEFT JOIN cargo c ON ((c.id = fs_hc.cargo_id)))
-     LEFT JOIN indice i_hfs_hc ON (((i_hfs_hc.id = hfs_hc.indice_id) AND (hfs_hc.tipo = 2))))
-     LEFT JOIN indicehistorico hi_hfs_hc ON ((i_hfs_hc.id = hi_hfs_hc.indice_id)))
-     LEFT JOIN indice i_hc ON (((i_hc.id = hc.indice_id) AND (hc.tiposalario = 2))))
-     LEFT JOIN indicehistorico hi_hc ON ((hi_hc.indice_id = i_hc.id)))
-     LEFT JOIN ( SELECT hc2.data,
-            hc2.colaborador_id AS colabid,
-            COALESCE(( SELECT min(hc3.data) AS min
-                   FROM historicocolaborador hc3
-                  WHERE ((hc3.data > hc2.data) AND (hc3.colaborador_id = hc2.colaborador_id))), '2300-01-01'::date) AS dataproximo
-           FROM historicocolaborador hc2
-          WHERE (hc2.status <> 3)
-          ORDER BY hc2.colaborador_id, hc2.data) proximo ON (((proximo.data = hc.data) AND (proximo.colabid = hc.colaborador_id))))
-     LEFT JOIN ( SELECT hfs2.data,
-            hfs2.faixasalarial_id AS faixaid,
-            COALESCE(( SELECT min(fsh3.data) AS min
-                   FROM faixasalarialhistorico fsh3
-                  WHERE ((fsh3.data > hfs2.data) AND (fsh3.faixasalarial_id = hfs2.faixasalarial_id))), '2300-01-01'::date) AS dataproximohistfaixa
-           FROM faixasalarialhistorico hfs2
-          WHERE (hfs2.status <> 3)
-          ORDER BY hfs2.faixasalarial_id, hfs2.data) proximafaixa ON (((proximafaixa.data = hfs_hc.data) AND (proximafaixa.faixaid = hfs_hc.faixasalarial_id))))
-     LEFT JOIN ( SELECT hc3.id AS histcolabid,
-            COALESCE(( SELECT max(fsh.data) AS max
-                   FROM faixasalarialhistorico fsh
-                  WHERE ((fsh.data <= hc3.data) AND (fsh.faixasalarial_id = hc3.faixasalarial_id))), '1900-01-01'::date) AS dataatualfaixa
-           FROM historicocolaborador hc3
-          WHERE ((hc3.tiposalario = 1) AND (hc3.status <> 3))
-          ORDER BY hc3.id) faixaatual ON ((faixaatual.histcolabid = hc.id)))
-     LEFT JOIN ( SELECT hfs3.id AS histfaixaid,
-            COALESCE(( SELECT max(hi.data) AS max
-                   FROM indicehistorico hi
-                  WHERE ((hi.data <= hfs3.data) AND (hi.indice_id = hfs3.indice_id))), '1900-01-01'::date) AS dataatualindicefaixa
-           FROM faixasalarialhistorico hfs3
-          WHERE ((hfs3.tipo = 2) AND (hfs3.status <> 3))
-          ORDER BY hfs3.id) indiceatualfaixa ON ((indiceatualfaixa.histfaixaid = hfs_hc.id)))
-     LEFT JOIN ( SELECT hc4.id AS histcolabid,
-            COALESCE(( SELECT max(hi.data) AS max
-                   FROM indicehistorico hi
-                  WHERE ((hi.data <= hc4.data) AND (hi.indice_id = hc4.indice_id))), '1900-01-01'::date) AS dataatualindice
-           FROM historicocolaborador hc4
-          WHERE ((hc4.tiposalario = 2) AND (hc4.status <> 3))
-          ORDER BY hc4.id) indiceatual ON ((indiceatual.histcolabid = hc.id)))
-  WHERE ((((((((hc.status <> 3) AND ((hfs_hc.data < proximo.dataproximo) OR (hfs_hc.data IS NULL))) AND ((hi_hfs_hc.data < proximo.dataproximo) OR (hi_hfs_hc.data IS NULL))) AND ((hi_hfs_hc.data < proximafaixa.dataproximohistfaixa) OR (hi_hfs_hc.data IS NULL))) AND ((hfs_hc.data >= faixaatual.dataatualfaixa) OR (hfs_hc.data IS NULL))) AND ((hi_hfs_hc.data >= indiceatualfaixa.dataatualindicefaixa) OR (hi_hfs_hc.data IS NULL))) AND ((hi_hc.data < proximo.dataproximo) OR (hi_hc.data IS NULL))) AND ((hi_hc.data >= indiceatual.dataatualindice) OR (hi_hc.data IS NULL)))
-  ORDER BY hc.colaborador_id, hc.data, hfs_hc.data, hi_hfs_hc.data, hi_hc.data;
+SELECT hc.id AS historicocolaboradorid, GREATEST(hc.data, hfs_hc.data, hi_hfs_hc.data, hi_hc.data) AS data, hc.tiposalario AS tipo, COALESCE((hfs_hc.quantidade * hi_hfs_hc.valor), hfs_hc.valor, (hc.quantidadeindice * hi_hc.valor), hc.salario) AS salario, c.id AS cargo_id, hc.faixasalarial_id, hc.estabelecimento_id, hc.areaorganizacional_id, hc.colaborador_id, hc.motivo FROM ((((((((((((historicocolaborador hc LEFT JOIN faixasalarial fs_hc ON ((fs_hc.id = hc.faixasalarial_id))) LEFT JOIN faixasalarialhistorico hfs_hc ON (((hfs_hc.faixasalarial_id = fs_hc.id) AND (hc.tiposalario = 1)))) LEFT JOIN cargo c ON ((c.id = fs_hc.cargo_id))) LEFT JOIN indice i_hfs_hc ON (((i_hfs_hc.id = hfs_hc.indice_id) AND (hfs_hc.tipo = 2)))) LEFT JOIN indicehistorico hi_hfs_hc ON ((i_hfs_hc.id = hi_hfs_hc.indice_id))) LEFT JOIN indice i_hc ON (((i_hc.id = hc.indice_id) AND (hc.tiposalario = 2)))) LEFT JOIN indicehistorico hi_hc ON ((hi_hc.indice_id = i_hc.id))) LEFT JOIN (SELECT hc2.data, hc2.colaborador_id AS colabid, COALESCE((SELECT min(hc3.data) AS min FROM historicocolaborador hc3 WHERE ((hc3.data > hc2.data) AND (hc3.colaborador_id = hc2.colaborador_id))), '2300-01-01'::date) AS dataproximo FROM historicocolaborador hc2 WHERE (hc2.status <> 3) ORDER BY hc2.colaborador_id, hc2.data) proximo ON (((proximo.data = hc.data) AND (proximo.colabid = hc.colaborador_id)))) LEFT JOIN (SELECT hfs2.data, hfs2.faixasalarial_id AS faixaid, COALESCE((SELECT min(fsh3.data) AS min FROM faixasalarialhistorico fsh3 WHERE ((fsh3.data > hfs2.data) AND (fsh3.faixasalarial_id = hfs2.faixasalarial_id))), '2300-01-01'::date) AS dataproximohistfaixa FROM faixasalarialhistorico hfs2 WHERE (hfs2.status <> 3) ORDER BY hfs2.faixasalarial_id, hfs2.data) proximafaixa ON (((proximafaixa.data = hfs_hc.data) AND (proximafaixa.faixaid = hfs_hc.faixasalarial_id)))) LEFT JOIN (SELECT hc3.id AS histcolabid, COALESCE((SELECT max(fsh.data) AS max FROM faixasalarialhistorico fsh WHERE ((fsh.data <= hc3.data) AND (fsh.faixasalarial_id = hc3.faixasalarial_id))), '1900-01-01'::date) AS dataatualfaixa FROM historicocolaborador hc3 WHERE ((hc3.tiposalario = 1) AND (hc3.status <> 3)) ORDER BY hc3.id) faixaatual ON ((faixaatual.histcolabid = hc.id))) LEFT JOIN (SELECT hfs3.id AS histfaixaid, COALESCE((SELECT max(hi.data) AS max FROM indicehistorico hi WHERE ((hi.data <= hfs3.data) AND (hi.indice_id = hfs3.indice_id))), '1900-01-01'::date) AS dataatualindicefaixa FROM faixasalarialhistorico hfs3 WHERE ((hfs3.tipo = 2) AND (hfs3.status <> 3)) ORDER BY hfs3.id) indiceatualfaixa ON ((indiceatualfaixa.histfaixaid = hfs_hc.id))) LEFT JOIN (SELECT hc4.id AS histcolabid, COALESCE((SELECT max(hi.data) AS max FROM indicehistorico hi WHERE ((hi.data <= hc4.data) AND (hi.indice_id = hc4.indice_id))), '1900-01-01'::date) AS dataatualindice FROM historicocolaborador hc4 WHERE ((hc4.tiposalario = 2) AND (hc4.status <> 3)) ORDER BY hc4.id) indiceatual ON ((indiceatual.histcolabid = hc.id))) WHERE ((((((((hc.status <> 3) AND ((hfs_hc.data < proximo.dataproximo) OR (hfs_hc.data IS NULL))) AND ((hi_hfs_hc.data < proximo.dataproximo) OR (hi_hfs_hc.data IS NULL))) AND ((hi_hfs_hc.data < proximafaixa.dataproximohistfaixa) OR (hi_hfs_hc.data IS NULL))) AND ((hfs_hc.data >= faixaatual.dataatualfaixa) OR (hfs_hc.data IS NULL))) AND ((hi_hfs_hc.data >= indiceatualfaixa.dataatualindicefaixa) OR (hi_hfs_hc.data IS NULL))) AND ((hi_hc.data < proximo.dataproximo) OR (hi_hc.data IS NULL))) AND ((hi_hc.data >= indiceatual.dataatualindice) OR (hi_hc.data IS NULL))) ORDER BY hc.colaborador_id, hc.data, hfs_hc.data, hi_hfs_hc.data, hi_hc.data;
 
 
 ALTER TABLE situacaocolaborador OWNER TO postgres;
 
 --
--- Name: solicitacaoepi; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: solicitacaoepi; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE solicitacaoepi (
@@ -6340,7 +6230,7 @@ CREATE TABLE solicitacaoepi (
 ALTER TABLE solicitacaoepi OWNER TO postgres;
 
 --
--- Name: solicitacaoepi_item; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: solicitacaoepi_item; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE solicitacaoepi_item (
@@ -6356,7 +6246,7 @@ CREATE TABLE solicitacaoepi_item (
 ALTER TABLE solicitacaoepi_item OWNER TO postgres;
 
 --
--- Name: solicitacaoepiitemdevolucao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: solicitacaoepiitemdevolucao; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE solicitacaoepiitemdevolucao (
@@ -6371,7 +6261,7 @@ CREATE TABLE solicitacaoepiitemdevolucao (
 ALTER TABLE solicitacaoepiitemdevolucao OWNER TO postgres;
 
 --
--- Name: solicitacaoepiitementrega; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: solicitacaoepiitementrega; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE solicitacaoepiitementrega (
@@ -6390,64 +6280,13 @@ ALTER TABLE solicitacaoepiitementrega OWNER TO postgres;
 --
 
 CREATE VIEW situacaosolicitacaoepi AS
- SELECT sub.solicitacaoepiid,
-    sub.empresaid,
-    sub.estabelecimentoid,
-    sub.estabelecimentonome,
-    sub.colaboradorid,
-    sub.colaboradormatricula,
-    sub.colaboradornome,
-    sub.colaboradordesligado,
-    sub.solicitacaoepidata,
-    sub.cargonome,
-    sub.qtdsolicitado,
-    sub.qtdentregue,
-        CASE
-            WHEN (sub.qtdsolicitado <= sub.qtdentregue) THEN 'E'::text
-            WHEN ((sub.qtdentregue > 0) AND (sub.qtdentregue < sub.qtdsolicitado)) THEN 'P'::text
-            WHEN (sub.qtdentregue = 0) THEN 'A'::text
-            ELSE NULL::text
-        END AS solicitacaoepisituacaoentregue,
-    sub.qtddevolvida,
-        CASE
-            WHEN ((sub.qtddevolvida <> 0) AND (sub.qtddevolvida = sub.qtdentregue)) THEN 'D'::text
-            WHEN ((sub.qtddevolvida > 0) AND (sub.qtddevolvida < sub.qtdentregue)) THEN 'DP'::text
-            WHEN ((sub.qtddevolvida = 0) AND (sub.qtdentregue > 0)) THEN 'S'::text
-            ELSE NULL::text
-        END AS solicitacaoepisituacaodevolvido
-   FROM ( SELECT se.id AS solicitacaoepiid,
-            se.empresa_id AS empresaid,
-            est.id AS estabelecimentoid,
-            est.nome AS estabelecimentonome,
-            c.id AS colaboradorid,
-            c.matricula AS colaboradormatricula,
-            c.nome AS colaboradornome,
-            c.desligado AS colaboradordesligado,
-            se.data AS solicitacaoepidata,
-            ca.nome AS cargonome,
-            ( SELECT sum(sei2.qtdsolicitado) AS sum
-                   FROM solicitacaoepi_item sei2
-                  WHERE (sei2.solicitacaoepi_id = se.id)) AS qtdsolicitado,
-            COALESCE(sum(seie.qtdentregue), (0)::bigint) AS qtdentregue,
-            COALESCE(sum(seid.qtddevolvida), (0)::bigint) AS qtddevolvida
-           FROM (((((((solicitacaoepi se
-             LEFT JOIN solicitacaoepi_item sei ON ((sei.solicitacaoepi_id = se.id)))
-             LEFT JOIN solicitacaoepiitementrega seie ON ((seie.solicitacaoepiitem_id = sei.id)))
-             LEFT JOIN solicitacaoepiitemdevolucao seid ON ((seid.solicitacaoepiitem_id = sei.id)))
-             LEFT JOIN colaborador c ON ((se.colaborador_id = c.id)))
-             LEFT JOIN historicocolaborador hc ON ((c.id = hc.colaborador_id)))
-             LEFT JOIN estabelecimento est ON ((se.estabelecimento_id = est.id)))
-             LEFT JOIN cargo ca ON ((se.cargo_id = ca.id)))
-          WHERE ((hc.data = ( SELECT max(hc2.data) AS max
-                   FROM historicocolaborador hc2
-                  WHERE (((hc2.colaborador_id = c.id) AND (hc2.status = 1)) AND (hc2.data <= ('now'::text)::date)))) AND (hc.status = 1))
-          GROUP BY se.id, se.empresa_id, est.id, est.nome, c.matricula, c.id, c.nome, c.desligado, se.data, ca.id, ca.nome) sub;
+SELECT sub.solicitacaoepiid, sub.empresaid, sub.estabelecimentoid, sub.estabelecimentonome, sub.colaboradorid, sub.colaboradormatricula, sub.colaboradornome, sub.colaboradordesligado, sub.solicitacaoepidata, sub.cargonome, sub.qtdsolicitado, sub.qtdentregue, CASE WHEN (sub.qtdsolicitado <= sub.qtdentregue) THEN 'E'::text WHEN ((sub.qtdentregue > 0) AND (sub.qtdentregue < sub.qtdsolicitado)) THEN 'P'::text WHEN (sub.qtdentregue = 0) THEN 'A'::text ELSE NULL::text END AS solicitacaoepisituacaoentregue, sub.qtddevolvida, CASE WHEN ((sub.qtddevolvida <> 0) AND (sub.qtddevolvida = sub.qtdentregue)) THEN 'D'::text WHEN ((sub.qtddevolvida > 0) AND (sub.qtddevolvida < sub.qtdentregue)) THEN 'DP'::text WHEN ((sub.qtddevolvida = 0) AND (sub.qtdentregue > 0)) THEN 'S'::text ELSE NULL::text END AS solicitacaoepisituacaodevolvido FROM (SELECT se.id AS solicitacaoepiid, se.empresa_id AS empresaid, est.id AS estabelecimentoid, est.nome AS estabelecimentonome, c.id AS colaboradorid, c.matricula AS colaboradormatricula, c.nome AS colaboradornome, c.desligado AS colaboradordesligado, se.data AS solicitacaoepidata, ca.nome AS cargonome, (SELECT sum(sei2.qtdsolicitado) AS sum FROM solicitacaoepi_item sei2 WHERE (sei2.solicitacaoepi_id = se.id)) AS qtdsolicitado, COALESCE(sum(seie.qtdentregue), (0)::bigint) AS qtdentregue, COALESCE(sum(seid.qtddevolvida), (0)::bigint) AS qtddevolvida FROM (((((((solicitacaoepi se LEFT JOIN solicitacaoepi_item sei ON ((sei.solicitacaoepi_id = se.id))) LEFT JOIN solicitacaoepiitementrega seie ON ((seie.solicitacaoepiitem_id = sei.id))) LEFT JOIN solicitacaoepiitemdevolucao seid ON ((seid.solicitacaoepiitem_id = sei.id))) LEFT JOIN colaborador c ON ((se.colaborador_id = c.id))) LEFT JOIN historicocolaborador hc ON ((c.id = hc.colaborador_id))) LEFT JOIN estabelecimento est ON ((se.estabelecimento_id = est.id))) LEFT JOIN cargo ca ON ((se.cargo_id = ca.id))) WHERE ((hc.data = (SELECT max(hc2.data) AS max FROM historicocolaborador hc2 WHERE (((hc2.colaborador_id = c.id) AND (hc2.status = 1)) AND (hc2.data <= ('now'::text)::date)))) AND (hc.status = 1)) GROUP BY se.id, se.empresa_id, est.id, est.nome, c.matricula, c.id, c.nome, c.desligado, se.data, ca.id, ca.nome) sub;
 
 
 ALTER TABLE situacaosolicitacaoepi OWNER TO postgres;
 
 --
--- Name: solicitacao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: solicitacao; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE solicitacao (
@@ -6489,7 +6328,7 @@ CREATE TABLE solicitacao (
 ALTER TABLE solicitacao OWNER TO postgres;
 
 --
--- Name: solicitacao_bairro; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: solicitacao_bairro; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE solicitacao_bairro (
@@ -6515,7 +6354,7 @@ CREATE SEQUENCE solicitacao_sequence
 ALTER TABLE solicitacao_sequence OWNER TO postgres;
 
 --
--- Name: solicitacaoavaliacao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: solicitacaoavaliacao; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE solicitacaoavaliacao (
@@ -6543,7 +6382,7 @@ CREATE SEQUENCE solicitacaoavaliacao_sequence
 ALTER TABLE solicitacaoavaliacao_sequence OWNER TO postgres;
 
 --
--- Name: solicitacaobds; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: solicitacaobds; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE solicitacaobds (
@@ -6564,7 +6403,7 @@ CREATE TABLE solicitacaobds (
 ALTER TABLE solicitacaobds OWNER TO postgres;
 
 --
--- Name: solicitacaobds_empresabds; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: solicitacaobds_empresabds; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE solicitacaobds_empresabds (
@@ -6646,7 +6485,7 @@ CREATE SEQUENCE solicitacaoepiitementrega_sequence
 ALTER TABLE solicitacaoepiitementrega_sequence OWNER TO postgres;
 
 --
--- Name: solicitacaoexame; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: solicitacaoexame; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE solicitacaoexame (
@@ -6679,7 +6518,7 @@ CREATE SEQUENCE solicitacaoexame_sequence
 ALTER TABLE solicitacaoexame_sequence OWNER TO postgres;
 
 --
--- Name: tabelareajustecolaborador; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tabelareajustecolaborador; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE tabelareajustecolaborador (
@@ -6711,7 +6550,7 @@ CREATE SEQUENCE tabelareajustecolaborador_sequence
 ALTER TABLE tabelareajustecolaborador_sequence OWNER TO postgres;
 
 --
--- Name: tamanhoepi; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tamanhoepi; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE tamanhoepi (
@@ -6737,7 +6576,7 @@ CREATE SEQUENCE tamanhoepi_sequence
 ALTER TABLE tamanhoepi_sequence OWNER TO postgres;
 
 --
--- Name: testemunha; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: testemunha; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE testemunha (
@@ -6772,7 +6611,7 @@ CREATE SEQUENCE testemunha_sequence
 ALTER TABLE testemunha_sequence OWNER TO postgres;
 
 --
--- Name: tipo_tamanhoepi; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tipo_tamanhoepi; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE tipo_tamanhoepi (
@@ -6800,7 +6639,7 @@ CREATE SEQUENCE tipo_tamanhoepi_sequence
 ALTER TABLE tipo_tamanhoepi_sequence OWNER TO postgres;
 
 --
--- Name: tipodespesa; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tipodespesa; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE tipodespesa (
@@ -6827,7 +6666,7 @@ CREATE SEQUENCE tipodespesa_sequence
 ALTER TABLE tipodespesa_sequence OWNER TO postgres;
 
 --
--- Name: tipodocumento; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tipodocumento; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE tipodocumento (
@@ -6853,7 +6692,7 @@ CREATE SEQUENCE tipodocumento_sequence
 ALTER TABLE tipodocumento_sequence OWNER TO postgres;
 
 --
--- Name: tipoepi; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tipoepi; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE tipoepi (
@@ -6881,7 +6720,7 @@ CREATE SEQUENCE tipoepi_sequence
 ALTER TABLE tipoepi_sequence OWNER TO postgres;
 
 --
--- Name: token; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: token; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE token (
@@ -6921,7 +6760,7 @@ CREATE SEQUENCE turma_avaliacaoturma_sequence
 ALTER TABLE turma_avaliacaoturma_sequence OWNER TO postgres;
 
 --
--- Name: turma_documentoanexo; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: turma_documentoanexo; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE turma_documentoanexo (
@@ -6962,7 +6801,7 @@ CREATE SEQUENCE turma_sequence
 ALTER TABLE turma_sequence OWNER TO postgres;
 
 --
--- Name: turmatipodespesa; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: turmatipodespesa; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE turmatipodespesa (
@@ -6990,7 +6829,7 @@ CREATE SEQUENCE turmatipodespesa_sequence
 ALTER TABLE turmatipodespesa_sequence OWNER TO postgres;
 
 --
--- Name: usuario; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: usuario; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE usuario (
@@ -7022,7 +6861,7 @@ CREATE SEQUENCE usuario_sequence
 ALTER TABLE usuario_sequence OWNER TO postgres;
 
 --
--- Name: usuarioempresa; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: usuarioempresa; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE usuarioempresa (
@@ -7050,7 +6889,7 @@ CREATE SEQUENCE usuarioempresa_sequence
 ALTER TABLE usuarioempresa_sequence OWNER TO postgres;
 
 --
--- Name: usuariomensagem; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: usuariomensagem; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE usuariomensagem (
@@ -7079,7 +6918,7 @@ CREATE SEQUENCE usuariomensagem_sequence
 ALTER TABLE usuariomensagem_sequence OWNER TO postgres;
 
 --
--- Name: usuarionoticia; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: usuarionoticia; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE usuarionoticia (
@@ -7110,27 +6949,7 @@ ALTER TABLE usuarionoticia_sequence OWNER TO postgres;
 --
 
 CREATE VIEW view_cursonota AS
- SELECT ct.id AS colaboradorturma_id,
-    ct.colaborador_id,
-    ct.turma_id,
-    count(ct.id) AS qtdavaliacoescurso,
-    sum((((
-        CASE
-            WHEN (ac.tipo = 'a'::bpchar) THEN (cq.performance * (100)::double precision)
-            ELSE aac.valor
-        END >= ac.minimoaprovacao) OR (ac.minimoaprovacao IS NULL)))::integer) AS qtdavaliacoesaprovadaspornota,
-    sum(
-        CASE
-            WHEN (ac.tipo = 'a'::bpchar) THEN (cq.performance * (100)::double precision)
-            ELSE aac.valor
-        END) AS nota
-   FROM (((avaliacaocurso ac
-     CROSS JOIN colaboradorturma ct)
-     LEFT JOIN aproveitamentoavaliacaocurso aac ON (((ac.id = aac.avaliacaocurso_id) AND (ct.id = aac.colaboradorturma_id))))
-     LEFT JOIN colaboradorquestionario cq ON ((((ac.id = cq.avaliacaocurso_id) AND (ac.avaliacao_id = cq.avaliacao_id)) AND (ct.colaborador_id = cq.colaborador_id))))
-  WHERE ((ct.id = aac.colaboradorturma_id) OR ((ct.colaborador_id = cq.colaborador_id) AND (ct.turma_id = cq.turma_id)))
-  GROUP BY ct.id, ct.colaborador_id, ct.turma_id
-  ORDER BY ct.id;
+SELECT ct.id AS colaboradorturma_id, ct.colaborador_id, ct.turma_id, count(ct.id) AS qtdavaliacoescurso, sum((((CASE WHEN (ac.tipo = 'a'::bpchar) THEN (cq.performance * (100)::double precision) ELSE aac.valor END >= ac.minimoaprovacao) OR (ac.minimoaprovacao IS NULL)))::integer) AS qtdavaliacoesaprovadaspornota, sum(CASE WHEN (ac.tipo = 'a'::bpchar) THEN (cq.performance * (100)::double precision) ELSE aac.valor END) AS nota FROM (((avaliacaocurso ac CROSS JOIN colaboradorturma ct) LEFT JOIN aproveitamentoavaliacaocurso aac ON (((ac.id = aac.avaliacaocurso_id) AND (ct.id = aac.colaboradorturma_id)))) LEFT JOIN colaboradorquestionario cq ON ((((ac.id = cq.avaliacaocurso_id) AND (ac.avaliacao_id = cq.avaliacao_id)) AND (ct.colaborador_id = cq.colaborador_id)))) WHERE ((ct.id = aac.colaboradorturma_id) OR ((ct.colaborador_id = cq.colaborador_id) AND (ct.turma_id = cq.turma_id))) GROUP BY ct.id, ct.colaborador_id, ct.turma_id ORDER BY ct.id;
 
 
 ALTER TABLE view_cursonota OWNER TO postgres;
@@ -31908,6 +31727,9 @@ INSERT INTO migrations (name) VALUES ('20170315103053');
 INSERT INTO migrations (name) VALUES ('20170323110857');
 INSERT INTO migrations (name) VALUES ('20170330101935');
 INSERT INTO migrations (name) VALUES ('20170404103400');
+INSERT INTO migrations (name) VALUES ('20170425102905');
+INSERT INTO migrations (name) VALUES ('20170428113753');
+INSERT INTO migrations (name) VALUES ('20170504082459');
 
 
 --
@@ -32440,7 +32262,7 @@ SELECT pg_catalog.setval('papel_sequence', 704, false);
 -- Data for Name: parametrosdosistema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatoexternovisivel, camposcandidatoexternoobrigatorio, camposcandidatoexternotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima, bancoconsistente, quantidadeconstraints, tamanhomaximoupload, modulospermitidossomatorio, versaoacademica, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, camposcolaboradorvisivel, camposcolaboradorobrigatorio, camposcolaboradortabs, autorizacaogestornasolicitacaopessoal) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.178.210', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.62.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', '2', false, 1, true, 0, NULL, 63, false, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,comoFicouSabendoVaga,comfirmaSenha,senha,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,carteiraHabilitacao,tituloEleitoral,certificadoMilitar,ctps,pis', 'nome,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais', 'nome,nomeComercial,nascimento,sexo,cpf,escolaridade,endereco,email,fone,celular,estadoCivil,qtdFilhos,nomeConjuge,nomePai,nomeMae,deficiencia,matricula,dt_admissao,vinculo,dt_encerramentoContrato,regimeRevezamento,formacao,idioma,desCursos,expProfissional,infoAdicionais,identidade,carteiraHabilitacao,tituloEleitoral,certificadoMilitar,ctps,pis,modelosAvaliacao', 'nome,nomeComercial,nascimento,cpf,escolaridade,ende,num,cidade,email,fone,dt_admissao', 'abaDocumentos,abaExperiencias,abaDadosFuncionais,abaFormacaoEscolar,abaDadosPessoais,abaModelosAvaliacao', false);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatoexternovisivel, camposcandidatoexternoobrigatorio, camposcandidatoexternotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima, bancoconsistente, quantidadeconstraints, tamanhomaximoupload, modulospermitidossomatorio, versaoacademica, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, camposcolaboradorvisivel, camposcolaboradorobrigatorio, camposcolaboradortabs, autorizacaogestornasolicitacaopessoal) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.179.211', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.62.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', '2', false, 1, true, 0, NULL, 63, false, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,comoFicouSabendoVaga,comfirmaSenha,senha,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,carteiraHabilitacao,tituloEleitoral,certificadoMilitar,ctps,pis', 'nome,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais', 'nome,nomeComercial,nascimento,sexo,cpf,escolaridade,endereco,email,fone,celular,estadoCivil,qtdFilhos,nomeConjuge,nomePai,nomeMae,deficiencia,matricula,dt_admissao,vinculo,dt_encerramentoContrato,regimeRevezamento,formacao,idioma,desCursos,expProfissional,infoAdicionais,identidade,carteiraHabilitacao,tituloEleitoral,certificadoMilitar,ctps,pis,modelosAvaliacao', 'nome,nomeComercial,nascimento,cpf,escolaridade,ende,num,cidade,email,fone,dt_admissao', 'abaDocumentos,abaExperiencias,abaDadosFuncionais,abaFormacaoEscolar,abaDadosPessoais,abaModelosAvaliacao', false);
 
 
 --
@@ -33401,7 +33223,7 @@ SELECT pg_catalog.setval('usuarionoticia_sequence', 1, false);
 
 
 --
--- Name: afastamento_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: afastamento_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY afastamento
@@ -33409,7 +33231,7 @@ ALTER TABLE ONLY afastamento
 
 
 --
--- Name: agenda_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: agenda_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY agenda
@@ -33417,7 +33239,7 @@ ALTER TABLE ONLY agenda
 
 
 --
--- Name: ambiente_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: ambiente_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY ambiente
@@ -33425,7 +33247,7 @@ ALTER TABLE ONLY ambiente
 
 
 --
--- Name: anexo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: anexo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY anexo
@@ -33433,7 +33255,7 @@ ALTER TABLE ONLY anexo
 
 
 --
--- Name: anuncio_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: anuncio_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY anuncio
@@ -33441,7 +33263,7 @@ ALTER TABLE ONLY anuncio
 
 
 --
--- Name: anuncio_solicitacao_uk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: anuncio_solicitacao_uk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY anuncio
@@ -33449,7 +33271,7 @@ ALTER TABLE ONLY anuncio
 
 
 --
--- Name: aproveitamentoavaliacaocurso_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: aproveitamentoavaliacaocurso_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY aproveitamentoavaliacaocurso
@@ -33457,7 +33279,7 @@ ALTER TABLE ONLY aproveitamentoavaliacaocurso
 
 
 --
--- Name: areaformacao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: areaformacao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY areaformacao
@@ -33465,7 +33287,7 @@ ALTER TABLE ONLY areaformacao
 
 
 --
--- Name: areainteresse_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: areainteresse_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY areainteresse
@@ -33473,7 +33295,7 @@ ALTER TABLE ONLY areainteresse
 
 
 --
--- Name: areaorganizacional_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: areaorganizacional_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY areaorganizacional
@@ -33481,7 +33303,7 @@ ALTER TABLE ONLY areaorganizacional
 
 
 --
--- Name: areavivencia_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: areavivencia_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY areavivencia
@@ -33489,7 +33311,7 @@ ALTER TABLE ONLY areavivencia
 
 
 --
--- Name: areavivenciapcmat_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: areavivenciapcmat_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY areavivenciapcmat
@@ -33497,7 +33319,7 @@ ALTER TABLE ONLY areavivenciapcmat
 
 
 --
--- Name: aspecto_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: aspecto_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY aspecto
@@ -33505,7 +33327,7 @@ ALTER TABLE ONLY aspecto
 
 
 --
--- Name: atitude_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: atitude_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY atitude
@@ -33513,7 +33335,7 @@ ALTER TABLE ONLY atitude
 
 
 --
--- Name: atividadesegurancapcmat_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: atividadesegurancapcmat_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY atividadesegurancapcmat
@@ -33521,7 +33343,7 @@ ALTER TABLE ONLY atividadesegurancapcmat
 
 
 --
--- Name: auditoria_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: auditoria_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY auditoria
@@ -33529,7 +33351,7 @@ ALTER TABLE ONLY auditoria
 
 
 --
--- Name: avaliacao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: avaliacao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY avaliacao
@@ -33537,7 +33359,7 @@ ALTER TABLE ONLY avaliacao
 
 
 --
--- Name: avaliacaocurso_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: avaliacaocurso_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY avaliacaocurso
@@ -33545,7 +33367,7 @@ ALTER TABLE ONLY avaliacaocurso
 
 
 --
--- Name: avaliacaodesempenho_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: avaliacaodesempenho_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY avaliacaodesempenho
@@ -33553,7 +33375,7 @@ ALTER TABLE ONLY avaliacaodesempenho
 
 
 --
--- Name: avaliacaopratica_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: avaliacaopratica_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY avaliacaopratica
@@ -33561,7 +33383,7 @@ ALTER TABLE ONLY avaliacaopratica
 
 
 --
--- Name: avaliacaoturma_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: avaliacaoturma_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY avaliacaoturma
@@ -33569,7 +33391,7 @@ ALTER TABLE ONLY avaliacaoturma
 
 
 --
--- Name: bairro_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: bairro_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY bairro
@@ -33577,7 +33399,7 @@ ALTER TABLE ONLY bairro
 
 
 --
--- Name: beneficio_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: beneficio_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY beneficio
@@ -33585,7 +33407,7 @@ ALTER TABLE ONLY beneficio
 
 
 --
--- Name: camposextras_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: camposextras_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY camposextras
@@ -33593,7 +33415,7 @@ ALTER TABLE ONLY camposextras
 
 
 --
--- Name: candidato_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: candidato_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY candidato
@@ -33601,7 +33423,7 @@ ALTER TABLE ONLY candidato
 
 
 --
--- Name: candidatocurriculo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: candidatocurriculo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY candidatocurriculo
@@ -33609,7 +33431,7 @@ ALTER TABLE ONLY candidatocurriculo
 
 
 --
--- Name: candidatoeleicao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: candidatoeleicao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY candidatoeleicao
@@ -33617,7 +33439,7 @@ ALTER TABLE ONLY candidatoeleicao
 
 
 --
--- Name: candidatoidioma_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: candidatoidioma_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY candidatoidioma
@@ -33625,7 +33447,7 @@ ALTER TABLE ONLY candidatoidioma
 
 
 --
--- Name: candidatosolicitacao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: candidatosolicitacao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY candidatosolicitacao
@@ -33633,7 +33455,7 @@ ALTER TABLE ONLY candidatosolicitacao
 
 
 --
--- Name: cargo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: cargo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY cargo
@@ -33641,7 +33463,7 @@ ALTER TABLE ONLY cargo
 
 
 --
--- Name: cartao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: cartao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY cartao
@@ -33649,7 +33471,7 @@ ALTER TABLE ONLY cartao
 
 
 --
--- Name: cat_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: cat_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY cat
@@ -33657,7 +33479,7 @@ ALTER TABLE ONLY cat
 
 
 --
--- Name: certificacao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: certificacao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY certificacao
@@ -33665,7 +33487,7 @@ ALTER TABLE ONLY certificacao
 
 
 --
--- Name: cid_codigo_uk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: cid_codigo_uk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY cid
@@ -33673,7 +33495,7 @@ ALTER TABLE ONLY cid
 
 
 --
--- Name: cidade_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: cidade_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY cidade
@@ -33681,7 +33503,7 @@ ALTER TABLE ONLY cidade
 
 
 --
--- Name: cliente_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: cliente_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY cliente
@@ -33689,7 +33511,7 @@ ALTER TABLE ONLY cliente
 
 
 --
--- Name: clinicaautorizada_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: clinicaautorizada_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY clinicaautorizada
@@ -33697,7 +33519,7 @@ ALTER TABLE ONLY clinicaautorizada
 
 
 --
--- Name: codigocbo_codigo_uk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: codigocbo_codigo_uk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY codigocbo
@@ -33705,7 +33527,7 @@ ALTER TABLE ONLY codigocbo
 
 
 --
--- Name: colaborador_candidato_uk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: colaborador_candidato_uk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY colaborador
@@ -33713,7 +33535,7 @@ ALTER TABLE ONLY colaborador
 
 
 --
--- Name: colaborador_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: colaborador_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY colaborador
@@ -33721,7 +33543,7 @@ ALTER TABLE ONLY colaborador
 
 
 --
--- Name: colaborador_usuario_uk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: colaborador_usuario_uk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY colaborador
@@ -33729,7 +33551,7 @@ ALTER TABLE ONLY colaborador
 
 
 --
--- Name: colaboradorafastamento_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: colaboradorafastamento_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY colaboradorafastamento
@@ -33737,7 +33559,7 @@ ALTER TABLE ONLY colaboradorafastamento
 
 
 --
--- Name: colaboradoravaliacaopratica_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: colaboradoravaliacaopratica_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY colaboradoravaliacaopratica
@@ -33745,7 +33567,7 @@ ALTER TABLE ONLY colaboradoravaliacaopratica
 
 
 --
--- Name: colaboradorcertificacao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: colaboradorcertificacao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY colaboradorcertificacao
@@ -33753,7 +33575,7 @@ ALTER TABLE ONLY colaboradorcertificacao
 
 
 --
--- Name: colaboradoridioma_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: colaboradoridioma_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY colaboradoridioma
@@ -33761,7 +33583,7 @@ ALTER TABLE ONLY colaboradoridioma
 
 
 --
--- Name: colaboradorocorrencia_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: colaboradorocorrencia_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY colaboradorocorrencia
@@ -33769,7 +33591,7 @@ ALTER TABLE ONLY colaboradorocorrencia
 
 
 --
--- Name: colaboradorperiodoexperienciaavaliacao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: colaboradorperiodoexperienciaavaliacao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY colaboradorperiodoexperienciaavaliacao
@@ -33777,7 +33599,7 @@ ALTER TABLE ONLY colaboradorperiodoexperienciaavaliacao
 
 
 --
--- Name: colaboradorpresenca_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: colaboradorpresenca_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY colaboradorpresenca
@@ -33785,7 +33607,7 @@ ALTER TABLE ONLY colaboradorpresenca
 
 
 --
--- Name: colaboradorquestionario_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: colaboradorquestionario_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY colaboradorquestionario
@@ -33793,7 +33615,7 @@ ALTER TABLE ONLY colaboradorquestionario
 
 
 --
--- Name: colaboradorresposta_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: colaboradorresposta_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY colaboradorresposta
@@ -33801,7 +33623,7 @@ ALTER TABLE ONLY colaboradorresposta
 
 
 --
--- Name: colaboradorturma_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: colaboradorturma_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY colaboradorturma
@@ -33809,7 +33631,7 @@ ALTER TABLE ONLY colaboradorturma
 
 
 --
--- Name: comissao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: comissao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY comissao
@@ -33817,7 +33639,7 @@ ALTER TABLE ONLY comissao
 
 
 --
--- Name: comissaoeleicao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: comissaoeleicao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY comissaoeleicao
@@ -33825,7 +33647,7 @@ ALTER TABLE ONLY comissaoeleicao
 
 
 --
--- Name: comissaomembro_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: comissaomembro_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY comissaomembro
@@ -33833,7 +33655,7 @@ ALTER TABLE ONLY comissaomembro
 
 
 --
--- Name: comissaoperiodo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: comissaoperiodo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY comissaoperiodo
@@ -33841,7 +33663,7 @@ ALTER TABLE ONLY comissaoperiodo
 
 
 --
--- Name: comissaoplanotrabalho_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: comissaoplanotrabalho_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY comissaoplanotrabalho
@@ -33849,7 +33671,7 @@ ALTER TABLE ONLY comissaoplanotrabalho
 
 
 --
--- Name: comissaoreuniao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: comissaoreuniao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY comissaoreuniao
@@ -33857,7 +33679,7 @@ ALTER TABLE ONLY comissaoreuniao
 
 
 --
--- Name: comissaoreuniaopresenca_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: comissaoreuniaopresenca_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY comissaoreuniaopresenca
@@ -33865,7 +33687,7 @@ ALTER TABLE ONLY comissaoreuniaopresenca
 
 
 --
--- Name: comoficousabendovaga_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: comoficousabendovaga_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY comoficousabendovaga
@@ -33873,7 +33695,7 @@ ALTER TABLE ONLY comoficousabendovaga
 
 
 --
--- Name: composicaosesmt_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: composicaosesmt_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY composicaosesmt
@@ -33881,7 +33703,7 @@ ALTER TABLE ONLY composicaosesmt
 
 
 --
--- Name: confighistoriconivel_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: confighistoriconivel_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY confighistoriconivel
@@ -33889,7 +33711,7 @@ ALTER TABLE ONLY confighistoriconivel
 
 
 --
--- Name: configuracaocampoextra_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: configuracaocampoextra_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY configuracaocampoextra
@@ -33897,7 +33719,7 @@ ALTER TABLE ONLY configuracaocampoextra
 
 
 --
--- Name: configuracaocampoextravisivelobrigadotorio_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: configuracaocampoextravisivelobrigadotorio_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY configuracaocampoextravisivelobrigadotorio
@@ -33905,7 +33727,7 @@ ALTER TABLE ONLY configuracaocampoextravisivelobrigadotorio
 
 
 --
--- Name: configuracaocompetenciaavaliacaodesempenho_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: configuracaocompetenciaavaliacaodesempenho_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY configuracaocompetenciaavaliacaodesempenho
@@ -33913,7 +33735,7 @@ ALTER TABLE ONLY configuracaocompetenciaavaliacaodesempenho
 
 
 --
--- Name: configuracaoimpressaocurriculo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: configuracaoimpressaocurriculo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY configuracaoimpressaocurriculo
@@ -33921,7 +33743,7 @@ ALTER TABLE ONLY configuracaoimpressaocurriculo
 
 
 --
--- Name: configuracaolimitecolaborador_areaorganizacional_uk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: configuracaolimitecolaborador_areaorganizacional_uk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY configuracaolimitecolaborador
@@ -33929,7 +33751,7 @@ ALTER TABLE ONLY configuracaolimitecolaborador
 
 
 --
--- Name: configuracaolimitecolaborador_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: configuracaolimitecolaborador_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY configuracaolimitecolaborador
@@ -33937,7 +33759,7 @@ ALTER TABLE ONLY configuracaolimitecolaborador
 
 
 --
--- Name: configuracaonivelcompetencia_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: configuracaonivelcompetencia_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY configuracaonivelcompetencia
@@ -33945,7 +33767,7 @@ ALTER TABLE ONLY configuracaonivelcompetencia
 
 
 --
--- Name: configuracaonivelcompetenciacandidato_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: configuracaonivelcompetenciacandidato_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY configuracaonivelcompetenciacandidato
@@ -33953,7 +33775,7 @@ ALTER TABLE ONLY configuracaonivelcompetenciacandidato
 
 
 --
--- Name: configuracaonivelcompetenciacolaborador_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: configuracaonivelcompetenciacolaborador_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY configuracaonivelcompetenciacolaborador
@@ -33961,7 +33783,7 @@ ALTER TABLE ONLY configuracaonivelcompetenciacolaborador
 
 
 --
--- Name: configuracaonivelcompetenciacriterio_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: configuracaonivelcompetenciacriterio_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY configuracaonivelcompetenciacriterio
@@ -33969,7 +33791,7 @@ ALTER TABLE ONLY configuracaonivelcompetenciacriterio
 
 
 --
--- Name: configuracaonivelcompetenciafaixasalarial_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: configuracaonivelcompetenciafaixasalarial_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY configuracaonivelcompetenciafaixasalarial
@@ -33977,7 +33799,7 @@ ALTER TABLE ONLY configuracaonivelcompetenciafaixasalarial
 
 
 --
--- Name: configuracaoperformance_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: configuracaoperformance_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY configuracaoperformance
@@ -33985,7 +33807,7 @@ ALTER TABLE ONLY configuracaoperformance
 
 
 --
--- Name: configuracaorelatoriodinamico_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: configuracaorelatoriodinamico_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY configuracaorelatoriodinamico
@@ -33993,7 +33815,7 @@ ALTER TABLE ONLY configuracaorelatoriodinamico
 
 
 --
--- Name: conhecimento_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: conhecimento_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY conhecimento
@@ -34001,7 +33823,7 @@ ALTER TABLE ONLY conhecimento
 
 
 --
--- Name: criterioavaliacaocompetencia_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: criterioavaliacaocompetencia_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY criterioavaliacaocompetencia
@@ -34009,7 +33831,7 @@ ALTER TABLE ONLY criterioavaliacaocompetencia
 
 
 --
--- Name: curso_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: curso_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY curso
@@ -34017,7 +33839,7 @@ ALTER TABLE ONLY curso
 
 
 --
--- Name: cursolnt_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: cursolnt_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY cursolnt
@@ -34025,7 +33847,7 @@ ALTER TABLE ONLY cursolnt
 
 
 --
--- Name: dependente_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: dependente_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY dependente
@@ -34033,7 +33855,7 @@ ALTER TABLE ONLY dependente
 
 
 --
--- Name: diaturma_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: diaturma_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY diaturma
@@ -34041,7 +33863,7 @@ ALTER TABLE ONLY diaturma
 
 
 --
--- Name: dnt_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: dnt_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY dnt
@@ -34049,7 +33871,7 @@ ALTER TABLE ONLY dnt
 
 
 --
--- Name: documentoanexo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: documentoanexo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY documentoanexo
@@ -34057,7 +33879,7 @@ ALTER TABLE ONLY documentoanexo
 
 
 --
--- Name: eleicao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: eleicao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY eleicao
@@ -34065,7 +33887,7 @@ ALTER TABLE ONLY eleicao
 
 
 --
--- Name: empresa_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: empresa_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY empresa
@@ -34073,7 +33895,7 @@ ALTER TABLE ONLY empresa
 
 
 --
--- Name: empresabds_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: empresabds_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY empresabds
@@ -34081,7 +33903,7 @@ ALTER TABLE ONLY empresabds
 
 
 --
--- Name: engenheiroresponsavel_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: engenheiroresponsavel_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY engenheiroresponsavel
@@ -34089,7 +33911,7 @@ ALTER TABLE ONLY engenheiroresponsavel
 
 
 --
--- Name: epc_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: epc_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY epc
@@ -34097,7 +33919,7 @@ ALTER TABLE ONLY epc
 
 
 --
--- Name: epcpcmat_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: epcpcmat_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY epcpcmat
@@ -34105,7 +33927,7 @@ ALTER TABLE ONLY epcpcmat
 
 
 --
--- Name: epi_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: epi_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY epi
@@ -34113,7 +33935,7 @@ ALTER TABLE ONLY epi
 
 
 --
--- Name: epihistorico_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: epihistorico_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY epihistorico
@@ -34121,7 +33943,7 @@ ALTER TABLE ONLY epihistorico
 
 
 --
--- Name: epipcmat_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: epipcmat_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY epipcmat
@@ -34129,7 +33951,7 @@ ALTER TABLE ONLY epipcmat
 
 
 --
--- Name: estabelecimento_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: estabelecimento_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY estabelecimento
@@ -34137,7 +33959,7 @@ ALTER TABLE ONLY estabelecimento
 
 
 --
--- Name: estado_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: estado_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY estado
@@ -34145,7 +33967,7 @@ ALTER TABLE ONLY estado
 
 
 --
--- Name: etapaprocessoeleitoral_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: etapaprocessoeleitoral_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY etapaprocessoeleitoral
@@ -34153,7 +33975,7 @@ ALTER TABLE ONLY etapaprocessoeleitoral
 
 
 --
--- Name: etapaseletiva_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: etapaseletiva_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY etapaseletiva
@@ -34161,7 +33983,7 @@ ALTER TABLE ONLY etapaseletiva
 
 
 --
--- Name: evento_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: evento_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY evento
@@ -34169,7 +33991,7 @@ ALTER TABLE ONLY evento
 
 
 --
--- Name: exame_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: exame_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY exame
@@ -34177,7 +33999,7 @@ ALTER TABLE ONLY exame
 
 
 --
--- Name: examesolicitacaoexame_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: examesolicitacaoexame_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY examesolicitacaoexame
@@ -34185,7 +34007,7 @@ ALTER TABLE ONLY examesolicitacaoexame
 
 
 --
--- Name: experiencia_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: experiencia_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY experiencia
@@ -34193,7 +34015,7 @@ ALTER TABLE ONLY experiencia
 
 
 --
--- Name: extintor_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: extintor_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY extintor
@@ -34201,7 +34023,7 @@ ALTER TABLE ONLY extintor
 
 
 --
--- Name: extintorinspecao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: extintorinspecao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY extintorinspecao
@@ -34209,7 +34031,7 @@ ALTER TABLE ONLY extintorinspecao
 
 
 --
--- Name: extintorinspecaoitem_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: extintorinspecaoitem_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY extintorinspecaoitem
@@ -34217,7 +34039,7 @@ ALTER TABLE ONLY extintorinspecaoitem
 
 
 --
--- Name: extintormanutencao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: extintormanutencao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY extintormanutencao
@@ -34225,7 +34047,7 @@ ALTER TABLE ONLY extintormanutencao
 
 
 --
--- Name: extintormanutencaoservico_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: extintormanutencaoservico_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY extintormanutencaoservico
@@ -34233,7 +34055,7 @@ ALTER TABLE ONLY extintormanutencaoservico
 
 
 --
--- Name: faixasalarial_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: faixasalarial_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY faixasalarial
@@ -34241,7 +34063,7 @@ ALTER TABLE ONLY faixasalarial
 
 
 --
--- Name: faixasalarialhistorico_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: faixasalarialhistorico_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY faixasalarialhistorico
@@ -34249,7 +34071,7 @@ ALTER TABLE ONLY faixasalarialhistorico
 
 
 --
--- Name: fase_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: fase_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY fase
@@ -34257,7 +34079,7 @@ ALTER TABLE ONLY fase
 
 
 --
--- Name: fasepcmat_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: fasepcmat_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY fasepcmat
@@ -34265,7 +34087,7 @@ ALTER TABLE ONLY fasepcmat
 
 
 --
--- Name: faturamentomensal_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: faturamentomensal_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY faturamentomensal
@@ -34273,7 +34095,7 @@ ALTER TABLE ONLY faturamentomensal
 
 
 --
--- Name: fichamedica_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: fichamedica_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY fichamedica
@@ -34281,7 +34103,7 @@ ALTER TABLE ONLY fichamedica
 
 
 --
--- Name: formacao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: formacao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY formacao
@@ -34289,7 +34111,7 @@ ALTER TABLE ONLY formacao
 
 
 --
--- Name: funcao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: funcao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY funcao
@@ -34297,7 +34119,7 @@ ALTER TABLE ONLY funcao
 
 
 --
--- Name: gasto_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: gasto_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY gasto
@@ -34305,7 +34127,7 @@ ALTER TABLE ONLY gasto
 
 
 --
--- Name: gastoempresa_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: gastoempresa_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY gastoempresa
@@ -34313,7 +34135,7 @@ ALTER TABLE ONLY gastoempresa
 
 
 --
--- Name: gastoempresaitem_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: gastoempresaitem_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY gastoempresaitem
@@ -34321,7 +34143,7 @@ ALTER TABLE ONLY gastoempresaitem
 
 
 --
--- Name: gerenciadorcomunicacao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: gerenciadorcomunicacao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY gerenciadorcomunicacao
@@ -34329,7 +34151,7 @@ ALTER TABLE ONLY gerenciadorcomunicacao
 
 
 --
--- Name: grupoac_codigo_uk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: grupoac_codigo_uk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY grupoac
@@ -34337,7 +34159,7 @@ ALTER TABLE ONLY grupoac
 
 
 --
--- Name: grupoac_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: grupoac_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY grupoac
@@ -34345,7 +34167,7 @@ ALTER TABLE ONLY grupoac
 
 
 --
--- Name: grupogasto_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: grupogasto_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY grupogasto
@@ -34353,7 +34175,7 @@ ALTER TABLE ONLY grupogasto
 
 
 --
--- Name: grupoocupacional_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: grupoocupacional_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY grupoocupacional
@@ -34361,7 +34183,7 @@ ALTER TABLE ONLY grupoocupacional
 
 
 --
--- Name: habilidade_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: habilidade_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY habilidade
@@ -34369,7 +34191,7 @@ ALTER TABLE ONLY habilidade
 
 
 --
--- Name: historicoambiente_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: historicoambiente_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY historicoambiente
@@ -34377,7 +34199,7 @@ ALTER TABLE ONLY historicoambiente
 
 
 --
--- Name: historicobeneficio_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: historicobeneficio_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY historicobeneficio
@@ -34385,7 +34207,7 @@ ALTER TABLE ONLY historicobeneficio
 
 
 --
--- Name: historicocandidato_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: historicocandidato_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY historicocandidato
@@ -34393,7 +34215,7 @@ ALTER TABLE ONLY historicocandidato
 
 
 --
--- Name: historicocolaborador_data_colaborador_uk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: historicocolaborador_data_colaborador_uk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY historicocolaborador
@@ -34401,7 +34223,7 @@ ALTER TABLE ONLY historicocolaborador
 
 
 --
--- Name: historicocolaborador_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: historicocolaborador_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY historicocolaborador
@@ -34409,7 +34231,7 @@ ALTER TABLE ONLY historicocolaborador
 
 
 --
--- Name: historicocolaboradorbeneficio_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: historicocolaboradorbeneficio_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY historicocolaboradorbeneficio
@@ -34417,7 +34239,7 @@ ALTER TABLE ONLY historicocolaboradorbeneficio
 
 
 --
--- Name: historicoextintor_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: historicoextintor_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY historicoextintor
@@ -34425,7 +34247,7 @@ ALTER TABLE ONLY historicoextintor
 
 
 --
--- Name: historicofuncao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: historicofuncao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY historicofuncao
@@ -34433,7 +34255,7 @@ ALTER TABLE ONLY historicofuncao
 
 
 --
--- Name: idioma_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: idioma_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY idioma
@@ -34441,7 +34263,7 @@ ALTER TABLE ONLY idioma
 
 
 --
--- Name: indice_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: indice_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY indice
@@ -34449,7 +34271,7 @@ ALTER TABLE ONLY indice
 
 
 --
--- Name: indicehistorico_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: indicehistorico_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY indicehistorico
@@ -34457,7 +34279,7 @@ ALTER TABLE ONLY indicehistorico
 
 
 --
--- Name: lnt_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: lnt_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY lnt
@@ -34465,7 +34287,7 @@ ALTER TABLE ONLY lnt
 
 
 --
--- Name: medicaorisco_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: medicaorisco_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY medicaorisco
@@ -34473,7 +34295,7 @@ ALTER TABLE ONLY medicaorisco
 
 
 --
--- Name: medicocoordenador_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: medicocoordenador_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY medicocoordenador
@@ -34481,7 +34303,7 @@ ALTER TABLE ONLY medicocoordenador
 
 
 --
--- Name: medidariscofasepcmat_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: medidariscofasepcmat_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY medidariscofasepcmat
@@ -34489,7 +34311,7 @@ ALTER TABLE ONLY medidariscofasepcmat
 
 
 --
--- Name: medidaseguranca_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: medidaseguranca_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY medidaseguranca
@@ -34497,7 +34319,7 @@ ALTER TABLE ONLY medidaseguranca
 
 
 --
--- Name: mensagem_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: mensagem_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY mensagem
@@ -34505,7 +34327,7 @@ ALTER TABLE ONLY mensagem
 
 
 --
--- Name: motivodemissao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: motivodemissao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY motivodemissao
@@ -34513,7 +34335,7 @@ ALTER TABLE ONLY motivodemissao
 
 
 --
--- Name: motivosolicitacao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: motivosolicitacao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY motivosolicitacao
@@ -34521,7 +34343,7 @@ ALTER TABLE ONLY motivosolicitacao
 
 
 --
--- Name: motivosolicitacaoepi_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: motivosolicitacaoepi_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY motivosolicitacaoepi
@@ -34529,7 +34351,7 @@ ALTER TABLE ONLY motivosolicitacaoepi
 
 
 --
--- Name: naturezalesao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: naturezalesao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY naturezalesao
@@ -34537,7 +34359,7 @@ ALTER TABLE ONLY naturezalesao
 
 
 --
--- Name: nivelcompetencia_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: nivelcompetencia_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY nivelcompetencia
@@ -34545,7 +34367,7 @@ ALTER TABLE ONLY nivelcompetencia
 
 
 --
--- Name: nivelcompetenciahistorico_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: nivelcompetenciahistorico_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY nivelcompetenciahistorico
@@ -34553,7 +34375,7 @@ ALTER TABLE ONLY nivelcompetenciahistorico
 
 
 --
--- Name: noticia_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: noticia_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY noticia
@@ -34561,7 +34383,7 @@ ALTER TABLE ONLY noticia
 
 
 --
--- Name: obra_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: obra_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY obra
@@ -34569,7 +34391,7 @@ ALTER TABLE ONLY obra
 
 
 --
--- Name: ocorrencia_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: ocorrencia_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY ocorrencia
@@ -34577,7 +34399,7 @@ ALTER TABLE ONLY ocorrencia
 
 
 --
--- Name: ordemdeservico_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: ordemdeservico_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY ordemdeservico
@@ -34585,7 +34407,7 @@ ALTER TABLE ONLY ordemdeservico
 
 
 --
--- Name: papel_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: papel_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY papel
@@ -34593,7 +34415,7 @@ ALTER TABLE ONLY papel
 
 
 --
--- Name: parametrosdosistema_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: parametrosdosistema_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY parametrosdosistema
@@ -34601,7 +34423,7 @@ ALTER TABLE ONLY parametrosdosistema
 
 
 --
--- Name: participanteavaliacaodesempenho_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: participanteavaliacaodesempenho_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY participanteavaliacaodesempenho
@@ -34609,7 +34431,7 @@ ALTER TABLE ONLY participanteavaliacaodesempenho
 
 
 --
--- Name: participantecursolnt_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: participantecursolnt_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY participantecursolnt
@@ -34617,7 +34439,7 @@ ALTER TABLE ONLY participantecursolnt
 
 
 --
--- Name: pausapreenchimentovagas_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: pausapreenchimentovagas_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY pausapreenchimentovagas
@@ -34625,7 +34447,7 @@ ALTER TABLE ONLY pausapreenchimentovagas
 
 
 --
--- Name: pcmat_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: pcmat_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY pcmat
@@ -34633,7 +34455,7 @@ ALTER TABLE ONLY pcmat
 
 
 --
--- Name: perfil_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: perfil_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY perfil
@@ -34641,7 +34463,7 @@ ALTER TABLE ONLY perfil
 
 
 --
--- Name: pergunta_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: pergunta_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY pergunta
@@ -34649,7 +34471,7 @@ ALTER TABLE ONLY pergunta
 
 
 --
--- Name: periodoexperiencia_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: periodoexperiencia_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY periodoexperiencia
@@ -34657,7 +34479,7 @@ ALTER TABLE ONLY periodoexperiencia
 
 
 --
--- Name: pesquisa_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: pesquisa_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY pesquisa
@@ -34665,7 +34487,7 @@ ALTER TABLE ONLY pesquisa
 
 
 --
--- Name: prioridadetreinamento_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: prioridadetreinamento_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY prioridadetreinamento
@@ -34673,7 +34495,7 @@ ALTER TABLE ONLY prioridadetreinamento
 
 
 --
--- Name: prontuario_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: prontuario_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY prontuario
@@ -34681,7 +34503,7 @@ ALTER TABLE ONLY prontuario
 
 
 --
--- Name: providencia_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: providencia_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY providencia
@@ -34689,7 +34511,7 @@ ALTER TABLE ONLY providencia
 
 
 --
--- Name: quantidadelimitecolaboradoresporcargo_cargo_area_uk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: quantidadelimitecolaboradoresporcargo_cargo_area_uk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY quantidadelimitecolaboradoresporcargo
@@ -34697,7 +34519,7 @@ ALTER TABLE ONLY quantidadelimitecolaboradoresporcargo
 
 
 --
--- Name: quantidadelimitecolaboradoresporcargo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: quantidadelimitecolaboradoresporcargo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY quantidadelimitecolaboradoresporcargo
@@ -34705,7 +34527,7 @@ ALTER TABLE ONLY quantidadelimitecolaboradoresporcargo
 
 
 --
--- Name: questionario_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: questionario_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY questionario
@@ -34713,7 +34535,7 @@ ALTER TABLE ONLY questionario
 
 
 --
--- Name: reajustecolaborador_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: reajustecolaborador_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY reajustecolaborador
@@ -34721,7 +34543,7 @@ ALTER TABLE ONLY reajustecolaborador
 
 
 --
--- Name: reajustefaixasalarial_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: reajustefaixasalarial_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY reajustefaixasalarial
@@ -34729,7 +34551,7 @@ ALTER TABLE ONLY reajustefaixasalarial
 
 
 --
--- Name: reajusteindice_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: reajusteindice_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY reajusteindice
@@ -34737,7 +34559,7 @@ ALTER TABLE ONLY reajusteindice
 
 
 --
--- Name: realizacaoexame_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: realizacaoexame_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY realizacaoexame
@@ -34745,7 +34567,7 @@ ALTER TABLE ONLY realizacaoexame
 
 
 --
--- Name: resposta_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: resposta_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY resposta
@@ -34753,7 +34575,7 @@ ALTER TABLE ONLY resposta
 
 
 --
--- Name: risco_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: risco_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY risco
@@ -34761,7 +34583,7 @@ ALTER TABLE ONLY risco
 
 
 --
--- Name: riscoambiente_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: riscoambiente_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY riscoambiente
@@ -34769,7 +34591,7 @@ ALTER TABLE ONLY riscoambiente
 
 
 --
--- Name: riscofasepcmat_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: riscofasepcmat_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY riscofasepcmat
@@ -34777,7 +34599,7 @@ ALTER TABLE ONLY riscofasepcmat
 
 
 --
--- Name: riscofuncao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: riscofuncao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY riscofuncao
@@ -34785,7 +34607,7 @@ ALTER TABLE ONLY riscofuncao
 
 
 --
--- Name: riscomedicaorisco_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: riscomedicaorisco_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY riscomedicaorisco
@@ -34793,7 +34615,7 @@ ALTER TABLE ONLY riscomedicaorisco
 
 
 --
--- Name: sinalizacaopcmat_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: sinalizacaopcmat_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY sinalizacaopcmat
@@ -34801,7 +34623,7 @@ ALTER TABLE ONLY sinalizacaopcmat
 
 
 --
--- Name: solicitacao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: solicitacao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY solicitacao
@@ -34809,7 +34631,7 @@ ALTER TABLE ONLY solicitacao
 
 
 --
--- Name: solicitacaoavaliacao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: solicitacaoavaliacao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY solicitacaoavaliacao
@@ -34817,7 +34639,7 @@ ALTER TABLE ONLY solicitacaoavaliacao
 
 
 --
--- Name: solicitacaobds_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: solicitacaobds_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY solicitacaobds
@@ -34825,7 +34647,7 @@ ALTER TABLE ONLY solicitacaobds
 
 
 --
--- Name: solicitacaoepi_item_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: solicitacaoepi_item_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY solicitacaoepi_item
@@ -34833,7 +34655,7 @@ ALTER TABLE ONLY solicitacaoepi_item
 
 
 --
--- Name: solicitacaoepi_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: solicitacaoepi_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY solicitacaoepi
@@ -34841,7 +34663,7 @@ ALTER TABLE ONLY solicitacaoepi
 
 
 --
--- Name: solicitacaoepiitemdevolucao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: solicitacaoepiitemdevolucao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY solicitacaoepiitemdevolucao
@@ -34849,7 +34671,7 @@ ALTER TABLE ONLY solicitacaoepiitemdevolucao
 
 
 --
--- Name: solicitacaoepiitementrega_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: solicitacaoepiitementrega_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY solicitacaoepiitementrega
@@ -34857,7 +34679,7 @@ ALTER TABLE ONLY solicitacaoepiitementrega
 
 
 --
--- Name: solicitacaoexame_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: solicitacaoexame_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY solicitacaoexame
@@ -34865,7 +34687,7 @@ ALTER TABLE ONLY solicitacaoexame
 
 
 --
--- Name: tabelareajustecolaborador_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tabelareajustecolaborador_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY tabelareajustecolaborador
@@ -34873,7 +34695,7 @@ ALTER TABLE ONLY tabelareajustecolaborador
 
 
 --
--- Name: tamanhoepi_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tamanhoepi_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY tamanhoepi
@@ -34881,7 +34703,7 @@ ALTER TABLE ONLY tamanhoepi
 
 
 --
--- Name: testemunha_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: testemunha_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY testemunha
@@ -34889,7 +34711,7 @@ ALTER TABLE ONLY testemunha
 
 
 --
--- Name: tipodespesa_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tipodespesa_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY tipodespesa
@@ -34897,7 +34719,7 @@ ALTER TABLE ONLY tipodespesa
 
 
 --
--- Name: tipodocumento_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tipodocumento_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY tipodocumento
@@ -34905,7 +34727,7 @@ ALTER TABLE ONLY tipodocumento
 
 
 --
--- Name: tipoepi_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: tipoepi_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY tipoepi
@@ -34913,7 +34735,7 @@ ALTER TABLE ONLY tipoepi
 
 
 --
--- Name: turma_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: turma_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY turma
@@ -34921,7 +34743,7 @@ ALTER TABLE ONLY turma
 
 
 --
--- Name: turmatipodespesa_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: turmatipodespesa_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY turmatipodespesa
@@ -34929,7 +34751,7 @@ ALTER TABLE ONLY turmatipodespesa
 
 
 --
--- Name: unique_codigoac_areaorganizacional; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: unique_codigoac_areaorganizacional; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY areaorganizacional
@@ -34937,7 +34759,7 @@ ALTER TABLE ONLY areaorganizacional
 
 
 --
--- Name: unique_codigoac_colaborador; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: unique_codigoac_colaborador; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY colaborador
@@ -34945,7 +34767,7 @@ ALTER TABLE ONLY colaborador
 
 
 --
--- Name: unique_codigoac_empresa_estabelecimento; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: unique_codigoac_empresa_estabelecimento; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY estabelecimento
@@ -34953,7 +34775,7 @@ ALTER TABLE ONLY estabelecimento
 
 
 --
--- Name: unique_codigoac_empresa_ocorrencia; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: unique_codigoac_empresa_ocorrencia; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY ocorrencia
@@ -34961,7 +34783,7 @@ ALTER TABLE ONLY ocorrencia
 
 
 --
--- Name: unique_codigoac_grupoac_empresa; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: unique_codigoac_grupoac_empresa; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY empresa
@@ -34969,7 +34791,7 @@ ALTER TABLE ONLY empresa
 
 
 --
--- Name: unique_codigoac_grupoac_indice; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: unique_codigoac_grupoac_indice; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY indice
@@ -34977,7 +34799,7 @@ ALTER TABLE ONLY indice
 
 
 --
--- Name: unique_colaboradorid_cursolntid_participantecursolnt; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: unique_colaboradorid_cursolntid_participantecursolnt; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY participantecursolnt
@@ -34985,7 +34807,7 @@ ALTER TABLE ONLY participantecursolnt
 
 
 --
--- Name: unique_obra_apartirde_pcmat; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: unique_obra_apartirde_pcmat; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY pcmat
@@ -34993,7 +34815,7 @@ ALTER TABLE ONLY pcmat
 
 
 --
--- Name: usuario_login_uk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: usuario_login_uk; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY usuario
@@ -35001,7 +34823,7 @@ ALTER TABLE ONLY usuario
 
 
 --
--- Name: usuario_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: usuario_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY usuario
@@ -35009,7 +34831,7 @@ ALTER TABLE ONLY usuario
 
 
 --
--- Name: usuarioempresa_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: usuarioempresa_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY usuarioempresa
@@ -35017,7 +34839,7 @@ ALTER TABLE ONLY usuarioempresa
 
 
 --
--- Name: usuariomensagem_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: usuariomensagem_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY usuariomensagem
@@ -35025,7 +34847,7 @@ ALTER TABLE ONLY usuariomensagem
 
 
 --
--- Name: usuarionoticia_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+-- Name: usuarionoticia_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY usuarionoticia
@@ -35033,280 +34855,280 @@ ALTER TABLE ONLY usuarionoticia
 
 
 --
--- Name: colaboradorocorrencia_idx; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: colaboradorocorrencia_idx; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX colaboradorocorrencia_idx ON colaboradorocorrencia USING btree (colaborador_id, ocorrencia_id, dataini);
 
 
 --
--- Name: configuracaonivelcompetenciafaixasalarial_data_faixasalarial_uk; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: configuracaonivelcompetenciafaixasalarial_data_faixasalarial_uk; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE UNIQUE INDEX configuracaonivelcompetenciafaixasalarial_data_faixasalarial_uk ON configuracaonivelcompetenciafaixasalarial USING btree (data, faixasalarial_id);
 
 
 --
--- Name: faixasalarialhistorico_data_faixasalarial_uk; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: faixasalarialhistorico_data_faixasalarial_uk; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE UNIQUE INDEX faixasalarialhistorico_data_faixasalarial_uk ON faixasalarialhistorico USING btree (data, faixasalarial_id);
 
 
 --
--- Name: index_area_organizacional_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: index_area_organizacional_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX index_area_organizacional_id ON areaorganizacional USING btree (id);
 
 
 --
--- Name: index_avaliacaopratica_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: index_avaliacaopratica_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX index_avaliacaopratica_id ON avaliacaopratica USING btree (id);
 
 
 --
--- Name: index_certificacao_curso; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: index_certificacao_curso; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX index_certificacao_curso ON certificacao_curso USING btree (certificacaos_id, cursos_id);
 
 
 --
--- Name: index_colabavpratica_certificacao_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: index_colabavpratica_certificacao_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX index_colabavpratica_certificacao_id ON colaboradoravaliacaopratica USING btree (certificacao_id);
 
 
 --
--- Name: index_colabavpratica_colaborador_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: index_colabavpratica_colaborador_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX index_colabavpratica_colaborador_id ON colaboradoravaliacaopratica USING btree (colaborador_id);
 
 
 --
--- Name: index_colabavpratica_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: index_colabavpratica_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX index_colabavpratica_id ON colaboradoravaliacaopratica USING btree (id);
 
 
 --
--- Name: index_colabcertificacao_certificacao; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: index_colabcertificacao_certificacao; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX index_colabcertificacao_certificacao ON colaboradorcertificacao USING btree (certificacao_id);
 
 
 --
--- Name: index_colabcertificacao_colaborador; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: index_colabcertificacao_colaborador; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX index_colabcertificacao_colaborador ON colaboradorcertificacao USING btree (colaborador_id);
 
 
 --
--- Name: index_colabcertificacao_colaborador_certificacao; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: index_colabcertificacao_colaborador_certificacao; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX index_colabcertificacao_colaborador_certificacao ON colaboradorcertificacao USING btree (colaborador_id, certificacao_id);
 
 
 --
--- Name: index_colabcertificacao_data; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: index_colabcertificacao_data; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX index_colabcertificacao_data ON colaboradorcertificacao USING btree (data);
 
 
 --
--- Name: index_colabcertificacao_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: index_colabcertificacao_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX index_colabcertificacao_id ON colaboradorcertificacao USING btree (id);
 
 
 --
--- Name: index_colaborador_cpf; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: index_colaborador_cpf; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX index_colaborador_cpf ON colaborador USING btree (cpf);
 
 
 --
--- Name: index_colaborador_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: index_colaborador_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX index_colaborador_id ON colaborador USING btree (id);
 
 
 --
--- Name: index_colaboradorpresenca; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: index_colaboradorpresenca; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX index_colaboradorpresenca ON colaboradorpresenca USING btree (presenca, colaboradorturma_id);
 
 
 --
--- Name: index_colaboradorturma; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: index_colaboradorturma; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX index_colaboradorturma ON colaboradorturma USING btree (curso_id, colaborador_id);
 
 
 --
--- Name: index_colaboradorturma_colaborador_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: index_colaboradorturma_colaborador_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX index_colaboradorturma_colaborador_id ON colaboradorturma USING btree (colaborador_id);
 
 
 --
--- Name: index_colaboradorturma_curso_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: index_colaboradorturma_curso_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX index_colaboradorturma_curso_id ON colaboradorturma USING btree (curso_id);
 
 
 --
--- Name: index_colaboradorturma_turma_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: index_colaboradorturma_turma_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX index_colaboradorturma_turma_id ON colaboradorturma USING btree (turma_id);
 
 
 --
--- Name: index_curso_avaliacaocurso_curso; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: index_curso_avaliacaocurso_curso; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX index_curso_avaliacaocurso_curso ON curso_avaliacaocurso USING btree (cursos_id);
 
 
 --
--- Name: index_curso_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: index_curso_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX index_curso_id ON curso USING btree (id);
 
 
 --
--- Name: index_diaturma_turma; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: index_diaturma_turma; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX index_diaturma_turma ON diaturma USING btree (turma_id);
 
 
 --
--- Name: index_faixasalarial; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: index_faixasalarial; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX index_faixasalarial ON faixasalarial USING btree (id);
 
 
 --
--- Name: index_faixasalarial_cargo; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: index_faixasalarial_cargo; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX index_faixasalarial_cargo ON faixasalarial USING btree (cargo_id);
 
 
 --
--- Name: index_hc_area; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: index_hc_area; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX index_hc_area ON historicocolaborador USING btree (areaorganizacional_id);
 
 
 --
--- Name: index_hc_colaboradorid_status; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: index_hc_colaboradorid_status; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX index_hc_colaboradorid_status ON historicocolaborador USING btree (colaborador_id, status);
 
 
 --
--- Name: index_hc_estabelecimento; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: index_hc_estabelecimento; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX index_hc_estabelecimento ON historicocolaborador USING btree (estabelecimento_id);
 
 
 --
--- Name: index_hc_faixa; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: index_hc_faixa; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX index_hc_faixa ON historicocolaborador USING btree (faixasalarial_id);
 
 
 --
--- Name: index_historicocolaborador_colaborador_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: index_historicocolaborador_colaborador_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX index_historicocolaborador_colaborador_id ON historicocolaborador USING btree (colaborador_id);
 
 
 --
--- Name: index_solicitacaoepi_item_solicitacaoepi_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: index_solicitacaoepi_item_solicitacaoepi_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX index_solicitacaoepi_item_solicitacaoepi_id ON solicitacaoepi_item USING btree (solicitacaoepi_id);
 
 
 --
--- Name: index_solicitacaoexame_data_empresa_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: index_solicitacaoexame_data_empresa_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX index_solicitacaoexame_data_empresa_id ON solicitacaoexame USING btree (data, empresa_id);
 
 
 --
--- Name: index_turma_curso; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: index_turma_curso; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX index_turma_curso ON turma USING btree (curso_id);
 
 
 --
--- Name: index_turma_dataprevfim; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: index_turma_dataprevfim; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX index_turma_dataprevfim ON turma USING btree (dataprevfim);
 
 
 --
--- Name: index_turma_id; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: index_turma_id; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX index_turma_id ON turma USING btree (id);
 
 
 --
--- Name: index_turma_id_realizada; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: index_turma_id_realizada; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX index_turma_id_realizada ON turma USING btree (id, realizada);
 
 
 --
--- Name: indicehistorico_data_indice_uk; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: indicehistorico_data_indice_uk; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE UNIQUE INDEX indicehistorico_data_indice_uk ON indicehistorico USING btree (data, indice_id);
 
 
 --
--- Name: nivelcompetenciahistorico_data_empresa_uk; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: nivelcompetenciahistorico_data_empresa_uk; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE UNIQUE INDEX nivelcompetenciahistorico_data_empresa_uk ON nivelcompetenciahistorico USING btree (data, empresa_id);
 
 
 --
--- Name: solicitacaoexame_fkey; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+-- Name: solicitacaoexame_fkey; Type: INDEX; Schema: public; Owner: postgres
 --
 
 CREATE INDEX solicitacaoexame_fkey ON examesolicitacaoexame USING btree (solicitacaoexame_id);

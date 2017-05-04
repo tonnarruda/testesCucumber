@@ -11,7 +11,7 @@ Funcionalidade: Relatório de colaboradores que fizeram um treinamento
     Dado que eu esteja logado com o usuário "SOS"
     
     Quando eu acesso o menu "T&D > Relatórios > Colaboradores com Treinamentos"
-    Então eu devo ver o título "Colaboradores que fizeram o treinamento"
+    Então eu devo ver o título "Colaboradores com treinamento"
     E eu clico no botão "Relatorio"
     E eu devo ver o alert do valida campos e clico no ok
 

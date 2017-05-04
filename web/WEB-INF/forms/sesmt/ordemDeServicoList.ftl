@@ -46,6 +46,7 @@
 		function checkProcessandoTime(){
 			if(processandoTime != getCookieProcessando()){
 				$('.processando').remove();
+				$( ":button" ).removeAttr('disabled');
 				window.location.reload();
 			}
 			else{

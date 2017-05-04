@@ -44,7 +44,7 @@ public class Cargo extends AbstractModel implements Serializable
 	@Transient
 	public static Boolean INATIVO = false;
 
-	@Column(length=30)
+	@Column(length=100)
 	private String nome;
 	@Column(length=100)
 	private String nomeMercado;

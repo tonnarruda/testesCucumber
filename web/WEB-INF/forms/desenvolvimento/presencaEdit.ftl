@@ -35,7 +35,7 @@
 			DWREngine.setErrorHandler(errorListaPresenca);
 			if(img.title == "${marcarTodos}"){
 				processando('${urlImgs}');
-				ListaPresencaDWR.marcarTodos(function(data){setImgCertificado(data);alteraImg(diaTurmaId, img);$('.processando').remove();}, diaTurmaId, ${turma.id}, ${empresaSistema.controlarVencimentoCertificacaoPor});
+				ListaPresencaDWR.marcarTodos(function(data){setImgCertificado(data);alteraImg(diaTurmaId, img);$('.processando').remove();$( ":button" ).removeAttr('disabled');}, diaTurmaId, ${turma.id}, ${empresaSistema.controlarVencimentoCertificacaoPor});
 			}else{
 				if(controlarVencimentoPorCertificacao && verificaExistenciaCertificacaoASerRemovido(diaTurmaId, img))
 					dialogCertificacaoLote(diaTurmaId, ${turma.id}, ${empresaSistema.controlarVencimentoCertificacaoPor}, img);
@@ -84,7 +84,7 @@
 		
 		function desmarcarTodos(diaTurmaId, turmaId, controlarVencimentoCertificacaoPor, img){
 			processando('${urlImgs}');
-			ListaPresencaDWR.desmarcarTodos(function(){alteraImg(diaTurmaId, img);$('.processando').remove();}, diaTurmaId, turmaId, controlarVencimentoCertificacaoPor);
+			ListaPresencaDWR.desmarcarTodos(function(){alteraImg(diaTurmaId, img);$('.processando').remove();$( ":button" ).removeAttr('disabled');}, diaTurmaId, turmaId, controlarVencimentoCertificacaoPor);
 		}
 
 		function alteraImg(diaTurmaId, img)
@@ -180,7 +180,7 @@
 			processando('${urlImgs}');
 			var presente = img.title != "${presente}";
 			DWREngine.setErrorHandler(errorListaPresenca);
-			ListaPresencaDWR.updateFrequencia(function(data){mudaImagem(data, presente, colaboradorTurmaId, img, certificadoEmTurmaPosterior);$('.processando').remove();}, diaTurmaId, colaboradorTurmaId, presente, ${empresaSistema.controlarVencimentoCertificacaoPor}, certificadoEmTurmaPosterior);
+			ListaPresencaDWR.updateFrequencia(function(data){mudaImagem(data, presente, colaboradorTurmaId, img, certificadoEmTurmaPosterior);$('.processando').remove();$( ":button" ).removeAttr('disabled');}, diaTurmaId, colaboradorTurmaId, presente, ${empresaSistema.controlarVencimentoCertificacaoPor}, certificadoEmTurmaPosterior);
 		}
 
 		function calculaFrequencia(colaboradorTurmaId, certificadoEmTurmaPosterior)
@@ -209,6 +209,7 @@
 		function errorListaPresenca(msg)
 		{
 			$('.processando').remove();
+			$( ":button" ).removeAttr('disabled');
 			jAlert(msg);
 			
 		}

@@ -215,6 +215,7 @@ end
 Quando /^eu seleciono \(JS\) "([^"]*)" de "([^"]*)"$/ do |value, field|
   field = get_field(field)
   page.execute_script("$('##{field}').val('#{value}')")
+  page.execute_script("$('##{field}').change()")
 end
 
 Quando /^eu adiciono o avaliado no avaliador da avaliação de desempenho$/ do

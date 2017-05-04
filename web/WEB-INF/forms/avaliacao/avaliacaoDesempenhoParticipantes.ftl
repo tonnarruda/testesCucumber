@@ -536,6 +536,7 @@
 			    }
 			    
 			    $('.processando').remove();
+			    $( ":button" ).removeAttr('disabled');
 			}
 		</script>
 		<div id="black-back" style="display:none; /*display: block;*/ top: 0; left: 0; bottom: 0; background: gray; opacity: 0.6; width: 100%; position: absolute; z-index: 1000;"></div>

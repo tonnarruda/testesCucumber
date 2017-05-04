@@ -11,12 +11,13 @@ Funcionalidade: Relatório de colaboradores que não fizeram um treinamento
     Dado que eu esteja logado com o usuário "SOS"
     
     Quando eu acesso o menu "T&D > Relatórios > Colaboradores sem Treinamentos"
-    Então eu devo ver o título "Colaboradores que não fizeram o treinamento"
+    Então eu devo ver o título "Colaboradores sem treinamento"
     E eu clico no botão "Relatorio"
-    E eu devo ver o alert do valida campos e clico no ok
+    E eu devo ver "Não existem dados para o filtro informado"
 
-    Então eu marco "java"
+    Entao eu seleciono (JS) "AR" de "status"
     E eu seleciono "Empresa Padrão" de "Empresa"
+    E eu marco "java"
     E eu marco "Empresa Padrão - matriz"
     E eu marco "adm"
     

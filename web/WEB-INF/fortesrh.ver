@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.17x.2xx" db="" data="xx/xx/2017">
+	<Versao id="1.1.179.211" db="" data="05/05/2017">
 		<Item visivel="S" motivo="S16100000059"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Transf. Candidatos: Nova implementação para transferir respostas das avaliações do candidato para a solicitação destino.]]></Item>
 		<Item visivel="S" motivo="S16020000117"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Inserir/Editar: Apresentar somente cargos/faixas relacionados a área organizacional selecionada.]]></Item>
 		<Item visivel="S" motivo="P17030000294"><![CDATA[C&S > Relatórios > Colaboradores por cargo: Ajuste de inconsistência ao gerar relatório em XLS quando é selecionado a opção de todas as empresas no filtro.]]></Item>

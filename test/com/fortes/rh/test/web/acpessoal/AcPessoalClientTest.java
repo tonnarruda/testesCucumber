@@ -38,7 +38,7 @@ public abstract class AcPessoalClientTest extends MockObjectTestCase
 	{
 		super.setUp();
 		
-		String baseAcUrl = "http://10.1.19.255:1026";
+		String baseAcUrl = "http://10.1.19.255:1024";
 
 		acPessoalClientImpl = new AcPessoalClientImpl();
 		acPessoalClientImpl.setService(new Service());
