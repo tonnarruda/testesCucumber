@@ -47,8 +47,6 @@ import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.acesso.Perfil;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
-import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
-import com.fortes.rh.model.avaliacao.relatorio.AcompanhamentoExperienciaColaborador;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoIdioma;
 import com.fortes.rh.model.captacao.Experiencia;
@@ -93,7 +91,6 @@ import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.business.MockObjectTestCaseManager;
 import com.fortes.rh.test.business.TesteAutomaticoManager;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
-import com.fortes.rh.test.factory.avaliacao.PeriodoExperienciaFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.CartaoFactory;
@@ -1489,7 +1486,7 @@ public class ColaboradorManagerTest extends MockObjectTestCaseManager<Colaborado
     	testaEscolaridade(Escolaridade.GINASIO_EM_ANDAMENTO, null, Escolaridade.GINASIO_EM_ANDAMENTO);
     	testaEscolaridade(Escolaridade.TECNICO_EM_ANDAMENTO, EscolaridadeACPessoal.COLEGIAL_COMPLETO, Escolaridade.TECNICO_EM_ANDAMENTO);
     	testaEscolaridade(Escolaridade.TECNICO_COMPLETO, EscolaridadeACPessoal.COLEGIAL_COMPLETO, Escolaridade.TECNICO_COMPLETO);
-    	testaEscolaridade(Escolaridade.ESPECIALIZACAO, EscolaridadeACPessoal.SUPERIOR_COMPLETO, Escolaridade.ESPECIALIZACAO);
+    	testaEscolaridade(Escolaridade.ESPECIALIZACAO, EscolaridadeACPessoal.POS_GRADUACAO_COMPLETA, Escolaridade.ESPECIALIZACAO);
     	testaEscolaridade(Escolaridade.SUPERIOR_EM_ANDAMENTO, EscolaridadeACPessoal.SUPERIOR_EM_ANDAMENTO, Escolaridade.SUPERIOR_EM_ANDAMENTO);
     	testaEscolaridade(Escolaridade.SUPERIOR_COMPLETO, EscolaridadeACPessoal.SUPERIOR_COMPLETO, Escolaridade.SUPERIOR_COMPLETO);
     	testaEscolaridade(Escolaridade.MESTRADO, EscolaridadeACPessoal.MESTRADO, Escolaridade.MESTRADO);
@@ -1498,7 +1495,7 @@ public class ColaboradorManagerTest extends MockObjectTestCaseManager<Colaborado
     	// Este trecho testa situações variadas
     	testaEscolaridade(Escolaridade.GINASIO_COMPLETO, EscolaridadeACPessoal.COLEGIAL_EM_ANDAMENTO, Escolaridade.COLEGIAL_EM_ANDAMENTO);
     	testaEscolaridade(Escolaridade.PRIMARIO_EM_ANDAMENTO, EscolaridadeACPessoal.GINASIO_EM_ANDAMENTO, Escolaridade.GINASIO_EM_ANDAMENTO);
-    	testaEscolaridade(Escolaridade.SUPERIOR_EM_ANDAMENTO, EscolaridadeACPessoal.SUPERIOR_COMPLETO, Escolaridade.SUPERIOR_COMPLETO);
+    	testaEscolaridade(Escolaridade.SUPERIOR_EM_ANDAMENTO, EscolaridadeACPessoal.SUPERIOR_EM_ANDAMENTO, Escolaridade.SUPERIOR_EM_ANDAMENTO);
     	testaEscolaridade(Escolaridade.ESPECIALIZACAO, EscolaridadeACPessoal.MESTRADO, Escolaridade.MESTRADO);
     }
     
