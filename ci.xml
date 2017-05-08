@@ -378,6 +378,7 @@ http://10.1.3.48:8080/fortesrhhomologacao
 	</target>
 	
 	<target name="rumMigrate">
+		<echo message="Rodando Migrations banco homologacao"/>
 		<exec executable="ruby">
 		    <arg value="migrate.rb"/>
 		    <arg value="--db"/>
@@ -433,15 +434,6 @@ http://10.1.3.48:8080/fortesrhhomologacao
 		<echo message="Tomcat iniciado com sucesso." />
 	</target>
 	
-    <target name="rumMigrations">
-    	<echo message="Rodando Migrations banco homologacao"/>
-		<exec executable="ruby">
-            <arg value="migrate.rb"/>
-			<arg value="--db"/>
-            <arg value="homologacao"/>
-        </exec>
-    </target>
-	
 	<target name="removerPastaFortesRhHomologacao">
 		<echo message="Removendo pasta fortesrhhomologacao"/>
 		<exec executable="rm">
@@ -478,7 +470,7 @@ http://10.1.3.48:8080/fortesrhhomologacao
 		<antcall target="stopTomcat"/>
 		<antcall target="war"/>
 		<antcall target="checkStopTomcat"/>
-		<antcall target="rumMigrations"/>
+		<antcall target="rumMigrate"/>
 		<antcall target="removerWarFortesRhHomologacao"/>
 		<antcall target="removerPastaFortesRhHomologacao"/>
 		<antcall target="removerPastaWork"/>
