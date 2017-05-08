@@ -760,8 +760,8 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 
 		assertEquals(4, lista.size());
 		assertEquals(item4.getQtdSolicitado(), vo1.getQtdSolicitadoItem());
-		assertEquals(item3.getQtdSolicitado(), vo2.getQtdSolicitadoItem());
-		assertEquals(item2.getQtdSolicitado(), vo3.getQtdSolicitadoItem());
+		assertEquals(item2.getQtdSolicitado(), vo2.getQtdSolicitadoItem());
+		assertEquals(item3.getQtdSolicitado(), vo3.getQtdSolicitadoItem());
 		assertEquals(item1.getQtdSolicitado(), vo4.getQtdSolicitadoItem());
 		
 		assertEquals(new Integer(3), vo1.getQtdSolicitadoTotal());
