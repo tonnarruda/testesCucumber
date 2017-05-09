@@ -78,22 +78,8 @@ public class CargoListAction extends MyActionSupportList
 		try {
 			cargoManager.remove(cargo.getId(), getEmpresaSistema());
 			addActionSuccess("Cargo excluído com sucesso.");
-		}catch (InvocationTargetException ive){
-			ive.printStackTrace();
-			ExceptionUtil.traduzirMensagem(this, ive, null);
 		} catch (Exception e) {
-			String message = "Erro ao excluir Cargo.<br/>";
-			
-			if(e.getCause().getClass() == ConstraintViolationException.class)
-				message = "O Cargo não pode ser excluído, pois possui dependência.";
-			else if(e.getMessage() != null)
-				message += e.getMessage();
-			else if(e.getCause() != null && e.getCause().getLocalizedMessage() != null)
-				message += e.getCause().getLocalizedMessage();
-			
-			addActionWarning(message);
-			
-			list();
+			ExceptionUtil.traduzirMensagem(this, e, "Não foi possível excluir este cargo.");
 		}
 
 		return Action.SUCCESS;

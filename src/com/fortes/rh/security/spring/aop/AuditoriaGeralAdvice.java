@@ -3,7 +3,6 @@ package com.fortes.rh.security.spring.aop;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.log4j.Logger;
-import org.springframework.dao.DataIntegrityViolationException;
 
 import com.fortes.rh.business.security.AuditoriaManager;
 import com.fortes.rh.business.security.SecurityManager;
@@ -42,13 +41,11 @@ public class AuditoriaGeralAdvice implements MethodInterceptor {
 			return resultado;
 		
 		} catch (Exception e) {
-			System.out.println("Auditoria não funcionou.");
+			logger.info("Auditoria não funcionou.");
 			e.printStackTrace();
-			if (e.getCause() instanceof FortesException)
-				throw new FortesException(e.getCause().getMessage());	
-			if(e.getCause() instanceof IntegraACException)
-				throw new IntegraACException(e.getCause().getMessage());
-			return null;
+			if (e.getCause() instanceof FortesException || e.getCause() instanceof IntegraACException)
+				throw e.getCause();	
+			throw e;
 		}
 	}
 

@@ -77,8 +77,6 @@ public class AuditoriaListAction extends MyActionSupport
 		auditoriaView = auditoriaManager.projectionFindById(auditoriaView.getId(), getEmpresaId());
 		auditoriaView.setDados(auditoriaView.getDados().replace("</null>", "").replace("<null>", "").replace("null", "").replace("}", "").replace("{", "").replace("\"", ""));
 		
-//		detalhes = auditoriaManager.getDetalhes(auditoriaView.getDados());
-//		auditoriaView.setDados(detalhes);
 		return Action.SUCCESS;
 	}
 

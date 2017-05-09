@@ -38,7 +38,6 @@ public interface AuditoriaManager extends GenericManager<Auditoria>
 	 * Busca todas as operações existente de um módulo.
 	 */
 	public List<String> findOperacoesPeloModulo(String modulo);
-	public String getDetalhes(String dados);
 	public void auditaCancelarContratacaoNoAC(Colaborador colaborador,String mensagem);
 	public void auditaCancelamentoSolicitacoNoAC(Colaborador colaborador,String mensagem);
 	public void auditaConfirmacaoDesligamentoNoAC(Collection<Colaborador> colaboradores,Date dataDesligamento, Empresa empresa);
