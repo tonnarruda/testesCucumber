@@ -633,7 +633,7 @@
 		}
 		
 		function houveAlteracaoDosCampos(){
-			retorno = false;
+			var retorno = false;
 			$(".campoAdd").each(function(){
 				var id = this.id.replace('wwgrp_', '');
 				if(colaboradorMap[id] != $('#' + id).val()){
@@ -903,7 +903,7 @@
 				       	<b><@ww.label label="Carteira de Habilitação" /></b>
 						<@ww.textfield label="Nº de Registro" id="carteiraHabilitacao" name="colaborador.habilitacao.numeroHab" cssStyle="width: 100px;" maxLength="11" liClass="liLeft campoAdd" onkeypress = "return(somenteNumeros(event,'{,}'));" />
 				      	<@ww.textfield label="Prontuário" id="prontuario" name="colaborador.habilitacao.registro" cssStyle="" maxLength="15" liClass="liLeft campoAdd" />
-				      	<@ww.datepicker label="Emissão" name="colaborador.habilitacao.emissao" id="emissao" liClass="liLeft" cssClass="mascaraData campoAdd" value="${habEmissao}" />
+				      	<@ww.datepicker label="Emissão" name="colaborador.habilitacao.emissao" id="emissao" liClass="liLeft campoAdd" cssClass="mascaraData" value="${habEmissao}" />
 				      	<@ww.datepicker label="Vencimento" name="colaborador.habilitacao.vencimento" id="vencimento" liClass="liLeft campoAdd" cssClass="mascaraData" value="${dataVenc}" />
 				       	<@ww.textfield label="Categoria(s)" name="colaborador.habilitacao.categoria" id="chCategoria" liClass="campoAdd" cssStyle="width:25px" maxLength="3" />
 				       	<li><hr style="border-top: 1px solid #CCCCCC; border-bottom:0;"/></li>
