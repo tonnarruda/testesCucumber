@@ -81,11 +81,11 @@
 			
 				montaGraficoPizza(${grfFaixaEtarias}, "#faixaEtaria", {}, "Faixa Etária");
 				montaGraficoPizza(${grfEstadoCivil}, "#estadoCivil", {percentMin: 0.02}, "Estado Civil");
-				montaGraficoPizza(${grfDeficiencia}, "#deficiencia", {percentMin: 0.03}, "Deficiência");
+				montaGraficoPizza(${grfDeficiencia}, "#deficiencia", {percentMin: 0.02}, "Deficiência");
 				montaGraficoPizza(${grfColocacao}, "#colocacao", {percentMin: 0.02}, "Colocação");
 				montaGraficoPizza(${grfOcorrencia}, "#ocorrencia", {percentMin: 0.02, radiusLabel:0.9, combinePercentMin: 0.03}, "Ocorrências", true);
 				montaGraficoPizza(${grfProvidencia}, "#providencia", {percentMin: 0.02, radiusLabel:0.9}, "Providências");
-				montaGraficoPizza(${grfFormacaoEscolars}, "#formacaoEscolar", {pieLeft:-190}, "Formação Escolar");
+				montaGraficoPizza(${grfFormacaoEscolars}, "#formacaoEscolar", {percentMin: 0.02, pieLeft:-190}, "Formação Escolar");
 				montaGraficoPizza(${grfSexo}, "#sexo", {percentMin:0}, "Sexo");
 				montaGraficoPizza(${grfTurnoverTempoServico}, "#turnoverTempoServico", {}, "Turnover por Tempo de Serviço");
 				montaGraficoPizza(${grfColaboradoresTempoServico}, "#colaboradoresTempoServico", {}, "Colaborador por Tempo de Serviço");

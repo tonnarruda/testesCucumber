@@ -14,8 +14,9 @@ public class EscolaridadeACPessoal extends LinkedHashMap<String, String> {
 	public static final String COLEGIAL_COMPLETO = "07";
 	public static final String SUPERIOR_EM_ANDAMENTO = "08";
 	public static final String SUPERIOR_COMPLETO = "09";	
-	public static final String MESTRADO = "10";
-	public static final String DOUTORADO = "11";
+	public static final String POS_GRADUACAO_COMPLETA = "10";	
+	public static final String MESTRADO = "11";
+	public static final String DOUTORADO = "12";
 
 	public EscolaridadeACPessoal() {
 		put(ANALFABETO, "Analfabeto");
@@ -27,7 +28,8 @@ public class EscolaridadeACPessoal extends LinkedHashMap<String, String> {
 		put(COLEGIAL_COMPLETO, "Ensino médio completo");
 		put(SUPERIOR_EM_ANDAMENTO, "Educação superior incompleto");
 		put(SUPERIOR_COMPLETO, "Educação superior completo");
+		put(POS_GRADUACAO_COMPLETA, "Pós-Graduação Completa");
 		put(MESTRADO, "Mestrado completo");
 		put(DOUTORADO, "Doutorado completo");
-	}
+	}	
 }

@@ -57,14 +57,17 @@ public class ColaboradorQuestionarioDaoHibernateTest_JUnit4  extends DaoHibernat
 		avaliacaoDao.save(avaliacao2);
 		
 		CandidatoSolicitacao candidatoSolicitacao1 = CandidatoSolicitacaoFactory.getEntity();
+		candidatoSolicitacao1.setSolicitacao(solicitacao);
 		candidatoSolicitacao1.setCandidato(candidato1);
 		candidatoSolicitacaoDao.save(candidatoSolicitacao1);
 		
 		CandidatoSolicitacao candidatoSolicitacao2 = CandidatoSolicitacaoFactory.getEntity();
+		candidatoSolicitacao2.setSolicitacao(solicitacao);
 		candidatoSolicitacao2.setCandidato(candidato2);
 		candidatoSolicitacaoDao.save(candidatoSolicitacao2);
 		
 		CandidatoSolicitacao candidatoSolicitacao3 = CandidatoSolicitacaoFactory.getEntity();
+		candidatoSolicitacao3.setSolicitacao(solicitacao);
 		candidatoSolicitacao3.setCandidato(candidato3);
 		candidatoSolicitacaoDao.save(candidatoSolicitacao3);
 

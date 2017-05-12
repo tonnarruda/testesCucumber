@@ -378,6 +378,7 @@ http://10.1.3.48:8080/fortesrhhomologacao
 	</target>
 	
 	<target name="rumMigrate">
+		<echo message="Rodando Migrations banco homologacao"/>
 		<exec executable="ruby">
 		    <arg value="migrate.rb"/>
 		    <arg value="--db"/>
@@ -402,41 +403,80 @@ http://10.1.3.48:8080/fortesrhhomologacao
         <echo message="Start Tomcat 7"/>
     </target>
 	
-	<target name="deploy">
-		<echo message="Início Deploy"/>
-
-		<antcall target="stopTomcat"/>
-		<antcall target="war"/>
-		<antcall target="stopTomcat"/>
-		
-		<echo message="Rodando Migrations banco homologacao"/>
-		<exec executable="ruby">
-            <arg value="migrate.rb"/>
-			<arg value="--db"/>
-            <arg value="homologacao"/>
-        </exec>
-		<antcall target="stopTomcat"/>
-		
+	<target name="checkStopTomcat">
+		<waitfor maxwait="4" maxwaitunit="minute" timeoutproperty="tomcat.stop.expired.time">
+			<not>
+		        <and>
+		        	<http url="http://127.0.0.1:8080/fortesrhhomologacao/" errorsBeginAt="404"/>
+					<socket server="127.0.0.1" port="8080" />
+		        </and>
+			</not>
+	    </waitfor>
+		<!-- falha -->
+		<fail if="tomcat.stop.expired.time"	message="Nao foi possivel parar o servidor Tomcat ou a Aplicacao." />
+		<!-- sucesso -->
+		<echo level="verbose" message="Tomcat derrubado com sucesso." />
+	</target>
+	
+	<target name="checkStartTomcat">
+		<!-- Verifica se o Tomcat está no ar -->
+		<waitfor maxwait="5" maxwaitunit="minute"
+			timeoutproperty="tomcat.start.expired.time">
+	        <and>
+	             <socket server="127.0.0.1" port="8080"/>
+	             <http url="http://127.0.0.1:8080/fortesrhhomologacao/" errorsBeginAt="404"/>
+	        </and>
+	    </waitfor>
+		<!-- falha -->
+		<fail if="tomcat.start.expired.time"
+			message="Nao foi possivel iniciar o servidor Tomcat ou a Aplicacao." />
+		<!-- sucesso -->
+		<echo message="Tomcat iniciado com sucesso." />
+	</target>
+	
+	<target name="removerPastaFortesRhHomologacao">
 		<echo message="Removendo pasta fortesrhhomologacao"/>
 		<exec executable="rm">
-            <arg value="-rf"/>
-            <arg value="/home/fortes/tomcat7/webapps/fortesrhhomologacao/"/>
-        </exec>
+        	<arg value="-rf"/>
+        	<arg value="/home/fortes/tomcat7/webapps/fortesrhhomologacao/"/>
+    	</exec>
+	</target>
+	
+	<target name="removerWarFortesRhHomologacao">
+		<echo message="Removendo WAR fortesrhhomologacao"/>
 		<exec executable="rm">
             <arg value="/home/fortes/tomcat7/webapps/fortesrhhomologacao.war"/>
         </exec>
+	</target>
+	
+	<target name="removerPastaWork">
 		<echo message="Limpando pasta work do Tomcat 7"/>
 		<exec executable="rm">
             <arg value="-rf"/>
             <arg value="/home/fortes/tomcat7/work/*"/>
         </exec>
+	</target>
+	
+	<target name="copyWar">
         <echo message="atualizando WAR"/>
 		<exec executable="cp">
             <arg value="dist/fortesrh.war"/>
             <arg value="/home/fortes/tomcat7/webapps/fortesrhhomologacao.war"/>
         </exec>
-		<antcall target="startTomcat"/>
-		<echo message="Fim Deploy"/>
 	</target>
 	
+	<target name="deploy">
+		<echo message="Início Deploy"/>
+		<antcall target="stopTomcat"/>
+		<antcall target="war"/>
+		<antcall target="checkStopTomcat"/>
+		<antcall target="rumMigrate"/>
+		<antcall target="removerWarFortesRhHomologacao"/>
+		<antcall target="removerPastaFortesRhHomologacao"/>
+		<antcall target="removerPastaWork"/>
+		<antcall target="copyWar"/>
+		<antcall target="startTomcat"/>
+		<antcall target="checkStartTomcat"/>
+		<echo message="Fim Deploy"/>
+	</target>
 </project>

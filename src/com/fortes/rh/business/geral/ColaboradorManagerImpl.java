@@ -385,12 +385,14 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 				empregado.setEscolaridade("07");//colegial completo no ac
 			else if (colaborador.getPessoal().getEscolaridade().equals("10"))//superior em andamento no rh
 				empregado.setEscolaridade("08");//superior em andamento no ac
-			else if (colaborador.getPessoal().getEscolaridade().equals("11") || colaborador.getPessoal().getEscolaridade().equals("12") || colaborador.getPessoal().getEscolaridade().equals("15"))// superior completo / especializacao completa ou incompleta
+			else if (colaborador.getPessoal().getEscolaridade().equals("11") || colaborador.getPessoal().getEscolaridade().equals("15"))// superior completo / especializacao completa ou incompleta
 				empregado.setEscolaridade("09");// superior completo no ac
+			else if(colaborador.getPessoal().getEscolaridade().equals("12"))
+				empregado.setEscolaridade("10");//  completo no ac
 			else if (colaborador.getPessoal().getEscolaridade().equals("13"))// mestrado no rh
-				empregado.setEscolaridade("10");// mestrado no ac
+				empregado.setEscolaridade("11");// mestrado no ac
 			else if (colaborador.getPessoal().getEscolaridade().equals("14"))//doutorrado no rh
-				empregado.setEscolaridade("11");//doutorrado no ac
+				empregado.setEscolaridade("12");//doutorrado no ac
 			else
 				empregado.setEscolaridade(colaborador.getPessoal().getEscolaridade());
 		}
@@ -1592,6 +1594,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			colaborador.getPessoal().setEscolaridade(Escolaridade.SUPERIOR_EM_ANDAMENTO);
 		else if(empregado.getEscolaridade().equals(EscolaridadeACPessoal.SUPERIOR_COMPLETO))
 			colaborador.getPessoal().setEscolaridade(Escolaridade.SUPERIOR_COMPLETO);
+		else if(empregado.getEscolaridade().equals(EscolaridadeACPessoal.POS_GRADUACAO_COMPLETA))
+			colaborador.getPessoal().setEscolaridade(Escolaridade.ESPECIALIZACAO);
 		else if(empregado.getEscolaridade().equals(EscolaridadeACPessoal.MESTRADO))
 			colaborador.getPessoal().setEscolaridade(Escolaridade.MESTRADO);
 		else if(empregado.getEscolaridade().equals(EscolaridadeACPessoal.DOUTORADO))
@@ -1605,7 +1609,6 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	{
 		if(colaborador.getPessoal().getEscolaridade() != null && ((empregado.getEscolaridade() == null)
 					|| ((colaborador.getPessoal().getEscolaridade().equals(Escolaridade.TECNICO_EM_ANDAMENTO) || colaborador.getPessoal().getEscolaridade().equals(Escolaridade.TECNICO_COMPLETO)) && empregado.getEscolaridade().equals(EscolaridadeACPessoal.COLEGIAL_COMPLETO))
-					|| (colaborador.getPessoal().getEscolaridade().equals(Escolaridade.ESPECIALIZACAO)) && empregado.getEscolaridade().equals(EscolaridadeACPessoal.SUPERIOR_COMPLETO)
 					|| (colaborador.getPessoal().getEscolaridade().equals(Escolaridade.ESPECIALIZACAO_INCOMPLETA)) && empregado.getEscolaridade().equals(EscolaridadeACPessoal.SUPERIOR_COMPLETO)))
 		{
 			return;
