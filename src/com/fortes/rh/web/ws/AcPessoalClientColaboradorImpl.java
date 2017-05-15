@@ -22,6 +22,7 @@ import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.ws.TEmpregado;
 import com.fortes.rh.model.ws.TFeedbackPessoalWebService;
 import com.fortes.rh.model.ws.TItemTabelaEmpregados;
+import com.fortes.rh.model.ws.TNaturalidadeAndNacionalidade;
 import com.fortes.rh.model.ws.TPeriodoGozo;
 import com.fortes.rh.model.ws.TRemuneracaoVariavel;
 import com.fortes.rh.model.ws.TSituacao;
@@ -476,6 +477,41 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new IntegraACException(e, "Não foi possível obter os dados solicitadoss.");
+		}
+	}
+	
+	public TNaturalidadeAndNacionalidade[] getNaturalidadesAndNacionalidades(Empresa empresa, String[] colaboradoresIds) throws IntegraACException {
+		try {
+			StringBuilder token = new StringBuilder();
+			GrupoAC grupoAC = new GrupoAC();
+			Call call = acPessoalClient.createCall(empresa, token, grupoAC, "GetNaturalidadesAndNacionalidades");
+
+			QName qname = new QName("urn:UnTypesPessoalWebService", "TNaturalidadeAndNacionalidade");
+			QName qnameArr = new QName("urn:UnTypesPessoalWebService", "TNaturalidadeAndNacionalidades");
+
+			call.registerTypeMapping(TNaturalidadeAndNacionalidade.class, qname , new org.apache.axis.encoding.ser.BeanSerializerFactory(TNaturalidadeAndNacionalidade.class, qname ), new org.apache.axis.encoding.ser.BeanDeserializerFactory(TNaturalidadeAndNacionalidade.class, qname));
+			call.registerTypeMapping(TNaturalidadeAndNacionalidade[].class, qnameArr,new org.apache.axis.encoding.ser.ArraySerializerFactory(),new org.apache.axis.encoding.ser.ArrayDeserializerFactory());
+			
+			QName xmlstring = new QName("xs:string");
+			QName xmlstringArray = new QName("xs:string[]");
+
+			call.addParameter("Token", xmlstring, ParameterMode.IN);
+			call.addParameter("Empresa", xmlstring, ParameterMode.IN);
+			call.addParameter("Empregados", xmlstringArray, ParameterMode.IN);
+
+			call.setReturnType(qnameArr);
+
+			Object[] param = new Object[] { token.toString(), empresa.getCodigoAC(), colaboradoresIds};
+
+			TNaturalidadeAndNacionalidade[] result = (TNaturalidadeAndNacionalidade[]) call.invoke(param);
+
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			if(colaboradoresIds.length == 1)
+				throw new IntegraACException(e, "Não foi possível obter a naturalidade e a nacionalidade do colaborador.");
+			else
+				throw new IntegraACException(e, "Não foi possível obter as naturalidades e as nacionalidades dos colaboradores.");
 		}
 	}
 }

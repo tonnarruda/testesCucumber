@@ -71,6 +71,100 @@
 		var arrayObrigatorios = new Array();
 		var colaboradorMap = new Object();
 
+	<#if colaborador?exists && colaborador.id?exists>
+		colaboradorMap["endereco.logradouro"] = "${colaborador.endereco.logradouro}";
+		colaboradorMap["endereco.numero"] = "${colaborador.endereco.numero}";
+		colaboradorMap["endereco.complemento"] = "${colaborador.endereco.complemento}";
+		colaboradorMap["endereco.bairro"] = "${colaborador.endereco.bairro}";
+		colaboradorMap["endereco.cep"] = "${colaborador.endereco.cepFormatado}";
+	
+		<#if colaborador.endereco?exists && colaborador.endereco.uf?exists>
+			colaboradorMap["endereco.uf.sigla"] = "${colaborador.endereco.uf.sigla}";
+		</#if>
+		<#if colaborador.endereco.cidade?exists>
+			colaboradorMap["endereco.cidade.nome"] = "${colaborador.endereco.cidade.nome}";
+		</#if>
+		
+		<#if colaborador.contato.email?exists>
+			colaboradorMap["contato.email"] = "${colaborador.contato.email};
+		</#if>	
+		
+		<#if colaborador.contato.ddd?exists>
+			colaboradorMap["contato.ddd"] = "${colaborador.contato.ddd}";
+		</#if>	
+		
+		<#if colaborador.contato.foneFixo?exists>
+			colaboradorMap["contato.foneFixo"] = "${colaborador.contato.foneFixo}";
+		</#if>
+		
+		<#if colaborador.contato.foneCelular?exists>
+			colaboradorMap["contato.foneCelular"] = "${colaborador.contato.foneCelular}";
+		</#if>
+		
+		colaboradorMap["pessoal.escolaridade"] = "${colaborador.pessoal.escolaridade}";
+		colaboradorMap["pessoal.estadoCivil"] = "${colaborador.pessoal.estadoCivil}";
+		colaboradorMap["pessoal.pai"] = "${colaborador.pessoal.pai}";
+		colaboradorMap["pessoal.mae"] = "${colaborador.pessoal.mae}";
+		
+		<#if colaborador.pessoal.conjuge?exists>
+			colaboradorMap["pessoal.conjuge"] = "${colaborador.pessoal.conjuge}";
+		</#if>
+		
+		colaboradorMap["pessoal.qtdFilhos"] = "${colaborador.pessoal.qtdFilhos}";
+		
+		colaboradorMap["pessoal.rg"] = "${colaborador.pessoal.rg}";
+		colaboradorMap["pessoal.rgOrgaoEmissor"] = "${colaborador.pessoal.rgOrgaoEmissor}";
+		<#if colaborador.pessoal?exists && colaborador.pessoal.rgDataExpedicao?exists>
+			colaboradorMap["pessoal.rgDataExpedicao"] = "${colaborador.pessoal.rgDataExpedicao?date}";
+		</#if>
+		<#if colaborador.habilitacao?exists && colaborador.habilitacao.numeroHab?exists>
+			colaboradorMap["habilitacao.numeroHab"] = "${colaborador.habilitacao.numeroHab}";
+		</#if>
+		<#if colaborador.habilitacao?exists && colaborador.habilitacao.registro?exists>
+			colaboradorMap["habilitacao.numeroHab"] = "${colaborador.habilitacao.registro}";
+		</#if>
+		<#if colaborador.habilitacao?exists && colaborador.habilitacao.vencimento?exists>
+			colaboradorMap["habilitacao.numeroHab"] = "${colaborador.habilitacao.vencimento}";
+		</#if>
+		<#if colaborador.habilitacao?exists && colaborador.habilitacao.categoria?exists>
+			colaboradorMap["habilitacao.numeroHab"] = "${colaborador.habilitacao.categoria}";
+		</#if>
+		<#if colaborador.pessoal.tituloEleitoral?exists && colaborador.pessoal.tituloEleitoral.titEleitNumero?exists>
+			colaboradorMap["pessoal.tituloEleitoral.titEleitNumero"] = "${colaborador.pessoal.tituloEleitoral.titEleitNumero}";
+		</#if>
+		<#if colaborador.pessoal.tituloEleitoral?exists && colaborador.pessoal.tituloEleitoral.titEleitZona?exists>
+			colaboradorMap["pessoal.tituloEleitoral.titEleitZona"] = "${colaborador.pessoal.tituloEleitoral.titEleitZona}";
+		</#if>
+		<#if colaborador.pessoal.tituloEleitoral?exists && colaborador.pessoal.tituloEleitoral.titEleitSecao?exists>
+			colaboradorMap["pessoal.tituloEleitoral.titEleitNumero"] = "${colaborador.pessoal.tituloEleitoral.titEleitSecao}";
+		</#if>
+		<#if colaborador.pessoal.certificadoMilitar?exists && colaborador.pessoal.certificadoMilitar.certMilNumero?exists>
+			colaboradorMap["pessoal.certificadoMilitar.certMilNumero"] = "${colaborador.pessoal.certificadoMilitar.certMilNumero}";
+		</#if>
+		<#if colaborador.pessoal.certificadoMilitar?exists && colaborador.pessoal.certificadoMilitar.certMilTipo?exists>
+			colaboradorMap["pessoal.certificadoMilitar.certMilTipo"] = "${colaborador.pessoal.certificadoMilitar.certMilTipo}";
+		</#if>
+		<#if colaborador.pessoal.certificadoMilitar?exists && colaborador.pessoal.certificadoMilitar.certMilSerie?exists>
+			colaboradorMap["pessoal.certificadoMilitar.certMilSerie"] = "${colaborador.pessoal.certificadoMilitar.certMilSerie}";
+		</#if>
+		
+		<#if colaborador.pessoal.ctps?exists>
+			<#if colaborador.pessoal.ctps.ctpsNumero?exists>
+				colaboradorMap["pessoal.ctps.ctpsNumero"] = "${colaborador.pessoal.ctps.ctpsNumero}";
+			</#if>
+			<#if colaborador.pessoal.ctps.ctpsSerie?exists>
+				colaboradorMap["pessoal.ctps.ctpsSerie"] = "${colaborador.pessoal.ctps.ctpsSerie}";
+			</#if>
+			<#if colaborador.pessoal.ctps.ctpsDv?exists>
+				colaboradorMap["pessoal.ctps.ctpsDv"] = "${colaborador.pessoal.ctps.ctpsDv}";
+			</#if>
+			<#if colaborador.pessoal.ctps.ctpsUf?exists>
+				colaboradorMap["pessoal.ctps.ctpsUf.sigla"] = "${colaborador.pessoal.ctps.ctpsUf.sigla}";
+			</#if>
+		</#if>
+		colaboradorMap["pessoal.pis"] = "${colaborador.pessoal.pis}";
+	</#if>
+
 		function setaCampos()
 		{
 			document.getElementById('colaborador.cursos').value = document.getElementById('desCursos').value;

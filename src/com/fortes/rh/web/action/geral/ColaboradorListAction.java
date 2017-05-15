@@ -219,7 +219,9 @@ public class ColaboradorListAction extends MyActionSupportList
 
 	private enum Nomenclatura {
 		ENVIADO_FP("Enviado Fortes Pessoal"),
-		CODIGO_FP ("Cód. Fortes Pessoal");
+		CODIGO_FP ("Cód. Fortes Pessoal"),
+		NATUARLIDADE("Naturalidade"),
+		NACIONALIDADE ("Nacionalidade ");
 		
 		private String descricao;
 		
@@ -579,6 +581,8 @@ public class ColaboradorListAction extends MyActionSupportList
 		if (existeEmpresaIntegradaAc){
 			colunas.add(new ReportColumn(Nomenclatura.ENVIADO_FP.getDescricao(), "enviadoParaAC", "naoIntegraAc", 25, false));	
 			colunas.add(new ReportColumn(Nomenclatura.CODIGO_FP.getDescricao(), "codigoACRelatorio", "co.codigoAC", 10, false));
+			colunas.add(new ReportColumn(Nomenclatura.NATUARLIDADE.getDescricao(), "naturalidade", "", 50, false));
+			colunas.add(new ReportColumn(Nomenclatura.NACIONALIDADE.getDescricao(), "nacionalidade", "", 40, false));
 		}
 		
 		if (habilitaCampoExtra){
@@ -618,6 +622,8 @@ public class ColaboradorListAction extends MyActionSupportList
 			if(colaboradores.isEmpty())
 				throw new Exception("SEM_DADOS");
 			
+			setNaturalidadeAndNacionalidade();
+			
 			JRDataSource dataSource = setupRelatorio();
 			
 			montaColunas();
@@ -642,6 +648,11 @@ public class ColaboradorListAction extends MyActionSupportList
 			prepareRelatorioDinamico();
  			return Action.INPUT;
 		}
+	}
+	
+	private void setNaturalidadeAndNacionalidade(){
+		if(colunasMarcadas.contains("naturalidade") || colunasMarcadas.contains("nacionalidade"))
+			colaboradorManager.getNaturalidadesAndNacionalidades(colaboradores, EmpresaUtil.empresasSelecionadas(empresa.getId(),empresasPermitidas));
 	}
 
 	private JRDataSource setupRelatorio()
@@ -706,7 +717,8 @@ public class ColaboradorListAction extends MyActionSupportList
 		AbstractColumn aCol;
 		for (ReportColumn coluna : colunasMarcadasRedimensionadas)
 		{
-			if(!integradaAc && (coluna.getName().equals(Nomenclatura.ENVIADO_FP.getDescricao()) || coluna.getName().equals(Nomenclatura.CODIGO_FP.getDescricao())))
+			if(!integradaAc && (coluna.getName().equals(Nomenclatura.ENVIADO_FP.getDescricao()) || coluna.getName().equals(Nomenclatura.CODIGO_FP.getDescricao())
+					|| coluna.getName().equals(Nomenclatura.NATUARLIDADE.getDescricao()) || coluna.getName().equals(Nomenclatura.NACIONALIDADE.getDescricao())))
 				continue;
 			
 		    aCol = ColumnBuilder.getNew()
@@ -811,6 +823,8 @@ public class ColaboradorListAction extends MyActionSupportList
 			
 			if(colaboradores.isEmpty())
 				throw new Exception("SEM_DADOS");
+			
+			setNaturalidadeAndNacionalidade();
 			
 			reportFilter = "Emitido em: " + DateUtil.formataDiaMesAno(new Date());
 			reportTitle = configuracaoRelatorioDinamico.getTitulo();

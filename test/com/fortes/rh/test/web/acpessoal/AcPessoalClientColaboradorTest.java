@@ -12,6 +12,7 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.ws.TEmpregado;
+import com.fortes.rh.model.ws.TNaturalidadeAndNacionalidade;
 import com.fortes.rh.model.ws.TRemuneracaoVariavel;
 import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
@@ -374,6 +375,27 @@ public class AcPessoalClientColaboradorTest extends AcPessoalClientTest
 			execute("INSERT INTO EPG (EMP_CODIGO,CODIGO,NOME) VALUES ('"+ empCodigo +"','"+ colaborador.getCodigoAC() +"','TESTE do RH')");
 			
 			acPessoalClientColaboradorImpl.getFerias(empresa, new String[]{colaborador.getCodigoAC()}, null, null);
+		} catch (Exception e) {
+			exception = e;
+		}
+		 assertNull(exception);
+	}
+	
+	public void testGetNaturalidadesAndNacionalidades()
+	{
+		montaMockGrupoAC();
+		
+		Exception exception = null;
+		try {
+			Colaborador colaborador = ColaboradorFactory.getEntity("991186", 1L);
+			colaborador.setEmpresa(empresa);
+
+			execute("INSERT INTO EPG (EMP_CODIGO,CODIGO,NOME,MUN_UFD_SIGLA_NATURALIDADE,MUN_CODIGO_NATURALIDADE,NACIONALIDADE) VALUES ('"+ empCodigo +"','"+ colaborador.getCodigoAC() +"','TESTE do RH','CE','04400','10')");
+			
+			TNaturalidadeAndNacionalidade[] tNaturalidadesAndNacionalidades = acPessoalClientColaboradorImpl.getNaturalidadesAndNacionalidades(empresa, new String[]{colaborador.getCodigoAC()});
+			
+			assertEquals("Fortaleza - CE", ((TNaturalidadeAndNacionalidade) tNaturalidadesAndNacionalidades[0]).getNaturalidade() );
+			assertEquals("Brasileira", ((TNaturalidadeAndNacionalidade) tNaturalidadesAndNacionalidades[0]).getNacionalidade() );
 		} catch (Exception e) {
 			exception = e;
 		}

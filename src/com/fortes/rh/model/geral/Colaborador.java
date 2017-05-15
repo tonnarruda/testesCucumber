@@ -268,6 +268,10 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	private ColaboradorCertificacao colaboradorCertificacao;
 	@Transient
 	private boolean iscritoNaTurma;
+	@Transient
+	private String naturalidade = "";
+	@Transient
+	private String nacionalidade = "";
 
 	public Colaborador()
 	{
@@ -3440,5 +3444,21 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 
 	public void setAvaliadorNome(String avaliadorNome) {
 		this.avaliadorNome = avaliadorNome;
+	}
+
+	public String getNaturalidade() {
+		return naturalidade;
+	}
+
+	public void setNaturalidade(String naturalidade) {
+		this.naturalidade = naturalidade;
+	}
+
+	public String getNacionalidade() {
+		return nacionalidade;
+	}
+
+	public void setNacionalidade(String nacionalidade) {
+		this.nacionalidade = nacionalidade;
 	}
 }

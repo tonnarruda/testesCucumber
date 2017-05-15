@@ -112,6 +112,7 @@ import com.fortes.rh.model.json.ColaboradorJson;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.ws.TEmpregado;
 import com.fortes.rh.model.ws.TFeedbackPessoalWebService;
+import com.fortes.rh.model.ws.TNaturalidadeAndNacionalidade;
 import com.fortes.rh.model.ws.TPeriodoGozo;
 import com.fortes.rh.model.ws.TRemuneracaoVariavel;
 import com.fortes.rh.model.ws.TSituacao;
@@ -3096,6 +3097,54 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public Collection<Colaborador> findByAdmitidos(Date data) {
 		return getDao().findByAdmitidos(data);
+	}
+
+	public TNaturalidadeAndNacionalidade getNaturalidadeAndNacionalidade(Empresa empresa, String codigoAc) throws IntegraACException {
+		TNaturalidadeAndNacionalidade[] tNaturalidadesAndNacionalidades = acPessoalClientColaborador.getNaturalidadesAndNacionalidades(empresa, new String[]{codigoAc});
+		
+		if(tNaturalidadesAndNacionalidades != null && tNaturalidadesAndNacionalidades.length == 1)
+			return tNaturalidadesAndNacionalidades[0];
+		else
+			return null;
+	}
+	
+	public Collection<Colaborador> getNaturalidadesAndNacionalidades(Collection<Colaborador> colaboradores, Long... empresasIds){
+		try{
+			for (Long empresaId : empresasIds) {
+				Empresa empresa = empresaManager.findByIdProjection(empresaId);
+
+				if(!empresa.isAcIntegra() || empresa.getGrupoAC() == null || "".equals(empresa.getGrupoAC()))
+					continue;
+
+				Collection<String> codigosFosrtesPessoal = new ArrayList<>();
+				for (Colaborador colaborador : colaboradores) {
+					if(!colaborador.isNaoIntegraAc() && colaborador.getCodigoAC() != null && !"".equals(colaborador.getCodigoAC()) && colaborador.getEmpresa().getId().equals(empresaId))
+						codigosFosrtesPessoal.add(colaborador.getCodigoAC());
+				}
+
+				if(codigosFosrtesPessoal.size() > 0){
+					TNaturalidadeAndNacionalidade[] tNaturalidadesAndNacionalidades = acPessoalClientColaborador.getNaturalidadesAndNacionalidades(empresa, codigosFosrtesPessoal.toArray(new String[codigosFosrtesPessoal.size()]));
+
+					Map<String, TNaturalidadeAndNacionalidade> mapColabNaturalidade = new HashMap<String, TNaturalidadeAndNacionalidade>();
+
+					for (TNaturalidadeAndNacionalidade tNaturalidadeAndNacionalidade : tNaturalidadesAndNacionalidades) 
+						mapColabNaturalidade.put(tNaturalidadeAndNacionalidade.getCodigo(), tNaturalidadeAndNacionalidade);
+
+					for(Colaborador colaborador : colaboradores){
+						if(colaborador.getCodigoAC() != null && !"".equals(colaborador.getCodigoAC()) && mapColabNaturalidade.containsKey(colaborador.getCodigoAC())){
+							colaborador.setNaturalidade(mapColabNaturalidade.get(colaborador.getCodigoAC()).getNaturalidade());
+							colaborador.setNacionalidade(mapColabNaturalidade.get(colaborador.getCodigoAC()).getNacionalidade());
+						}
+					}
+				}
+			}
+			
+			return colaboradores;
+			
+		} catch (IntegraACException e) {
+			System.out.println(e.getMessage());
+			return colaboradores;
+		}
 	}
 	
 	public void setColaboradorPeriodoExperienciaAvaliacaoManager(ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager) 

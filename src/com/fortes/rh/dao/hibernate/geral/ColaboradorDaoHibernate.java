@@ -1195,7 +1195,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		}
 
 		// Ordenação
-		if(order == null)
+		if(order == null || "".equals(order))
 			hql.append(" order by es.nome, col_3_0_, co.nome ");
 		else
 			hql.append(" order by " + order);

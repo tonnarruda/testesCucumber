@@ -105,6 +105,7 @@ import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Cat;
 import com.fortes.rh.model.sesmt.ColaboradorAfastamento;
 import com.fortes.rh.model.sesmt.Funcao;
+import com.fortes.rh.model.ws.TNaturalidadeAndNacionalidade;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.RelatorioUtil;
@@ -448,6 +449,8 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	{
 		prepare();
 		
+		setNacionalidadeAndNaturalidade();
+		
 		if(historicoColaboradorManager.findByColaboradorProjection(colaborador.getId(), null).size() > 1 || (getEmpresaSistema().isAcIntegra() && !"".equals(colaborador.getCodigoAC())))
 			editarHistorico = false;
 
@@ -469,6 +472,21 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		periodoExperiencias = periodoExperienciaManager.findPeriodosAtivosAndPeriodosConfiguradosParaColaborador(getEmpresaSistema().getId(), colaborador.getId());
 		
 		return Action.SUCCESS;
+	}
+
+	private void setNacionalidadeAndNaturalidade() {
+		if(getEmpresaSistema().isAcIntegra() && colaborador.getCodigoAC() != null && !colaborador.isNaoIntegraAc()){
+			TNaturalidadeAndNacionalidade tNaturalidadeAndNacionalidade;
+			try {
+				tNaturalidadeAndNacionalidade = colaboradorManager.getNaturalidadeAndNacionalidade(getEmpresaSistema(), colaborador.getCodigoAC());
+				if(tNaturalidadeAndNacionalidade != null){
+					colaborador.setNaturalidade(tNaturalidadeAndNacionalidade.getNaturalidade());
+					colaborador.setNacionalidade(tNaturalidadeAndNacionalidade.getNacionalidade());
+				}
+			} catch (IntegraACException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	/**

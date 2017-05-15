@@ -81,6 +81,7 @@ import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.relatorio.ParticipacaoColaboradorCipa;
 import com.fortes.rh.model.sesmt.Cat;
 import com.fortes.rh.model.sesmt.ColaboradorAfastamento;
+import com.fortes.rh.model.ws.TNaturalidadeAndNacionalidade;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
@@ -259,10 +260,12 @@ public class ColaboradorEditActionTest_JUnit4
 		Empresa empresa = EmpresaFactory.getEmpresa(2L);
 		empresa.setCampoExtraColaborador(true);
 		empresa.setCriarUsuarioAutomaticamente(true);
+		empresa.setAcIntegra(true);
 		action.setEmpresaSistema(empresa);
 		
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
 		colaborador.setEmpresa(empresa);
+		colaborador.setCodigoAC("123456");
 		action.setColaborador(colaborador);
 		
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L);
@@ -280,11 +283,21 @@ public class ColaboradorEditActionTest_JUnit4
 		ConfiguracaoCampoExtraVisivelObrigadotorio configCampoExtraVisivelObrigadotorio = ConfiguracaoCampoExtraVisivelObrigadotorioFactory.getEntity(empresa.getId(), "texto1", TipoConfiguracaoCampoExtra.CANDIDATO_EXTERNO.getTipo()); 
 		configCampoExtraVisivelObrigadotorio.setCamposExtrasObrigatorios("texto1");
 		
+		TNaturalidadeAndNacionalidade tNaturalidadeAndNacionalidade = new TNaturalidadeAndNacionalidade();
+		tNaturalidadeAndNacionalidade.setNacionalidade("Brasileiro");
+		tNaturalidadeAndNacionalidade.setNaturalidade("Fortaleza - CE");;
+		
 		when(parametrosDoSistemaManager.findByIdProjection(1L)).thenReturn(ParametrosDoSistemaFactory.getEntity(1L));
 		when(configuracaoCampoExtraVisivelObrigadotorioManager.findByEmpresaId(empresa.getId(), TipoConfiguracaoCampoExtra.COLABORADOR.getTipo())).thenReturn(configCampoExtraVisivelObrigadotorio);
 		when(colaboradorManager.findByIdComHistoricoConfirmados(colaborador.getId())).thenReturn(colaborador);
 		when(historicoColaboradorManager.getHistoricoAtual(colaborador.getId())).thenReturn(historicoColaborador);
+		when(historicoColaboradorManager.getHistoricoAtual(colaborador.getId())).thenReturn(historicoColaborador);
+		when(colaboradorManager.getNaturalidadeAndNacionalidade(empresa, colaborador.getCodigoAC())).thenReturn(tNaturalidadeAndNacionalidade);
+		when(areaOrganizacionalManager.getMascaraLotacoesAC(empresa)).thenReturn("99.99.99");
+		
 		assertEquals(Action.SUCCESS, action.prepareUpdate());
+		assertEquals("Fortaleza - CE", action.getColaborador().getNaturalidade());
+		assertEquals("Brasileiro", action.getColaborador().getNacionalidade());
 	}
 	
 	@SuppressWarnings("unchecked")

@@ -39,6 +39,7 @@ import com.fortes.rh.model.json.ColaboradorJson;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.ws.TEmpregado;
 import com.fortes.rh.model.ws.TFeedbackPessoalWebService;
+import com.fortes.rh.model.ws.TNaturalidadeAndNacionalidade;
 import com.fortes.rh.model.ws.TPeriodoGozo;
 import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.security.spring.aop.callback.ColaboradorAuditorCallbackImpl;
@@ -250,4 +251,6 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Colaborador> findAniversariantesPorTempoDeEmpresa(int mes, boolean agruparPorArea, Long[] empresaIds, Long[] estabelecimentoIds, Long[] areaIds) throws Exception;
 	public Collection<Colaborador> findColaboradoresQueNuncaRealizaramTreinamento(Long[] empresasIds, Long[] cursosIds, Long[] areaIds, Long[] estabelecimentoIds) throws Exception;
 	public Collection<Colaborador> findByAdmitidos(Date data);
+	public TNaturalidadeAndNacionalidade getNaturalidadeAndNacionalidade(Empresa empresa, String codigoAc) throws IntegraACException;
+	public Collection<Colaborador> getNaturalidadesAndNacionalidades(Collection<Colaborador> colaboradores, Long... empresasIds);
 }

@@ -33,10 +33,11 @@ import com.fortes.rh.business.geral.MensagemManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
-import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
-import com.fortes.rh.model.avaliacao.relatorio.AcompanhamentoExperienciaColaborador;
+import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
+import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
+import com.fortes.rh.model.avaliacao.relatorio.AcompanhamentoExperienciaColaborador;
 import com.fortes.rh.model.dicionario.Escolaridade;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
@@ -49,6 +50,7 @@ import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.json.ColaboradorJson;
 import com.fortes.rh.model.ws.TEmpregado;
+import com.fortes.rh.model.ws.TNaturalidadeAndNacionalidade;
 import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.test.factory.avaliacao.PeriodoExperienciaFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
@@ -552,4 +554,62 @@ public class ColaboradorManagerTest_Junit4
     	
     	assertEquals("O empregado null está sem situação.", e.getMessage());
     }
+    
+    @Test
+    public void testGetNaturalidadesAndNacioanlidades() throws IntegraACException, Exception{
+		
+    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
+    	empresa.setAcIntegra(true);
+    	empresa.setCodigoAC("0001");
+    	empresa.setGrupoAC("001");
+    	
+    	TNaturalidadeAndNacionalidade tNaturalidadeAndNacionalidade1 = new TNaturalidadeAndNacionalidade();
+    	tNaturalidadeAndNacionalidade1.setCodigo("001");
+    	tNaturalidadeAndNacionalidade1.setNaturalidade("Buenos Aires");
+    	tNaturalidadeAndNacionalidade1.setNacionalidade("Agentina");
+    	
+    	TNaturalidadeAndNacionalidade tNaturalidadeAndNacionalidade2 = new TNaturalidadeAndNacionalidade();
+    	tNaturalidadeAndNacionalidade2.setCodigo("003");
+    	tNaturalidadeAndNacionalidade2.setNaturalidade("Fortaleza - CE");
+    	tNaturalidadeAndNacionalidade2.setNacionalidade("Brasileira");
+    	
+    	TNaturalidadeAndNacionalidade[] tNaturalidades = new TNaturalidadeAndNacionalidade[]{tNaturalidadeAndNacionalidade1, tNaturalidadeAndNacionalidade2};
+    	
+    	Colaborador colab1 = ColaboradorFactory.getEntity("001", 1L);
+    	colab1.setEmpresa(empresa);
+    	Colaborador colab2 = ColaboradorFactory.getEntity("003", 3L);
+    	colab2.setEmpresa(empresa);
+    	Collection<Colaborador> colaboradores = Arrays.asList(colab1, colab2);
+    	
+    	String[] colabCodigoFP = new String[]{"001","003"};
+    	
+    	when(acPessoalClientColaborador.getNaturalidadesAndNacionalidades(empresa, colabCodigoFP)).thenReturn(tNaturalidades);
+    	when(empresaManager.findByIdProjection(empresa.getId())).thenReturn(empresa);
+    	
+    	Collection<Colaborador> retorno = colaboradorManager.getNaturalidadesAndNacionalidades(colaboradores, empresa.getId());
+    	
+    	assertEquals(tNaturalidadeAndNacionalidade1.getNacionalidade(), ((Colaborador) retorno.toArray()[0]).getNacionalidade());
+    	assertEquals(tNaturalidadeAndNacionalidade1.getNaturalidade(), ((Colaborador) retorno.toArray()[0]).getNaturalidade());
+    	
+    	assertEquals(tNaturalidadeAndNacionalidade2.getNacionalidade(), ((Colaborador) retorno.toArray()[1]).getNacionalidade());
+    	assertEquals(tNaturalidadeAndNacionalidade2.getNaturalidade(), ((Colaborador) retorno.toArray()[1]).getNaturalidade());
+	}
+    
+    @Test
+    public void testGetNaturalidadeAndNacionalidade() throws IntegraACException, Exception{
+    	TNaturalidadeAndNacionalidade tNaturalidadeAndNacionalidade1 = new TNaturalidadeAndNacionalidade();
+    	tNaturalidadeAndNacionalidade1.setCodigo("001");
+    	tNaturalidadeAndNacionalidade1.setNaturalidade("Buenos Aires");
+    	tNaturalidadeAndNacionalidade1.setNacionalidade("Agentina");
+    	
+    	TNaturalidadeAndNacionalidade[] tNaturalidades = new TNaturalidadeAndNacionalidade[]{tNaturalidadeAndNacionalidade1};
+    	Colaborador colab1 = ColaboradorFactory.getEntity("001", 1L);
+    	
+    	when(acPessoalClientColaborador.getNaturalidadesAndNacionalidades(null, new String[]{colab1.getCodigoAC()})).thenReturn(tNaturalidades);
+    	
+    	TNaturalidadeAndNacionalidade retorno = colaboradorManager.getNaturalidadeAndNacionalidade(null, colab1.getCodigoAC());
+    	
+    	assertEquals(tNaturalidadeAndNacionalidade1.getNacionalidade(), retorno.getNacionalidade());
+    	assertEquals(tNaturalidadeAndNacionalidade1.getNaturalidade(), retorno.getNaturalidade());
+	}
 }

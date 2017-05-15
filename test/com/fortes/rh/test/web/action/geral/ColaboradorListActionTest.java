@@ -45,6 +45,7 @@ import com.fortes.rh.model.geral.ConfiguracaoRelatorioDinamico;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
+import com.fortes.rh.model.ws.TNaturalidadeAndNacionalidade;
 import com.fortes.rh.model.ws.TPeriodoGozo;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
@@ -690,15 +691,26 @@ public class ColaboradorListActionTest
 		camposExtras.setId(1l);
 		
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setCodigoAC("codigoAC");
 		Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
 		colaboradores.add(colaborador);
 		Collection<String> colunasMarcadas = new ArrayList<String>();
 		colunasMarcadas.add("nome");
 		colunasMarcadas.add("co.nomeComercial");
+		colunasMarcadas.add("nacionalidade");
 		action.setColunasMarcadas(colunasMarcadas);
+		
+		TNaturalidadeAndNacionalidade tNaturalidadeAndNacionalidade = new TNaturalidadeAndNacionalidade();
+		tNaturalidadeAndNacionalidade.setCodigo(colaborador.getCodigoAC());
+		tNaturalidadeAndNacionalidade.setNacionalidade("Barsileira");
+		tNaturalidadeAndNacionalidade.setNaturalidade("Fortaleza - CE");
+		
+		Map<String, TNaturalidadeAndNacionalidade> mapColabNaturalidade = new HashMap<String, TNaturalidadeAndNacionalidade>();
+		mapColabNaturalidade.put(tNaturalidadeAndNacionalidade.getCodigo(), tNaturalidadeAndNacionalidade);
 		
 		when(areaOrganizacionalManager.filtraPermitidas(new String[]{}, action.getEmpresa().getId())).thenReturn(new String[]{});
 		when(colaboradorManager.findAreaOrganizacionalByAreas(false, new ArrayList<Long>(), new ArrayList<Long>(), new ArrayList<Long>(), camposExtras, null, null, null, null, null, null, null, null, null, new Long[]{1L})).thenReturn(colaboradores);
+		when(colaboradorManager.getNaturalidadesAndNacionalidades(colaboradores, action.getEmpresa().getId())).thenReturn(colaboradores);
 		
 		assertEquals(Action.SUCCESS, action.relatorioDinamico());
 	}

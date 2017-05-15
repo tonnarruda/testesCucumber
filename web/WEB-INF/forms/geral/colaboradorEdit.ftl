@@ -251,6 +251,13 @@
 			$('#dataAdmissaoTooltipHelp').qtip({ content: 'Não é possível alterar a data de admissão quando integrado com o Fortes Pessoal.' });
 			$('#vinculoTooltipHelp').qtip({ content: 'Não é possível alterar o vínculo quando integrado com o Fortes Pessoal.' });
 			
+			<#if colaborador.id?exists && integraAc && !colaborador.naoIntegraAc>
+				$('.naturalidadeAndNacionalidadeHelp').qtip({
+					content: '<div style="text-align:justify">Informações do sistema Fortes Pessoal.</div>',
+					style: { width: 180 }
+				});
+			</#if>
+			
 			addBuscaCEP('cep', 'endereco', 'bairroNome', 'cidade', 'uf');
 
 			<#if avaliacoes?exists>
@@ -732,6 +739,15 @@
 			<@ww.select label="Sexo" id="sexo" name="colaborador.pessoal.sexo" list="sexos" cssStyle="width: 85px;" liClass="liLeft campo campoAdd"/>
 			<@ww.textfield label="CPF" name="colaborador.pessoal.cpf" id="cpf" liClass="campo campoAdd" cssClass="mascaraCpf" onchange="verificaCpf(this.value);" onblur="verificaCpf(this.value);"/>
 			<@ww.div id="msgCPFDuplicado" cssStyle="display:none;"></@ww.div>
+			
+			<#if colaborador.id?exists && integraAc && !colaborador.naoIntegraAc>
+				<@ww.textfield label="Naturalidade" name="colaborador.naturalidade" id="naturalidade" disabled="true" cssStyle="width: 300px;" liClass="liLeft"/>
+				<img src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: -212px" class="liLeft naturalidadeAndNacionalidadeHelp"/>
+				<@ww.textfield label="Nacionalidade" name="colaborador.nacionalidade" id="nacionalidade" disabled="true" cssStyle="width: 280px;" liClass="liLeft"/>
+				<img src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: -185px" class="naturalidadeAndNacionalidadeHelp"/>
+				<br clear="all"/>
+			</#if>			
+			
 			<@ww.div id="wwgrp_endereco" cssClass="campo">
 				<@ww.textfield label="CEP" name="colaborador.endereco.cep" id="cep" cssClass="mascaraCep" liClass="liLeft campoAdd"/>
 				<@ww.textfield label="Logradouro" name="colaborador.endereco.logradouro" id="endereco" cssStyle="width: 300px;" liClass="liLeft campoAdd" maxLength="40" />
