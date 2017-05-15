@@ -10,6 +10,7 @@ Funcionalidade: Editar Cadastro de EPI
        E eu clico no botão "Gravar"
    Então eu devo ver o título "EPIs (Equipamentos de Proteção Individual)"
 
+#------------------------------------------------------------------------------------------------------------------------
 
   Cenario: Edição do Nome do Fabricante no Cadastro de EPI
     Dado que exista o EPI "Bota" da categoria "Proteção"
@@ -20,6 +21,7 @@ Funcionalidade: Editar Cadastro de EPI
        E eu clico no botão "Gravar"
    Então eu devo ver o título "EPIs (Equipamentos de Proteção Individual)"
 
+#------------------------------------------------------------------------------------------------------------------------
 
   Cenario: Edição do Historico de EPI no Cadastro de EPI
     Dado que exista o EPI "Bota" da categoria "Proteção"

@@ -22,6 +22,8 @@ Dado /^que eu esteja logado com o usuário "([^"]*)"$/ do |nome|
 end
 
 Dado /^que eu esteja deslogado$/ do
+
+  exec_sql "update parametrosdosistema set servidorremprot = 'FORTESAG'"
   page.execute_script("window.location = 'http://localhost:8080/fortesrh/logout.action'")
 end
 

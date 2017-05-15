@@ -2,6 +2,9 @@
 
 Funcionalidade: Gerenciamento de EPIs
 
+
+
+
   Cenário: Cadastro de Gerenciamento de EPIs
     Dado que exista o EPI "jaleco" da categoria "roupas"
     Dado que exista um colaborador "geraldo", da area "administracao", com o cargo "quimico" e a faixa salarial "I"
@@ -66,9 +69,16 @@ Funcionalidade: Gerenciamento de EPIs
     Então eu clico em excluir "geraldo"
     E eu devo ver o alert do confirmar exclusão e clico no ok
     E eu devo ver "Gerenciamento de EPIs excluído com sucesso."
-    
+
     Então eu clico "Exibir Filtro"
     E eu seleciono "Aberta" de "Situação"
     E eu clico no botão "Pesquisar"
     E eu não devo ver "geraldo"
+
+
+
+
+
+
+
 
