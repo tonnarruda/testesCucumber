@@ -21,12 +21,28 @@ Funcionalidade: Gerenciamento de EPIs
 
 #------------------------------------------------------------------------------------------------------------------------
 
-  Cenário: Solicitação/Entrega de vários EPIs
+  Cenário: Solicitação/Entrega um EPI
      Dado que exista o EPI "Bota" da categoria "Proteção_Membro_Inferior"
      Dado que exista o EPI "Luvas" da categoria "Proteção_Membro_Superior"
      Dado que exista o EPI "Capacete" da categoria "Proteção da Cabeça"
      Dado que exista um colaborador "David Cameron", da area "Desenvolvimento", com o cargo "Desenvolvedor" e a faixa salarial "I"
      Dado que eu esteja logado com o usuário "SOS"
+
+     Então eu acesso o menu "SESMT > Cadastros > Tamanhos de EPI/Fardamento"
+         E eu clico no botão "Inserir"
+     Então eu preencho "Descrição" com "Pequeno"
+         E eu clico no botão "Gravar"
+
+     Então eu acesso o menu "SESMT > Cadastros > Categorias de EPI/Fardamento"
+         E eu clico em editar "Proteção_Membro_Inferior"
+         E eu marco "Pequeno"
+         E eu clico no botão "Gravar"
+
+     Então eu acesso o menu "SESMT > Cadastros > Motivos de Solicitação de EPI/Fardamento"
+         E eu clico no botão "Inserir"
+     Então eu preencho "Descrição" com "Solicitação de EPI"
+         E eu clico no botão "Gravar"
+     E eu devo ver "Motivo da solicitação do EPI cadastrado com sucesso."
 
      Então eu acesso o menu "SESMT > Movimentações > Gerenciamento de EPIs"
          E eu clico no botão "Inserir"
@@ -34,6 +50,8 @@ Funcionalidade: Gerenciamento de EPIs
          E eu clico no botão "Pesquisar"
          E eu seleciono "David Cameron - 123.213.623-91" de "Colaborador"
          E eu marco "md"
+         E eu seleciono (JS) "1" de "selectTamanhoEpi_1"
+         E eu seleciono (JS) "1" de "selectMotivoSolicitacaoEpi_1"
          E eu seleciono "Sim" de "Entregues"
          E eu clico no botão "Gravar"
      Então eu devo ver o título "Gerenciamento de EPIs"
@@ -70,14 +88,15 @@ Funcionalidade: Gerenciamento de EPIs
      Então eu preencho "Nome" com "Davi"
          E eu clico no botão "Pesquisar"
          E eu seleciono "David Cameron - 123.213.623-91" de "Colaborador"
-         E eu marco "md"
+         E eu marco "epiIds"
+         E eu preencho o campo (JS) "selectQtdSolicitado" com "2"
          E eu preencho o campo (JS) "Data" com "01/05/2017"
          E eu clico no botão "Gravar"
      Então eu devo ver o título "Gerenciamento de EPIs"
          E eu clico na linha "David Cameron" da imagem "Entregar/Devolver"
          E eu clico na imagem com o título "Inserir entrega"
-         E eu preencho o campo (JS) "dataEntrega" com "11/05/2017"
          E eu preencho "Qtd. Entregue" com "1"
+         E eu preencho o campo (JS) "dataEntrega" com "11/05/2017"
          E eu seleciono "01/02/2011 - a0a1a2a3 - 30" de "epiHistoricoId"
          E eu clico no botão "Gravar"
          E eu devo ver o título "Entrega/Devolução de EPIs"
@@ -185,15 +204,17 @@ Funcionalidade: Gerenciamento de EPIs
      Então eu devo ver o título "Gerenciamento de EPIs"
          E eu clico na linha "David Cameron" da imagem "Entregar/Devolver"
          E eu clico na imagem com o título "Inserir entrega"
-         E eu preencho o campo (JS) "dataEntrega" com "11/05/2017"
          E eu preencho "Qtd. Entregue" com "1"
+         E eu preencho o campo (JS) "dataEntrega" com "11/05/2017"
          E eu seleciono "01/02/2011 - a0a1a2a3 - 30" de "epiHistoricoId"
          E eu clico no botão "Gravar"
          E eu clico na imagem com o título "Inserir Devolução"
-         E eu preencho o campo (JS) "dataDevolucao" com "13/05/2017"
          E eu preencho "Qtd. Devolvida" com "90"
-         E eu saio do campo "Qtd. Devolvida"
-         E eu devo ver "Não é possível inserir uma devolução nessa data"
+         E eu preencho o campo (JS) "dataDevolucao" com "13/05/2017"
+         E eu preencho "Observação" com "Devolução de EPI do Empregado David Cameron"
+         E eu clico no botão "Gravar"
+         E eu devo ver "O total de itens devolvidos não pode ser superior à quantidade de itens entregues"
+
 
 #------------------------------------------------------------------------------------------------------------------------
 
@@ -220,9 +241,15 @@ Funcionalidade: Gerenciamento de EPIs
          E eu seleciono "01/02/2011 - a0a1a2a3 - 30" de "epiHistoricoId"
          E eu clico no botão "Gravar"
          E eu clico na imagem com o título "Inserir Devolução"
-         E eu preencho o campo (JS) "dataDevolucao" com "01/01/2000"
-         E eu saio do campo "dataDevolucao"
-         E eu devo ver "A data de devolução não pode ser anterior à data de solicitação"
+         E eu preencho "Qtd. Devolvida" com "1"
+         E eu preencho o campo (JS) "dataDevolucao" com "13/05/2017"
+         E eu preencho "Observação" com "Devolução de EPI do Empregado David Cameron"
+         E eu clico no botão "Gravar"
+     Então eu clico na imagem com o título "Excluir"
+         E eu devo ver o alert "Confirma exclusão?" e clico no ok
+         E eu devo ver "A exclusão da entrega não pode ser realizada, pois existem devoluções para o ítem entregue."
+         E eu clico no botão "Voltar"
+
 
 #------------------------------------------------------------------------------------------------------------------------
 
@@ -244,8 +271,8 @@ Funcionalidade: Gerenciamento de EPIs
      Então eu devo ver o título "Gerenciamento de EPIs"
          E eu clico na linha "David Cameron" da imagem "Entregar/Devolver"
          E eu clico na imagem com o título "Inserir entrega"
-         E eu preencho o campo (JS) "dataEntrega" com "11/05/2017"
          E eu preencho "Qtd. Entregue" com "1"
+         E eu preencho o campo (JS) "dataEntrega" com "11/05/2017"
          E eu seleciono "01/02/2011 - a0a1a2a3 - 30" de "epiHistoricoId"
          E eu clico no botão "Gravar"
          E eu clico na imagem com o título "Inserir Devolução"
@@ -321,20 +348,19 @@ Funcionalidade: Gerenciamento de EPIs
      Então eu devo ver o título "Gerenciamento de EPIs"
          E eu clico na linha "David Cameron" da imagem "Entregar/Devolver"
          E eu clico na imagem com o título "Inserir entrega"
-         E eu preencho o campo (JS) "dataEntrega" com "11/05/2016"
          E eu preencho "Qtd. Entregue" com "1"
+         E eu preencho o campo (JS) "dataEntrega" com "11/05/2016"
          E eu seleciono "01/02/2011 - a0a1a2a3 - 30" de "epiHistoricoId"
          E eu clico no botão "Gravar"
      Então eu devo ver "A data de entrega não pode ser anterior à data de solicitação"
          E eu preencho o campo (JS) "dataEntrega" com "11/05/2017"
          E eu clico no botão "Gravar"
          E eu clico na imagem com o título "Inserir Devolução"
-         E eu preencho o campo (JS) "dataDevolucao" com "10/05/2016"
          E eu preencho "Qtd. Devolvida" com "1"
+         E eu preencho o campo (JS) "dataDevolucao" com "10/05/2016"
          E eu preencho "Observação" com "Devolução de EPI do Empregado David Cameron"
          E eu clico no botão "Gravar"
      Então eu devo ver "A data de devolução não pode ser anterior à data de solicitação"
-    E eu espero 5 segundos
          E eu clico no botão "Voltar"
 
 #------------------------------------------------------------------------------------------------------------------------
