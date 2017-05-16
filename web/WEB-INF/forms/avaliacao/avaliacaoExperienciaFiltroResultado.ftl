@@ -14,6 +14,8 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/PerguntaDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorQuestionarioDWR.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AvaliacaoDesempenhoDWR.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AvaliacaoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 
@@ -56,14 +58,40 @@
 		{
 			if(existeModeloAvaliacaoEmDesempnhoEPeriodoExperiencia) {
 				$('#liTipoModeloAvaliacao').show();
-				$('#tipoModeloAvaliacao').attr('checked', 'checked');
+				$('#tipoModeloAvaliacaoDesempenho').attr('checked', 'checked');
 			}
 			else {
 				$('#liTipoModeloAvaliacao').hide();
 				$('#divTipoModeloAvaliacao input:radio').removeAttr('checked');
 			}
+			populaAvaliacoesDeDempenho();
+		}
+		
+		function populaAvaliacoesDeDempenho(){
+			AvaliacaoDWR.tipoAvaliacao($('#avaliacaoExperiencia').val(), decidePopulaAvaliacaoDesempenho);
+		}
+		
+		function decidePopulaAvaliacaoDesempenho(tipoModelo){
+			if(tipoModelo == 'D' || ($('#liTipoModeloAvaliacao').is(':visible') && $('#tipoModeloAvaliacaoDesempenho').is(":checked")) ){
+				AvaliacaoDesempenhoDWR.getAvaliacoesDesempenhoByModelo(createListAvaliacoesDesempenho, $('#avaliacaoExperiencia').val() );
+				$('#periodo').hide();
+				$('#empresaId').parent().parent().show();
+				$('#avaliacoesDesempenho').show();
+				
+			}
+			else{
+				$('#periodo').show();
+				$('#empresaId').parent().parent().hide();
+				$('#avaliacoesDesempenho').hide();
+				populaArea(${empresaSistema.id});
+			} 
 		}
 
+		function createListAvaliacoesDesempenho(data)
+		{
+			addChecks('avaliacoesDesempenhoCheck',data)
+		}
+		
 		function createListPerguntas(data)
 		{
 			addChecks('perguntasCheck',data)
@@ -87,6 +115,9 @@
 		
 		$(document).ready(function($)
 		{
+			$('#periodo').hide();
+			$('#avaliacoesDesempenho').hide();
+			$('#empresaId').parent().parent().hide();
 			$('#liTipoModeloAvaliacao').hide();
 			
 			var empresa = $('#empresa').val();
@@ -119,6 +150,9 @@
 	<@ww.actionmessage />
 
 		<@ww.form name="form" action="imprimeResultado.action" onsubmit="${validarCampos}" method="POST">
+			<#list empresas as empresa>	
+				<input type="hidden" name="empresasPermitidas" value="${empresa.id}" />
+			</#list>
 			<@ww.select label="Modelo de Avaliação" required="true" name="avaliacaoExperiencia.id" id="avaliacaoExperiencia" list="" listKey="id" listValue="titulo" headerKey="" headerValue="Selecione..." onchange="populaPesquisaAspecto(this.value);exibeTipoModeloAvaliacao(this.value);"/>
 			<li id="liTipoModeloAvaliacao" style="width: 505px;">
 				<fieldset>
@@ -127,17 +161,22 @@
 						Escolha um desses tipos:<br />
 					</@ww.div>
 					<@ww.div id="divTipoModeloAvaliacao" cssClass="radio">
-						<input id="tipoModeloAvaliacao" name="tipoModeloAvaliacao" type="radio" value="D" checked/><label>Avaliação Desempenho</label>
-						<input id="tipoModeloAvaliacao" name="tipoModeloAvaliacao" type="radio" value="A"/><label>Acomp. de Período de Experiência</label>
+						<input id="tipoModeloAvaliacaoDesempenho" name="tipoModeloAvaliacao" type="radio" value="D" onchange="populaAvaliacoesDeDempenho();" checked/><label>Avaliação Desempenho</label>
+						<input id="tipoModeloAvaliacaoExperiencia" name="tipoModeloAvaliacao" type="radio" value="A" onchange="populaAvaliacoesDeDempenho();" /><label>Acomp. de Período de Experiência</label>
 					</@ww.div>
 				</fieldset>
 				<br />
 			</li>	
 
-			<@ww.datepicker label="Período" name="periodoIni" id="periodoIni" cssClass="mascaraData validaDataIni" liClass="liLeft" after="a" value="${periodoIniFormatado}"/>
-			<@ww.datepicker label="" name="periodoFim" id="periodoFim" cssClass="mascaraData validaDataFim" value="${periodoFimFormatado}"/>
-			
+			<@ww.div id="periodo">
+				<@ww.datepicker label="Período das respostas" name="periodoIni" id="periodoIni" cssClass="mascaraData validaDataIni" liClass="liLeft" after="a" value="${periodoIniFormatado}"/>
+				<@ww.datepicker label="" name="periodoFim" id="periodoFim" cssClass="mascaraData validaDataFim" value="${periodoFimFormatado}"/>
+			</@ww.div>
+			<@ww.div id="avaliacoesDesempenho">
+				<@frt.checkListBox label="Avaliações de Desempenho" name="avaliacoesDesempenhoCheck" id="avaliacoesDesempenhoCheck" list="avaliacoesDesempenhoCheckList" filtro="true"/>
+			</@ww.div>
 			<@ww.select label="Empresa" name="empresa.id" id="empresaId" listKey="id" listValue="nome" list="empresas" headerKey="-1" headerValue="Todas" cssClass="selectEmpresa" onchange="populaArea(this.value);"/>
+			
 			<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areasCheck" list="areasCheckList" filtro="true" selectAtivoInativo="true"/>
 			<@frt.checkListBox label="Exibir apenas os Aspectos" name="aspectosCheck" id="aspectosCheck" list="aspectosCheckList" filtro="true"/>
 			<@frt.checkListBox label="Exibir apenas as Perguntas" name="perguntasCheck" id="perguntasCheck" list="perguntasCheckList" filtro="true"/>

@@ -75,6 +75,7 @@
 				<param name="dataSource">resultadoQuestionarios</param>
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">resultadoQuestionario.pdf</param>
+				<param name="virtualizar">false</param>
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/fichaMedicaFiltroResultado.ftl</result>
 		</action>

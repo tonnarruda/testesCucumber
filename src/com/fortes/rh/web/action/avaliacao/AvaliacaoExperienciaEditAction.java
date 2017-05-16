@@ -21,6 +21,7 @@ import com.fortes.rh.model.pesquisa.relatorio.QuestionarioRelatorio;
 import com.fortes.rh.model.pesquisa.relatorio.ResultadoQuestionario;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
+import com.fortes.rh.util.EmpresaUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -59,6 +60,8 @@ public class AvaliacaoExperienciaEditAction extends MyActionSupportList
 	private Collection<CheckBox> aspectosCheckList = new ArrayList<CheckBox>();
  	private String[] perguntasCheck;
 	private Collection<CheckBox> perguntasCheckList = new ArrayList<CheckBox>();
+	private Collection<CheckBox> avaliacoesDesempenhoCheckList = new ArrayList<CheckBox>();
+	private String[] avaliacoesDesempenhoCheck;
 	
 	private Date periodoIni;
 	private Date periodoFim;
@@ -73,6 +76,7 @@ public class AvaliacaoExperienciaEditAction extends MyActionSupportList
 	private Collection<ResultadoQuestionario> resultados;
 	private boolean compartilharColaboradores;
 	private Character tipoModeloAvaliacao;
+	private Long[] empresasPermitidas;
 	
 	public String prepareResultado()
 	{
@@ -116,13 +120,13 @@ public class AvaliacaoExperienciaEditAction extends MyActionSupportList
 	    	CollectionUtil<Pergunta> clu = new CollectionUtil<Pergunta>();
 	    	Long[] perguntasIds = clu.convertCollectionToArrayIds(perguntas);
 	    	Long[] areaIds = LongUtil.arrayStringToArrayLong(areasCheck);
-	    	
-    		resultados = avaliacaoManager.montaResultado(perguntas, perguntasIds, areaIds, periodoIni, periodoFim, avaliacaoExperiencia, empresa.getId(), tipoModeloAvaliacao, ocultarQtdRespostas);
+	    
+    		resultados = avaliacaoManager.montaResultado(perguntas, perguntasIds, areaIds, periodoIni, periodoFim, avaliacaoExperiencia, EmpresaUtil.empresasSelecionadas(empresa.getId(), empresasPermitidas), defineTipoModelo(), ocultarQtdRespostas,LongUtil.arrayStringToArrayLong(avaliacoesDesempenhoCheck));
     		parametros.put("TOTAL_COLAB_RESP", avaliacaoExperiencia.getTotalColab());
     		
     		String obsAval = "";
     		if(exibirObsAvaliadores)
-    			obsAval = avaliacaoManager.montaObsAvaliadores(colaboradorRespostaManager.findInPerguntaIdsAvaliacao(perguntasIds, areaIds, periodoIni, periodoFim, empresa.getId(), tipoModeloAvaliacao));
+    			obsAval = avaliacaoManager.montaObsAvaliadores(colaboradorRespostaManager.findInPerguntaIdsAvaliacao(perguntasIds, areaIds, periodoIni, periodoFim, EmpresaUtil.empresasSelecionadas(empresa.getId(), empresasPermitidas), defineTipoModelo(), LongUtil.arrayStringToArrayLong(avaliacoesDesempenhoCheck)));
     		parametros.put("OBS_AVALIADOS", obsAval);
 		}
 		catch (Exception e)
@@ -135,6 +139,14 @@ public class AvaliacaoExperienciaEditAction extends MyActionSupportList
 
     	return Action.SUCCESS;
     }
+	
+	
+	private char defineTipoModelo(){
+		if(tipoModeloAvaliacao != null)
+			return tipoModeloAvaliacao;
+		
+		return avaliacaoExperiencia.getTipoModeloAvaliacao();
+	}
 
 	private String defineModeloDeAvaliacaoDoRelatorio()
 	{
@@ -348,5 +360,26 @@ public class AvaliacaoExperienciaEditAction extends MyActionSupportList
 	public void setTipoModeloAvaliacao(Character tipoModeloAvaliacao)
 	{
 		this.tipoModeloAvaliacao = tipoModeloAvaliacao;
+	}
+
+	public Collection<CheckBox> getAvaliacoesDesempenhoCheckList() {
+		return avaliacoesDesempenhoCheckList;
+	}
+
+	public void setAvaliacoesDesempenhoCheckList(
+			Collection<CheckBox> avaliacoesDesempenhoCheckList) {
+		this.avaliacoesDesempenhoCheckList = avaliacoesDesempenhoCheckList;
+	}
+
+	public String[] getAvaliacoesDesempenhoCheck() {
+		return avaliacoesDesempenhoCheck;
+	}
+
+	public void setAvaliacoesDesempenhoCheck(String[] avaliacoesDesempenhoCheck) {
+		this.avaliacoesDesempenhoCheck = avaliacoesDesempenhoCheck;
+	}
+	
+	public void setEmpresasPermitidas(Long[] empresasPermitidas) {
+		this.empresasPermitidas = empresasPermitidas;
 	}
 }

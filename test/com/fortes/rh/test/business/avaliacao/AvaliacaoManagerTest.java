@@ -148,7 +148,7 @@ public class AvaliacaoManagerTest extends MockObjectTestCase
     	
     	questionarioManager.expects(once()).method("montaResultadosQuestionarios").will(returnValue(resultadoQuestionarios));
     	
-    	Collection<ResultadoQuestionario> resultado = avaliacaoManager.montaResultado(perguntas, null, null, null, null, avaliacao, null, null, false);
+    	Collection<ResultadoQuestionario> resultado = avaliacaoManager.montaResultado(perguntas, null, null, null, null, avaliacao, null, null, false, null);
     	assertEquals(2, resultado.size());
     	assertEquals(1, ((ResultadoQuestionario)resultado.toArray()[0]).getColabRespostas().size());
     }
@@ -162,7 +162,7 @@ public class AvaliacaoManagerTest extends MockObjectTestCase
 		Exception exception=null;
 		
 		try {
-			avaliacaoManager.montaResultado(perguntas, null, null, null, null, avaliacao, null, null, false);
+			avaliacaoManager.montaResultado(perguntas, null, null, null, null, avaliacao, null, null, false, null);
 		} catch (Exception e) {
 			exception=e;
 		}

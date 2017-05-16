@@ -13,6 +13,8 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -504,5 +506,14 @@ public class AvaliacaoDesempenhoManagerTest_Junit4
 		when(configuracaoNivelCompetenciaCriterioManager.findByConfiguracaoNivelCompetencia(cncColab1.getId(), cncf.getId())).thenReturn(cncCriterios);
 		when(configuracaoNivelCompetenciaCriterioManager.findByConfiguracaoNivelCompetencia(cncColab2.getId(), cncf.getId())).thenReturn(cncCriterios);
 		when(nivelCompetenciaManager.findAllSelect(empresa.getId(), nivelCompetenciaHistorico.getId(), null)).thenReturn(NivelCompetenciaFactory.getCollection());
+	}
+	
+	@Test
+	public void testFindByModelo() {
+		Long modeloId = 2L;
+		Collection<AvaliacaoDesempenho> avaliacoesDesempenho = AvaliacaoDesempenhoFactory.getCollection();
+		when(avaliacaoDesempenhoDao.findByModelo(modeloId)).thenReturn(avaliacoesDesempenho);
+		assertEquals(avaliacoesDesempenho.size(), avaliacaoDesempenhoManager.findByModelo(modeloId).size());
+		verify(avaliacaoDesempenhoDao, times(1)).findByModelo(modeloId);
 	}
 }

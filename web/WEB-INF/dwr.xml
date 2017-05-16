@@ -175,6 +175,9 @@
 		<create creator="spring" javascript="LntDWR">
 			<param name="beanName" value="lntDWR"/>
 		</create>
+		<create creator="spring" javascript="AvaliacaoDWR">
+			<param name="beanName" value="avaliacaoDWR"/>
+		</create>
 		
 		<convert converter="bean" match="com.opensymphony.xwork.ValidationAwareSupport"/>
 		

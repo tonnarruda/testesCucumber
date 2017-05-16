@@ -1,12 +1,21 @@
 package com.fortes.rh.test.dao.hibernate.pesquisa;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDao;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDesempenhoDao;
+import com.fortes.rh.dao.avaliacao.PeriodoExperienciaDao;
 import com.fortes.rh.dao.captacao.CandidatoDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
@@ -14,6 +23,7 @@ import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
 import com.fortes.rh.dao.desenvolvimento.TurmaDao;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
+import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.pesquisa.AspectoDao;
 import com.fortes.rh.dao.pesquisa.ColaboradorQuestionarioDao;
 import com.fortes.rh.dao.pesquisa.ColaboradorRespostaDao;
@@ -23,6 +33,7 @@ import com.fortes.rh.dao.pesquisa.QuestionarioDao;
 import com.fortes.rh.dao.pesquisa.RespostaDao;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
+import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
@@ -33,6 +44,7 @@ import com.fortes.rh.model.dicionario.TipoPergunta;
 import com.fortes.rh.model.dicionario.TipoQuestionario;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.pesquisa.Aspecto;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
@@ -42,12 +54,14 @@ import com.fortes.rh.model.pesquisa.Pesquisa;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.model.pesquisa.Resposta;
 import com.fortes.rh.model.pesquisa.relatorio.RespostaQuestionario;
-import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.dao.GenericDaoHibernateTest_JUnit4;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoDesempenhoFactory;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
+import com.fortes.rh.test.factory.avaliacao.PeriodoExperienciaFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
+import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
@@ -61,25 +75,33 @@ import com.fortes.rh.test.factory.pesquisa.QuestionarioFactory;
 import com.fortes.rh.test.factory.pesquisa.RespostaFactory;
 import com.fortes.rh.util.DateUtil;
 
-public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest<ColaboradorResposta>
+public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<ColaboradorResposta>
 {
-	private ColaboradorRespostaDao colaboradorRespostaDao;
-	private ColaboradorDao colaboradorDao;
-	private HistoricoColaboradorDao historicoColaboradorDao;
-	private CargoDao cargoDao;
-	private FaixaSalarialDao faixaSalarialDao;
-	private PesquisaDao pesquisaDao;
-	private QuestionarioDao questionarioDao;
-	private ColaboradorQuestionarioDao colaboradorQuestionarioDao;
-	private PerguntaDao perguntaDao;
-	private RespostaDao respostaDao;
-	private AreaOrganizacionalDao areaOrganizacionalDao;
-	private AspectoDao aspectoDao;
-	private TurmaDao turmaDao;
-	private CandidatoDao candidatoDao;
-	private AvaliacaoDesempenhoDao avaliacaoDesempenhoDao;
-	private AvaliacaoDao avaliacaoDao;
+	
+	@Autowired private ColaboradorRespostaDao colaboradorRespostaDao;
+	@Autowired private ColaboradorDao colaboradorDao;
+	@Autowired private HistoricoColaboradorDao historicoColaboradorDao;
+	@Autowired private CargoDao cargoDao;
+	@Autowired private FaixaSalarialDao faixaSalarialDao;
+	@Autowired private PesquisaDao pesquisaDao;
+	@Autowired private QuestionarioDao questionarioDao;
+	@Autowired private ColaboradorQuestionarioDao colaboradorQuestionarioDao;
+	@Autowired private PerguntaDao perguntaDao;
+	@Autowired private RespostaDao respostaDao;
+	@Autowired private AreaOrganizacionalDao areaOrganizacionalDao;
+	@Autowired private AspectoDao aspectoDao;
+	@Autowired private TurmaDao turmaDao;
+	@Autowired private CandidatoDao candidatoDao;
+	@Autowired private AvaliacaoDesempenhoDao avaliacaoDesempenhoDao;
+	@Autowired private AvaliacaoDao avaliacaoDao;
+	@Autowired private EmpresaDao empresaDao;
+	@Autowired private PeriodoExperienciaDao periodoExperienciaDao;
 
+	public GenericDao<ColaboradorResposta> getGenericDao()
+	{
+		return colaboradorRespostaDao;
+	}
+	
 	public ColaboradorResposta getEntity()
 	{
 		ColaboradorResposta colaboradorResposta = new ColaboradorResposta();
@@ -95,6 +117,7 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		return colaboradorResposta;
 	}
 
+	@Test
 	public void testCountRespostas()
 	{
 		Turma turma = TurmaFactory.getEntity();
@@ -128,7 +151,7 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		montaColaboradorResposta(questionario, pergunta, respostaA, null, areaOrganizacional, cargo, null, turma, null, null);
 		montaColaboradorResposta(questionario, pergunta, respostaB, null, areaOrganizacional, cargo, null, turma, null, null);
 
-		List<Object[]> retornos = colaboradorRespostaDao.countRespostas(new Long[]{pergunta.getId()}, null, new Long[]{areaOrganizacional.getId()}, null, null, null, false, turma.getId(), null, null);
+		List<Object[]> retornos = colaboradorRespostaDao.countRespostas(new Long[]{pergunta.getId()}, null, new Long[]{areaOrganizacional.getId()}, null, null, null, false, turma.getId(), null, null, null);
 
 		assertEquals("Total de registros", 2, retornos.size());
 
@@ -142,6 +165,7 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		assertEquals("II - Quantidade", 1, qtdRespostaB[1]);
 	}
 	
+	@Test
 	public void testCountRespostasConsiderandoTipoModeloAvaliacao()
 	{
 		Questionario questionario = QuestionarioFactory.getEntity();
@@ -170,13 +194,14 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		montaColaboradorResposta(questionario, pergunta, respostaA, null, null, null, null, null, null, avaliacaoDesempenho);
 		montaColaboradorResposta(questionario, pergunta, respostaB, null, null, null, null, null, null, avaliacaoDesempenho);
 
-		List<Object[]> retornoAvaliacaoDesempenho = colaboradorRespostaDao.countRespostas(new Long[]{pergunta.getId()}, null, null, null, null, null, false, null, null, TipoModeloAvaliacao.DESEMPENHO);
-		List<Object[]> retornoAcompPerExperiencia = colaboradorRespostaDao.countRespostas(new Long[]{pergunta.getId()}, null, null, null, null, null, false, null, null, TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA);
+		List<Object[]> retornoAvaliacaoDesempenho = colaboradorRespostaDao.countRespostas(new Long[]{pergunta.getId()}, null, null, null, null, null, false, null, null, TipoModeloAvaliacao.DESEMPENHO, null);
+		List<Object[]> retornoAcompPerExperiencia = colaboradorRespostaDao.countRespostas(new Long[]{pergunta.getId()}, null, null, null, null, null, false, null, null, TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA, null);
 
 		assertEquals("Registros com Avaliação de Desempenho", 2, retornoAvaliacaoDesempenho.size());
 		assertEquals("Registros com Acomp. de Período de Experiência", 1, retornoAcompPerExperiencia.size());
 	}
 	
+	@Test
 	public void testCountRespostasComAvaliacaoDesempenho()
 	{
 		Colaborador colaborador = ColaboradorFactory.getEntity();
@@ -188,6 +213,7 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		colaboradorRespostaDao.countRespostas(colaborador.getId(), avaliacaoDesempenho.getId(), false);
 	}
 	
+	@Test
 	public void testCountRespostasMultiplaComAvaliacaoDesempenho()
 	{
 		Colaborador colaborador = ColaboradorFactory.getEntity();
@@ -243,6 +269,7 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		assertEquals("II - Quantidade", 2, qtdRespostaB[1]);
 	}
 	
+	@Test
 	public void testCountRespostasMultipla()
 	{
 		Turma turma = TurmaFactory.getEntity();
@@ -277,7 +304,7 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		montaColaboradorResposta(questionario, pergunta, respostaA, null, areaOrganizacional, cargo, null, turma, null, null);
 		montaColaboradorResposta(questionario, pergunta, respostaB, null, areaOrganizacional, cargo, null, turma, DateUtil.criarDataMesAno(22, 10, 2013), null);
 		
-		List<Object[]> retornos = colaboradorRespostaDao.countRespostasMultiplas(new Long[]{pergunta.getId()}, null, new Long[]{areaOrganizacional.getId()}, null, null, null, false, turma.getId(), null);
+		List<Object[]> retornos = colaboradorRespostaDao.countRespostasMultiplas(new Long[]{pergunta.getId()}, null, new Long[]{areaOrganizacional.getId()}, null, null, null, false, turma.getId(), null, null, null);
 		
 		assertEquals("Total de registros pela data de resposta", 2, retornos.size());
 		
@@ -290,10 +317,11 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		assertEquals("II - Ordem pergunta", 2, qtdRespostaB[0]);
 		assertEquals("II - Quantidade", 1, qtdRespostaB[1]);
 		
-		retornos = colaboradorRespostaDao.countRespostasMultiplas(new Long[]{pergunta.getId()}, null, new Long[]{areaOrganizacional.getId()}, null, null, DateUtil.criarDataMesAno(22, 10, 2013), true, turma.getId(), null);
+		retornos = colaboradorRespostaDao.countRespostasMultiplas(new Long[]{pergunta.getId()}, null, new Long[]{areaOrganizacional.getId()}, null, null, DateUtil.criarDataMesAno(22, 10, 2013), true, turma.getId(), null, null, null);
 		assertEquals("Total de registros pela data de desligamento", 1, retornos.size());
 	}
 	
+	@Test
 	public void testCountRespostasRespondidaEm()
 	{
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
@@ -325,7 +353,7 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		montaColaboradorResposta(questionario, pergunta, respostaA, null, areaOrganizacional, cargo, DateUtil.criarAnoMesDia(2008, 11, 10), null, null, null);
 		montaColaboradorResposta(questionario, pergunta, respostaB, null, areaOrganizacional, cargo, DateUtil.criarAnoMesDia(2008, 11, 10), null, DateUtil.criarAnoMesDia(2008, 11, 10), null);
 		
-		List<Object[]> retornos = colaboradorRespostaDao.countRespostas(new Long[]{pergunta.getId()}, null, new Long[]{areaOrganizacional.getId()}, null, DateUtil.criarAnoMesDia(2008, 11, 10), DateUtil.criarAnoMesDia(2008, 11, 10), false, null, null, null);
+		List<Object[]> retornos = colaboradorRespostaDao.countRespostas(new Long[]{pergunta.getId()}, null, new Long[]{areaOrganizacional.getId()}, null, DateUtil.criarAnoMesDia(2008, 11, 10), DateUtil.criarAnoMesDia(2008, 11, 10), false, null, null, null, null);
 		
 		assertEquals("Total de registros pela data de resposta", 2, retornos.size());
 		
@@ -340,10 +368,11 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		assertEquals("II - Quantidade", 1, qtdRespostaB[1]);
 		
 		// Testa pela data de desligamento
-		retornos = colaboradorRespostaDao.countRespostas(new Long[]{pergunta.getId()}, null, new Long[]{areaOrganizacional.getId()}, null, DateUtil.criarAnoMesDia(2008, 11, 10), DateUtil.criarAnoMesDia(2008, 11, 10), true, null, null, null);
+		retornos = colaboradorRespostaDao.countRespostas(new Long[]{pergunta.getId()}, null, new Long[]{areaOrganizacional.getId()}, null, DateUtil.criarAnoMesDia(2008, 11, 10), DateUtil.criarAnoMesDia(2008, 11, 10), true, null, null, null, null);
 		assertEquals("Total de registros pela data de desligamento", 1, retornos.size());
 	}
 
+	@Test
 	public void testFindInPerguntaIds()
 	{
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
@@ -381,6 +410,7 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		assertEquals("Pela data de desligamento", 1, colaboradorRespostas.size());
 	}
 	
+	@Test
 	public void testFindInPerguntaIdsAnonima()
 	{
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
@@ -414,6 +444,7 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		assertEquals(2, colaboradorRespostas.size());
 	}
 	
+	@Test
 	public void testFindInPerguntaIdsRespondidaEm()
 	{
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
@@ -445,6 +476,7 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		assertEquals(1, colaboradorRespostas.size());
 	}
 	
+	@Test
 	public void testFindInPerguntaIdsEntrevista()
 	{
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
@@ -496,6 +528,7 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		assertEquals(1, colaboradorRespostas.size());
 	}
 	
+	@Test
 	public void testFindByQuestionarioColaborador()
 	{
 		Questionario questionario = QuestionarioFactory.getEntity();
@@ -527,6 +560,7 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		assertEquals(1, colaboradorRespostas.size());
 	}
 	
+	@Test
 	public void testFindByColaboradorQuestionario()
 	{
 		Questionario questionario = QuestionarioFactory.getEntity();
@@ -558,6 +592,7 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		assertEquals(1, colaboradorRespostas.size());
 	}
 	
+	@Test
 	public void testFindByQuestionarioCandidato()
 	{
 		Questionario questionario = QuestionarioFactory.getEntity();
@@ -589,6 +624,7 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		assertEquals(1, colaboradorRespostas.size());
 	}
 	
+	@Test
 	public void testRemoveByColaboradorQuestionario()
 	{
 		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
@@ -607,6 +643,7 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		assertEquals(0, colaboradorRespostaDao.findRespostasColaborador(colaboradorQuestionario.getId(), null).size());
 	}
 	
+	@Test
 	public void testRemoveByColaboradorQuestionarios()
 	{
 		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
@@ -678,6 +715,7 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		return colaboradorResposta;
 	}
 
+	@Test
 	public void testFindRespostasColaborador()
 	{
 		Colaborador colaborador = ColaboradorFactory.getEntity();
@@ -739,6 +777,7 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		assertEquals(2, colaboradorRespostas.size());
 	}
 	
+	@Test
 	public void testFindRespostasAvaliacaoDesempenho()
 	{
 		Colaborador colaborador = ColaboradorFactory.getEntity();
@@ -790,6 +829,7 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		assertEquals(2, colaboradorRespostas.size());
 	}
 	
+	@Test
 	public void testFindByAvaliadoAndAvaliacaoDesempenho()
 	{
 		Colaborador avaliado = ColaboradorFactory.getEntity();
@@ -865,6 +905,7 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		assertEquals("Sem auto avaliação", 2, respostas2.size());
 	}
 
+	@Test
 	public void testCountColaboradorAvaliacaoRespondida() 
 	{
 		Avaliacao avaliacao1 = AvaliacaoFactory.getEntity();
@@ -893,6 +934,7 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		assertEquals(new Integer(0), colaboradorRespostaDao.countColaboradorAvaliacaoRespondida(avaliacao2.getId()));
 	}
 	
+	@Test
 	public void testExisteRespostaSemCargo() 
 	{
 		Pergunta p1 = PerguntaFactory.getEntity();
@@ -918,6 +960,7 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		assertTrue(colaboradorRespostaDao.existeRespostaSemCargo(new Long[] { p1.getId(), p2.getId() }));
 	}
 	
+	@Test
 	public void testFindPerguntasRespostasByColaboradorQuestionario()
 	{
 		Avaliacao avaliacao = AvaliacaoFactory.getEntity();
@@ -1052,6 +1095,7 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		assertEquals("2ª resposta múltipla escolha marcada", colaboradorResposta5.getResposta().getId(), colaboradorRespostasPorOrdem[6].getResposta().getId());
 	}
 	
+	@Test
 	public void testApenasUmColaboradorRespondeuPesquisaAnonima() {
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
 		areaOrganizacional = areaOrganizacionalDao.save(areaOrganizacional);
@@ -1090,6 +1134,7 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		assertEquals(true, apenasUmColaboradorRespondeuPesquisaAnonima);
 	}
 	
+	@Test
 	public void testMaisDeUmColaboradorRespondeuPesquisaAnonima() {
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
 		areaOrganizacional = areaOrganizacionalDao.save(areaOrganizacional);
@@ -1129,85 +1174,120 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		assertEquals(false, apenasUmColaboradorRespondeuPesquisaAnonima);
 	}
 	
-	public GenericDao<ColaboradorResposta> getGenericDao()
+	@Test
+	public void testFindInPerguntaIdsAvaliacaoTipoModeloAvaliacaoDesempenho() 
 	{
-		return colaboradorRespostaDao;
-	}
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(null, "Area", true, empresa);
+		areaOrganizacional = areaOrganizacionalDao.save(areaOrganizacional);
 
-	public void setColaboradorRespostaDao(ColaboradorRespostaDao colaboradorRespostaDao)
+		Avaliacao avaliacao = AvaliacaoFactory.getEntity(empresa, "Avaliação", TipoModeloAvaliacao.DESEMPENHO, null, true);
+		avaliacaoDao.save(avaliacao);
+		
+		Pergunta pergunta = PerguntaFactory.getEntity();
+		pergunta.setTexto("Voce foi criado com a avo?");
+		pergunta.setAvaliacao(avaliacao);
+		pergunta = perguntaDao.save(pergunta);
+
+		Resposta respostaA = RespostaFactory.getEntity();
+		respostaA.setTexto("Sim");
+		respostaA.setOrdem(1);
+		respostaA.setPergunta(pergunta);
+		respostaA = respostaDao.save(respostaA);
+
+		Resposta respostaB = RespostaFactory.getEntity();
+		respostaB.setTexto("Nao");
+		respostaB.setOrdem(2);
+		respostaB.setPergunta(pergunta);
+		respostaB = respostaDao.save(respostaB);
+		
+		Colaborador avaliado = ColaboradorFactory.getEntity(null, empresa);
+		colaboradorDao.save(avaliado);
+		
+		Colaborador avaliador = ColaboradorFactory.getEntity(null, empresa);
+		colaboradorDao.save(avaliador);
+
+		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(null, "Avalição Desempenho", true, avaliacao, empresa);
+		avaliacaoDesempenhoDao.save(avaliacaoDesempenho);
+		
+		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario.setColaborador(avaliado);
+		colaboradorQuestionario.setAvaliador(avaliador);
+		colaboradorQuestionario.setAvaliacaoDesempenho(avaliacaoDesempenho);
+		colaboradorQuestionario = colaboradorQuestionarioDao.save(colaboradorQuestionario);
+		
+		
+		ColaboradorResposta colaboradorResposta = ColaboradorRespostaFactory.getEntity(null, pergunta, respostaA, null, colaboradorQuestionario);
+		colaboradorResposta.setAreaOrganizacional(areaOrganizacional);
+		colaboradorRespostaDao.save(colaboradorResposta);
+		
+		Collection<ColaboradorResposta> retorno = colaboradorRespostaDao.findInPerguntaIdsAvaliacao(new Long[]{pergunta.getId()}, new Long[]{areaOrganizacional.getId()}, null, null, new Long[]{empresa.getId()},
+				TipoModeloAvaliacao.DESEMPENHO, new Long[]{avaliacaoDesempenho.getId()});
+		
+		assertEquals(1, retorno.size());
+		assertEquals(colaboradorResposta.getId(), retorno.iterator().next().getId());
+		
+		Collection<ColaboradorResposta> retornoSemdefinirAvaliacaoDesempenho = colaboradorRespostaDao.findInPerguntaIdsAvaliacao(new Long[]{pergunta.getId()}, new Long[]{areaOrganizacional.getId()}, null, null, new Long[]{empresa.getId()},
+				TipoModeloAvaliacao.DESEMPENHO, null);
+		assertEquals(1, retornoSemdefinirAvaliacaoDesempenho.size());
+	}
+	
+	@Test
+	public void testFindInPerguntaIdsAvaliacaoTipoModeloAcompanhamentoPeriodoExperiencia() 
 	{
-		this.colaboradorRespostaDao = colaboradorRespostaDao;
-	}
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(null, "Area", true, empresa);
+		areaOrganizacional = areaOrganizacionalDao.save(areaOrganizacional);
 
-	public void setColaboradorDao(ColaboradorDao colaboradorDao)
-	{
-		this.colaboradorDao = colaboradorDao;
-	}
+		PeriodoExperiencia periodoExperiencia = PeriodoExperienciaFactory.getEntity(empresa, 30, true);
+		periodoExperienciaDao.save(periodoExperiencia);
+		
+		Avaliacao avaliacao = AvaliacaoFactory.getEntity(empresa, "Avaliação", TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA, periodoExperiencia, true);
+		avaliacaoDao.save(avaliacao);
+		
+		Pergunta pergunta = PerguntaFactory.getEntity();
+		pergunta.setTexto("Voce foi criado com a avo?");
+		pergunta.setAvaliacao(avaliacao);
+		pergunta = perguntaDao.save(pergunta);
 
-	public void setQuestionarioDao(QuestionarioDao questionarioDao)
-	{
-		this.questionarioDao = questionarioDao;
-	}
+		Resposta respostaA = RespostaFactory.getEntity();
+		respostaA.setTexto("Sim");
+		respostaA.setOrdem(1);
+		respostaA.setPergunta(pergunta);
+		respostaA = respostaDao.save(respostaA);
 
-	public void setColaboradorQuestionarioDao(ColaboradorQuestionarioDao colaboradorQuestionarioDao)
-	{
-		this.colaboradorQuestionarioDao = colaboradorQuestionarioDao;
-	}
+		Resposta respostaB = RespostaFactory.getEntity();
+		respostaB.setTexto("Nao");
+		respostaB.setOrdem(2);
+		respostaB.setPergunta(pergunta);
+		respostaB = respostaDao.save(respostaB);
+		
+		Colaborador avaliado = ColaboradorFactory.getEntity(null, empresa);
+		colaboradorDao.save(avaliado);
+		
+		Colaborador avaliador = ColaboradorFactory.getEntity(null, empresa);
+		colaboradorDao.save(avaliador);
 
-	public void setPerguntaDao(PerguntaDao perguntaDao)
-	{
-		this.perguntaDao = perguntaDao;
+		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario.setColaborador(avaliado);
+		colaboradorQuestionario.setAvaliador(avaliador);
+		colaboradorQuestionario.setAvaliacao(avaliacao);
+		colaboradorQuestionario.setRespondida(true);
+		colaboradorQuestionario.setRespondidaEm(DateUtil.criarDataMesAno(1, 1, 2017));
+		colaboradorQuestionario = colaboradorQuestionarioDao.save(colaboradorQuestionario);
+		
+		ColaboradorResposta colaboradorResposta = ColaboradorRespostaFactory.getEntity(null, pergunta, respostaA, null, colaboradorQuestionario);
+		colaboradorResposta.setAreaOrganizacional(areaOrganizacional);
+		colaboradorRespostaDao.save(colaboradorResposta);
+		
+		Collection<ColaboradorResposta> retorno = colaboradorRespostaDao.findInPerguntaIdsAvaliacao(new Long[]{pergunta.getId()}, new Long[]{areaOrganizacional.getId()}, DateUtil.criarDataMesAno(1, 1, 2017), DateUtil.criarDataMesAno(1, 1, 2017), new Long[]{empresa.getId()},
+				TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA, null);
+		
+		assertEquals(1, retorno.size());
+		assertEquals(colaboradorResposta.getId(), retorno.iterator().next().getId());
 	}
-
-	public void setRespostaDao(RespostaDao respostaDao)
-	{
-		this.respostaDao = respostaDao;
-	}
-
-	public void setPesquisaDao(PesquisaDao pesquisaDao)
-	{
-		this.pesquisaDao = pesquisaDao;
-	}
-
-	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao)
-	{
-		this.areaOrganizacionalDao = areaOrganizacionalDao;
-	}
-
-	public void setAspectoDao(AspectoDao aspectoDao)
-	{
-		this.aspectoDao = aspectoDao;
-	}
-
-	public void setTurmaDao(TurmaDao turmaDao)
-	{
-		this.turmaDao = turmaDao;
-	}
-
-	public void setCandidatoDao(CandidatoDao candidatoDao)
-	{
-		this.candidatoDao = candidatoDao;
-	}
-
-	public void setAvaliacaoDesempenhoDao(AvaliacaoDesempenhoDao avaliacaoDesempenhoDao) {
-		this.avaliacaoDesempenhoDao = avaliacaoDesempenhoDao;
-	}
-
-	public void setAvaliacaoDao(AvaliacaoDao avaliacaoDao) {
-		this.avaliacaoDao = avaliacaoDao;
-	}
-
-	public void setCargoDao(CargoDao cargoDao) {
-		this.cargoDao = cargoDao;
-	}
-
-	public void setFaixaSalarialDao(FaixaSalarialDao faixaSalarialDao) {
-		this.faixaSalarialDao = faixaSalarialDao;
-	}
-
-	public void setHistoricoColaboradorDao(
-			HistoricoColaboradorDao historicoColaboradorDao) {
-		this.historicoColaboradorDao = historicoColaboradorDao;
-	}
-
 }

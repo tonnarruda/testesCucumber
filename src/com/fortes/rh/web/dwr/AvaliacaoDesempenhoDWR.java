@@ -19,6 +19,7 @@ import com.fortes.rh.util.CollectionUtil;
 import com.fortes.web.tags.Option;
 import com.opensymphony.webwork.dispatcher.SessionMap;
 
+@SuppressWarnings("unchecked")
 public class AvaliacaoDesempenhoDWR 
 {
 	private AvaliacaoDesempenhoManager avaliacaoDesempenhoManager;
@@ -26,14 +27,19 @@ public class AvaliacaoDesempenhoDWR
 	private ConfiguracaoCompetenciaAvaliacaoDesempenhoManager configuracaoCompetenciaAvaliacaoDesempenhoManager;
 	private ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager;
 
-	@SuppressWarnings("unchecked")
 	public Map<Long, String> getAvaliacoesByEmpresa(Long empresaId)
 	{
 		Collection<AvaliacaoDesempenho> avaliacoesDesempenho = avaliacaoDesempenhoManager.findAllSelect(empresaId, true, TipoModeloAvaliacao.DESEMPENHO);
 		return new CollectionUtil<AvaliacaoDesempenho>().convertCollectionToMap(avaliacoesDesempenho, "getId", ((empresaId == null || empresaId < 0) ? "getTituloComEmpresa" : "getTitulo"));
 	}
+	
+	public Map<Long, String> getAvaliacoesDesempenhoByModelo(Long modeloId)
+	{
+		Collection<AvaliacaoDesempenho> avaliacoesDesempenho = avaliacaoDesempenhoManager.findByModelo(modeloId);
+		return new CollectionUtil<AvaliacaoDesempenho>().convertCollectionToMap(avaliacoesDesempenho, "getId", "getTitulo");
+	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({"rawtypes" })
 	public Map<Long, String> getAvaliacoesByEmpresaPermitidas(String naoApagar, HttpServletRequest request, Long... empresasIds)
 	{
 		Map session = new SessionMap(request);
@@ -50,7 +56,6 @@ public class AvaliacaoDesempenhoDWR
 		return new CollectionUtil<AvaliacaoDesempenho>().convertCollectionToMap(avaliacaoDesempenhos, "getId", ((empresasIds.length > 1) ? "getTituloComEmpresa" : "getTitulo"));
 	}
 	
-	@SuppressWarnings("unchecked")
 	public Map<Long, String> getParticipantesByAvalEmpresaAreaCargo(Long avaliacaoDesempenhoId, Long empresaId, Long[] areasIds, Long[] cargosIds)
 	{
 		empresaId = (empresaId == null || empresaId == -1 || empresaId == 0) ? null : empresaId;
@@ -59,7 +64,6 @@ public class AvaliacaoDesempenhoDWR
 		return new CollectionUtil<Colaborador>().convertCollectionToMap(participantes, "getId", "getNome");
 	}
 	
-	@SuppressWarnings("unchecked")
 	public Map<Long, String> getAvaliacoesNaoLiberadasByTitulo(Long empresaId, String titulo)
 	{
 		Collection<AvaliacaoDesempenho> avaliacaoDesempenhos = avaliacaoDesempenhoManager.findTituloModeloAvaliacao(null, null, null, null, empresaId, titulo, null, false);

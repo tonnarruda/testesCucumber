@@ -98,19 +98,19 @@ public class AvaliacaoManagerImpl extends GenericManagerImpl<Avaliacao, Avaliaca
 		return obs;
 	}
 	
-	public Collection<ResultadoQuestionario> montaResultado(Collection<Pergunta> perguntas, Long[] perguntasIds, Long[] areaIds, Date periodoIni, Date periodoFim, Avaliacao avaliacao, Long empresaId, Character tipoModeloAvaliacao, boolean ocultarQtdRespostas) throws Exception
+	public Collection<ResultadoQuestionario> montaResultado(Collection<Pergunta> perguntas, Long[] perguntasIds, Long[] areaIds, Date periodoIni, Date periodoFim, Avaliacao avaliacao, Long[] empresasIds, Character tipoModeloAvaliacao, boolean ocultarQtdRespostas, Long[] avaliacoesDesempenhoCheck) throws Exception
     {
         Collection<ResultadoQuestionario> resultadoQuestionarios = new ArrayList<ResultadoQuestionario>();
         Collection<Resposta> respostas = respostaManager.findInPerguntaIds(perguntasIds);
-        Collection<ColaboradorResposta> colaboradorRespostas = colaboradorRespostaManager.findInPerguntaIdsAvaliacao(perguntasIds, areaIds, periodoIni, periodoFim, empresaId, tipoModeloAvaliacao);
+        Collection<ColaboradorResposta> colaboradorRespostas = colaboradorRespostaManager.findInPerguntaIdsAvaliacao(perguntasIds, areaIds, periodoIni, periodoFim, empresasIds, tipoModeloAvaliacao, avaliacoesDesempenhoCheck);
 
         if(colaboradorRespostas.isEmpty())
         	throw new Exception("Nenhuma pergunta foi respondida.");
         
-        Collection<QuestionarioResultadoPerguntaObjetiva> percentuaisDeRespostas = colaboradorRespostaManager.calculaPercentualRespostas(perguntasIds, null, areaIds, null, periodoIni, periodoFim, false, null, empresaId, tipoModeloAvaliacao);
+        Collection<QuestionarioResultadoPerguntaObjetiva> percentuaisDeRespostas = colaboradorRespostaManager.calculaPercentualRespostas(perguntasIds, null, areaIds, null, periodoIni, periodoFim, false, null, empresasIds, tipoModeloAvaliacao, avaliacoesDesempenhoCheck);
         
         avaliacao.setTotalColab(questionarioManager.countColaborador(colaboradorRespostas)); 
-        Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostasMultiplas = colaboradorRespostaManager.calculaPercentualRespostasMultipla(perguntasIds, null, areaIds, null, periodoIni, periodoFim, false, null, empresaId);
+        Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostasMultiplas = colaboradorRespostaManager.calculaPercentualRespostasMultipla(perguntasIds, null, areaIds, null, periodoIni, periodoFim, false, null, empresasIds, tipoModeloAvaliacao, avaliacoesDesempenhoCheck);
         percentuaisDeRespostas.addAll(calculaPercentualRespostasMultiplas);
         
         resultadoQuestionarios = questionarioManager.montaResultadosQuestionarios(perguntas, respostas, colaboradorRespostas, percentuaisDeRespostas, false, ocultarQtdRespostas);

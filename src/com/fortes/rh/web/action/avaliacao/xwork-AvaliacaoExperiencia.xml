@@ -13,6 +13,7 @@
 				<param name="dataSource">resultados</param>
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">resultadoAvaliacaoExperiencia.pdf</param>
+				<param name="virtualizar">false</param>
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/avaliacao/avaliacaoExperienciaFiltroResultado.ftl</result>
 		</action>

@@ -305,4 +305,26 @@ public class AvaliacaoDesempenhoDaoHibernateTest extends GenericDaoHibernateTest
 		Collection<AvaliacaoDesempenho> avaliacoesDesempenho = avaliacaoDesempenhoDao.findByCncfId(configuracaoNivelCompetenciaFaixaSalarial.getId());
 		assertEquals(avaliacaoDesempenho.getId(), avaliacoesDesempenho.iterator().next().getId());
 	}
+	
+	@Test
+	public void testFindByModelo() {
+		Avaliacao avaliacao1 = AvaliacaoFactory.getEntity();
+		avaliacaoDao.save(avaliacao1);
+		
+		Avaliacao avaliacao2 = AvaliacaoFactory.getEntity();
+		avaliacaoDao.save(avaliacao2);
+		
+		AvaliacaoDesempenho avaliacaoDesempenho1 = AvaliacaoDesempenhoFactory.getEntity();
+		avaliacaoDesempenho1.setAvaliacao(avaliacao1);
+		avaliacaoDesempenhoDao.save(avaliacaoDesempenho1);
+
+		AvaliacaoDesempenho avaliacaoDesempenho2 = AvaliacaoDesempenhoFactory.getEntity();
+		avaliacaoDesempenho2.setAvaliacao(avaliacao2);
+		avaliacaoDesempenhoDao.save(avaliacaoDesempenho2);
+		
+		Collection<AvaliacaoDesempenho> retorno = avaliacaoDesempenhoDao.findByModelo(avaliacao1.getId());
+		
+		assertEquals(1, retorno.size());
+		assertEquals(avaliacaoDesempenho1.getId(), retorno.iterator().next().getId());
+	}
 }

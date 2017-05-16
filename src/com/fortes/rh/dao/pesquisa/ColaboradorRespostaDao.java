@@ -11,11 +11,11 @@ import com.fortes.rh.model.pesquisa.relatorio.RespostaQuestionario;
 
 public interface ColaboradorRespostaDao extends GenericDao<ColaboradorResposta>
 {
-	List<Object[]> countRespostas(Long[] perguntaId, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Date periodoIni, Date periodoFim, boolean desligamento, Long turmaId, Long empresaId, Character tipoModeloAvaliacao);
+	List<Object[]> countRespostas(Long[] perguntaId, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Date periodoIni, Date periodoFim, boolean desligamento, Long turmaId, Long[] empresasIds, Character tipoModeloAvaliacao, Long[] avaliacoesDesempenhoId);
 
 	Collection<ColaboradorResposta> findInPerguntaIds(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Date periodoIni, Date periodoFim, boolean desligamento, Long turmaId, Questionario questionario, Long empresaId);
 
-	Collection<ColaboradorResposta> findInPerguntaIdsAvaliacao(Long[] perguntasIds, Long[] areasIds, Date periodoIni, Date periodoFim, Long empresaId, Character tipoModeloAvaliacao);
+	Collection<ColaboradorResposta> findInPerguntaIdsAvaliacao(Long[] perguntasIds, Long[] areasIds, Date periodoIni, Date periodoFim, Long[] empresasIds, Character tipoModeloAvaliacao, Long[] avaliacoesDesempenhoCheck);
 
 	Collection<ColaboradorResposta> findRespostasColaborador(Long colaboradorQuestionarioId, Boolean aplicarPorAspecto);
 
@@ -28,7 +28,7 @@ public interface ColaboradorRespostaDao extends GenericDao<ColaboradorResposta>
 
 	Collection<ColaboradorResposta> findByQuestionarioCandidato(Long questionarioId, Long candidatoId, Long colaboradorQuestionarioId);
 
-	List<Object[]> countRespostasMultiplas(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Date periodoIni, Date periodoFim, boolean desligamento, Long turmaId, Long empresaId);
+	List<Object[]> countRespostasMultiplas(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Date periodoIni, Date periodoFim, boolean desligamento, Long turmaId, Long[] empresasIds, Character tipoModeloAvaliacao, Long[] avaliacoesDesempenhoId);
 	
 	Collection<ColaboradorResposta> findByAvaliadoAndAvaliacaoDesempenho(Long avaliadoId, Long avaliacaoDesempenhoId, boolean desconsiderarAutoAvaliacao);
 

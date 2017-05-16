@@ -52,6 +52,7 @@ public class MyJasperReportsResult extends JasperReportsResult implements Jasper
 	private final static Log LOG = LogFactory.getLog(JasperReportsResult.class);
 
 	protected String parametersMap = null;
+	protected boolean virtualizar = true;
 	
 	public String getParametersMap()
 	{
@@ -61,6 +62,14 @@ public class MyJasperReportsResult extends JasperReportsResult implements Jasper
 	public void setParametersMap(String parametersMap)
 	{
 		this.parametersMap = parametersMap;
+	}
+	
+	public boolean isVirtualizar() {
+		return virtualizar;
+	}
+
+	public void setVirtualizar(boolean virtualizar) {
+		this.virtualizar = virtualizar;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -126,16 +135,18 @@ public class MyJasperReportsResult extends JasperReportsResult implements Jasper
 			Map parameters = new OgnlValueStackShadowMap(stack);
 			File directory = new File(systemId.substring(0, systemId.lastIndexOf(File.separator)));
 
-			JRSwapFile arquivoSwap = new JRSwapFile(ArquivoUtil.getRhHome(), 4096, 100);
-			JRAbstractLRUVirtualizer virtualizer = new JRSwapFileVirtualizer(100, arquivoSwap, true);
+			if(virtualizar){
+				JRSwapFile arquivoSwap = new JRSwapFile(ArquivoUtil.getRhHome(), 4096, 100);
+				JRAbstractLRUVirtualizer virtualizer = new JRSwapFileVirtualizer(100, arquivoSwap, true);
+				parameters.put(JRParameter.REPORT_VIRTUALIZER, virtualizer);
+			}
 			
 			parameters.put("reportDirectory", directory);
 			parameters.put(JRParameter.REPORT_LOCALE, invocation.getInvocationContext().getLocale());
-			parameters.put(JRParameter.REPORT_VIRTUALIZER, virtualizer);
 			 
 			// Instancia o virtualizador
 			 
-			// Map contendo os parâmetros para o relatório
+			/**Map contendo os parâmetros para o relatório**/
 			if (parametersMap != null)
 			{
 				Map obj = (Map) invocation.getStack().findValue(parametersMap);

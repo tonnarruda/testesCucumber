@@ -268,4 +268,18 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(AvaliacaoDesempenho.class));
 		return criteria.list();
 	}
+
+	public Collection<AvaliacaoDesempenho> findByModelo(Long modeloId) {
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("ad.id"), "id");
+		p.add(Projections.property("ad.titulo"), "titulo");
+
+		Criteria criteria = getSession().createCriteria(AvaliacaoDesempenho.class, "ad");
+		criteria.add(Expression.eq("ad.avaliacao.id", modeloId));
+		
+		criteria.setProjection(Projections.distinct(p));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(AvaliacaoDesempenho.class));
+		return criteria.list();
+	}
 }

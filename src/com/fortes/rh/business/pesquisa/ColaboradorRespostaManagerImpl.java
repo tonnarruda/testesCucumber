@@ -62,7 +62,7 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
     {
         Long[] perguntasIds = new Long[]{perguntaId};
 
-        return getDao().countRespostas(perguntasIds, estabelecimentosIds, areasIds, null, periodoIni, periodoFim, false, turmaId, null, null);
+        return getDao().countRespostas(perguntasIds, estabelecimentosIds, areasIds, null, periodoIni, periodoFim, false, turmaId, null, null, null);
     }
 
     public Collection<ColaboradorResposta> findInPerguntaIds(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Date periodoIni, Date periodoFim, boolean desligamento, Long turmaId, Questionario questionario, Long empresaId)
@@ -70,9 +70,9 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
         return getDao().findInPerguntaIds(perguntasIds, estabelecimentosIds, areasIds, cargosIds, periodoIni, periodoFim, desligamento, turmaId, questionario, empresaId);
     }
 
-    public Collection<ColaboradorResposta> findInPerguntaIdsAvaliacao(Long[] perguntasIds, Long[] areasIds,  Date periodoIni, Date periodoFim, Long empresaId, Character tipoModeloAvaliacao)
+    public Collection<ColaboradorResposta> findInPerguntaIdsAvaliacao(Long[] perguntasIds, Long[] areasIds,  Date periodoIni, Date periodoFim, Long[] empresasIds, Character tipoModeloAvaliacao, Long[] avaliacoesDesempenhoCheck)
     {
-    	return getDao().findInPerguntaIdsAvaliacao(perguntasIds, areasIds, periodoIni, periodoFim, empresaId, tipoModeloAvaliacao);
+    	return getDao().findInPerguntaIdsAvaliacao(perguntasIds, areasIds, periodoIni, periodoFim, empresasIds, tipoModeloAvaliacao, avaliacoesDesempenhoCheck);
     }
 
     public void salvaQuestionarioRespondido(String respostas, Questionario questionario, Long colaboradorId, Long turmaId, char vinculo, Date respondidaEm, Long colaboradorQuestionarioId, boolean inserirFichaMedica) throws Exception
@@ -528,13 +528,13 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 		colaboradorQuestionarioManager.update(colaboradorQuestionario);
 	}
 	
-    public Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostas(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Date periodoIni, Date periodoFim, boolean desligamento, Long turmaId, Long empresaId, Character tipoModeloAvaliacao)
+    public Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostas(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Date periodoIni, Date periodoFim, boolean desligamento, Long turmaId, Long[] empresasIds, Character tipoModeloAvaliacao, Long[] avaliacoesDesempenhoId)
     {
-        List<Object[]> countRespostas = getDao().countRespostas(perguntasIds, estabelecimentosIds, areasIds, cargosIds, periodoIni, periodoFim, desligamento, turmaId, empresaId, tipoModeloAvaliacao);
-
-        Collection<QuestionarioResultadoPerguntaObjetiva> resultadosObjetivas = processaRespostas(countRespostas);
-
-        return resultadosObjetivas;
+    	List<Object[]> countRespostas = getDao().countRespostas(perguntasIds, estabelecimentosIds, areasIds, cargosIds, periodoIni, periodoFim, desligamento, turmaId, empresasIds, tipoModeloAvaliacao, avaliacoesDesempenhoId);
+    	
+    	Collection<QuestionarioResultadoPerguntaObjetiva> resultadosObjetivas = processaRespostas(countRespostas);
+    	
+    	return resultadosObjetivas;
     }
 
 	public Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostas(Long avaliadoId, Long avaliacaoDesempenhoId, boolean desconsiderarAutoAvaliacao)
@@ -565,9 +565,9 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 		return resultadosObjetivas;
 	}
 	
-	public Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostasMultipla(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Date periodoIni, Date periodoFim, boolean desligamento, Long turmaId, Long empresaId)
+	public Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostasMultipla(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Date periodoIni, Date periodoFim, boolean desligamento, Long turmaId, Long[] empresasIds, Character tipoModeloAvaliacao, Long[] avaliacoesDesempenhoId)
 	{
-    	List<Object[]> countRespostas = getDao().countRespostasMultiplas(perguntasIds, estabelecimentosIds, areasIds, cargosIds, periodoIni, periodoFim, desligamento, turmaId, empresaId);
+    	List<Object[]> countRespostas = getDao().countRespostasMultiplas(perguntasIds, estabelecimentosIds, areasIds, cargosIds, periodoIni, periodoFim, desligamento, turmaId, empresasIds, tipoModeloAvaliacao, avaliacoesDesempenhoId);
         Collection<QuestionarioResultadoPerguntaObjetiva> resultadosMultiplaEscolha = new ArrayList<QuestionarioResultadoPerguntaObjetiva>();
         Map<Long, Integer> totalRespostasPorQuestao = new LinkedHashMap<Long, Integer>();
         

@@ -290,7 +290,7 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
         if(colaboradorRespostas.isEmpty())
         	throw new Exception("Nenhuma pergunta foi respondida.");
         
-        Collection<QuestionarioResultadoPerguntaObjetiva> percentuaisDeRespostas = colaboradorRespostaManager.calculaPercentualRespostas(perguntasIds, estabelecimentosIds, areasIds, cargosIds, periodoIni, periodoFim, desligamento, turmaId, null, null);
+        Collection<QuestionarioResultadoPerguntaObjetiva> percentuaisDeRespostas = colaboradorRespostaManager.calculaPercentualRespostas(perguntasIds, estabelecimentosIds, areasIds, cargosIds, periodoIni, periodoFim, desligamento, turmaId, null, null, null);
        
         if(questionario.isAnonimo() && questionario.getTipo() == TipoQuestionario.PESQUISA ) {
         	ParametrosDoSistemaManager parametrosDoSistemaManager = (ParametrosDoSistemaManager) SpringUtil.getBean("parametrosDoSistemaManager");
@@ -305,7 +305,7 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
         } else	
         	questionario.setTotalColab(countColaborador(colaboradorRespostas));
 
-        Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostasMultiplas = colaboradorRespostaManager.calculaPercentualRespostasMultipla(perguntasIds, estabelecimentosIds, areasIds, cargosIds, periodoIni, periodoFim, desligamento, turmaId, null);
+        Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostasMultiplas = colaboradorRespostaManager.calculaPercentualRespostasMultipla(perguntasIds, estabelecimentosIds, areasIds, cargosIds, periodoIni, periodoFim, desligamento, turmaId, null, null, null);
         percentuaisDeRespostas.addAll(calculaPercentualRespostasMultiplas);
         
     	resultadoQuestionarios = montaResultadosQuestionarios(perguntas, respostas, colaboradorRespostas, percentuaisDeRespostas, questionario.isAnonimo(), false);

@@ -457,4 +457,8 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 	public Collection<AvaliacaoDesempenho> findByCncfId(Long configuracaoNivelCompetenciaFaixaSalarialId) {
 		return getDao().findByCncfId(configuracaoNivelCompetenciaFaixaSalarialId);
 	}
+
+	public Collection<AvaliacaoDesempenho> findByModelo(Long modeloId) {
+		return getDao().findByModelo(modeloId);
+	}
 }

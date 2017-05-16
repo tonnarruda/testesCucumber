@@ -39,4 +39,5 @@ public interface AvaliacaoDesempenhoManager extends GenericManager<AvaliacaoDese
 	Collection<AvaliacaoDesempenho> findComCompetencia(Long empresaId);
 	boolean isExibiNivelCompetenciaExigido(Long avaliacaoDesempenhoId);
 	Collection<AvaliacaoDesempenho> findByCncfId(Long configuracaoNivelCompetenciaFaixaSalarialId);
+	Collection<AvaliacaoDesempenho> findByModelo(Long modeloId);
 }

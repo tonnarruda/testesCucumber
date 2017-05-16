@@ -1,43 +1,61 @@
 package com.fortes.rh.test.web.dwr;
 
-import java.util.ArrayList;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
-import org.jmock.core.Constraint;
+import java.util.ArrayList;
+import java.util.Date;
+
+import org.junit.Before;
+import org.junit.Test;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
+import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.web.dwr.AvaliacaoDesempenhoDWR;
 
-public class AvaliacaoDesempenhoDWRTest extends MockObjectTestCase
+public class AvaliacaoDesempenhoDWRTest 
 {
 	private AvaliacaoDesempenhoDWR avaliacaoDesempenhoDWR;
-	private Mock avaliacaoDesempenhoManager;
+	private AvaliacaoDesempenhoManager avaliacaoDesempenhoManager;
 
-	protected void setUp() throws Exception
+	@Before
+	public void setUp() throws Exception
 	{
-		super.setUp();
 		avaliacaoDesempenhoDWR = new AvaliacaoDesempenhoDWR();
-
-		avaliacaoDesempenhoManager = new Mock(AvaliacaoDesempenhoManager.class);
-		avaliacaoDesempenhoDWR.setAvaliacaoDesempenhoManager((AvaliacaoDesempenhoManager) avaliacaoDesempenhoManager.proxy());
+		avaliacaoDesempenhoManager = mock(AvaliacaoDesempenhoManager.class);
+		avaliacaoDesempenhoDWR.setAvaliacaoDesempenhoManager(avaliacaoDesempenhoManager);
 	}
 
+	@Test
 	public void testGetByEmpresa()
 	{
 		Long empresaId = 1L;
-		avaliacaoDesempenhoManager.expects(once()).method("findAllSelect").with(eq(empresaId), ANYTHING, ANYTHING).will(returnValue(new ArrayList<AvaliacaoDesempenho>()));
+		when(avaliacaoDesempenhoManager.findAllSelect(empresaId, true, TipoModeloAvaliacao.DESEMPENHO)).thenReturn(new ArrayList<AvaliacaoDesempenho>());
 		
 		assertEquals(0, avaliacaoDesempenhoDWR.getAvaliacoesByEmpresa(empresaId).size());
 	}
 	
+	@Test
 	public void testGetAvaliacoesNaoLiberadasByTitulo()
 	{
 		Long empresaId = 1L;
 		String titulo = "teste";
-		avaliacaoDesempenhoManager.expects(once()).method("findTituloModeloAvaliacao").with(new Constraint[]{eq(null), eq(null), eq(null), eq(null), eq(empresaId), eq(titulo), eq(null), eq(false)}).will(returnValue(new ArrayList<AvaliacaoDesempenho>()));
-		
+		when(avaliacaoDesempenhoManager.findTituloModeloAvaliacao(anyInt(), anyInt(), any(Date.class), any(Date.class), eq(empresaId), eq(titulo), anyLong(), eq(true))).thenReturn(new ArrayList<AvaliacaoDesempenho>());
 		assertEquals(0, avaliacaoDesempenhoDWR.getAvaliacoesNaoLiberadasByTitulo(empresaId, titulo).size());
+	}
+	
+	@Test
+	public void testGetAvaliacoesDesempenhoByModelo()
+	{
+		Long modeloId = 2L;
+		
+		when(avaliacaoDesempenhoManager.findByModelo(modeloId)).thenReturn(new ArrayList<AvaliacaoDesempenho>());
+		assertEquals(0, avaliacaoDesempenhoDWR.getAvaliacoesDesempenhoByModelo(modeloId).size());
 	}
 }

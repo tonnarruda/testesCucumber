@@ -34,7 +34,7 @@ import com.fortes.rh.model.pesquisa.relatorio.RespostaQuestionario;
 @SuppressWarnings("unchecked")
 public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<ColaboradorResposta> implements ColaboradorRespostaDao
 {
-	public List<Object[]> countRespostas(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Date periodoIni, Date periodoFim, boolean desligamento, Long turmaId, Long empresaId, Character tipoModeloAvaliacao)
+	public List<Object[]> countRespostas(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Date periodoIni, Date periodoFim, boolean desligamento, Long turmaId, Long[] empresasIds, Character tipoModeloAvaliacao, Long[] avaliacoesDesempenhoId)
 	{
 		String whereEmpresa = "";
 		String whereAreas = "";
@@ -53,8 +53,8 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		String whereColaboradorQuestionarioSub = "";
 		String whereColaboradorQuestionario = "";
 
-		if(empresaId != null && empresaId != -1)
-			whereEmpresa = "and c.empresa.id = :empresaId ";
+		if(empresasIds != null)
+			whereEmpresa = "and c.empresa.id in(:empresasIds) ";
 		
 		if(perguntasIds != null && perguntasIds.length > 0)
 			wherePerguntas = "and p.id in (:perguntasIds) ";
@@ -80,36 +80,38 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		String campo = desligamento ? "c.dataDesligamento" : "cq.respondidaEm";
 		String campoSub = desligamento ? "csub.dataDesligamento" : "cqsub.respondidaEm";
 		
-		if(periodoIni != null)
-		{
-			wherePeriodoIni = "and " + campo + " >= :periodoIni ";
-			wherePeriodoIniSub = "and " + campoSub + " >= :periodoIni ";
-		}
-		
-		if(periodoFim != null)
-		{
-			wherePeriodoFim = "and " + campo + " <= :periodoFim ";
-			wherePeriodoFimSub = "and " + campoSub + " <= :periodoFim ";
-		}
-		
 		if(turmaId != null)
 		{
 			whereTurmaSub = "and cqsub.turma.id = :turmaId ";
 			whereTurma = "and cq.turma.id = :turmaId ";			
 		}
 		
-		if(tipoModeloAvaliacao != null)
-		{
-			if(tipoModeloAvaliacao.equals(TipoModeloAvaliacao.DESEMPENHO)){
+		if(tipoModeloAvaliacao != null && tipoModeloAvaliacao.equals(TipoModeloAvaliacao.DESEMPENHO)){
 				whereColaboradorQuestionarioSub = "   and cqsub.avaliacaoDesempenho.id is not null " ;
 				whereColaboradorQuestionario =  "   and cq.avaliacaoDesempenho.id is not null " ;
-			}
-			else if(tipoModeloAvaliacao.equals(TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA)){
+				if(avaliacoesDesempenhoId != null && avaliacoesDesempenhoId.length > 0){
+					whereColaboradorQuestionarioSub += "   and cqsub.avaliacaoDesempenho.id in(:avaliacoesDesempenhoId) " ;
+					whereColaboradorQuestionario +=  "   and cq.avaliacaoDesempenho.id in(:avaliacoesDesempenhoId) " ;
+				}
+		}
+		else if(tipoModeloAvaliacao != null && tipoModeloAvaliacao.equals(TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA)){
 				whereColaboradorQuestionarioSub = "   and cqsub.avaliacaoDesempenho.id is null " ;
 				whereColaboradorQuestionario =  "   and cq.avaliacaoDesempenho.id is null " ;
-			}
 		}
-
+		
+		if(tipoModeloAvaliacao == null || tipoModeloAvaliacao.equals(TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA)){
+			if(periodoIni != null)
+			{
+				wherePeriodoIni = "and " + campo + " >= :periodoIni ";
+				wherePeriodoIniSub = "and " + campoSub + " >= :periodoIni ";
+			}
+			if(periodoFim != null)
+			{
+				wherePeriodoFim = "and " + campo + " <= :periodoFim ";
+				wherePeriodoFimSub = "and " + campoSub + " <= :periodoFim ";
+			}
+		}			
+		
 		String queryHQL =	"select r.ordem, count(r.id), p.id, r.id, " +
 							"   (select count(crsub.pergunta.id) from ColaboradorResposta as crsub " +
 							"   left join crsub.colaboradorQuestionario as cqsub " +
@@ -157,12 +159,15 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		if(cargosIds != null && cargosIds.length > 0)
 			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);
 
-		if(empresaId != null && empresaId != -1)
-			query.setLong("empresaId", empresaId);
+		if(empresasIds != null)
+			query.setParameterList("empresasIds", empresasIds);
 		
 		if(estabelecimentosIds != null && estabelecimentosIds.length > 0)
 			query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
 
+		if(tipoModeloAvaliacao != null && tipoModeloAvaliacao.equals(TipoModeloAvaliacao.DESEMPENHO) && avaliacoesDesempenhoId != null && avaliacoesDesempenhoId.length > 0)
+			query.setParameterList("avaliacoesDesempenhoId", avaliacoesDesempenhoId);
+		
 		if(periodoIni != null)
 			query.setDate("periodoIni", periodoIni);
 
@@ -175,7 +180,7 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		return query.list();
 	}
 
-	public List<Object[]> countRespostasMultiplas(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Date periodoIni, Date periodoFim, boolean desligamento, Long turmaId, Long empresaId)
+	public List<Object[]> countRespostasMultiplas(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Date periodoIni, Date periodoFim, boolean desligamento, Long turmaId, Long[] empresasIds, Character tipoModeloAvaliacao, Long[] avaliacoesDesempenhoId)
 	{
 		String whereEmpresa = "";
 		String whereAreas = "";
@@ -185,9 +190,10 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		String wherePeriodoIni = "";
 		String wherePeriodoFim = "";
 		String whereTurma = "";
+		String whereColaboradorQuestionario = "";
 		
-		if(empresaId != null && empresaId != -1)
-			whereEmpresa = "and c.empresa.id = :empresaId ";
+		if(empresasIds != null)
+			whereEmpresa = "and c.empresa.id in (:empresasIds) ";
 		
 		if(perguntasIds != null && perguntasIds.length > 0)
 			wherePerguntas = "and p.id in (:perguntasIds) ";
@@ -201,14 +207,26 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		if(estabelecimentosIds != null && estabelecimentosIds.length > 0)
 			whereEstabelecimentos = "and e.id in (:estabelecimentosIds) ";
 		
-		if(periodoIni != null)
-			wherePeriodoIni = desligamento ? "and c.dataDesligamento >= :periodoIni " : "and cq.respondidaEm >= :periodoIni ";
-		
-		if(periodoFim != null)
-			wherePeriodoFim = desligamento ? "and c.dataDesligamento <= :periodoFim " : "and cq.respondidaEm <= :periodoFim ";
-		
 		if(turmaId != null)
 			whereTurma = "and cq.turma.id = :turmaId ";
+		
+		if(tipoModeloAvaliacao != null && tipoModeloAvaliacao.equals(TipoModeloAvaliacao.DESEMPENHO)){
+			whereColaboradorQuestionario =  "   and cq.avaliacaoDesempenho.id is not null " ;
+			if(avaliacoesDesempenhoId != null && avaliacoesDesempenhoId.length > 0){
+				whereColaboradorQuestionario +=  "   and cq.avaliacaoDesempenho.id in(:avaliacoesDesempenhoId) " ;
+			}
+		}
+		else if(tipoModeloAvaliacao != null && tipoModeloAvaliacao.equals(TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA)){
+			whereColaboradorQuestionario =  "   and cq.avaliacaoDesempenho.id is null " ;
+		}
+
+		if(tipoModeloAvaliacao == null || tipoModeloAvaliacao.equals(TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA)){
+			if(periodoIni != null)
+				wherePeriodoIni = desligamento ? "and c.dataDesligamento >= :periodoIni " : "and cq.respondidaEm >= :periodoIni ";
+			
+			if(periodoFim != null)
+				wherePeriodoFim = desligamento ? "and c.dataDesligamento <= :periodoFim " : "and cq.respondidaEm <= :periodoFim ";
+		}		
 		
 		String queryHQL =	"select r.ordem, count(r.id), p.id, r.id " +
 		"from ColaboradorResposta cr " +
@@ -228,6 +246,7 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		wherePeriodoFim +
 		whereTurma +
 		whereEmpresa +
+		whereColaboradorQuestionario +
 		"group by r.ordem, p.id, r.id "+
 		"order by p.id, r.ordem ";
 		
@@ -243,8 +262,8 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		if(cargosIds != null && cargosIds.length > 0)
 			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);
 
-		if(empresaId != null && empresaId != -1)
-			query.setLong("empresaId", empresaId);
+		if(empresasIds != null)
+			query.setParameterList("empresasIds", empresasIds);
 		
 		if(estabelecimentosIds != null && estabelecimentosIds.length > 0)
 			query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
@@ -256,6 +275,9 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 			query.setDate("periodoFim", periodoFim);
 		if(turmaId != null)
 			query.setLong("turmaId", turmaId);
+		
+		if(tipoModeloAvaliacao != null && tipoModeloAvaliacao.equals(TipoModeloAvaliacao.DESEMPENHO) && avaliacoesDesempenhoId != null && avaliacoesDesempenhoId.length > 0)
+			query.setParameterList("avaliacoesDesempenhoId", avaliacoesDesempenhoId);
 		
 		return query.list();
 	}
@@ -339,7 +361,7 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		return criteria.list();
 	}
 	
-	public Collection<ColaboradorResposta> findInPerguntaIdsAvaliacao(Long[] perguntasIds, Long[] areasIds, Date periodoIni, Date periodoFim, Long empresaId, Character tipoModeloAvaliacao) 
+	public Collection<ColaboradorResposta> findInPerguntaIdsAvaliacao(Long[] perguntasIds, Long[] areasIds, Date periodoIni, Date periodoFim, Long[] empresasIds, Character tipoModeloAvaliacao, Long[] avaliacoesDesempenhoCheck) 
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(),"cr");
 		criteria.createCriteria("cr.colaboradorQuestionario", "cq", Criteria.LEFT_JOIN);
@@ -369,10 +391,19 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 
 		criteria.setProjection(p);
 
-		if(tipoModeloAvaliacao != null && tipoModeloAvaliacao == TipoModeloAvaliacao.DESEMPENHO)
+		if(tipoModeloAvaliacao != null && tipoModeloAvaliacao == TipoModeloAvaliacao.DESEMPENHO){
 			criteria.add(Expression.isNotNull("cq.avaliacaoDesempenho"));
-		else if(tipoModeloAvaliacao != null && tipoModeloAvaliacao == TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA)
+			if(avaliacoesDesempenhoCheck != null && avaliacoesDesempenhoCheck.length > 0)
+				criteria.add(Expression.in("cq.avaliacaoDesempenho.id", avaliacoesDesempenhoCheck));	
+		}
+		else if(tipoModeloAvaliacao != null && tipoModeloAvaliacao == TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA){
 			criteria.add(Expression.isNull("cq.avaliacaoDesempenho"));
+			if(periodoIni != null)
+				criteria.add(Expression.ge("cq.respondidaEm", periodoIni));
+
+			if(periodoFim != null)
+				criteria.add(Expression.le("cq.respondidaEm", periodoFim));
+		}
 		
 		if(perguntasIds != null && perguntasIds.length > 0)
 			criteria.add(Expression.in("p.id", perguntasIds));
@@ -380,15 +411,7 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		if(areasIds != null && areasIds.length > 0)
 			criteria.add(Expression.in("a.id", areasIds));
 
-		if(empresaId != null && empresaId != -1)
-			criteria.add(Expression.eq("c.empresa.id", empresaId));
-		
-		String periodo = "cq.respondidaEm";
-		if(periodoIni != null)
-			criteria.add(Expression.ge(periodo, periodoIni));
-
-		if(periodoFim != null)
-			criteria.add(Expression.le(periodo, periodoFim));
+		criteria.add(Expression.in("c.empresa.id", empresasIds));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorResposta.class));

@@ -136,6 +136,7 @@ import com.fortes.rh.test.business.importacao.ImportacaoColaboradorManagerTest;
 import com.fortes.rh.test.business.pesquisa.AspectoManagerTest;
 import com.fortes.rh.test.business.pesquisa.ColaboradorQuestionarioManagerTest;
 import com.fortes.rh.test.business.pesquisa.ColaboradorRespostaManagerTest;
+import com.fortes.rh.test.business.pesquisa.ColaboradorRespostaManagerTest_Junit4;
 import com.fortes.rh.test.business.pesquisa.EntrevistaManagerTest;
 import com.fortes.rh.test.business.pesquisa.FichaMedicaManagerTest;
 import com.fortes.rh.test.business.pesquisa.LembretePesquisaTest;
@@ -1123,6 +1124,7 @@ import com.fortes.test.web.tags.LinkTagTest;
     //PESQUISA
 	ColaboradorRespostaEditActionTest.class,
 	ColaboradorRespostaManagerTest.class,
+	ColaboradorRespostaManagerTest_Junit4.class,
 	ColaboradorRespostaDaoHibernateTest.class,
 	ColaboradorRespostaListActionTest.class,
 	PerguntaTest.class,
