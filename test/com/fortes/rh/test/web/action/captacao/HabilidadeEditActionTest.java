@@ -119,7 +119,7 @@ public class HabilidadeEditActionTest extends MockObjectTestCase
 
 		configuracaoNivelCompetenciaManager.expects(once()).method("existeConfiguracaoNivelCompetencia").with(eq(habilidade.getId()), eq(TipoCompetencia.HABILIDADE)).will(returnValue(false));
 		criterioAvaliacaoCompetenciaManager.expects(once()).method("removeByCompetencia");
-		habilidadeManager.expects(once()).method("remove");
+		habilidadeManager.expects(once()).method("removeComDependencia");
 		assertEquals("success", action.delete());
 	}
 	
@@ -139,7 +139,7 @@ public class HabilidadeEditActionTest extends MockObjectTestCase
 		
 		configuracaoNivelCompetenciaManager.expects(once()).method("existeConfiguracaoNivelCompetencia").with(eq(habilidade.getId()), eq(TipoCompetencia.HABILIDADE)).will(returnValue(false));
 		criterioAvaliacaoCompetenciaManager.expects(once()).method("removeByCompetencia");
-		habilidadeManager.expects(once()).method("remove").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
+		habilidadeManager.expects(once()).method("removeComDependencia").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
 		
 		try {
 			action.delete();

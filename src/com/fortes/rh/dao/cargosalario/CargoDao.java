@@ -39,4 +39,5 @@ public interface CargoDao extends GenericDao<Cargo>
 	public Collection<Cargo> getCargosSemGrupoRelacionado(Long empresaId);
 	public Collection<Cargo> findByEmpresa(Long empresaId);
 	public void insereAreaRelacionada(Long areaMaeId, Long areaId);
+	public void removeViculoComHabilidade(Long habilidadeId);
 }

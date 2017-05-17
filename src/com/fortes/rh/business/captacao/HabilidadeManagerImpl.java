@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Map;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.dao.captacao.HabilidadeDao;
@@ -149,6 +150,12 @@ public class HabilidadeManagerImpl extends GenericManagerImpl<Habilidade, Habili
 		}
 
 		return habilidade;
+	}
+	
+	public void removeComDependencia(Long id) {
+		CargoManager cargoManager = (CargoManager) SpringUtil.getBean("cargoManager");
+		cargoManager.removeViculoComHabilidade(id);
+		getDao().remove(id);
 	}
 	
 	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)

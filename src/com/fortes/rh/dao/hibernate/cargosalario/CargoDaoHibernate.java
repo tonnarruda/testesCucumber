@@ -624,4 +624,9 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 			JDBCConnection.executeQuery(sql);
 		}
 	}
+
+	public void removeViculoComHabilidade(Long habilidadeId) {
+		String[] sql = new String[] {"delete from cargo_habilidade where habilidades_id = " + habilidadeId};
+		JDBCConnection.executeQuery(sql);
+	}
 }

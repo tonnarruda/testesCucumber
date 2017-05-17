@@ -561,6 +561,10 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 	{
 		getDao().insereAreaRelacionada(areaMaeId, areaId);
 	}
+
+	public void removeViculoComHabilidade(Long habilidadeId) {
+		getDao().removeViculoComHabilidade(habilidadeId);
+	}
 	
 	public void setHabilidadeManager(HabilidadeManager habilidadeManager) 
 	{
@@ -616,4 +620,5 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 	{
 		this.codigoCBOManager = codigoCBOManager;
 	}
+
 }

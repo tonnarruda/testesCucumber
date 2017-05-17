@@ -132,7 +132,7 @@ public class HabilidadeEditAction extends MyActionSupportList
 		if(!configuracaoNivelCompetenciaManager.existeConfiguracaoNivelCompetencia(habilidade.getId(), TipoCompetencia.HABILIDADE)){
 			try {
 				criterioAvaliacaoCompetenciaManager.removeByCompetencia(habilidade.getId(), TipoCompetencia.HABILIDADE, null);
-				habilidadeManager.remove(habilidade.getId());
+				habilidadeManager.removeComDependencia(habilidade.getId());
 				
 				addActionMessage("Habilidade excluída com sucesso.");
 				return Action.SUCCESS;
