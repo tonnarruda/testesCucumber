@@ -25,7 +25,7 @@
 		<#assign urlServlet = "${request.contextPath}/externo/layout?tipo=" />
 	</#if>
 
-	<link rel="stylesheet" href="${urlServlet}layout" />
+	<link rel="stylesheet" type="text/css" href="${urlServlet}layout" />
 	<#include "../ftl/mascarasImports.ftl" />
 </head>
 <#assign validarCampos="return validaFormulario('form', new Array('cpfRH','senhaRH'), new Array('cpfRH'))"/>
