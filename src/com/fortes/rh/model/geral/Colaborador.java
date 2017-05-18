@@ -3025,6 +3025,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.statusAvaliacao = statusAvaliacao;
 	}
 
+	@NaoAudita
 	public Date getDataSolicitacaoDesligamento() {
 		return dataSolicitacaoDesligamento;
 	}
@@ -3038,6 +3039,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.dataSolicitacaoDesligamento = dataSolicitacaoDesligamento;
 	}
 	
+	@NaoAudita
 	public Date getDataSolicitacaoDesligamentoAc() {
 		return dataSolicitacaoDesligamentoAc;
 	}
@@ -3214,6 +3216,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.afastado = afastado;
 	}
 
+	@NaoAudita
 	public Collection<ComissaoMembro> getComissaoMembros() {
 		return comissaoMembros;
 	}
@@ -3391,6 +3394,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.ordensDeServico = ordensDeServico;
 	}
 
+	@NaoAudita
 	public Collection<ColaboradorCertificacao> getColaboradorCertificacaos() {
 		return colaboradorCertificacaos;
 	}
@@ -3422,6 +3426,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.colaboradorCertificacao.setData(colaboradorCertificacaoData);
 	}
 
+	@NaoAudita
 	public boolean isTemFuncao() {
 		return temFuncao;
 	}
@@ -3430,6 +3435,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.temFuncao = temFuncao;
 	}
 
+	@NaoAudita
 	public boolean isIscritoNaTurma() {
 		return iscritoNaTurma;
 	}
@@ -3438,6 +3444,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.iscritoNaTurma = iscritoNaTurma;
 	}
 
+	@NaoAudita
 	public String getAvaliadorNome() {
 		return avaliadorNome;
 	}
@@ -3446,6 +3453,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.avaliadorNome = avaliadorNome;
 	}
 
+	@NaoAudita
 	public String getNaturalidade() {
 		return naturalidade;
 	}
@@ -3454,6 +3462,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.naturalidade = naturalidade;
 	}
 
+	@NaoAudita
 	public String getNacionalidade() {
 		return nacionalidade;
 	}

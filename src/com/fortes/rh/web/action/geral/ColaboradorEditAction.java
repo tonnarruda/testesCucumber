@@ -476,16 +476,13 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 	private void setNacionalidadeAndNaturalidade() {
 		if(getEmpresaSistema().isAcIntegra() && colaborador.getCodigoAC() != null && !colaborador.isNaoIntegraAc()){
-			TNaturalidadeAndNacionalidade tNaturalidadeAndNacionalidade;
 			try {
-				tNaturalidadeAndNacionalidade = colaboradorManager.getNaturalidadeAndNacionalidade(getEmpresaSistema(), colaborador.getCodigoAC());
+				TNaturalidadeAndNacionalidade tNaturalidadeAndNacionalidade = colaboradorManager.getNaturalidadeAndNacionalidade(getEmpresaSistema(), colaborador.getCodigoAC());
 				if(tNaturalidadeAndNacionalidade != null){
 					colaborador.setNaturalidade(tNaturalidadeAndNacionalidade.getNaturalidade());
 					colaborador.setNacionalidade(tNaturalidadeAndNacionalidade.getNacionalidade());
 				}
-			} catch (IntegraACException e) {
-				e.printStackTrace();
-			}
+			} catch (IntegraACException e) {}
 		}
 	}
 	

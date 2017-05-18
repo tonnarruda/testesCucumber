@@ -4,6 +4,8 @@
 		<Item visivel="N" motivo="P17050000053"><![CDATA[C&S > Cadastros > Habilidades: Ajuste na exclusão para remover vínculos relacionados ao cargo.]]></Item>
 		<Item visivel="S" motivo="P17030000385"><![CDATA[C&S > Cadastros > Cargos e Faixas > Excluir: Ajuste de incosistência na exclusão de cargo. O sistema exibia mensagem de excluído com sucesso, porém o cargo permanecia no sistema.]]></Item>
 		<Item visivel="N" motivo="S17040000125"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Inserir/Editar: Mapeamento da opção de "Pós-Graduação Completa" do Fortes Pessoal com a opção de "Especialização completa" do Fortes RH.]]></Item>
+		<Item visivel="S" motivo="S17050000025"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Editar: Exibir as informações de naturalidade e nacionalidade provenientes do Fortes Pessoal quando a empresa/colaborador estiver integrada.]]></Item>
+		<Item visivel="S" motivo="S17050000025"><![CDATA[Info. Funcionais > Relatórios > Listagem de Colaboradores: Possibilidade de exibir as informações da naturalidade e nacionalidade provenientes do Fortes Pessoal no relatório quando a empresa/colaborador estiver integrada.]]></Item>
 		<Item visivel="S" motivo="P17040000198"><![CDATA[Info. Funcionais > Painel de Indicadores > Informações Sociais: Ajuste no valor mínimo para exibir o percentual dos gráficos de "Deficiência" e "Formação Escolar". O valor mínimo do percentual é de 2%.]]></Item>
 		<Item visivel="S" motivo="P17050000085"><![CDATA[Módulo Externo: Ajuste de inconsistência ao carregar arquivo de css em novas versões de navegadores.]]></Item>
 	</Versao>

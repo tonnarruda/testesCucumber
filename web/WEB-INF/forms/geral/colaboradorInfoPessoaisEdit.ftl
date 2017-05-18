@@ -84,32 +84,15 @@
 		<#if colaborador.endereco.cidade?exists>
 			colaboradorMap["endereco.cidade.nome"] = "${colaborador.endereco.cidade.nome}";
 		</#if>
-		
-		<#if colaborador.contato.email?exists>
-			colaboradorMap["contato.email"] = "${colaborador.contato.email};
-		</#if>	
-		
-		<#if colaborador.contato.ddd?exists>
-			colaboradorMap["contato.ddd"] = "${colaborador.contato.ddd}";
-		</#if>	
-		
-		<#if colaborador.contato.foneFixo?exists>
-			colaboradorMap["contato.foneFixo"] = "${colaborador.contato.foneFixo}";
-		</#if>
-		
-		<#if colaborador.contato.foneCelular?exists>
-			colaboradorMap["contato.foneCelular"] = "${colaborador.contato.foneCelular}";
-		</#if>
-		
+		colaboradorMap["contato.email"] = "${colaborador.contato.email}";
+		colaboradorMap["contato.ddd"] = "${colaborador.contato.ddd}";
+		colaboradorMap["contato.foneFixo"] = "${colaborador.contato.foneFixo}";
+		colaboradorMap["contato.foneCelular"] = "${colaborador.contato.foneCelular}";
 		colaboradorMap["pessoal.escolaridade"] = "${colaborador.pessoal.escolaridade}";
 		colaboradorMap["pessoal.estadoCivil"] = "${colaborador.pessoal.estadoCivil}";
 		colaboradorMap["pessoal.pai"] = "${colaborador.pessoal.pai}";
 		colaboradorMap["pessoal.mae"] = "${colaborador.pessoal.mae}";
-		
-		<#if colaborador.pessoal.conjuge?exists>
-			colaboradorMap["pessoal.conjuge"] = "${colaborador.pessoal.conjuge}";
-		</#if>
-		
+		colaboradorMap["pessoal.conjuge"] = "${colaborador.pessoal.conjuge}";
 		colaboradorMap["pessoal.qtdFilhos"] = "${colaborador.pessoal.qtdFilhos}";
 		
 		colaboradorMap["pessoal.rg"] = "${colaborador.pessoal.rg}";
