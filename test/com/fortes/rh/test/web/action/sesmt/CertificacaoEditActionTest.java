@@ -5,6 +5,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 import mockit.Mockit;
@@ -24,6 +25,7 @@ import com.fortes.rh.model.avaliacao.AvaliacaoPratica;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
 import com.fortes.rh.model.desenvolvimento.Curso;
+import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
@@ -39,6 +41,7 @@ import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.desenvolvimento.CertificacaoEditAction;
 import com.fortes.web.tags.CheckBox;
+import com.opensymphony.xwork.Action;
 
 public class CertificacaoEditActionTest
 {
@@ -261,5 +264,58 @@ public class CertificacaoEditActionTest
 		when(colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(null, null, null, null, new Long[]{}, new Long[]{}, new Long[]{}, new Long[]{}, null)).thenReturn(colaboradorCertificacaos);
 		
 		assertEquals("sucessoAgrupadoPorCertificacao", action.imprimirCertificadosVencidosAVencer());
+	}
+	
+	@Test
+	public void testImprimirColaboradoresSemCertificacoes() throws Exception
+	{
+		action.setSituacao(SituacaoColaborador.ATIVO);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		action.setEmpresaSistema(empresa);
+		
+		ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity();
+		parametrosDoSistema.setCompartilharColaboradores(true);
+		
+		ColaboradorCertificacao colaboradorCertificacao = ColaboradorCertificacaoFactory.getEntity(1L);
+		Collection<ColaboradorCertificacao> colaboradorCertificacaos = Arrays.asList(colaboradorCertificacao);
+
+		when(colaboradorCertificacaoManager.colaboradoresSemCertificacao(action.getEmpresaSistema().getId(), new Long[]{}, new Long[]{}, new Long[]{}, new Long[]{}, SituacaoColaborador.ATIVO)).thenReturn(colaboradorCertificacaos);
+		
+		assertEquals(Action.SUCCESS, action.imprimirColaboradoresSemCertificacoes());
+	}
+	
+	@Test
+	public void testImprimirColaboradoresSemCertificacoesAgruparPorCertificacao() throws Exception
+	{
+		action.setSituacao(SituacaoColaborador.ATIVO);
+		action.setAgruparPor('T');
+		
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		action.setEmpresaSistema(empresa);
+		
+		ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity();
+		parametrosDoSistema.setCompartilharColaboradores(true);
+		
+		ColaboradorCertificacao colaboradorCertificacao = ColaboradorCertificacaoFactory.getEntity(1L);
+		Collection<ColaboradorCertificacao> colaboradorCertificacaos = Arrays.asList(colaboradorCertificacao);
+
+		when(colaboradorCertificacaoManager.colaboradoresSemCertificacao(action.getEmpresaSistema().getId(), new Long[]{}, new Long[]{}, new Long[]{}, new Long[]{}, SituacaoColaborador.ATIVO)).thenReturn(colaboradorCertificacaos);
+		
+		assertEquals("sucessoAgrupadoPorCertificacao", action.imprimirColaboradoresSemCertificacoes());
+	}
+	
+	@Test
+	public void testImprimirColaboradoresSemCertificacoesVazio() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		action.setEmpresaSistema(empresa);
+		
+		Collection<ColaboradorCertificacao> colaboradorCertificacaos = new ArrayList<ColaboradorCertificacao>();
+		
+		when(colaboradorCertificacaoManager.colaboradoresSemCertificacao(action.getEmpresaSistema().getId(), new Long[]{}, new Long[]{}, new Long[]{}, new Long[]{}, SituacaoColaborador.ATIVO)).thenReturn(colaboradorCertificacaos);
+		mocksPrepareImprimir();
+		
+		assertEquals("input", action.imprimirColaboradoresSemCertificacoes());
 	}
 }

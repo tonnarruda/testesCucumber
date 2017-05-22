@@ -39,6 +39,14 @@ public class CertificacaoDWR
     	
     	return checkboxes;
     }
+    
+    public  Collection<CheckBox> getColaboradoresSemCertificacao(Long empresaId, String[] areaOrganizacionalIds, String[] estabelecimentoIds, String[] certificacoesIds, String situacaoColaborador) {
+		Long [] areasIdsLong = StringUtil.stringToLong(areaOrganizacionalIds);
+		Long [] estabelecimentoIdsLong = StringUtil.stringToLong(estabelecimentoIds);
+		Long [] certificacoesIdsLong = StringUtil.stringToLong(certificacoesIds);
+		
+		return colaboradorCertificacaoManager.checkBoxColaboradoresSemCertificacaoDWR(empresaId, areasIdsLong, estabelecimentoIdsLong, certificacoesIdsLong, situacaoColaborador);
+    }
 
 	public void setColaboradorCertificacaoManager(ColaboradorCertificacaoManager colaboradorCertificacaoManager) {
 		this.colaboradorCertificacaoManager = colaboradorCertificacaoManager;

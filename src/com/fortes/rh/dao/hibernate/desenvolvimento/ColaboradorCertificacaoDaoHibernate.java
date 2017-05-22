@@ -30,6 +30,7 @@ import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.StringUtil;
 
@@ -610,5 +611,52 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		}
 		
 		return colaboradoresCertificados;
+	}
+
+	@SuppressWarnings("unchecked")
+	public Collection<ColaboradorCertificacao> findColaboradoresCertificacoesQueNaoParticipamDoCurso(Long empresaId, Long[] areasIds, Long[] estabelecimentosIds, Long[] colaboradoresIds, String situacaoColaborador, Long[] cursosIds){
+		DetachedCriteria ultimoHistoricoColaborador = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2").setProjection(Projections.max("hc2.data"))
+				.add(Restrictions.eqProperty("hc2.colaborador.id", "hc.colaborador.id")).add(Restrictions.eq("hc2.status", StatusRetornoAC.CONFIRMADO));
+		
+		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
+		criteria.createCriteria("c.historicoColaboradors", "hc", Criteria.INNER_JOIN);
+		criteria.createCriteria("hc.estabelecimento", "e", Criteria.INNER_JOIN);
+		criteria.createCriteria("hc.faixaSalarial", "fs", Criteria.INNER_JOIN);
+		criteria.createCriteria("fs.cargo", "cg", Criteria.INNER_JOIN);
+		criteria.createCriteria("hc.areaOrganizacional", "ao", Criteria.INNER_JOIN);
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("c.id"), "colaboradorId");
+		p.add(Projections.property("c.nome"), "colaboradorNome");
+		p.add(Projections.property("c.nomeComercial"), "colaboradorNomeComercial");
+		p.add(Projections.property("c.matricula"), "colaboradorMatricula");
+		p.add(Projections.property("e.id"), "estabelecimentoId");
+		p.add(Projections.property("e.nome"), "estabelecimentoNome");
+		p.add(Projections.property("fs.id"), "faixaSalarialId");
+		p.add(Projections.property("fs.nome"), "faixaSalarialNome");
+		p.add(Projections.property("cg.id"), "cargoId");
+		p.add(Projections.property("cg.nome"), "cargoNome");
+		p.add(Projections.property("ao.id"), "areaOrganizacionalId");
+		p.add(Projections.sqlProjection("monta_familia_area(ao5_.id) as areaOrganizacionalNome", new String[] {"areaOrganizacionalNome"}, new Type[] {Hibernate.TEXT}), "areaOrganizacionalNome");
+		criteria.setProjection(Projections.distinct(p));
+		
+		if(areasIds != null && areasIds.length > 0)
+			criteria.add(Expression.in("hc.areaOrganizacional.id",areasIds));
+		if(estabelecimentosIds != null && estabelecimentosIds.length > 0)
+			criteria.add(Expression.in("hc.estabelecimento.id" , estabelecimentosIds));
+		if(colaboradoresIds != null && colaboradoresIds.length > 0)
+			criteria.add(Expression.in("c.id" , colaboradoresIds));
+		
+		criteria.add(Expression.eq("c.empresa.id" , empresaId));
+	    criteria.add(Subqueries.propertyEq("hc.data", ultimoHistoricoColaborador));
+
+	    criteria.add(Expression.sqlRestriction("{alias}.id not in (select distinct colaborador_id from colaboradorturma where curso_id in ("+ StringUtil.converteArrayToString(StringUtil.LongToString(cursosIds)) + ")) ", new String[]{}, new Type[]{}));
+
+		situacaoColaborador(situacaoColaborador, criteria, "c");	    
+	    criteria.addOrder(Order.asc("c.nome"));
+	    criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+	    criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorCertificacao.class));
+
+	    return criteria.list();
 	}
 }

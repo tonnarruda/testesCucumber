@@ -574,6 +574,9 @@
 				/desenvolvimento/certificacao/prepareImprimirCertificadosVencidosAVencer*=ROLE_REL_CERTIFICADOS_VENCIDOS_A_VENCER
 				/desenvolvimento/certificacao/imprimirCertificadosVencidosAVencer*=ROLE_REL_CERTIFICADOS_VENCIDOS_A_VENCER
 				/desenvolvimento/certificacao/imprimirCertificadosVencidosAVencerXlS*=ROLE_REL_CERTIFICADOS_VENCIDOS_A_VENCER
+				/desenvolvimento/certificacao/prepareRelatorioColaboradoresSemCertificacoes*=ROLE_REL_COLABORADORES_SEM_CURSO_CERTIFICACOES
+				/desenvolvimento/certificacao/imprimirColaboradoresSemCertificacoes*=ROLE_REL_COLABORADORES_SEM_CURSO_CERTIFICACOES
+				/desenvolvimento/certificacao/imprimirColaboradoresSemCertificacoesXlS*=ROLE_REL_COLABORADORES_SEM_CURSO_CERTIFICACOES
 				/desenvolvimento/certificacao/*/**=ROLE_CAD_CERTIFICACAO
 				/desenvolvimento/indicadores/*/**=ROLE_MOV_CURSO,ROLE_TED_PAINEL_IND
 				/desenvolvimento/turma/prepareImprimirCursosVencidosAVencer.action*=ROLE_REL_CURSOS_VENCIDOS_A_VENCER

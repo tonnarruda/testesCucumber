@@ -23,6 +23,7 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.SpringUtil;
+import com.fortes.web.tags.CheckBox;
 
 public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<ColaboradorCertificacao, ColaboradorCertificacaoDao> implements ColaboradorCertificacaoManager
 {
@@ -249,7 +250,6 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 		
 		return colaboradorCertificacaosRetorno;
 	}
-
 
 	private Collection<ColaboradorCertificacao> decideColaboradorCertificacaoAdicionar(Collection<ColaboradorCertificacao> colaboradoresCertificadosVencidos,Collection<ColaboradorCertificacao> colaboradoresQueParticipamDaCertificacaoNaoCertificados) {
 		Collection<ColaboradorCertificacao> colaboradoresCertificacaoes = new ArrayList<ColaboradorCertificacao>();
@@ -491,7 +491,83 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 			return false;
 		Map<Long, ColaboradorTurma> colaboradoresTurmaMap = getDao().findCertificaçõesNomesByColaboradoresTurmasIds(colaboradorTurmaId);
 		return colaboradoresTurmaMap.containsKey(colaboradorTurmaId);
-	} 
+	}
+
+	public Collection<CheckBox> checkBoxColaboradoresSemCertificacaoDWR(Long empresaId, Long[] areasIds, Long[] estabelecimentosIds, Long[] certificacoesIds, String situacaoColaborador) {
+		CertificacaoManager certificacaoManager = (CertificacaoManager) SpringUtil.getBeanOld("certificacaoManager");
+		Collection<ColaboradorCertificacao> colaboradorCertificacaosRetorno = new ArrayList<ColaboradorCertificacao>();
+		Collection<CheckBox> checkboxes = new ArrayList<CheckBox>();
+		
+		for (Long certificacaoId : certificacoesIds) {
+			Collection<Curso> cursos = certificacaoManager.findCursosByCertificacaoId(certificacaoId);
+			if(cursos.size() == 0)	
+				continue;
+			
+			Long[] cursosIds = new CollectionUtil<Curso>().convertCollectionToArrayIds(cursos, "getId");
+			colaboradorCertificacaosRetorno.addAll(getDao().findColaboradoresCertificacoesQueNaoParticipamDoCurso(empresaId, areasIds, estabelecimentosIds, null, situacaoColaborador, cursosIds)); 
+		}
+		
+    	Collection<Long> colaboradoresIdsAdicionados = new ArrayList<Long>();
+    	for (ColaboradorCertificacao colaboradorCert : colaboradorCertificacaosRetorno) {
+    		if(!colaboradoresIdsAdicionados.contains(colaboradorCert.getColaboradorId())){
+	    		CheckBox checkBox = new CheckBox();
+				checkBox.setId(colaboradorCert.getColaboradorId());
+				checkBox.setNome(colaboradorCert.getColaborador().getNome());
+				colaboradoresIdsAdicionados.add(colaboradorCert.getColaboradorId());
+				checkboxes.add(checkBox);
+			}
+    	}
+    	
+    	if(checkboxes.size() > 0)
+    		return new CollectionUtil<CheckBox>().sortCollectionStringIgnoreCase(checkboxes, "nome");
+    	else
+    		return checkboxes;
+	}
+	
+	public Collection<ColaboradorCertificacao> colaboradoresSemCertificacao(Long empresaId, Long[] areasIds, Long[] estabelecimentosIds, Long[] colaboradoresIds, Long[] certificacoesIds, String situacaoColaborador) {
+		CertificacaoManager certificacaoManager = (CertificacaoManager) SpringUtil.getBean("certificacaoManager");
+		Collection<Certificacao> certificacoes = certificacaoManager.findCollectionByIdProjection(certificacoesIds);
+		Map<Long, Collection<AvaliacaoPratica>> mapAvaliacoesPraticas = avaliacaoPraticaManager.findMapByCertificacaoId(certificacoesIds);
+		Collection<ColaboradorCertificacao> colaboradorCertificacaosRetorno = new ArrayList<ColaboradorCertificacao>(); 
+
+		for (Certificacao certificacao : certificacoes) {
+			Collection<Curso> cursos = certificacaoManager.findCursosByCertificacaoId(certificacao.getId());
+			if(cursos.size() == 0)	
+				continue;
+			
+			Long[] cursosIds = new CollectionUtil<Curso>().convertCollectionToArrayIds(cursos, "getId");
+			Collection<ColaboradorCertificacao> colaboradoresCertificacaoes = getDao().findColaboradoresCertificacoesQueNaoParticipamDoCurso(empresaId, areasIds, estabelecimentosIds, colaboradoresIds, situacaoColaborador, cursosIds); 
+			if(colaboradoresCertificacaoes.size() == 0)
+				continue;
+
+			for (ColaboradorCertificacao colabCertificacao : colaboradoresCertificacaoes) {
+				for (Curso curso : cursos) {
+					ColaboradorCertificacao colaboradorCertificacao = (ColaboradorCertificacao) colabCertificacao.clone();
+					colaboradorCertificacao.setCertificacao((Certificacao) certificacao.clone());
+					colaboradorCertificacao.setNomeCurso(curso.getNome());
+					colaboradorCertificacao.setPeriodoTurma("Não realizou o curso");
+					colaboradorCertificacao.getCertificacao().setAprovadoNaTurma(false);
+					colaboradorCertificacaosRetorno.add(colaboradorCertificacao);
+				}
+				
+				if(mapAvaliacoesPraticas.containsKey(certificacao.getId())){
+					for (AvaliacaoPratica avaliacaoPratica : mapAvaliacoesPraticas.get(certificacao.getId())){
+						if(avaliacaoPratica.getId() == null) 
+							continue;
+
+						ColaboradorCertificacao colabCertificacaoAVPratica = (ColaboradorCertificacao) colabCertificacao.clone();
+						colabCertificacaoAVPratica.setPeriodoTurma("Não possui nota da av. prática");
+						colabCertificacaoAVPratica.setNomeCurso("Avaliação Prática: " + avaliacaoPratica.getTitulo());
+						colabCertificacaoAVPratica.setCertificacao((Certificacao) certificacao.clone());
+						colabCertificacaoAVPratica.getCertificacao().setAprovadoNaTurma(false);
+						colaboradorCertificacaosRetorno.add(colabCertificacaoAVPratica);
+					}
+				}
+			}
+		}
+		
+		return colaboradorCertificacaosRetorno;
+	}
 
 	public void setAvaliacaoPraticaManager( AvaliacaoPraticaManager avaliacaoPraticaManager) {
 		this.avaliacaoPraticaManager = avaliacaoPraticaManager;

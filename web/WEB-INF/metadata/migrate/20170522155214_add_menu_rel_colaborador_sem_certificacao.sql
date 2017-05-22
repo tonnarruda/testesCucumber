@@ -1,0 +1,3 @@
+insert into papel (id, codigo, nome, url, ordem, menu, papelmae_id) values (704, 'ROLE_REL_COLABORADORES_SEM_CURSO_CERTIFICACOES','Colaboradores sem Cursos em Certificações', '/desenvolvimento/certificacao/prepareRelatorioColaboradoresSemCertificacoes.action', 19, true, 368);--.go
+insert into perfil_papel(perfil_id, papeis_id) values(1, 704);--.go
+alter sequence papel_sequence restart with 705;--.go

@@ -12,6 +12,8 @@
 	
 	<script type="text/javascript">
 		$(function() {
+			$('#listCheckBoxFiltercertificacoesCheck').parent().find('#mt').removeAttr('onclick').css('color', '#5C5C5A' );
+			$('#listCheckBoxFiltercertificacoesCheck').parent().find('#dt').removeAttr('onclick').css('color', '#5C5C5A' );
 
 			$('#tooltipHelpPeriodo').qtip({
 				content: 'Os campos "Período Certificado" e "Com certificação a vencer em até" só serão habilitados ao marcar a opção "Certificados".'

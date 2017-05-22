@@ -107,5 +107,46 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/reprocessaCertificacao.ftl</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/reprocessaCertificacao.ftl</result>
 		</action>
+		<action name="prepareRelatorioColaboradoresSemCertificacoes" class="com.fortes.rh.web.action.desenvolvimento.CertificacaoEditAction" method="prepareImprimirCertificadosVencidosAVencer">
+			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/prepareRelatorioColaboradoresSemCertificacoes.ftl</result>
+		</action>
+		<action name="imprimirColaboradoresSemCertificacoes" class="com.fortes.rh.web.action.desenvolvimento.CertificacaoEditAction" method="imprimirColaboradoresSemCertificacoes">
+			<result name="success" type="jasper">
+				<param name="location">WEB-INF/report/colaboradorPorCertificado.jasper</param>
+				<param name="dataSource">colaboradorCertificacoes</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">colaboradoresSemCertificacoes.pdf</param>
+			</result>
+			<result name="sucessoAgrupadoPorCertificacao" type="jasper">
+				<param name="location">WEB-INF/report/colaboradorPorCertificadoAgrupadoPorCertificacao.jasper</param>
+				<param name="dataSource">colaboradorCertificacoes</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">colaboradoresSemCertificacoes.pdf</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/prepareRelatorioColaboradoresSemCertificacoes.ftl</result>
+		</action>
+		<action name="imprimirColaboradoresSemCertificacoesXlS" class="com.fortes.rh.web.action.desenvolvimento.CertificacaoEditAction" method="imprimirColaboradoresSemCertificacoes">
+			<result name="success" type="xls">
+				<param name="dataSource">colaboradorCertificacoes</param>
+				<param name="documentName">colaboradoresSemCertificacoes.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Nome,Nome Comercial,Matrícula,Estabelecimento,Área Organizacional,Cargo,Certificação,Status Certificação,Certificado em,Periodicidade,Vencimento do Certificado,Curso,Período,Aprovado</param>
+				<param name="propertiesGroup">colaborador.id,colaborador.id,colaborador.matricula,colaborador.estabelecimento.id,colaborador.areaOrganizacional.id,colaborador.faixaSalarial.cargo.id,certificacao.id,aprovadoNaCertificacaoString,dataCertificadoFormatada,certificacao.periodicidade,dataVencimentoCertificacao</param>
+				<param name="properties">colaborador.nome,colaborador.nomeComercial,colaborador.matricula,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.nome,colaborador.faixaSalarial.cargo.nome,certificacao.nome,aprovadoNaCertificacaoString,dataCertificadoFormatada,certificacao.periodicidadeFormatada,dataVencimentoCertificacao,nomeCurso,periodoTurma,certificacao.aprovadoNaTurmaString</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
+			<result name="sucessoAgrupadoPorCertificacao" type="xls">
+				<param name="dataSource">colaboradorCertificacoes</param>
+				<param name="documentName">colaboradoresSemCertificacoes.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Certificação,Qtd Certificado,Qtd Não Certificado,Status Certificação,Certificado em,Periodicidade,Vencimento do Certificado,Nome,Nome Comercial,Matrícula,Estabelecimento,Área Organizacional,Cargo,Curso,Período,Aprovado</param>
+				<param name="propertiesGroup">certificacao.id,qtdColaboradorAprovado,qtdColaboradorNaoAprovado,aprovadoNaCertificacaoString,dataCertificadoFormatada,certificacao.periodicidade,dataVencimentoCertificacao,colaborador.id,colaborador.id,colaborador.matricula,colaborador.estabelecimento.id,colaborador.areaOrganizacional.id,colaborador.faixaSalarial.cargo.id</param>
+				<param name="properties">certificacao.nome,qtdColaboradorAprovado,qtdColaboradorNaoAprovado,aprovadoNaCertificacaoString,dataCertificadoFormatada,certificacao.periodicidadeFormatada,dataVencimentoCertificacao,colaborador.nome,colaborador.nomeComercial,colaborador.matricula,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.nome,colaborador.faixaSalarial.cargo.nome,nomeCurso,periodoTurma,certificacao.aprovadoNaTurmaString</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>		
+			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/prepareRelatorioColaboradoresSemCertificacoes.ftl</result>
+		</action>
 	</package>
 </xwork>

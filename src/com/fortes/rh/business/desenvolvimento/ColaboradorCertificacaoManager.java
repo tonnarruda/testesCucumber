@@ -7,6 +7,7 @@ import com.fortes.business.GenericManager;
 import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.web.tags.CheckBox;
 
 public interface ColaboradorCertificacaoManager extends GenericManager<ColaboradorCertificacao>
 {
@@ -28,4 +29,6 @@ public interface ColaboradorCertificacaoManager extends GenericManager<Colaborad
 	boolean existiColaboradorCertificadoByTurma(Long turmaId);
 	boolean isCertificadoByColaboradorTurmaId(Long colaboradorTurmaId);
 	void setCertificaçõesNomesInColaboradorTurmas(Collection<ColaboradorTurma> colaboradorTurmas);
+	Collection<CheckBox> checkBoxColaboradoresSemCertificacaoDWR(Long empresaId, Long[] areasIds, Long[] estabelecimentosIds, Long[] certificacoesIds, String situacaoColaborador);
+	Collection<ColaboradorCertificacao> colaboradoresSemCertificacao(Long empresaId, Long[] areasIds, Long[] estabelecimentosIds, Long[] colaboradoresIds, Long[] certificacoesIds, String situacaoColaborador);
 }

@@ -33,6 +33,7 @@ import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoPraticaFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
@@ -47,6 +48,7 @@ import com.fortes.rh.test.util.mockObjects.MockSpringUtilJUnit4;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.SpringUtil;
+import com.fortes.web.tags.CheckBox;
 
 public class ColaboradorCertificacaoManagerTest
 {
@@ -556,5 +558,84 @@ public class ColaboradorCertificacaoManagerTest
 
 		when(colaboradorCertificacaoDao.findCertificaçõesNomesByColaboradoresTurmasIds(colaboradorTurma.getId())).thenReturn(colaboradoresTurmaMap);
 		assertTrue(colaboradorCertificacaoManager.isCertificadoByColaboradorTurmaId(colaboradorTurma.getId()));
+	}
+	
+	@Test
+	public void testColaboradoresSemCertificacaoDWR(){
+		Certificacao certificacao = CertificacaoFactory.getEntity(1L);
+		certificacao.setNome("Cerificação");
+		
+		Curso curso1 = CursoFactory.getEntity(1L);
+		Curso curso2 = CursoFactory.getEntity(2L);
+		Collection<Curso> cursos = Arrays.asList(curso1, curso2);
+		
+		Colaborador colab1 = ColaboradorFactory.getEntity(1L);
+		colab1.setNome("João");
+		Colaborador colab2 = ColaboradorFactory.getEntity(2L);
+		colab2.setNome("Maria");
+		
+		ColaboradorCertificacao colaboradorCertificacao1 = ColaboradorCertificacaoFactory.getEntity(colab1, certificacao, null);
+		ColaboradorCertificacao colaboradorCertificacao2 = ColaboradorCertificacaoFactory.getEntity(colab2, certificacao, null);
+		
+		Collection<ColaboradorCertificacao> colaboradorCertificacaos = Arrays.asList(colaboradorCertificacao1, colaboradorCertificacao2);
+		
+		Long[] certificacoesIds = new Long[]{1L, 2L};
+		Long[] cursosIds = new Long[]{curso1.getId(), curso2.getId()};
+		
+		when(certificacaoManager.findCursosByCertificacaoId(1L)).thenReturn(cursos);
+		when(colaboradorCertificacaoDao.findColaboradoresCertificacoesQueNaoParticipamDoCurso(1L, null, null, null, SituacaoColaborador.ATIVO, cursosIds)).thenReturn(colaboradorCertificacaos);
+
+		Collection<CheckBox> checkBoxs = colaboradorCertificacaoManager.checkBoxColaboradoresSemCertificacaoDWR(1L, null, null, certificacoesIds, SituacaoColaborador.ATIVO);
+		assertEquals(2, checkBoxs.size());
+		assertEquals(colab1.getNome(), ((CheckBox) checkBoxs.toArray()[0]).getNome());
+		assertEquals(colab2.getNome(), ((CheckBox) checkBoxs.toArray()[1]).getNome());
+	}
+	
+	@Test
+	public void testColaboradoresSemCertificacao(){
+		Certificacao certificacao = CertificacaoFactory.getEntity(1L);
+		certificacao.setNome("Cerificação");
+		Collection<Certificacao> certificacoes = Arrays.asList(certificacao);
+		
+		Colaborador colab1 = ColaboradorFactory.getEntity(1L);
+		colab1.setNome("João");
+		Colaborador colab2 = ColaboradorFactory.getEntity(2L);
+		colab2.setNome("Maria");
+		
+		Curso curso1 = CursoFactory.getEntity(1L);
+		Curso curso2 = CursoFactory.getEntity(2L);
+		Collection<Curso> cursos = Arrays.asList(curso1, curso2);
+		
+		AvaliacaoPratica avaliacaoPratica = AvaliacaoPraticaFactory.getEntity(1L);
+		avaliacaoPratica.setNotaMinima(90.0);
+		avaliacaoPratica.setTitulo("Av Pratica");
+		
+		Map<Long, Collection<AvaliacaoPratica>> mapAvaliacoesPraticas = new HashMap<Long, Collection<AvaliacaoPratica>>();
+		mapAvaliacoesPraticas.put(certificacao.getId(), Arrays.asList(avaliacaoPratica));
+		
+		ColaboradorCertificacao colaboradorCertificacao1 = ColaboradorCertificacaoFactory.getEntity(1L);
+		colaboradorCertificacao1.setColaborador(colab1);
+		colaboradorCertificacao1.setCertificacao(certificacao);
+		
+		ColaboradorCertificacao colaboradorCertificacao2 = ColaboradorCertificacaoFactory.getEntity(2L);
+		colaboradorCertificacao2.setColaborador(colab2);
+		colaboradorCertificacao2.setCertificacao(certificacao);
+		
+		Collection<ColaboradorCertificacao> colaboradorCertificacaos = Arrays.asList(colaboradorCertificacao1, colaboradorCertificacao2);
+		
+		Long[] certificacoesIds = new Long[]{certificacao.getId()};
+		Long[] colaboradoresIds = new Long[]{colab1.getId(), colab2.getId()};
+		Long[] cursosIds = new Long[]{curso1.getId(), curso2.getId()};
+		
+		when(certificacaoManager.findCollectionByIdProjection(certificacoesIds)).thenReturn(certificacoes);
+		when(avaliacaoPraticaManager.findMapByCertificacaoId(certificacoesIds)).thenReturn(mapAvaliacoesPraticas);
+		when(certificacaoManager.findCursosByCertificacaoId(certificacao.getId())).thenReturn(cursos);
+		when(colaboradorCertificacaoDao.findColaboradoresCertificacoesQueNaoParticipamDoCurso(1L, null, null, colaboradoresIds, SituacaoColaborador.ATIVO, cursosIds)).thenReturn(colaboradorCertificacaos);
+
+		Collection<ColaboradorCertificacao> colaboradoresNasCertificacoes = colaboradorCertificacaoManager.colaboradoresSemCertificacao(1L, null, null, colaboradoresIds, certificacoesIds, SituacaoColaborador.ATIVO);
+		assertEquals(6, colaboradoresNasCertificacoes.size());
+		
+		ColaboradorCertificacao result2 = (ColaboradorCertificacao) colaboradoresNasCertificacoes.toArray()[2];
+		assertEquals("Avaliação Prática: Av Pratica", result2.getNomeCurso());
 	}
 }

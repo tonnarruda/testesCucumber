@@ -347,6 +347,44 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 		}
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public String imprimirColaboradoresSemCertificacoes(){
+		try {
+			Long[] areaIds = LongUtil.arrayStringToArrayLong(areasCheck);
+			Long[] estabelecimentoIds = LongUtil.arrayStringToArrayLong(estabelecimentosCheck);
+			Long[] certificacoesIds = LongUtil.arrayStringToArrayLong(certificacoesCheck);
+			Long[] colaboradoresIds = LongUtil.arrayStringToArrayLong(colaboradoresCheck);
+			
+			colaboradorCertificacoes = colaboradorCertificacaoManager.colaboradoresSemCertificacao(getEmpresaSistema().getId(), areaIds, estabelecimentoIds, colaboradoresIds, certificacoesIds, situacao);
+			if(colaboradorCertificacoes.size() == 0){
+				addActionMessage("Não existem dados para o filtro informado.");
+				prepareImprimirCertificadosVencidosAVencer();
+				return Action.INPUT;	
+			}
+
+			if((agruparPor != null && agruparPor == 'T'))
+				colaboradorCertificacoes = new CollectionUtil<ColaboradorCertificacao>().sortCollectionStringIgnoreCase(colaboradorCertificacoes, "certificacao.nome");
+			else
+				colaboradorCertificacoes = new CollectionUtil().sortCollectionStringIgnoreCase(colaboradorCertificacoes, "colaborador.nome");
+			
+			reportTitle = "Relatório de Colaboradores Sem Certificações";
+			reportTitle += "\nData do Relatório: " + DateUtil.formataDiaMesAno(new Date());
+
+			parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), "");
+			
+			if(agruparPor != null && agruparPor == 'T') 
+				return "sucessoAgrupadoPorCertificacao";
+
+			return Action.SUCCESS;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			addActionMessage("Não foi possível gerar relatório.");
+			prepareImprimirCertificadosVencidosAVencer();
+			return Action.INPUT;
+		}
+	}
+	
 	public Object getModel()
 	{
 		return getCertificacao();

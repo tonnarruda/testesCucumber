@@ -111,7 +111,8 @@ public abstract class Menu
 					
 					if (verificaPapeisParaEmpresasIntegradas(papel, empresaLogada) && verificaEmpresaComSolicitacaoDesligamento(papel, empresaLogada) 
 							&& verificaPapeisParaCursosOuCertificacaoVencidasAVencer(papel, empresaLogada) && verificaPapeisUsuarioSOS(papel, idDoUsuario)
-							&& verificaParametrosSistemaAutorizacaoSolicitacaoPessoal(papel, parametros)) 
+							&& verificaParametrosSistemaAutorizacaoSolicitacaoPessoal(papel, parametros)
+							&& verificaPapeisParaColaboradoresSemCursoDasCertificacoes(papel, empresaLogada)) 
 					{
 						menuFilho.append("<a href='" + url + "'>" + papel.getNome() + "</a>");
 					}
@@ -162,5 +163,9 @@ public abstract class Menu
 	private static boolean verificaParametrosSistemaAutorizacaoSolicitacaoPessoal(Papel papel, ParametrosDoSistema parametros) 
 	{
 		return !papel.getCodigo().equalsIgnoreCase("ROLE_MOV_AUTOR_COLAB_SOL_PESSOAL") || parametros.isAutorizacaoGestorNaSolicitacaoPessoal();
+	}
+	
+	private static boolean verificaPapeisParaColaboradoresSemCursoDasCertificacoes(Papel papel, Empresa empresa){
+		return !papel.getCodigo().equalsIgnoreCase("ROLE_REL_COLABORADORES_SEM_CURSO_CERTIFICACOES") || empresa.isControlarVencimentoPorCertificacao();
 	}
 }
