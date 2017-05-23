@@ -15,4 +15,6 @@ public interface MotivoDemissaoManager extends GenericManager<MotivoDemissao>
 	Collection<MotivoDemissao> findAllSelect(Long empresaId);
 
 	void sincronizar(Long empresaOrigemId, Long empresaDestinoId);
+
+	Collection<MotivoDemissao> findMotivoDemissao(Integer page, Integer pagingSize,	Long empresaId, String motivo, Boolean ativo);
 }

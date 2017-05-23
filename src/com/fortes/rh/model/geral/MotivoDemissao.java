@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.security.auditoria.ChaveDaAuditoria;
@@ -15,6 +16,11 @@ import com.fortes.security.auditoria.ChaveDaAuditoria;
 @SequenceGenerator(name="sequence", sequenceName="motivodemissao_sequence", allocationSize=1)
 public class MotivoDemissao extends AbstractModel implements Serializable
 {
+	@Transient
+	public static Boolean ATIVO = true;
+	@Transient
+	public static Boolean INATIVO = false;
+	
 	@Column(length=50)
 	private String motivo;
 
@@ -23,6 +29,7 @@ public class MotivoDemissao extends AbstractModel implements Serializable
 
 	private boolean turnover;
 	private boolean reducaoDeQuadro;
+	private boolean ativo = ATIVO;
 	
 	@ChaveDaAuditoria
     public String getMotivo()
@@ -82,5 +89,13 @@ public class MotivoDemissao extends AbstractModel implements Serializable
 
 	public void setReducaoDeQuadro(boolean reducaoDeQuadro) {
 		this.reducaoDeQuadro = reducaoDeQuadro;
+	}
+
+	public boolean isAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
 	}
 }

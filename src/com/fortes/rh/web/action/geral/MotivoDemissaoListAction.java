@@ -77,13 +77,17 @@ public class MotivoDemissaoListAction extends MyActionSupportList
 	public String list() throws Exception
 	{
 		exibeFlagTurnover = getEmpresaSistema().isTurnoverPorSolicitacao();
-		
-		String[] keys = new String[]{"empresa.id"};
-		Object[] values = new Object[]{getEmpresaSistema().getId()};
-		String[] orders = new String[]{"motivo asc"};
 
-		setTotalSize(motivoDemissaoManager.getCount(keys, values));
-		motivoDemissaos = motivoDemissaoManager.find(getPage(), getPagingSize(), keys, values, orders);
+		String motivo = null;
+		Boolean ativo = null;
+		
+		if(motivoDemissao != null){
+			motivo = motivoDemissao.getMotivo() != null ? motivoDemissao.getMotivo() : null;
+			ativo = motivoDemissao.isAtivo();
+		}
+		
+		setTotalSize(motivoDemissaoManager.findMotivoDemissao(null, null, getEmpresaSistema().getId(), motivo, ativo).size());
+		motivoDemissaos = motivoDemissaoManager.findMotivoDemissao(getPage(), getPagingSize(), getEmpresaSistema().getId(), motivo, ativo);
 
 		return Action.SUCCESS;
 	}

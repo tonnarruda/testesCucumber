@@ -51,8 +51,11 @@ public class MotivoDemissaoManagerImpl extends GenericManagerImpl<MotivoDemissao
 		getDao().save(motivoDemissao);
 	}
 
+	public Collection<MotivoDemissao> findMotivoDemissao(Integer page, Integer pagingSize, Long empresaId, String motivo, Boolean ativo) {
+		return getDao().findMotivoDemissao(page, pagingSize, empresaId, motivo, ativo);
+	}
+	
 	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager) {
 		this.estabelecimentoManager = estabelecimentoManager;
 	}
-
 }

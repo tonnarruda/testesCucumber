@@ -1,10 +1,7 @@
 package com.fortes.rh.web.action.cargosalario;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Map;
-
-import org.hibernate.exception.ConstraintViolationException;
 
 import com.fortes.rh.business.acesso.PapelManager;
 import com.fortes.rh.business.cargosalario.CargoManager;

@@ -65,7 +65,7 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 	public String prepareUpdate() throws Exception
 	{
 		integraAc = getEmpresaSistema().isAcIntegra();
-		motivoDemissaos = motivoDemissaoManager.findAllSelect(getEmpresaSistema().getId());
+		motivoDemissaos = motivoDemissaoManager.findMotivoDemissao(null, null, getEmpresaSistema().getId(), null, true);
 		colaborador = colaboradorManager.findColaboradorById(colaborador.getId());
 		motDemissao = colaborador.getMotivoDemissao();
 		gerouSubstituicao = colaborador.getDemissaoGerouSubstituicao();
@@ -73,11 +73,11 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 		return Action.SUCCESS;
 	}
 
-	// TODO: SEM TESTE
 	public String prepareDesliga() throws Exception
 	{
 		integraAc = getEmpresaSistema().isAcIntegra();
-		motivoDemissaos = motivoDemissaoManager.find(new String[]{"empresa.id"}, new Object[]{getEmpresaSistema().getId()}, new String[]{"motivo asc"});
+		
+		motivoDemissaos = motivoDemissaoManager.findMotivoDemissao(null, null, getEmpresaSistema().getId(), null, true);
 
 		return Action.SUCCESS;
 	}
@@ -219,7 +219,6 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 		return Action.SUCCESS;
 	}
 
-	// TODO: SEM TESTE
 	public String visualizarSolicitacaoDesligamento() throws Exception
 	{
 		colaborador = colaboradorManager.findColaboradorByIdProjection(colaborador.getId());

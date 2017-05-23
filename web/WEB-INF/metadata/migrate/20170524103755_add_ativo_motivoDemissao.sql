@@ -1,0 +1,1 @@
+alter table MotivoDemissao add column ativo boolean NOT NULL default true;--.go

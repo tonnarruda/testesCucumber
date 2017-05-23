@@ -17,6 +17,7 @@
 	<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" validate="true" method="POST">
 		<@ww.hidden name="motivoDemissao.id" />
 		<@ww.textfield label="Motivo" name="motivoDemissao.motivo" id="motivo" size="50" maxLength="50" required="true"/>
+		<@ww.select label="Ativo" name="motivoDemissao.ativo" list=r"#{true:'Sim',false:'Não'}"/>
 		
 		<#if exibeFlagTurnover>
 			<@ww.checkbox label="Considerar para cálculo de turnover" name="motivoDemissao.turnover" labelPosition="left"/>
@@ -24,7 +25,6 @@
 		<@ww.checkbox label="Redução de Quadro" name="motivoDemissao.reducaoDeQuadro" labelPosition="left"/>
 		
 	</@ww.form>
-
 
 	<div class="buttonGroup">
 		<button onclick="${validarCampos};" class="btnGravar" accesskey="${accessKey}">

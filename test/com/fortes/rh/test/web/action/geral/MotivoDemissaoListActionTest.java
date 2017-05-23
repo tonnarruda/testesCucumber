@@ -1,14 +1,25 @@
 package com.fortes.rh.test.web.action.geral;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
-import org.jmock.core.Constraint;
+import mockit.Mockit;
+
+import org.hibernate.ObjectNotFoundException;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
@@ -19,44 +30,70 @@ import com.fortes.rh.model.geral.MotivoDemissao;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.geral.relatorio.MotivoDemissaoQuantidade;
 import com.fortes.rh.model.relatorio.Cabecalho;
+import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
+import com.fortes.rh.test.factory.geral.MotivoDemissaoFactory;
+import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
+import com.fortes.rh.test.util.mockObjects.MockSpringUtil;
+import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.web.action.geral.MotivoDemissaoListAction;
+import com.opensymphony.xwork.ActionContext;
 
-public class MotivoDemissaoListActionTest extends MockObjectTestCase
+public class MotivoDemissaoListActionTest
 {
 	private MotivoDemissaoListAction action;
-	private Mock manager;
-	private Mock colaboradorManager;
-	private Mock empresaManager;
-	private Mock parametrosDoSistemaManager;
+	private MotivoDemissaoManager manager;
+	private ColaboradorManager colaboradorManager;
+	private EmpresaManager empresaManager;
+	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 
-    protected void setUp() throws Exception
+	@Before
+    public void setUp() throws Exception
     {
-        super.setUp();
         action = new MotivoDemissaoListAction();
-        manager = new Mock(MotivoDemissaoManager.class);
-        colaboradorManager = new Mock(ColaboradorManager.class);
-        empresaManager = new Mock(EmpresaManager.class);
-        parametrosDoSistemaManager = new Mock(ParametrosDoSistemaManager.class);
+        manager = mock(MotivoDemissaoManager.class);
+        colaboradorManager = mock(ColaboradorManager.class);
+        empresaManager = mock(EmpresaManager.class);
+        parametrosDoSistemaManager = mock(ParametrosDoSistemaManager.class);
 
-        action.setMotivoDemissaoManager((MotivoDemissaoManager) manager.proxy());
-        action.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
-        action.setEmpresaManager((EmpresaManager) empresaManager.proxy());
-        action.setParametrosDoSistemaManager((ParametrosDoSistemaManager) parametrosDoSistemaManager.proxy());
+        action.setMotivoDemissaoManager(manager);
+        action.setColaboradorManager(colaboradorManager);
+        action.setEmpresaManager(empresaManager);
+        action.setParametrosDoSistemaManager(parametrosDoSistemaManager);
+        
+        Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
+		Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
     }
 
-    protected void tearDown() throws Exception
-    {
-        manager = null;
-        action = null;
-        super.tearDown();
-    }
-
-    public void testExecute() throws Exception
+	@Test
+	public void testExecute() throws Exception
     {
     	assertEquals(action.execute(), "success");
     }
 
+	@Test
+    public void testList() throws Exception
+    {
+    	Empresa empresa = new Empresa();
+    	empresa.setId(1L);
+    	action.setEmpresaSistema(empresa);
+    	
+       	MotivoDemissao motivoDemissao = MotivoDemissaoFactory.getEntity();
+       	motivoDemissao.setMotivo("motivo");
+       	motivoDemissao.setAtivo(true);
+       	action.setMotivoDemissao(motivoDemissao);
+       	
+       	Collection<MotivoDemissao> motivosdemissoes = new ArrayList<MotivoDemissao>();
+       	motivosdemissoes.add(motivoDemissao);
+    	
+    	when(manager.findMotivoDemissao(null, null, action.getEmpresaSistema().getId(), "motivo", true)).thenReturn(motivosdemissoes);
+    	when(manager.findMotivoDemissao(1, 15, action.getEmpresaSistema().getId(), "motivo", true)).thenReturn(motivosdemissoes);
+    	
+    	assertEquals("success", action.list());
+    	assertEquals(1, action.getMotivoDemissaos().size());
+    }
+	
+	@Test
     public void testPrepareRelatorioMotivoDemissao() throws Exception
     {
     	Empresa empresa = new Empresa();
@@ -65,12 +102,14 @@ public class MotivoDemissaoListActionTest extends MockObjectTestCase
     	
        	ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
     	parametrosDoSistema.setCompartilharCandidatos(true);
-		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
-		empresaManager.expects(once()).method("findEmpresasPermitidas");
+    	
+    	when(parametrosDoSistemaManager.findById(1L)).thenReturn(parametrosDoSistema);
+		when(empresaManager.findEmpresasPermitidas(action.getCompartilharColaboradores(), action.getEmpresaSistema().getId(),SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_REL_MOTIVO_DEMISSAO")).thenReturn(Arrays.asList(empresa));
     	
     	assertEquals("success", action.prepareRelatorioMotivoDemissao());
     }
 
+	@Test
     public void testRelatorioMotivoDemissaoListaTrue() throws Exception
     {
     	Empresa empresa = new Empresa();
@@ -90,40 +129,43 @@ public class MotivoDemissaoListActionTest extends MockObjectTestCase
     	Collection<MotivoDemissaoQuantidade> motivoDemissaoQuantidades = new ArrayList<MotivoDemissaoQuantidade>();
     	motivoDemissaoQuantidades.add(motivoDemissaoQuantidade);
     	
-    	manager.expects(once()).method("getParametrosRelatorio").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(parametros));
-    	colaboradorManager.expects(atLeastOnce()).method("findColaboradoresMotivoDemissao").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(ColaboradorFactory.getCollection()));
-
+    	when(manager.getParametrosRelatorio(action.getEmpresaSistema(), action.getDataIni(), action.getDataFim(), new Long[]{}, new Long[]{}, action.getParametros())).thenReturn(parametros);
+    	when(colaboradorManager.findColaboradoresMotivoDemissao(new Long[]{}, new Long[]{}, new Long[]{}, action.getDataIni(), action.getDataFim(), "M", null)).thenReturn(ColaboradorFactory.getCollection());
+    	
     	assertEquals("success", action.relatorioMotivoDemissao());
 
     	action.setListaColaboradores(true);
     	action.setAgruparPor("N");
     	
-    	manager.expects(once()).method("getParametrosRelatorio").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(parametros));
-    	colaboradorManager.expects(atLeastOnce()).method("findColaboradoresMotivoDemissao").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(motivoDemissaoQuantidades));
+    	when(manager.getParametrosRelatorio(action.getEmpresaSistema(), action.getDataIni(), action.getDataFim(), new Long[]{}, new Long[]{}, action.getParametros())).thenReturn(parametros);
+    	when(colaboradorManager.findColaboradoresMotivoDemissao(new Long[]{}, new Long[]{}, new Long[]{}, action.getDataIni(), action.getDataFim(), "N", null)).thenReturn(ColaboradorFactory.getCollection());
     	
     	assertEquals("successSemAgrupar", action.relatorioMotivoDemissao());
     	
     	action.setListaColaboradores(false);
     	action.setAgruparPor(null);
-    	manager.expects(once()).method("getParametrosRelatorio").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(parametros));
-    	colaboradorManager.expects(once()).method("findColaboradoresMotivoDemissaoQuantidade").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(motivoDemissaoQuantidades));
+    	
+    	when(manager.getParametrosRelatorio(action.getEmpresaSistema(), action.getDataIni(), action.getDataFim(), new Long[]{}, new Long[]{}, action.getParametros())).thenReturn(parametros);
+    	when(colaboradorManager.findColaboradoresMotivoDemissao(new Long[]{}, new Long[]{}, new Long[]{}, action.getDataIni(), action.getDataFim(), null, null)).thenReturn(ColaboradorFactory.getCollection());
     	
     	assertEquals("successBasico", action.relatorioMotivoDemissao());
     	assertEquals("Relatório de Motivos de Desligamento", ((Cabecalho)action.getParametros().get("CABECALHO")).getTitulo());
     }
 
+	@Test
     public void testImprimeRelatorioMotivoDemissaoBasico() throws Exception
     {
     	MotivoDemissaoQuantidade motivoDemissaoQuantidade = new MotivoDemissaoQuantidade();
     	
     	Collection<MotivoDemissaoQuantidade> motivoDemissaoQuantidades = new ArrayList<MotivoDemissaoQuantidade>();
     	motivoDemissaoQuantidades.add(motivoDemissaoQuantidade);
-    	
-    	colaboradorManager.expects(once()).method("findColaboradoresMotivoDemissaoQuantidade").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(motivoDemissaoQuantidades));
 
+    	when(colaboradorManager.findColaboradoresMotivoDemissaoQuantidade(new Long[]{}, new Long[]{}, new Long[]{}, null, null, null)).thenReturn(motivoDemissaoQuantidades);
+    	
     	assertEquals("successBasico", action.imprimeRelatorioMotivoDemissaoBasico());
     }
 
+	@Test
     public void testImprimeRelatorioMotivoDemissaoBasicoException() throws Exception
     {
     	Empresa empresa = new Empresa();
@@ -132,13 +174,15 @@ public class MotivoDemissaoListActionTest extends MockObjectTestCase
 
        	ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
     	parametrosDoSistema.setCompartilharCandidatos(true);
-		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
-		empresaManager.expects(once()).method("findEmpresasPermitidas");
-    	colaboradorManager.expects(once()).method("findColaboradoresMotivoDemissaoQuantidade").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(throwException(new Exception()));
+    	
+    	when(colaboradorManager.findColaboradoresMotivoDemissaoQuantidade(new Long[]{}, new Long[]{}, new Long[]{}, null, null, null)).thenThrow(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("","")));
+    	when(parametrosDoSistemaManager.findById(1L)).thenReturn(parametrosDoSistema);
+    	when(empresaManager.findEmpresasPermitidas(true , action.getEmpresaSistema().getId(),SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_REL_MOTIVO_DEMISSAO")).thenReturn(Arrays.asList(empresa));
     	
     	assertEquals("input", action.imprimeRelatorioMotivoDemissaoBasico());
     }
 
+	@Test
     public void testImprimeRelatorioMotivoDemissao() throws Exception
     {
     	MotivoDemissaoQuantidade motivoDemissaoQuantidade = new MotivoDemissaoQuantidade();
@@ -146,11 +190,13 @@ public class MotivoDemissaoListActionTest extends MockObjectTestCase
     	Collection<MotivoDemissaoQuantidade> motivoDemissaoQuantidades = new ArrayList<MotivoDemissaoQuantidade>();
     	motivoDemissaoQuantidades.add(motivoDemissaoQuantidade);
     	action.setAgruparPor("M");
-    	colaboradorManager.expects(once()).method("findColaboradoresMotivoDemissao").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(motivoDemissaoQuantidades));
+    	
+    	when(colaboradorManager.findColaboradoresMotivoDemissao(new Long[]{}, new Long[]{}, new Long[]{}, action.getDataIni(), action.getDataFim(), "M", null)).thenReturn(ColaboradorFactory.getCollection());
 
     	assertEquals("success", action.imprimeRelatorioMotivoDemissao());
     }
 
+	@Test
     public void testImprimeRelatorioMotivoDemissaoException() throws Exception
     {
     	Empresa empresa = new Empresa();
@@ -159,11 +205,11 @@ public class MotivoDemissaoListActionTest extends MockObjectTestCase
 
     	ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
     	parametrosDoSistema.setCompartilharCandidatos(true);
-		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
-		empresaManager.expects(once()).method("findEmpresasPermitidas");
-
-		colaboradorManager.expects(once()).method("findColaboradoresMotivoDemissao").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(throwException(new Exception()));
-
+		
+    	when(colaboradorManager.findColaboradoresMotivoDemissao(new Long[]{}, new Long[]{}, new Long[]{}, action.getDataIni(), action.getDataFim(), null, null)).thenThrow(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("","")));
+    	when(parametrosDoSistemaManager.findById(1L)).thenReturn(parametrosDoSistema);
+    	when(empresaManager.findEmpresasPermitidas(true , action.getEmpresaSistema().getId(),SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_REL_MOTIVO_DEMISSAO")).thenReturn(Arrays.asList(empresa));
+    	
     	assertEquals("input", action.imprimeRelatorioMotivoDemissao());
     }
 
