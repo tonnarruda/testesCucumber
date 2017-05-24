@@ -1146,7 +1146,7 @@ function addBuscaCEP(cepFieldId, logradouroFieldId, bairroFieldId, cidadeFieldId
 				 				 
 				 if (jsonCEP.sucesso == 1)
 				 {
-			 		 $logradouro.val(jsonCEP.logradouro);
+			 		 $logradouro.val(jsonCEP.logradouro.substring(0, 40));
 					 
 					jQuery("#uf option").each(function() {
 						if (jQuery(this).text() == jsonCEP.estado)
@@ -1156,7 +1156,7 @@ function addBuscaCEP(cepFieldId, logradouroFieldId, bairroFieldId, cidadeFieldId
 						}
 					});
 					 $estado.change();
-					 $bairro.val(jsonCEP.bairro);
+					 $bairro.val(jsonCEP.bairro.substring(0, 85));
 				 }
 				 else if (jsonCEP.sucesso == 2)
 				 {

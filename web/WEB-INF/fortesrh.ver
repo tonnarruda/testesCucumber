@@ -2,9 +2,10 @@
 <Versoes>
 	<Versao id="1.1.1xx.212" db="" data="xx/xx/2017">
 		<Item visivel="N" motivo="P17050000053"><![CDATA[C&S > Cadastros > Habilidades: Ajuste na exclusão para remover vínculos relacionados ao cargo.]]></Item>
-		<Item visivel="S" motivo="P17030000385"><![CDATA[C&S > Cadastros > Cargos e Faixas > Excluir: Ajuste de incosistência na exclusão de cargo. O sistema exibia mensagem de excluído com sucesso, porém o cargo permanecia no sistema.]]></Item>
+		<Item visivel="S" motivo="P17030000385"><![CDATA[C&S > Cadastros > Cargos e Faixas > Excluir: Ajuste de inconsistência na exclusão de cargo. O sistema exibia mensagem de excluído com sucesso, porém o cargo permanecia no sistema.]]></Item>
 		<Item visivel="S" motivo="S17040000187"><![CDATA[Aval. Desempenho > Relatórios > Resultado das Avaliações de Desempenho e Acompanhamento do Período de Experiência: Reestruturação dos filtros para impressão do relatório.]]></Item>
 		<Item visivel="S" motivo="S17030000289"><![CDATA[T&D > Relatórios > Colaboradores sem Cursos em Certificações: Novo relatório de colaboradores que nunca realizaram treinamento das certificações selecionadas.]]></Item>
+		<Item visivel="S" motivo="P17050000178"><![CDATA[Info. Funcionais > Cadastros > Colaboradores: Ajuste de inconsistência ao carregar logradouro pelo CEP com mais de 40 caracteres.]]></Item>
 		<Item visivel="N" motivo="S17040000125"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Inserir/Editar: Mapeamento da opção de "Pós-Graduação Completa" do Fortes Pessoal com a opção de "Especialização completa" do Fortes RH.]]></Item>
 		<Item visivel="S" motivo="S17050000025"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Editar: Exibir as informações de naturalidade e nacionalidade provenientes do Fortes Pessoal quando a empresa/colaborador estiver integrada.]]></Item>
 		<Item visivel="S" motivo="S16060000016"><![CDATA[Info. Funcionais > Cadastros > Motivos de Desligamento: Nova opção para ativar ou inativar o motivo de desligamento.]]></Item>
