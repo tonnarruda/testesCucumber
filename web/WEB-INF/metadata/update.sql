@@ -25220,3 +25220,14 @@ insert into migrations values('20170504082459');--.go
 update parametrosdosistema set acversaowebservicecompativel = '1.1.63.1';--.go
 insert into migrations values('20170504104713');--.go
 update parametrosdosistema set appversao = '1.1.179.211';--.go
+-- versao 1.1.180.212
+
+update parametrosdosistema set acversaowebservicecompativel='1.1.64.1'; --.go
+insert into migrations values('20170519085725');--.go
+insert into papel (id, codigo, nome, url, ordem, menu, papelmae_id) values (704, 'ROLE_REL_COLABORADORES_SEM_CURSO_CERTIFICACOES','Colaboradores sem Cursos em Certificações', '/desenvolvimento/certificacao/prepareRelatorioColaboradoresSemCertificacoes.action', 19, true, 368);--.go
+insert into perfil_papel(perfil_id, papeis_id) values(1, 704);--.go
+alter sequence papel_sequence restart with 705;--.go
+insert into migrations values('20170522155214');--.go
+alter table MotivoDemissao add column ativo boolean NOT NULL default true;--.go
+insert into migrations values('20170524103755');--.go
+update parametrosdosistema set appversao = '1.1.180.212';--.go

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.1xx.212" db="" data="xx/xx/2017">
+	<Versao id="1.1.180.212" db="" data="25/05/2017">
 		<Item visivel="N" motivo="P17050000053"><![CDATA[C&S > Cadastros > Habilidades: Ajuste na exclusão para remover vínculos relacionados ao cargo.]]></Item>
 		<Item visivel="S" motivo="P17030000385"><![CDATA[C&S > Cadastros > Cargos e Faixas > Excluir: Ajuste de inconsistência na exclusão de cargo. O sistema exibia mensagem de excluído com sucesso, porém o cargo permanecia no sistema.]]></Item>
 		<Item visivel="S" motivo="S17040000187"><![CDATA[Aval. Desempenho > Relatórios > Resultado das Avaliações de Desempenho e Acompanhamento do Período de Experiência: Reestruturação dos filtros para impressão do relatório.]]></Item>
