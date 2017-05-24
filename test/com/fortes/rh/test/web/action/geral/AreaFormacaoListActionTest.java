@@ -102,6 +102,7 @@ public class AreaFormacaoListActionTest {
 		AreaFormacao areaFormacao = AreaFormacaoFactory.getEntity();
 		Collection<AreaFormacao> areasFormacoes = Arrays.asList(areaFormacao, areaFormacao);
 		action.setAreaFormacaos(areasFormacoes);
+		
 		assertEquals(2, action.getAreaFormacaos().size());
 
 	}
