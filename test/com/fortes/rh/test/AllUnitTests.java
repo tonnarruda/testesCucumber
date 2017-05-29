@@ -64,7 +64,9 @@ import com.fortes.rh.test.business.captacao.SolicitacaoManagerTest;
 import com.fortes.rh.test.business.captacao.SolicitacaoManagerTest_Junit4;
 import com.fortes.rh.test.business.cargosalario.CargoManagerTest;
 import com.fortes.rh.test.business.cargosalario.FaixaSalarialHistoricoManagerTest;
+import com.fortes.rh.test.business.cargosalario.FaixaSalarialHistoricoManagerTest_JUnit4;
 import com.fortes.rh.test.business.cargosalario.FaixaSalarialManagerTest;
+import com.fortes.rh.test.business.cargosalario.FaixaSalarialManagerTest_JUnit4;
 import com.fortes.rh.test.business.cargosalario.FaturamentoMensalManagerTest;
 import com.fortes.rh.test.business.cargosalario.GrupoOcupacionalManagerTest;
 import com.fortes.rh.test.business.cargosalario.HistoricoColaboradorManagerTest;
@@ -273,6 +275,7 @@ import com.fortes.rh.test.dao.hibernate.desenvolvimento.ColaboradorAvaliacaoPrat
 import com.fortes.rh.test.dao.hibernate.desenvolvimento.ColaboradorCertificacaoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.desenvolvimento.ColaboradorPresencaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.desenvolvimento.ColaboradorTurmaDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.desenvolvimento.ColaboradorTurmaDaoHibernateTest_JUnit4;
 import com.fortes.rh.test.dao.hibernate.desenvolvimento.CursoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.desenvolvimento.CursoLntDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.desenvolvimento.DNTDaoHibernateTest;
@@ -432,7 +435,6 @@ import com.fortes.rh.test.dicionario.TipoReajusteColaboradorTest;
 import com.fortes.rh.test.dicionario.TipoReajusteTest;
 import com.fortes.rh.test.exception.AreaColaboradorExceptionTest;
 import com.fortes.rh.test.exception.ColecaoVaziaExceptionTest;
-import com.fortes.rh.test.exception.FaixaJaCadastradaExceptionTest;
 import com.fortes.rh.test.exception.IntegraACExceptionTest;
 import com.fortes.rh.test.model.acesso.UsuarioTest;
 import com.fortes.rh.test.model.avaliacao.AcompanhamentoExperienciaColaboradorTest;
@@ -859,8 +861,10 @@ import com.fortes.test.web.tags.LinkTagTest;
 
 	FaixaSalarialDaoHibernateTest.class,
 	FaixaSalarialManagerTest.class,
+	FaixaSalarialManagerTest_JUnit4.class,
 	FaixaSalarialHistoricoDaoHibernateTest.class,
 	FaixaSalarialHistoricoManagerTest.class,
+	FaixaSalarialHistoricoManagerTest_JUnit4.class,
 	FaixaSalarialHistoricoListActionTest.class,
 	FaixaSalarialHistoricoEditActionTest.class,
 
@@ -940,6 +944,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	ColaboradorTurmaManagerTest.class,
 	ColaboradorTurmaManagerTest_Junit4.class,
 	ColaboradorTurmaDaoHibernateTest.class,
+	ColaboradorTurmaDaoHibernateTest_JUnit4.class,
 
 	ColaboradorPresencaEditActionTest.class,
 	ColaboradorPresencaListActionTest.class,
@@ -1532,7 +1537,6 @@ import com.fortes.test.web.tags.LinkTagTest;
 
     //EXCEPTIONS
 	ColecaoVaziaExceptionTest.class,
-	FaixaJaCadastradaExceptionTest.class,
 	IntegraACExceptionTest.class,
 	AreaColaboradorExceptionTest.class,
 

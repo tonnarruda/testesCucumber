@@ -17,6 +17,7 @@
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
 	
 	<script type="text/javascript">
+	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 	
 	function dialog()
 	{
@@ -88,19 +89,18 @@
 	{ 
 		valida = validaFormulario('form', new Array('origem', 'destino', '@cadastrosCheck'), null, true);
 		
-		if (valida && $('#origem').val() == $('#destino').val())
-		{
+		if (valida && $('#origem').val() == $('#destino').val()){
 			jAlert('Selecione empresas Origem e Destino diferentes.');
 			valida = false;
 		}
 		
-		if(valida)
+		if(valida){
+			processando('${urlImgs}');
 			document.form.submit();
-		else
+		}else
 			return false;
 	}
-	
-	</script>
+</script>
 
 </head>
 <body>

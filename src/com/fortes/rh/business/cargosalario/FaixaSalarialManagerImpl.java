@@ -105,7 +105,7 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 		{
 			try
 			{
-				String codigoAC = acPessoalClientCargo.updateCargo(faixaSalarial, empresa);
+				String codigoAC = acPessoalClientCargo.createOrUpdateCargo(faixaSalarial, empresa);
 				if (codigoAC == null)
 				{
 					throw new Exception();
@@ -137,7 +137,7 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 				FaixaSalarial faixaTmp = getDao().findCodigoACById(faixaSalarial.getId());
 				faixaSalarial.setCodigoAC(faixaTmp.getCodigoAC());
 				faixaSalarial.setNomeACPessoal(faixaTmp.getNomeACPessoal());
-				acPessoalClientCargo.updateCargo(faixaSalarial, empresa);
+				acPessoalClientCargo.createOrUpdateCargo(faixaSalarial, empresa);
 			}
 			
 			transactionManager.commit(status);
@@ -305,14 +305,16 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 
 			FaixaSalarialHistorico faixaSalarialHistoricoAtualClonado = faixaSalarialHistoricoManager.sincronizar(faixaOrigemId, faixaSalarial.getId(), empresaDestino);
 
-			if(empresaDestino.isAcIntegra())
-			{
-				faixaSalarialHistoricoAtualClonado.setFaixaSalarial(faixaSalarial);
-	
-				String codigoAC = acPessoalClientCargo.criarCargo(faixaSalarialHistoricoAtualClonado.getFaixaSalarial(), faixaSalarialHistoricoAtualClonado, empresaDestino);
+			if(empresaDestino.isAcIntegra()){
+				String codigoAC = "";
+				if(faixaSalarialHistoricoAtualClonado == null)
+					codigoAC = acPessoalClientCargo.createOrUpdateCargo(faixaSalarial, empresaDestino);
+				else
+					codigoAC = acPessoalClientCargo.criarCargo(faixaSalarial, faixaSalarialHistoricoAtualClonado, empresaDestino);
+
 				if (codigoAC == null || codigoAC.equals(""))
 					throw new IntegraACException();
-				
+
 				getDao().updateCodigoAC(codigoAC, faixaSalarial.getId());
 			}
 		}

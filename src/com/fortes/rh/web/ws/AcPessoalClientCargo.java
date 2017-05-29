@@ -64,14 +64,17 @@ public class AcPessoalClientCargo
         	DateFormat formata = new SimpleDateFormat("dd/MM/yyyy");
 
         	String indiceCodicoAC = "";
-        	if(faixaSalarialHistorico.getIndice() != null && faixaSalarialHistorico.getIndice().getCodigoAC() != null)
+        	if(faixaSalarialHistorico != null && faixaSalarialHistorico.getIndice() != null && faixaSalarialHistorico.getIndice().getCodigoAC() != null)
         		indiceCodicoAC = faixaSalarialHistorico.getIndice().getCodigoAC();
-        	if(faixaSalarialHistorico.getQuantidade() == null)
+        	if(faixaSalarialHistorico != null && faixaSalarialHistorico.getQuantidade() == null)
         		faixaSalarialHistorico.setQuantidade(0.0);
         	Double valor = 0.0;
-        	if(faixaSalarialHistorico.getTipo() == TipoAplicacaoIndice.VALOR)
+        	if(faixaSalarialHistorico != null && faixaSalarialHistorico.getTipo() == TipoAplicacaoIndice.VALOR)
         		valor = faixaSalarialHistorico.getValor();
-        	Object[] param = new Object[]{token.toString(), empresa.getCodigoAC(), "", faixaSalarial.getNome(),formata.format(faixaSalarialHistorico.getData()),indiceCodicoAC, TipoAplicacaoIndice.getCodigoAC(faixaSalarialHistorico.getTipo()), faixaSalarial.getNomeACPessoal(), valor,	faixaSalarialHistorico.getQuantidade(), faixaSalarialHistorico.getId()};
+        	
+        	Object[] param = new Object[]{token.toString(), empresa.getCodigoAC(), "", faixaSalarial.getNome(),null,indiceCodicoAC, null, faixaSalarial.getNomeACPessoal(), valor, 0.0, 0};
+        	if(faixaSalarialHistorico != null)
+        		param = new Object[]{token.toString(), empresa.getCodigoAC(), "", faixaSalarial.getNome(),formata.format(faixaSalarialHistorico.getData()),indiceCodicoAC, TipoAplicacaoIndice.getCodigoAC(faixaSalarialHistorico.getTipo()), faixaSalarial.getNomeACPessoal(), valor,	faixaSalarialHistorico.getQuantidade(), faixaSalarialHistorico.getId()};
       
         	TFeedbackPessoalWebService result =  (TFeedbackPessoalWebService) call.invoke(param);
         	result.getSucesso("SetCargoComSituacao", param, this.getClass());
@@ -102,7 +105,7 @@ public class AcPessoalClientCargo
 		call.addParameter("rh_sca_id",xmlint,ParameterMode.IN);
 	}
 
-	public String updateCargo(FaixaSalarial faixaSalarial, Empresa empresa) throws Exception{
+	public String createOrUpdateCargo(FaixaSalarial faixaSalarial, Empresa empresa) throws Exception{
 		try{
 			StringBuilder token = new StringBuilder();
 			GrupoAC grupoAC = new GrupoAC();

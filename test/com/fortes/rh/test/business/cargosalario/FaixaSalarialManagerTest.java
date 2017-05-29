@@ -333,7 +333,7 @@ public class FaixaSalarialManagerTest extends MockObjectTestCase
 			transactionManager.expects(once()).method("getTransaction").with(ANYTHING);
 			faixaSalarialDao.expects(once()).method("updateNomeECargo").with(eq(faixaSalarial.getId()), eq(cargoDestino.getId()), eq(faixaSalarial.getNome()));
 			faixaSalarialDao.expects(once()).method("findCodigoACById").with(eq(faixaSalarial.getId())).will(returnValue(faixaTmpCodigoAC));
-			acPessoalClientCargo.expects(once()).method("updateCargo").with(ANYTHING,ANYTHING).will(returnValue("001"));
+			acPessoalClientCargo.expects(once()).method("createOrUpdateCargo").with(ANYTHING,ANYTHING).will(returnValue("001"));
 			transactionManager.expects(once()).method("commit").with(ANYTHING);
 			faixaSalarialManager.transfereFaixasCargo(faixaSalarial, cargoDestino, empresa);
 		} catch (Exception e) {
@@ -387,7 +387,7 @@ public class FaixaSalarialManagerTest extends MockObjectTestCase
 		{
 			transactionManager.expects(once()).method("getTransaction").with(ANYTHING);
 			faixaSalarialDao.expects(once()).method("update").with(ANYTHING);
-			acPessoalClientCargo.expects(once()).method("updateCargo").with(ANYTHING,ANYTHING).will(returnValue("001"));
+			acPessoalClientCargo.expects(once()).method("createOrUpdateCargo").with(ANYTHING,ANYTHING).will(returnValue("001"));
 			transactionManager.expects(once()).method("commit").with(ANYTHING);
 			faixaSalarialManager.updateFaixaSalarial(faixaSalarial, empresa, null);
 		}
@@ -416,7 +416,7 @@ public class FaixaSalarialManagerTest extends MockObjectTestCase
 		{
 			transactionManager.expects(once()).method("getTransaction").with(ANYTHING);
 			faixaSalarialDao.expects(once()).method("update").with(ANYTHING);
-			acPessoalClientCargo.expects(once()).method("updateCargo").with(ANYTHING,ANYTHING).will(returnValue(null));
+			acPessoalClientCargo.expects(once()).method("createOrUpdateCargo").with(ANYTHING,ANYTHING).will(returnValue(null));
 			transactionManager.expects(once()).method("rollback").with(ANYTHING);
 			faixaSalarialManager.updateFaixaSalarial(faixaSalarial, empresa, null);
 		}
@@ -445,7 +445,7 @@ public class FaixaSalarialManagerTest extends MockObjectTestCase
 		{
 			transactionManager.expects(once()).method("getTransaction").with(ANYTHING);
 			faixaSalarialDao.expects(once()).method("update").with(ANYTHING);
-			acPessoalClientCargo.expects(once()).method("updateCargo").with(ANYTHING,ANYTHING).will(throwException(exception));
+			acPessoalClientCargo.expects(once()).method("createOrUpdateCargo").with(ANYTHING,ANYTHING).will(throwException(exception));
 			transactionManager.expects(once()).method("rollback").with(ANYTHING);
 			faixaSalarialManager.updateFaixaSalarial(faixaSalarial, empresa, null);
 		}
@@ -665,29 +665,6 @@ public class FaixaSalarialManagerTest extends MockObjectTestCase
 		FaixaSalarial retorno = faixaSalarialManager.findFaixaSalarialByCodigoAc(faixaCodigoAC, empresaCodigoAC, "XXX");
 
 		assertEquals(faixaSalarial.getId(), retorno.getId());
-	}
-	
-	public void testSincronizar() throws Exception
-	{
-		Cargo cargoOrigem = CargoFactory.getEntity(2L);
-		Cargo cargoDestino = CargoFactory.getEntity(5L);
-		
-		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(99L);		
-		faixaSalarial.setCargo(cargoOrigem);
-		faixaSalarial.setNome("I");
-		Collection<FaixaSalarial> faixas = new ArrayList<FaixaSalarial>();
-		faixas.add(faixaSalarial);
-		
-		FaixaSalarial faixaSalarialDepoisDoSave = FaixaSalarialFactory.getEntity(130L);
-		faixaSalarialDepoisDoSave.setCargo(CargoFactory.getEntity(12L));
-		
-		// clonar faixa
-		faixaSalarialDao.expects(once()).method("findByCargo").with(eq(cargoOrigem.getId())).will(returnValue(faixas));
-		faixaSalarialDao.expects(once()).method("save").with(eq(faixaSalarial)).will(returnValue(faixaSalarial));
-		faixaSalarialHistoricoManager.expects(once()).method("sincronizar");
-		
-		
-		faixaSalarialManager.sincronizar(cargoOrigem.getId(), cargoDestino, EmpresaFactory.getEmpresa());
 	}
 	
 	public void testMontaFaixa()

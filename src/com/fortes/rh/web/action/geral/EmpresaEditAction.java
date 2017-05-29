@@ -344,9 +344,6 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 			else {
 				addActionSuccess("Cadastros importados com sucesso.");
 			}
-
-			empresaOrigem = null;
-			empresaDestino = null;
 		} 
 		catch (Exception e) {
 			addActionError("Erro ao importar cadastros.");

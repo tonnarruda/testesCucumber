@@ -26,7 +26,6 @@ import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.QuantidadeLimiteColaboradoresPorCargoManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.dao.cargosalario.CargoDao;
-import com.fortes.rh.exception.FaixaJaCadastradaException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.captacao.Atitude;
 import com.fortes.rh.model.captacao.Conhecimento;
@@ -358,13 +357,8 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 				faixaSalarialManager.sincronizar(cargoOrigemId, cargo, empresaDestino);
 				getDao().update(cargo);
 				transactionManager.commit(status);
-			}catch (IntegraACException e)
-			{
-				mensagens.add("Não foi possível importar o cargo <strong>" + cargo.getNome() + "</strong> por pendências no Fortes Pessoal.");
-				transactionManager.rollback(status);
-			}catch (FaixaJaCadastradaException e)
-			{
-				mensagens.add("Não foi possível importar o cargo <strong>" + cargo.getNome() + "</strong> por não existir histórico da faixa salarial.");
+			}catch (IntegraACException e){
+				mensagens.add("Não foi possível importar o cargo <strong>" + cargo.getNome() + "</strong> para o Fortes Pessoal.<br>Possíveis Motivos: <br>&nbsp&nbsp&nbsp- Cargo existente com a mesma descrição no Fortes Pessoal. <br>&nbsp&nbsp&nbsp- Limite de cadastros de cargos excedido no Fortes Pessoal.");
 				transactionManager.rollback(status);
 			}catch (Exception e)
 			{

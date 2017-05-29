@@ -109,6 +109,6 @@ public class AcPessoalClientCargoTest extends MockObjectTestCase
     	Mockit.redefineMethods(Call.class, mock);
     	
     	acPessoalClient.expects(once()).method("setReturnType");
-    	assertEquals(RETORNO_STRING, acPessoalClientCargo.updateCargo(faixaSalarial, empresa));
+    	assertEquals(RETORNO_STRING, acPessoalClientCargo.createOrUpdateCargo(faixaSalarial, empresa));
     }
 }

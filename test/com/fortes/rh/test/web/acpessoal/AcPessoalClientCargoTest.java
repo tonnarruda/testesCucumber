@@ -108,7 +108,7 @@ public class AcPessoalClientCargoTest extends AcPessoalClientTest
 		faixaSalarial.setNomeACPessoal("Castelo do AC");
 		
 		execute("delete from car where nome = '" + faixaSalarial.getNomeACPessoal() + "'");
-		acPessoalClientCargo.updateCargo(faixaSalarial, empresa);
+		acPessoalClientCargo.createOrUpdateCargo(faixaSalarial, empresa);
 		
 		result = query(sql);
 		if (result.next())
