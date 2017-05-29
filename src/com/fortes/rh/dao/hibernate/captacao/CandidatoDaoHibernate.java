@@ -997,7 +997,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 			criteria.add(Restrictions.sqlRestriction("normalizar(this_.cpf) ilike  normalizar(?)", "%" + cpfBusca + "%", Hibernate.STRING));
 
 		if(isNotBlank(escolaridade))
-			criteria.add(Expression.sqlRestriction("cast(this_.escolaridade as integer) >= ?", Integer.parseInt(escolaridade), Hibernate.INTEGER)); 
+		criteria.add(Expression.sqlRestriction("coalesce(cast(nullif(this_.escolaridade,'') as integer),0)  >= ?", Integer.parseInt(escolaridade), Hibernate.INTEGER)); 
 		
 		if(cidadesCheck != null && cidadesCheck.length > 0)
 			criteria.add(Expression.in("cd.id", cidadesCheck));
