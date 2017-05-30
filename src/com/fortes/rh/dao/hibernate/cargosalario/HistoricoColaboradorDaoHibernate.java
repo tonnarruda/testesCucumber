@@ -310,6 +310,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		sql.append("		e.id as estabelecimentoId, ");
 		sql.append("		e.nome as estabelecimentoNome, ");
 		sql.append("		areaorganizacional_id,  ");
+		sql.append("		colaborador_id, ");
 		sql.append("		CASE WHEN colaborador_id = lag(colaborador_id) OVER (ORDER BY colaborador_id, data) and cargo_id != lag(cargo_id) OVER (ORDER BY colaborador_id, data) THEN ");
 		sql.append("			'VERTICAL' ");
 		sql.append("			ELSE ");
@@ -337,11 +338,16 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		}
 		sql.append("	ORDER BY colaborador_id, data ");
 		sql.append("  ) as sc ");
+		sql.append("join colaborador cc on cc.id = sc.colaborador_id ");
 		sql.append("  where sc.promocao is not null ");
+		
 		if (dataFim != null)
 			sql.append("		and sc.data<=:dataFim ");
 		if (dataIni != null)
 			sql.append("		and sc.data >= :dataIni ");
+		
+		sql.append("and (cc.dataDesligamento is null or cc.dataDesligamento >= sc.data)");
+		
 		sql.append(") as rp ");
 		sql.append("group by rp.estabelecimentoId, rp.estabelecimentoNome, rp.areaorganizacional_id ");
 		sql.append("order by rp.estabelecimentoNome, areaNome ");

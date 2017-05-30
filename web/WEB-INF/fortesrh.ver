@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
 	<Versao id="1.1.18*.21*" db="" data="**/**/2017">
+		<Item visivel="S" motivo="P17050000176"><![CDATA[C&S > Relatórios > Promoções: Ajuste da inconsitência ao considerar promoções para colaboradores desligados no período informado.]></Item>
 		<Item visivel="S" motivo="S17040000104"><![CDATA[Utilitários > Importar Cadastros: Permitir importar cargos/faixas salariais que não possuem históricos.]></Item>
 		<Item visivel="N" motivo="P17050000142"><![CDATA[Sistema: Ajuste na integridade na busca dos dados do banco de dados em relação a data de admissão do colaborador.]]></Item>
 	</Versao>
