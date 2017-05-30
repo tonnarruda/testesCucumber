@@ -154,12 +154,12 @@ public class RiscoAmbienteDaoHibernateTest extends GenericDaoHibernateTest<Risco
 		
 		criaHistoricoColaborador(colaborador2, tresMesesAntes, null, null, estabelecimento1); // Fora
 
-		Colaborador colaborador3 = ColaboradorFactory.getEntity(null, "Colab3",null, null, hoje);
+		Colaborador colaborador3 = ColaboradorFactory.getEntity(null, "Colab3",null, tresMesesAntes, hoje);
 		colaboradorDao.save(colaborador3);
 		
 		criaHistoricoColaborador(colaborador3, tresMesesAntes, null, null, estabelecimento1); // Dentro com data desligamento anterior 
 
-		Colaborador colaborador4 = ColaboradorFactory.getEntity(null, "Colab4",null, null, tresMesesAntes);
+		Colaborador colaborador4 = ColaboradorFactory.getEntity(null, "Colab4",null, tresMesesAntes, tresMesesAntes);
 		colaboradorDao.save(colaborador4);
 		
 		criaHistoricoColaborador(colaborador4, tresMesesAntes, null, null, estabelecimento1); // Fora com data desligamento anterior

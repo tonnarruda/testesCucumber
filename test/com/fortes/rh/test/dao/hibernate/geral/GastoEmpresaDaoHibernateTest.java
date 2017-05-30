@@ -173,7 +173,7 @@ public class GastoEmpresaDaoHibernateTest extends GenericDaoHibernateTest<GastoE
 		colaborador2.setDesligado(false);
 		colaborador2.setDataDesligamento(new Date());
 		colaborador2.setObservacao("observação");
-		colaborador.setDataAdmissao(new Date());
+		colaborador2.setDataAdmissao(new Date());
 		colaborador2.setEndereco(EnderecoFactory.getEntity());
 		colaborador2.setContato(ContatoFactory.getEntity());
 		colaborador2.setPessoal(pessoal);

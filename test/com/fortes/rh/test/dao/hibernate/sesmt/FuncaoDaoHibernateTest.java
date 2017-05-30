@@ -231,7 +231,7 @@ public class FuncaoDaoHibernateTest extends GenericDaoHibernateTest<Funcao>
 		
 		HistoricoColaborador historicoColaborador3DentroComDataDesligamentoAnterior = criaHistoricoColaborador(colaborador3, tresMesesAntes, null, null, estabelecimento1);
 
-		Colaborador colaborador4 = ColaboradorFactory.getEntity(null, "Colab4", null, null, tresMesesAntes);
+		Colaborador colaborador4 = ColaboradorFactory.getEntity(null, "Colab4", null, tresMesesAntes, tresMesesAntes);
 		colaboradorDao.save(colaborador4);
 		
 		HistoricoColaborador historicoColaborador4ForaComDataDesligamentoAnterior = criaHistoricoColaborador(colaborador4, tresMesesAntes, null, null, estabelecimento1);

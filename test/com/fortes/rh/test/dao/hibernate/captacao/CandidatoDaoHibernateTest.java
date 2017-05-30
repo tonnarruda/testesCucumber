@@ -843,7 +843,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		candidato.setContratado(true);
 		candidatoDao.save(candidato);
 
-		Colaborador colaborador = new Colaborador();
+		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaborador.setCandidato(candidato);
 		colaboradorDao.save(colaborador);
 		
@@ -858,7 +858,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		candidato.setContratado(true);
 		candidatoDao.save(candidato);
 		
-		colaborador = new Colaborador();
+		colaborador = ColaboradorFactory.getEntity();
 		colaboradorDao.save(colaborador);
 		
 		candidatoDao.updateDisponivelAndContratadoByColaborador(true, false, colaborador.getId());

@@ -1380,13 +1380,13 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<
 		AreaOrganizacional area = AreaOrganizacionalFactory.getEntity();
 		areaOrganizacionalDao.save(area);
 		
-		saveColaborador('F', true, null, empresa, null, null, Deficiencia.SEM_DEFICIENCIA, DateUtil.criarDataMesAno(02, 03, 2005), motivoFalta, null, area, faixaSalarial, estabelecimento1);
-		saveColaborador('M', true, null, empresa, null, null, Deficiencia.SEM_DEFICIENCIA, DateUtil.criarDataMesAno(02, 03, 2006), motivoFalta, null, area, faixaSalarialFora, estabelecimento1); // faixa de outro cargo
-		saveColaborador('M', true, null, empresa, null, null, Deficiencia.SEM_DEFICIENCIA, DateUtil.criarDataMesAno(02, 03, 2006), motivoPediuPraSair, null, area, faixaSalarial, estabelecimento1);
+		saveColaborador('F', true, new Date(), empresa, null, null, Deficiencia.SEM_DEFICIENCIA, DateUtil.criarDataMesAno(02, 03, 2005), motivoFalta, null, area, faixaSalarial, estabelecimento1);
+		saveColaborador('M', true, new Date(), empresa, null, null, Deficiencia.SEM_DEFICIENCIA, DateUtil.criarDataMesAno(02, 03, 2006), motivoFalta, null, area, faixaSalarialFora, estabelecimento1); // faixa de outro cargo
+		saveColaborador('M', true, new Date(), empresa, null, null, Deficiencia.SEM_DEFICIENCIA, DateUtil.criarDataMesAno(02, 03, 2006), motivoPediuPraSair, null, area, faixaSalarial, estabelecimento1);
 
-		saveColaborador('M', true, null, outraEmpresa, null, null, Deficiencia.SEM_DEFICIENCIA, DateUtil.criarDataMesAno(02, 03, 2006), motivoPediuPraSair, null, area, faixaSalarial, estabelecimento2);
-		saveColaborador('M', true, null, empresa, null, null, Deficiencia.SEM_DEFICIENCIA, DateUtil.criarDataMesAno(02, 03, 2003), motivoPediuPraSair, null, area, faixaSalarial, estabelecimento2);
-		saveColaborador('M', true, null, empresa, null, null, Deficiencia.SEM_DEFICIENCIA, DateUtil.criarDataMesAno(02, 03, 2010), motivoPediuPraSair, null, area, faixaSalarial, estabelecimento2);
+		saveColaborador('M', true, new Date(), outraEmpresa, null, null, Deficiencia.SEM_DEFICIENCIA, DateUtil.criarDataMesAno(02, 03, 2006), motivoPediuPraSair, null, area, faixaSalarial, estabelecimento2);
+		saveColaborador('M', true, new Date(), empresa, null, null, Deficiencia.SEM_DEFICIENCIA, DateUtil.criarDataMesAno(02, 03, 2003), motivoPediuPraSair, null, area, faixaSalarial, estabelecimento2);
+		saveColaborador('M', true, new Date(), empresa, null, null, Deficiencia.SEM_DEFICIENCIA, DateUtil.criarDataMesAno(02, 03, 2010), motivoPediuPraSair, null, area, faixaSalarial, estabelecimento2);
 
 		Collection<DataGrafico> motivos = colaboradorDao.countMotivoDesligamento(DateUtil.criarDataMesAno(01, 02, 2004), DateUtil.criarDataMesAno(01, 02, 2009), Arrays.asList(empresa.getId()), new Long[]{estabelecimento1.getId()}, null, null, 2);
 		assertEquals(2, motivos.size());
@@ -1482,11 +1482,11 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<
 		AreaOrganizacional area = AreaOrganizacionalFactory.getEntity();
 		areaOrganizacionalDao.save(area);
 		
-		saveColaborador('F', true, null, empresa, null, null, Deficiencia.SEM_DEFICIENCIA, DateUtil.criarDataMesAno(02, 03, 2005), null, null, area, faixaSalarialFora, estabelecimento1);
-		saveColaborador('M', true, null, empresa, null, null, Deficiencia.SEM_DEFICIENCIA, DateUtil.criarDataMesAno(02, 03, 2003), null, null, area, faixaSalarial, estabelecimento1);
-		saveColaborador('F', true, null, empresa, null, null, Deficiencia.SEM_DEFICIENCIA, DateUtil.criarDataMesAno(02, 03, 2011), null, null, area, faixaSalarial, estabelecimento1);
-		saveColaborador('F', true, null, empresa, null, null, Deficiencia.SEM_DEFICIENCIA, DateUtil.criarDataMesAno(01, 02, 2004), null, null, area, faixaSalarial, estabelecimento2);
-		saveColaborador('F', true, null, empresa, null, null, Deficiencia.SEM_DEFICIENCIA, DateUtil.criarDataMesAno(01, 02, 2009), null, null, area, faixaSalarial, estabelecimento2);
+		saveColaborador('F', true, new Date(), empresa, null, null, Deficiencia.SEM_DEFICIENCIA, DateUtil.criarDataMesAno(02, 03, 2005), null, null, area, faixaSalarialFora, estabelecimento1);
+		saveColaborador('M', true, new Date(), empresa, null, null, Deficiencia.SEM_DEFICIENCIA, DateUtil.criarDataMesAno(02, 03, 2003), null, null, area, faixaSalarial, estabelecimento1);
+		saveColaborador('F', true, new Date(), empresa, null, null, Deficiencia.SEM_DEFICIENCIA, DateUtil.criarDataMesAno(02, 03, 2011), null, null, area, faixaSalarial, estabelecimento1);
+		saveColaborador('F', true, new Date(), empresa, null, null, Deficiencia.SEM_DEFICIENCIA, DateUtil.criarDataMesAno(01, 02, 2004), null, null, area, faixaSalarial, estabelecimento2);
+		saveColaborador('F', true, new Date(), empresa, null, null, Deficiencia.SEM_DEFICIENCIA, DateUtil.criarDataMesAno(01, 02, 2009), null, null, area, faixaSalarial, estabelecimento2);
 
 		int count = colaboradorDao.countAdmitidosDemitidosTurnover(DateUtil.criarDataMesAno(01, 02, 2004), DateUtil.criarDataMesAno(01, 02, 2009), empresa, new Long[]{estabelecimento1.getId()}, null, null, false);
 		assertEquals(1, count);
@@ -1653,7 +1653,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 
-		Colaborador colaborador1 = ColaboradorFactory.getEntity("1234", "teste", empresa, null, null);
+		Colaborador colaborador1 = ColaboradorFactory.getEntity("1234", "teste", empresa, new Date(), null);
 		colaboradorDao.save(colaborador1);
 		
 		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity(colaborador1, new Date(), null, null, null, null, null, StatusRetornoAC.AGUARDANDO);
@@ -1666,7 +1666,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<
 		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity(colaborador2, new Date(), null, null, null, null, null, StatusRetornoAC.CONFIRMADO);
 		historicoColaboradorDao.save(historicoColaborador2);
 
-		Colaborador colaborador3 = ColaboradorFactory.getEntity(null, "Eva", empresa, null, null);
+		Colaborador colaborador3 = ColaboradorFactory.getEntity(null, "Eva", empresa, new Date(), null);
 		colaboradorDao.save(colaborador3);
 		
 		HistoricoColaborador historicoColaborador3 = HistoricoColaboradorFactory.getEntity(colaborador3, DateUtil.incrementaDias(new Date(), 1), null, null, null, null, null, StatusRetornoAC.CONFIRMADO);
@@ -1862,8 +1862,8 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 
-		Colaborador colaborador1 = saveColaborador(empresa, "Pedro Jose", "12e3456789", "000", null);
-		Colaborador colaborador2 = saveColaborador(empresa, "Maria", "123", null, null);
+		Colaborador colaborador1 = saveColaborador(empresa, "Pedro Jose", "12e3456789", "000", new Date());
+		Colaborador colaborador2 = saveColaborador(empresa, "Maria", "123", null, new Date());
 
 		AreaOrganizacional areaOrganizacional = saveAreaOrganizacional();
 		GrupoOcupacional grupoOcupacional = GrupoOcupacionalFactory.getGrupoOcupacional();
@@ -1944,7 +1944,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<
 	@Test public void testFindByAreaEstabelecimento() {
 		Empresa empresa = empresaDao.save(EmpresaFactory.getEmpresa());
 
-		Colaborador colaborador = saveColaborador(empresa, "Junior", "", "", null);
+		Colaborador colaborador = saveColaborador(empresa, "Junior", "", "", new Date());
 
 		AreaOrganizacional areaOrganizacionalAtual = saveAreaOrganizacional();
 		AreaOrganizacional areaOrganizacionalAntiga = saveAreaOrganizacional();
@@ -6863,7 +6863,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<
 		Cargo cargo = saveCargo();
 		FaixaSalarial faixaSalarial = saveFaixaSalarial(cargo);
 		
-		Colaborador colaborador = saveColaborador(empresa, "Francisco", "000122", "04404404433", null);
+		Colaborador colaborador = saveColaborador(empresa, "Francisco", "000122", "04404404433", new Date());
 		saveHistoricoColaborador(colaborador, estabelecimento, areaOrganizacional, faixaSalarial, DateUtil.criarDataMesAno(02, 04, 2016), 1);
 		
 		Colaborador colaboradorBusca = ColaboradorFactory.getEntity(1L, "cisc", null, "0012", null, "044", empresa);
@@ -6883,7 +6883,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<
 		Cargo cargo = saveCargo();
 		FaixaSalarial faixaSalarial = saveFaixaSalarial(cargo);
 		
-		Colaborador colaborador = saveColaborador(empresa, "Francisco", "000122", "04404404433", null);
+		Colaborador colaborador = saveColaborador(empresa, "Francisco", "000122", "04404404433", new Date());
 		saveHistoricoColaborador(colaborador, estabelecimento, areaOrganizacional, faixaSalarial, DateUtil.criarDataMesAno(02, 04, 2016), 1);
 		
 		Colaborador colaboradorBusca = ColaboradorFactory.getEntity(1L, "Francisco", null, "0012", null, "04404404433", empresa);
@@ -6904,7 +6904,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<
 		
 		Long[] idsAreasDoGestor = {areaOrganizacional.getId()};
 		
-		Colaborador colaborador = saveColaborador(empresa, "Francisco", "000122", "04404404433", null);
+		Colaborador colaborador = saveColaborador(empresa, "Francisco", "000122", "04404404433", new Date());
 		saveHistoricoColaborador(colaborador, estabelecimento, areaOrganizacional, faixaSalarial, DateUtil.criarDataMesAno(02, 04, 2016), 1);
 		
 		Colaborador colaboradorBusca = ColaboradorFactory.getEntity(1L, "Francisco", null, "0012", null, "04404404433", empresa);
@@ -6925,10 +6925,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<
 		
 		Long[] idsAreasDoGestor = {2L};
 		
-		Colaborador colaborador = saveColaborador(empresa, "Francisco", "000122", "04404404433", null);
+		Colaborador colaborador = saveColaborador(empresa, "Francisco", "000122", "04404404433", new Date());
 		saveHistoricoColaborador(colaborador, estabelecimento, areaOrganizacional, faixaSalarial, DateUtil.criarDataMesAno(02, 04, 2016), 1);
 		
-		Colaborador colaboradorBusca = new Colaborador();
+		Colaborador colaboradorBusca = ColaboradorFactory.getEntity();
 		colaboradorBusca.setEmpresa(empresa);
 		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
 

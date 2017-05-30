@@ -50,6 +50,7 @@ public class ColaboradorFactory
 	public static Colaborador getEntity(Long id)
 	{
 		Colaborador colaborador = getEntity();
+		colaborador.setDataAdmissao(new Date());
 		colaborador.setId(id);
 
 		return colaborador;
