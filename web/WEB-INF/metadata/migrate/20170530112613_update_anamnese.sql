@@ -1,0 +1,1 @@
+update exame set nome = 'Avaliação Clínica e Anamnese Ocupacional'  where id=27;--.go

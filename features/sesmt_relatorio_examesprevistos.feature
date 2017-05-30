@@ -13,7 +13,7 @@ Funcionalidade: Relatório de Exames Previstos
 
     Então eu preencho o campo (JS) "data" com "29/07/2011"
 
-    E eu marco "Avaliação Clínica e Anaminese Ocupacional"
+    E eu marco "Avaliação Clínica e Anamnese Ocupacional"
     E eu marco "Exame de Aptidões Física e Mental"
     E eu marco "Estabelecimento Padrão"
     E eu marco "desenvolvimento"

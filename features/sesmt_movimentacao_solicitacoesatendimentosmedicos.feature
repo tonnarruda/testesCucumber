@@ -30,7 +30,7 @@ Funcionalidade: Solicitações/Atendimentos Médicos
 
     Então eu clico na linha "28/07/2011" da imagem "Resultados"
     E eu devo ver o título "Resultados dos Exames de geraldo (geraldo)"
-    E eu devo ver "Avaliação Clínica e Anaminese Ocupacional"
+    E eu devo ver "Avaliação Clínica e Anamnese Ocupacional"
     E eu preencho o campo (JS) "datasRealizacaoExames" com "01/08/2011"
     E eu seleciono "Não Realizado" de "selectResultados"
     E eu preencho "observacoes" com "testes"
