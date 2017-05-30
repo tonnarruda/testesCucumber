@@ -9,10 +9,13 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import mockit.Mockit;
-
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.BDDMockito;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManagerImpl;
 import com.fortes.rh.business.captacao.SolicitacaoAvaliacaoManager;
@@ -24,10 +27,11 @@ import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
 import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
-import com.fortes.rh.test.util.mockObjects.MockSpringUtilJUnit4;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.SpringUtil;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(SpringUtil.class)
 public class CandidatoSolicitacaoManagerTest_JUnit4
 {
 	private CandidatoSolicitacaoManagerImpl candidatoSolicitacaoManager;
@@ -48,12 +52,17 @@ public class CandidatoSolicitacaoManagerTest_JUnit4
 
         colaboradorQuestionarioManager = mock(ColaboradorQuestionarioManager.class);
 
-        Mockit.redefineMethods(SpringUtil.class, MockSpringUtilJUnit4.class);
+    	PowerMockito.mockStatic(SpringUtil.class);
+//    	Podemos usar BDDMockito.given(methodCall) quando o comportamento for o mesmo para todos os métodos
+    	BDDMockito.given(SpringUtil.getBean("colaboradorQuestionarioManager")).willReturn(colaboradorQuestionarioManager);
+
+//    	Não deve ser mais utilizado
+//    	Mockit.redefineMethods(SpringUtil.class, MockSpringUtilJUnit4.class);
     }
 
     @Test
     public void testFindByCandidatoSolicitacao(){
-
+         
     	CandidatoSolicitacao candidatoSolicitacao = new CandidatoSolicitacao();
     	candidatoSolicitacao.setId(1L);
 
@@ -90,12 +99,19 @@ public class CandidatoSolicitacaoManagerTest_JUnit4
     	Solicitacao solicitacaoOrigin = SolicitacaoFactory.getSolicitacao(1L);
     	Solicitacao solicitacaoDestino = SolicitacaoFactory.getSolicitacao(2L);
 
-    	MockSpringUtilJUnit4.mocks.put("colaboradorQuestionarioManager", colaboradorQuestionarioManager);
+//    	Não deve ser mais utilizado
+//    	MockSpringUtilJUnit4.mocks.put("colaboradorQuestionarioManager", colaboradorQuestionarioManager);
 
     	Collection<Long> candidatoSolicitacaoIds = new ArrayList<Long>();
     	candidatoSolicitacaoIds.add(1L);
 
     	when(candidatoSolicitacaoDao.findCandidatosIdsAptosMover(candidatosSolicitacaoId, solicitacaoDestino)).thenReturn(candidatoSolicitacaoIds);
+    	
+//    	Utilizar essa linha quando o retorno for específico do teste.
+//    	when(SpringUtil.getBean("colaboradorQuestionarioManager")).thenReturn(colaboradorQuestionarioManager);
+    	
+//    	Não entendi como usar essa linha, preciso estudar para entender.
+//    	PowerMockito.verifyStatic();
     	
     	candidatoSolicitacaoManager.moverCandidatos(candidatosSolicitacaoId, solicitacaoOrigin, solicitacaoDestino, false);
 
@@ -110,7 +126,8 @@ public class CandidatoSolicitacaoManagerTest_JUnit4
     	Solicitacao solicitacaoOrigem = SolicitacaoFactory.getSolicitacao(1L);
     	Solicitacao solicitacaoDestino = SolicitacaoFactory.getSolicitacao(2L);
 
-    	MockSpringUtilJUnit4.mocks.put("colaboradorQuestionarioManager", colaboradorQuestionarioManager);
+//    	Não deve ser mais utilizado
+//    	MockSpringUtilJUnit4.mocks.put("colaboradorQuestionarioManager", colaboradorQuestionarioManager);
 
     	Collection<Long> candidatoSolicitacaoIds = new ArrayList<Long>();
     	candidatoSolicitacaoIds.add(1L);

@@ -10,8 +10,6 @@ import static org.mockito.Mockito.when;
 import java.util.HashMap;
 import java.util.Map;
 
-import mockit.Mockit;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -25,9 +23,9 @@ import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialHistoricoFactory;
-import com.fortes.rh.test.util.mockObjects.MockSpringUtilJUnit4;
-import com.fortes.rh.util.SpringUtil;
 
+//@RunWith(PowerMockRunner.class)
+//@PrepareForTest(SpringUtil.class)
 public class FaixaSalarialHistoricoManagerTest_JUnit4
 {
 	FaixaSalarialHistoricoManagerImpl faixaSalarialHistoricoManager = null;
@@ -45,7 +43,6 @@ public class FaixaSalarialHistoricoManagerTest_JUnit4
 		faixaSalarialHistoricoManager.setDao(faixaSalarialHistoricoDao);
 
 		faixaSalarialManager = mock(FaixaSalarialManager.class);
-		MockSpringUtilJUnit4.mocks.put("faixaSalarialManager", faixaSalarialManager);
 
 		indiceHistoricoManager = mock(IndiceHistoricoManager.class);
 		faixaSalarialHistoricoManager.setIndiceHistoricoManager(indiceHistoricoManager);
@@ -53,7 +50,8 @@ public class FaixaSalarialHistoricoManagerTest_JUnit4
 		indiceManager = mock(IndiceManager.class);
 		faixaSalarialHistoricoManager.setIndiceManager(indiceManager);
 
-        Mockit.redefineMethods(SpringUtil.class, MockSpringUtilJUnit4.class);
+//    	PowerMockito.mockStatic(SpringUtil.class);
+//    	BDDMockito.given(SpringUtil.getBean("faixaSalarialManager")).willReturn(faixaSalarialManager);
 	}
 
 	@Test
