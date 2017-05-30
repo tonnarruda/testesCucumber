@@ -40,6 +40,7 @@ import com.fortes.rh.model.captacao.relatorio.AvaliacaoCandidatosRelatorio;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.Apto;
+import com.fortes.rh.model.dicionario.Escolaridade;
 import com.fortes.rh.model.dicionario.OrigemCandidato;
 import com.fortes.rh.model.dicionario.PesosTriagemAutomatica;
 import com.fortes.rh.model.dicionario.StatusSolicitacao;
@@ -54,6 +55,7 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Endereco;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Estado;
+import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
@@ -956,6 +958,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		candidatoComSolicitacao.setEmpresa(empresa);
 		candidatoComSolicitacao.setNome("Jim");
 		candidatoComSolicitacao.setCpf("123456780");
+		candidatoComSolicitacao.getPessoal().setEscolaridade(Escolaridade.COLEGIAL_COMPLETO);
 		candidatoDao.save(candidatoComSolicitacao);
 		
 		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
@@ -966,8 +969,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		candidatoSolicitacao.setSolicitacao(solicitacao);
 		candidatoSolicitacaoDao.save(candidatoSolicitacao);
 		
-		String escolaridade = null;
-		Collection<Candidato> resultados = candidatoDao.findCandidatosForSolicitacao(null, null, null, escolaridade, null, null, null, null, null, somenteCandidatosSemSolicitacao, null, null, new Long[]{empresa.getId()}, true); 
+		Collection<Candidato> resultados = candidatoDao.findCandidatosForSolicitacao(null, null, null, null, null, null, null, null, null, somenteCandidatosSemSolicitacao, null, null, new Long[]{empresa.getId()}, true); 
 		assertEquals(2, resultados.size());
 		
 	}
