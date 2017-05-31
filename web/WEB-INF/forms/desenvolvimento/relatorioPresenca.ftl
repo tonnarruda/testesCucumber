@@ -84,7 +84,7 @@
 			}
 	
 			// verificação do submit, se há exatamente duas colunas
-			if (!onclick && qtdChecked != 2)
+			if (!onclick && qtdChecked > 2)
 			{
 				jAlert("É necessário selecionar exatamente duas colunas extras.");
 				return false;
@@ -166,7 +166,7 @@
 		<li>
 			<@ww.div cssClass="divInfo" cssStyle="width:490px;">
 				<ul>
-					<li style="font-weight:bold;">Selecione duas colunas extras:*</li><br />
+					<li style="font-weight:bold;">Selecione até duas colunas extras:</li><br />
 					<@ww.checkbox label="CPF" name="exibirCPF" id="exibirCPF" labelPosition="left" onchange="validaQtdColunas(this, true);"/>
 					<@ww.checkbox label="Cargo" name="exibirCargo" id="exibirCargo" labelPosition="left" onchange="validaQtdColunas(this, true);"/>
 					<@ww.checkbox label="Área Organizacional" name="exibirArea" id="exibirArea" labelPosition="left" onchange="validaQtdColunas(this, true);"/>

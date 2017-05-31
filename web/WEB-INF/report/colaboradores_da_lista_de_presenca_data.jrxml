@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-05-31T15:38:38 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="colaboradores_da_lista_de_presenca_data" pageWidth="538" pageHeight="842" columnWidth="538" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="7df03960-eaa2-403d-a066-a01760756885">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
@@ -29,31 +31,32 @@
 		<band splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="18" splitType="Prevent">
+		<band height="17" splitType="Prevent">
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="c2bb01dd-4629-4f6e-9cc5-0beb9402db55" key="textField" x="63" y="2" width="182" height="13"/>
+				<reportElement key="textField" x="63" y="2" width="182" height="13" uuid="c2bb01dd-4629-4f6e-9cc5-0beb9402db55"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement/>
 				<textFieldExpression><![CDATA[$F{coluna01RelatorioPresenca}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement uuid="abcf93b9-af62-40ee-b6f9-58ae2d041be8" key="textField" x="17" y="2" width="44" height="13"/>
+				<reportElement key="textField" x="19" y="2" width="42" height="13" uuid="abcf93b9-af62-40ee-b6f9-58ae2d041be8">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement/>
 				<textFieldExpression><![CDATA[$F{colaborador.matricula}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="57adc45a-19a0-49c5-9d7a-c7592def9ebf" key="textField" x="247" y="2" width="135" height="13">
+				<reportElement key="textField" x="247" y="2" width="130" height="13" uuid="57adc45a-19a0-49c5-9d7a-c7592def9ebf">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<printWhenExpression><![CDATA[new Boolean(!$P{coluna02}.equals(""))]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -62,11 +65,10 @@
 					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement/>
 				<textFieldExpression><![CDATA[$F{coluna02RelatorioPresenca}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement uuid="207a9c7a-533b-4c1a-8879-f427f6069d31" key="textField" positionType="FixRelativeToBottom" x="1" y="2" width="17" height="13"/>
+				<reportElement key="textField" positionType="FixRelativeToBottom" x="0" y="2" width="17" height="13" uuid="207a9c7a-533b-4c1a-8879-f427f6069d31"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -77,7 +79,7 @@
 				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="97582f06-9c48-46c7-9049-3a36cea0c4e7" key="staticText-12" positionType="FixRelativeToBottom" x="511" y="2" width="26" height="13">
+				<reportElement key="staticText-12" positionType="FixRelativeToBottom" x="511" y="2" width="26" height="13" uuid="97582f06-9c48-46c7-9049-3a36cea0c4e7">
 					<printWhenExpression><![CDATA[$P{exibirNota}]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -86,22 +88,28 @@
 					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement/>
 				<text><![CDATA[]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="f0b7e964-0049-4cad-8641-765e60cc151c" key="textField-1" x="384" y="2" width="125" height="13">
+				<reportElement key="textField-1" x="379" y="2" width="130" height="13" uuid="f0b7e964-0049-4cad-8641-765e60cc151c">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<printWhenExpression><![CDATA[new Boolean(!$P{coluna03}.equals(""))]]></printWhenExpression>
 				</reportElement>
 				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5"/>
 				</box>
-				<textElement/>
 				<textFieldExpression><![CDATA[$F{coluna03RelatorioPresenca}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="247" y="10" width="262" height="5" uuid="88eba261-6f99-494a-af8f-8e542801ee1d">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<printWhenExpression><![CDATA[$P{coluna03} == null]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<text><![CDATA[Static Text]]></text>
+			</staticText>
 		</band>
 	</detail>
 	<columnFooter>

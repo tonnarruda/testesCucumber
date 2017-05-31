@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-05-31T15:31:54 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="colaboradores_da_lista_de_presenca_estabelecimento" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="537" leftMargin="29" rightMargin="29" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="8b33e741-df2d-4aa1-8b9b-73c59c039a4e">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
@@ -167,7 +169,7 @@
 					<textFieldExpression><![CDATA[$P{data}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement key="staticText-22" positionType="Float" x="61" y="234" width="182" height="12" isPrintWhenDetailOverflows="true" uuid="86ce591a-6c2f-4175-9d5c-d8334b7023c9"/>
+					<reportElement key="staticText-22" positionType="Float" x="60" y="234" width="182" height="12" isPrintWhenDetailOverflows="true" uuid="86ce591a-6c2f-4175-9d5c-d8334b7023c9"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -180,7 +182,7 @@
 					<text><![CDATA[Nome]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement key="textField-8" positionType="Float" x="385" y="234" width="125" height="12" isPrintWhenDetailOverflows="true" uuid="5ad412fc-bcd0-41ad-a4ea-1f7b94931d34"/>
+					<reportElement key="textField-8" positionType="Float" x="378" y="234" width="132" height="12" isPrintWhenDetailOverflows="true" uuid="5ad412fc-bcd0-41ad-a4ea-1f7b94931d34"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -193,7 +195,7 @@
 					<textFieldExpression><![CDATA[$P{coluna03}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement key="textField-7" positionType="Float" x="247" y="234" width="135" height="12" isPrintWhenDetailOverflows="true" uuid="0d9e28cd-9a94-4c0a-bed7-9ee1b53f8d2b"/>
+					<reportElement key="textField-7" positionType="Float" x="244" y="234" width="132" height="12" isPrintWhenDetailOverflows="true" uuid="0d9e28cd-9a94-4c0a-bed7-9ee1b53f8d2b"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -206,7 +208,7 @@
 					<textFieldExpression><![CDATA[$P{coluna02}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement key="staticText-36" positionType="Float" x="19" y="234" width="41" height="12" isPrintWhenDetailOverflows="true" uuid="f175f5d3-b933-4955-a33d-e682f8fce2c5"/>
+					<reportElement key="staticText-36" positionType="Float" x="19" y="234" width="39" height="12" isPrintWhenDetailOverflows="true" uuid="f175f5d3-b933-4955-a33d-e682f8fce2c5"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -232,7 +234,7 @@
 					<text><![CDATA[Nº]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="staticText-38" positionType="Float" x="514" y="234" width="23" height="12" isPrintWhenDetailOverflows="true" uuid="efd7b14d-b590-40b1-9790-56fff6489291">
+					<reportElement key="staticText-38" positionType="Float" x="512" y="234" width="23" height="12" isPrintWhenDetailOverflows="true" uuid="efd7b14d-b590-40b1-9790-56fff6489291">
 						<printWhenExpression><![CDATA[$P{exibirNota}]]></printWhenExpression>
 					</reportElement>
 					<box>
@@ -523,9 +525,9 @@
 		<band splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="18" splitType="Stretch">
+		<band height="15" splitType="Stretch">
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField-12" x="61" y="2" width="182" height="13" uuid="0539ca42-8872-42eb-a5fa-11ef10116887"/>
+				<reportElement key="textField-12" x="60" y="2" width="182" height="13" uuid="0539ca42-8872-42eb-a5fa-11ef10116887"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -545,7 +547,8 @@
 				<textFieldExpression><![CDATA[$F{colaborador.matricula}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField-14" x="246" y="2" width="135" height="13" uuid="45f847a3-810c-412e-afc4-9a4288e5e91d">
+				<reportElement key="textField-14" x="244" y="2" width="132" height="13" uuid="45f847a3-810c-412e-afc4-9a4288e5e91d">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<printWhenExpression><![CDATA[new Boolean(!$P{coluna02}.equals(""))]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -557,7 +560,7 @@
 				<textFieldExpression><![CDATA[$F{coluna02RelatorioPresenca}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-15" positionType="FixRelativeToBottom" x="-1" y="2" width="17" height="13" uuid="bfcaf816-4ea0-4749-a277-01f621d3d500"/>
+				<reportElement key="textField-15" positionType="FixRelativeToBottom" x="0" y="2" width="17" height="13" uuid="bfcaf816-4ea0-4749-a277-01f621d3d500"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -580,7 +583,8 @@
 				<text><![CDATA[]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField-16" x="384" y="2" width="125" height="13" uuid="a71807da-5b1b-4335-88cd-4bcdb1c6605f">
+				<reportElement key="textField-16" x="378" y="2" width="132" height="13" uuid="a71807da-5b1b-4335-88cd-4bcdb1c6605f">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					<printWhenExpression><![CDATA[new Boolean(!$P{coluna03}.equals(""))]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -591,6 +595,18 @@
 				</box>
 				<textFieldExpression><![CDATA[$F{coluna03RelatorioPresenca}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="244" y="10" width="266" height="5" uuid="deb8ae12-643f-4f93-bed0-b01c1f04be84">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<printWhenExpression><![CDATA[$P{coluna03} == null]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<text><![CDATA[Static Text]]></text>
+			</staticText>
 		</band>
 	</detail>
 	<columnFooter>
