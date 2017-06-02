@@ -19,3 +19,5 @@ $$ LANGUAGE plpgsql;--.go
 select setarTodasAsDatasAdmissaoColaborador();--.go
 
 ALTER TABLE colaborador ALTER COLUMN dataAdmissao SET NOT NULL;--.go
+
+DROP FUNCTION setarTodasAsDatasAdmissaoColaborador();--.go
