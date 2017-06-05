@@ -100,7 +100,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Colaborador> findByEstabelecimento(Long[] estabelecimentoIds);
 	public Colaborador findByIdProjectionUsuario(Long colaboradorId);
 	public Collection<Colaborador> findAreaOrganizacionalByAreas(boolean habilitaCampoExtra, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, CamposExtras camposExtras, String order, Date dataAdmissaoIni, Date dataAdmissaoFim, String sexo, String deficiencia, Integer[] tempoServicoIni, Integer[] tempoServicoFim, String situacao, Character enviadoParaAC, Long... empresasIds);
-	public Colaborador findColaboradorByIdProjection(Long colaboradorId);
+	public Colaborador findColaboradorByIdProjection (Long colaboradorId);
 	void atualizarUsuario(Long colaboradorId, Long usuarioId) throws Exception;
 	public Colaborador findByIdProjectionEmpresa(Long colaboradorId);
 	public Collection<Colaborador> findColaboradoresMotivoDemissao(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim, String agruparPor, String vinculo)throws Exception;

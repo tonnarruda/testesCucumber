@@ -2,7 +2,9 @@ package com.fortes.rh.test.web.dwr;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
 
 import org.jmock.Mock;
@@ -31,6 +33,7 @@ import com.fortes.rh.test.factory.cargosalario.AmbienteFactory;
 import com.fortes.rh.test.factory.cargosalario.FuncaoFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.web.dwr.ColaboradorDWR;
 
@@ -76,6 +79,10 @@ public class ColaboradorDWRTest extends MockObjectTestCase
 
 		assertEquals(1, retorno.size());
 	}
+	
+	
+	
+	
 	
 	public void testGetByAreaEstabelecimentoEmpresasPassandoApenasEmpresa()
 	{	
@@ -489,4 +496,11 @@ public class ColaboradorDWRTest extends MockObjectTestCase
 		assertEquals(colaboradoresVinculadosAoUsuario.iterator().next().getNomeEOuNomeComercial(), mapColaboradoresPermitidos.get(2L));
 	}
 	
+	public void testGetColaboradorById()
+	{
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaboradorManager.expects(once()).method("findColaboradorByIdProjection").with(eq(colaborador.getId())).will(returnValue(colaborador));
+
+		assertNotNull(colaboradorDWR.getColaboradorById(colaborador.getId()));
+	}
 }

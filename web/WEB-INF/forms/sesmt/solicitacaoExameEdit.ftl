@@ -26,11 +26,15 @@
 	</#if>
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/SolicitacaoExameDWR.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 
 	<script>
 		var examesAsoPadrao = ${action.getExameAsosJson()};
+		const COLABORADOR = 'C';
+		
+		
 		$(function() {
 			<#if primeiraExecucao && vinculo?exists && (vinculo == "COLABORADOR" || vinculo == 'TODOS')>
 				$('#examesPara').val('C');
@@ -53,6 +57,11 @@
 			
 			<#if !edicao && !primeiraExecucao>
 				findProxOrdem();
+				validaDatasColaborador();
+			</#if>
+			<#if edicao>
+				validaDatasColaborador();
+				
 			</#if>
 			
 			$('#observacaoTooltipHelp').qtip({content: 'A observação inserida será apresentada ao "Imprimir a Solicitação de Exames".'});
@@ -64,7 +73,65 @@
 			
 			SolicitacaoExameDWR.findProximaOrdem( data, function(ordem) { $('#ordem').val(ordem) } );
 		}
+		
+		
+		
+		
+	function verificaDataSolicitacaoMenorQueDataAdmissao(colaboradorId,data){
+    
+    	DWREngine.setAsync(false);
+    
+    	var flag= false;
+    
+	            ColaboradorDWR.getColaboradorById(colaboradorId,{
+	                callback : function(colaborador)
+	                {
+	                    
+	                    var partesDataAdmissao  =colaborador.dataAdmissaoFormatada.split('/');
+						var dataAdmissao = new Date(partesDataAdmissao[2],partesDataAdmissao[1]-1,partesDataAdmissao[0]);
+	                    
+	                    var partesDataSolicitacao  = data.split('/');
+						var dataSolicitacao = new Date(partesDataSolicitacao[2],partesDataSolicitacao[1]-1,partesDataSolicitacao[0]);
+	                    
+	                    if(colaborador.dataAdmissaoFormatada &&  dataSolicitacao.getTime() < dataAdmissao.getTime()){
+	                        DWREngine.setAsync(true);
+	                        
+	                        jAlert("Data solicitação não pode ser menor que a data de admissão. \n Data admissão:  " + colaborador.dataAdmissaoFormatada);
+	                    	flag= false;
+	                    	
+	                    	$('#flagMsgDataAdmissao').val(flag);
+	                    }
+	                    else{
+	                        flag= true;
+	                        $('#flagMsgDataAdmissao').val(flag);
+	                    }
+	                    return flag;
+	                },
+	                errorHandler : function(e){
+	                    alert(e); 
+	                    }
+	            });
+	            
+    	return flag;
+} 
+		
+		
 	
+	function validaDatasColaborador() {
+		    var data = $('#data').val();
+		    var colaboradorId = $('#colaboradorId').val();
+  
+		    if ($('#examesPara').val() === COLABORADOR) {
+
+		        if (data) {
+		        
+		        return	verificaDataSolicitacaoMenorQueDataAdmissao(colaboradorId,data);
+		        }
+
+		    }
+				return false;
+		}
+		
 		function filtrarOpcao()
 		{
 			value = document.getElementById('examesPara').value;
@@ -117,7 +184,11 @@
 		function mudaAction(opcao)
 		{
 			if (opcao == 'gravar'){
-				validaOrdem();
+				if(validaDatasColaborador()){
+					validaOrdem();
+				}else{
+					return false;
+				}
 			}else{
 				document.form.action = "imprimirSolicitacaoExames.action";
 				validaform();
@@ -125,7 +196,8 @@
 		}
 		
 		function validaform(){
-			return validaFormulario('form', new Array('data','ordem','motivoExame','medico'), new Array('data'));
+
+			return   validaFormulario('form', new Array('data','ordem','motivoExame','medico'), new Array('data'));
 		}
 
 		function desabilitaPeriodicidade(value,checked)
@@ -283,6 +355,7 @@
 			<@ww.textfield label="Matrícula" name="colaborador.matricula" id="matriculaBusca" liClass="liLeft" cssStyle="width: 60px;"/>
 			<@ww.textfield label="CPF" name="colaborador.pessoal.cpf" id="cpfColaborador" cssClass="mascaraCpf"/>
 			<@ww.hidden id="colaboradorId" name="colaborador.id" />
+			<@ww.hidden id="flagMsgDataAdmissao" value="false" />
 		</span>
 		<@ww.hidden id="nomeBusca" name="nomeBusca" />
 		<@ww.hidden id="vinculo" name="vinculo" />
@@ -327,7 +400,7 @@
 			</#if>
 	
 			<#if (listaExames?exists && listaExames?size > 0)>
-				<@ww.datepicker label="Data" id="data" name="solicitacaoExame.data" required="true" cssClass="mascaraData" value="${data}" liClass="liLeft" onchange="findProxOrdem()" onblur="findProxOrdem()"/>
+				<@ww.datepicker label="Data" id="data" name="solicitacaoExame.data" required="true" cssClass="mascaraData" value="${data}" liClass="liLeft" onchange="findProxOrdem(),validaDatasColaborador()" onblur="findProxOrdem(),validaDatasColaborador()"/>
 				<@ww.textfield label="Ordem de Atendimento" name="solicitacaoExame.ordem" id="ordem" maxLength="2" size="3" onkeypress="return somenteNumeros(event,'')" required="true" cssStyle="text-align:right;"/>
 					<@ww.select label="Motivo do Atendimento" onchange="configuraCampos();" name="solicitacaoExame.motivo" id="motivoExame" list="motivos" headerKey="" headerValue="Selecione..." required="true" cssStyle="width:300px;"/>
 				 	<@ww.select label="Médico Coordenador" name="solicitacaoExame.medicoCoordenador.id" id="medico" list="medicoCoordenadors" required="true" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." cssStyle="width:300px;" />
@@ -425,7 +498,7 @@
 	
 		<#if (listaExames?exists && listaExames?size > 0)>
 			<div class="buttonGroup">
-				<button onclick="return mudaAction('gravar');" class="btnGravar"> </button>
+				<button  onclick="return mudaAction('gravar');" class="btnGravar"> </button>
 				<#-- TODO ver solução para gravar/visualizar. problemas no Inserir (gravando várias vezes)  
 				<button onclick="return mudaAction('gravarVisualizar');" class="btnGravarVisualizar"> </button>
 				-->

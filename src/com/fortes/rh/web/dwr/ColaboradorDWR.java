@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
@@ -45,7 +46,7 @@ public class ColaboradorDWR
     private UsuarioManager usuarioManager;
     private AreaOrganizacionalManager areaOrganizacionalManager;
     private UsuarioEmpresaManager usuarioEmpresaManager;
-
+    private static Logger logger = Logger.getLogger(ColaboradorDWR.class);
 	public Map<Long, String> getColaboradores(String[] areaOrganizacionalIds, Long empresaId)
     {
         Collection<Colaborador> colaboradores;
@@ -453,8 +454,14 @@ public class ColaboradorDWR
     	return checkBoxs;
     }
     
+    
     public boolean existeHistoricoAguardandoConfirmacaoNoFortesPessoal(Long colobaoradorId){
     	return (historicoColaboradorManager.findByColaboradorProjection(colobaoradorId, StatusRetornoAC.AGUARDANDO)).size() > 0;
+    }
+    
+    
+	public Colaborador getColaboradorById (Long colaboradorId) {
+		return  colaboradorManager.findColaboradorByIdProjection(colaboradorId);
     }
     
 	public void setColaboradorManager(ColaboradorManager colaboradorManager)
