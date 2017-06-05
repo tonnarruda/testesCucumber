@@ -7,7 +7,7 @@
 					<#if msg?exists>
 						<li>${msg}</li>
 					<#else>
-						<li>Infelizmente ocorreu uma inconsistência insperada.</li>
+						<li>Ocorreu uma inconsistência inesperada.</li>
 					</#if>
 				</#list>
 			</ul>

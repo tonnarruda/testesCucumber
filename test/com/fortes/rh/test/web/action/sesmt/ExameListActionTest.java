@@ -24,12 +24,7 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.ClinicaAutorizada;
 import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.model.sesmt.MedicoCoordenador;
-import com.fortes.rh.model.sesmt.SolicitacaoExame;
-import com.fortes.rh.model.sesmt.relatorio.AsoRelatorio;
 import com.fortes.rh.security.SecurityUtil;
-import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
-import com.fortes.rh.test.factory.captacao.EmpresaFactory;
-import com.fortes.rh.test.factory.sesmt.SolicitacaoExameFactory;
 import com.fortes.rh.test.util.mockObjects.MockRelatorioUtil;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.test.util.mockObjects.MockStringUtil;
@@ -207,54 +202,6 @@ public class ExameListActionTest extends MockObjectTestCase
 		assertEquals("success", action.filtroImprimirAso());
 	}
 	
-/*
-	public void testImprimirAso()
-	{
-		Long colaboradorId = 1L, candidatoId = 1L, medicoCoordenadorId = 1L;
-		MedicoCoordenador medicoCoordenador = new MedicoCoordenador();
-		medicoCoordenador.setId(medicoCoordenadorId);
-		Empresa empresaSistema = EmpresaFactory.getEmpresa(1L);
-		empresaSistema.setCidade(new Cidade());
-
-		//Colaborador
-		medicoCoordenadorManager.expects(once()).method("findByIdProjection").with(eq(medicoCoordenadorId)).will(returnValue(new MedicoCoordenador()));
-		colaboradorManager.expects(once()).method("findColaboradorByIdProjection").with(eq(colaboradorId)).will(returnValue(new Colaborador()));
-		RelatorioUtil.getParametrosRelatorio("SERVIÇO DE MEDICINA OCUPACIONAL", new Empresa(), "ATESTADO DE SAÚDE OCUPACIONAL - ASO");
-
-		action.setEmpresaSistema(empresaSistema);
-		action.getColaborador().setId(colaboradorId);
-		action.getCandidato().setId(null);
-		assertEquals("success", action.imprimirAso());
-
-		//Candidato
-		medicoCoordenadorManager.expects(once()).method("findByIdProjection").with(eq(medicoCoordenadorId)).will(returnValue(new MedicoCoordenador()));
-		candidatoManager.expects(once()).method("findByCandidatoId").with(eq(candidatoId)).will(returnValue(new Candidato()));
-		RelatorioUtil.getParametrosRelatorio("SERVIÇO DE MEDICINA OCUPACIONAL", new Empresa(), "ATESTADO DE SAÚDE OCUPACIONAL - ASO");
-
-		action.setEmpresaSistema(empresaSistema);
-		action.getColaborador().setId(null);
-		action.getCandidato().setId(candidatoId);
-		assertEquals("success", action.imprimirAso());
-	}
-*/
-	
-	public void testImprimirAso()
-	{
-		SolicitacaoExame solicitacaoExame = SolicitacaoExameFactory.getEntity(100L);
-		solicitacaoExame.setColaborador(ColaboradorFactory.getEntity(1000L));
-		Empresa empresa = EmpresaFactory.getEmpresa(1L);
-		
-		AsoRelatorio asoRelatorio = new AsoRelatorio(solicitacaoExame, empresa);
-		solicitacaoExameManager.expects(once()).method("montaRelatorioAso").will(returnValue(asoRelatorio ));
-		assertEquals("success", action.imprimirAso());
-	}
-	
-	public void testImprimirAsoColecaoVazia()
-	{
-		solicitacaoExameManager.expects(once()).method("montaRelatorioAso").will(throwException(new ColecaoVaziaException("")));
-		assertEquals("input", action.imprimirAso());
-	}
-
 	public void testPrepareRelatorioExamesPrevistos()
 	{
 		Long empresaId = 1L;

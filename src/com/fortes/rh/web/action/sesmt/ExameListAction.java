@@ -102,6 +102,7 @@ public class ExameListAction extends MyActionSupportList
 	private Character tipoPessoa = 'T';
 	private boolean relatorioExamesPrevistosResumido;
 	private String nomeBusca;
+	private boolean utilizarAsoNR35;
 
 	public String list() throws Exception
 	{
@@ -177,7 +178,10 @@ public class ExameListAction extends MyActionSupportList
 			return INPUT;
 		}
 
-		return SUCCESS;
+		if(utilizarAsoNR35)
+			return "successNR35";
+		else
+			return SUCCESS;
 	}
 
 	public String prepareRelatorioExamesPrevistos()
@@ -613,6 +617,10 @@ public class ExameListAction extends MyActionSupportList
 
 	public void setExibirExamesNaoRealizados(boolean exibirExamesNaoRealizados) {
 		this.exibirExamesNaoRealizados = exibirExamesNaoRealizados;
+	}
+
+	public void setUtilizarAsoNR35(boolean utilizarAsoNR35) {
+		this.utilizarAsoNR35 = utilizarAsoNR35;
 	}
 
 }

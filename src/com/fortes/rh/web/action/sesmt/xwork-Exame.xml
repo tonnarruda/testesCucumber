@@ -47,6 +47,12 @@
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">aso.pdf</param>
 			</result>
+			<result name="successNR35" type="jasper">
+				<param name="dataSource">asoRelatorio</param>
+				<param name="location">WEB-INF/report/asoNR35.jasper</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">aso.pdf</param>
+			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/relatorioAso.ftl</result>
 		</action>
 

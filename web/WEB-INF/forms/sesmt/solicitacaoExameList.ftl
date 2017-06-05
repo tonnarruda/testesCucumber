@@ -108,6 +108,11 @@
 			$(".box-type").click(function(){
 				selectPrintType(this);
 			});
+			
+			$('#help').qtip({
+				content: '<div style="text-align:justify">NR35 - ASO referente a atividades com altura.</div>',
+				style: { width: 200 }
+			});
 		})
 		
 		function selectPrintType(box) {
@@ -147,7 +152,7 @@
 		
 		function selecionarRiscoPor(solicitacaoExameId){
 			$('#solicitacaoExameId').val(solicitacaoExameId);
-			$('#considerarRiscoPorDialog').dialog({ title: 'Imprimir ASO</br>' + $("#colab_" + solicitacaoExameId).text(), modal: true, width: 550, height: 165 });
+			$('#considerarRiscoPorDialog').dialog({ title: 'Imprimir ASO</br>' + $("#colab_" + solicitacaoExameId).text(), modal: true, width: 550, height: 190 });
 		}
 		
 		function addPequenosModelos(){
@@ -358,6 +363,10 @@
 
 			<@ww.hidden name="solicitacaoExame.id" id="solicitacaoExameId"/>
 			<@ww.select label="Imprimir ASO considerando risco por" name="imprimirASOComRiscoPor" list="tiposRiscoSistema" cssStyle="width: 200px; margin-top: 6px;" />
+
+			<label>Utilizar ASO com:</label>
+			<img id="help" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-bottom: -3px" />
+			<@ww.select name="utilizarAsoNR35" list=r"#{false:'NR7',true:'NR35'}" cssStyle="width: 200px; margin-top: 6px;"/>
 			
 			<button type="submit" class="btnImprimir grayBG" onclick="$('#considerarRiscoPorDialog').dialog('close');"></button>
 			<button type="button" onclick="$('#considerarRiscoPorDialog').dialog('close'); $('#considerarRiscoPorDialog input').val(''); $('#considerarRiscoPorDialog select').val('');" class="btnCancelar grayBG">	</button>

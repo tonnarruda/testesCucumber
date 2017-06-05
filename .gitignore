@@ -25,3 +25,4 @@ ruby/Gemfile.lock
 .dbeaver-data-sources.xml
 .myumldata
 Scripts/
+web/WEB-INF/report/lib/

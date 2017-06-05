@@ -20,8 +20,14 @@ import com.fortes.rh.business.sesmt.ClinicaAutorizadaManager;
 import com.fortes.rh.business.sesmt.ExameManager;
 import com.fortes.rh.business.sesmt.MedicoCoordenadorManager;
 import com.fortes.rh.business.sesmt.SolicitacaoExameManager;
+import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.sesmt.SolicitacaoExame;
+import com.fortes.rh.model.sesmt.relatorio.AsoRelatorio;
 import com.fortes.rh.model.sesmt.relatorio.ExamesPrevistosRelatorio;
+import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.sesmt.SolicitacaoExameFactory;
 import com.fortes.rh.test.util.mockObjects.MockRelatorioUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.RelatorioUtil;
@@ -117,5 +123,45 @@ public class ExameListActionTest_JUnit4
 		when(exameManager.findRelatorioExamesPrevistos(action.getEmpresaSistema().getId(), action.getInicio(), action.getFim(), null, null, null, null, 'C', false, false, false)).thenReturn(colecaoRelatorio);
 		
 		assertEquals("success", action.relatorioExamesPrevistos());
+	}
+	
+	@Test
+	public void testImprimirAso() throws ColecaoVaziaException
+	{
+		SolicitacaoExame solicitacaoExame = SolicitacaoExameFactory.getEntity(100L);
+		solicitacaoExame.setColaborador(ColaboradorFactory.getEntity(1000L));
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		action.setEmpresaSistema(empresa);
+		action.setSolicitacaoExame(solicitacaoExame);
+		
+		AsoRelatorio asoRelatorio = new AsoRelatorio(solicitacaoExame, empresa);
+		when(solicitacaoExameManager.montaRelatorioAso(empresa, solicitacaoExame, "AF")).thenReturn(asoRelatorio);
+
+		assertEquals("success", action.imprimirAso());
+	}
+	
+	@Test
+	public void testImprimirAsoNR35() throws ColecaoVaziaException
+	{
+		SolicitacaoExame solicitacaoExame = SolicitacaoExameFactory.getEntity(100L);
+		solicitacaoExame.setColaborador(ColaboradorFactory.getEntity(1000L));
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		action.setEmpresaSistema(empresa);
+		action.setSolicitacaoExame(solicitacaoExame);
+		action.setUtilizarAsoNR35(true);
+		
+		AsoRelatorio asoRelatorio = new AsoRelatorio(solicitacaoExame, empresa);
+		when(solicitacaoExameManager.montaRelatorioAso(empresa, solicitacaoExame, "AF")).thenReturn(asoRelatorio);
+
+		assertEquals("successNR35", action.imprimirAso());
+	}
+	
+	@Test
+	public void testImprimirAsoColecaoVazia() throws ColecaoVaziaException
+	{
+		when(solicitacaoExameManager.montaRelatorioAso(action.getEmpresaSistema(), null, "AF")).thenThrow(new ColecaoVaziaException("Não existem dados"));
+		assertEquals("input", action.imprimirAso());
 	}
 }
