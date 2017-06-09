@@ -52,7 +52,6 @@ import com.fortes.rh.business.sesmt.CatManager;
 import com.fortes.rh.business.sesmt.ColaboradorAfastamentoManager;
 import com.fortes.rh.business.sesmt.ComissaoManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
-import com.fortes.rh.business.sesmt.SolicitacaoExameManager;
 import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.exception.LimiteColaboradorExceditoException;
@@ -137,7 +136,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	private ColaboradorOcorrenciaManager colaboradorOcorrenciaManager;
 	private EstabelecimentoManager estabelecimentoManager;
 	private DocumentoAnexoManager documentoAnexoManager;
-	private SolicitacaoExameManager solicitacaoExameManager;
 	private IndiceManager indiceManager;
 	private AcPessoalClientSistema acPessoalClientSistema;
 	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
@@ -647,9 +645,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 			if (colaboradorManager.insert(colaborador, salarioColaborador, idCandidato, formacaos, idiomas, experiencias, solicitacao, getEmpresaSistema(), candidatoSolicitacaoId))
 			{
-				// Transferindo solicitações médicas do candidato
-				solicitacaoExameManager.transferirCandidatoToColaborador(getEmpresaSistema().getId(), idCandidato, colaborador.getId());
-				
 				if (candidatoSolicitacaoId != null)
 					candidatoSolicitacaoManager.setStatusAndDataContratacaoOrPromocao(candidatoSolicitacaoId, StatusCandidatoSolicitacao.CONTRATADO, getDataContratacao());
 				
@@ -1679,11 +1674,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	public void setManterFoto(boolean manterFoto)
 	{
 		this.manterFoto = manterFoto;
-	}
-
-	public void setSolicitacaoExameManager(SolicitacaoExameManager solicitacaoExameManager)
-	{
-		this.solicitacaoExameManager = solicitacaoExameManager;
 	}
 
 	public HashMap<String, String> getCodigosGFIP() {

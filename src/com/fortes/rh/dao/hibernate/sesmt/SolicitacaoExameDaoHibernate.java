@@ -211,16 +211,6 @@ public class SolicitacaoExameDaoHibernate extends GenericDaoHibernate<Solicitaca
 		return criteria.list();
 	}
 
-	public void transferirCandidatoToColaborador(Long empresaId, Long candidatoId, Long colaboradorId)
-	{
-		String hql = "update SolicitacaoExame se set se.colaborador.id = :colaboradorId, se.candidato.id = null where (se.candidato.id = :candidatoId and se.empresa.id = :empresaId)";
-		Query query = getSession().createQuery(hql);
-		query.setLong("empresaId", empresaId);
-		query.setLong("candidatoId", candidatoId);
-		query.setLong("colaboradorId", colaboradorId);
-		query.executeUpdate();
-	}
-	
 	public void transferirColaboradorToCandidato(Long empresaId, Long candidatoId, Long colaboradorId)
 	{
 		String hql = "update SolicitacaoExame se set se.colaborador.id = null, se.candidato.id = :candidatoId where (se.colaborador.id = :colaboradorId and se.empresa.id = :empresaId)";
@@ -230,8 +220,6 @@ public class SolicitacaoExameDaoHibernate extends GenericDaoHibernate<Solicitaca
 		query.setLong("colaboradorId", colaboradorId);
 		query.executeUpdate();
 	}
-	
-	
 
 	/**
 	 * Relatório de Atendimentos médicos

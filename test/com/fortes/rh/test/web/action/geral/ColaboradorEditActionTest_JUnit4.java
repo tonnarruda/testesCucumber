@@ -54,7 +54,6 @@ import com.fortes.rh.business.sesmt.CatManager;
 import com.fortes.rh.business.sesmt.ColaboradorAfastamentoManager;
 import com.fortes.rh.business.sesmt.ComissaoManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
-import com.fortes.rh.business.sesmt.SolicitacaoExameManager;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.captacao.Experiencia;
@@ -128,7 +127,6 @@ public class ColaboradorEditActionTest_JUnit4
 	private EstabelecimentoManager estabelecimentoManager;
 	private AcPessoalClientSistema acPessoalClientSistema;
 	private PlatformTransactionManager transactionManager;
-	private SolicitacaoExameManager solicitacaoExameManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private PeriodoExperienciaManager periodoExperienciaManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
@@ -172,7 +170,6 @@ public class ColaboradorEditActionTest_JUnit4
 		experienciaManager = mock(ExperienciaManager.class);
 		transactionManager = mock(PlatformTransactionManager.class);
 		candidatoIdiomaManager = mock(CandidatoIdiomaManager.class);
-		solicitacaoExameManager = mock(SolicitacaoExameManager.class);
 		colaboradorManager = mock(ColaboradorManager.class);
 		camposExtrasManager = mock(CamposExtrasManager.class);
 		faixaSalarialManager = mock(FaixaSalarialManager.class);
@@ -217,7 +214,6 @@ public class ColaboradorEditActionTest_JUnit4
 		action.setUsuarioManager(usuarioManager);
 		action.setAmbienteManager(ambienteManager);
 		action.setTransactionManager(transactionManager);
-		action.setSolicitacaoExameManager(solicitacaoExameManager);
 		action.setParametrosDoSistemaManager(parametrosDoSistemaManager);
         action.setConfiguracaoCampoExtraManager(configuracaoCampoExtraManager);
         action.setQuantidadeLimiteColaboradoresPorCargoManager(quantidadeLimiteColaboradoresPorCargoManager);

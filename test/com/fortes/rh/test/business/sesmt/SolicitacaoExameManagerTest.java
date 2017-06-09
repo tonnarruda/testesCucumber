@@ -245,15 +245,6 @@ public class SolicitacaoExameManagerTest extends MockObjectTestCase
 		assertNotNull(exception);
 	}
 	
-	public void testTransferir()
-	{
-		Long empresaId=1L, candidatoId=100L, colaboradorId=1302L;
-		
-		solicitacaoExameDao.expects(once()).method("transferirCandidatoToColaborador").isVoid();
-		
-		solicitacaoExameManager.transferirCandidatoToColaborador(empresaId, candidatoId, colaboradorId);
-	}
-	
 	public void testMontaRelatorioAsoSemSolicitacaoExame() throws Exception
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);

@@ -29,6 +29,7 @@ import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.MotivoSolicitacaoExame;
 import com.fortes.rh.model.dicionario.ResultadoExame;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
+import com.fortes.rh.model.dicionario.TipoPessoa;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -363,7 +364,7 @@ public class ExameDaoHibernateTest extends GenericDaoHibernateTest<Exame>
 		Long[] estabelecimentoIds = {estabelecimento1.getId(), estabelecimento2.getId()};
 		Long[] exameIds = {exame1.getId(), exame2.getId()};
 		
-		assertEquals(2, exameDao.findExamesRealizadosColaboradores(empresa.getId(),null, dataDoisMesesAtras, hoje, null, ResultadoExame.ANORMAL.toString(), null, exameIds, estabelecimentoIds).size());
+		assertEquals(2, exameDao.findExamesRealizadosCandidatosAndColaboradores(empresa.getId(),null, dataDoisMesesAtras, hoje, null, ResultadoExame.ANORMAL.toString(), null, exameIds, estabelecimentoIds,TipoPessoa.COLABORADOR.getChave()).size());
 	}
 	
 	public void testFindExamesRealizadosNaoInformado()
@@ -399,7 +400,7 @@ public class ExameDaoHibernateTest extends GenericDaoHibernateTest<Exame>
 		exameSolicitacaoExame2.setSolicitacaoExame(solicitacaoExame2);
 		exameSolicitacaoExameDao.save(exameSolicitacaoExame2);
 		
-		Collection<ExamesRealizadosRelatorio> examesRealizadosRelatorios = exameDao.findExamesRealizadosColaboradores(empresa.getId(), colaborador1.getNome(), dataDoisMesesAtras.getTime(), hoje, MotivoSolicitacaoExame.PERIODICO, null, null, null, null);
+		Collection<ExamesRealizadosRelatorio> examesRealizadosRelatorios = exameDao.findExamesRealizadosCandidatosAndColaboradores(empresa.getId(), colaborador1.getNome(), dataDoisMesesAtras.getTime(), hoje, MotivoSolicitacaoExame.PERIODICO, null, null, null, null,TipoPessoa.COLABORADOR.getChave());
 		
 		assertEquals(2, examesRealizadosRelatorios.size());
 	}
@@ -466,7 +467,7 @@ public class ExameDaoHibernateTest extends GenericDaoHibernateTest<Exame>
 		Long[] estabelecimentoIds = {estabelecimento1.getId(), estabelecimentoFora.getId()};
 		Long[] exameIds = {exame1.getId(), exame2.getId()};
 		
-		assertEquals(2, exameDao.findExamesRealizadosCandidatos(empresa.getId(),null, dataDoisMesesAtras, hoje, MotivoSolicitacaoExame.PERIODICO, ResultadoExame.ANORMAL.toString(), null, exameIds, estabelecimentoIds).size());
+		assertEquals(2, exameDao.findExamesRealizadosCandidatosAndColaboradores(empresa.getId(),null, dataDoisMesesAtras, hoje, MotivoSolicitacaoExame.PERIODICO, ResultadoExame.ANORMAL.toString(), null, exameIds, estabelecimentoIds,TipoPessoa.CANDIDATO.getChave()).size());
 	}
 
 	public void testFindExamesRealizadosRelatorioResumidoComFiltros()

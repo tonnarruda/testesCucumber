@@ -210,15 +210,6 @@ public class SolicitacaoExameManagerImpl extends GenericManagerImpl<SolicitacaoE
 		}
 	}
 	
-	/**
-	 * Transfere as solicitações de candidato para colaborador, no ato da contratação
-	 */
-	public void transferirCandidatoToColaborador(Long empresaId, Long candidatoId, Long colaboradorId)
-	{
-		if (empresaId != null && candidatoId != null && colaboradorId != null)
-			getDao().transferirCandidatoToColaborador(empresaId, candidatoId, colaboradorId);
-	}
-	
 	public void transferirColaboradorToCandidato(Long empresaId, Long candidatoId, Long colaboradorId)
 	{
 		if (empresaId != null && candidatoId != null && colaboradorId != null)

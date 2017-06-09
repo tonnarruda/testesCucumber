@@ -39,7 +39,6 @@ import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.sesmt.CatManager;
 import com.fortes.rh.business.sesmt.ColaboradorAfastamentoManager;
 import com.fortes.rh.business.sesmt.ComissaoManager;
-import com.fortes.rh.business.sesmt.SolicitacaoExameManager;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.geral.CamposExtras;
@@ -87,7 +86,6 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 	private Mock transactionManager;
 	private Mock candidatoManager;
 	private Mock quantidadeLimiteColaboradoresPorCargoManager;
-	private Mock solicitacaoExameManager;
 	private Mock colaboradorPeriodoExperienciaAvaliacaoManager;
 	private Mock acPessoalClientSistema;
 	private Mock faixaSalarialManager;
@@ -126,7 +124,6 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 		transactionManager = new Mock(PlatformTransactionManager.class);
 		candidatoManager = new Mock(CandidatoManager.class);
 		quantidadeLimiteColaboradoresPorCargoManager = new Mock(QuantidadeLimiteColaboradoresPorCargoManager.class);
-		solicitacaoExameManager = new Mock(SolicitacaoExameManager.class);
 		colaboradorPeriodoExperienciaAvaliacaoManager = new Mock(ColaboradorPeriodoExperienciaAvaliacaoManager.class);
 		acPessoalClientSistema = new Mock(AcPessoalClientSistema.class);
 		faixaSalarialManager = new Mock(FaixaSalarialManager.class);
@@ -161,7 +158,6 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 		action.setTransactionManager((PlatformTransactionManager) transactionManager.proxy());
 		action.setCandidatoManager((CandidatoManager) candidatoManager.proxy());
 		action.setQuantidadeLimiteColaboradoresPorCargoManager((QuantidadeLimiteColaboradoresPorCargoManager) quantidadeLimiteColaboradoresPorCargoManager.proxy());
-		action.setSolicitacaoExameManager((SolicitacaoExameManager) solicitacaoExameManager.proxy());
 		action.setColaboradorPeriodoExperienciaAvaliacaoManager((ColaboradorPeriodoExperienciaAvaliacaoManager) colaboradorPeriodoExperienciaAvaliacaoManager.proxy());
 		action.setAcPessoalClientSistema((AcPessoalClientSistema) acPessoalClientSistema.proxy());
 		action.setFaixaSalarialManager((FaixaSalarialManager) faixaSalarialManager.proxy());

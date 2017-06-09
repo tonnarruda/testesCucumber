@@ -27,12 +27,15 @@ public class ExamesRealizadosRelatorio
 	public ExamesRealizadosRelatorio() {
 	}
 	
-	public ExamesRealizadosRelatorio(Long exameId, String nome, Character tipoPessoa, String exameNome, Date realizacaoData, Long clinicaId, String clinicaNome, String exameResultado, String motivoSolicitacaoExame, Long estabelecimentoId, String estabelecimentoNome, String solicitacaoExameObservacao)
+	public ExamesRealizadosRelatorio(Long exameId, String nome, String tipoPessoa, String exameNome, Date realizacaoData, Long clinicaId, String clinicaNome, String exameResultado, String motivoSolicitacaoExame, Long estabelecimentoId, String estabelecimentoNome, String solicitacaoExameObservacao)
 	{
 		this.exameId = exameId;
 		this.clinicaId = clinicaId;
 		this.nome = nome;
-		this.tipo = tipoPessoa;
+		
+		if(tipoPessoa != null)
+			this.tipo = tipoPessoa.toCharArray()[0];
+		
 		this.exameNome = exameNome;
 		this.clinicaNome = StringUtils.isEmpty(clinicaNome) ? "(Sem clínica definida)" : clinicaNome.trim();
 		this.data = realizacaoData;

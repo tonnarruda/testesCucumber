@@ -88,14 +88,13 @@ public class ExameManagerTest extends MockObjectTestCase
     {
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
     	Collection<ExamesRealizadosRelatorio> colecao = new ArrayList<ExamesRealizadosRelatorio>();
-    	ExamesRealizadosRelatorio examesPrevistosRelatorio = new ExamesRealizadosRelatorio(1L, "do dedo", 'C', "Toque", new Date(), 1L, "Socorro", "Passou não", "problema", 1L, "estabelecimento", "observação");
+    	ExamesRealizadosRelatorio examesPrevistosRelatorio = new ExamesRealizadosRelatorio(1L, "do dedo", "C", "Toque", new Date(), 1L, "Socorro", "Passou não", "problema", 1L, "estabelecimento", "observação");
     	
     	colecao.add(examesPrevistosRelatorio);
     	
-    	exameDao.expects(once()).method("findExamesRealizadosColaboradores").will(returnValue(colecao));
-    	exameDao.expects(once()).method("findExamesRealizadosCandidatos").will(returnValue(colecao));
+    	exameDao.expects(once()).method("findExamesRealizadosCandidatosAndColaboradores").will(returnValue(colecao));
     	
-    	assertEquals(2, exameManager.findRelatorioExamesRealizados(empresa.getId(), null, new Date(), new Date(), null, null, null, null, null, TipoPessoa.TODOS.getChave()).size());
+    	assertEquals(1, exameManager.findRelatorioExamesRealizados(empresa.getId(), null, new Date(), new Date(), null, null, null, null, null, TipoPessoa.TODOS.getChave()).size());
     }
 
     public void testFindRelatorioExamesRealizadosResumido() throws ColecaoVaziaException
@@ -117,8 +116,7 @@ public class ExameManagerTest extends MockObjectTestCase
     {
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
 
-    	exameDao.expects(once()).method("findExamesRealizadosColaboradores").will(returnValue(new ArrayList<ExamesRealizadosRelatorio>()));
-    	exameDao.expects(once()).method("findExamesRealizadosCandidatos").will(returnValue(new ArrayList<ExamesRealizadosRelatorio>()));
+    	exameDao.expects(once()).method("findExamesRealizadosCandidatosAndColaboradores").will(returnValue(new ArrayList<ExamesRealizadosRelatorio>()));
     	
     	Exception exception = null;
 

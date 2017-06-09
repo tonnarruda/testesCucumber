@@ -180,32 +180,6 @@ public class SolicitacaoExameDaoHibernateTest extends GenericDaoHibernateTest<So
 
 	}
 
-	public void testTransferirCandidatoToColaborador()
-	{
-		Empresa empresa = EmpresaFactory.getEmpresa();
-		empresaDao.save(empresa);
-
-		Candidato candidato = CandidatoFactory.getCandidato();
-		candidatoDao.save(candidato);
-
-		SolicitacaoExame solicitacaoExame = SolicitacaoExameFactory.getEntity();
-		solicitacaoExame.setCandidato(candidato);
-		solicitacaoExame.setEmpresa(empresa);
-		solicitacaoExameDao.save(solicitacaoExame);
-
-		Colaborador colaboradorContratado = ColaboradorFactory.getEntity();
-		colaboradorContratado.setCandidato(candidato);
-		colaboradorDao.save(colaboradorContratado);
-
-		solicitacaoExameDao.transferirCandidatoToColaborador(empresa.getId(), candidato.getId(), colaboradorContratado.getId());
-
-		Collection<SolicitacaoExame> resultadoCandidato = solicitacaoExameDao.findByCandidatoOuColaborador(TipoPessoa.CANDIDATO, candidato.getId(), null);
-		Collection<SolicitacaoExame> resultadoColaborador = solicitacaoExameDao.findByCandidatoOuColaborador(TipoPessoa.COLABORADOR, colaboradorContratado.getId(), null);
-
-		assertEquals(0, resultadoCandidato.size());
-		assertEquals(1, resultadoColaborador.size());
-	}
-
 	public void testTransferirColaboradorToCandidato()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();

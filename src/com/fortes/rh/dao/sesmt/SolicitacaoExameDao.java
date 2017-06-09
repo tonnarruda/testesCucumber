@@ -19,7 +19,6 @@ public interface SolicitacaoExameDao extends GenericDao<SolicitacaoExame>
 	public Collection<SolicitacaoExame> findAllSelect(int page, int pagingSize, Long empresaId, Date dataIni, Date dataFim, TipoPessoa vinculo, String nomeBusca, String matriculaBusca, String motivo, Long[] exameIds, ResultadoExame resultadoExame);
 	public Collection<SolicitacaoExameRelatorio> findImprimirSolicitacaoExames(Long solicitacaoExameId);
 	public Collection<SolicitacaoExame> findByCandidatoOuColaborador(TipoPessoa vinculo, Long candidatoOuColaboradorId, String motivo);
-	void transferirCandidatoToColaborador(Long empresaId, Long candidatoId, Long colaboradorId);
 	void transferirColaboradorToCandidato(Long empresaId, Long candidatoId, Long colaboradorId);
 	public Collection<SolicitacaoExame> findAtendimentosMedicos(Date inicio, Date fim, String[] motivos, MedicoCoordenador medicoCoordenador, Long empresaId, boolean agruparPorMotivo, boolean ordenarPorNome, char situacao);
 	public SolicitacaoExame findByIdProjection(Long id);

@@ -120,13 +120,7 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 
 	public Collection<ExamesRealizadosRelatorio> findRelatorioExamesRealizados(Long empresaId, String nomeBusca, Date inicio, Date fim, String motivo, String exameResultado, Long clinicaAutorizadaId, Long[] examesIds, Long[] estabelecimentosIds, Character tipoPessoa) throws ColecaoVaziaException
 	{
-		Collection<ExamesRealizadosRelatorio> examesRealizados = new ArrayList<ExamesRealizadosRelatorio>();
-		
-		if (!tipoPessoa.equals(TipoPessoa.CANDIDATO.getChave()))
-			examesRealizados.addAll(getDao().findExamesRealizadosColaboradores(empresaId, nomeBusca, inicio, fim, motivo, exameResultado, clinicaAutorizadaId, examesIds, estabelecimentosIds));
-
-		if (!tipoPessoa.equals(TipoPessoa.COLABORADOR.getChave()))
-			examesRealizados.addAll(getDao().findExamesRealizadosCandidatos(empresaId, nomeBusca, inicio, fim, motivo, exameResultado, clinicaAutorizadaId, examesIds, estabelecimentosIds));
+		Collection<ExamesRealizadosRelatorio> examesRealizados = getDao().findExamesRealizadosCandidatosAndColaboradores(empresaId, nomeBusca, inicio, fim, motivo, exameResultado, clinicaAutorizadaId, examesIds, estabelecimentosIds, tipoPessoa);
 		
 		if (examesRealizados == null || examesRealizados.isEmpty())
 			throw new ColecaoVaziaException("Não existem exames realizados para os filtros informados.");

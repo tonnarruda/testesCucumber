@@ -34,7 +34,6 @@
 		var examesAsoPadrao = ${action.getExameAsosJson()};
 		const COLABORADOR = 'C';
 		
-		
 		$(function() {
 			<#if primeiraExecucao && vinculo?exists && (vinculo == "COLABORADOR" || vinculo == 'TODOS')>
 				$('#examesPara').val('C');
@@ -57,11 +56,6 @@
 			
 			<#if !edicao && !primeiraExecucao>
 				findProxOrdem();
-				validaDatasColaborador();
-			</#if>
-			<#if edicao>
-				validaDatasColaborador();
-				
 			</#if>
 			
 			$('#observacaoTooltipHelp').qtip({content: 'A observação inserida será apresentada ao "Imprimir a Solicitação de Exames".'});
@@ -70,78 +64,57 @@
 		function findProxOrdem()
 		{
 			var data = $('#data').val();
-			
 			SolicitacaoExameDWR.findProximaOrdem( data, function(ordem) { $('#ordem').val(ordem) } );
 		}
 		
-		
-		
-		
-	function verificaDataSolicitacaoMenorQueDataAdmissao(colaboradorId,data){
-    
-    	DWREngine.setAsync(false);
-    
-    	var flag= false;
-    
-	            ColaboradorDWR.getColaboradorById(colaboradorId,{
-	                callback : function(colaborador)
-	                {
-	                    
+		function verificaDataSolicitacaoMenorQueDataAdmissao(){
+	    	DWREngine.setAsync(false);
+            var retorno = false;
+            var data = $('#data').val();
+            
+            if(data){
+	            ColaboradorDWR.getColaboradorById($('#colaboradorId').val(),{
+	                callback : function(colaborador){
 	                    var partesDataAdmissao  =colaborador.dataAdmissaoFormatada.split('/');
 						var dataAdmissao = new Date(partesDataAdmissao[2],partesDataAdmissao[1]-1,partesDataAdmissao[0]);
 	                    
 	                    var partesDataSolicitacao  = data.split('/');
 						var dataSolicitacao = new Date(partesDataSolicitacao[2],partesDataSolicitacao[1]-1,partesDataSolicitacao[0]);
 	                    
-	                    if(colaborador.dataAdmissaoFormatada &&  dataSolicitacao.getTime() < dataAdmissao.getTime()){
-	                        DWREngine.setAsync(true);
-	                        
+	                    if(colaborador.dataAdmissaoFormatada &&  dataSolicitacao.getTime() < dataAdmissao.getTime())
 	                        jAlert("Data solicitação não pode ser menor que a data de admissão. \n Data admissão:  " + colaborador.dataAdmissaoFormatada);
-	                    	flag= false;
-	                    	
-	                    	$('#flagMsgDataAdmissao').val(flag);
-	                    }
-	                    else{
-	                        flag= true;
-	                        $('#flagMsgDataAdmissao').val(flag);
-	                    }
-	                    return flag;
-	                },
-	                errorHandler : function(e){
-	                    alert(e); 
-	                    }
+	                    else
+	                        retorno = true;
+	                }
 	            });
-	            
-    	return flag;
-} 
-		
-		
+	        }
+            
+            return retorno;
+		} 
 	
-	function validaDatasColaborador() {
-		    var data = $('#data').val();
-		    var colaboradorId = $('#colaboradorId').val();
-  
-		    if ($('#examesPara').val() === COLABORADOR) {
-
-		        if (data) {
-		        
-		        return	verificaDataSolicitacaoMenorQueDataAdmissao(colaboradorId,data);
-		        }
-
-		    }
-				return false;
+		function validaDatasColaborador() {
+		    <#if edicao>
+	        	<#if solicitacaoExame.colaborador?exists && solicitacaoExame.colaborador.id?exists>
+	        		return verificaDataSolicitacaoMenorQueDataAdmissao();
+	        	<#else>
+	        		return true;
+	        	</#if>
+			<#else>
+				if($('#examesPara').val() == COLABORADOR)
+		        	return verificaDataSolicitacaoMenorQueDataAdmissao();
+		        else
+					return true;
+			</#if>
 		}
 		
 		function filtrarOpcao()
 		{
 			value = document.getElementById('examesPara').value;
-			if (value == 'A')
-			{
+			
+			if (value == 'A'){
 				exibe('divCandidato');
 				oculta('divColaborador');
-			}
-			else if (value == 'C')
-			{
+			}else if (value == 'C')	{
 				exibe('divColaborador');
 				oculta('divCandidato');
 			}
@@ -156,13 +129,7 @@
 		{
 			document.getElementById(id_da_div).style.display = '';
 		}
-	
-		function validaOrdem()
-		{
-			var data = $('#data').val();
-			SolicitacaoExameDWR.findProximaOrdem(retornoValidaOrdem, data );
-		}
-	
+
 		function retornoValidaOrdem(proximaOrdem)
 		{
 			var ordemAtual = $('#ordem').val();
@@ -181,23 +148,13 @@
 			}
 		}
 	
-		function mudaAction(opcao)
-		{
-			if (opcao == 'gravar'){
-				if(validaDatasColaborador()){
-					validaOrdem();
-				}else{
-					return false;
-				}
-			}else{
-				document.form.action = "imprimirSolicitacaoExames.action";
-				validaform();
-			}
+		function submeter(){
+			if(validaDatasColaborador())
+				SolicitacaoExameDWR.findProximaOrdem(retornoValidaOrdem, $('#data').val() );
 		}
 		
 		function validaform(){
-
-			return   validaFormulario('form', new Array('data','ordem','motivoExame','medico'), new Array('data'));
+			return validaFormulario('form', new Array('data','ordem','motivoExame','medico'), new Array('data'));
 		}
 
 		function desabilitaPeriodicidade(value,checked)
@@ -355,7 +312,6 @@
 			<@ww.textfield label="Matrícula" name="colaborador.matricula" id="matriculaBusca" liClass="liLeft" cssStyle="width: 60px;"/>
 			<@ww.textfield label="CPF" name="colaborador.pessoal.cpf" id="cpfColaborador" cssClass="mascaraCpf"/>
 			<@ww.hidden id="colaboradorId" name="colaborador.id" />
-			<@ww.hidden id="flagMsgDataAdmissao" value="false" />
 		</span>
 		<@ww.hidden id="nomeBusca" name="nomeBusca" />
 		<@ww.hidden id="vinculo" name="vinculo" />
@@ -498,10 +454,7 @@
 	
 		<#if (listaExames?exists && listaExames?size > 0)>
 			<div class="buttonGroup">
-				<button  onclick="return mudaAction('gravar');" class="btnGravar"> </button>
-				<#-- TODO ver solução para gravar/visualizar. problemas no Inserir (gravando várias vezes)  
-				<button onclick="return mudaAction('gravarVisualizar');" class="btnGravarVisualizar"> </button>
-				-->
+				<button  onclick="submeter();" class="btnGravar"> </button>
 				<#if solicitacaoExame.id?exists>
 					<button onclick="document.forms[0].action='list.action';document.forms[0].submit();" class="btnVoltar" accesskey="V"> </button>
 				</#if>

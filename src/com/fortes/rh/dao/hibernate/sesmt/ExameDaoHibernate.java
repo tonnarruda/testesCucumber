@@ -269,23 +269,20 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 		return query.list();
 	}
 	
-	public Collection<ExamesRealizadosRelatorio> findExamesRealizadosColaboradores(Long empresaId, String nomeBusca, Date inicio, Date fim, String solicitacaoMotivo, String exameResultado, Long clinicaAutorizadaId, Long[] examesIds, Long[] estabelecimentosIds)  
+	public Collection<ExamesRealizadosRelatorio> findExamesRealizadosCandidatosAndColaboradores(Long empresaId, String nomeBusca, Date inicio, Date fim, String solicitacaoMotivo, String exameResultado, Long clinicaAutorizadaId, Long[] examesIds, Long[] estabelecimentosIds, Character tipoPessoa)  
 	{
-		Query query = montaConsultaDeExamesRealizados(empresaId, nomeBusca, inicio, fim, solicitacaoMotivo, exameResultado, clinicaAutorizadaId, examesIds, estabelecimentosIds, new Colaborador());
-		
-		return query.list();
-	}
+		StringBuilder hql = new StringBuilder("select ");
 
-	public Collection<ExamesRealizadosRelatorio> findExamesRealizadosCandidatos(Long empresaId, String nomeBusca, Date inicio, Date fim, String solicitacaoMotivo, String exameResultado, Long clinicaAutorizadaId, Long[] examesIds, Long[] estabelecimentosIds)  
-	{
-		Query query = montaConsultaDeExamesRealizados(empresaId, nomeBusca, inicio, fim, solicitacaoMotivo, exameResultado, clinicaAutorizadaId, examesIds, estabelecimentosIds, new Candidato());
+		Examinado examinado = new Colaborador();
+		if (tipoPessoa.equals(TipoPessoa.CANDIDATO.getChave())){
+			examinado = new Candidato();
+			hql.append("distinct ");
+		}
 		
-		return query.list();
-	}
-	
-	private Query montaConsultaDeExamesRealizados(Long empresaId, String nomeBusca, Date inicio, Date fim, String solicitacaoMotivo, String exameResultado, Long clinicaAutorizadaId, Long[] examesIds, Long[] estabelecimentosIds, Examinado examinado)
-	{
-		StringBuilder hql = new StringBuilder("select new com.fortes.rh.model.sesmt.relatorio.ExamesRealizadosRelatorio(e.id,examinado.nome,cast(:tipoPessoa as char),e.nome,se.data,clinica.id,clinica.nome,re.resultado,se.motivo,es.id,es.nome, re.observacao) ");
+		hql.append("new com.fortes.rh.model.sesmt.relatorio.ExamesRealizadosRelatorio(e.id,");
+		examinado.setSelect(hql);
+		hql.append("(case when se.colaborador.id is not null then 'C' else 'A' end),");
+		hql.append("e.nome,se.data,clinica.id,clinica.nome,re.resultado,se.motivo,es.id,es.nome, re.observacao) ");
 		hql.append("from ExameSolicitacaoExame ese ");
 		hql.append("left join ese.realizacaoExame re ");
 		hql.append("left join ese.clinicaAutorizada clinica ");
@@ -320,13 +317,15 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 				hql.append("and re.resultado = :resultado ");
 		}
 		
-		examinado.setWhereMaxData(hql);
+		if (!tipoPessoa.equals(TipoPessoa.TODOS.getChave()))
+			examinado.setWhereMaxData(hql);
 	
 		hql.append("order by e.nome, clinica.id, se.data ");
 		
 		Query query = getSession().createQuery(hql.toString());
 		
-		examinado.setParametros(query);
+		if (!tipoPessoa.equals(TipoPessoa.TODOS.getChave()))
+			examinado.setParametros(query);
 		
 		if (isNotBlank(nomeBusca))
 			query.setString("nome", "%" + nomeBusca.toLowerCase() + "%");
@@ -350,7 +349,7 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 		if (StringUtils.isNotBlank(exameResultado))
 			query.setString("resultado", exameResultado);
 		
-		return query;
+		return query.list();
 	}
 	
 	private void montaQuery(Long empresaId, Exame exame, Criteria criteria) {
@@ -509,46 +508,59 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 	 */
 	private interface Examinado {
 		public void setJoins(StringBuilder hql);
+		public void setSelect(StringBuilder hql);
 		public void setWhereMaxData(StringBuilder hql);
 		public void setParametros(Query query);
 	}
 	
 	private class Colaborador implements Examinado{
 		
+		public void setSelect(StringBuilder hql) {
+			hql.append("(case when examinado.nome is not null then examinado.nome else cand.nome end),");
+		}
+		
 		public void setJoins(StringBuilder hql)
 		{
-			hql.append("inner join se.colaborador examinado ");
+			hql.append("left join se.colaborador examinado ");
 			hql.append("left join examinado.historicoColaboradors as hc ");
 			hql.append("left join hc.estabelecimento as es ");
+			hql.append("left join se.candidato as cand ");
 		}
 
 		public void setWhereMaxData(StringBuilder hql)
 		{
 			hql.append("and ( ");
 			hql.append("	  ( se.motivo = :motivoSolicitacaoExame ");
-			hql.append("		and hc.data = (select min(hc2.data) ");
+			hql.append("		and (");
+			hql.append("			(se.candidato.id is not null and cand.contratado = true) ");
+			hql.append("			or hc.data = (select min(hc2.data) ");
 			hql.append("	        	from HistoricoColaborador as hc2 ");
 			hql.append("	   			where hc2.status = :status ");
 			hql.append("	   			and hc2.colaborador.id = examinado.id ) ");
-			hql.append("	  ) ");
-			hql.append("	  or ( se.motivo != :motivoSolicitacaoExame ");
+			hql.append("	 		) ");
+			hql.append("	  ) or");
+			hql.append("	  ( se.motivo != :motivoSolicitacaoExame ");
 			hql.append("		   and hc.data = ( select max(hc2.data) ");
 			hql.append("	        	from HistoricoColaborador as hc2 ");
 			hql.append("	   			where hc2.data <= re.data and hc2.status = :status ");
 			hql.append("	   			and hc2.colaborador.id = examinado.id )");
-			hql.append("	  	 ) ");
+			hql.append("	  ) ");
 			hql.append("	) ");
 		}
 
 		public void setParametros(Query query)
 		{
-			query.setCharacter("tipoPessoa", TipoPessoa.COLABORADOR.getChave());
 			query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 			query.setString("motivoSolicitacaoExame", MotivoSolicitacaoExame.ADMISSIONAL);
 		}
+
 	}
 	
 	private class Candidato implements Examinado{
+		
+		public void setSelect(StringBuilder hql) {
+			hql.append("examinado.nome,");
+		}
 		
 		public void setJoins(StringBuilder hql)
 		{
@@ -570,7 +582,6 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 
 		public void setParametros(Query query)
 		{
-			query.setCharacter("tipoPessoa", TipoPessoa.CANDIDATO.getChave());			
 		}
 	}
 }

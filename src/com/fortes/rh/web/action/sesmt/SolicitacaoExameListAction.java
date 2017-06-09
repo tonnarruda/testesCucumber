@@ -44,7 +44,6 @@ public class SolicitacaoExameListAction extends MyActionSupportList
 	private Date dataIni;
 	private Date dataFim;
 	private String vinculo = "TODOS";
-	//private TipoPessoa vinculo = TipoPessoa.TODOS;
 	private String nomeBusca;
 	private String matriculaBusca;
 	private String motivo = "";
