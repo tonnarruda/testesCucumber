@@ -753,7 +753,7 @@ public class ConfiguracaoNivelCompetenciaManagerTest
 		
 		when(configuracaoNivelCompetenciaDao.findByAvaliacaoDesempenhoAndAvaliado(1L, colaborador.getId(), agruparPorCargo)).thenReturn(configuracaoNivelCompetencias);
 		when(nivelCompetenciaManager.getOrdemMaximaByAavaliacaoDesempenhoAndAvaliado(1L, colaborador.getId())).thenReturn(new Integer(5));
-		when(nivelCompetenciaManager.findNiveisCompetenciaByAvDesempenho(1L)).thenReturn(niveisCompetencia);
+		when(nivelCompetenciaManager.findNiveisCompetenciaByAvDesempenho(1L,1l)).thenReturn(niveisCompetencia);
 		
 		return colaborador;
 	}

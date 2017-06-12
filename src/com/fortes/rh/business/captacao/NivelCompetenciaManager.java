@@ -29,5 +29,5 @@ public interface NivelCompetenciaManager extends GenericManager<NivelCompetencia
 
 	Integer getOrdemMaximaByAavaliacaoDesempenhoAndAvaliado(Long avaliacaoDesempenhoId, Long avaliadoId);
 
-	Collection<NivelCompetencia> findNiveisCompetenciaByAvDesempenho(Long avaliacaoDesempenhoId);
+	Collection<NivelCompetencia> findNiveisCompetenciaByAvDesempenho(Long avaliacaoDesempenhoId, Long avaliadoId);
 }

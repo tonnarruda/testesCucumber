@@ -40,9 +40,9 @@ public class NivelCompetenciaDWR
 		return configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(faixaSalarialId, DateUtil.criarDataDiaMesAno(data), configuracaoNivelCompetenciaFaixaSalarial.getId(), null, null);
 	}
 	
-	public Collection<NivelCompetencia> findNiveisCompetenciaByAvDesempenho(Long avaliacaoDesempenhoId)
+	public Collection<NivelCompetencia> findNiveisCompetenciaByAvDesempenho(Long avaliacaoDesempenhoId, Long avaliadoId)
 	{
-		return nivelCompetenciaManager.findNiveisCompetenciaByAvDesempenho(avaliacaoDesempenhoId);
+		return nivelCompetenciaManager.findNiveisCompetenciaByAvDesempenho(avaliacaoDesempenhoId,avaliadoId);
 	}
 	
 	public boolean existePercentual(Long nivelCompetenciaId, Long empresaId, Double percentual)

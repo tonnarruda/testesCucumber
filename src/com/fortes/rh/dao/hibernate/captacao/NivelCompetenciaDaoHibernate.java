@@ -208,7 +208,7 @@ public class NivelCompetenciaDaoHibernate extends GenericDaoHibernate<NivelCompe
 		return (int) (result == null ? 0 : result);
 	}
 
-	public Collection<NivelCompetencia> findNiveisCompetenciaByAvDesempenho(Long avaliacaoDesempenhoId) {
+	public Collection<NivelCompetencia> findNiveisCompetenciaByAvDesempenho(Long avaliacaoDesempenhoId, Long avaliadoId) {
 		Criteria criteria = getSession().createCriteria(ConfiguracaoNivelCompetenciaColaborador.class, "cncc");
 		criteria.createCriteria("cncc.colaboradorQuestionario", "cq", Criteria.INNER_JOIN);
 		criteria.createCriteria("cncc.configuracaoNivelCompetenciaFaixaSalarial", "cncf", Criteria.INNER_JOIN);
@@ -223,6 +223,8 @@ public class NivelCompetenciaDaoHibernate extends GenericDaoHibernate<NivelCompe
 		criteria.setProjection(Projections.distinct(p));
 		
 		criteria.add(Expression.eq("cq.avaliacaoDesempenho.id", avaliacaoDesempenhoId));
+		criteria.add(Expression.eq("cq.colaborador.id", avaliadoId));
+
 		criteria.addOrder(Order.asc("chn.ordem"));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(NivelCompetencia.class));

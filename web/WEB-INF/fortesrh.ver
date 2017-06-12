@@ -3,6 +3,7 @@
 	<Versao id="1.1.18*.21*" db="" data="**/**/2017">
 		<Item visivel="S" motivo="P17050000137"><![CDATA[R&S > Cadastros > Candidatos > Triagem> Triagem simples: Ajuste de inconsitências ao filtrar por escolaridade mínima.]]></Item>
 		<Item visivel="S" motivo="P17050000176"><![CDATA[C&S > Relatórios > Promoções: Ajuste da inconsitência ao considerar promoções para colaboradores desligados no período informado.]]></Item>
+		<Item visivel="S" motivo="P17050000284"><![CDATA[Aval. Desempenho > Relatórios > Análise de Desempenho das Competências do Colaborador: Ajuste de inconsistência ao apresentar as informações das competências da "Nota mínima considerada em 'Média Geral das Competências'".]]></Item>
 		<Item visivel="S" motivo="S16100000057"><![CDATA[T&D > Relatórios > Lista de Presença: Possibilidade de selecionar até duas colunas extras.]]></Item>
 		<Item visivel="S" motivo="P17040000264"><![CDATA[SESMT > Movimentações > Solicitações/Atendimentos Médicos : Correção ortográfica no registro de exame que possui a palavra Anaminese para Anamnese.]]></Item>
 		<Item visivel="S" motivo="P17010000142"><![CDATA[SESMT > Movimentações > Solicitações/Atendimentos Médicos > Imprimir ASO: Nova opção para gerar o relatório na NR35.]]></Item>

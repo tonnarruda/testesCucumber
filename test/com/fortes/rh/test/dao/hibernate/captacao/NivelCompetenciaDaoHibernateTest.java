@@ -1745,8 +1745,12 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity();
 		avaliacaoDesempenhoDao.save(avaliacaoDesempenho);
 		
+		Colaborador colaboradorAvaliado = ColaboradorFactory.getEntity("João");
+		colaboradorDao.save(colaboradorAvaliado);
+		
 		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
 		colaboradorQuestionario.setAvaliacaoDesempenho(avaliacaoDesempenho);
+		colaboradorQuestionario.setColaborador(colaboradorAvaliado);
 		colaboradorQuestionarioDao.save(colaboradorQuestionario);
 		
 		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = ConfiguracaoNivelCompetenciaFaixaSalarialFactory.getEntity(null, null, DateUtil.criarDataMesAno(1, 1, 2016), nivelCompetenciaHistorico);
@@ -1756,7 +1760,7 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		configuracaoNivelCompetenciaColaborador.setColaboradorQuestionario(colaboradorQuestionario);
 		configuracaoNivelCompetenciaColaboradorDao.save(configuracaoNivelCompetenciaColaborador);
 
-		assertEquals(3, nivelCompetenciaDao.findNiveisCompetenciaByAvDesempenho(avaliacaoDesempenho.getId()).size());
+		assertEquals(3, nivelCompetenciaDao.findNiveisCompetenciaByAvDesempenho(avaliacaoDesempenho.getId(), colaboradorAvaliado.getId()).size());
 	}
 	
 	public GenericDao<NivelCompetencia> getGenericDao()
