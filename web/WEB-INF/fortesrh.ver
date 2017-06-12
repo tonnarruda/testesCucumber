@@ -5,6 +5,7 @@
 		<Item visivel="S" motivo="P17050000176"><![CDATA[C&S > Relatórios > Promoções: Ajuste da inconsitência ao considerar promoções para colaboradores desligados no período informado.]]></Item>
 		<Item visivel="S" motivo="P17050000284"><![CDATA[Aval. Desempenho > Relatórios > Análise de Desempenho das Competências do Colaborador: Ajuste de inconsistência ao apresentar as informações das competências da "Nota mínima considerada em 'Média Geral das Competências'".]]></Item>
 		<Item visivel="S" motivo="S16100000057"><![CDATA[T&D > Relatórios > Lista de Presença: Possibilidade de selecionar até duas colunas extras.]]></Item>
+		<Item visivel="S" motivo="P17060000073"><![CDATA[Info. Funcionais > Relatórios > Turnover (rotatividade) - Ajuste na inconsistência ao exportar para Excel.]]></Item>
 		<Item visivel="S" motivo="P17040000264"><![CDATA[SESMT > Movimentações > Solicitações/Atendimentos Médicos : Correção ortográfica no registro de exame que possui a palavra Anaminese para Anamnese.]]></Item>
 		<Item visivel="S" motivo="P17010000142"><![CDATA[SESMT > Movimentações > Solicitações/Atendimentos Médicos > Imprimir ASO: Nova opção para gerar o relatório na NR35.]]></Item>
 		<Item visivel="S" motivo="P17050000307"><![CDATA[SESMT > Movimentações > Solicitações/Atendimentos Médicos > Inserir/Editar: Ajuste de inconsistência ao tentar inserir um exame com data inferior a data de admissão do colaborador.]]></Item>
