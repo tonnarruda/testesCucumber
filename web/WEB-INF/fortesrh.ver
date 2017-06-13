@@ -10,7 +10,7 @@
 		<Item visivel="S" motivo="P17010000142"><![CDATA[SESMT > Movimentações > Solicitações/Atendimentos Médicos > Imprimir ASO: Nova opção para gerar o relatório na NR35.]]></Item>
 		<Item visivel="S" motivo="P17050000307"><![CDATA[SESMT > Movimentações > Solicitações/Atendimentos Médicos > Inserir/Editar: Ajuste de inconsistência ao tentar inserir um exame com data inferior a data de admissão do colaborador.]]></Item>
 		<Item visivel="S" motivo="S16120000293"><![CDATA[SESMT > Movimentações > Afastamentos > Inserir/Editar: Nova informação do tipo de registro do profissional da saúde.]]></Item>
-		<Item visivel="S" motivo="S16120000292"><![CDATA[SESMT > Relatórios > Afastamentos > Imprimir/Exportar: Nova informação do tipo de registro do profissional da saúde.]]></Item>
+		<Item visivel="S" motivo="S16120000292"><![CDATA[SESMT > Relatórios > Afastamentos > Afastamentos > Imprimir/Exportar: Nova informação do tipo de registro do profissional da saúde.]]></Item>
 		<Item visivel="S" motivo="S17040000104"><![CDATA[Utilitários > Importar Cadastros: Permitir importar cargos/faixas salariais que não possuem históricos.]]></Item>
 		<Item visivel="N" motivo="P17050000142"><![CDATA[Sistema: Ajuste na integridade na busca dos dados do banco de dados em relação a data de admissão do colaborador.]]></Item>
 	</Versao>
