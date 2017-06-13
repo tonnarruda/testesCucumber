@@ -1014,41 +1014,36 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	}
 	
 	private void enviaAvisoDeAfastamentoPorEmail(ColaboradorAfastamento colaboradorAfastamento, Empresa empresa){
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.CADASTRAR_AFASTAMENTO.getId(), empresa.getId());
+		if(gerenciadorComunicacaos.isEmpty())
+			return;
+		
 		String subject = "[RH] - Afastamento do colaborador " + colaboradorAfastamento.getColaborador().getNomeMaisNomeComercial();
+		StringBuilder body = getMensagemDeAfastamento(colaboradorAfastamento, TipoMensagemAfastamento.EMAIL);
+
+		enviaEmailsUsuarios(gerenciadorComunicacaos, empresa, subject, body.toString());
+	}
+
+	private StringBuilder getMensagemDeAfastamento(ColaboradorAfastamento colaboradorAfastamento, TipoMensagemAfastamento tipoMensagemAfastamento) {
 		StringBuilder  body = new StringBuilder();
 		body.append("Afastamento do colaborador " + colaboradorAfastamento.getColaborador().getNomeMaisNomeComercial());
-		body.append("<br><br>");
+		body.append(tipoMensagemAfastamento.getQuebraDeLinha() + tipoMensagemAfastamento.getQuebraDeLinha());
 		body.append("Motivo: " + colaboradorAfastamento.getAfastamento().getDescricao());
-		body.append("<br>");
+		body.append(tipoMensagemAfastamento.getQuebraDeLinha());
 		body.append("Período: " + colaboradorAfastamento.getPeriodoFormatado());
-		body.append("<br>"); 
+		body.append(tipoMensagemAfastamento.getQuebraDeLinha()); 
 		body.append("CID: " + colaboradorAfastamento.getCid() + " - " + cidManager.findDescricaoByCodigo(colaboradorAfastamento.getCid()));
-		body.append("<br>"); 
-		body.append("Médico: " + colaboradorAfastamento.getMedicoNome());
-		body.append("<br>"); 
-		body.append("CRM: " + colaboradorAfastamento.getMedicoCrm());
-		body.append("<br>"); 
+		body.append(tipoMensagemAfastamento.getQuebraDeLinha());
+		body.append("Profissional da Saúde: " + colaboradorAfastamento.getNomeProfissionalDaSaude());
+		body.append(tipoMensagemAfastamento.getQuebraDeLinha());
+		body.append(colaboradorAfastamento.getTipoRegistroDeSaudeMaisRegistro());
+		body.append(tipoMensagemAfastamento.getQuebraDeLinha());
 		body.append("Observações: " + colaboradorAfastamento.getObservacao());
-
-		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.CADASTRAR_AFASTAMENTO.getId(), empresa.getId());
-		enviaEmailsUsuarios(gerenciadorComunicacaos, empresa, subject, body.toString());
+		return body;
 	}
 	
 	private void enviaAvisoDeAfastamentoPorMensagem(ColaboradorAfastamento colaboradorAfastamento, Empresa empresa){
-		StringBuilder  mensagem = new StringBuilder();
-		mensagem.append("Foi inserido um afastamento para o colaborador " + colaboradorAfastamento.getColaborador().getNomeMaisNomeComercial());
-		mensagem.append("\n\n");
-		mensagem.append("Motivo: " + colaboradorAfastamento.getAfastamento().getDescricao());
-		mensagem.append("\n");
-		mensagem.append("Período: " + colaboradorAfastamento.getPeriodoFormatado());
-		mensagem.append("\n"); 
-		mensagem.append("CID: " + colaboradorAfastamento.getCid() + " - " + cidManager.findDescricaoByCodigo(colaboradorAfastamento.getCid()));
-		mensagem.append("\n"); 
-		mensagem.append("Médico: " + colaboradorAfastamento.getMedicoNome());
-		mensagem.append("\n"); 
-		mensagem.append("CRM: " + colaboradorAfastamento.getMedicoCrm());
-		mensagem.append("\n"); 
-		mensagem.append("Observações: " + colaboradorAfastamento.getObservacao());
+		StringBuilder mensagem = getMensagemDeAfastamento(colaboradorAfastamento, TipoMensagemAfastamento.MENSAGEM);
 		
 		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.CADASTRAR_AFASTAMENTO.getId(), empresa.getId());
 		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
@@ -2174,6 +2169,21 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		return subject + "\n\n" + body.toString().replaceAll("<br>", "\n");
 	}
 
+	enum TipoMensagemAfastamento{
+		EMAIL("<br />"),
+		MENSAGEM("\n");
+		
+		private String quebraDeLinha;
+		
+		public String getQuebraDeLinha() {
+			return quebraDeLinha;
+		}
+
+		private TipoMensagemAfastamento(String quebraDeLinha) {
+			this.quebraDeLinha = quebraDeLinha;
+		}
+	}
+	
 	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager) {
 		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
 	}

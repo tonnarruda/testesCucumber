@@ -66,12 +66,6 @@ public class ColaboradorAfastamentoManagerTest extends MockObjectTestCaseManager
         Mockit.redefineMethods(ImportacaoCSVUtil.class, MockImportacaoCSVUtil.class);
     }
 
-	public void testGetCount()
-	{
-		colaboradorAfastamentoDao.expects(once()).method("getCount").will(returnValue(1));
-		assertEquals(Integer.valueOf(1),manager.getCount(1L, "", "", estabelecimentoCheck, colaboradorAfastamento));
-	}
-
 	public void testFindAllSelect()
 	{
 		colaboradorAfastamentoDao.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<ColaboradorAfastamento>()));
@@ -227,17 +221,17 @@ public class ColaboradorAfastamentoManagerTest extends MockObjectTestCaseManager
 		ColaboradorAfastamento colaboradorAfastamento1 = new ColaboradorAfastamento();
 		colaboradorAfastamento1.setAfastamentoDescricao("Licença paternidade");
 		colaboradorAfastamento1.setColaboradorCodigoAC("000391");
-		colaboradorAfastamento1.setMedicoCrm("Juscelino Silva");
+		colaboradorAfastamento1.setNomeProfissionalDaSaude("Juscelino Silva");
 		
 		ColaboradorAfastamento colaboradorAfastamento2 = new ColaboradorAfastamento();
 		colaboradorAfastamento2.setAfastamentoDescricao("Fratura");
 		colaboradorAfastamento2.setColaboradorCodigoAC("000010");
-		colaboradorAfastamento2.setMedicoCrm("Roberta Braga");
+		colaboradorAfastamento2.setNomeProfissionalDaSaude("Roberta Braga");
 		
 		ColaboradorAfastamento colaboradorAfastamento3 = new ColaboradorAfastamento();
 		colaboradorAfastamento3.setAfastamentoDescricao("babau");
 		colaboradorAfastamento3.setColaboradorCodigoAC("000999");
-		colaboradorAfastamento3.setMedicoCrm("Mariola");
+		colaboradorAfastamento3.setNomeProfissionalDaSaude("Mariola");
 		
 		Collection<ColaboradorAfastamento> colaboradorAfastamentos = Arrays.asList(colaboradorAfastamento1,colaboradorAfastamento2, colaboradorAfastamento3);
 		MockImportacaoCSVUtil.afastamentos = colaboradorAfastamentos;

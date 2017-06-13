@@ -159,6 +159,7 @@ import com.fortes.rh.test.business.sesmt.CandidatoEleicaoManagerTest;
 import com.fortes.rh.test.business.sesmt.CatManagerTest;
 import com.fortes.rh.test.business.sesmt.ClinicaAutorizadaManagerTest;
 import com.fortes.rh.test.business.sesmt.ColaboradorAfastamentoManagerTest;
+import com.fortes.rh.test.business.sesmt.ColaboradorAfastamentoManagerTest_JUnit4;
 import com.fortes.rh.test.business.sesmt.ComissaoEleicaoManagerTest;
 import com.fortes.rh.test.business.sesmt.ComissaoManagerTest;
 import com.fortes.rh.test.business.sesmt.ComissaoMembroManagerTest;
@@ -352,7 +353,7 @@ import com.fortes.rh.test.dao.hibernate.sesmt.AtividadeSegurancaPcmatDaoHibernat
 import com.fortes.rh.test.dao.hibernate.sesmt.CandidatoEleicaoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.CatDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.ClinicaAutorizadaDaoHibernateTest;
-import com.fortes.rh.test.dao.hibernate.sesmt.ColaboradorAfastamentoDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.sesmt.ColaboradorAfastamentoDaoHibernateTest_JUnit4;
 import com.fortes.rh.test.dao.hibernate.sesmt.ComissaoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.ComissaoEleicaoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.ComissaoMembroDaoHibernateTest;
@@ -1346,7 +1347,8 @@ import com.fortes.test.web.tags.LinkTagTest;
 	AfastamentoEditActionTest.class,
 	AfastamentoDWRTest.class,
 
-	ColaboradorAfastamentoDaoHibernateTest.class,
+	ColaboradorAfastamentoDaoHibernateTest_JUnit4.class,
+	ColaboradorAfastamentoManagerTest_JUnit4.class,
 	ColaboradorAfastamentoManagerTest.class,
 	ColaboradorAfastamentoEditActionTest.class,
 	ColaboradorAfastamentoListActionTest.class,

@@ -62,7 +62,7 @@ public class ColaboradorAfastamentoDaoHibernate extends GenericDaoHibernate<Cola
 		if (isCount)
 			hql = new StringBuilder("select count(ca.id) ");
 		else
-			hql = new StringBuilder("select new ColaboradorAfastamento(ca.id, ca.inicio, ca.fim, a.descricao, co.nome, co.matricula, es.nome, ao.id, upper(trim(coalesce(ca.cid,''))), ca.medicoNome, co.dataAdmissao, cast('" + DateUtil.formataDiaMesAno(ultimaData) + "' as text) ) ");
+			hql = new StringBuilder("select new ColaboradorAfastamento(ca.id, ca.inicio, ca.fim, a.descricao, co.nome, co.matricula, es.nome, ao.id, upper(trim(coalesce(ca.cid,''))), ca.nomeProfissionalDaSaude, co.dataAdmissao, cast('" + DateUtil.formataDiaMesAno(ultimaData) + "' as text), ca.tipoRegistroDeSaude, ca.numeroDoRegistroDeSaude ) ");
 
 		hql.append("from ColaboradorAfastamento ca ");
 		hql.append("join ca.afastamento a ");
@@ -171,8 +171,9 @@ public class ColaboradorAfastamentoDaoHibernate extends GenericDaoHibernate<Cola
 		p.add(Projections.property("ca.id"), "id");
 		p.add(Projections.property("ca.inicio"), "inicio");
 		p.add(Projections.property("ca.fim"), "fim");
-		p.add(Projections.property("ca.medicoNome"), "medicoNome");
-		p.add(Projections.property("ca.medicoCrm"), "medicoCrm");
+		p.add(Projections.property("ca.nomeProfissionalDaSaude"), "nomeProfissionalDaSaude");
+		p.add(Projections.property("ca.numeroDoRegistroDeSaude"), "numeroDoRegistroDeSaude");
+		p.add(Projections.property("ca.tipoRegistroDeSaude"), "tipoRegistroDeSaude");
 		p.add(Projections.property("ca.observacao"), "observacao");
 		p.add(Projections.property("a.descricao"), "afastamentoDescricao");
 
@@ -197,9 +198,10 @@ public class ColaboradorAfastamentoDaoHibernate extends GenericDaoHibernate<Cola
 		p.add(Projections.property("ca.id"), "id");
 		p.add(Projections.property("ca.inicio"), "inicio");
 		p.add(Projections.property("ca.fim"), "fim");
-		p.add(Projections.property("ca.medicoNome"), "medicoNome");
 		p.add(Projections.property("ca.cid"), "cid");
-		p.add(Projections.property("ca.medicoCrm"), "medicoCrm");
+		p.add(Projections.property("ca.nomeProfissionalDaSaude"), "nomeProfissionalDaSaude");
+		p.add(Projections.property("ca.numeroDoRegistroDeSaude"), "numeroDoRegistroDeSaude");
+		p.add(Projections.property("ca.tipoRegistroDeSaude"), "tipoRegistroDeSaude");
 		p.add(Projections.property("ca.observacao"), "observacao");
 		p.add(Projections.property("a.descricao"), "afastamentoDescricao");
 		p.add(Projections.property("co.nome"), "projectionColaboradorNome");
@@ -269,8 +271,8 @@ public class ColaboradorAfastamentoDaoHibernate extends GenericDaoHibernate<Cola
 			criteria.add(Expression.eq("ca.fim", colaboradorAfastamento.getFim()));
 		if(colaboradorAfastamento.getObservacao() != null)
 			criteria.add(Expression.eq("ca.observacao", colaboradorAfastamento.getObservacao()));
-		if(colaboradorAfastamento.getMedicoNome() != null)
-			criteria.add(Expression.eq("ca.medicoNome", colaboradorAfastamento.getMedicoNome()));
+		if(colaboradorAfastamento.getNomeProfissionalDaSaude() != null)
+			criteria.add(Expression.eq("ca.nomeProfissionalDaSaude", colaboradorAfastamento.getNomeProfissionalDaSaude()));
 		
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 		

@@ -181,7 +181,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	@Transient
 	private String avaliacaoDesempenhoTitulo;
 	@Transient
-	private boolean exibePerformanceProficional;
+	private boolean exibePerformanceProfissional;
 	@Transient
 	private Boolean afastado = false;
 	@Transient
@@ -3048,12 +3048,12 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.dataSolicitacaoDesligamentoAc = dataSolicitacaoDesligamentoAc;
 	}
 
-	public boolean isExibePerformanceProficional() {
-		return exibePerformanceProficional;
+	public boolean isExibePerformanceProfissional() {
+		return exibePerformanceProfissional;
 	}
 
-	public void setExibePerformanceProficional(boolean exibePerformanceProficional) {
-		this.exibePerformanceProficional = exibePerformanceProficional;
+	public void setExibePerformanceProfissional(boolean exibePerformanceProfissional) {
+		this.exibePerformanceProfissional = exibePerformanceProfissional;
 	}
 
 	@NaoAudita

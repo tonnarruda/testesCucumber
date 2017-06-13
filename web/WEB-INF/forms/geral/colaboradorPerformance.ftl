@@ -554,8 +554,9 @@
 								a ${afastamento.fim}
 							</#if>
 						</@display.column>
-						<@display.column property="medicoNome" title="Médico"/>
-						<@display.column property="medicoCrm" title="CRM"/>
+						<@display.column property="nomeProfissionalDaSaude" title="Profissional da saúde"/>
+						<@display.column property="tipoRegistroDeSaude" title="Registro"/>
+						<@display.column property="numeroDoRegistroDeSaude" title="Número do Registro"/>
 						<@display.column property="observacao" title="Observação"/>
 					</@display.table>
 				</td>

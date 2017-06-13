@@ -1,7 +1,14 @@
 package com.fortes.rh.test.dao.hibernate.sesmt;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.Arrays;
 import java.util.Collection;
+
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
@@ -20,7 +27,7 @@ import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.relatorio.Absenteismo;
 import com.fortes.rh.model.sesmt.Afastamento;
 import com.fortes.rh.model.sesmt.ColaboradorAfastamento;
-import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.dao.GenericDaoHibernateTest_JUnit4;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -30,29 +37,27 @@ import com.fortes.rh.test.factory.sesmt.AfastamentoFactory;
 import com.fortes.rh.test.factory.sesmt.ColaboradorAfastamentoFactory;
 import com.fortes.rh.util.DateUtil;
 
-public class ColaboradorAfastamentoDaoHibernateTest extends GenericDaoHibernateTest<ColaboradorAfastamento>
+public class ColaboradorAfastamentoDaoHibernateTest_JUnit4 extends GenericDaoHibernateTest_JUnit4<ColaboradorAfastamento>
 {
-	private ColaboradorAfastamentoDao colaboradorAfastamentoDao;
-	private ColaboradorDao colaboradorDao;
-	private AfastamentoDao afastamentoDao;
-	private EmpresaDao empresaDao;
-	private EstabelecimentoDao estabelecimentoDao;
-	private HistoricoColaboradorDao historicoColaboradorDao;
-	private AreaOrganizacionalDao areaOrganizacionalDao;
+	@Autowired private ColaboradorAfastamentoDao colaboradorAfastamentoDao;
+	@Autowired private ColaboradorDao colaboradorDao;
+	@Autowired private AfastamentoDao afastamentoDao;
+	@Autowired private EmpresaDao empresaDao;
+	@Autowired private EstabelecimentoDao estabelecimentoDao;
+	@Autowired private HistoricoColaboradorDao historicoColaboradorDao;
+	@Autowired private AreaOrganizacionalDao areaOrganizacionalDao;
 
-	@Override
 	public ColaboradorAfastamento getEntity()
 	{
-		ColaboradorAfastamento colaboradorAfastamento = new ColaboradorAfastamento();
-		return colaboradorAfastamento;
+		return ColaboradorAfastamentoFactory.getEntity();
 	}
 
-	@Override
 	public GenericDao<ColaboradorAfastamento> getGenericDao()
 	{
 		return colaboradorAfastamentoDao;
 	}
 
+	@Test
 	public void testFindAllSelect()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -126,7 +131,8 @@ public class ColaboradorAfastamentoDaoHibernateTest extends GenericDaoHibernateT
 		Collection<ColaboradorAfastamento> teste4 = colaboradorAfastamentoDao.findAllSelect(1, 15, false, empresa.getId(), null, "", "", estabelecimentoIds, null, null, null, ordem, afastadoPeloINSS);
 		assertEquals(1, teste4.size());
 	}
-
+	
+	@Test
 	public void testGetCount()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -166,6 +172,7 @@ public class ColaboradorAfastamentoDaoHibernateTest extends GenericDaoHibernateT
 				colaboradorAfastamentoDao.getCount(empresa.getId(), afastamento.getId(), colaborador.getMatricula(), "", new Long[0], null, null));
 	}
 	
+	@Test
 	public void testFindByColaborador()
 	{
 		Colaborador colaboradorFora = ColaboradorFactory.getEntity();
@@ -201,6 +208,7 @@ public class ColaboradorAfastamentoDaoHibernateTest extends GenericDaoHibernateT
 		assertEquals(1, resultado.size());
 	}
 	
+	@Test
 	public void testFindQtdAfastamentosPorMotivo()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -261,6 +269,7 @@ public class ColaboradorAfastamentoDaoHibernateTest extends GenericDaoHibernateT
 		assertEquals(2, resultado.size());
 	}
 	
+	@Test
 	public void testFindQtdAfastamentosInss()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -318,6 +327,7 @@ public class ColaboradorAfastamentoDaoHibernateTest extends GenericDaoHibernateT
 		assertEquals(new Integer(3), colaboradorAfastamentoDao.findQtdAfastamentosInss(empresa.getId(), DateUtil.criarDataMesAno(5, 11, 2011), DateUtil.criarDataMesAno(30, 11, 2011), false));
 	}
 	
+	@Test
 	public void testExists()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -338,7 +348,7 @@ public class ColaboradorAfastamentoDaoHibernateTest extends GenericDaoHibernateT
 		colabAfast1.setFim(DateUtil.criarDataMesAno(5, 11, 2011));
 		colabAfast1.setColaborador(ana);
 		colabAfast1.setObservacao("teste");
-		colabAfast1.setMedicoNome("joao");
+		colabAfast1.setNomeProfissionalDaSaude("joao");
 		colabAfast1.setAfastamento(pessoais);
 		colaboradorAfastamentoDao.save(colabAfast1);
 		
@@ -349,12 +359,13 @@ public class ColaboradorAfastamentoDaoHibernateTest extends GenericDaoHibernateT
 		colabAfastExists.setFim(DateUtil.criarDataMesAno(5, 11, 2011));
 		colabAfastExists.setColaborador(ana);
 		colabAfastExists.setObservacao("mudou");
-		colabAfastExists.setMedicoNome("joao");
+		colabAfastExists.setNomeProfissionalDaSaude("joao");
 		colabAfastExists.setAfastamento(pessoais);
 		
 		assertEquals(false, colaboradorAfastamentoDao.exists(colabAfastExists));
 	}
 	
+	@Test
 	public void testFindRelatorioResumoAfastamentos()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -426,6 +437,7 @@ public class ColaboradorAfastamentoDaoHibernateTest extends GenericDaoHibernateT
 		assertEquals(new Integer(1), colaboradorAfastamentoResult.getQtdAfastamentos());
 	}
 
+	@Test
 	public void testCountAfastamentosByPeriodo() 
 	{
 		Collection<Long> areasIds = Arrays.asList(1L);
@@ -436,6 +448,7 @@ public class ColaboradorAfastamentoDaoHibernateTest extends GenericDaoHibernateT
 		assertTrue(true);//testa apenas se a consulta roda, é um sql e o hibernate roda o teste em outra transação
 	}
 	
+	@Test
 	public void testFindByColaboradorAfastamentoId() 
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -463,7 +476,7 @@ public class ColaboradorAfastamentoDaoHibernateTest extends GenericDaoHibernateT
 		colaboradorAfastamento1.setFim(DateUtil.criarDataMesAno(5, 11, 2011));
 		colaboradorAfastamento1.setColaborador(ana);
 		colaboradorAfastamento1.setObservacao("teste");
-		colaboradorAfastamento1.setMedicoNome("joao");
+		colaboradorAfastamento1.setNomeProfissionalDaSaude("joao");
 		colaboradorAfastamento1.setAfastamento(pessoais);
 		colaboradorAfastamentoDao.save(colaboradorAfastamento1);
 		
@@ -472,43 +485,12 @@ public class ColaboradorAfastamentoDaoHibernateTest extends GenericDaoHibernateT
 		colaboradorAfastamento2.setFim(DateUtil.criarDataMesAno(5, 11, 2011));
 		colaboradorAfastamento2.setColaborador(maria);
 		colaboradorAfastamento2.setObservacao("teste");
-		colaboradorAfastamento2.setMedicoNome("joao");
+		colaboradorAfastamento2.setNomeProfissionalDaSaude("joao");
 		colaboradorAfastamento2.setAfastamento(pessoais);
 		colaboradorAfastamentoDao.save(colaboradorAfastamento2);
 		
 		assertNull(colaboradorAfastamentoDao.findByColaboradorAfastamentoId(colaboradorAfastamento1.getId()));
 		assertEquals(colaboradorAfastamento2.getId(), colaboradorAfastamentoDao.findByColaboradorAfastamentoId(colaboradorAfastamento2.getId()).getId());
 	}
-	
-	public void setAfastamentoDao(AfastamentoDao afastamentoDao)
-	{
-		this.afastamentoDao = afastamentoDao;
-	}
-	public void setColaboradorAfastamentoDao(ColaboradorAfastamentoDao colaboradorAfastamentoDao)
-	{
-		this.colaboradorAfastamentoDao = colaboradorAfastamentoDao;
-	}
-	public void setColaboradorDao(ColaboradorDao colaboradorDao)
-	{
-		this.colaboradorDao = colaboradorDao;
-	}
 
-	public void setEmpresaDao(EmpresaDao empresaDao)
-	{
-		this.empresaDao = empresaDao;
-	}
-
-	public void setHistoricoColaboradorDao(HistoricoColaboradorDao historicoColaboradorDao)
-	{
-		this.historicoColaboradorDao = historicoColaboradorDao;
-	}
-
-	public void setEstabelecimentoDao(EstabelecimentoDao estabelecimentoDao)
-	{
-		this.estabelecimentoDao = estabelecimentoDao;
-	}
-	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao)
-	{
-		this.areaOrganizacionalDao = areaOrganizacionalDao;
-	}
 }

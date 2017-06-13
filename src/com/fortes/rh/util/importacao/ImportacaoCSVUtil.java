@@ -13,6 +13,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.dicionario.OpcaoImportacao;
+import com.fortes.rh.model.dicionario.RegistrosDeSaude;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Contato;
 import com.fortes.rh.model.geral.Endereco;
@@ -112,8 +113,9 @@ public class ImportacaoCSVUtil
 			colaboradorAfastamento.setInicio(DateUtil.montaDataByString(campos[4]));
 			colaboradorAfastamento.setFim(DateUtil.montaDataByString(campos[5]));
 			
-			colaboradorAfastamento.setMedicoNome(campos[6]);
-			colaboradorAfastamento.setMedicoCrm(campos[7]);
+			colaboradorAfastamento.setNomeProfissionalDaSaude(campos[6]);
+			colaboradorAfastamento.setNumeroDoRegistroDeSaude(campos[7]);
+			colaboradorAfastamento.setTipoRegistroDeSaude(RegistrosDeSaude.CRM);
 			
 			colaboradorAfastamento.setCid(campos[8]);
 			colaboradorAfastamento.setObservacao(campos[9]);

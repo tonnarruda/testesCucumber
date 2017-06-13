@@ -29,7 +29,7 @@ public class CandidatoJsonVO
 	private String rg;
 	private String pis;
 	private String[] funcoesPretendidas;
-	private String registroProficional;
+	private String registroProfissional;
 	private String validadeRegistro;
 
     public CandidatoJsonVO()
@@ -38,7 +38,7 @@ public class CandidatoJsonVO
 
 	public CandidatoJsonVO(String id, String nome, String dataNascimento, String sexo, String cpf, String escolaridade, String cep, String logradouro, String numero, String complemento,
 			String bairro, String cidade, String estado, String email, String foneFixo, String celular, String estadoCivil,	String mae, String rg, String pis, String[] funcoesPretendidas,
-			String registroProficional, String validadeRegistro) {
+			String registroProfissional, String validadeRegistro) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -61,7 +61,7 @@ public class CandidatoJsonVO
 		this.rg = rg;
 		this.pis = pis;
 		this.funcoesPretendidas = funcoesPretendidas;
-		this.registroProficional = registroProficional;
+		this.registroProfissional = registroProfissional;
 		this.validadeRegistro = validadeRegistro;
 	}
 
@@ -145,8 +145,8 @@ public class CandidatoJsonVO
 		return pis;
 	}
 
-	public String getRegistroProficional() {
-		return registroProficional;
+	public String getRegistroProfissional() {
+		return registroProfissional;
 	}
 
 	public String getValidadeRegistro() {

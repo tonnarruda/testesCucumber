@@ -137,7 +137,6 @@
 						.appendTo( ul );
 			};
 		});
-		
 	</script>
 	
 	<#include "../ftl/mascarasImports.ftl" />
@@ -229,8 +228,10 @@
 			<@ww.textfield label="CID" id="cid" name="colaboradorAfastamento.cid" cssStyle="width: 80px;" maxLength="10" liClass="liLeft" />
 			<@ww.textfield label="Descrição" name="descricao" id="descricaoCid" cssStyle="width: 416px;" maxLength="200"  />
 			
-			<@ww.textfield label="Médico" name="colaboradorAfastamento.medicoNome" cssClass="inputNome" cssStyle="width: 350px;" liClass="liLeft"/>
-			<@ww.textfield label="CRM" name="colaboradorAfastamento.medicoCrm" maxLength="20"/>
+			<@ww.textfield label="Profissional da saúde" name="colaboradorAfastamento.nomeProfissionalDaSaude" cssClass="inputNome" cssStyle="width: 500px;"/>
+			<@ww.select label="Registro" name="colaboradorAfastamento.tipoRegistroDeSaude" id="tipoRegistroDeSaude" list="registrosDeSaude" headerKey="" headerValue="" cssStyle="width:120px" liClass="liLeft"/>
+			<@ww.textfield label="Número do registro" id="numeroDoRegistroDeSaude" name="colaboradorAfastamento.numeroDoRegistroDeSaude" maxLength="20"/>
+			
 			<@ww.textarea label="Observações" name="colaboradorAfastamento.observacao" cssStyle="width: 500px;"/>
 
 			<@ww.hidden name="colaboradorAfastamento.id" />

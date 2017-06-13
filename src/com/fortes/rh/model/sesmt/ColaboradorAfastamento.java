@@ -17,6 +17,7 @@ import javax.persistence.Transient;
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.security.auditoria.NaoAudita;
 
 @SuppressWarnings("serial")
 @Entity
@@ -29,10 +30,13 @@ public class ColaboradorAfastamento extends AbstractModel implements Serializabl
 	private Date fim;
 
 	@Column(length=100)
-	private String medicoNome;
+	private String nomeProfissionalDaSaude;
 
 	@Column(length=20)
-	private String medicoCrm;
+	private String numeroDoRegistroDeSaude;
+	
+	@Column(length=4)
+	private String tipoRegistroDeSaude;
 
 	@Column(length=10)
 	private String cid;
@@ -57,13 +61,15 @@ public class ColaboradorAfastamento extends AbstractModel implements Serializabl
 	
 	public ColaboradorAfastamento() { }
 
-	public ColaboradorAfastamento(Long id, Date inicio, Date fim, String afastamentoDescricao, String colaboradorNome, String colaboradorMatricula, String estabelecimentoNome, Long areaOrganizacionalId, String cid, String medicoNome, Date dataAdmissao, String dataFimRelatorio)
+	public ColaboradorAfastamento(Long id, Date inicio, Date fim, String afastamentoDescricao, String colaboradorNome, String colaboradorMatricula, String estabelecimentoNome, Long areaOrganizacionalId, String cid, String nomeProfissionalDaSaude, Date dataAdmissao, String dataFimRelatorio, String tipoRegistroDeSaude, String numeroDoRegistroDeSaude)
 	{
 		setId(id);
 		this.inicio = inicio;
 		this.fim = fim;
 		this.cid = cid;
-		this.medicoNome = medicoNome;
+		this.nomeProfissionalDaSaude = nomeProfissionalDaSaude;
+		this.tipoRegistroDeSaude = tipoRegistroDeSaude;
+		this.numeroDoRegistroDeSaude = numeroDoRegistroDeSaude;
 		
 		afastamento = new Afastamento();
 		afastamento.setDescricao(afastamentoDescricao);
@@ -204,26 +210,6 @@ public class ColaboradorAfastamento extends AbstractModel implements Serializabl
 		this.inicio = inicio;
 	}
 
-	public String getMedicoCrm()
-	{
-		return medicoCrm;
-	}
-
-	public void setMedicoCrm(String medicoCrm)
-	{
-		this.medicoCrm = medicoCrm;
-	}
-
-	public String getMedicoNome()
-	{
-		return medicoNome;
-	}
-
-	public void setMedicoNome(String medicoNome)
-	{
-		this.medicoNome = medicoNome;
-	}
-
 	public String getObservacao()
 	{
 		return observacao;
@@ -287,5 +273,41 @@ public class ColaboradorAfastamento extends AbstractModel implements Serializabl
 	   {
 	      throw new Error("Ocorreu um erro interno no sistema. Não foi possível clonar o objeto.");
 	   }
+	}
+
+	public String getNumeroDoRegistroDeSaude() {
+		return numeroDoRegistroDeSaude;
+	}
+
+	public void setNumeroDoRegistroDeSaude(String numeroDoRegistroDeSaude) {
+		this.numeroDoRegistroDeSaude = numeroDoRegistroDeSaude;
+	}
+
+	public String getTipoRegistroDeSaude() {
+		return tipoRegistroDeSaude;
+	}
+
+	public void setTipoRegistroDeSaude(String tipoRegistroDeSaude) {
+		this.tipoRegistroDeSaude = tipoRegistroDeSaude;
+	}
+
+	@NaoAudita
+	public String getTipoRegistroDeSaudeMaisRegistro() {
+		String tipoMaisRegistro = "";
+		
+		if (tipoRegistroDeSaude != null && !"".equals(tipoRegistroDeSaude))
+			tipoMaisRegistro += tipoRegistroDeSaude + ": ";
+		if (numeroDoRegistroDeSaude != null && !"".equals(numeroDoRegistroDeSaude))
+			tipoMaisRegistro += numeroDoRegistroDeSaude;
+
+		return tipoMaisRegistro;
+	}
+
+	public String getNomeProfissionalDaSaude() {
+		return nomeProfissionalDaSaude;
+	}
+
+	public void setNomeProfissionalDaSaude(String nomeProfissionalDaSaude) {
+		this.nomeProfissionalDaSaude = nomeProfissionalDaSaude;
 	}
 }

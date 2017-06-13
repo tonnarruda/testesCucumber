@@ -472,7 +472,19 @@
 	</property>
   </bean>
   
-    <bean id="aspectoDao" class="com.fortes.rh.dao.hibernate.pesquisa.AspectoDaoHibernate">
+  <bean id="aspectoDao" class="com.fortes.rh.dao.hibernate.pesquisa.AspectoDaoHibernate">
+	<property name="sessionFactory">
+		<ref bean="sessionFactory" />
+	</property>
+  </bean>
+  
+  <bean id="colaboradorAfastamentoDao" class="com.fortes.rh.dao.hibernate.sesmt.ColaboradorAfastamentoDaoHibernate">
+	<property name="sessionFactory">
+		<ref bean="sessionFactory" />
+	</property>
+  </bean>
+  
+  <bean id="afastamentoDao" class="com.fortes.rh.dao.hibernate.sesmt.AfastamentoDaoHibernate">
 	<property name="sessionFactory">
 		<ref bean="sessionFactory" />
 	</property>

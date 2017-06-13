@@ -38,7 +38,7 @@
 	<@ww.actionerror />
 
 	<@ww.form name="form" id="form" action="relatorioAfastamentos.action" method="POST">
-		Período:<br>
+		Período:*<br>
 		<@ww.datepicker name="colaboradorAfastamento.inicio" id="inicio" value="${inicio}" liClass="liLeft" cssClass="mascaraData validaDataIni"/>
 		<@ww.label value="a" liClass="liLeft" />
 		<@ww.datepicker name="colaboradorAfastamento.fim" id="fim" value="${fim}" cssClass="mascaraData validaDataFim" />

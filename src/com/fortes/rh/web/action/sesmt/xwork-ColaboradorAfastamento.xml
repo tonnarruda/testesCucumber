@@ -89,8 +89,8 @@
 				<param name="dataSource">colaboradorAfastamentos</param>
 				<param name="documentName">afastamentos.xls</param>
 				<param name="sheetName">Planilha1</param>
-				<param name="columns">Matrícula,Colaborador,Período,Dias,Estabelecimento,Área Organizacional,Médico,Motivo,CID</param>
-				<param name="properties">colaborador.matricula,colaborador.nome,periodoFormatado,dias,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao,medicoNome,afastamento.descricao,cid</param>
+				<param name="columns">Matrícula,Colaborador,Período,Dias,Estabelecimento,Área Organizacional,Reg.,Prof. da Saúde,Motivo,CID</param>
+				<param name="properties">colaborador.matricula,colaborador.nome,periodoFormatado,dias,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao,tipoRegistroDeSaudeMaisRegistro,nomeProfissionalDaSaude,afastamento.descricao,cid</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>
@@ -98,9 +98,9 @@
 				<param name="dataSource">colaboradorAfastamentos</param>
 				<param name="documentName">afastamentos_cid.xls</param>
 				<param name="sheetName">Planilha1</param>
-				<param name="columns">CID,Matrícula,Colaborador,Período,Dias,Estabelecimento,Área Organizacional,Médico,Motivo</param>
+				<param name="columns">CID,Matrícula,Colaborador,Período,Dias,Estabelecimento,Área Organizacional,Reg.,Prof. da Saúde,Motivo</param>
 				<param name="propertiesGroup">cid</param>
-				<param name="properties">cid,colaborador.matricula,colaborador.nome,periodoFormatado,dias,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao,medicoNome,afastamento.descricao</param>
+				<param name="properties">cid,colaborador.matricula,colaborador.nome,periodoFormatado,dias,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao,tipoRegistroDeSaudeMaisRegistro,nomeProfissionalDaSaude,afastamento.descricao</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>	
@@ -108,9 +108,9 @@
 				<param name="dataSource">colaboradorAfastamentos</param>
 				<param name="documentName">afastamentos_cid.xls</param>
 				<param name="sheetName">Planilha1</param>
-				<param name="columns">Colaborador,Matrícula,Estabelecimento,Área Organizacional,Período,Dias,Médico,Motivo</param>
+				<param name="columns">Colaborador,Matrícula,Estabelecimento,Área Organizacional,Período,Dias,Reg.,Prof. da Saúde,Motivo</param>
 				<param name="propertiesGroup">colaborador.nome</param>
-				<param name="properties">colaborador.nome,colaborador.matricula,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao,periodoFormatado,dias,medicoNome,afastamento.descricao</param>
+				<param name="properties">colaborador.nome,colaborador.matricula,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao,periodoFormatado,dias,tipoRegistroDeSaudeMaisRegistro,nomeProfissionalDaSaude,afastamento.descricao</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>
@@ -118,9 +118,9 @@
 				<param name="dataSource">colaboradorAfastamentos</param>
 				<param name="documentName">afastamentos_cid.xls</param>
 				<param name="sheetName">Planilha1</param>
-				<param name="columns">Mês/Ano,Matrícula,Colaborador,Período,Dias,Estabelecimento,Área Organizacional,Médico,Motivo</param>
+				<param name="columns">Mês/Ano,Matrícula,Colaborador,Período,Dias,Estabelecimento,Área Organizacional,Reg.,Prof. da Saúde,Motivo</param>
 				<param name="propertiesGroup">mesAno</param>
-				<param name="properties">mesAno,colaborador.matricula,colaborador.nome,periodoFormatado,dias,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao,medicoNome,afastamento.descricao</param>
+				<param name="properties">mesAno,colaborador.matricula,colaborador.nome,periodoFormatado,dias,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao,tipoRegistroDeSaudeMaisRegistro,nomeProfissionalDaSaude,afastamento.descricao</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>	
@@ -128,9 +128,9 @@
 				<param name="dataSource">colaboradorAfastamentos</param>
 				<param name="documentName">afastamentos_cid.xls</param>
 				<param name="sheetName">Planilha1</param>
-				<param name="columns">Mês/Ano,Matrícula,Colaborador,Período,Dias,Estabelecimento,Área Organizacional,Médico,Motivo</param>
+				<param name="columns">Mês/Ano,Matrícula,Colaborador,Período,Dias,Estabelecimento,Área Organizacional,Reg.,Prof. da Saúde,Motivo</param>
 				<param name="propertiesGroup">mesAno</param>
-				<param name="properties">mesAno,colaborador.matricula,colaborador.nome,periodoFormatado,dias,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao,medicoNome,afastamento.descricao</param>
+				<param name="properties">mesAno,colaborador.matricula,colaborador.nome,periodoFormatado,dias,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao,tipoRegistroDeSaudeMaisRegistro,nomeProfissionalDaSaude,afastamento.descricao</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>	
@@ -138,9 +138,9 @@
 				<param name="dataSource">colaboradorAfastamentos</param>
 				<param name="documentName">afastamentos_area.xls</param>
 				<param name="sheetName">Planilha1</param>
-				<param name="columns">Área Organizacional,Matrícula,Colaborador,Período,Dias,Estabelecimento,Médico,Motivo,CID</param>
+				<param name="columns">Área Organizacional,Matrícula,Colaborador,Período,Dias,Estabelecimento,Reg.,Prof. da Saúde,Motivo,CID</param>
 				<param name="propertiesGroup">colaborador.areaOrganizacional.descricao</param>
-				<param name="properties">colaborador.areaOrganizacional.descricao,colaborador.matricula,colaborador.nome,periodoFormatado,dias,colaborador.estabelecimento.nome,medicoNome,afastamento.descricao,cid</param>
+				<param name="properties">colaborador.areaOrganizacional.descricao,colaborador.matricula,colaborador.nome,periodoFormatado,dias,colaborador.estabelecimento.nome,tipoRegistroDeSaudeMaisRegistro,nomeProfissionalDaSaude,afastamento.descricao,cid</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>
@@ -150,8 +150,8 @@
 				<param name="dataSource">colaboradorAfastamentos</param>
 				<param name="documentName">afastamentos.xls</param>
 				<param name="sheetName">Planilha1</param>
-				<param name="columns">Matrícula,Colaborador,Período,Dias,Tempo de Serviço,Estabelecimento,Área Organizacional,Médico,Motivo,CID</param>
-				<param name="properties">colaborador.matricula,colaborador.nome,periodoFormatado,dias,colaborador.tempoServicoString,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao,medicoNome,afastamento.descricao,cid</param>
+				<param name="columns">Matrícula,Colaborador,Período,Dias,Tempo de Serviço,Estabelecimento,Área Organizacional,Reg.,Prof. da Saúde,Motivo,CID</param>
+				<param name="properties">colaborador.matricula,colaborador.nome,periodoFormatado,dias,colaborador.tempoServicoString,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao,tipoRegistroDeSaudeMaisRegistro,nomeProfissionalDaSaude,afastamento.descricao,cid</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>
@@ -159,9 +159,9 @@
 				<param name="dataSource">colaboradorAfastamentos</param>
 				<param name="documentName">afastamentos_cid.xls</param>
 				<param name="sheetName">Planilha1</param>
-				<param name="columns">CID,Matrícula,Colaborador,Período,Dias,Tempo de Serviço,Estabelecimento,Área Organizacional,Médico,Motivo</param>
+				<param name="columns">CID,Matrícula,Colaborador,Período,Dias,Tempo de Serviço,Estabelecimento,Área Organizacional,Reg.,Prof. da Saúde,Motivo</param>
 				<param name="propertiesGroup">cid</param>
-				<param name="properties">cid,colaborador.matricula,colaborador.nome,periodoFormatado,dias,colaborador.tempoServicoString,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao,medicoNome,afastamento.descricao</param>
+				<param name="properties">cid,colaborador.matricula,colaborador.nome,periodoFormatado,dias,colaborador.tempoServicoString,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao,tipoRegistroDeSaudeMaisRegistro,nomeProfissionalDaSaude,afastamento.descricao</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>	
@@ -169,9 +169,9 @@
 				<param name="dataSource">colaboradorAfastamentos</param>
 				<param name="documentName">afastamentos_cid.xls</param>
 				<param name="sheetName">Planilha1</param>
-				<param name="columns">Colaborador,Matrícula,Estabelecimento,Área Organizacional,Período,Dias,Tempo de Serviço,Médico,Motivo</param>
+				<param name="columns">Colaborador,Matrícula,Estabelecimento,Área Organizacional,Período,Dias,Tempo de Serviço,Reg.,Prof. da Saúde,Motivo</param>
 				<param name="propertiesGroup">colaborador.nome</param>
-				<param name="properties">colaborador.nome,colaborador.matricula,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao,periodoFormatado,dias,colaborador.tempoServicoString,medicoNome,afastamento.descricao</param>
+				<param name="properties">colaborador.nome,colaborador.matricula,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao,periodoFormatado,dias,colaborador.tempoServicoString,tipoRegistroDeSaudeMaisRegistro,nomeProfissionalDaSaude,afastamento.descricao</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>
@@ -179,9 +179,9 @@
 				<param name="dataSource">colaboradorAfastamentos</param>
 				<param name="documentName">afastamentos_cid.xls</param>
 				<param name="sheetName">Planilha1</param>
-				<param name="columns">Mês/Ano,Matrícula,Colaborador,Período,Dias,Tempo de Serviço,Estabelecimento,Área Organizacional,Médico,Motivo</param>
+				<param name="columns">Mês/Ano,Matrícula,Colaborador,Período,Dias,Tempo de Serviço,Estabelecimento,Área Organizacional,Reg.,Prof. da Saúde,Motivo</param>
 				<param name="propertiesGroup">mesAno</param>
-				<param name="properties">mesAno,colaborador.matricula,colaborador.nome,periodoFormatado,dias,colaborador.tempoServicoString,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao,medicoNome,afastamento.descricao</param>
+				<param name="properties">mesAno,colaborador.matricula,colaborador.nome,periodoFormatado,dias,colaborador.tempoServicoString,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao,tipoRegistroDeSaudeMaisRegistro,nomeProfissionalDaSaude,afastamento.descricao</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>	
@@ -189,9 +189,9 @@
 				<param name="dataSource">colaboradorAfastamentos</param>
 				<param name="documentName">afastamentos_cid.xls</param>
 				<param name="sheetName">Planilha1</param>
-				<param name="columns">Mês/Ano,Matrícula,Colaborador,Período,Dias,Tempo de Serviço,Estabelecimento,Área Organizacional,Médico,Motivo</param>
+				<param name="columns">Mês/Ano,Matrícula,Colaborador,Período,Dias,Tempo de Serviço,Estabelecimento,Área Organizacional,Reg.,Prof. da Saúde,Motivo</param>
 				<param name="propertiesGroup">mesAno</param>
-				<param name="properties">mesAno,colaborador.matricula,colaborador.nome,periodoFormatado,dias,colaborador.tempoServicoString,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao,medicoNome,afastamento.descricao</param>
+				<param name="properties">mesAno,colaborador.matricula,colaborador.nome,periodoFormatado,dias,colaborador.tempoServicoString,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao,tipoRegistroDeSaudeMaisRegistro,nomeProfissionalDaSaude,afastamento.descricao</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>	
@@ -199,9 +199,9 @@
 				<param name="dataSource">colaboradorAfastamentos</param>
 				<param name="documentName">afastamentos_area.xls</param>
 				<param name="sheetName">Planilha1</param>
-				<param name="columns">Área Organizacional,Matrícula,Colaborador,Período,Dias,Tempo de Serviço,Estabelecimento,Médico,Motivo,CID</param>
+				<param name="columns">Área Organizacional,Matrícula,Colaborador,Período,Dias,Tempo de Serviço,Estabelecimento,Reg.,Prof. da Saúde,Motivo,CID</param>
 				<param name="propertiesGroup">colaborador.areaOrganizacional.descricao</param>
-				<param name="properties">colaborador.areaOrganizacional.descricao,colaborador.matricula,colaborador.nome,periodoFormatado,dias,colaborador.tempoServicoString,colaborador.estabelecimento.nome,medicoNome,afastamento.descricao,cid</param>
+				<param name="properties">colaborador.areaOrganizacional.descricao,colaborador.matricula,colaborador.nome,periodoFormatado,dias,colaborador.tempoServicoString,colaborador.estabelecimento.nome,tipoRegistroDeSaudeMaisRegistro,nomeProfissionalDaSaude,afastamento.descricao,cid</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>

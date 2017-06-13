@@ -2,6 +2,7 @@ package com.fortes.rh.web.action.sesmt;
 
 
 import java.util.Collection;
+import java.util.LinkedHashMap;
 
 import com.fortes.rh.business.geral.CidManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -9,6 +10,7 @@ import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.sesmt.AfastamentoManager;
 import com.fortes.rh.business.sesmt.ColaboradorAfastamentoManager;
 import com.fortes.rh.exception.EventoAntesDaDataAdmissaoException;
+import com.fortes.rh.model.dicionario.RegistrosDeSaude;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.Afastamento;
@@ -32,6 +34,7 @@ public class ColaboradorAfastamentoEditAction extends MyActionSupportEdit
 	private Collection<Colaborador> colaboradors;
 	private Colaborador colaborador = new Colaborador();
 	private String descricao;
+	private LinkedHashMap<String, String> registrosDeSaude = new RegistrosDeSaude();
 
 	private void prepare() throws Exception
 	{
@@ -190,8 +193,11 @@ public class ColaboradorAfastamentoEditAction extends MyActionSupportEdit
 		return descricao;
 	}
 
-	public void setGerenciadorComunicacaoManager(
-			GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
+	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
 		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
+	}
+
+	public LinkedHashMap<String, String> getRegistrosDeSaude() {
+		return registrosDeSaude;
 	}
 }
