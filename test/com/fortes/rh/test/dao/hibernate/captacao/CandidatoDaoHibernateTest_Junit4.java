@@ -786,4 +786,58 @@ public class CandidatoDaoHibernateTest_Junit4 extends GenericDaoHibernateTest_JU
 
 		assertEquals(1, candidatos.size());
 	}
+	
+	@Test
+	public void testGetCandidatosByExperiencia()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa = empresaDao.save(empresa);
+
+		Estado estado = EstadoFactory.getEntity();
+		estado = estadoDao.save(estado);
+
+		Cidade cidade = CidadeFactory.getEntity();
+		cidade.setUf(estado);
+		cidade = cidadeDao.save(cidade);
+
+		Candidato c1 = CandidatoFactory.getCandidatoDiponivel("chico", "1111241111", empresa);
+		c1.getEndereco().setCidade(cidade);
+		candidatoDao.save(c1);
+		Candidato c2 = CandidatoFactory.getCandidatoDiponivel("bob", "22222232521", empresa);
+		c2.getEndereco().setCidade(cidade);
+		candidatoDao.save(c2);
+
+		Cargo ca1 = CargoFactory.getEntity();
+		ca1 = cargoDao.save(ca1);
+
+		Cargo ca2 = CargoFactory.getEntity();
+		ca2 = cargoDao.save(ca2);
+
+		Experiencia exp1 = ExperienciaFactory.getEntity();
+		exp1.setCandidato(c1);
+		exp1.setCargo(ca1);
+		exp1.setEmpresa("e1");
+		exp1 = experienciaDao.save(exp1);
+
+		Experiencia exp2 = ExperienciaFactory.getEntity();
+		exp2.setCandidato(c1);
+		exp2.setCargo(ca1);
+		exp2.setEmpresa("e2");
+		exp2 = experienciaDao.save(exp2);
+
+		Experiencia exp3 = ExperienciaFactory.getEntity();
+		exp3.setCandidato(c2);
+		exp3.setCargo(ca2);
+		exp3.setEmpresa("e3");
+		exp3 = experienciaDao.save(exp3);
+
+		Long[] experienciasIds = {ca1.getId()};
+
+		Map param = new HashMap();
+		param.put("experiencias", experienciasIds);
+
+		Collection<Candidato> candidatos = candidatoDao.getCandidatosByExperiencia(param, new Long[]{empresa.getId()});
+
+		assertEquals(1, candidatos.size());
+	}	
 }

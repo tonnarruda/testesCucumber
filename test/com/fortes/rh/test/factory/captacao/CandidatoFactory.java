@@ -101,4 +101,15 @@ public class CandidatoFactory
 		candidato.setNome(nome);
 		return candidato;
 	}
+	public static  Candidato getCandidatoDiponivel(String nome, String cpf, Empresa empresa){
+		Candidato candidato = getCandidato();
+		candidato.setEmpresa(empresa);
+		candidato.setNome(nome);
+		candidato.getPessoal().setCpf(cpf);
+		candidato.setDisponivel(true);
+		candidato.setContratado(false);
+		candidato.setBlackList(false);
+		
+		return candidato;
+	}
 }

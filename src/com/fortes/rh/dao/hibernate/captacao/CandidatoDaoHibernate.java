@@ -1,4 +1,4 @@
-package com.fortes.rh.dao.hibernate.captacao;
+	package com.fortes.rh.dao.hibernate.captacao;
 
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 
@@ -758,6 +758,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 	public Collection<Candidato> getCandidatosByExperiencia(Map parametros, Long[] empresaIds){
 		Criteria criteria = getSession().createCriteria(Candidato.class, "c");
 		criteria.createCriteria("c.experiencias", "e", Criteria.LEFT_JOIN);
+		Long[] experienciasIds = (Long[])parametros.get("experiencias");
 		
 		if (isNotBlank((String)parametros.get("palavrasChaveOutrosCampos")))
 			criteria.createCriteria("c.formacao", "f", Criteria.LEFT_JOIN);
@@ -767,10 +768,12 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		criteria.createCriteria("c.endereco.uf", "uf", Criteria.LEFT_JOIN);
 
 		criteria.setProjection(projectionGetCandidatosByExperiencia());
-		criteria.add(Expression.in("ca.id", (Long[])parametros.get("experiencias")));
+		
+		if(experienciasIds != null &&  experienciasIds.length > 0)
+			criteria.add(Expression.in("ca.id", experienciasIds));
+		
 		criteria.addOrder(Order.asc("c.id"));
-
-		parametros.remove("experiencias");
+		
 		montaCriteriaFiltros(parametros, empresaIds, criteria);
 		Collection<Candidato> result = new ArrayList<Candidato>();
 		
@@ -779,16 +782,23 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 
 		for (Iterator<Object[]> it = lista.iterator(); it.hasNext();){
 			Object[] array = it.next();
-
-			if(candidatoAnterior == null || !candidatoAnterior.getId().equals((Long) array[3])){
-				Candidato candidato = new Candidato((Long) array[3], null);
+			
+			Long experienciaId = (Long) array[0];
+			Date dataAdmissao = (Date) array[1];
+			Date dataDesligamento = (Date) array[2];
+			Long candidatoId = (Long)array[3];
+			Long cargoId = (Long) array[4];
+			
+			if(candidatoAnterior == null || !candidatoAnterior.getId().equals(candidatoId)){
+				Candidato candidato = new Candidato(candidatoId, null);
 				Collection<Experiencia> experiencias = new ArrayList<Experiencia>(); 
-				experiencias.add(new Experiencia((Long) array[0], (Date) array[1], (Date) array[2], (Long) array[4]));
+				
+				experiencias.add(new Experiencia(experienciaId, dataAdmissao, dataDesligamento, cargoId));
 				candidato.setExperiencias(experiencias);
 				candidatoAnterior = candidato;
 				result.add(candidatoAnterior);
 			}else
-				candidatoAnterior.getExperiencias().add(new Experiencia((Long) array[0], (Date) array[1], (Date) array[2], (Long) array[4]));
+				candidatoAnterior.getExperiencias().add(new Experiencia(experienciaId, dataAdmissao, dataDesligamento, cargoId));
 		}
 
 		return result;
