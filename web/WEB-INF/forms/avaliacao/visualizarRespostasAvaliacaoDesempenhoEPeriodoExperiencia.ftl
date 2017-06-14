@@ -7,7 +7,14 @@
 	<#else>
 		<title>Visualizar Acompanhamento do Período de Experiência</title>
 	</#if>	
+	
 	<#assign respostasCompactas=colaboradorQuestionario.avaliacao.respostasCompactas />
+	<#assign exibirPerformance=(mostrarPerformanceAvalDesempenho && !(avaliador.id == colaborador.id && !colaboradorQuestionario.avaliacaoDesempenho.exibeResultadoAutoAvaliacao)) />
+	
+	<#if !colaboradorQuestionario.avaliacao.id?exists || colaboradorQuestionario.avaliacao.avaliarCompetenciasCargo>
+		<#include "includeCompetenciasAvaliacaoHead.ftl" />
+	</#if>
+	
 </head>
 <body>
 	<@ww.actionerror />
@@ -23,14 +30,29 @@
 	<#if colaboradorQuestionario.avaliacao?exists && colaboradorQuestionario.avaliacao.cabecalho?exists>
 		<pre><h4>${colaboradorQuestionario.avaliacao.cabecalho}</h4></pre>
 	</#if>
-	
-	<#if perguntas?exists && 0 < perguntas?size>
-		<@ww.form name="form" method="POST">
-			<#include "includePerguntasAvaliacao.ftl" />
-		</@ww.form>
+	<#if exibirPerformance && colaboradorQuestionario.avaliacao.id?exists >
+		<pre id="performanceQuestionario" style="text-align:right; font-weight: bold;">Performance Questionário: - </pre>
 	</#if>
+	
+	<@ww.form name="form" method="POST">
+		<#if perguntas?exists && 0 < perguntas?size>
+			<#include "includePerguntasAvaliacao.ftl" />
+		</#if>
+		<#if !colaboradorQuestionario.avaliacao.id?exists || colaboradorQuestionario.avaliacao.avaliarCompetenciasCargo>
+			<#include "includeCompetenciasAvaliacaoBody.ftl" />
+		</#if>
+	</@ww.form>
 	<div class="buttonGroup">
 		<button class="btnFechar" onclick="window.close();"></button>		
 	</div>
+
+	<script type="text/javascript">
+		$(function() {
+			$(':checkbox').attr('disabled',true);
+			$('select').attr('disabled',true);
+			$(':radio:not(:checked)').attr('disabled', true);
+			$('input[type="text"], textarea').attr('readonly','readonly');
+		});
+	</script>
 </body>
 </html>
