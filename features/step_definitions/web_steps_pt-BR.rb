@@ -39,6 +39,10 @@ Dado /^que a opção apresentar performance de forma parcial ao responder avalia
   exec_sql "update empresa set mostrarPerformanceAvalDesempenho = #{apresentar_performance};"
 end
 
+Dado /^que eu desligue o colaborador "([^"]*)" na data "([^"]*)" com motivo de deligamento "([^"]*)"$/ do |colaborador_nome, data, motivo_nome|
+  exec_sql "update colaborador set desligado = true, dataDesligamento = '#{data}', motivodemissao_id = (select id from motivodemissao  where motivo = '#{motivo_nome}') where nome = '#{colaborador_nome}';"
+end
+
 Quando /^eu acesso "([^"]*)"$/ do |path|
   page.execute_script("window.location = 'http://localhost:8080/fortesrh/#{path}'")
 end
@@ -56,6 +60,12 @@ end
 Quando /^eu clico em "Entrar"?$/ do
     find('.btnEntrar').click
 end
+
+Então /^eu devo deslogar do sistema$/ do
+   exec_sql "update parametrosdosistema set servidorremprot = 'FORTESAG'"
+  page.execute_script("window.location = 'http://localhost:8080/fortesrh/logout.action'")
+end
+
 
 Quando /^eu clico no botão "([^"]*)"$/ do |text|
     find('.btn' + text).click
@@ -564,9 +574,18 @@ Dado /^que exista um bairro "([^"]*)" na cidade de "([^"]*)"$/ do |bairro_nome, 
 end
 
 Dado /^que exista um modelo avaliacao aluno "([^"]*)"$/ do |avaliacao_titulo|
+  insert :avaliacao do
+    titulo avaliacao_titulo
+    tipomodeloavaliacao 'L'
+    ativo true
+    empresa :id => 1
+  end
+end
+
+Dado /^que exista um modelo avaliacao de período de experiência "([^"]*)"$/ do |avaliacao_titulo|
    insert :avaliacao do
      titulo avaliacao_titulo
-     tipomodeloavaliacao 'L'
+     tipomodeloavaliacao 'A'
      ativo true
      empresa :id => 1
    end
@@ -581,11 +600,26 @@ Dado /^que exista um modelo avaliacao desempenho "([^"]*)"$/ do |avaliacao_titul
    end
 end
 
+Dado /^que exista uma avaliacao desempenho "([^"]*)" no período de "([^"]*)" até "([^"]*)"$/ do |avaliacaodesempenho_titulo, data_ini, data_fim|
+   insert :avaliacaodesempenho do
+     titulo avaliacaodesempenho_titulo
+     inicio data_ini
+     fim data_fim
+     anonima true
+     permiteautoavaliacao true
+     exibirnivelcompetenciaexigido false
+     liberada false
+     avaliacao :id => 1
+     empresa :id => 1
+   end
+end
+
 Dado /^que exista uma avaliacao desempenho "([^"]*)"$/ do |avaliacaodesempenho_titulo|
    insert :avaliacaodesempenho do
      titulo avaliacaodesempenho_titulo
      liberada true
      avaliacao :id => 1
+     empresa :id => 1
    end
 end
 
@@ -728,6 +762,8 @@ end
 Dado /^que exista um candidato "([^"]*)"$/ do |candidato_nome|
   insert :candidato do
     nome candidato_nome
+    cpf '06060722334'
+    senha 'MTIzNA=='
     conjugetrabalha true
     sexo 'M'
     blacklist false
@@ -903,6 +939,7 @@ Dado /^que exista um modelo de ficha medica "([^"]*)" com a pergunta "([^"]*)"$/
   end
 end
 
+
 Dado /^que exista uma solicitacao "([^"]*)" para área "([^"]*)" na faixa "([^"]*)"$/ do |solicitacao_nome, area_nome, faixa_nome|
   insert :solicitacao do
     quantidade 1
@@ -930,6 +967,29 @@ Dado /^que exista um conhecimento "([^"]*)"$/ do |conhecimento_nome|
   end
 end
 
+Dado /^que exista uma habilidade "([^"]*)"$/ do |habilidade_nome|
+  insert :habilidade do
+    nome habilidade_nome
+    empresa :id => 1
+  end
+end
+
+Dado /^que exista uma ocorrência "([^"]*)"$/ do |ocorrencia_nome|
+  insert :ocorrencia do
+    descricao ocorrencia_nome
+    pontuacao 5
+    integraac false
+    empresa :id => 1
+  end
+end
+
+Dado /^que exista uma providencia "([^"]*)"$/ do |providencia_nome|
+  insert :providencia do
+    descricao providencia_nome
+    empresa :id => 1
+  end
+end
+
 Dado /^que exista um conhecimento "([^"]*)" na area organizacional "([^"]*)"$/ do |conhecimento_nome, area_nome|
   insert :conhecimento_areaorganizacional, :sem_id => true do
      conhecimentos :conhecimento, :nome => conhecimento_nome
@@ -941,6 +1001,13 @@ Dado /^que exista um conhecimento "([^"]*)" no cargo "([^"]*)"$/ do |conheciment
   insert :cargo_conhecimento, :sem_id => true do
      cargo :nome => cargo_nome
      conhecimentos :conhecimento, :nome => conhecimento_nome
+  end
+end
+
+Dado /^que exista uma habilidade "([^"]*)" no cargo "([^"]*)"$/ do |habilidade_nome, cargo_nome|
+  insert :cargo_conhecimento, :sem_id => true do
+     cargo :nome => cargo_nome
+     habilidades :habilidade, :nome => habilidade_nome
   end
 end
 
@@ -1017,6 +1084,14 @@ Dado /^que exista um motivo de desligamento "([^"]*)"$/ do |motivo_nome|
      empresa :id => 1
     end
 end
+
+Dado /^que exista um motivo de desligamento inativo "([^"]*)"$/ do |motivo_nome|
+   insert :motivodemissao do
+     motivo motivo_nome
+     empresa :id => 1
+     ativo false
+    end
+end
  
 Dado /^que exista a etapa seletiva "([^"]*)"$/ do |etapaseletiva_nome|
    exec_sql "insert into etapaseletiva (id,nome,ordem,empresa_id) values(nextval('etapaseletiva_sequence'),'#{etapaseletiva_nome}', 1,  1);"
@@ -1024,6 +1099,38 @@ end
 
 Dado /^que exista o motivo da solicitacao "([^"]*)"$/ do |motivosolicitacao_descricao|
    exec_sql "insert into motivosolicitacao (id,descricao) values(nextval('motivosolicitacao_sequence'),'#{motivosolicitacao_descricao}');"
+end
+
+Dado /^que exista um documento "([^"]*)"$/ do |documento_nome|
+    insert :tipodocumento do
+    descricao documento_nome
+  end
+end
+
+Dado /^que exista um modelo de entrevista de desligamento "([^"]*)" com a pergunta "([^"]*)"$/ do |titulo, pergunta|
+  insert :questionario do
+    titulo titulo
+    tipo 1
+    liberado true
+    anonimo false
+    aplicarporaspecto false
+    empresa :id => 1
+  end
+
+  insert :pergunta do
+    texto pergunta
+    questionario :titulo => titulo
+    tipo 4
+    ordem 1
+    notaminima 1
+    notamaxima 10
+    comentario false
+  end
+
+  insert :entrevista do
+    questionario_id 1
+    ativa true
+  end
 end
 
 Dado /^que haja um[a]? (.*) com (.*)$/ do |entidade, atributos|
@@ -1036,4 +1143,23 @@ def get_field field
   label = all(:xpath, "//label[contains(text(), '#{field}')]").select{|e| e.text.match("^\s*#{field}\:?")}.first
   field = label[:for] unless label.nil?
   field
+end
+
+Dado /^que eu insira a ocorrencia "([^"]*)" para o colaborador  "([^"]*)" na data inicial "([^"]*)"$/ do |nome_ocorrencia, nome_colaborador, dataini|
+
+    insert :colaboradorocorrencia do
+      dataini dataini
+      colaborador :nome => nome_colaborador
+      ocorrencia :descricao => nome_ocorrencia
+    end
+end
+
+Dado /^que eu insira a providencia "([^"]*)" na ocorrencia "([^"]*)" para o colaborador  "([^"]*)" na data inicial "([^"]*)"$/ do |nome_providencia, nome_ocorrencia, nome_colaborador, dataini|
+
+    insert :colaboradorocorrencia do
+      dataini dataini
+      colaborador :nome => nome_colaborador
+      ocorrencia :descricao => nome_ocorrencia
+      providencia :descricao => nome_providencia
+    end
 end

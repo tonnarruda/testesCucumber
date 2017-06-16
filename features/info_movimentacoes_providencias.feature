@@ -1,73 +1,78 @@
 # language: pt
 
-Funcionalidade: Providências
+Funcionalidade: Gerenciamento de Providencias
 
-  Cenário: Cadastro de providencia Ocorrências
+  Cenário: Associar Providencias aos Empregados |Sem ocorrência Cadastrada|
 
-    Dado que exista um colaborador "Rombona", da area "Financeiro", com o cargo "Contador" e a faixa salarial "I"
-    Dado que haja uma ocorrencia com id 1, descricao "Falta", pontuacao 1, integraac "false", empresa_id 1
-    Dado que haja uma providencia com id 1, descricao "Não Faltar", empresa_id 1
-    Dado que haja uma colaboradorocorrencia com id 1, dataIni "2013-11-05", dataFim "2013-11-06", colaborador_id 1, ocorrencia_id 1
-
-    Dado que eu esteja logado com o usuário "SOS"
+      Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "Info. Funcionais > Movimentações > Providências"
-    Então eu devo ver o título "Providências"
-    E eu devo ver "Rombona"
-    E eu devo ver "Falta"
-    E eu não devo ver "Não Faltar"
-    E eu clico na ação "Inserir" de "Rombona"
+     Então eu devo ver "Não existem providências a serem listadas para o filtro informado"
 
-    Então eu devo ver o título "Inserir Providência"
-    E eu clico no botão "Cancelar"
+#------------------------------------------------------------------------------------------------------------------------
 
-    Então eu devo ver o título "Providências"
-    E eu clico na ação "Inserir" de "Rombona"
-    Então eu devo ver o título "Inserir Providência"
-    E eu devo ver "Colaborador: Rombona"
-    E eu devo ver "Ocorrencia: Falta"
-    E eu devo ver "Data de Início: 05/11/2013"
-    E eu devo ver "Data de Término: 06/11/2013"
-    E eu seleciono (JS) "1" de "providencia"
-    E eu clico no botão "Gravar"
+  Cenário: Associar Providencias aos Empregados
 
-    Então eu devo ver o título "Providências"
-    E eu clico na ação "Editar" de "Rombona"
-    Então eu devo ver o título "Editar Providência"
-    E eu clico no botão "Cancelar"
-    Então eu devo ver o título "Providências"
+      Dado que exista um colaborador "Ellen Pompeo", da area "Financeiro", com o cargo "Contador" e a faixa salarial "I"
+      Dado que exista uma ocorrência "Faltas"
+      Dado que eu insira a ocorrencia "Faltas" para o colaborador  "Ellen Pompeo" na data inicial "01/05/2017"
+      Dado que exista uma providencia "Suspensao por ma conduta"
+      Dado que eu esteja logado com o usuário "SOS"
+    Quando eu acesso o menu "Info. Funcionais > Movimentações > Providências"
+        E eu clico na ação "Inserir" de "Ellen Pompeo"
+        E eu seleciono (JS) "1" de "providencia"
+        E eu clico no botão "Gravar"
 
-    Então eu clico "Exibir Filtro"
-   	E eu preencho "Colaborador" com "ro"
-   	E eu preencho "Ocorrência" com "Falt"
-    E eu seleciono (JS) "C" de "formBusca_comProvidencia"
-    E eu clico no botão "Pesquisar"
-    E eu devo ver "Rombona"
-    E eu devo ver "Falta"
+#------------------------------------------------------------------------------------------------------------------------
 
-    Então eu preencho "Colaborador" com ""
-   	E eu preencho "Ocorrência" com ""
-    E eu seleciono (JS) "S" de "formBusca_comProvidencia"
-    E eu clico no botão "Pesquisar"
-    E eu não devo ver "Rombona"
-    E eu não devo ver "Falta"
+  Cenário: Editar Providencias associadas aos Empregados
 
-    E eu seleciono (JS) "T" de "formBusca_comProvidencia"
-    E eu clico no botão "Pesquisar"
-    E eu devo ver "Rombona"
-    E eu devo ver "Falta"
+      Dado que exista uma ocorrência "Faltas"
+      Dado que exista uma providencia "Suspensao por ma conduta"
+      Dado que exista uma providencia "Atrasos"
+      Dado que exista um colaborador "Ellen Pompeo", da area "DEV", com o cargo "DEV" e a faixa salarial "A"
+      Dado que eu insira a providencia "Suspensao por ma conduta" na ocorrencia "Faltas" para o colaborador  "Ellen Pompeo" na data inicial "31/05/2017"
+      Dado que eu esteja logado com o usuário "SOS"
+    Quando eu acesso o menu "Info. Funcionais > Movimentações > Providências"
+        E eu clico na ação "Editar" de "Ellen Pompeo"
+        E eu seleciono (JS) "2" de "providencia"
+        E eu clico no botão "Gravar"
 
+#------------------------------------------------------------------------------------------------------------------------
 
+  Cenário: Excluir Providencias associadas aos Empregados
 
+      Dado que exista uma ocorrência "Faltas"
+      Dado que exista uma providencia "Suspensao por ma conduta"
+      Dado que exista um colaborador "Ellen Pompeo", da area "DEV", com o cargo "DEV" e a faixa salarial "A"
+      Dado que eu insira a providencia "Suspensao por ma conduta" na ocorrencia "Faltas" para o colaborador  "Ellen Pompeo" na data inicial "31/05/2017"
+      Dado que eu esteja logado com o usuário "SOS"
+    Quando eu acesso o menu "Info. Funcionais > Movimentações > Providências"
+        E eu clico na ação "Editar" de "Ellen Pompeo"
+        E eu seleciono (JS) "" de "providencia"
+        E eu clico no botão "Gravar"
 
+#------------------------------------------------------------------------------------------------------------------------
 
+  Cenário: Pesquisar Providencias associadas aos Empregados
 
-
-
-
-
-
-
-
-
-
-
+      Dado que exista uma ocorrência "Faltas"
+      Dado que exista uma ocorrência "Briga com outro Colaborador"
+      Dado que exista uma providencia "Suspensao por ma conduta"
+      Dado que exista uma providencia "Advertência Verbal"
+      Dado que exista um colaborador "Ellen Pompeo", da area "DEV", com o cargo "DEV" e a faixa salarial "A"
+      Dado que eu insira a providencia "Suspensao por ma conduta" na ocorrencia "Faltas" para o colaborador  "Ellen Pompeo" na data inicial "31/05/2017"
+      Dado que eu insira a ocorrencia "Briga com outro Colaborador" para o colaborador  "Ellen Pompeo" na data inicial "01/05/2017"
+      Dado que eu esteja logado com o usuário "SOS"
+    Quando eu acesso o menu "Info. Funcionais > Movimentações > Providências"
+     Então eu clico "Exibir Filtro"
+         E eu preencho "Colaborador" com "Ellen"
+         E eu clico no botão "Pesquisar"
+         E eu devo ver "Faltas"
+         E eu devo ver "Briga com outro Colaborador"
+     Então eu seleciono (JS) "S" de "formBusca_comProvidencia"
+         E eu clico no botão "Pesquisar"
+         E eu não devo ver "Faltas"
+     Então eu seleciono (JS) "C" de "formBusca_comProvidencia"
+         E eu clico no botão "Pesquisar"
+         E eu não devo ver "Briga com outro Colaborador"
+     Então eu devo deslogar do sistema
