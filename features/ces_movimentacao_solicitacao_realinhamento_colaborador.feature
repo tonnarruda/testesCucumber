@@ -28,7 +28,7 @@ Funcionalidade: Solicitação de Realinhamento por Colaborador
     E eu seleciono (JS) "-1" de "estabelecimentoProposta"
     E eu seleciono (JS) "-1" de "areaOrganizacionalProposta"
     E eu seleciono (JS) "-1" de "faixa"
-    E eu seleciono (JS) "1" de "tipoSalario"
+    E eu seleciono (JS) "3" de "tipoSalario"
     E eu preencho o campo (JS) "" com "wwctrl_salarioProposto"
     E eu clico no botão "Gravar"
     Então eu devo ver o alert do valida campos e clico no ok
@@ -42,9 +42,11 @@ Funcionalidade: Solicitação de Realinhamento por Colaborador
 
     E eu seleciono (JS) "2" de "faixa"
 
-    E eu seleciono (JS) "1" de "tipoSalario"
-    E eu preencho o campo (JS) "1.000,00" com "wwctrl_salarioProposto"
-    E eu preencho o campo (JS) "teste" com "observacao"
+    E eu espero 1 segundo
+    E eu seleciono (JS) "3" de "tipoSalario"
+    E eu espero 1 segundo
+    E eu preencho o campo (JS) "salarioProposto" com "1.000,00"
+    E eu preencho o campo (JS) "observacao" com "teste"
 
     E eu clico no botão "Gravar"
     Então eu devo ver "Solicitação de realinhamento incluída com sucesso"

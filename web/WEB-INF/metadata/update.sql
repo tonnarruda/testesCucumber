@@ -25231,3 +25231,37 @@ insert into migrations values('20170522155214');--.go
 alter table MotivoDemissao add column ativo boolean NOT NULL default true;--.go
 insert into migrations values('20170524103755');--.go
 update parametrosdosistema set appversao = '1.1.180.212';--.go
+-- versao 1.1.181.213
+
+CREATE OR REPLACE FUNCTION setarTodasAsDatasAdmissaoColaborador() RETURNS integer AS $$ 
+DECLARE 
+mv RECORD; 
+BEGIN 
+FOR mv IN 
+    SELECT hc.data as dataAdmissao, c.id from colaborador c 
+    inner join historicocolaborador hc on c.id=hc.colaborador_id 
+    where c.dataadmissao is null 
+    and hc.data = (select min(hc2.data) from historicocolaborador hc2 where hc2.colaborador_id = c.id) 
+LOOP       
+    update colaborador set dataadmissao = mv.dataAdmissao where id= mv.id;  
+END LOOP;   
+
+RETURN 1;  
+END; 
+$$ LANGUAGE plpgsql;--.go  
+
+select setarTodasAsDatasAdmissaoColaborador();--.go
+
+ALTER TABLE colaborador ALTER COLUMN dataAdmissao SET NOT NULL;--.go
+
+DROP FUNCTION setarTodasAsDatasAdmissaoColaborador();--.go
+insert into migrations values('20170529110036');--.go
+update exame set nome = 'Avaliação Clínica e Anamnese Ocupacional' where nome = 'Avaliação Clínica e Anaminese Ocupacional';--.go
+insert into migrations values('20170530112613');--.go
+ALTER TABLE colaboradorafastamento ADD COLUMN tipoRegistroDeSaude CHARACTER VARYING(4);--.go
+UPDATE colaboradorafastamento SET tipoRegistroDeSaude = 'CRM' where medicocrm is not null and medicocrm <> '';--.go
+ALTER TABLE colaboradorafastamento RENAME COLUMN medicocrm TO numeroDoRegistroDeSaude;--.go
+ALTER TABLE colaboradorafastamento RENAME COLUMN mediconome TO nomeProfissionalDaSaude;--.go
+
+insert into migrations values('20170613105904');--.go
+update parametrosdosistema set appversao = '1.1.181.213';--.go

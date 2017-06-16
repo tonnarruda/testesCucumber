@@ -27,8 +27,11 @@ Funcionalidade: Afastamentos
     E eu preencho o campo (JS) "inicio" com "25/07/2011"
     E eu preencho o campo (JS) "fim" com "29/07/2011"
     E eu preencho "CID" com "A010"
-    E eu preencho "Médico" com "fernando"
-    E eu preencho "CRM" com "9999"
+    E eu preencho "Profissional da saúde" com "fernando"
+    E eu seleciono "CRM" de "Registro"
+    E eu preencho "Número do registro" com "9999"
+    E eu preencho o campo (JS) "numeroDoRegistroDeSaude" com "123456"
+    
     E eu preencho "Observações" com "acidentado"
     E eu clico no botão "Gravar"
     E eu devo ver o título "Afastamentos"
