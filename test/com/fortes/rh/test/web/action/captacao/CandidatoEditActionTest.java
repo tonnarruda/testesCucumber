@@ -3,11 +3,13 @@ package com.fortes.rh.test.web.action.captacao;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Map;
 
 import mockit.Mockit;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import com.fortes.rh.business.captacao.CandidatoCurriculoManager;
 import com.fortes.rh.business.captacao.CandidatoIdiomaManager;
@@ -26,6 +28,7 @@ import com.fortes.rh.business.geral.EstadoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoCurriculo;
+import com.fortes.rh.model.captacao.Formacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Empresa;
@@ -35,6 +38,7 @@ import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.captacao.FormacaoFactory;
 import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
 import com.fortes.rh.test.util.mockObjects.MockActionContext;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
@@ -59,6 +63,7 @@ public class CandidatoEditActionTest extends MockObjectTestCase
 	private Mock experienciaManager;
 	private Mock bairroManager;
 	private Mock comoFicouSabendoVagaManager;
+	private Mock transactionManager;
 
     protected void setUp() throws Exception
     {
@@ -71,6 +76,7 @@ public class CandidatoEditActionTest extends MockObjectTestCase
         cargoManager = new Mock(CargoManager.class);
         bairroManager = new Mock(BairroManager.class);
         comoFicouSabendoVagaManager = new Mock(ComoFicouSabendoVagaManager.class);
+        transactionManager = new Mock(PlatformTransactionManager.class);
 
         action.setCandidatoManager((CandidatoManager) manager.proxy());
         action.setCandidatoCurriculoManager((CandidatoCurriculoManager) candidatoCurriculoManager.proxy());
@@ -79,6 +85,8 @@ public class CandidatoEditActionTest extends MockObjectTestCase
         action.setCargoManager((CargoManager) cargoManager.proxy());
         action.setBairroManager((BairroManager) bairroManager.proxy());
         action.setComoFicouSabendoVagaManager((ComoFicouSabendoVagaManager)comoFicouSabendoVagaManager.proxy());
+        action.setTransactionManager((PlatformTransactionManager) transactionManager.proxy());
+        
         
         parametrosDoSistemaManager = mock(ParametrosDoSistemaManager.class);
         action.setParametrosDoSistemaManager((ParametrosDoSistemaManager) parametrosDoSistemaManager.proxy());
@@ -103,6 +111,7 @@ public class CandidatoEditActionTest extends MockObjectTestCase
         
         experienciaManager = mock(ExperienciaManager.class);
         action.setExperienciaManager((ExperienciaManager) experienciaManager.proxy());
+        
 
         Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
         Mockit.redefineMethods(ActionContext.class, MockActionContext.class);
@@ -335,6 +344,88 @@ public class CandidatoEditActionTest extends MockObjectTestCase
     	
     	assertEquals("input", action.insertCurriculo());
     }
+    
+    public void testInsertFormacaoDuplicadaDeveRetornarListaUnica() throws Exception{  	
+    	
+		Map<String, Collection> session = ActionContext.getContext().getSession();
+		
+		Formacao formacao = FormacaoFactory.getEntity();
+		Formacao formacao2 = FormacaoFactory.getEntity();
+		
+		Collection<Formacao> formacaos = new ArrayList<Formacao>();
+		Collection<Formacao> listaEsperada = new ArrayList<Formacao>();
+    	
+    	Candidato candidato = CandidatoFactory.getCandidato();
+    	candidato.setId(null);
+    	candidato.getEndereco().setCidade(new Cidade());
+    	candidato.getEndereco().setUf(new Estado());
+    	
+    	action.setCandidato(candidato);
+    	
+    	formacaos= Arrays.asList(formacao,formacao2);
+    	
+    	session.put("SESSION_FORMACAO", formacaos);
+    	
+    	listaEsperada.add(formacao);
+    	
+    	cargoManager.expects(once()).method("populaCargos").will(returnValue(new ArrayList<Cargo>()));
+    	manager.expects(once()).method("verifyCPF").withAnyArguments().will(returnValue(null));
+    	
+    	manager.expects(once()).method("save").with(ANYTHING).will(returnValue(candidato));
+    	formacaoManager.expects(once()).method("save").with(ANYTHING).will(returnValue(formacao));
+
+    	formacaoManager.expects(once()).method("retornaListaSemDuplicados").with(eq(formacaos)).will(returnValue(listaEsperada));
+    	
+    	transactionManager.expects(once()).method("getTransaction").withAnyArguments().will(returnValue(null));
+    	transactionManager.expects(once()).method("commit").withAnyArguments().isVoid();
+    	
+    	
+    	assertEquals("success", action.insert());
+    }
+    
+    public void testUpdateFormacaoDuplicadaDeveRetornarListaUnica() throws Exception{
+    	
+     	Map<String, Collection> session = ActionContext.getContext().getSession();
+    	
+    	Formacao formacao = FormacaoFactory.getEntity();
+    	Formacao formacao2 = FormacaoFactory.getEntity();
+    	
+    	Collection<Formacao> formacaos = new ArrayList<Formacao>();
+    	Collection<Formacao> listaEsperada = new ArrayList<Formacao>();
+ 
+    	Candidato candidato = CandidatoFactory.getCandidato();
+    	candidato.getEndereco().setCidade(new Cidade());
+    	candidato.getEndereco().setUf(new Estado());
+    	
+    	action.setCandidato(candidato);
+        	
+    	formacaos= Arrays.asList(formacao,formacao2);
+    	
+    	session.put("SESSION_FORMACAO", formacaos);
+    	
+    	listaEsperada.add(formacao);
+    	
+    	cargoManager.expects(once()).method("populaCargos").will(returnValue(new ArrayList<Cargo>()));
+    	manager.expects(once()).method("verifyCPF").withAnyArguments().will(returnValue(null));
+    
+    	formacaoManager.expects(once()).method("save").with(ANYTHING).will(returnValue(formacao));
+    	manager.expects(once()).method("getOcrTextoById").with(eq(candidato.getId())).will(returnValue("ocr"));
+    	
+    	manager.expects(once()).method("ajustaSenha").with(ANYTHING);
+    	manager.expects(once()).method("update").with(ANYTHING);
+    	
+    	formacaoManager.expects(once()).method("removeCandidato").with(ANYTHING);
+    	candidatoIdiomaManager.expects(once()).method("removeCandidato").with(ANYTHING);
+    	experienciaManager.expects(once()).method("removeCandidato").with(ANYTHING);
+    	
+    	transactionManager.expects(once()).method("getTransaction").withAnyArguments().will(returnValue(null));
+    	
+    	formacaoManager.expects(once()).method("retornaListaSemDuplicados").with(eq(formacaos)).will(returnValue(listaEsperada));
+		transactionManager.expects(once()).method("commit").withAnyArguments().isVoid();
+    	
+    	assertEquals("success", action.update());
+    }
+    
     
     public void testGets() throws Exception
     {

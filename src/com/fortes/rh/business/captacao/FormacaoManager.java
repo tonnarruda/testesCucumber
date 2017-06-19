@@ -20,4 +20,6 @@ public interface FormacaoManager extends GenericManager<Formacao>
 	public void montaFormacaosBDS(Collection<Formacao> formacaos, Candidato candidato);
 	public Collection<Formacao> findByColaborador(Long id);
 	public Collection<Formacao> findByCandidato(Long candidatoId);
+	public Collection<Formacao> retornaListaSemDuplicados(Collection<Formacao> formacaos);
+	public boolean checaMesmoElemento(Formacao formacao,Collection<Formacao> formacaos );
 }

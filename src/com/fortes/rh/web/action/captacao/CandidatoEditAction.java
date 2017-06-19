@@ -15,6 +15,10 @@ import javax.imageio.stream.FileImageInputStream;
 import javax.servlet.http.HttpServletResponse;
 
 import org.hibernate.NonUniqueResultException;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.model.type.FileUtil;
 import com.fortes.rh.business.captacao.CandidatoCurriculoManager;
@@ -65,6 +69,7 @@ import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.LongUtil;
+import com.fortes.rh.util.ModelUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.fortes.validation.validator.NotEmpty;
@@ -172,6 +177,7 @@ public class CandidatoEditAction extends MyActionSupportEdit
 	private Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras = new ArrayList<ConfiguracaoCampoExtra>();
 	private CamposExtras camposExtras;
 	private Solicitacao solicitacao;
+	private PlatformTransactionManager transactionManager;
 	
 	private void prepare() throws Exception
 	{
@@ -363,9 +369,18 @@ public class CandidatoEditAction extends MyActionSupportEdit
 			candidato.setFoto(null);
 			return Action.INPUT;
 		}
+		
+		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+		TransactionStatus status = transactionManager.getTransaction(def);
 
 		Map session = ActionContext.getContext().getSession();
-		formacaos = (Collection<Formacao>) session.get("SESSION_FORMACAO");
+		Collection<Formacao> sessionFormacao = (Collection<Formacao>) session.get("SESSION_FORMACAO");
+		
+		try
+		{
+			
+		formacaos = formacaoManager.retornaListaSemDuplicados(sessionFormacao);
 		idiomas = (Collection<CandidatoIdioma>) session.get("SESSION_IDIOMA");
 		experiencias = (Collection<Experiencia>) session.get("SESSION_EXPERIENCIA");
 
@@ -375,29 +390,17 @@ public class CandidatoEditAction extends MyActionSupportEdit
 		candidato.setDisponivel(true);
 		candidato.setDataCadastro(new Date());
 		candidato.setDataAtualizacao(new Date());
+		
+		if(candidato.getSenha()!=null && candidato.getSenha().isEmpty())
 		candidato.setSenha(StringUtil.encodeString(candidato.getSenha()));
 
 		ajustaCamposNulls(candidato);
 		
-		if(moduloExterno)
-		{
-			candidato.setOrigem(OrigemCandidato.EXTERNO);
-			candidatoManager.enviaAvisoDeCadastroCandidato(candidato.getNome(), empresa.getId());
-		}else
-			candidato.setOrigem(OrigemCandidato.CADASTRADO);
+		verificaCandidatoModuloExterno(empresa);
 
 		carregaChecksCandidato();
 
 		candidato.getPessoal().setCpf(StringUtil.removeMascara(candidato.getPessoal().getCpf()));
-
-		if(candidato.getPessoal().getCtps().getCtpsUf().getId() == null)
-			candidato.getPessoal().getCtps().setCtpsUf(null);
-
-		if(candidato.getPessoal().getRgUf().getId() == null)
-			candidato.getPessoal().setRgUf(null);
-
-		if (candidato.getComoFicouSabendoVaga()!=null && candidato.getComoFicouSabendoVaga().getId()==null)
-			candidato.setComoFicouSabendoVaga(null);
 		
 		if(habilitaCampoExtra && camposExtras != null)
 			candidato.setCamposExtras(camposExtrasManager.save(camposExtras));
@@ -405,15 +408,37 @@ public class CandidatoEditAction extends MyActionSupportEdit
 		candidatoManager.save(candidato);
 
 		saveDetalhes();
-
+		
+		transactionManager.commit(status);
+		
 		session.put("SESSION_FORMACAO", null);
 		session.put("SESSION_IDIOMA", null);
 		session.put("SESSION_EXPERIENCIA", null);
 		
+		addActionSuccess("Candidato <strong>" + candidato.getNome() + "</strong>  cadastrado com sucesso.");
+		
 		if (moduloExterno && solicitacao != null && solicitacao.getId() != null)
-			return "enviarCurriculo";
+			return "enviarCurriculo";	
+		}
+	
+		catch(Exception e){
+
+		e.printStackTrace();	
+		transactionManager.rollback(status);
+		addActionError("Erro ao gravar as informações do candidato!");
+				
+		}
 
 		return Action.SUCCESS;
+	}
+
+	private void verificaCandidatoModuloExterno(Empresa empresa) {
+		if(moduloExterno)
+		{
+			candidato.setOrigem(OrigemCandidato.EXTERNO);
+			candidatoManager.enviaAvisoDeCadastroCandidato(candidato.getNome(), empresa.getId());
+		}else
+			candidato.setOrigem(OrigemCandidato.CADASTRADO);
 	}
 
 	private void ajustaCamposNulls(Candidato candidatoAux) 
@@ -422,6 +447,12 @@ public class CandidatoEditAction extends MyActionSupportEdit
 			candidatoAux.getEndereco().setUf(null);
 		if(candidatoAux.getEndereco().getCidade() == null || candidatoAux.getEndereco().getCidade().getId() == null)
 			candidatoAux.getEndereco().setCidade(null);
+		if(!ModelUtil.hasNull("getPessoal().getCtps().getCtpsUf().getId()", candidatoAux))
+			candidatoAux.getPessoal().getCtps().setCtpsUf(null);
+		if(!ModelUtil.hasNull("getPessoal().getRgUf().getId()", candidatoAux))
+			candidatoAux.getPessoal().setRgUf(null);
+		if (candidatoAux.getComoFicouSabendoVaga()!=null && candidatoAux.getComoFicouSabendoVaga().getId()==null)
+			candidatoAux.setComoFicouSabendoVaga(null);
 	}
 
 	private boolean fotoValida(com.fortes.model.type.File foto)
@@ -485,10 +516,18 @@ public class CandidatoEditAction extends MyActionSupportEdit
 			return Action.INPUT;				
 		}
 		
+		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+		TransactionStatus status = transactionManager.getTransaction(def);
+	
 		Map session = ActionContext.getContext().getSession();
-		formacaos = (Collection<Formacao>) session.get("SESSION_FORMACAO");
+		Collection<Formacao> sessionFormacao = (Collection<Formacao>) session.get("SESSION_FORMACAO");
+		
+		formacaos = formacaoManager.retornaListaSemDuplicados(sessionFormacao);
 		idiomas = (Collection<CandidatoIdioma>) session.get("SESSION_IDIOMA");
 		experiencias = (Collection<Experiencia>) session.get("SESSION_EXPERIENCIA");
+		
+		try {
 
 		candidato.setDataAtualizacao(new Date());
 		ajustaCamposNulls(candidato);
@@ -497,9 +536,6 @@ public class CandidatoEditAction extends MyActionSupportEdit
 
 		candidato.getPessoal().setCpf(StringUtil.removeMascara(candidato.getPessoal().getCpf()));
 		candidatoManager.ajustaSenha(candidato);
-		
-		if (candidato.getComoFicouSabendoVaga()!=null && candidato.getComoFicouSabendoVaga().getId()==null)
-			candidato.setComoFicouSabendoVaga(null);
 		
 		if(habilitaCampoExtra && camposExtras != null)
 			candidato.setCamposExtras(camposExtrasManager.save(camposExtras));		
@@ -514,11 +550,25 @@ public class CandidatoEditAction extends MyActionSupportEdit
 		experienciaManager.removeCandidato(candidato);
 
 		saveDetalhes();
-
+		
+		transactionManager.commit(status);
+		
 		session.put("SESSION_FORMACAO", null);
 		session.put("SESSION_IDIOMA", null);
-		session.put("SESSION_EXPERIENCIA", null);
+		session.put("SESSION_EXPERIENCIA", null);	
 		
+		}
+		
+		catch (Exception e) {
+			prepare();
+			e.printStackTrace();	
+			transactionManager.rollback(status);
+			addActionError("Erro ao gravar as informações do candidato!");
+			
+			session.put("SESSION_FORMACAO", formacaos);
+			return Action.INPUT;
+
+		}
 		return Action.SUCCESS;
 	}
 	
@@ -768,11 +818,14 @@ public class CandidatoEditAction extends MyActionSupportEdit
 			candidato.setConhecimentos(conhecimentosTmp);
 		}
 	}
+	
+
 
 	private void saveDetalhes()
 	{
 		if (formacaos != null && !formacaos.isEmpty())
 		{
+//			formacaos=formacaoManager.retornaListaSemDuplicados(formacaos);
 			for (Formacao f : formacaos)
 			{
 				f.setId(null);
@@ -808,7 +861,8 @@ public class CandidatoEditAction extends MyActionSupportEdit
 		bairro.setNome(candidato.getEndereco().getBairro());
 		bairro.setCidade(candidato.getEndereco().getCidade());
 
-		if(bairro.getNome() != null && !bairro.getNome().trim().equals("") && bairro.getCidade().getId() != null)
+
+		if((bairro.getNome() != null && !bairro.getNome().isEmpty()) && (bairro.getCidade()!=null && bairro.getCidade().getId() != null))
 		{
 			if(!bairroManager.existeBairro(bairro))
 			{
@@ -1450,6 +1504,10 @@ public class CandidatoEditAction extends MyActionSupportEdit
 
 	public void setConfigCampoExtraVisivelObrigadotorio( ConfiguracaoCampoExtraVisivelObrigadotorio configCampoExtraVisivelObrigadotorio) {
 		this.configCampoExtraVisivelObrigadotorio = configCampoExtraVisivelObrigadotorio;
+	}
+	public void setTransactionManager(PlatformTransactionManager transactionManager)
+	{
+		this.transactionManager = transactionManager;
 	}
 	
 }
