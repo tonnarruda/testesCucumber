@@ -31,7 +31,6 @@ import com.fortes.rh.test.util.mockObjects.MockRelatorioUtil;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.cargosalario.FaixaSalarialHistoricoEditAction;
-import com.fortes.web.tags.CheckBox;
 
 public class FaixaSalarialHistoricoEditActionTest extends MockObjectTestCase
 {
@@ -299,72 +298,6 @@ public class FaixaSalarialHistoricoEditActionTest extends MockObjectTestCase
     	indiceManager.expects(once()).method("findAll").with(ANYTHING);
 
     	assertEquals("success", action.prepareUpdate());
-    }
-    
-    public void testAnaliseTabelaSalarialFiltro() throws Exception
-    {
-    	grupoOcupacionalManager.expects(once()).method("populaCheckOrderNome").will(returnValue(new ArrayList<CheckBox>()));
-    	areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").will(returnValue(new ArrayList<CheckBox>()));
-    	cargoManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<CheckBox>()));
-    	
-    	assertEquals("success",action.analiseTabelaSalarialFiltro());
-    }
-    
-    public void testAnaliseTabelaSalarialList() throws Exception
-    {
-    	String[] grupoOcupacionalsCheck={"1"}, cargosCheck={"2"}, areasCheck={""};
-    	Date data = new Date();
-    	
-    	action.setGrupoOcupacionalsCheck(grupoOcupacionalsCheck);
-    	action.setCargosCheck(cargosCheck);
-    	action.setAreasCheck(areasCheck);
-    	action.setData(data);
-    	
-    	Collection<FaixaSalarialHistorico> faixaSalarialHistoricos = new ArrayList<FaixaSalarialHistorico>();
-    	faixaSalarialHistoricos.add(FaixaSalarialHistoricoFactory.getEntity(232L));
-		
-    	manager.expects(once()).method("findByGrupoCargoAreaData").with(new Constraint[] {eq(grupoOcupacionalsCheck),eq(cargosCheck),eq(areasCheck),eq(data), eq(Boolean.TRUE), eq(1L), ANYTHING}).will(returnValue(faixaSalarialHistoricos));
-    	cargoManager.expects(once()).method("getCargosFromFaixaSalarialHistoricos").with(eq(faixaSalarialHistoricos)).will(returnValue(new ArrayList<Cargo>()));
-    	
-    	assertEquals("success",action.analiseTabelaSalarialList());
-    	assertEquals(faixaSalarialHistoricos, action.getFaixaSalarialHistoricos());
-    }
-    public void testRelatorioAnaliseTabelaSalarial() throws Exception
-    {
-    	String[] grupoOcupacionalsCheck={"1"}, cargosCheck={"2"}, areasCheck={""};
-    	Date data = new Date();
-    	
-    	action.setGrupoOcupacionalsCheck(grupoOcupacionalsCheck);
-    	action.setCargosCheck(cargosCheck);
-    	action.setAreasCheck(areasCheck);
-    	action.setData(data);
-    	
-    	Collection<FaixaSalarialHistorico> faixaSalarialHistoricos = new ArrayList<FaixaSalarialHistorico>();
-    	faixaSalarialHistoricos.add(FaixaSalarialHistoricoFactory.getEntity(232L));
-		
-    	manager.expects(once()).method("findByGrupoCargoAreaData").with(new Constraint[] {eq(grupoOcupacionalsCheck),eq(cargosCheck),eq(areasCheck),eq(data), eq(Boolean.TRUE), eq(1L), eq(null)}).will(returnValue(faixaSalarialHistoricos));
-    	cargoManager.expects(once()).method("getCargosFromFaixaSalarialHistoricos").with(eq(faixaSalarialHistoricos)).will(returnValue(new ArrayList<Cargo>()));
-    	
-    	assertEquals("success",action.relatorioAnaliseTabelaSalarial());
-    	assertEquals(faixaSalarialHistoricos, action.getFaixaSalarialHistoricos());
-    	assertNotNull(action.getParametros());
-    }
-    
-    public void testAnaliseTabelaSalarialListException() throws Exception
-    {
-    	String[] areasCheck={""};
-    	Date data = new Date();
-    	action.setAreasCheck(areasCheck);
-    	action.setData(data);
-    	
-    	manager.expects(once()).method("findByGrupoCargoAreaData").with(new Constraint[] {eq(null),eq(null),eq(areasCheck),eq(data), eq(Boolean.TRUE), eq(1L), eq(null)}).will(throwException(new Exception("Sem dados para o filtro")));
-    	//prepare
-    	grupoOcupacionalManager.expects(once()).method("populaCheckOrderNome").will(returnValue(new ArrayList<CheckBox>()));
-    	areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").will(returnValue(new ArrayList<CheckBox>()));
-    	cargoManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<CheckBox>()));
-    	
-    	assertEquals("input",action.analiseTabelaSalarialList());
-    	assertNotNull(action.getActionMsg());
     }
 
     public void testGet() throws Exception

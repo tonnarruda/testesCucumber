@@ -25,6 +25,7 @@
 	
 	<bean id="cargoDWR" class="com.fortes.rh.web.dwr.CargoDWR">
 		<property name="cargoManager" ref="cargoManager"/>
+		<property name="areaOrganizacionalManager" ref="areaOrganizacionalManager"/>
 	</bean>
 	
 	<bean id="competenciaDWR" class="com.fortes.rh.web.dwr.CompetenciaDWR">

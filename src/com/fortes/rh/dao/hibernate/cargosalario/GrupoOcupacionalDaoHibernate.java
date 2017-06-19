@@ -5,6 +5,7 @@ import java.util.Collection;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
@@ -93,6 +94,31 @@ public class GrupoOcupacionalDaoHibernate extends GenericDaoHibernate<GrupoOcupa
 		criteria.addOrder(Order.asc("g.nome"));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(GrupoOcupacional.class));
+
+		return criteria.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Collection<GrupoOcupacional> findAllSelectByAreasResponsavelCoresponsavel(Long empresaId, Long[] areasIds)
+	{
+		Criteria criteria = getSession().createCriteria(GrupoOcupacional.class,"g");
+		criteria.createCriteria("g.empresa", "e", Criteria.INNER_JOIN);
+		criteria.createCriteria("g.cargos", "cg", Criteria.INNER_JOIN);
+		criteria.createCriteria("cg.areasOrganizacionais", "a", Criteria.INNER_JOIN);
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("g.id"), "id");
+		p.add(Projections.property("g.nome"), "nome");
+
+		criteria.setProjection(Projections.distinct(p));
+
+		criteria.add(Expression.eq("e.id", empresaId));
+		criteria.add(Expression.in("a.id", areasIds));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+
+		criteria.addOrder(Order.asc("g.nome"));
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(GrupoOcupacional.class));
 
 		return criteria.list();

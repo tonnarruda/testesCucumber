@@ -25,7 +25,7 @@
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
 			var gruposIds = getArrayCheckeds(frm, nameCheck);
-			CargoDWR.getCargoByGrupoAtivoInativo(createListCargos, gruposIds, empresaId, 'T');
+			CargoDWR.getCargoByGrupoAtivoInativo(createListCargos,false,gruposIds, empresaId, 'T');
 		}
 
 		function createListCargos(data)
@@ -55,6 +55,7 @@
 		{
 			document.getElementById(id_da_div).style.display = 'none';
 		}
+		
 		function exibe(id_da_div)
 		{
 			document.getElementById(id_da_div).style.display = '';
@@ -69,6 +70,10 @@
 				
 			return ${validarCampos};
 		}
+		
+		$(document).ready(function($){
+			filtrarOpt();
+		});
 	</script>
 </head>
 <body>

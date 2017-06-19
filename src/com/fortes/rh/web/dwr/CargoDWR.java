@@ -4,15 +4,23 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.fortes.rh.business.cargosalario.CargoManager;
+import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
+import com.opensymphony.webwork.dispatcher.SessionMap;
+import com.opensymphony.xwork.ActionContext;
 
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class CargoDWR
 {
 	private CargoManager cargoManager;
+	private AreaOrganizacionalManager areaOrganizacionalManager;
 
 	public Map getCargoByGrupo(String[] grupoOcupacionalIds, Long empresaId)
 	{
@@ -21,7 +29,7 @@ public class CargoDWR
 		return new CollectionUtil<Cargo>().convertCollectionToMap(cargos,"getId","getNomeMercadoComStatus");
 	}
 
-	public Map getCargoByGrupoAtivoInativo(String[] grupoOcupacionalIds, Long empresaId, Character ativo)
+	public Map getCargoByGrupoAtivoInativo(String naoApagar, HttpServletRequest request, String[] grupoOcupacionalIds, Long empresaId, Character ativo)
 	{
 		Boolean cargoAtivo = null;
 		if(ativo == 'A')
@@ -29,7 +37,16 @@ public class CargoDWR
 		if(ativo == 'I')
 			cargoAtivo = false;
 		
-		Collection<Cargo> cargos = getCargosByGrupoCollection(grupoOcupacionalIds, empresaId, cargoAtivo);
+		Map session = new SessionMap(request);
+		boolean verTodasAreas = SecurityUtil.verifyRole(session, new String[]{"ROLE_VER_AREAS"});
+		
+		Collection<Cargo> cargos = new ArrayList<Cargo>();
+		if(verTodasAreas){
+			cargos = getCargosByGrupoCollection(grupoOcupacionalIds, empresaId, cargoAtivo);
+		}else{
+			Long[] areasIds = new CollectionUtil<AreaOrganizacional>().convertCollectionToArrayIds(areaOrganizacionalManager.findAllListAndInativasByUsuarioId(empresaId, SecurityUtil.getIdUsuarioLoged(session), AreaOrganizacional.TODAS, null));
+			cargos = cargoManager.findByAreasAndGrupoOcapcinal(empresaId, LongUtil.arrayStringToArrayLong(grupoOcupacionalIds), cargoAtivo, areasIds);
+		}
 		
 		return new CollectionUtil<Cargo>().convertCollectionToMap(cargos,"getId","getNomeMercadoComStatus");
 	}
@@ -167,7 +184,7 @@ public class CargoDWR
 
 	public Collection<Cargo> getCargosByArea(Long areaOrganizacionalId, Long empresaId)
 	{
-		return cargoManager.findByArea(areaOrganizacionalId, empresaId);
+		return cargoManager.findByAreasAndGrupoOcapcinal(empresaId, null, null, areaOrganizacionalId);
 	}
 	
 	public Map<Long, String> getCargosByAreaGrupo(Long[] areaOrganizacionalIds, Long[] grupoOcupacionalIds, Long empresaId)
@@ -179,5 +196,9 @@ public class CargoDWR
 	public void setCargoManager(CargoManager cargoManager)
 	{
 		this.cargoManager = cargoManager;
+	}
+
+	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
+		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 }

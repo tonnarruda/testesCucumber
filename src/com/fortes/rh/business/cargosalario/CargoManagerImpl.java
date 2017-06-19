@@ -84,9 +84,9 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 		return cargos;
 	}
 	
-	public Collection<Cargo> findByArea(Long areaOrganizacionalId, Long empresaId) 
+	public Collection<Cargo> findByAreasAndGrupoOcapcinal(Long empresaId, Long[] grupoOcupacionaisIds, Boolean cargoAtivo, Long... areasOrganizacionalIds) 
 	{
-		return getDao().findByArea(areaOrganizacionalId, empresaId);
+		return getDao().findByAreasAndGrupoOcapcinal(empresaId, grupoOcupacionaisIds, cargoAtivo, areasOrganizacionalIds);
 	}
 	
 	public Collection<Cargo> findByAreasOrganizacionalIdsProjection(Long[] idsLong, Long empresaId)

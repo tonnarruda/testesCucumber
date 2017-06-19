@@ -1,13 +1,14 @@
 package com.fortes.rh.test.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
-
-import junit.framework.TestCase;
 
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.web.tags.CheckBox;
+
+import junit.framework.TestCase;
 
 public class CheckListBoxUtilTest extends TestCase
 {
@@ -180,6 +181,34 @@ public class CheckListBoxUtilTest extends TestCase
 		assertEquals("Test 8", u4.getId().toString(), checks.toArray(new CheckBox[]{})[3].getId());
 		assertEquals("Test 9", u4.getNome(), checks.toArray(new CheckBox[]{})[3].getNome());
 
+	}
+	
+	public void testRetornaArrayLongId(){
+		CheckBox cb1 = new CheckBox();
+		cb1.setId(1L);
+		cb1.setNome("c1");
+		cb1.setSelecionado(false);
 
+		CheckBox cb2 = new CheckBox();
+		cb2.setId(2L);
+		cb2.setNome("c2");
+		cb2.setSelecionado(false);
+		
+		Collection<CheckBox> checks = new ArrayList<CheckBox>();
+		checks.add(cb1);
+		checks.add(cb2);
+		
+		Long[] retorno = CheckListBoxUtil.retornaArrayLongId(checks);
+		
+		assertTrue(Arrays.equals(new Long[]{1L, 2L}, retorno));
+	}
+	
+	public void testRetornaArrayLongIdVazio(){
+		
+		Collection<CheckBox> checks = new ArrayList<CheckBox>();
+		
+		Long[] retorno = CheckListBoxUtil.retornaArrayLongId(checks);
+		
+		assertTrue(Arrays.equals(new Long[]{}, retorno));
 	}
 }

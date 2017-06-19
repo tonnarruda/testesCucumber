@@ -332,32 +332,6 @@ public class CargoDaoHibernateTest extends GenericDaoHibernateTest<Cargo>
 		assertEquals(2, retorno.size());
 	}
 
-	public void testFindByArea()
-	{
-		Empresa empresa = EmpresaFactory.getEmpresa();
-		empresaDao.save(empresa);
-		
-		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
-		areaOrganizacionalDao.save(areaOrganizacional);
-		
-		Collection<AreaOrganizacional> areasOrganizacionais = new ArrayList<AreaOrganizacional>();
-		areasOrganizacionais.add(areaOrganizacional);
-		
-		Cargo cobrador = CargoFactory.getEntity();
-		cobrador.setAreasOrganizacionais(areasOrganizacionais);
-		cobrador.setEmpresa(empresa);
-		cargoDao.save(cobrador);
-		
-		Cargo motorista = CargoFactory.getEntity();
-		motorista.setEmpresa(empresa);
-		motorista.setAreasOrganizacionais(areasOrganizacionais);
-		cargoDao.save(motorista);
-		
-		Collection<Cargo> retorno = cargoDao.findByArea(areaOrganizacional.getId(), empresa.getId());
-		
-		assertEquals(2, retorno.size());
-	}
-	
 	public void testGetCargoSemAreaRelacionadaTodosRelacionados()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();

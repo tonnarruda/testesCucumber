@@ -259,7 +259,7 @@ import com.fortes.rh.test.dao.hibernate.cargosalario.CargoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.cargosalario.FaixaSalarialDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.cargosalario.FaixaSalarialHistoricoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.cargosalario.FaturamentoMensalDaoHibernateTest;
-import com.fortes.rh.test.dao.hibernate.cargosalario.GrupoOcupacionalDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.cargosalario.GrupoOcupacionalDaoHibernateTest_JUnit4;
 import com.fortes.rh.test.dao.hibernate.cargosalario.HistoricoColaboradorDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.cargosalario.HistoricoColaboradorDaoHibernateTest_Junit4;
 import com.fortes.rh.test.dao.hibernate.cargosalario.IndiceDaoHibernateTest;
@@ -870,7 +870,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	FaixaSalarialHistoricoEditActionTest.class,
 
 	GrupoOcupacionalManagerTest.class,
-	GrupoOcupacionalDaoHibernateTest.class,
+	GrupoOcupacionalDaoHibernateTest_JUnit4.class,
 
 	HistoricoColaboradorDaoHibernateTest.class,
 	HistoricoColaboradorDaoHibernateTest_Junit4.class,

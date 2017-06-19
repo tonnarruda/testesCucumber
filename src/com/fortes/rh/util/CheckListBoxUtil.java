@@ -3,8 +3,11 @@ package com.fortes.rh.util;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.beanutils.BeanToPropertyValueTransformer;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.map.LinkedMap;
 
 import com.fortes.web.tags.CheckBox;
@@ -183,4 +186,14 @@ public final class CheckListBoxUtil
 		}
 		return listBox;
 	}
+
+	public static Long[] retornaArrayLongId(Collection<CheckBox> listCheckBox)
+	{
+		@SuppressWarnings("unchecked")
+		List<String> a = (ArrayList<String>) CollectionUtils.collect(listCheckBox, new BeanToPropertyValueTransformer("id", true));
+		Long[] ids = LongUtil.collectionStringToArrayLong(a);
+		
+		return ids;
+	}
+
 }

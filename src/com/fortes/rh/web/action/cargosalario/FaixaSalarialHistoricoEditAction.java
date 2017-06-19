@@ -16,14 +16,19 @@ import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
+import com.fortes.rh.model.cargosalario.GrupoOcupacional;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
+import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
+import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupport;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork.ActionContext;
 
 public class FaixaSalarialHistoricoEditAction extends MyActionSupport
 {
@@ -56,6 +61,7 @@ public class FaixaSalarialHistoricoEditAction extends MyActionSupport
 	private Long empresaId;
 
 	private Date data;
+	private String filtro;
 	
 	private Map<String, Object> parametros;
 	
@@ -105,39 +111,62 @@ public class FaixaSalarialHistoricoEditAction extends MyActionSupport
 		return Action.SUCCESS;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public String analiseTabelaSalarialFiltro() throws Exception
 	{
 		empresaId = getEmpresaSistema().getId();
-		
-		grupoOcupacionalsCheckList = grupoOcupacionalManager.populaCheckOrderNome(getEmpresaSistema().getId());
-		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
-		cargosCheckList = populaCheckListBox(cargoManager.findAllSelect("nome", null, Cargo.TODOS, getEmpresaSistema().getId()), "getId", "getNomeMercadoComStatus", null);
+		if(SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VER_AREAS"})){
+			areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(empresaId);
+			grupoOcupacionalsCheckList = grupoOcupacionalManager.populaCheckOrderNome(empresaId);
+			cargosCheckList = populaCheckListBox(cargoManager.findAllSelect("nome", null, Cargo.TODOS, empresaId), "getId", "getNomeMercadoComStatus", null);
+		}else{		
+			Collection<AreaOrganizacional> areas =  areaOrganizacionalManager.findAllListAndInativasByUsuarioId(empresaId, SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), AreaOrganizacional.TODAS, null);
+			areasCheckList = CheckListBoxUtil.populaCheckListBox(areas, "getId", "getDescricaoStatusAtivo", null);
+
+			Long[] areasIds = new CollectionUtil<AreaOrganizacional>().convertCollectionToArrayIds(areas);
+			grupoOcupacionalsCheckList = grupoOcupacionalManager.populaCheckByAreasResponsavelCoresponsavel(empresaId, areasIds);
+			cargosCheckList = populaCheckListBox(cargoManager.findByAreasAndGrupoOcapcinal(empresaId, null, null, areasIds), "getId", "getNomeMercadoComStatus", null);
+		}
 		
 		grupoOcupacionalsCheckList = CheckListBoxUtil.marcaCheckListBox(grupoOcupacionalsCheckList, grupoOcupacionalsCheck);
 		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
 		cargosCheckList = CheckListBoxUtil.marcaCheckListBox(cargosCheckList, cargosCheck);
-		
 		return Action.SUCCESS;
 	}
 	
 	public String analiseTabelaSalarialList() throws Exception
 	{
-		try
-		{
+		try{
+			populaChecksGrupoOcupacionalsCargosAreas();
 			faixaSalarialHistoricos = faixaSalarialHistoricoManager.findByGrupoCargoAreaData(grupoOcupacionalsCheck, cargosCheck, areasCheck, data, Boolean.TRUE, getEmpresaSistema().getId(), isCargoAtivo());
 			cargos = cargoManager.getCargosFromFaixaSalarialHistoricos(faixaSalarialHistoricos);
-		}
-		catch (Exception e)
-		{
+		}catch (Exception e){
 			setActionMsg(e.getMessage());
 			e.printStackTrace();
-			
 			analiseTabelaSalarialFiltro();
 
 			return Action.INPUT;
 		}
 
 		return Action.SUCCESS;
+	}
+
+	private void populaChecksGrupoOcupacionalsCargosAreas() {
+		empresaId = getEmpresaSistema().getId();
+		if(!SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VER_AREAS"})){
+			Collection<AreaOrganizacional> areas =  areaOrganizacionalManager.findAllListAndInativasByUsuarioId(empresaId, SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), AreaOrganizacional.TODAS, null);
+
+			if("1".equals(filtro)){
+				Long[] areasIds = new CollectionUtil<AreaOrganizacional>().convertCollectionToArrayIds(areas);
+				if(grupoOcupacionalsCheck == null || grupoOcupacionalsCheck.length == 0)
+					grupoOcupacionalsCheck =  new CollectionUtil<GrupoOcupacional>().convertCollectionToArrayIdsString(grupoOcupacionalManager.findAllSelectByAreasResponsavelCoresponsavel(empresaId, areasIds));
+				if(cargosCheck == null || cargosCheck.length == 0)
+					cargosCheck = new CollectionUtil<Cargo>().convertCollectionToArrayIdsString(cargoManager.findByAreasAndGrupoOcapcinal(empresaId, null, null, areasIds));
+			}else{
+				if(areasCheck == null || areasCheck.length == 0)
+					areasCheck = new CollectionUtil<AreaOrganizacional>().convertCollectionToArrayIdsString(areas);
+			}
+		}
 	}
 
 	public String relatorioAnaliseTabelaSalarial() throws Exception
@@ -350,5 +379,9 @@ public class FaixaSalarialHistoricoEditAction extends MyActionSupport
 
 	public void setSituacaoCargo(Character situacaoCargo) {
 		this.situacaoCargo = situacaoCargo;
+	}
+
+	public void setFiltro(String filtro) {
+		this.filtro = filtro;
 	}
 }

@@ -58,7 +58,24 @@ public class GrupoOcupacionalManagerImpl extends GenericManagerImpl<GrupoOcupaci
 	{
 		return getDao().findByEmpresasIds(empresaIds);
 	}
+	
+	public Collection<CheckBox> populaCheckByAreasResponsavelCoresponsavel(Long empresaId, Long[] areasIds)
+	{
+		Collection<CheckBox> checks = new ArrayList<CheckBox>();
+		try{
+			Collection<GrupoOcupacional> grupos = getDao().findAllSelectByAreasResponsavelCoresponsavel(empresaId, areasIds);
+			checks = CheckListBoxUtil.populaCheckListBox(grupos, "getId", "getNome", null);
+		}catch (Exception e){
+			e.printStackTrace();
+		}
 
+		return checks;
+	}
+
+	public Collection<GrupoOcupacional> findAllSelectByAreasResponsavelCoresponsavel(Long empresaId, Long[] areasIds){
+		return getDao().findAllSelectByAreasResponsavelCoresponsavel(empresaId, areasIds);
+	}
+	
 	public void setCargoManager(CargoManager cargoManager)
 	{
 		this.cargoManager = cargoManager;

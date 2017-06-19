@@ -46,7 +46,7 @@ public interface CargoManager extends GenericManager<Cargo>
 	public Cargo preparaCargoDoAC(TCargo tCargo);
 	public void updateCBO(Long id, TCargo tCargo);
 	public Collection<Cargo> findAllSelect(Long[] empresaIds);
-	public Collection<Cargo> findByArea(Long areaOrganizacionalId, Long empresaId);
+	public Collection<Cargo> findByAreasAndGrupoOcapcinal(Long empresaId, Long[] grupoOcupacionaisIds, Boolean cargoAtivo, Long... areasOrganizacionalIds);
 	public String nomeCargos(Long[] cargosIds);
 	public void deleteByAreaOrganizacional(Long[] areaIds) throws Exception;
 	public boolean existemCargosSemAreaRelacionada(Long empresaId);

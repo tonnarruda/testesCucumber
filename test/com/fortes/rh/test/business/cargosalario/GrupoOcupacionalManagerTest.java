@@ -1,10 +1,14 @@
 package com.fortes.rh.test.business.cargosalario;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.jmock.Mock;
-import org.jmock.cglib.MockObjectTestCase;
+import org.junit.Before;
+import org.junit.Test;
 
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.cargosalario.GrupoOcupacionalManagerImpl;
@@ -15,81 +19,90 @@ import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.GrupoOcupacionalFactory;
 import com.fortes.web.tags.CheckBox;
 
-public class GrupoOcupacionalManagerTest extends MockObjectTestCase
+public class GrupoOcupacionalManagerTest
 {
 	GrupoOcupacionalManagerImpl grupoOcupacionalManager = null;
-	Mock grupoOcupacionalDao = null;
-	Mock cargoManager;
+	GrupoOcupacionalDao grupoOcupacionalDao = null;
+	CargoManager cargoManager;
 
-	protected void setUp() throws Exception
+	@Before
+	public void setUp() throws Exception
 	{
-		super.setUp();
 		grupoOcupacionalManager = new GrupoOcupacionalManagerImpl();
 
-		grupoOcupacionalDao = new Mock(GrupoOcupacionalDao.class);
-		grupoOcupacionalManager.setDao((GrupoOcupacionalDao) grupoOcupacionalDao.proxy());
+		grupoOcupacionalDao = mock(GrupoOcupacionalDao.class);
+		grupoOcupacionalManager.setDao(grupoOcupacionalDao);
 
-		cargoManager = new Mock(CargoManager.class);
-		grupoOcupacionalManager.setCargoManager((CargoManager) cargoManager.proxy());
+		cargoManager = mock(CargoManager.class);
+		grupoOcupacionalManager.setCargoManager(cargoManager);
 	}
 
-	protected void tearDown() throws Exception
-	{
-		super.tearDown();
-	}
-
+	@Test
 	public void testGetCount()
 	{
 		Collection<GrupoOcupacional> grupoOcupacionals = new ArrayList<GrupoOcupacional>();
 
-		grupoOcupacionalDao.expects(once()).method("getCount").with(ANYTHING).will(returnValue(grupoOcupacionals.size()));
+		when(grupoOcupacionalDao.getCount()).thenReturn(grupoOcupacionals.size());
 
 		int retorno = grupoOcupacionalManager.getCount(1L);
 
 		assertEquals(grupoOcupacionals.size(), retorno);
 	}
 
+	@Test
 	public void testFindAllSelect()
 	{
 		Collection<GrupoOcupacional> grupoOcupacionals = new ArrayList<GrupoOcupacional>();
 		Long empresaId = 1L;
 
-		grupoOcupacionalDao.expects(once()).method("findAllSelect").with(eq(0), eq(0), eq(empresaId)).will(returnValue(grupoOcupacionals));
+		when(grupoOcupacionalDao.findAllSelect(0, 0, empresaId)).thenReturn(grupoOcupacionals);
 
 		assertEquals("Sem paginação", grupoOcupacionals, grupoOcupacionalManager.findAllSelect(empresaId));
 
-		grupoOcupacionalDao.expects(once()).method("findAllSelect").with(eq(1), eq(15), eq(empresaId)).will(returnValue(grupoOcupacionals));
+		when(grupoOcupacionalDao.findAllSelect(1, 15, empresaId)).thenReturn(grupoOcupacionals);
 
 		assertEquals("Com paginação", grupoOcupacionals, grupoOcupacionalManager.findAllSelect(1, 15, empresaId));
 	}
 	
+	@Test
 	public void testFindByIdProjection()
 	{
 		GrupoOcupacional grupoOcupacional = GrupoOcupacionalFactory.getGrupoOcupacional(1L);
 		
-		grupoOcupacionalDao.expects(once()).method("findByIdProjection").with(eq(grupoOcupacional.getId())).will(returnValue(grupoOcupacional));
+		when(grupoOcupacionalDao.findByIdProjection(grupoOcupacional.getId())).thenReturn(grupoOcupacional);
 
 		Cargo cargo = CargoFactory.getEntity(1L);
 		Collection<Cargo> cargos = new ArrayList<Cargo>();
 		cargos.add(cargo);
 		
-		cargoManager.expects(once()).method("findByGrupoOcupacional").with(eq(grupoOcupacional.getId())).will(returnValue(cargos));
+		when(cargoManager.findByGrupoOcupacional(grupoOcupacional.getId())).thenReturn(cargos);
 		
 		assertEquals(grupoOcupacional, grupoOcupacionalManager.findByIdProjection(grupoOcupacional.getId()));
 	}
 
+	@Test
 	public void testPopulaCheckOrderNome()
 	{
 		Long empresaId = 1L;
 		Collection<GrupoOcupacional> grupoOcupacionals = GrupoOcupacionalFactory.getCollection();
 
-		grupoOcupacionalDao.expects(once()).method("findAllSelect").with(eq(0),eq(0),eq(empresaId)).will(returnValue(grupoOcupacionals));
+		when(grupoOcupacionalDao.findAllSelect(0, 0, empresaId)).thenReturn(grupoOcupacionals);
 		Collection<CheckBox> checks = grupoOcupacionalManager.populaCheckOrderNome(empresaId);
 		assertEquals(1, checks.size());
 
-		grupoOcupacionalDao.expects(once()).method("findAllSelect").with(eq(0),eq(0),eq(empresaId));
+		when(grupoOcupacionalDao.findAllSelect(0, 0, empresaId)).thenReturn(new ArrayList<GrupoOcupacional>());
 		checks = grupoOcupacionalManager.populaCheckOrderNome(empresaId);
 		assertEquals(0, checks.size());
 	}
+	
+	@Test
+	public void testPopulaCheckByAreasResponsavelCoresponsavel(){
+		Long empresaId = 1L;
+		Long[] areasIds = new Long[]{2L};
+		Collection<GrupoOcupacional> grupoOcupacionals = GrupoOcupacionalFactory.getCollection();
+		
+		when( grupoOcupacionalDao.findAllSelectByAreasResponsavelCoresponsavel(empresaId, areasIds)).thenReturn(grupoOcupacionals);
+		Collection<CheckBox> checks = grupoOcupacionalManager.populaCheckByAreasResponsavelCoresponsavel(empresaId, areasIds);
+		assertEquals(1, checks.size());
+	}
 }
-

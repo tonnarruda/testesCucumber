@@ -494,7 +494,7 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 		return criteria.list();
 	}
 
-	public Collection<Cargo> findByArea(Long areaOrganizacionalId, Long empresaId) {
+	public Collection<Cargo> findByAreasAndGrupoOcapcinal(Long empresaId, Long[] grupoOcupacionaisIds, Boolean cargoAtivo, Long... areasOrganizacionalIds) {
 		Criteria criteria = getSession().createCriteria(Cargo.class, "c");
 		criteria.createCriteria("areasOrganizacionais","ao", Criteria.INNER_JOIN);
 		criteria.createCriteria("empresa", "e", Criteria.LEFT_JOIN);
@@ -505,10 +505,18 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 		p.add(Projections.property("c.nome"), "nome");
 		p.add(Projections.property("c.ativo"), "ativo");
 		
-		criteria.setProjection(p);
-		
-		criteria.add(Expression.eq("ao.id", areaOrganizacionalId));
+		criteria.setProjection(Projections.distinct(p));
+
 		criteria.add(Expression.eq("e.id", empresaId));
+		
+		if(areasOrganizacionalIds != null && areasOrganizacionalIds.length > 0)
+			criteria.add(Expression.in("ao.id", areasOrganizacionalIds));
+		
+		if(grupoOcupacionaisIds != null && grupoOcupacionaisIds.length > 0)
+			criteria.add(Expression.in("c.grupoOcupacional.id", grupoOcupacionaisIds));
+		
+		if(cargoAtivo != null)
+			criteria.add(Expression.eq("c.ativo", cargoAtivo));
 		
 		criteria.addOrder(Order.asc("c.nomeMercado"));
 

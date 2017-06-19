@@ -24,6 +24,7 @@
 				<param name="location">WEB-INF/report/analise_tabela_salarial.jasper</param>
 				<param name="dataSource">faixaSalarialHistoricos</param>
 				<param name="parametersMap">parametros</param>
+				<param name="documentName">analiseTabelaSalarial.pdf</param>
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/analiseTabelaSalarialFiltro.ftl</result>
 		</action>
@@ -45,6 +46,7 @@
 				<param name="location">WEB-INF/report/historico_faixa_salarial.jasper</param>
 				<param name="dataSource">faixaSalarialHistoricos</param>
 				<param name="parametersMap">parametros</param>
+				<param name="documentName">historicoFaixaSalarial.pdf</param>
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/relatorioHistoricoFaixaSalarial.ftl</result>
 		</action>
