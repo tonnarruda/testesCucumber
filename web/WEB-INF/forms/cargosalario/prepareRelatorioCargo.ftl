@@ -24,9 +24,9 @@
 				var areaIds = getArrayCheckeds(document.forms[0], 'areasCheck');
 				
 				if ($('#exibirCargosVinculados').is(":checked")) {
-					CargoDWR.getCargoByArea(createListCargos, areaIds, 'getNomeMercado', ${empresaSistema.id});
+					CargoDWR.getCargoByArea(createListCargos, areaIds, 'getNomeMercadoComStatus', ${empresaSistema.id});
 				} else {
-					CargoDWR.getCargoByArea(createListCargos, null, 'getNomeMercado', ${empresaSistema.id});
+					CargoDWR.getCargoByArea(createListCargos, null, 'getNomeMercadoComStatus', ${empresaSistema.id});
 				}
 			} else {
 				var grupoIds = getArrayCheckeds(document.forms[0], 'gruposCheck');
@@ -80,7 +80,7 @@
 			<@frt.checkListBox name="areasCheck" id="areasCheck" label="Área Organizacional" list="areasCheckList" onClick="populaCargos();" filtro="true" selectAtivoInativo="true"/>
 		</div>
 		<div id="divGrupos" style="display:none;">
-			<@frt.checkListBox name="gruposCheck" id="gruposCheck" label="Grupos Ocupacionais" list="gruposCheckList" onClick="populaCargos();" filtro="true"  selectAtivoInativo="true"/>
+			<@frt.checkListBox name="gruposCheck" id="gruposCheck" label="Grupos Ocupacionais" list="gruposCheckList" onClick="populaCargos();" filtro="true"/>
 		</div>
 		<@ww.checkbox label="Exibir somente os cargos vinculados às áreas organizacionais acima." id="exibirCargosVinculados" name="" labelPosition="left"/>
 		<@frt.checkListBox name="cargosCheck" id="cargosCheck" label="Cargos *" list="cargosCheckList" filtro="true" selectAtivoInativo="true"/>
