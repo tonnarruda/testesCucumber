@@ -392,7 +392,7 @@ public class CandidatoEditAction extends MyActionSupportEdit
 		candidato.setDataAtualizacao(new Date());
 		
 		if(candidato.getSenha()!=null && candidato.getSenha().isEmpty())
-		candidato.setSenha(StringUtil.encodeString(candidato.getSenha()));
+			candidato.setSenha(StringUtil.encodeString(candidato.getSenha()));
 
 		ajustaCamposNulls(candidato);
 		

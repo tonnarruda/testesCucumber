@@ -54,6 +54,7 @@ import com.fortes.rh.test.business.captacao.EmpresaBdsManagerTest;
 import com.fortes.rh.test.business.captacao.EtapaSeletivaManagerTest;
 import com.fortes.rh.test.business.captacao.ExperienciaManagerTest;
 import com.fortes.rh.test.business.captacao.FormacaoManagerTest;
+import com.fortes.rh.test.business.captacao.FormacaoManagerTest_Junit4;
 import com.fortes.rh.test.business.captacao.HabilidadeManagerTest;
 import com.fortes.rh.test.business.captacao.HistoricoCandidatoManagerTest;
 import com.fortes.rh.test.business.captacao.NivelCompetenciaHistoricoManagerTest;
@@ -786,6 +787,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	ExperienciaDaoHibernateTest.class,
 	FormacaoDaoHibernateTest.class,
 	FormacaoManagerTest.class,
+	FormacaoManagerTest_Junit4.class,
 	IdiomaDaoHibernateTest.class,
 	SolicitacaoDaoHibernateTest.class,
 	SolicitacaoDaoHibernateTest_JUnit4.class,
