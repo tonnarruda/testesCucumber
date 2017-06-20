@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
 	<Versao id="1.1.18*.2**" db="" data="**/**/2017">
+		<Item visivel="S" motivo="P17060000103"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Inserir/Editar: Novo campo para inserir experiências almejadas pela solicitação.]]></Item>
 		<Item visivel="S" motivo="S17010000267"><![CDATA[C&S > Relatórios > Análise de Tabela Salarial: Nova restrição nos filtros de áres organizacionais, grupo ocupacionais e cargos, para os usuários que são gestores das áreas organizacionais e/ou possuir em seu perfil a permissão "Visualizar todas as Áreas Organizacionais".]]></Item>
 	</Versao>
 	<Versao id="1.1.181.213" db="" data="20/06/2017">

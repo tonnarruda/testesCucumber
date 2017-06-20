@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.0.1.final using JasperReports Library version 6.0.0  -->
-<!-- 2015-04-20T11:45:54 -->
+<!-- Created with Jaspersoft Studio version 6.0.0.final using JasperReports Library version 6.0.0  -->
+<!-- 2017-06-20T10:35:20 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="solicitacaoPessoal" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="537" leftMargin="29" rightMargin="29" topMargin="20" bottomMargin="20" uuid="b4082f41-f438-4ebe-a882-75b97a874174">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
@@ -28,7 +28,7 @@
 	<field name="sexo" class="java.lang.String"/>
 	<field name="solicitacao.idadeMinima" class="java.lang.Integer"/>
 	<field name="solicitacao.idadeMaxima" class="java.lang.Integer"/>
-	<field name="solicitacao.experiencia" class="java.lang.String"/>
+	<field name="solicitacao.experiencias" class="java.lang.String"/>
 	<field name="motivoSolicitacao" class="java.lang.String"/>
 	<field name="solicitacao.infoComplementares" class="java.lang.String"/>
 	<field name="solicitacao.statusFormatado" class="java.lang.String"/>
@@ -637,7 +637,7 @@
 					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<text><![CDATA[Experiência:]]></text>
+				<text><![CDATA[Experiências:]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-15" positionType="Float" mode="Transparent" x="5" y="14" width="526" height="13" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="a9057737-29d3-420e-ac94-de6d9bdbcb23"/>
@@ -651,7 +651,7 @@
 					<font size="10"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{solicitacao.experiencia}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{solicitacao.experiencias}]]></textFieldExpression>
 			</textField>
 		</band>
 		<band height="30">

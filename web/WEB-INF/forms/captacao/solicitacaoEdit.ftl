@@ -27,6 +27,7 @@
 	<#assign formAction = formAction + "?visualizar=${visualizar}&cargo.id=${cargo.id}"/>
 </#if>
 
+
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ComissaoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CidadeDWR.js?version=${versao}"/>'></script>
@@ -419,6 +420,11 @@
 			<@frt.checkListBox name="emailsCheck" id="emailsCheck" label="Comunicar responsáveis da Área Organizacional" list="emailsCheckList" filtro="true" />
 		</#if>
 		<br/>
+		<#if somenteLeitura>
+			<@ww.textarea label="Experiências" id = "experiencias" name="solicitacao.experiencias" cssStyle="width:445px;" cssStyle="width: 695px; background: #EBEBEB;" readonly=true/>
+		<#else>
+			<@ww.textarea label="Experiências" id = "experiencias" name="solicitacao.experiencias" cssStyle="width:445px;" cssStyle="width: 695px;"/>
+		</#if>
 		
 		<li>
 			<@ww.div id="complementares" cssClass="divInfo">

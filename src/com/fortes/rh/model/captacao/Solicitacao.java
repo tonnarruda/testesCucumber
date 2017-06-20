@@ -46,6 +46,7 @@ import com.fortes.security.auditoria.NaoAudita;
 @SequenceGenerator(name = "sequence", sequenceName = "solicitacao_sequence", allocationSize = 1)
 public class Solicitacao extends AbstractModel implements Serializable, Cloneable
 {
+	
 	@Column(length=100)
 	private String descricao;
 	@Temporal(TemporalType.DATE)
@@ -110,6 +111,9 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 	
 	@Lob
 	private String obsSuspensao;
+	
+	@Lob
+	private String experiencias;
 	
 	@OneToMany (mappedBy="solicitacao", fetch=FetchType.LAZY)
 	private Collection<SolicitacaoAvaliacao> solicitacaoAvaliacaos;
@@ -966,5 +970,13 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 			this.estabelecimento = new Estabelecimento();
 		
 		this.estabelecimento.setNome(estabelecimentoNome);
+	}
+	
+	public String getExperiencias() {
+		return experiencias;
+	}
+
+	public void setExperiencias(String experiencias) {
+		this.experiencias = experiencias;
 	}
 }
