@@ -1,6 +1,7 @@
 package com.fortes.rh.test.business.geral;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -13,10 +14,13 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import mockit.Mockit;
-
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.BDDMockito;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import com.fortes.rh.business.acesso.UsuarioManager;
@@ -41,6 +45,7 @@ import com.fortes.rh.model.avaliacao.relatorio.AcompanhamentoExperienciaColabora
 import com.fortes.rh.model.dicionario.Escolaridade;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
+import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
@@ -60,11 +65,12 @@ import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.geral.CidadeFactory;
 import com.fortes.rh.test.factory.geral.EstadoFactory;
 import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
-import com.fortes.rh.test.util.mockObjects.MockSpringUtilJUnit4;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientColaborador;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(SpringUtil.class)
 public class ColaboradorManagerTest_Junit4
 {
 	private ColaboradorManagerImpl colaboradorManager = new ColaboradorManagerImpl();
@@ -84,7 +90,8 @@ public class ColaboradorManagerTest_Junit4
     private UsuarioEmpresaManager usuarioEmpresaManager;
     private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 
-    @Before
+    @SuppressWarnings("deprecation")
+	@Before
     public void setUp() throws Exception
     {
         colaboradorDao = mock(ColaboradorDao.class);
@@ -117,11 +124,10 @@ public class ColaboradorManagerTest_Junit4
         
         usuarioManager = mock(UsuarioManager.class);
         usuarioEmpresaManager = mock(UsuarioEmpresaManager.class);
-        MockSpringUtilJUnit4.mocks.put("usuarioManager", usuarioManager);
-        MockSpringUtilJUnit4.mocks.put("usuarioEmpresaManager", usuarioEmpresaManager);
         
-        
-        Mockit.redefineMethods(SpringUtil.class, MockSpringUtilJUnit4.class);
+    	PowerMockito.mockStatic(SpringUtil.class);
+    	BDDMockito.given(SpringUtil.getBeanOld("usuarioManager")).willReturn(usuarioManager);
+    	BDDMockito.given(SpringUtil.getBeanOld("usuarioEmpresaManager")).willReturn(usuarioEmpresaManager);
     }
     
     @Test
@@ -612,4 +618,22 @@ public class ColaboradorManagerTest_Junit4
     	assertEquals(tNaturalidadeAndNacionalidade1.getNacionalidade(), retorno.getNacionalidade());
     	assertEquals(tNaturalidadeAndNacionalidade1.getNaturalidade(), retorno.getNaturalidade());
 	}
+    
+    @Test
+    public void getVinculo() {
+    	assertEquals(Vinculo.ESTAGIO, colaboradorManager.getVinculo("00", null, null));
+    	assertEquals(Vinculo.TEMPORARIO, colaboradorManager.getVinculo(null, 50, null));
+    	assertEquals(Vinculo.TEMPORARIO, colaboradorManager.getVinculo(null, 60, null));
+    	assertEquals(Vinculo.TEMPORARIO, colaboradorManager.getVinculo(null, 65, null));
+    	assertEquals(Vinculo.TEMPORARIO, colaboradorManager.getVinculo(null, 70, null));
+    	assertEquals(Vinculo.TEMPORARIO, colaboradorManager.getVinculo(null, 75, null));
+    	assertEquals(Vinculo.TEMPORARIO, colaboradorManager.getVinculo(null, 90, null));
+    	assertNotEquals(Vinculo.TEMPORARIO, colaboradorManager.getVinculo(null, 95, null));
+    	assertEquals(Vinculo.APRENDIZ, colaboradorManager.getVinculo(null, null, 7));
+    	assertEquals(Vinculo.EMPREGO, colaboradorManager.getVinculo(null, null, 6));
+    	assertEquals(Vinculo.EMPREGO, colaboradorManager.getVinculo(null, null, 8));
+    	assertEquals(Vinculo.EMPREGO, colaboradorManager.getVinculo(null, 100, null));
+    	assertEquals(Vinculo.EMPREGO, colaboradorManager.getVinculo(null, null, null));
+    	assertEquals(Vinculo.EMPREGO, colaboradorManager.getVinculo("01", 55, 8));
+    }
 }

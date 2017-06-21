@@ -243,6 +243,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findColaboradorPesquisa(id, empresaId);
 	}
 
+	// TODO: SEM TESTE
 	public boolean insert(Colaborador colaborador, Double salarioColaborador, Long idCandidato, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas, Collection<Experiencia> experiencias, Solicitacao solicitacao, Empresa empresa, Long candidatoSolicitacaoId) throws Exception
 	{
 		colaborador.setUsuario(null);
@@ -499,13 +500,13 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public String getVinculo(String admissaoTipo, Integer admissaoVinculo, Integer admissaoCategoria) {
 		String colocacao;
-		
-		if (admissaoTipo!=null && admissaoTipo.equals("00"))
+		List<Integer> vinculosTemporarios = Arrays.asList(50,60,65,70,75,90);
+		if ("00".equals(admissaoTipo))
 			colocacao = Vinculo.ESTAGIO;
-		else if (admissaoVinculo!=null && (admissaoVinculo == 50 || admissaoVinculo == 60 || admissaoVinculo == 65 || admissaoVinculo == 70 || admissaoVinculo == 75 || admissaoVinculo == 90))
+		else if (vinculosTemporarios.contains(admissaoVinculo))
 			colocacao = Vinculo.TEMPORARIO;
 		else {
-				if (admissaoCategoria!=null && admissaoCategoria == 7) {
+				if (new Integer(7).equals(admissaoCategoria)) {
 					colocacao = Vinculo.APRENDIZ;
 				} else {
 					colocacao = Vinculo.EMPREGO;
