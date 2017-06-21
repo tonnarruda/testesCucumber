@@ -447,9 +447,9 @@ public class CandidatoEditAction extends MyActionSupportEdit
 			candidatoAux.getEndereco().setUf(null);
 		if(candidatoAux.getEndereco().getCidade() == null || candidatoAux.getEndereco().getCidade().getId() == null)
 			candidatoAux.getEndereco().setCidade(null);
-		if(!ModelUtil.hasNull("getPessoal().getCtps().getCtpsUf().getId()", candidatoAux))
+		if(ModelUtil.hasNull("getPessoal().getCtps().getCtpsUf().getId()", candidatoAux))
 			candidatoAux.getPessoal().getCtps().setCtpsUf(null);
-		if(!ModelUtil.hasNull("getPessoal().getRgUf().getId()", candidatoAux))
+		if(ModelUtil.hasNull("getPessoal().getRgUf().getId()", candidatoAux))
 			candidatoAux.getPessoal().setRgUf(null);
 		if (candidatoAux.getComoFicouSabendoVaga()!=null && candidatoAux.getComoFicouSabendoVaga().getId()==null)
 			candidatoAux.setComoFicouSabendoVaga(null);
