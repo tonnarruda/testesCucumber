@@ -1965,6 +1965,25 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCaseManager<H
 		assertEquals(msg, "Não foi possível realizar a operação. Faixa salarial não existe no RH.");
 	}
 	
+	public void testUpdateSituacaoComHistoricoInexistenet() throws Exception
+	{
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1L);
+		historicoColaborador.setColaborador(colaborador);
+		TSituacao situacao = montaTSituacao();
+		
+		historicoColaboradorDao.expects(once()).method("findByAC").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(null));
+		
+		String msg = "";
+		try {
+			manager.updateSituacao(situacao);
+		} catch (Exception e) {
+			msg = e.getMessage();
+		}
+		
+		assertEquals(msg, "Situação não encontrada no Fortes RH.");
+	}
+	
 	public void testUpdateSituacaoComAreaNula() throws Exception
 	{
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);

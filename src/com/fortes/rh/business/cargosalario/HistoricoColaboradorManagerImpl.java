@@ -1036,6 +1036,9 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	{
 		HistoricoColaborador historicoColaborador = getDao().findByAC(situacao.getDataFormatada(), situacao.getEmpregadoCodigoAC(), situacao.getEmpresaCodigoAC(), situacao.getGrupoAC());
 		
+		if(historicoColaborador == null)
+			throw new Exception("Situação não encontrada no Fortes RH.");
+
 		historicoColaborador = bindSituacao(situacao, historicoColaborador);
 		historicoColaborador.setStatusAnterior(historicoColaborador.getStatus());
 		historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);

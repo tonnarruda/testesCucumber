@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.apache.commons.digester.WithDefaultsRulesWrapper;
 import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
@@ -528,6 +527,33 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		gerenciadorComunicacaoManager.expects(once()).method("enviaMensagemCadastroSituacaoAC").with(eq(empregado.getNome()), eq(situacao));
 
 		assertEquals(true, rHServiceManager.criarSituacao("TOKEN", empregado, situacao).isSucesso());
+	}
+	
+	public void testCriarSituacaoSemColaborador() throws Exception
+	{
+		TSituacao situacao = new TSituacao();
+		situacao.setEmpresaCodigoAC("12345");
+		situacao.setEmpregadoCodigoAC("54321");
+		
+		TEmpregado empregado = new TEmpregado();
+		empregado.setNome("chaves");
+		empregado.setTipoAdmissao("00");
+		empregado.setVinculo(55);
+		empregado.setCategoria(07);
+		
+		Colaborador colaborador = null;
+		
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1L);
+		
+		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
+		historicoColaboradorManager.expects(once()).method("prepareSituacao").with(eq(situacao)).will(returnValue(historicoColaborador));
+		colaboradorManager.expects(once()).method("findByCodigoAC").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaborador));
+		
+		FeedbackWebService feedbackWebService = rHServiceManager.criarSituacao("TOKEN", empregado, situacao);
+		
+		assertEquals(false, feedbackWebService.isSucesso());
+		assertTrue(feedbackWebService.getException().contains("Colaborador não encontrado no Fortes RH."));
 	}
 
 	public void testCriarSituacaoException() throws Exception

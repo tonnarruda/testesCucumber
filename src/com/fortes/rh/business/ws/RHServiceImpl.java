@@ -673,6 +673,7 @@ public class RHServiceImpl implements RHService
 		}
 	}
 	
+	// TODO: SEM TESTE
 	public FeedbackWebService criarSituacaoEmLote(String token, TSituacao[] situacaos){
 		Collection<HistoricoColaborador> historicoColaboradors = new ArrayList<HistoricoColaborador>();
 		try{
@@ -732,6 +733,9 @@ public class RHServiceImpl implements RHService
 		HistoricoColaborador historicoColaborador = historicoColaboradorManager.prepareSituacao(situacao);
 
 		Colaborador colaborador = colaboradorManager.findByCodigoAC(situacao.getEmpregadoCodigoAC(), situacao.getEmpresaCodigoAC(), situacao.getGrupoAC());
+		
+		if(colaborador == null)
+			throw new Exception("Colaborador não encontrado no Fortes RH.");
 		
 		if(empregado != null)
 			colaborador.setVinculo(colaboradorManager.getVinculo(empregado.getTipoAdmissao(), empregado.getVinculo(), empregado.getCategoria()));
