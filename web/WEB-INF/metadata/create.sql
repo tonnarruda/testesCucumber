@@ -3924,7 +3924,7 @@ CREATE TABLE faixasalarial (
     nome character varying(30),
     codigoac character varying(12),
     cargo_id bigint,
-    nomeacpessoal character varying(30),
+    nomeacpessoal character varying(100),
     CONSTRAINT no_blank_codigoac_faixasalarial CHECK (((codigoac)::text <> ''::text))
 );
 

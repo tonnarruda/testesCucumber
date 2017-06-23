@@ -1,0 +1,1 @@
+ALTER TABLE faixasalarial ALTER COLUMN nomeacpessoal TYPE character varying(100);--.go
