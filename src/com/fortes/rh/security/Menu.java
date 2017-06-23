@@ -75,7 +75,7 @@ public abstract class Menu
 
 					if (exibeMenuTru)
 						menu.append("<li><a href='" + contexto + "/exportacao/prepareExportacaoTreinamentos.action'>Exportar Curso/Turma como ocorrência para o TRU</a>");
-
+					
 					menu.append("</ul>\n</li>\n");
 				}
 			}
@@ -94,7 +94,7 @@ public abstract class Menu
 	{
 		StringBuilder menuFilho = new StringBuilder();
 		String maisFilhos = "";
-		
+
 		for(Papel papel : roles)
 		{
 			if (papel.getPapelMae() != null && papel.getPapelMae().getId() == id )
@@ -114,7 +114,8 @@ public abstract class Menu
 							&& verificaParametrosSistemaAutorizacaoSolicitacaoPessoal(papel, parametros)
 							&& verificaPapeisParaColaboradoresSemCursoDasCertificacoes(papel, empresaLogada)) 
 					{
-						menuFilho.append("<a href='" + url + "'>" + papel.getNome() + "</a>");
+						
+						menuFilho.append(retornaUrl(papel,url));
 					}
 					
 					maisFilhos = getFilhos(papel.getId(), contexto, empresaLogada, idDoUsuario, parametros);
@@ -123,7 +124,6 @@ public abstract class Menu
 					{
 						menuFilho.append("<ul>\n" + maisFilhos+ "</ul>\n");
 					}
-	
 					menuFilho.append("</li>\n");
 				}
 			}						
@@ -132,6 +132,15 @@ public abstract class Menu
 		return menuFilho.toString();
 	}
 	
+	private static String retornaUrl(Papel papel, String url) {
+		if (papel.getCodigo().equals("ROLE_FORMULARIO_SOLICITACAO_EXTERNO")) {
+			url = "<a href='" + papel.getUrl() + "'target='_blank'>" + papel.getNome() + "</a>";
+		} else {
+			url = "<a href='" + url + "'>" + papel.getNome() + "</a>";
+		}
+		return url;
+	}
+
 	private static boolean verificaPapeisParaCursosOuCertificacaoVencidasAVencer(Papel papel, Empresa empresa) 
 	{
 		if(papel.getCodigo().equalsIgnoreCase(CERTIFICADOSVENCIDOSAVENCER) || papel.getCodigo().equalsIgnoreCase(CURSOSVENCIDOSAVENCER))
