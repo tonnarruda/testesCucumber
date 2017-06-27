@@ -491,6 +491,12 @@
   </bean>
   
   <bean id="solicitacaoEpiItemDao" class="com.fortes.rh.dao.hibernate.sesmt.SolicitacaoEpiItemDaoHibernate">
+  	<property name="sessionFactory">
+		<ref bean="sessionFactory" />
+	</property>
+  </bean>
+
+  <bean id="comoFicouSabendoVagaDao" class="com.fortes.rh.dao.hibernate.geral.ComoFicouSabendoVagaDaoHibernate">
 	<property name="sessionFactory">
 		<ref bean="sessionFactory" />
 	</property>
@@ -513,5 +519,4 @@
 		<ref bean="sessionFactory" />
 	</property>
   </bean>
-  
 </beans>

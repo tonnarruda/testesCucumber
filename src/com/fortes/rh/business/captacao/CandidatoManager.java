@@ -82,4 +82,5 @@ public interface CandidatoManager extends GenericManager<Candidato>
 	public Collection<AutoCompleteVO> getAutoComplete(String descricao, Long empresaId);
 	public Collection<Candidato> findCandidatosIndicadosPor(Date dataIni, Date dataFim, Long[] empresasIds) throws ColecaoVaziaException;
 	public Collection<CandidatoJsonVO> getCandidatosJsonVO(Long etapaSeletivaId);
+	public Candidato findPorEmpresaByCpfSenha(String cpf, String senha, Long empresaId);
 }

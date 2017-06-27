@@ -65,4 +65,5 @@ public interface CandidatoDao extends GenericDao<Candidato>
 	public Collection<Candidato> findCandidatosIndicadosPor(Date dataIni, Date dataFim, Long[] empresasIds);
 	public Collection<Candidato> getCandidatosByEtapaSeletiva(Long etapaSeletivaId);
 	public Map<Long, Collection<String>> getFuncoesPretendidasByEtapaSeletiva(Long etapaSeletivaId);
+	public Collection<Candidato> findPorEmpresaByCpfSenha(String cpf, String senha, Long empresaId);
 }

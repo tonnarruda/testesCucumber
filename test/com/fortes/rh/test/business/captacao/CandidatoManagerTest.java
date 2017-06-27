@@ -13,7 +13,6 @@ import java.util.zip.ZipOutputStream;
 
 import mockit.Mockit;
 
-import org.hibernate.NonUniqueResultException;
 import org.jmock.Mock;
 import org.jmock.core.Constraint;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -68,7 +67,6 @@ import com.fortes.rh.model.geral.Contato;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Endereco;
 import com.fortes.rh.model.geral.Estado;
-import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.geral.SocioEconomica;
 import com.fortes.rh.model.relatorio.DataGrafico;
@@ -1200,99 +1198,6 @@ public class CandidatoManagerTest extends MockObjectTestCaseManager<CandidatoMan
 			}
 		}
 		return false;
-	}
-
-	public void testRecuperaSenhaUsuarioNulo() throws Exception
-	{
-		String cpf = "123";
-		Empresa empresa = EmpresaFactory.getEmpresa(1L);
-
-		Candidato candidato = null;
-
-		ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
-		parametrosDoSistema.setAppUrl("url");
-
-		candidatoDao.expects(once()).method("findCandidatoCpf").with(new Constraint[]{ANYTHING,ANYTHING}).will(returnValue(candidato));
-		assertEquals("Candidato não localizado!", manager.recuperaSenha(cpf, empresa));
-	}
-
-	public void testRecuperaSenhaUsuarioSemEmail() throws Exception
-	{
-		String cpf = "123";
-		Empresa empresa = EmpresaFactory.getEmpresa(1L);
-
-		Contato contato = new Contato();
-		
-		Candidato candidato = CandidatoFactory.getCandidato(1L);
-		candidato.setCpf(cpf);
-		candidato.setContato(contato);
-		candidato.setEmpresa(empresa);
-
-		ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
-		parametrosDoSistema.setAppUrl("url");
-
-		candidatoDao.expects(once()).method("findCandidatoCpf").with(new Constraint[]{ANYTHING,ANYTHING}).will(returnValue(candidato));
-		assertEquals("Candidato não possui email cadastrado!\n Por favor entre em contato com a empresa.", manager.recuperaSenha(cpf, empresa));
-	}
-	
-	public void testRecuperaSenha() throws Exception
-	{
-		String cpf = "123";
-		Empresa empresa = EmpresaFactory.getEmpresa(1L);
-
-		Candidato candidato = CandidatoFactory.getCandidato(1L);
-		candidato.setCpf(cpf);
-		candidato.setEmpresa(empresa);
-
-		ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
-		parametrosDoSistema.setAppUrl("url");
-
-		candidatoDao.expects(once()).method("findCandidatoCpf").with(new Constraint[]{ANYTHING,ANYTHING}).will(returnValue(candidato));
-		parametrosDoSistemaManager.expects(once()).method("findById").with(ANYTHING).will(returnValue(parametrosDoSistema));
-		mail.expects(once()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
-		candidatoDao.expects(once()).method("atualizaSenha").with(ANYTHING,ANYTHING);
-		assertEquals("Nova Senha enviada por e-mail (mail@mail.com). <br>(Caso não tenha recebido, favor entrar em contato com a empresa)", manager.recuperaSenha(cpf, empresa));
-	}
-	
-	public void testRecuperaSenhaMaisDeUmUsuario() throws Exception
-	{
-		String cpf = "123";
-		Empresa empresa = EmpresaFactory.getEmpresa(1L);
-		
-		Candidato candidato = CandidatoFactory.getCandidato(1L);
-		candidato.setCpf(cpf);
-		candidato.setEmpresa(empresa);
-		
-		ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
-		parametrosDoSistema.setAppUrl("url");
-		
-		candidatoDao.expects(once()).method("findCandidatoCpf").with(ANYTHING,ANYTHING).will(throwException(new NonUniqueResultException(2)));
-		assertEquals("Caro Sr(a) não identificamos uma senha associada ao seu cpf!<br> Por favor entre em contato com a empresa.", manager.recuperaSenha(cpf, empresa));
-	}
-	
-	public void testRecuperaNovaSenha() throws Exception
-	{
-		String cpf = "123";
-		Empresa empresa = new Empresa();
-		empresa.setId(1L);
-
-		Candidato candidato = CandidatoFactory.getCandidato();
-		candidato.setId(1L);
-		candidato.setCpf(cpf);
-		candidato.setEmpresa(empresa);
-		candidato.getContato().setEmail("email@grupofortes.com.br");
-
-		ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
-		parametrosDoSistema.setAppUrl("url");
-
-		candidatoDao.expects(atLeastOnce()).method("atualizaSenha").with(ANYTHING,ANYTHING);
-		parametrosDoSistemaManager.expects(atLeastOnce()).method("findById").with(ANYTHING).will(returnValue(parametrosDoSistema));
-
-		mail.expects(once()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
-		manager.enviaNovaSenha(candidato, empresa);
-
-		manager.setMail(null);
-		manager.enviaNovaSenha(candidato, empresa);
 	}
 
 	public void testUpdateSetContratado() throws Exception

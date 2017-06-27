@@ -1259,4 +1259,8 @@ public class Candidato extends AbstractModel implements Serializable, Cloneable
 		if(camposExtras == null)
 			camposExtras = new CamposExtras();
 	}
+	
+	public String getNomeComDataCadastro(){
+		return getNome()  + " - " + getDataCadastroFormatada();
+	}
 }

@@ -65,8 +65,10 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
         p.add(Projections.property("c.nome"), "nome");
         p.add(Projections.property("c.pessoal.cpf"),"pessoalCpf");
         p.add(Projections.property("c.contato.email"),"contatoEmail");
+        p.add(Projections.property("c.dataCadastro"),"dataCadastro");
         p.add(Projections.property("c.senha"),"senha");
         p.add(Projections.property("e.nome"),"empresaNome");
+        p.add(Projections.property("c.origem"),"origem");
         
         criteria.setProjection(p);
 		criteria.add(Expression.eq("c.pessoal.cpf", cpf));
@@ -1510,5 +1512,28 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		}
 		
 		return funcoesPretendidasCandidato;
+	}
+	
+	public Collection<Candidato> findPorEmpresaByCpfSenha(String cpf, String senha, Long empresaId){
+        ProjectionList p = Projections.projectionList().create();
+        p.add(Projections.property("c.id"), "id");
+        p.add(Projections.property("c.nome"), "nome");
+        p.add(Projections.property("c.pessoal.cpf"),"pessoalCpf");
+        p.add(Projections.property("c.contato.email"),"contatoEmail");
+        p.add(Projections.property("c.dataCadastro"),"dataCadastro");
+        p.add(Projections.property("c.senha"),"senha");
+        p.add(Projections.property("e.nome"),"empresaNome");
+        p.add(Projections.property("c.origem"),"origem");
+
+        Criteria criteria = getSession().createCriteria(Candidato.class, "c");
+        criteria.createCriteria("c.empresa", "e");
+        
+		criteria.add(Expression.eq("c.pessoal.cpf", cpf));
+		criteria.add(Expression.eq("c.empresa.id", empresaId));
+		criteria.add(Expression.eq("c.senha", senha));
+		
+		criteria.setProjection(p);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Candidato.class));
+		return criteria.list();
 	}
 }

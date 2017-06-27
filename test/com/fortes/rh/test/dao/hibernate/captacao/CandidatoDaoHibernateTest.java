@@ -1,11 +1,20 @@
 package com.fortes.rh.test.dao.hibernate.captacao;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.config.JDBCConnection;
@@ -54,7 +63,7 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Endereco;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Estado;
-import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.dao.GenericDaoHibernateTest_JUnit4;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoSolicitacaoFactory;
@@ -76,27 +85,27 @@ import com.fortes.rh.test.util.mockObjects.MockCandidato;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.StringUtil;
 @SuppressWarnings({"unchecked","rawtypes"})
-public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato>
+public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<Candidato>
 {
-	private CandidatoDao candidatoDao;
-	private EmpresaDao empresaDao;
-	private AreaInteresseDao areaInteresseDao;
-	private CargoDao cargoDao;
-	private ConhecimentoDao conhecimentoDao;
-	private CidadeDao cidadeDao;
-	private EstadoDao estadoDao;
-	private BairroDao bairroDao;
-	private ExperienciaDao experienciaDao;
-	private SolicitacaoDao solicitacaoDao;
-	private EstabelecimentoDao estabelecimentoDao;
-	private AreaOrganizacionalDao areaOrganizacionalDao;
-	private HistoricoCandidatoDao historicoCandidatoDao;
-	private CandidatoSolicitacaoDao candidatoSolicitacaoDao;
-	private EtapaSeletivaDao etapaSeletivaDao;
-	private ColaboradorDao colaboradorDao;
-	private FaixaSalarialDao faixaSalarialDao;
-	private ComoFicouSabendoVagaDao comoFicouSabendoVagaDao;
-	private CamposExtrasDao camposExtrasDao;
+	@Autowired private CandidatoDao candidatoDao;
+	@Autowired private EmpresaDao empresaDao;
+	@Autowired private AreaInteresseDao areaInteresseDao;
+	@Autowired private CargoDao cargoDao;
+	@Autowired private ConhecimentoDao conhecimentoDao;
+	@Autowired private CidadeDao cidadeDao;
+	@Autowired private EstadoDao estadoDao;
+	@Autowired private BairroDao bairroDao;
+	@Autowired private ExperienciaDao experienciaDao;
+	@Autowired private SolicitacaoDao solicitacaoDao;
+	@Autowired private EstabelecimentoDao estabelecimentoDao;
+	@Autowired private AreaOrganizacionalDao areaOrganizacionalDao;
+	@Autowired private HistoricoCandidatoDao historicoCandidatoDao;
+	@Autowired private CandidatoSolicitacaoDao candidatoSolicitacaoDao;
+	@Autowired private EtapaSeletivaDao etapaSeletivaDao;
+	@Autowired private ColaboradorDao colaboradorDao;
+	@Autowired private FaixaSalarialDao faixaSalarialDao;
+	@Autowired private ComoFicouSabendoVagaDao comoFicouSabendoVagaDao;
+	@Autowired private CamposExtrasDao camposExtrasDao;
 
 	public Candidato getEntity()
 	{
@@ -108,6 +117,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		return candidatoDao;
 	}
 
+	@Test
 	public void testFindByCPFCollection()
 	{
 		Empresa e1 = EmpresaFactory.getEmpresa();
@@ -138,6 +148,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertEquals("Verifica empresa", 1, candidatoDao.findByCPF("0000000000", e1.getId(), null, false).size());
 	}
 	
+	@Test
 	public void testFindQtdCadastradosByOrigem()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -167,6 +178,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertEquals(1, ((Candidato)candidatos.toArray()[1]).getQtdCurriculosCadastrados());//qtd de cadastrados no sistema(CADASTRADO)
 	}
 	
+	@Test
 	public void testCountComoFicouSabendoVagas()
 	{
 		Date hoje = new Date();
@@ -207,6 +219,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertEquals("revista", ((ComoFicouSabendoVaga)vagas.toArray()[1]).getNome());
 	}
 
+	@Test
 	public void testFindByCandidatoId()
 	{
 		Candidato c3 = getCandidato();
@@ -219,6 +232,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertEquals(c3.getId(), candidato.getId());
 	}
 
+	@Test
 	public void testFind()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -257,6 +271,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertEquals(c2.getId(), ((Candidato)(candidatos.toArray()[0])).getId(), 'T');
 	}
 
+	@Test
 	public void testFindVisualizar()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -281,7 +296,8 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		candidatos = candidatoDao.find(1, 10, "", "", null, null, null, "", 'I',null, null, null, false, false, empresa.getId());
 		assertEquals(2, candidatos.size());
 	}
-
+	
+	@Test
 	public void testUpdateBlackList()
 	{
 		Candidato c1 = getCandidato();
@@ -303,6 +319,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		return MockCandidato.getCandidato();
 	}
 
+	@Test
 	public void testGetCount()
 	{
 		String nomeBusca = "teste";
@@ -328,6 +345,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertEquals(1, (int)count);
 	}
 
+	@Test
 	public void testGetCountDisponivelIndisponivel()
 	{
 		String nomeBusca = "teste";
@@ -356,6 +374,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertEquals("indisponivel", 1, (int)candidatoDao.getCount(nomeBusca, cpfBusca, "85", "344", "8889", "", 'I',null, null, null, false, false, empresa.getId()));
 	}
 
+	@Test
 	public void testGetCountPeriodo()
 	{
 		Date dataIni = DateUtil.criarDataMesAno(01, 02, 2000);
@@ -381,6 +400,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertEquals(1, (int)count);
 	}
 
+	@Test
 	public void testFindCandidatosById()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -409,6 +429,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertEquals(3, candidatos.size());
 	}
 
+	@Test
 	public void testGetConhecimentosByCandidatoId()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -428,6 +449,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertEquals(conhecimento.getNome(), conhecimentosRetorno.get(0));
 	}
 
+	@Test
 	public void testGetCandidatosByCpf()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -457,6 +479,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertEquals(3, candidatos.size());
 	}
 
+	@Test
 	public void testFindCandidatoCpf()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -470,6 +493,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertEquals(c1.getId(), candidatoRetorno.getId());
 	}
 
+	@Test
 	public void testUpdateSetContratado()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -488,6 +512,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertTrue(retorno.isContratado());
 	}
 
+	@Test
 	public void testFindByIdProjection()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -505,7 +530,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertEquals(c1.getExamePalografico(), candidatoRetorno.getExamePalografico());
 	}
 
-
+	@Test
 	public void testAtualizaSenha()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -521,6 +546,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertEquals("novaSenha", retorno.getSenha());
 	}
 
+	@Test
 	public void testAtualizaTextoOcr()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -536,6 +562,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertEquals("texto ocr", ((Candidato) retorno.toArray()[0]).getOcrTexto());
 	}
 
+	@Test
 	public void testFindConhecimentosByCandidatoId()
 	{
 		Conhecimento conhecimento1 = ConhecimentoFactory.getConhecimento();
@@ -558,6 +585,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertEquals(2, lista.size());
 	}
 
+	@Test
 	public void testFindCargosByCandidatoId()
 	{
 		Cargo cargo1 = CargoFactory.getEntity();
@@ -580,6 +608,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertEquals(2, lista.size());
 	}
 
+	@Test
 	public void testFindAreasInteressesByCandidatoId()
 	{
 		AreaInteresse areaInteresse1 = AreaInteresseFactory.getAreaInteresse();
@@ -602,6 +631,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertEquals(2, lista.size());
 	}
 
+	@Test
 	public void testGetCandidatoByNome()
 	{
 		Candidato candidato = getCandidato();
@@ -617,6 +647,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertEquals(1, candidatos.size());
 	}
 
+	@Test
 	public void testUpdateSenha()
 	{
 		Candidato candidato = getCandidato();
@@ -627,6 +658,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		candidatoDao.updateSenha(candidato.getId(), candidato.getSenha(), StringUtil.encodeString("123456"));
 	}
 
+	@Test
 	public void testFindRelatorioAvaliacaoCandidatos()
 	{
 		Date hoje = new Date();
@@ -740,6 +772,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertEquals(Integer.valueOf(1), ((AvaliacaoCandidatosRelatorio)resultadosComStatusSolicitacaoTodas.toArray()[0]).getTotal());
 	}
 
+	@Test
 	public void testFindByNomeCpf()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -768,6 +801,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertEquals(1, resultados.size());
 	}
 	
+	@Test
 	public void testUpdateDisponivelAndContratadoByColaborador()
 	{
 		Candidato candidato = getCandidato();
@@ -800,6 +834,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertEquals(true, retorno.isContratado());
 	}
 	
+	@Test
 	public void testUpdateDisponivel()
 	{
 		Candidato candidato = getCandidato();
@@ -818,6 +853,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertEquals(false, retorno.isDisponivel());
 	}
 
+	@Test
 	public void testFindCandidatosForSolicitacaoAllEmpresasPermitidas()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -843,6 +879,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertEquals(1, resultados.size());
 	}
 
+	@Test
 	public void testFindCandidatosForSolicitacaoByEmpresa()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -870,6 +907,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertEquals(1, resultados.size());
 	}
 	
+	@Test
 	public void testFindCandidatosForSolicitacaoByEmpresaSomenteCandidatosSemSolicitacao()
 	{
 		boolean somenteCandidatosSemSolicitacao = true;
@@ -903,7 +941,8 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertEquals(2, resultados.size());
 		
 	}
-
+	
+	@Test
 	public void testFindCandidatosForSolicitacaoByEmpresaCandidatoJaSelecionado()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -961,7 +1000,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		candidatoDao.save(candidato2);
 	}
 
-
+	@Test
 	public void testMigrarBairro()
 	{
 		Bairro bairro = new Bairro();
@@ -988,6 +1027,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertEquals(candidatoTmp.getEndereco().getBairro(), bairroDestino.getNome());
 	}
 	
+	@Test
 	public void testTriagemAutomatica()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -1061,7 +1101,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertTrue(candidatos.size() >= 2);
 	}
 
-
+	@Test
 	public void testFindQtdCadastrados() {
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
@@ -1091,6 +1131,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		
 	}
 	
+	@Test
 	public void testRemoveAreaInteresseConhecimentoCargo() 
 	{
 	
@@ -1111,6 +1152,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertEquals("12", qtdTabelasComCandidatos);
 	}
 	
+	@Test
 	public void testFindColaboradoresMesmoCpf()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -1130,6 +1172,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertEquals(2, candidatoDao.findColaboradoresMesmoCpf(new String[] { "", colab1.getPessoal().getCpf(), colab2.getPessoal().getCpf() }).size() );
 	}
 	
+	@Test
 	public void testDeleteCargosPretendidos() 
 	{
 		Exception ex = null;
@@ -1141,6 +1184,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertNull(ex);
 	}
 	
+	@Test
 	public void testExisteCamposExtras()
 	{
 		CamposExtras camposExtras = CamposExtrasFactory.getEntity(1L);
@@ -1155,6 +1199,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertTrue(candidatoDao.existeCamposExtras(camposExtras.getId()));
 	}
 	
+	@Test
 	public void testGetAutoComplete(){
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
@@ -1170,6 +1215,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertEquals(1, candidatoDao.getAutoComplete("JULIANA", empresa.getId()).size());
 	}
 	
+	@Test
 	public void testFindCandidatosIndicadosPor()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -1195,6 +1241,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertEquals(candidato2.getPessoal().getIndicadoPor(), candidatos.iterator().next().getPessoal().getIndicadoPor());
 	}
 	
+	@Test
 	public void testGetCandidatosByEtapaSeletiva()
 	{
 		EtapaSeletiva etapaSeletiva1 = inicializaCandidatoSolicitacaoComEtapaSeletiva();
@@ -1204,7 +1251,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertEquals("Cand1", ((Candidato)candidatos.toArray()[0]).getNome());
 	}
 	
-	
+	@Test
 	public void testGetFuncoesPretendidasByEtapaSeletiva()
 	{
 		EtapaSeletiva etapaSeletiva1 = inicializaCandidatoSolicitacaoComEtapaSeletiva();
@@ -1215,6 +1262,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertEquals("Develop", ((Collection<String>) funcoesPretendidas.values().toArray()[0]).toArray()[0]);
 	}
 
+	@Test
 	public void testGetCandidatosByEtapaSeletivaCandidatoAptoPoremContratado()
 	{
 		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
@@ -1285,96 +1333,20 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		return etapaSeletiva1;
 	}
 	
-	public void setEmpresaDao(EmpresaDao empresaDao)
-	{
-		 this.empresaDao = empresaDao;
-	}
-
-	public void setCandidatoDao(CandidatoDao candidatoDao)
-	{
-		this.candidatoDao = candidatoDao;
-	}
-
-	public void setAreaInteresseDao(AreaInteresseDao areaInteresseDao)
-	{
-		this.areaInteresseDao = areaInteresseDao;
-	}
-
-	public void setCargoDao(CargoDao cargoDao)
-	{
-		this.cargoDao = cargoDao;
-	}
-
-	public void setConhecimentoDao(ConhecimentoDao conhecimentoDao)
-	{
-		this.conhecimentoDao = conhecimentoDao;
-	}
-
-	public void setCidadeDao(CidadeDao cidadeDao)
-	{
-		this.cidadeDao = cidadeDao;
-	}
-
-	public void setEstadoDao(EstadoDao estadoDao)
-	{
-		this.estadoDao = estadoDao;
-	}
-
-	public void setBairroDao(BairroDao bairroDao)
-	{
-		this.bairroDao = bairroDao;
-	}
-
-	public void setExperienciaDao(ExperienciaDao experienciaDao)
-	{
-		this.experienciaDao = experienciaDao;
-	}
-
-	public void setSolicitacaoDao(SolicitacaoDao solicitacaoDao)
-	{
-		this.solicitacaoDao = solicitacaoDao;
-	}
-
-	public void setCandidatoSolicitacaoDao(CandidatoSolicitacaoDao candidatoSolicitacaoDao)
-	{
-		this.candidatoSolicitacaoDao = candidatoSolicitacaoDao;
-	}
-
-	public void setEtapaSeletivaDao(EtapaSeletivaDao etapaSeletivaDao)
-	{
-		this.etapaSeletivaDao = etapaSeletivaDao;
-	}
-
-	public void setColaboradorDao(ColaboradorDao colaboradorDao) {
-		this.colaboradorDao = colaboradorDao;
-	}
-
-	public void setFaixaSalarialDao(FaixaSalarialDao faixaSalarialDao) {
-		this.faixaSalarialDao = faixaSalarialDao;
-	}
-
-	public void setHistoricoCandidatoDao(HistoricoCandidatoDao historicoCandidatoDao)
-	{
-		this.historicoCandidatoDao = historicoCandidatoDao;
-	}
-
-	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao)
-	{
-		this.areaOrganizacionalDao = areaOrganizacionalDao;
-	}
-
-	public void setEstabelecimentoDao(EstabelecimentoDao estabelecimentoDao)
-	{
-		this.estabelecimentoDao = estabelecimentoDao;
-	}
-
-	public void setComoFicouSabendoVagaDao(ComoFicouSabendoVagaDao comoFicouSabendoVagaDao)
-	{
-		this.comoFicouSabendoVagaDao = comoFicouSabendoVagaDao;
-	}
-
-	public void setCamposExtrasDao(CamposExtrasDao camposExtrasDao) 
-	{
-		this.camposExtrasDao = camposExtrasDao;
+	@Test
+	public void testFindPorEmpresaByCpfSenha(){
+        Empresa empresa = EmpresaFactory.getEmpresa();
+        empresaDao.save(empresa);
+        
+        Candidato candidato1 = CandidatoFactory.getCandidatoDiponivel("Candidato 1", "01234567890", empresa);
+        candidato1.setSenha("1234");
+        candidatoDao.save(candidato1);
+        
+        Candidato candidato2 = CandidatoFactory.getCandidatoDiponivel("Candidato 1", "01234567890", empresa);
+        candidatoDao.save(candidato2);
+        
+        Collection<Candidato> retorno = candidatoDao.findPorEmpresaByCpfSenha("01234567890", "1234", empresa.getId());
+        assertEquals(1, retorno.size());
+        assertEquals(candidato1.getId(), retorno.iterator().next().getId());
 	}
 }

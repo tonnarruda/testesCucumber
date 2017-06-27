@@ -1,6 +1,7 @@
 package com.fortes.rh.web.action.externo;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
@@ -49,6 +50,7 @@ public class ExternoAction extends MyActionSupport
 	private static final String MSG_SENHA_VAZIA_CPF = "Não existe senha para seu cadastro. Favor, entrar em contato com a Empresa.";
 	private static final String MSG_INF_LOGIN = "Dados cadastrados com sucesso.\\nInforme seu CPF e senha para ver as vagas disponíveis.";
 	private static final String MSG_INF_LOGIN_ENVIO_CURRICULO = "Dados cadastrados com sucesso.\\nInforme seu CPF e senha para efetivar sua candidatura à vaga.";
+	private static final String MSG_VARIOS_CANDIDATOS_MESMO_CPF = "Existe mais de um cadastro para o CPF informado. Selecione o candidato pelo qual deseja acessar o sistema.";
 
 	private String cpf;
 	private String senha;
@@ -74,6 +76,7 @@ public class ExternoAction extends MyActionSupport
 	private DocumentoAnexo documentoAnexo;
 	private com.fortes.model.type.File documento;
 	private Integer max_file_size;
+	private Collection<Candidato> candidatos = new ArrayList<Candidato>();
 
 	private boolean moduloExterno = true; // flag para regra em recuperaSenhaLogin
 	private boolean sucessoEnvioCurriculo; // flag de alerta ftl
@@ -104,17 +107,18 @@ public class ExternoAction extends MyActionSupport
 		return Action.SUCCESS;
 	}
 	
-	public String checaLogin() throws Exception
-	{
-		if (cpf.equals(""))
-		{
+	public String checaLogin() throws Exception {
+		
+		if (cpf.equals("")) {
 			msg = MSG_CPF_BRANCO;
 			return Action.INPUT;
 		}
 
 		Map<String, Object> session = ActionContext.getContext().getSession();
-		candidato = candidatoManager.findByCPF(cpf, empresaId);
-
+		
+		
+		candidato = candidatoManager.findPorEmpresaByCpfSenha(cpf, StringUtil.encodeString(senha), empresaId);
+		
 		if (candidato == null)
 		{
 			msg = MSG_CPF_NAO_CAD;
@@ -642,5 +646,13 @@ public class ExternoAction extends MyActionSupport
 			return 0;
 		else
 			return max_file_size;
+	}
+	
+	public Collection<Candidato> getCandidatos() {
+		return candidatos;
+	}
+
+	public void setCandidatos(Collection<Candidato> candidatos) {
+		this.candidatos = candidatos;
 	}
 }

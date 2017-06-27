@@ -11,6 +11,7 @@
 			<result name="success" type="redirect">prepareListAnuncio.action</result>
 			<result name="enviarCurriculo" type="redirect">enviarCurriculo.action?solicitacao.id=${solicitacao.id}</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/externo/externoLogin.ftl</result>
+			<result name="escolherCandidato" type="freemarker">/WEB-INF/forms/externo/externoLogin.ftl</result>
 		</action>
 		<action name="logoutExterno" class="com.fortes.rh.web.action.externo.ExternoAction" method="logoutExterno">
 			<result name="success" type="freemarker">/WEB-INF/forms/externo/externoLogin.ftl</result>

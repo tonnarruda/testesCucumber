@@ -13,7 +13,6 @@ import java.util.Map;
 import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.NonUniqueResultException;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -671,33 +670,55 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		return camposExtrasCandidato;
 	}
 
+	public Candidato findPorEmpresaByCpfSenha(String cpf, String senha, Long empresaId) 
+	{
+		Collection<Candidato> candidatos = getDao().findPorEmpresaByCpfSenha(cpf, senha, empresaId);
+
+		if (candidatos.isEmpty())
+			return this.findByCPF(cpf, empresaId);
+		else {
+			return decideQualCandidatoRetornar(candidatos);
+		}
+	}
+	
 	public String recuperaSenha(String cpf, Empresa empresa) 
 	{
-		try
-		{
-			String mensagem = "Candidato não localizado!";
-			Candidato candidato = findCandidatoCpf(cpf, empresa.getId());
-	
-			if(candidato != null)
-			{
-				if (candidato.getContato().getEmail() == null || candidato.getContato().getEmail().equals(""))
-					mensagem = "Candidato não possui email cadastrado!\n Por favor entre em contato com a empresa.";
-				else
-				{
-					enviaNovaSenha(candidato, empresa);
-					mensagem = "Nova Senha enviada por e-mail (" + candidato.getContato().getEmail() +"). <br>(Caso não tenha recebido, favor entrar em contato com a empresa)";					
-				}
-			}
-	
+		String mensagem = "Candidato não localizado!";
+		Collection<Candidato> candidatos = findByCPF(cpf, empresa.getId(),null, null);
+		if (candidatos.isEmpty())
 			return mensagem;
+		else {
+			Candidato candidato = decideQualCandidatoRetornar(candidatos);
+
+			if (candidato.getContato().getEmail() == null || candidato.getContato().getEmail().equals(""))
+				mensagem = "Candidato não possui email cadastrado!\n Por favor entre em contato com a empresa.";
+			else {
+				enviaNovaSenha(candidato, empresa);
+				mensagem = "Nova Senha enviada por e-mail (" + candidato.getContato().getEmail() + "). <br>(Caso não tenha recebido, favor entrar em contato com a empresa)";
+			}
 		}
-		catch (NonUniqueResultException notUniqueResultException) 
-		{
-			return "Caro Sr(a) não identificamos uma senha associada ao seu cpf!<br> Por favor entre em contato com a empresa.";
-		}
-		
+		return mensagem;
 	}
 
+	private Candidato decideQualCandidatoRetornar(Collection<Candidato> candidatos) {
+		Candidato candidatoAux = null;
+		
+		if (candidatos.size() == 1) {
+			candidatoAux = candidatos.iterator().next();
+		} else {
+			for (Candidato candidato : candidatos) 
+				if (candidato.getOrigem() == OrigemCandidato.EXTERNO) {
+					candidatoAux = candidato;
+					break;
+				}
+		}
+		
+		if (candidatoAux == null)
+			candidatoAux = candidatos.iterator().next();
+		
+		return candidatoAux;
+	}
+	
 	private void enviaSenha(Candidato candidato, Empresa empresa, String senha)
 	{
 		ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findById(1L);
@@ -730,11 +751,6 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 
 		enviaSenha(candidato, empresa, senha);
 
-	}
-
-	private Candidato findCandidatoCpf(String cpf, Long empresaId)
-	{
-		return getDao().findCandidatoCpf(cpf, empresaId);
 	}
 
 	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager)
