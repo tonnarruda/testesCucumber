@@ -869,7 +869,9 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		try
 		{
 			Long reajusteColaboradorId = getDao().findReajusteByHistoricoColaborador(historicoColaborador.getId());
-			candidatoSolicitacaoManager.updateStatusAndRemoveDataContratacaoOrPromocao(historicoColaborador.getCandidatoSolicitacao().getId(), StatusCandidatoSolicitacao.APROMOVER);
+			if(historicoColaborador.getCandidatoSolicitacao() != null && historicoColaborador.getCandidatoSolicitacao().getId() != null)
+				candidatoSolicitacaoManager.updateStatusAndRemoveDataContratacaoOrPromocao(historicoColaborador.getCandidatoSolicitacao().getId(), StatusCandidatoSolicitacao.APROMOVER);
+			
 			remove(historicoColaborador.getId());
 
 			if(reajusteColaboradorId != null)
