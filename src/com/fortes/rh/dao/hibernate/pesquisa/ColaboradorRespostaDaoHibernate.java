@@ -87,16 +87,16 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		}
 		
 		if(TipoModeloAvaliacao.isDesempenho(tipoModeloAvaliacao)){
-				whereColaboradorQuestionarioSub = "   and cqsub.avaliacaoDesempenho.id is not null " ;
-				whereColaboradorQuestionario =  "   and cq.avaliacaoDesempenho.id is not null " ;
-				if(avaliacoesDesempenhoId != null && avaliacoesDesempenhoId.length > 0){
-					whereColaboradorQuestionarioSub += "   and cqsub.avaliacaoDesempenho.id in(:avaliacoesDesempenhoId) " ;
-					whereColaboradorQuestionario +=  "   and cq.avaliacaoDesempenho.id in(:avaliacoesDesempenhoId) " ;
-				}
+			whereColaboradorQuestionarioSub = "   and cqsub.avaliacaoDesempenho.id is not null " ;
+			whereColaboradorQuestionario =  "   and cq.avaliacaoDesempenho.id is not null " ;
+			if(avaliacoesDesempenhoId != null && avaliacoesDesempenhoId.length > 0){
+				whereColaboradorQuestionarioSub += "   and cqsub.avaliacaoDesempenho.id in(:avaliacoesDesempenhoId) " ;
+				whereColaboradorQuestionario +=  "   and cq.avaliacaoDesempenho.id in(:avaliacoesDesempenhoId) " ;
+			}
 		}
 		else if(TipoModeloAvaliacao.isAcompanhamentoExperiencia(tipoModeloAvaliacao)){
-				whereColaboradorQuestionarioSub = "   and cqsub.avaliacaoDesempenho.id is null " ;
-				whereColaboradorQuestionario =  "   and cq.avaliacaoDesempenho.id is null " ;
+			whereColaboradorQuestionarioSub = "   and cqsub.avaliacaoDesempenho.id is null " ;
+			whereColaboradorQuestionario =  "   and cq.avaliacaoDesempenho.id is null " ;
 		}
 		
 		if(TipoModeloAvaliacao.isAcompanhamentoExperienciaOuNulo(tipoModeloAvaliacao)){
