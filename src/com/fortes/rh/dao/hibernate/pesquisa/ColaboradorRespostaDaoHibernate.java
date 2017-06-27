@@ -86,7 +86,7 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 			whereTurma = "and cq.turma.id = :turmaId ";			
 		}
 		
-		if(tipoModeloAvaliacao != null && tipoModeloAvaliacao.equals(TipoModeloAvaliacao.DESEMPENHO)){
+		if(TipoModeloAvaliacao.isDesempenho(tipoModeloAvaliacao)){
 				whereColaboradorQuestionarioSub = "   and cqsub.avaliacaoDesempenho.id is not null " ;
 				whereColaboradorQuestionario =  "   and cq.avaliacaoDesempenho.id is not null " ;
 				if(avaliacoesDesempenhoId != null && avaliacoesDesempenhoId.length > 0){
@@ -94,12 +94,12 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 					whereColaboradorQuestionario +=  "   and cq.avaliacaoDesempenho.id in(:avaliacoesDesempenhoId) " ;
 				}
 		}
-		else if(tipoModeloAvaliacao != null && tipoModeloAvaliacao.equals(TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA)){
+		else if(TipoModeloAvaliacao.isAcompanhamentoExperiencia(tipoModeloAvaliacao)){
 				whereColaboradorQuestionarioSub = "   and cqsub.avaliacaoDesempenho.id is null " ;
 				whereColaboradorQuestionario =  "   and cq.avaliacaoDesempenho.id is null " ;
 		}
 		
-		if(tipoModeloAvaliacao == null || tipoModeloAvaliacao.equals(TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA)){
+		if(TipoModeloAvaliacao.isAcompanhamentoExperienciaOuNulo(tipoModeloAvaliacao)){
 			if(periodoIni != null)
 			{
 				wherePeriodoIni = "and " + campo + " >= :periodoIni ";
@@ -165,14 +165,17 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		if(estabelecimentosIds != null && estabelecimentosIds.length > 0)
 			query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
 
-		if(tipoModeloAvaliacao != null && tipoModeloAvaliacao.equals(TipoModeloAvaliacao.DESEMPENHO) && avaliacoesDesempenhoId != null && avaliacoesDesempenhoId.length > 0)
+		if(TipoModeloAvaliacao.isDesempenho(tipoModeloAvaliacao) && avaliacoesDesempenhoId != null && avaliacoesDesempenhoId.length > 0)
 			query.setParameterList("avaliacoesDesempenhoId", avaliacoesDesempenhoId);
 		
-		if(periodoIni != null)
-			query.setDate("periodoIni", periodoIni);
+		if (TipoModeloAvaliacao.isAcompanhamentoExperienciaOuNulo(tipoModeloAvaliacao)) {
 
-		if(periodoFim != null)
-			query.setDate("periodoFim", periodoFim);
+			if (periodoIni != null)
+				query.setDate("periodoIni", periodoIni);
+
+			if (periodoFim != null)
+				query.setDate("periodoFim", periodoFim);
+		}
 		
 		if(turmaId != null)
 			query.setLong("turmaId", turmaId);
@@ -210,17 +213,17 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		if(turmaId != null)
 			whereTurma = "and cq.turma.id = :turmaId ";
 		
-		if(tipoModeloAvaliacao != null && tipoModeloAvaliacao.equals(TipoModeloAvaliacao.DESEMPENHO)){
+		if(TipoModeloAvaliacao.isDesempenho(tipoModeloAvaliacao)){
 			whereColaboradorQuestionario =  "   and cq.avaliacaoDesempenho.id is not null " ;
 			if(avaliacoesDesempenhoId != null && avaliacoesDesempenhoId.length > 0){
 				whereColaboradorQuestionario +=  "   and cq.avaliacaoDesempenho.id in(:avaliacoesDesempenhoId) " ;
 			}
 		}
-		else if(tipoModeloAvaliacao != null && tipoModeloAvaliacao.equals(TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA)){
+		else if(TipoModeloAvaliacao.isAcompanhamentoExperiencia(tipoModeloAvaliacao)){
 			whereColaboradorQuestionario =  "   and cq.avaliacaoDesempenho.id is null " ;
 		}
 
-		if(tipoModeloAvaliacao == null || tipoModeloAvaliacao.equals(TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA)){
+		if(TipoModeloAvaliacao.isAcompanhamentoExperienciaOuNulo(tipoModeloAvaliacao)){
 			if(periodoIni != null)
 				wherePeriodoIni = desligamento ? "and c.dataDesligamento >= :periodoIni " : "and cq.respondidaEm >= :periodoIni ";
 			
@@ -268,15 +271,19 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		if(estabelecimentosIds != null && estabelecimentosIds.length > 0)
 			query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
 		
-		if(periodoIni != null)
-			query.setDate("periodoIni", periodoIni);
 		
-		if(periodoFim != null)
-			query.setDate("periodoFim", periodoFim);
+		if (TipoModeloAvaliacao.isAcompanhamentoExperienciaOuNulo(tipoModeloAvaliacao)) {
+			
+			if (periodoIni != null)
+				query.setDate("periodoIni", periodoIni);
+			
+			if (periodoFim != null)
+				query.setDate("periodoFim", periodoFim);
+		}
 		if(turmaId != null)
 			query.setLong("turmaId", turmaId);
 		
-		if(tipoModeloAvaliacao != null && tipoModeloAvaliacao.equals(TipoModeloAvaliacao.DESEMPENHO) && avaliacoesDesempenhoId != null && avaliacoesDesempenhoId.length > 0)
+		if(TipoModeloAvaliacao.isDesempenho(tipoModeloAvaliacao) && avaliacoesDesempenhoId != null && avaliacoesDesempenhoId.length > 0)
 			query.setParameterList("avaliacoesDesempenhoId", avaliacoesDesempenhoId);
 		
 		return query.list();

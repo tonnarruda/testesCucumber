@@ -2,6 +2,7 @@ package com.fortes.rh.test.dao.hibernate.pesquisa;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -185,7 +186,6 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 
 		Resposta respostaA = RespostaFactory.getEntity("Sim", pergunta, 1);
 		respostaA = respostaDao.save(respostaA);
-
 
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity();
 		avaliacaoDesempenhoDao.save(avaliacaoDesempenho);
@@ -1289,5 +1289,59 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		
 		assertEquals(1, retorno.size());
 		assertEquals(colaboradorResposta.getId(), retorno.iterator().next().getId());
+	}
+
+	@Test
+	public void testCasoTipoAvaliacaoSejaDesempenhoEPeriodoSejaInformadoDesconsiderarNaConsulta() {
+
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(null, "Area", true, empresa);
+		areaOrganizacional = areaOrganizacionalDao.save(areaOrganizacional);
+
+		Avaliacao avaliacao = AvaliacaoFactory.getEntity(empresa, "Avaliação", TipoModeloAvaliacao.DESEMPENHO, null, true);
+		avaliacaoDao.save(avaliacao);
+
+		Pergunta pergunta = PerguntaFactory.getEntity();
+		pergunta.setTexto("Voce foi criado com a avo?");
+		pergunta.setAvaliacao(avaliacao);
+		pergunta = perguntaDao.save(pergunta);
+
+		Resposta respostaA = RespostaFactory.getEntity();
+		respostaA.setTexto("Sim");
+		respostaA.setOrdem(1);
+		respostaA.setPergunta(pergunta);
+		respostaA = respostaDao.save(respostaA);
+
+		Resposta respostaB = RespostaFactory.getEntity();
+		respostaB.setTexto("Nao");
+		respostaB.setOrdem(2);
+		respostaB.setPergunta(pergunta);
+		respostaB = respostaDao.save(respostaB);
+
+		Colaborador avaliado = ColaboradorFactory.getEntity(null, empresa);
+		colaboradorDao.save(avaliado);
+
+		Colaborador avaliador = ColaboradorFactory.getEntity(null, empresa);
+		colaboradorDao.save(avaliador);
+
+		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(null, "Avalição Desempenho", true, avaliacao, empresa);
+		avaliacaoDesempenhoDao.save(avaliacaoDesempenho);
+
+		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario.setColaborador(avaliado);
+		colaboradorQuestionario.setAvaliador(avaliador);
+		colaboradorQuestionario.setAvaliacaoDesempenho(avaliacaoDesempenho);
+		colaboradorQuestionario = colaboradorQuestionarioDao.save(colaboradorQuestionario);
+
+		ColaboradorResposta colaboradorResposta = ColaboradorRespostaFactory.getEntity(null, pergunta, respostaA, null, colaboradorQuestionario);
+		colaboradorResposta.setAreaOrganizacional(areaOrganizacional);
+		colaboradorRespostaDao.save(colaboradorResposta);
+
+		List<Object[]> retornos = colaboradorRespostaDao.countRespostas(new Long[] { pergunta.getId() }, null, new Long[] { areaOrganizacional.getId() }, null, new Date(), new Date(), false, null, null, TipoModeloAvaliacao.DESEMPENHO, null);
+
+		assertNotNull(retornos);
+
 	}
 }

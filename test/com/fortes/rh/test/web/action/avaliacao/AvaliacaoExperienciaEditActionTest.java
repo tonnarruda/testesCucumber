@@ -1,13 +1,18 @@
 package com.fortes.rh.test.web.action.avaliacao;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
 import mockit.Mockit;
 
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
-import org.jmock.core.Constraint;
+import org.junit.Before;
+import org.junit.Test;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
@@ -30,127 +35,116 @@ import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.avaliacao.AvaliacaoExperienciaEditAction;
 import com.fortes.web.tags.CheckBox;
 
-public class AvaliacaoExperienciaEditActionTest extends MockObjectTestCase
-{
+public class AvaliacaoExperienciaEditActionTest {
 	private AvaliacaoExperienciaEditAction action;
-	private Mock manager;
-	private Mock perguntaManager;
-	private Mock areaOrganizacionalManager;
-	private Mock empresaManager;
-	private Mock parametrosDoSistemaManager;
+	private AvaliacaoManager manager;
+	private PerguntaManager perguntaManager;
+	private AreaOrganizacionalManager areaOrganizacionalManager;
+	private EmpresaManager empresaManager;
+	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 
-	protected void setUp() throws Exception
-	{
-		super.setUp();
-		manager = new Mock(AvaliacaoManager.class);
+	@Before
+	public void setUp() throws Exception {
+		manager = mock(AvaliacaoManager.class);
 		action = new AvaliacaoExperienciaEditAction();
-		action.setAvaliacaoManager((AvaliacaoManager) manager.proxy());
-		
+		action.setAvaliacaoManager(manager);
+
 		perguntaManager = mock(PerguntaManager.class);
-		action.setPerguntaManager((PerguntaManager) perguntaManager.proxy());
-		
+		action.setPerguntaManager(perguntaManager);
+
 		empresaManager = mock(EmpresaManager.class);
-		action.setEmpresaManager((EmpresaManager) empresaManager.proxy());
-		
+		action.setEmpresaManager(empresaManager);
+
 		parametrosDoSistemaManager = mock(ParametrosDoSistemaManager.class);
-		action.setParametrosDoSistemaManager((ParametrosDoSistemaManager) parametrosDoSistemaManager.proxy());
-		
+		action.setParametrosDoSistemaManager(parametrosDoSistemaManager);
+
 		areaOrganizacionalManager = mock(AreaOrganizacionalManager.class);
-		action.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
+		action.setAreaOrganizacionalManager(areaOrganizacionalManager);
 
 		action.setAvaliacaoExperiencia(new Avaliacao());
-		
+
 		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
-		
+
 		Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
-        Mockit.redefineMethods(RelatorioUtil.class, MockRelatorioUtil.class);
+		Mockit.redefineMethods(RelatorioUtil.class, MockRelatorioUtil.class);
 	}
 
-	protected void tearDown() throws Exception
-	{
-		manager = null;
-		action = null;
-    	MockSecurityUtil.verifyRole = false;
-		super.tearDown();
+	@Test
+	public void testImprimeResultado() throws Exception {
+		action.setAgruparPorAspectos(true);
+		Avaliacao avaliacaoExperiencia = AvaliacaoFactory.getEntity(1L);
+		action.setAvaliacaoExperiencia(avaliacaoExperiencia);
+
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		action.setEmpresa(empresa);
+
+		Collection<Pergunta> perguntas = PerguntaFactory.getCollection(1L);
+
+		when(manager.findById(avaliacaoExperiencia.getId())).thenReturn(avaliacaoExperiencia);
+		when(perguntaManager.findByQuestionarioAspectoPergunta(avaliacaoExperiencia.getId(), new Long[0], new Long[0], true)).thenReturn(perguntas);
+		when(manager.montaResultado(perguntas, null, null, null, null, avaliacaoExperiencia, null, null, false, null)).thenReturn(new ArrayList<ResultadoQuestionario>());
+
+		assertEquals("success", action.imprimeResultado());
+		assertNotNull(action.getPerguntas());
+		assertNotNull(action.getTipoPergunta());
 	}
 
-	public void testImprimeResultado() throws Exception
-    {
-    	action.setAgruparPorAspectos(true);
-    	Avaliacao avaliacaoExperiencia = AvaliacaoFactory.getEntity(1L);
-    	action.setAvaliacaoExperiencia(avaliacaoExperiencia);
+	@Test
+	public void testImprimeResultadoSemPerguntas() throws Exception {
+		action.setAgruparPorAspectos(true);
+		action.setExibirCabecalho(false);
+		Avaliacao avaliacaoExperiencia = AvaliacaoFactory.getEntity(1L);
+		action.setAvaliacaoExperiencia(avaliacaoExperiencia);
 
-    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
-    	action.setEmpresa(empresa);
-    	
-    	Collection<Pergunta> perguntas = PerguntaFactory.getCollection(1L);
+		ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
+		parametrosDoSistema.setCompartilharColaboradores(true);
 
-    	manager.expects(once()).method("findById").with(eq(avaliacaoExperiencia.getId())).will(returnValue(avaliacaoExperiencia));
-    	perguntaManager.expects(once()).method("findByQuestionarioAspectoPergunta").with(eq(avaliacaoExperiencia.getId()), ANYTHING, ANYTHING, eq(true)).will(returnValue(perguntas));
-    	manager.expects(once()).method("montaResultado").will(returnValue(new ArrayList<ResultadoQuestionario>()));
+		when(manager.findById(avaliacaoExperiencia.getId())).thenReturn(avaliacaoExperiencia);
+		when(perguntaManager.findByQuestionarioAspectoPergunta(avaliacaoExperiencia.getId(), new Long[0], new Long[0], true)).thenReturn(new ArrayList<Pergunta>());
+		when(manager.findAllSelect(0, 0, 1l, true, TipoModeloAvaliacao.DESEMPENHO, "")).thenReturn(new ArrayList<Avaliacao>());
+		when(manager.findAllSelect(0, 0, 1l, false, TipoModeloAvaliacao.DESEMPENHO, "")).thenReturn(new ArrayList<Avaliacao>());
+		when(areaOrganizacionalManager.populaCheckOrderDescricao(1l)).thenReturn(new ArrayList<CheckBox>());
+		when(parametrosDoSistemaManager.findById(1l)).thenReturn(parametrosDoSistema);
+		when(empresaManager.findEmpresasPermitidas(false, 1l, 1l, "")).thenReturn(new ArrayList<Empresa>());
 
-    	assertEquals("success", action.imprimeResultado());
-    	assertNotNull(action.getPerguntas());
-    	assertNotNull(action.getTipoPergunta());
-    }
-	
-	public void testImprimeResultadoSemPerguntas() throws Exception
-    {
-    	action.setAgruparPorAspectos(true);
-    	action.setExibirCabecalho(false);
-    	Avaliacao avaliacaoExperiencia = AvaliacaoFactory.getEntity(1L);
-    	action.setAvaliacaoExperiencia(avaliacaoExperiencia);
+		assertEquals("input", action.imprimeResultado());
+	}
 
-    	manager.expects(once()).method("findById").with(eq(avaliacaoExperiencia.getId())).will(returnValue(avaliacaoExperiencia));
-    	perguntaManager.expects(once()).method("findByQuestionarioAspectoPergunta").with(eq(avaliacaoExperiencia.getId()), ANYTHING, ANYTHING, eq(true)).will(returnValue(new ArrayList<Pergunta>()));
-    	
-    	ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
-    	parametrosDoSistema.setCompartilharColaboradores(true);
-    	
-    	//prepareResultado
-    	manager.expects(once()).method("findAllSelect").with(new Constraint[] { eq(null), eq(null), eq(1L), eq(true), eq(TipoModeloAvaliacao.DESEMPENHO), ANYTHING }).will(returnValue(new ArrayList<Avaliacao>()));
-    	manager.expects(once()).method("findAllSelect").with(new Constraint[] { eq(null), eq(null), eq(1L), eq(false), eq(TipoModeloAvaliacao.DESEMPENHO), ANYTHING }).will(returnValue(new ArrayList<Avaliacao>()));
-    	areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(eq(1L)).will(returnValue(new ArrayList<CheckBox>()));
-    	parametrosDoSistemaManager.expects(once()).method("findById").with(eq(1L)).will(returnValue(parametrosDoSistema));
-    	empresaManager.expects(once()).method("findEmpresasPermitidas").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<Empresa>()));
-    	
-    	assertEquals("input", action.imprimeResultado());
-    }
-	public void testImprimeResultadoException() throws Exception
-    {
-    	action.setAgruparPorAspectos(true);
-    	Avaliacao avaliacaoExperiencia = AvaliacaoFactory.getEntity(1L);
-    	action.setAvaliacaoExperiencia(avaliacaoExperiencia);
+	@Test
+	public void testImprimeResultadoException() throws Exception {
+		action.setAgruparPorAspectos(true);
+		Avaliacao avaliacaoExperiencia = AvaliacaoFactory.getEntity(1L);
+		action.setAvaliacaoExperiencia(avaliacaoExperiencia);
 
-    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
-    	action.setEmpresa(empresa);
-    	
-    	Collection<Pergunta> perguntas = PerguntaFactory.getCollection(1L);
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		action.setEmpresa(empresa);
 
-    	manager.expects(once()).method("findById").with(eq(avaliacaoExperiencia.getId())).will(returnValue(avaliacaoExperiencia));
-    	perguntaManager.expects(once()).method("findByQuestionarioAspectoPergunta").with(eq(avaliacaoExperiencia.getId()), ANYTHING, ANYTHING, eq(true)).will(returnValue(perguntas));
-    	manager.expects(once()).method("montaResultado").will(throwException(new Exception()));
-    	
-    	ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
-    	parametrosDoSistema.setCompartilharColaboradores(true);
-    	
-    	//prepareResultado
-    	manager.expects(once()).method("findAllSelect").with(new Constraint[] { eq(null), eq(null), eq(1L), eq(true), eq(TipoModeloAvaliacao.DESEMPENHO), ANYTHING }).will(returnValue(new ArrayList<Avaliacao>()));
-    	manager.expects(once()).method("findAllSelect").with(new Constraint[] { eq(null), eq(null), eq(1L), eq(false), eq(TipoModeloAvaliacao.DESEMPENHO), ANYTHING }).will(returnValue(new ArrayList<Avaliacao>()));
-    	areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(eq(1L)).will(returnValue(new ArrayList<CheckBox>()));
-    	parametrosDoSistemaManager.expects(once()).method("findById").with(eq(1L)).will(returnValue(parametrosDoSistema));
-    	empresaManager.expects(once()).method("findEmpresasPermitidas").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<Empresa>()));
+		Collection<Pergunta> perguntas = PerguntaFactory.getCollection(1L);
 
-    	assertEquals("input", action.imprimeResultado());
-    }
-	
-	public void testGetSet() throws Exception
-	{
+		ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
+		parametrosDoSistema.setCompartilharColaboradores(true);
+
+		when(manager.findById(avaliacaoExperiencia.getId())).thenReturn(avaliacaoExperiencia);
+		when(perguntaManager.findByQuestionarioAspectoPergunta(avaliacaoExperiencia.getId(), new Long[0], new Long[0], true)).thenReturn(perguntas);
+		
+		when(manager.montaResultado(perguntas, new Long[] { 1L }, new Long[] {}, null, null, avaliacaoExperiencia, new Long[] { empresa.getId() }, 'D', false, new Long[] {})).thenThrow(new Exception());
+		
+		when(manager.findAllSelect(0, 0, 1l, true, TipoModeloAvaliacao.DESEMPENHO, "")).thenReturn(new ArrayList<Avaliacao>());
+		when(manager.findAllSelect(0, 0, 1l, false, TipoModeloAvaliacao.DESEMPENHO, "")).thenReturn(new ArrayList<Avaliacao>());
+		when(empresaManager.findEmpresasPermitidas(false, 1l, 1l, "")).thenReturn(new ArrayList<Empresa>());
+		when(areaOrganizacionalManager.populaCheckOrderDescricao(1l)).thenReturn(new ArrayList<CheckBox>());
+		when(parametrosDoSistemaManager.findById(1l)).thenReturn(parametrosDoSistema);
+
+		assertEquals("input", action.imprimeResultado());
+	}
+
+	@Test
+	public void testGetSet() throws Exception {
 		action.setAvaliacaoExperiencia(null);
 
 		assertNotNull(action.getAvaliacaoExperiencia());
 		assertTrue(action.getAvaliacaoExperiencia() instanceof Avaliacao);
-		
+
 		action.isPreview();
 		action.getPerguntas();
 		action.getTipoPergunta();
@@ -175,9 +169,5 @@ public class AvaliacaoExperienciaEditActionTest extends MockObjectTestCase
 		action.getUrlVoltar();
 		action.getAvaliacaoExperienciasAtivas();
 		action.getAvaliacaoExperienciasInativas();
-	}
-
-	public void setEmpresaManager(Mock empresaManager) {
-		this.empresaManager = empresaManager;
 	}
 }

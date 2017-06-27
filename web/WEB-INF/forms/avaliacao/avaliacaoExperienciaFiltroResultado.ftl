@@ -72,7 +72,9 @@
 		}
 		
 		function decidePopulaAvaliacaoDesempenho(tipoModelo){
-			if($('#tipoModeloAvaliacaoDesempenho').is(":checked") && (tipoModelo == 'D' || ($('#liTipoModeloAvaliacao').is(':visible')))){
+			
+			if(tipoModelo == 'D' || ($('#liTipoModeloAvaliacao').is(':visible') && $('#tipoModeloAvaliacaoDesempenho').is(":checked")) )
+			{
 				AvaliacaoDesempenhoDWR.getAvaliacoesDesempenhoByModelo(createListAvaliacoesDesempenho, $('#avaliacaoExperiencia').val() );
 				$('#periodo').hide();
 				$('#empresaId').parent().parent().show();
