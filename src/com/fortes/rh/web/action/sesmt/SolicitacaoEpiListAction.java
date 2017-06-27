@@ -10,6 +10,7 @@ import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.EpiManager;
+import com.fortes.rh.business.sesmt.SolicitacaoEpiItemDevolucaoManager;
 import com.fortes.rh.business.sesmt.SolicitacaoEpiItemEntregaManager;
 import com.fortes.rh.business.sesmt.SolicitacaoEpiManager;
 import com.fortes.rh.business.sesmt.TipoEPIManager;
@@ -35,6 +36,7 @@ import com.fortes.web.tags.CheckBox;
 public class SolicitacaoEpiListAction extends MyActionSupportList
 {
 	private SolicitacaoEpiItemEntregaManager solicitacaoEpiItemEntregaManager;
+	private SolicitacaoEpiItemDevolucaoManager solicitacaoEpiItemDevolucaoManager;
 	private SolicitacaoEpiManager solicitacaoEpiManager;
 	private ColaboradorManager colaboradorManager;
 	private EpiManager epiManager;
@@ -154,7 +156,8 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 	{
 		try
 		{
-			dataSource = solicitacaoEpiManager.findRelatorioVencimentoEpi(getEmpresaSistema().getId(), vencimento, agruparPor, exibirVencimentoCA, tipoEPICheck, areasCheck, estabelecimentoCheck);
+			Collection<SolicitacaoEpi> solicitacoesEpis = solicitacaoEpiManager.findRelatorioVencimentoEpi(getEmpresaSistema().getId(), vencimento, agruparPor, exibirVencimentoCA, tipoEPICheck, areasCheck, estabelecimentoCheck);
+			dataSource = solicitacaoEpiItemDevolucaoManager.removeItensDevolvidos(solicitacoesEpis);
 			parametros = RelatorioUtil.getParametrosRelatorio("EPIs com Prazo a Vencer em " + DateUtil.formataDiaMesAno(vencimento), getEmpresaSistema(), null);
 			parametros.put("DATA", vencimento);
 			parametros.put("EXIBIRVENCIMENTOCA", exibirVencimentoCA); // atente p/ as condicionais dentro do Relatorio vencimentoEpi_agrupaEpi.jrxml
@@ -547,5 +550,10 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 
 	public void setOrdem(char ordem) {
 		this.ordem = ordem;
+	}
+
+	public void setSolicitacaoEpiItemDevolucaoManager(
+			SolicitacaoEpiItemDevolucaoManager solicitacaoEpiItemDevolucaoManager) {
+		this.solicitacaoEpiItemDevolucaoManager = solicitacaoEpiItemDevolucaoManager;
 	}
 }

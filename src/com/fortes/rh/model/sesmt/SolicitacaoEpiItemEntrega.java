@@ -31,6 +31,9 @@ public class SolicitacaoEpiItemEntrega extends AbstractModel implements Serializ
 	
 	@Transient
 	private String CA;
+	
+	@Transient
+	private boolean itensEntregues = false;
 
 	public SolicitacaoEpiItemEntrega()
 	{
@@ -143,4 +146,12 @@ public class SolicitacaoEpiItemEntrega extends AbstractModel implements Serializ
     	
     	solicitacaoEpiItem.getEpi().setNome(epiNome);
     }
+
+	public boolean isItensEntregues() {
+		return itensEntregues;
+	}
+
+	public void setItensEntregues(boolean itensEntregues) {
+		this.itensEntregues = itensEntregues;
+	}
 }

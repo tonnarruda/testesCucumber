@@ -448,6 +448,7 @@
 			else
 				arrayValidacao = arrayValidacao.concat(new Array('dt_hist', 'estabelecimento','areaOrganizacional','faixa','tipoSalario'));
 		}
+		
 		function validaFormularioDinamico()
 		{
 			marcaAbas = true;

@@ -176,6 +176,8 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		Long[] areasIds = {areaOrganizacional.getId()};
 		Long[] estabelecimentoIds = {estabelecimento.getId()};
 		
+		solicitacaoEpiDao.getHibernateTemplateByGenericDao().flush();
+		
 		Collection<SolicitacaoEpi> colecao = solicitacaoEpiDao.findVencimentoEpi(empresa.getId(), hoje, false, tipoEPIIds, areasIds, estabelecimentoIds, 'C');
 
 		assertEquals(2, colecao.size());

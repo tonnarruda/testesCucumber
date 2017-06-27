@@ -17,7 +17,6 @@ import com.fortes.rh.business.sesmt.SolicitacaoEpiItemEntregaManager;
 import com.fortes.rh.business.sesmt.SolicitacaoEpiManager;
 import com.fortes.rh.business.sesmt.TipoEPIManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
-import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemDevolucao;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
 import com.fortes.rh.model.sesmt.relatorio.SolicitacaoEpiItemVO;
@@ -207,24 +206,6 @@ public class SolicitacaoEpiListActionTest extends MockObjectTestCase
 		tipoEPIManager.expects(once()).method("getByEmpresa").with(eq(action.getEmpresaSistema().getId())).will(returnValue(new ArrayList<CheckBox>()));
 		
 		assertEquals("success", action.prepareRelatorioVencimentoEpi());
-	}
-	
-	public void testRelatorioVencimentoEpiAgrupadoPorEpi()
-	{
-		action.setAgruparPor('E');
-		Collection<SolicitacaoEpi> dataSourceSolicitacaoEpi = Arrays.asList(new SolicitacaoEpi());
-
-		solicitacaoEpiManager.expects(once()).method("findRelatorioVencimentoEpi").withAnyArguments().will(returnValue(dataSourceSolicitacaoEpi));
-		assertEquals("success", action.relatorioVencimentoEpi());
-	}
-	
-	public void testRelatorioVencimentoEpiAgrupadoPorColaborador()
-	{
-		action.setAgruparPor('C');
-		Collection<SolicitacaoEpi> dataSourceSolicitacaoEpi = Arrays.asList(new SolicitacaoEpi());
-
-		solicitacaoEpiManager.expects(once()).method("findRelatorioVencimentoEpi").withAnyArguments().will(returnValue(dataSourceSolicitacaoEpi));
-		assertEquals("success_agrupar_colaborador", action.relatorioVencimentoEpi());
 	}
 	
 	public void testRelatorioVencimentoEpiException()

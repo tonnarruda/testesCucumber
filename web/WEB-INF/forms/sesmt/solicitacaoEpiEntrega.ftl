@@ -100,7 +100,16 @@
 										<tr>
 											<td width="50" align="center">
 												<a href="prepareUpdateEntrega.action?solicitacaoEpi.id=${solicitacaoEpi.id}&solicitacaoEpiItemEntrega.id=${entrega.id}&solicitacaoEpiItem.id=${item.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
-												<a href="javascript:;" onclick="newConfirm('Confirma exclusão?', function(){window.location='deleteEntrega.action?solicitacaoEpi.id=${solicitacaoEpi.id}&solicitacaoEpiItemEntrega.id=${entrega.id}&solicitacaoEpiItem.id=${item.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
+												<#if entrega.itensEntregues >
+													<#if (1 < entrega.qtdEntregue) >
+														<#assign texto = "Os ítens já foram devolvidos" />
+													<#else>
+														<#assign texto = "O ítem já foi devolvido" />
+													</#if>
+													<a href=""><img border="0" title="${texto}" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"  class="disabledImg"></a>
+												<#else>
+													<a href="javascript:;" onclick="newConfirm('Confirma exclusão?', function(){window.location='deleteEntrega.action?solicitacaoEpi.id=${solicitacaoEpi.id}&solicitacaoEpiItemEntrega.id=${entrega.id}&solicitacaoEpiItem.id=${item.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
+												</#if>
 											</td>
 											<td width="100" align="center">${entrega.dataEntrega}</td>
 											<td width="100" align="right">${entrega.qtdEntregue}</td>

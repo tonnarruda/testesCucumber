@@ -6,6 +6,7 @@ import java.util.Date;
 import com.fortes.business.GenericManager;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
+import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
 
 public interface SolicitacaoEpiItemManager extends GenericManager<SolicitacaoEpiItem>
 {
@@ -17,4 +18,6 @@ public interface SolicitacaoEpiItemManager extends GenericManager<SolicitacaoEpi
 	Integer countByTipoEPIAndTamanhoEPI(Long tipoEPIId, Long tamanhoEPIId);
 	Collection<SolicitacaoEpiItem> findAllDevolucoesBySolicitacaoEpi(Long solicitacaoEpiId);
 	SolicitacaoEpiItem populaEPIsEntreguesDevolvidos(SolicitacaoEpiItem solicitacaoEpiItem);
+	String validaDataDevolucao(Date data, Long solicitacaoEpiItemId, Long solicitacaoEpiItemDevolucaoId, Integer qtdASerDevolvida, Date solicitacaoEpiData);
+	void decideEdicaoSolicitacaoEpiItemEntrega(Long solicitacaoEpiItemId, SolicitacaoEpiItemEntrega solicitacaoEpiItemEntrega); 
 }

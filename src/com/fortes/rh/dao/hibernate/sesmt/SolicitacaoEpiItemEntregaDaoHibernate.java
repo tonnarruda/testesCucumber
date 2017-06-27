@@ -1,10 +1,12 @@
 package com.fortes.rh.dao.hibernate.sesmt;
 
 import java.util.Collection;
+import java.util.Date;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
@@ -33,6 +35,7 @@ public class SolicitacaoEpiItemEntregaDaoHibernate extends GenericDaoHibernate<S
 		criteria.setProjection(p);
 
 		criteria.add(Expression.eq("sei.id", solicitacaoEpiItemId));
+		criteria.addOrder(Order.asc("seie.dataEntrega"));
 
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 		
@@ -95,5 +98,24 @@ public class SolicitacaoEpiItemEntregaDaoHibernate extends GenericDaoHibernate<S
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 
 		return criteria.list();
+	}
+
+	public Integer findQtdEntregueByDataAndSolicitacaoItemId(Date data, Long solicitacaoEpiItemId) {
+		Criteria criteria = getSession().createCriteria(SolicitacaoEpiItemEntrega.class, "sent");
+		criteria.setProjection(Projections.sum("sent.qtdEntregue"));
+		
+		criteria.add(Expression.eq("solicitacaoEpiItem.id", solicitacaoEpiItemId));
+		criteria.add(Expression.le("dataEntrega", data));
+		
+		return criteria.uniqueResult() != null ? (Integer) criteria.uniqueResult() : 0;
+	}
+
+	public Date getMinDataBySolicitacaoEpiItem(Long solicitacaoEpiItemId) {
+		Criteria criteria = getSession().createCriteria(SolicitacaoEpiItemEntrega.class, "sent");
+		criteria.setProjection(Projections.min("sent.dataEntrega"));
+		
+		criteria.add(Expression.eq("solicitacaoEpiItem.id", solicitacaoEpiItemId));
+		
+		return criteria.uniqueResult() != null ? (Date) criteria.uniqueResult() : null;
 	}
 }

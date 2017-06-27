@@ -214,4 +214,8 @@ public class SolicitacaoEpiItem extends AbstractModel implements Serializable
 		else
 			return epi.getNomeInativo();
 	}
+	
+	public boolean getQtdDevolucaoMaiorOuIgualQtdEntrega(){
+		return this.totalDevolvido >= this.totalEntregue ;
+	}
 }

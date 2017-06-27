@@ -1,6 +1,7 @@
 package com.fortes.rh.business.sesmt;
 
 import java.util.Collection;
+import java.util.Date;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.SolicitacaoEpiItemEntregaDao;
@@ -26,5 +27,14 @@ public class SolicitacaoEpiItemEntregaManagerImpl extends GenericManagerImpl<Sol
 	public boolean existeEntrega(Long solicitacaoEpiId) 
 	{
 		return getDao().findBySolicitacaoEpi(solicitacaoEpiId).size() > 0;
+	}
+
+	public Integer findQtdEntregueByDataAndSolicitacaoItemId(Date data,Long solicitacaoEpiItemId) 
+	{
+		return getDao().findQtdEntregueByDataAndSolicitacaoItemId(data, solicitacaoEpiItemId);
+	}
+
+	public Date getMinDataBySolicitacaoEpiItem(Long solicitacaoEpiItemId) {
+		return getDao().getMinDataBySolicitacaoEpiItem(solicitacaoEpiItemId);
 	}
 }

@@ -200,9 +200,9 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 		return Action.SUCCESS;
 	}
 	
-	public String prepareUpdateEntrega() throws Exception
-	{
+	public String prepareUpdateEntrega() throws Exception{
 		solicitacaoEpiItemEntrega = solicitacaoEpiItemEntregaManager.findByIdProjection(solicitacaoEpiItemEntrega.getId());
+		solicitacaoEpiItemManager.decideEdicaoSolicitacaoEpiItemEntrega(solicitacaoEpiItem.getId(), solicitacaoEpiItemEntrega);
 		solicitacaoEpiItem = solicitacaoEpiItemManager.findByIdProjection(solicitacaoEpiItem.getId());
 		epiHistoricos = epiHistoricoManager.findByEpi(solicitacaoEpiItem.getEpi().getId());
 		return Action.SUCCESS;

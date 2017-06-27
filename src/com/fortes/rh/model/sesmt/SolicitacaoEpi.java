@@ -66,6 +66,8 @@ public class SolicitacaoEpi extends AbstractModel implements Serializable
 	private TamanhoEPI tamanhoEPI;
 	@Transient
 	private Integer qtdEpiDevolvido = 0;
+	@Transient
+	private Long solicitacaoEpiItemId;
 	
 	public SolicitacaoEpi()
 	{
@@ -73,7 +75,7 @@ public class SolicitacaoEpi extends AbstractModel implements Serializable
 			this.data = new Date();
 	}
 
-	public SolicitacaoEpi(Long epiId, Long colaboradorId, String epiNome, Boolean epiAtivo, String colaboradorNome, String cargoNome, Date data, Integer validadeUso, Date dataEntrega, Integer qtdEpiEntregue, Date vencimentoCA)
+	public SolicitacaoEpi(Long epiId, Long colaboradorId, String epiNome, Boolean epiAtivo, String colaboradorNome, String cargoNome, Date data, Integer validadeUso, Date dataEntrega, Integer qtdEpiEntregue, Date vencimentoCA, Long solicitacaoEpiItemId)
 	{
 		epi = new Epi();
 		epi.setId(epiId);
@@ -88,6 +90,7 @@ public class SolicitacaoEpi extends AbstractModel implements Serializable
 		this.qtdEpiEntregue = qtdEpiEntregue;
 		this.dataEpiEntrega = dataEntrega;
 		this.vencimentoCA = vencimentoCA;
+		this.solicitacaoEpiItemId = solicitacaoEpiItemId;
 	}
 
 	public SolicitacaoEpi(Long id, Date data, String cargoNome, Integer qtdEpiSolicitado, Integer qtdEpiEntregue, Integer qtdEpiDevolvido, String colaboradorNome, boolean colaboradorDesligado,  Integer colaboradorStatus, String colaboradorMotivoHistorico){
@@ -318,5 +321,13 @@ public class SolicitacaoEpi extends AbstractModel implements Serializable
 
 	public void setQtdEpiDevolvido(Integer qtdEpiDevolvido) {
 		this.qtdEpiDevolvido = qtdEpiDevolvido;
+	}
+
+	public Long getSolicitacaoEpiItemId() {
+		return solicitacaoEpiItemId;
+	}
+
+	public void setSolicitacaoEpiItemId(Long solicitacaoEpiItemId) {
+		this.solicitacaoEpiItemId = solicitacaoEpiItemId;
 	}
 }

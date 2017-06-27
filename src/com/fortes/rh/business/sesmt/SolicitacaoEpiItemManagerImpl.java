@@ -15,6 +15,7 @@ import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemDevolucao;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
 import com.fortes.rh.model.sesmt.TamanhoEPI;
+import com.fortes.rh.util.DateUtil;
 
 public class SolicitacaoEpiItemManagerImpl extends GenericManagerImpl<SolicitacaoEpiItem, SolicitacaoEpiItemDao> implements SolicitacaoEpiItemManager
 {
@@ -35,6 +36,7 @@ public class SolicitacaoEpiItemManagerImpl extends GenericManagerImpl<Solicitaca
 	public SolicitacaoEpiItem populaEPIsEntreguesDevolvidos(SolicitacaoEpiItem solicitacaoEpiItem)
 	{
 		Collection<SolicitacaoEpiItemEntrega> entregas =  solicitacaoEpiItemEntregaManager.findBySolicitacaoEpiItem(solicitacaoEpiItem.getId());
+		decideEdicaoSolicitacaoEpiItemEntrega(solicitacaoEpiItem.getId(), entregas);
 		solicitacaoEpiItem.setSolicitacaoEpiItemEntregas(entregas);
 		
 		Collection<SolicitacaoEpiItemDevolucao> devolucoes =  solicitacaoEpiItemDevolucaoManager.findSolicEpiItemDevolucaoBySolicitacaoEpiItem(solicitacaoEpiItem.getId());
@@ -125,6 +127,64 @@ public class SolicitacaoEpiItemManagerImpl extends GenericManagerImpl<Solicitaca
 		return getDao().countByTipoEPIAndTamanhoEPI(tipoEPIId, tamanhoEPIId);
 	}
 	
+	public String validaDataDevolucao(Date data, Long solicitacaoEpiItemId, Long solicitacaoEpiItemDevolucaoId, Integer qtdASerDevolvida, Date solicitacaoEpiData) {
+		if (solicitacaoEpiData != null && data.getTime() < solicitacaoEpiData.getTime())
+			return "A data de devolução não pode ser anterior à data de solicitação ( Data solicitação:" + DateUtil.formataDiaMesAno(solicitacaoEpiData) + " )";
+		
+		Date dataDaPrimeiraEntrega = solicitacaoEpiItemEntregaManager.getMinDataBySolicitacaoEpiItem(solicitacaoEpiItemId);
+		
+		if(dataDaPrimeiraEntrega != null && data.getTime() < dataDaPrimeiraEntrega.getTime())
+			return "Não é possível inserir uma devolução anterio a primeira data de entrega ( Data:" + DateUtil.formataDiaMesAno(dataDaPrimeiraEntrega) +  " )";
+		
+		Integer qtdTotalEntregue = solicitacaoEpiItemEntregaManager.getTotalEntregue(solicitacaoEpiItemId, null);
+		Integer qtdTotalDevolvida = solicitacaoEpiItemDevolucaoManager.getTotalDevolvido(solicitacaoEpiItemId, solicitacaoEpiItemDevolucaoId);
+
+		if(qtdTotalDevolvida >= qtdTotalEntregue)
+			return "Não é possível inserir uma devolução, pois todas os ítens já foram devolvidos.";
+		
+		Integer qtdEntregueAteAData = solicitacaoEpiItemEntregaManager.findQtdEntregueByDataAndSolicitacaoItemId(data,solicitacaoEpiItemId);
+		
+		if(qtdEntregueAteAData == 0)
+			return "Não existe(m) entrega(s) efetuada(s) anterior a data " + DateUtil.formataDiaMesAno(data) + ".";
+		
+		Integer qtdDevolvidaAteAData = solicitacaoEpiItemDevolucaoManager.findQtdDevolvidaByDataAndSolicitacaoItemId(data,solicitacaoEpiItemId, solicitacaoEpiItemDevolucaoId);
+		
+		if((qtdDevolvidaAteAData + qtdASerDevolvida) > qtdEntregueAteAData){
+			int maxASerDevolvido = qtdEntregueAteAData - qtdDevolvidaAteAData;
+			if(maxASerDevolvido > 0)
+				return "Não é possível inserir uma devolução nessa data ( " + DateUtil.formataDiaMesAno(data) + " ) maior que " + maxASerDevolvido + " Item(ns).";
+			else
+				return "Não é possível inserir uma devolução nessa data, pois já existe(m) devolução(ões) para a(s) entrega(s) efetuada(s) anterior a essa data " + DateUtil.formataDiaMesAno(data) + ".";
+		}
+		
+		return null;
+	}
+	
+	public void decideEdicaoSolicitacaoEpiItemEntrega(Long solicitacaoEpiItemId, SolicitacaoEpiItemEntrega solicitacaoEpiItemEntrega) {
+		Collection<SolicitacaoEpiItemEntrega> entregas =  solicitacaoEpiItemEntregaManager.findBySolicitacaoEpiItem(solicitacaoEpiItemId);
+		decideEdicaoSolicitacaoEpiItemEntrega(solicitacaoEpiItemId, entregas);
+		for (SolicitacaoEpiItemEntrega solicitacaoEpiItemEntregaTemp : entregas) {
+			if(solicitacaoEpiItemEntregaTemp.getId().equals(solicitacaoEpiItemEntrega.getId())){
+				solicitacaoEpiItemEntrega.setItensEntregues(solicitacaoEpiItemEntregaTemp.isItensEntregues());
+				break;
+			}
+		}
+	}
+	
+	private void decideEdicaoSolicitacaoEpiItemEntrega(Long solicitacaoEpiItemId, Collection<SolicitacaoEpiItemEntrega> solicitacaoEpiItemEntregas) {
+		Integer qtdDevolucaoAcumulado = solicitacaoEpiItemDevolucaoManager.getTotalDevolvido(solicitacaoEpiItemId, null);
+		if(qtdDevolucaoAcumulado == null || qtdDevolucaoAcumulado == 0)
+			return;
+		
+		for (SolicitacaoEpiItemEntrega solicitacaoEpiItemEntrega : solicitacaoEpiItemEntregas) {
+			if(qtdDevolucaoAcumulado <= 0)
+				break;
+			
+			solicitacaoEpiItemEntrega.setItensEntregues(true);
+			qtdDevolucaoAcumulado = qtdDevolucaoAcumulado - solicitacaoEpiItemEntrega.getQtdEntregue();
+		}
+	}
+
 	public void setSolicitacaoEpiItemEntregaManager(SolicitacaoEpiItemEntregaManager solicitacaoEpiItemEntregaManager) {
 		this.solicitacaoEpiItemEntregaManager = solicitacaoEpiItemEntregaManager;
 	}
@@ -133,8 +193,7 @@ public class SolicitacaoEpiItemManagerImpl extends GenericManagerImpl<Solicitaca
 		this.epiHistoricoManager = epiHistoricoManager;
 	}
 
-	public void setSolicitacaoEpiItemDevolucaoManager(
-			SolicitacaoEpiItemDevolucaoManager solicitacaoEpiItemDevolucaoManager) {
+	public void setSolicitacaoEpiItemDevolucaoManager(SolicitacaoEpiItemDevolucaoManager solicitacaoEpiItemDevolucaoManager) {
 		this.solicitacaoEpiItemDevolucaoManager = solicitacaoEpiItemDevolucaoManager;
 	}
 }

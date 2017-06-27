@@ -181,38 +181,51 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 
 	public Collection<SolicitacaoEpi> findVencimentoEpi(Long empresaId, Date data, boolean exibirVencimentoCA, Long[] tipoEPIIds, Long[] areasIds, Long[] estabelecimentoIds, char agruparPor)
 	{
-		StringBuilder hql = new StringBuilder();
-		hql.append("select distinct new SolicitacaoEpi(e.id, co.id, e.nome, e.ativo, co.nome, ca.nome, se.data, eh.validadeUso, ent.dataEntrega, ent.qtdEntregue, eh.vencimentoCA) ");
-		hql.append("from SolicitacaoEpi se ");
-		hql.append("join se.solicitacaoEpiItems item ");
-		hql.append("join item.solicitacaoEpiItemEntregas ent ");
-		hql.append("join item.epi e ");
-		hql.append("join se.colaborador co ");
-		hql.append("join se.cargo ca ");
-		hql.append("join co.historicoColaboradors hc ");
-		hql.append("left join ent.epiHistorico eh ");
-		hql.append("where ((:data - ent.dataEntrega) >= eh.validadeUso ");
+		StringBuilder sql = new StringBuilder();
+		sql.append("select distinct e.id as epiId, co.id as colabId, e.nome as epiNome, e.ativo as epiAtivo, co.nome as colabNome, ca.nome as cargoNome, se.data as solData, eh.validadeUso as epiHitData, ent.dataEntrega as entDataEntrega, ent.qtdEntregue as entQtdEntregue, eh.vencimentoCA as epiHitCA, item.id as solicitacaoEpiItemId ");
+		sql.append("from SolicitacaoEpi se ");
+		sql.append("join solicitacaoepi_item item on item.SolicitacaoEpi_id = se.id ");
+		sql.append("join solicitacaoEpiItemEntrega ent on ent.solicitacaoepiitem_id = item.id ");
+		sql.append("join epi e on e.id = item.epi_id ");
+		sql.append("join colaborador co on co.id = se.colaborador_id ");
+		sql.append("join cargo ca on ca.id = se.cargo_id ");
+		sql.append("join historicoColaborador hc on hc.colaborador_id = co.id ");
+		sql.append("left join epiHistorico eh on eh.id = ent.epiHistorico_id ");
+		sql.append("where ((:data - ent.dataEntrega) >= eh.validadeUso ");
 
 		if(exibirVencimentoCA)
-			hql.append(" or :data >= eh.vencimentoCA ");
+			sql.append(" or :data >= eh.vencimentoCA ");
 		
-		hql.append(" ) and co.desligado = false and e.empresa.id = :empresaId ");
+		sql.append(" ) and co.desligado = false and e.empresa_id = :empresaId ");
 		
 		if(tipoEPIIds != null && tipoEPIIds.length > 0)
-			hql.append("   and e.tipoEPI.id in (:tipoEPIIds) ");
+			sql.append("   and e.tipoEPI_id in (:tipoEPIIds) ");
 
 		if(areasIds != null && areasIds.length > 0)
-			hql.append("   and hc.areaOrganizacional.id in (:areasIds) ");
+			sql.append("   and hc.areaOrganizacional_id in (:areasIds) ");
 
 		if(estabelecimentoIds != null && estabelecimentoIds.length > 0)
-			hql.append("   and hc.estabelecimento.id in (:estabelecimentoIds) ");
+			sql.append("   and hc.estabelecimento_id in (:estabelecimentoIds) ");
+		
+		sql.append("and item.id not in ( ");
+		sql.append("	SELECT distinct itensDevolvido.solicitacaoepiitem_id FROM ");
+		sql.append("		(select sent.solicitacaoepiitem_id, sum(sent.qtdentregue) AS qtdentregue ");
+		sql.append("		from solicitacaoepiitementrega sent ");
+		sql.append("		group by sent.solicitacaoepiitem_id) as itensEntregues ");
+		sql.append("		inner join ");
+		sql.append("		(select sdev.solicitacaoepiitem_id, sum(sdev.qtddevolvida) as qtddevolvida ");
+		sql.append("		from solicitacaoepiitemdevolucao sdev  ");
+		sql.append("		group by sdev.solicitacaoepiitem_id) as itensDevolvido ");
+		sql.append("		on itensDevolvido.solicitacaoepiitem_id =  itensEntregues.solicitacaoepiitem_id ");
+		sql.append("	where itensDevolvido.qtddevolvida >= itensEntregues.qtdentregue ");
+		sql.append(") ");
 		
 		if (agruparPor == 'E')
-			hql.append("order by e.nome, co.nome, se.data ");
+			sql.append("order by e.nome, co.nome, se.data, ent.dataEntrega ");
 		else if (agruparPor == 'C')
-			hql.append("order by co.nome, e.nome, se.data ");
+			sql.append("order by co.nome, e.nome, se.data, ent.dataEntrega ");
 
-		Query query = getSession().createQuery(hql.toString());
+		Query query = getSession().createSQLQuery(sql.toString());
 		query.setDate("data", data);
 		query.setLong("empresaId", empresaId);
 		
@@ -225,7 +238,17 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		if(estabelecimentoIds != null && estabelecimentoIds.length > 0)
 			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
 
-		return query.list();
+		Collection<Object[]> lista = query.list();
+		Collection<SolicitacaoEpi> solicitacoes = new ArrayList<SolicitacaoEpi>();
+		
+		for (Object[] solicitacaoEpiAux : lista){
+			solicitacoes.add(new SolicitacaoEpi(new Long(solicitacaoEpiAux[0].toString()), new Long(solicitacaoEpiAux[1].toString()), solicitacaoEpiAux[2].toString(),
+					new Boolean(solicitacaoEpiAux[3].toString()), solicitacaoEpiAux[4].toString(), solicitacaoEpiAux[5].toString(),
+					(Date) solicitacaoEpiAux[6], new Integer(solicitacaoEpiAux[7].toString()), (Date) solicitacaoEpiAux[8],
+					new Integer(solicitacaoEpiAux[9].toString()), (Date) solicitacaoEpiAux[10], new Long(solicitacaoEpiAux[11].toString()))); 
+		}
+		
+		return solicitacoes;
 	}
 
 	public Collection<SolicitacaoEpiItemEntrega> findEntregaEpi(Long empresaId, Date dataIni, Date dataFim, Long[] epiIds, Long[] areaIds, Long[] colaboradorCheck, char agruparPor, boolean exibirDesligados)

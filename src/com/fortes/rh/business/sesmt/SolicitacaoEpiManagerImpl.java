@@ -194,7 +194,7 @@ public class SolicitacaoEpiManagerImpl extends GenericManagerImpl<SolicitacaoEpi
 		
 		return devolucoes;
 	}
-	
+
 	public void setSolicitacaoEpiItemManager(SolicitacaoEpiItemManager solicitacaoEpiItemManager)
 	{
 		this.solicitacaoEpiItemManager = solicitacaoEpiItemManager;
@@ -204,5 +204,4 @@ public class SolicitacaoEpiManagerImpl extends GenericManagerImpl<SolicitacaoEpi
 	{
 		this.transactionManager = transactionManager;
 	}
-	
 }

@@ -11,9 +11,6 @@ import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
 import com.fortes.rh.model.sesmt.relatorio.SolicitacaoEpiItemVO;
 import com.fortes.rh.model.sesmt.relatorio.SolicitacaoEpiVO;
 
-/**
- * @author Tiago Lopes
- */
 public interface SolicitacaoEpiDao extends GenericDao<SolicitacaoEpi>
 {
 	SolicitacaoEpiVO findAllSelect(int page, int pagingSize, Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, String situacaoSolicitacaoEpi, Long tipoEpi, String situacaoColaborador, Long[] estabelecimentoCheck, char ordem);

@@ -59,6 +59,13 @@ public class SolicitacaoEpiItemDevolucao extends AbstractModel implements Serial
 	public void setSolicitacaoEpiItem(SolicitacaoEpiItem solicitacaoEpiItem) {
 		this.solicitacaoEpiItem = solicitacaoEpiItem;
 	}
+	
+	public void setSolicitacaoEpiItemId(Long solicitacaoEpiItemId) {
+		if(this.solicitacaoEpiItem == null)
+			this.solicitacaoEpiItem = new SolicitacaoEpiItem();
+		
+		this.solicitacaoEpiItem.setId(solicitacaoEpiItemId);
+	}
 
 	public Integer getQtdDevolvida() {
 		return qtdDevolvida;

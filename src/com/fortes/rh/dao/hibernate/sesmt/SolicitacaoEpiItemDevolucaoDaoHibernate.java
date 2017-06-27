@@ -1,9 +1,11 @@
 package com.fortes.rh.dao.hibernate.sesmt;
 
 import java.util.Collection;
+import java.util.Date;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
@@ -15,7 +17,6 @@ import com.fortes.rh.model.sesmt.SolicitacaoEpiItemDevolucao;
 @SuppressWarnings("unchecked")
 public class SolicitacaoEpiItemDevolucaoDaoHibernate extends GenericDaoHibernate<SolicitacaoEpiItemDevolucao> implements SolicitacaoEpiItemDevolucaoDao
 {
-
 	public int getTotalDevolvido(Long solicitacaoEpiItemId, Long solicitacaoEpiItemDevolucaoId) {
 		
 		Criteria criteria = getSession().createCriteria(SolicitacaoEpiItemDevolucao.class, "seid");
@@ -41,6 +42,35 @@ public class SolicitacaoEpiItemDevolucaoDaoHibernate extends GenericDaoHibernate
 		criteria.setProjection(p);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(SolicitacaoEpiItemDevolucao.class));
 
+		return criteria.list();
+	}
+
+	public Integer findQtdDevolvidaByDataAndSolicitacaoItemId(Date data, Long solicitacaoEpiItemId, Long solicitacaoEpiItemDevolucaoId) {
+		Criteria criteria = getSession().createCriteria(SolicitacaoEpiItemDevolucao.class, "seid");
+		criteria.setProjection(Projections.sum("seid.qtdDevolvida"));
+		
+		criteria.add(Expression.eq("solicitacaoEpiItem.id", solicitacaoEpiItemId));
+		criteria.add(Expression.le("dataDevolucao", data));
+		
+		if(solicitacaoEpiItemDevolucaoId != null)
+			criteria.add(Expression.ne("seid.id", solicitacaoEpiItemDevolucaoId));
+		
+		return criteria.uniqueResult() != null ? (Integer) criteria.uniqueResult() : 0;
+	}
+	
+	public Collection<SolicitacaoEpiItemDevolucao> findQtdDevolvidaBySolicitacaoItemIds(Long[] solicitacaoEpiItensId) {
+		Criteria criteria = getSession().createCriteria(SolicitacaoEpiItemDevolucao.class, "seid");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.groupProperty("solicitacaoEpiItem.id"), "solicitacaoEpiItemId");
+		p.add(Projections.sum("seid.qtdDevolvida"), "qtdDevolvida");
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.in("solicitacaoEpiItem.id", solicitacaoEpiItensId));
+		
+		criteria.addOrder(Order.asc("solicitacaoEpiItem.id"));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(SolicitacaoEpiItemDevolucao.class));
+		
 		return criteria.list();
 	}
 }

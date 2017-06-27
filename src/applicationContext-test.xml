@@ -489,4 +489,29 @@
 		<ref bean="sessionFactory" />
 	</property>
   </bean>
+  
+  <bean id="solicitacaoEpiItemDao" class="com.fortes.rh.dao.hibernate.sesmt.SolicitacaoEpiItemDaoHibernate">
+	<property name="sessionFactory">
+		<ref bean="sessionFactory" />
+	</property>
+  </bean>
+  
+  <bean id="solicitacaoEpiItemEntregaDao" class="com.fortes.rh.dao.hibernate.sesmt.SolicitacaoEpiItemEntregaDaoHibernate">
+	<property name="sessionFactory">
+		<ref bean="sessionFactory" />
+	</property>
+  </bean>
+  
+  <bean id="solicitacaoEpiItemDevolucaoDao" class="com.fortes.rh.dao.hibernate.sesmt.SolicitacaoEpiItemDevolucaoDaoHibernate">
+	<property name="sessionFactory">
+		<ref bean="sessionFactory" />
+	</property>
+  </bean>
+  
+  <bean id="epiHistoricoDao" class="com.fortes.rh.dao.hibernate.sesmt.EpiHistoricoDaoHibernate">
+	<property name="sessionFactory">
+		<ref bean="sessionFactory" />
+	</property>
+  </bean>
+  
 </beans>
