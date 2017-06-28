@@ -105,7 +105,7 @@ public class CandidatoSolicitacaoListActionTest extends MockObjectTestCase
     	manager.expects(once()).method("getCandidatoSolicitacaoList").withAnyArguments().will(returnValue(candidatoSolicitacaos));
     	solicitacaoAvaliacaoManager.expects(once()).method("findBySolicitacaoId").with(eq(solicitacao.getId()), eq(null));
     	configuracaoNivelCompetenciaManager.expects(once()).method("findByFaixa").with(eq(solicitacao.getFaixaSalarial().getId()), ANYTHING).will(returnValue(configuracaoNivelCompetencias));
-    	colaboradorManager.expects(once()).method("excedeuContratacoes").with(eq(empresaSistema.getId())).will(returnValue(false));
+    	colaboradorManager.expects(once()).method("excedeuContratacao").with(eq(empresaSistema.getId())).will(returnValue(false));
     	
     	assertEquals(Action.SUCCESS, action.list());
     }
@@ -132,7 +132,7 @@ public class CandidatoSolicitacaoListActionTest extends MockObjectTestCase
     	manager.expects(atLeastOnce()).method("getCandidatoSolicitacaoList").withAnyArguments().will(returnValue(candidatoSolicitacaos));
     	solicitacaoAvaliacaoManager.expects(once()).method("findBySolicitacaoId").with(eq(solicitacao.getId()), eq(null));
     	configuracaoNivelCompetenciaManager.expects(once()).method("findByFaixa").with(eq(solicitacao.getFaixaSalarial().getId()), ANYTHING).will(returnValue(configuracaoNivelCompetencias));
-    	colaboradorManager.expects(once()).method("excedeuContratacoes").with(eq(empresaSistema.getId())).will(returnValue(false));
+    	colaboradorManager.expects(once()).method("excedeuContratacao").with(eq(empresaSistema.getId())).will(returnValue(false));
     	
     	assertEquals(Action.SUCCESS, action.list());
     	assertTrue(action.getActionMessages().isEmpty());
@@ -159,7 +159,7 @@ public class CandidatoSolicitacaoListActionTest extends MockObjectTestCase
     	manager.expects(once()).method("getCandidatoSolicitacaoList").withAnyArguments().will(returnValue(candidatoSolicitacaos));
     	solicitacaoAvaliacaoManager.expects(once()).method("findBySolicitacaoId").with(eq(solicitacao.getId()), eq(null));
     	configuracaoNivelCompetenciaManager.expects(once()).method("findByFaixa").with(eq(solicitacao.getFaixaSalarial().getId()), ANYTHING).will(returnValue(configuracaoNivelCompetencias));
-    	colaboradorManager.expects(once()).method("excedeuContratacoes").with(eq(empresaSistema.getId())).will(returnValue(false));
+    	colaboradorManager.expects(once()).method("excedeuContratacao").with(eq(empresaSistema.getId())).will(returnValue(false));
     	
     	assertEquals(Action.SUCCESS, action.list());
     	assertEquals("Não existem candidatos para o filtro informado.", ((String) action.getActionMessages().toArray()[0]));
