@@ -33,21 +33,21 @@ public class MenuTest extends TestCase {
 
 	@Test
 	public void testGetMenuFormatadoComFilho() {
-		Collection<Papel> papels = new ArrayList<Papel>();
 		Papel papel1 = PapelFactory.getSesmt();
-		Papel papel2 = PapelFactory.getSesmt();
-		Papel papel3 = PapelFactory.getSesmt();
 
+		Papel papel2 = PapelFactory.getSesmt();
 		papel2.setId(2L);
 		papel2.setNome("SESMT 1");
 		papel2.setOrdem(2);
 		papel2.setPapelMae(papel1);
 
+		Papel papel3 = PapelFactory.getSesmt();
 		papel3.setId(3L);
 		papel3.setNome("SESMT 2");
 		papel3.setOrdem(3);
 		papel3.setPapelMae(papel2);
 
+		Collection<Papel> papels = new ArrayList<Papel>();
 		papels.add(papel1);
 		papels.add(papel2);
 		papels.add(papel3);

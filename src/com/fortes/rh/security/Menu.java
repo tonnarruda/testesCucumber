@@ -27,6 +27,11 @@ public abstract class Menu
 		papeisParaEmpresasIntegradas.add("ROLE_REL_FERIAS");
 	}
 	
+	private static Collection<String> papeisParaURLExternas = new ArrayList<String>();
+	static{
+		papeisParaURLExternas.add("ROLE_FORMULARIO_SOLICITACAO_EXTERNO");
+	}
+	
 	public static String getMenuFormatado(Collection<Papel> rolesPapel, String contexto, ParametrosDoSistema parametros, Collection<Empresa> empresasDoUsuario, Empresa empresaLogada, Long idDoUsuario)
 	{
 		roles = new ArrayList<Papel>();
@@ -108,16 +113,7 @@ public abstract class Menu
 					String url = papel.getUrl().equals("#") ? "#" : contexto + papel.getUrl();
 					
 					menuFilho.append("<li>");
-					
-					if (verificaPapeisParaEmpresasIntegradas(papel, empresaLogada) && verificaEmpresaComSolicitacaoDesligamento(papel, empresaLogada) 
-							&& verificaPapeisParaCursosOuCertificacaoVencidasAVencer(papel, empresaLogada) && verificaPapeisUsuarioSOS(papel, idDoUsuario)
-							&& verificaParametrosSistemaAutorizacaoSolicitacaoPessoal(papel, parametros)
-							&& verificaPapeisParaColaboradoresSemCursoDasCertificacoes(papel, empresaLogada)) 
-					{
-						
-						menuFilho.append(retornaUrl(papel,url));
-					}
-					
+					decideUrlMenu(empresaLogada, idDoUsuario, parametros, menuFilho, papel, url);
 					maisFilhos = getFilhos(papel.getId(), contexto, empresaLogada, idDoUsuario, parametros);
 	
 					if (!maisFilhos.equals(""))
@@ -131,9 +127,20 @@ public abstract class Menu
 
 		return menuFilho.toString();
 	}
+
+	private static void decideUrlMenu(Empresa empresaLogada, Long idDoUsuario, ParametrosDoSistema parametros, StringBuilder menuFilho,	Papel papel, String url) {
+		if (verificaPapeisParaEmpresasIntegradas(papel, empresaLogada) && verificaEmpresaComSolicitacaoDesligamento(papel, empresaLogada) 
+				&& verificaPapeisParaCursosOuCertificacaoVencidasAVencer(papel, empresaLogada) && verificaPapeisUsuarioSOS(papel, idDoUsuario)
+				&& verificaParametrosSistemaAutorizacaoSolicitacaoPessoal(papel, parametros)
+				&& verificaPapeisParaColaboradoresSemCursoDasCertificacoes(papel, empresaLogada)) 
+		{
+			
+			menuFilho.append(retornaUrl(papel,url));
+		}
+	}
 	
 	private static String retornaUrl(Papel papel, String url) {
-		if (papel.getCodigo().equals("ROLE_FORMULARIO_SOLICITACAO_EXTERNO")) {
+		if(papeisParaURLExternas.contains(papel.getCodigo())){
 			url = "<a href='" + papel.getUrl() + "'target='_blank'>" + papel.getNome() + "</a>";
 		} else {
 			url = "<a href='" + url + "'>" + papel.getNome() + "</a>";
