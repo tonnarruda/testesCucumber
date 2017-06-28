@@ -17,6 +17,7 @@ import com.fortes.rh.business.captacao.SolicitacaoAvaliacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
+import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
@@ -47,6 +48,7 @@ public class CandidatoSolicitacaoListActionTest extends MockObjectTestCase
 	private Mock historicoColaboradorManager;
 	private Mock historicoCandidatoManager;
 	private Mock areaOrganizacionalManager;
+	private Mock colaboradorManager;
 	
     protected void setUp() throws Exception
     {
@@ -60,6 +62,7 @@ public class CandidatoSolicitacaoListActionTest extends MockObjectTestCase
         historicoColaboradorManager = new Mock(HistoricoColaboradorManager.class);
         historicoCandidatoManager = new Mock(HistoricoCandidatoManager.class);
         areaOrganizacionalManager = new Mock(AreaOrganizacionalManager.class);
+        colaboradorManager = new Mock(ColaboradorManager.class);
         
         action.setCandidatoSolicitacaoManager((CandidatoSolicitacaoManager) manager.proxy());
         action.setEtapaSeletivaManager((EtapaSeletivaManager) etapaSeletivaManager.proxy());
@@ -69,6 +72,7 @@ public class CandidatoSolicitacaoListActionTest extends MockObjectTestCase
         action.setHistoricoColaboradorManager((HistoricoColaboradorManager) historicoColaboradorManager.proxy());
         action.setHistoricoCandidatoManager((HistoricoCandidatoManager) historicoCandidatoManager.proxy());
         action.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
+        action.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
         
         Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
     }
@@ -101,6 +105,7 @@ public class CandidatoSolicitacaoListActionTest extends MockObjectTestCase
     	manager.expects(once()).method("getCandidatoSolicitacaoList").withAnyArguments().will(returnValue(candidatoSolicitacaos));
     	solicitacaoAvaliacaoManager.expects(once()).method("findBySolicitacaoId").with(eq(solicitacao.getId()), eq(null));
     	configuracaoNivelCompetenciaManager.expects(once()).method("findByFaixa").with(eq(solicitacao.getFaixaSalarial().getId()), ANYTHING).will(returnValue(configuracaoNivelCompetencias));
+    	colaboradorManager.expects(once()).method("excedeuContratacoes").with(eq(empresaSistema.getId())).will(returnValue(false));
     	
     	assertEquals(Action.SUCCESS, action.list());
     }
@@ -127,6 +132,7 @@ public class CandidatoSolicitacaoListActionTest extends MockObjectTestCase
     	manager.expects(atLeastOnce()).method("getCandidatoSolicitacaoList").withAnyArguments().will(returnValue(candidatoSolicitacaos));
     	solicitacaoAvaliacaoManager.expects(once()).method("findBySolicitacaoId").with(eq(solicitacao.getId()), eq(null));
     	configuracaoNivelCompetenciaManager.expects(once()).method("findByFaixa").with(eq(solicitacao.getFaixaSalarial().getId()), ANYTHING).will(returnValue(configuracaoNivelCompetencias));
+    	colaboradorManager.expects(once()).method("excedeuContratacoes").with(eq(empresaSistema.getId())).will(returnValue(false));
     	
     	assertEquals(Action.SUCCESS, action.list());
     	assertTrue(action.getActionMessages().isEmpty());
@@ -153,6 +159,7 @@ public class CandidatoSolicitacaoListActionTest extends MockObjectTestCase
     	manager.expects(once()).method("getCandidatoSolicitacaoList").withAnyArguments().will(returnValue(candidatoSolicitacaos));
     	solicitacaoAvaliacaoManager.expects(once()).method("findBySolicitacaoId").with(eq(solicitacao.getId()), eq(null));
     	configuracaoNivelCompetenciaManager.expects(once()).method("findByFaixa").with(eq(solicitacao.getFaixaSalarial().getId()), ANYTHING).will(returnValue(configuracaoNivelCompetencias));
+    	colaboradorManager.expects(once()).method("excedeuContratacoes").with(eq(empresaSistema.getId())).will(returnValue(false));
     	
     	assertEquals(Action.SUCCESS, action.list());
     	assertEquals("Não existem candidatos para o filtro informado.", ((String) action.getActionMessages().toArray()[0]));

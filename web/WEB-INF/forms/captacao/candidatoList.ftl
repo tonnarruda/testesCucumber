@@ -133,13 +133,18 @@
 		<#else>
 			<#assign color="#F00"/>
 		</#if>
+	
+		<#assign titleContracaoDesabilitada = "Candidato já contratado"/>
+		<#if candidato.disponivel && contratacoesExcederam>
+			<#assign titleContracaoDesabilitada = "Não é possível realizar novas contratações. Verifique sua licença."/>
+		</#if>
 
 		<@display.column title="Ações" media="html" style="text-align:center; width: 140px;" >
-	    	<#if candidato.disponivel = true>
+	    	<#if candidato.disponivel = true && !contratacoesExcederam>
 				<#assign nomeFormatado=stringUtil.removeApostrofo(candidato.nome)>
 				<a href="javascript:newConfirm('Deseja realmente contratar o candidato ${nomeFormatado}?', function(){window.location='<@ww.url includeParams="none" value="/geral/colaborador/prepareContrata.action?candidato.id=${candidato.id}"/>'});"><img border="0" title="Contratar Candidato" src="<@ww.url includeParams="none" value="/imgs/contrata_colab.gif"/>"></a>
 			<#else>
-				<img border="0" title="Candidato já contratado" src="<@ww.url includeParams="none" value="/imgs/contrata_colab.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
+				<img border="0" title="${titleContracaoDesabilitada}" src="<@ww.url includeParams="none" value="/imgs/contrata_colab.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 			</#if>
 			<a href="javascript:popup('infoCandidato.action?candidato.id=${candidato.id}&origemList=CA', 580, 750)"><img border="0" title="Visualizar Currículo" src="<@ww.url includeParams="none" value="/imgs/page_curriculo.gif"/>"></a>
 			<a href="prepareUpdate.action?candidato.id=${candidato.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>

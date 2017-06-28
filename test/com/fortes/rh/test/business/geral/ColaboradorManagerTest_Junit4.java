@@ -5,6 +5,8 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -29,6 +31,7 @@ import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.CidadeManager;
+import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorManagerImpl;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstadoManager;
@@ -37,6 +40,7 @@ import com.fortes.rh.business.geral.MensagemManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
@@ -74,6 +78,7 @@ import com.fortes.rh.web.ws.AcPessoalClientColaborador;
 public class ColaboradorManagerTest_Junit4
 {
 	private ColaboradorManagerImpl colaboradorManager = new ColaboradorManagerImpl();
+	private ColaboradorManager mockColaboradorManager;
     private ColaboradorDao colaboradorDao;
     private CandidatoManager candidatoManager;
     private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
@@ -95,6 +100,7 @@ public class ColaboradorManagerTest_Junit4
     public void setUp() throws Exception
     {
         colaboradorDao = mock(ColaboradorDao.class);
+        mockColaboradorManager = mock(ColaboradorManager.class);
         candidatoManager = mock(CandidatoManager.class);
         candidatoSolicitacaoManager = mock(CandidatoSolicitacaoManager.class);
         mensagemManager = mock(MensagemManager.class);
@@ -635,5 +641,27 @@ public class ColaboradorManagerTest_Junit4
     	assertEquals(Vinculo.EMPREGO, colaboradorManager.getVinculo(null, 100, null));
     	assertEquals(Vinculo.EMPREGO, colaboradorManager.getVinculo(null, null, null));
     	assertEquals(Vinculo.EMPREGO, colaboradorManager.getVinculo("01", 55, 8));
+    }
+    
+    @Test
+    public void excedeuContratacoes() throws Exception {
+    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+    	doThrow(FortesException.class).when(mockColaboradorManager).validaQtdCadastros(empresa.getId());
+
+		boolean excedeuContratacoes = colaboradorManager.excedeuContratacao(empresa.getId());
+		
+		assertTrue(excedeuContratacoes);
+	}
+    
+    @Test
+    public void naoExcedeuContratacoes() throws Exception {
+    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
+    	
+    	doNothing().when(mockColaboradorManager).validaQtdCadastros(empresa.getId());
+    	
+    	boolean excedeuContratacoes = colaboradorManager.excedeuContratacao(empresa.getId());
+    	
+    	assertTrue(excedeuContratacoes);
     }
 }

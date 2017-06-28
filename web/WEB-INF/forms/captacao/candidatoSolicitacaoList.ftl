@@ -157,11 +157,14 @@
 			</#if>
 		</#if>
 		
+		<#assign mensagemContratacoesExcederam = "Não é possível realizar novas contratações. Verifique sua licença."/>
+		
 		<#if candidatoSolicitacao?exists && candidatoSolicitacao.status == 'C'>
-			<#assign titleAceito="Candidato já contratado"/>
-		</#if>
-		<#if candidatoSolicitacao?exists && candidatoSolicitacao.status == 'P'>
-			<#assign titleAceito="Colaborador já promovido"/>
+			<#assign titleAceito = "Candidato já contratado"/>
+		<#elseif candidatoSolicitacao?exists && candidatoSolicitacao.status == 'P'>
+			<#assign titleAceito = "Colaborador já promovido"/>
+		<#elseif contratacoesExcederam>
+			<#assign titleAceito = mensagemContratacoesExcederam/>
 		</#if>
 		
 		<#if candidatoSolicitacao?exists && (candidatoSolicitacao.status == 'P' || candidatoSolicitacao.status == 'C')>
@@ -192,15 +195,19 @@
 				<#assign autorizadoPeloGestor =  candidatoSolicitacao.statusAutorizacaoGestor == 'A'/>
 				
 				<#if candidatoSolicitacao.statusAutorizacaoGestor == 'I'>
-					<#assign titleAceito="Aguardando Autorização do Gestor"/>
+					<#assign titleAceito = "Aguardando Autorização do Gestor"/>
 				<#elseif candidatoSolicitacao.statusAutorizacaoGestor == 'R'>
-					<#assign titleAceito="Não Autorizado pelo Gestor"/>
+					<#assign titleAceito = "Não Autorizado pelo Gestor"/>
 				<#else>
-					<#assign titleAceito=""/>
+					<#assign titleAceito = ""/>
 				</#if>
 				
 				<#assign titleDisabled=titleAceito/>
 				<#assign titleDisabledAnexo=titleAceito/>
+
+				<#if contratacoesExcederam>
+					<#assign titleAceito = mensagemContratacoesExcederam/>
+				</#if>
 			<#else>
 				<#assign autorizadoPeloGestor=true/>
 				<#assign titleDisabled="Esta solicitação já foi encerrada."/>
@@ -225,7 +232,7 @@
 				<#if !solicitacao.encerrada>
 					<#assign nomeFormatado=stringUtil.removeApostrofo(candidatoSolicitacao.candidato.nome)>
 					
-					<#if candidatoSolicitacao?exists && (candidatoSolicitacao.status == 'P' || candidatoSolicitacao.status == 'C' || !autorizadoPeloGestor)>
+					<#if (contratacoesExcederam) || (candidatoSolicitacao?exists && (candidatoSolicitacao.status == 'P' || candidatoSolicitacao.status == 'C' || !autorizadoPeloGestor))>
 						<img border="0" style="opacity:0.3;filter:alpha(opacity=30)" title="${titleAceito}" src="<@ww.url includeParams="none" value="/imgs/contrata_colab.gif"/>">
 					<#else>
 						<#if candidatoSolicitacao?exists && candidatoSolicitacao.candidato.empresa.id != solicitacao.empresa.id>

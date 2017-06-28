@@ -1863,7 +1863,6 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public void validaQtdCadastros(Long empresaId) throws Exception
 	{
-		//TODO remprot
 		ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
 		if ( parametrosDoSistema.isVersaoAcademica() ) {
 			int qtdColaboradorNoBanco = getDao().countColaboradoresComHistoricos(empresaId);
@@ -1887,7 +1886,6 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public String avisoQtdCadastros() throws Exception
 	{
-//		TODO remprot
 		int qtdColaboradorNoBanco = getDao().getCount(new String[]{"desligado"}, new Object[]{false});
 		
 		RPClient remprot = Autenticador.getRemprot();
@@ -3145,6 +3143,15 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		} catch (IntegraACException e) {
 			System.out.println(e.getMessage());
 			return colaboradores;
+		}
+	}
+	
+	public boolean excedeuContratacao(Long empresaId) {
+		try {
+			validaQtdCadastros(empresaId);
+			return false;
+		} catch (Exception e) {
+			return true;
 		}
 	}
 	

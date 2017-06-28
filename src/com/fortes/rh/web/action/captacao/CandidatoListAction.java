@@ -254,9 +254,9 @@ public class CandidatoListAction extends MyActionSupportList
 	private CamposExtras camposExtras;
 	
 	private boolean modoImpressao;
-
+	private boolean contratacoesExcederam;
 	private boolean opcaoTodasEmpresas = false;
-
+	
 	private Long[] empresasPermitidas;
 
 	private String reportTitle;
@@ -288,6 +288,8 @@ public class CandidatoListAction extends MyActionSupportList
 		if (!msgAlert.equals(""))
 			addActionMessage(msgAlert);
 
+		contratacoesExcederam = colaboradorManager.excedeuContratacao(getEmpresaSistema().getId());
+		
 		return Action.SUCCESS;
 	}
 
@@ -1971,5 +1973,9 @@ public class CandidatoListAction extends MyActionSupportList
 
 	public String getReportFilter() {
 		return reportFilter;
+	}
+
+	public boolean isContratacoesExcederam() {
+		return contratacoesExcederam;
 	}
 }

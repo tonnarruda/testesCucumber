@@ -9,6 +9,7 @@
 		<Item visivel="S" motivo="S17060000228"><![CDATA[SESMT > Movimentações > Solicitações/Atendimentos Médicos > Inserir/Editar: Permitir solicitar exames de “Motivo do Atendimento” como “ASO Admissional” com data inferior a data de admissão do colaborador.]]></Item>
 		<Item visivel="S" motivo="S17060000048"><![CDATA[Utilitários > Formulário de Solicitação para o Sistema Fortes RH : Nova opção de menu que redireciona para o formulário de solicitação do sistema Fortes RH.]]></Item>
 		<Item visivel="N" motivo="P17060000157"><![CDATA[Sistema: Ajuste para exibir mensagens que detalham quando o colaborador e/ou histórico não existir no Fortes RH ao criar ou atualizar situação de empregado através do Fortes Pessoal.]]></Item>
+		<Item visivel="N" motivo="P17060000269"><![CDATA[Sistema: Ajuste de inconsistência na contratação realizada através da "Solicitação de Pessoal" e "Cadastro de Candidatos" quando a validação da licença está ativa e a quantidade de contratações excede o limite.]]></Item>
 		<Item visivel="N" motivo="P17060000217"><![CDATA[Importador: Ajuste de inconsistência no arquivo implantação para novos clientes (create.sql), referente ao campo “Nome no Fortes Pessoal” na tabela de “Faixa Salarial” com 30 caracteres.]]></Item>
 		<Item visivel="N" motivo="P17050000189"><![CDATA[Integração com o Fortes Pessoal: Ajuste de inconsistência ao tentar excluir um histórico do colaborador pelo sistema Fortes Pessoal.]]></Item>
 	</Versao>

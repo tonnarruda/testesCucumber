@@ -14,6 +14,7 @@ import com.fortes.rh.business.captacao.SolicitacaoAvaliacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
+import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
@@ -48,6 +49,7 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
+	private ColaboradorManager colaboradorManager;
 	
 	private Collection<CandidatoSolicitacao> candidatoSolicitacaos;
 	private Collection<Solicitacao> solicitacaos;
@@ -77,6 +79,7 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 	private String solicitacaoDescricaoBusca;
 	private String colaboradorNomeBusca;
 	private Boolean atualizarModelo;
+	private boolean contratacoesExcederam;
 
 	// Utilizado no ftl para escapar nomes de candidatos contendo apóstrofos
 	private StringUtil stringUtil = new StringUtil();
@@ -99,7 +102,7 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 			}else
 				addActionMessage("Não existem candidatos para o filtro informado.");
 		}
-
+		contratacoesExcederam = colaboradorManager.excedeuContratacao(getEmpresaSistema().getId());
 
 		if(getActionMsg() != null && !getActionMsg().equals("") && (getActionMessages() != null && getActionMessages().toArray()[0].equals(""))){
 			addActionError(getActionMsg());
@@ -445,7 +448,6 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 	public void setHistoricoColaboradorManager(HistoricoColaboradorManager historicoColaboradorManager) {
 		this.historicoColaboradorManager = historicoColaboradorManager;
 	}
-
 	
 	public Long[] getCandidatoSolicitacaoIdsSelecionados()
 	{
@@ -473,13 +475,11 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 		return relatorioCandidatoSolicitacaoList;
 	}
 
-	public void setRelatorioCandidatoSolicitacaoList(
-			RelatorioCandidatoSolicitacaoList relatorioCandidatoSolicitacaoList) {
+	public void setRelatorioCandidatoSolicitacaoList(RelatorioCandidatoSolicitacaoList relatorioCandidatoSolicitacaoList) {
 		this.relatorioCandidatoSolicitacaoList = relatorioCandidatoSolicitacaoList;
 	}
 
-	public void setAreaOrganizacionalManager(
-			AreaOrganizacionalManager areaOrganizacionalManager) {
+	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
 		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 
@@ -538,9 +538,20 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 	public void setAtualizarModelo(Boolean atualizarModelo) {
 		this.atualizarModelo = atualizarModelo;
 	}
-
-	public void setColaboradorQuestionarioManager(
-			ColaboradorQuestionarioManager colaboradorQuestionarioManager) {
+	
+	public boolean isContratacoesExcederam() {
+		return contratacoesExcederam;
+	}
+	
+	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager) {
 		this.colaboradorQuestionarioManager = colaboradorQuestionarioManager;
+	}
+
+	public ColaboradorManager getColaboradorManager() {
+		return colaboradorManager;
+	}
+
+	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
+		this.colaboradorManager = colaboradorManager;
 	}
 }

@@ -253,4 +253,5 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Colaborador> findByAdmitidos(Date data);
 	public TNaturalidadeAndNacionalidade getNaturalidadeAndNacionalidade(Empresa empresa, String codigoAc) throws IntegraACException;
 	public Collection<Colaborador> getNaturalidadesAndNacionalidades(Collection<Colaborador> colaboradores, Long... empresasIds);
+	public boolean excedeuContratacao(Long empresaId);
 }
