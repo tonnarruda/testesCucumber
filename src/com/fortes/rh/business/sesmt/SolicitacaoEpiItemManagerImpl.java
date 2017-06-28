@@ -131,10 +131,10 @@ public class SolicitacaoEpiItemManagerImpl extends GenericManagerImpl<Solicitaca
 		if (solicitacaoEpiData != null && data.getTime() < solicitacaoEpiData.getTime())
 			return "A data de devolução não pode ser anterior à data de solicitação ( Data solicitação:" + DateUtil.formataDiaMesAno(solicitacaoEpiData) + " )";
 		
-		Date dataDaPrimeiraEntrega = solicitacaoEpiItemEntregaManager.getMinDataBySolicitacaoEpiItem(solicitacaoEpiItemId);
+		Date dataPrimeiraEntrega = solicitacaoEpiItemEntregaManager.getMinDataBySolicitacaoEpiItem(solicitacaoEpiItemId);
 		
-		if(dataDaPrimeiraEntrega != null && data.getTime() < dataDaPrimeiraEntrega.getTime())
-			return "Não é possível inserir uma devolução anterio a primeira data de entrega ( Data:" + DateUtil.formataDiaMesAno(dataDaPrimeiraEntrega) +  " )";
+		if(dataPrimeiraEntrega != null && data.getTime() < dataPrimeiraEntrega.getTime())
+			return "Não é possível inserir uma devolução anterior a primeira data de entrega ( Data:" + DateUtil.formataDiaMesAno(dataPrimeiraEntrega) +  " )";
 		
 		Integer qtdTotalEntregue = solicitacaoEpiItemEntregaManager.getTotalEntregue(solicitacaoEpiItemId, null);
 		Integer qtdTotalDevolvida = solicitacaoEpiItemDevolucaoManager.getTotalDevolvido(solicitacaoEpiItemId, solicitacaoEpiItemDevolucaoId);
@@ -154,7 +154,7 @@ public class SolicitacaoEpiItemManagerImpl extends GenericManagerImpl<Solicitaca
 			if(maxASerDevolvido > 0)
 				return "Não é possível inserir uma devolução nessa data ( " + DateUtil.formataDiaMesAno(data) + " ) maior que " + maxASerDevolvido + " Item(ns).";
 			else
-				return "Não é possível inserir uma devolução nessa data, pois já existe(m) devolução(ões) para a(s) entrega(s) efetuada(s) anterior a essa data " + DateUtil.formataDiaMesAno(data) + ".";
+				return "Não é possível inserir uma devolução nessa data, pois já existe(m) devolução(ões) para a(s) entrega(s) efetuada(s) anterior a data " + DateUtil.formataDiaMesAno(data) + ".";
 		}
 		
 		return null;

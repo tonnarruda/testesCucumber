@@ -235,4 +235,25 @@ public class SolicitacaoEpiItemEntregaDaoHibernateTest extends GenericDaoHiberna
 		assertEquals(new Integer(3), solicitacaoEpiItemEntregaDao.findQtdEntregueByDataAndSolicitacaoItemId(data1, solicitacaoEpiItem.getId()));
 		assertEquals(new Integer(6), solicitacaoEpiItemEntregaDao.findQtdEntregueByDataAndSolicitacaoItemId(data2, solicitacaoEpiItem.getId()));
 	}
+	
+	@Test
+	public void testGetMinDataBySolicitacaoEpiItem() {
+		Date data1 = DateUtil.criarDataMesAno(1, 1, 2017);
+		Date data2 = DateUtil.criarDataMesAno(1, 2, 2017);
+
+		SolicitacaoEpi solicitacaoEpi = SolicitacaoEpiFactory.getEntity();
+		solicitacaoEpiDao.save(solicitacaoEpi);
+		
+		SolicitacaoEpiItem solicitacaoEpiItem = SolicitacaoEpiItemFactory.getEntity(solicitacaoEpi, null, 3);
+		solicitacaoEpiItem.setSolicitacaoEpi(solicitacaoEpi);
+		solicitacaoEpiItemDao.save(solicitacaoEpiItem);
+		
+		SolicitacaoEpiItemEntrega solicitacaoEpiItemEntrega = SolicitacaoEpiItemEntregaFactory.getEntity(data1, solicitacaoEpiItem, 1);
+		solicitacaoEpiItemEntregaDao.save(solicitacaoEpiItemEntrega);
+
+		SolicitacaoEpiItemEntrega solicitacaoEpiItemEntrega2 = SolicitacaoEpiItemEntregaFactory.getEntity(data2, solicitacaoEpiItem, 2);
+		solicitacaoEpiItemEntregaDao.save(solicitacaoEpiItemEntrega2);
+		
+		assertEquals(data1, solicitacaoEpiItemEntregaDao.getMinDataBySolicitacaoEpiItem(solicitacaoEpiItem.getId()));
+	}
 }

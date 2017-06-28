@@ -65,7 +65,7 @@
 		<action name="updateEntrega" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiEditAction" method="updateEntrega">
 			<interceptor-ref name="tokenWebStack" />
 			<result name="success" type="redirect">prepareEntrega.action?solicitacaoEpi.id=${solicitacaoEpi.id}</result>
-			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/solicitacaoEpiDevolucaoEdit.ftl</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/solicitacaoEpiEntregaEdit.ftl</result>
 		</action>
 		<action name="updateDevolucao" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiEditAction" method="updateDevolucao">
 			<interceptor-ref name="tokenWebStack" />

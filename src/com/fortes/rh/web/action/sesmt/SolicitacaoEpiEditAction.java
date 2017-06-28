@@ -264,6 +264,11 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 	
 	private void validaDatasEQtds(Long solicitacaoEpiId, Long solicitacaoEpiItemId, SolicitacaoEpiItemEntrega solicitacaoEpiItemEntrega) throws FortesException
 	{
+		if(solicitacaoEpiItemEntrega.isItensEntregues()){
+			SolicitacaoEpiItemEntrega solicitacaoEpiItemEntregaAux = solicitacaoEpiItemEntregaManager.findByIdProjection(solicitacaoEpiItemEntrega.getId());
+			solicitacaoEpiItemEntrega.setDataEntrega(solicitacaoEpiItemEntregaAux.getDataEntrega());
+		}
+		
 		SolicitacaoEpi solicitacaoEpi = solicitacaoEpiManager.findEntidadeComAtributosSimplesById(solicitacaoEpiId);
 		if (solicitacaoEpiItemEntrega.getDataEntrega().before(solicitacaoEpi.getData()))
 			throw new FortesException("A data de entrega não pode ser anterior à data de solicitação");

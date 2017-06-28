@@ -730,6 +730,7 @@ import com.fortes.rh.test.web.dwr.ReajusteDWRTest;
 import com.fortes.rh.test.web.dwr.RiscoAmbienteDWRTest;
 import com.fortes.rh.test.web.dwr.RiscosDWRTest;
 import com.fortes.rh.test.web.dwr.SolicitacaoDWRTest;
+import com.fortes.rh.test.web.dwr.SolicitacaoEpiDWRTest;
 import com.fortes.rh.test.web.dwr.SolicitacaoExameDWRTest;
 import com.fortes.rh.test.web.dwr.TurmaDWRTest;
 import com.fortes.rh.test.web.dwr.TurmaDWRTest_Junit4;
@@ -1286,6 +1287,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	SolicitacaoEpiManagerTest_Junit4.class,
 	SolicitacaoEpiItemDaoHibernateTest.class,
 	SolicitacaoEpiItemManagerTest.class,
+	SolicitacaoEpiDWRTest.class,
 	        
 	SolicitacaoEpiItemEntregaManagerTest.class,
 	SolicitacaoEpiItemEntregaDaoHibernateTest.class,

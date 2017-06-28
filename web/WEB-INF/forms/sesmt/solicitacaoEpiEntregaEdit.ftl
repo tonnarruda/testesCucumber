@@ -28,7 +28,7 @@
 
 	<script type="text/javascript">
 		$(function() {
-			<#if solicitacaoEpiItemEntrega.itensEntregues>	
+			<#if solicitacaoEpiItemEntrega?exists && solicitacaoEpiItemEntrega.itensEntregues>	
 				$('#dataEntrega').css('background', '#F6F6F6');
 				$('#qtdEntregue').css('background', '#F6F6F6');
 				$('#dataEntrega_button').remove();
@@ -41,11 +41,12 @@
 	<@ww.actionerror />
 
 	<@ww.form name="form" action="${formAction}" method="POST">
-		<#if solicitacaoEpiItemEntrega.itensEntregues>
+		<#if solicitacaoEpiItemEntrega?exists && solicitacaoEpiItemEntrega.itensEntregues>
 			<@ww.datepicker label="Data da Entrega" name="solicitacaoEpiItemEntrega.dataEntrega" id="dataEntrega" disabled="true" value="${data}" cssClass="mascaraData"/>
 			<@ww.textfield label="Qtd. Entregue" name="solicitacaoEpiItemEntrega.qtdEntregue" id="qtdEntregue" disabled="true" cssStyle="width: 25px;"/>
 			<@ww.hidden name="solicitacaoEpiItemEntrega.dataEntrega" />
 			<@ww.hidden name="solicitacaoEpiItemEntrega.qtdEntregue" />
+			<@ww.hidden name="solicitacaoEpiItemEntrega.itensEntregues" />
 		<#else>
 			<@ww.datepicker label="Data da Entrega" name="solicitacaoEpiItemEntrega.dataEntrega" id="dataEntrega" required="true" value="${data}" cssClass="mascaraData"/>
 			<@ww.textfield label="Qtd. Entregue" name="solicitacaoEpiItemEntrega.qtdEntregue" id="qtdEntregue" required="true"  onkeypress="return(somenteNumeros(event,''));" cssStyle="width: 25px;" maxLength="3"  />

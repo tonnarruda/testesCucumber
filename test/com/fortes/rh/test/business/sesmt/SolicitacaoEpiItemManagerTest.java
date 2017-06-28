@@ -121,7 +121,7 @@ public class SolicitacaoEpiItemManagerTest
 	}
 	
 	@Test
-	public void testValidaDataDevolucaoDevolvendoantesDasEntregas()
+	public void testValidaDataDevolucaoDevolvendoAntesDasEntregas()
 	{
 		Date data = DateUtil.criarDataMesAno(22, 6, 2017);
 		Long solicitacaoEpiItemId = 1L;
@@ -136,7 +136,7 @@ public class SolicitacaoEpiItemManagerTest
 		when(solicitacaoEpiItemEntregaManager.findQtdEntregueByDataAndSolicitacaoItemId(data,solicitacaoEpiItemId)).thenReturn(qtdEntregueAteAData);
 		when(solicitacaoEpiItemDevolucaoManager.findQtdDevolvidaByDataAndSolicitacaoItemId(data,solicitacaoEpiItemId, solicitacaoEpiItemDevolucaoId)).thenReturn(qtdDevolvidaAteAData);
 
-		assertEquals("Não é possível inserir uma devolução nessa data, pois já existe(m) devolução(ões) para a(s) entrega(s) efetuada(s) anterior a essa data 22/06/2017.", solicitacaoEpiItemManager.validaDataDevolucao(data, solicitacaoEpiItemId, solicitacaoEpiItemDevolucaoId, 1, DateUtil.criarDataMesAno(1, 1, 2010)));
+		assertEquals("Não é possível inserir uma devolução nessa data, pois já existe(m) devolução(ões) para a(s) entrega(s) efetuada(s) anterior a data 22/06/2017.", solicitacaoEpiItemManager.validaDataDevolucao(data, solicitacaoEpiItemId, solicitacaoEpiItemDevolucaoId, 1, DateUtil.criarDataMesAno(1, 1, 2010)));
 	}
 	
 	@Test
@@ -168,7 +168,7 @@ public class SolicitacaoEpiItemManagerTest
 		
 		when(solicitacaoEpiItemEntregaManager.getMinDataBySolicitacaoEpiItem(solicitacaoEpiItemId)).thenReturn(data2);
 
-		assertEquals("Não é possível inserir uma devolução anterio a primeira data de entrega ( Data:22/08/2017 )", solicitacaoEpiItemManager.validaDataDevolucao(data1, solicitacaoEpiItemId, solicitacaoEpiItemDevolucaoId, 1, null));
+		assertEquals("Não é possível inserir uma devolução anterior a primeira data de entrega ( Data:22/08/2017 )", solicitacaoEpiItemManager.validaDataDevolucao(data1, solicitacaoEpiItemId, solicitacaoEpiItemDevolucaoId, 1, null));
 	}
 	
 	@Test
@@ -180,6 +180,23 @@ public class SolicitacaoEpiItemManagerTest
 		Long solicitacaoEpiItemDevolucaoId = 2L;
 
 		assertEquals("A data de devolução não pode ser anterior à data de solicitação ( Data solicitação:22/10/2017 )", solicitacaoEpiItemManager.validaDataDevolucao(data1, solicitacaoEpiItemId, solicitacaoEpiItemDevolucaoId, 1, data2));
+	}
+
+	@Test
+	public void testValidaDataDevolucaoAnteriorADataDaPrimeiraentrega()
+	{		
+		Date dataSolicitacao = DateUtil.criarDataMesAno(22, 9, 2017);
+		Date dataPrimeiraEntrega = DateUtil.criarDataMesAno(24, 9, 2017);
+		Date dataDevolucao = DateUtil.criarDataMesAno(23, 9, 2017);
+		Long solicitacaoEpiItemId = 1L;
+		Long solicitacaoEpiItemDevolucaoId = 2L;
+
+		when(solicitacaoEpiItemEntregaManager.getMinDataBySolicitacaoEpiItem(solicitacaoEpiItemId)).thenReturn(dataPrimeiraEntrega);
+		
+		String mensagem = solicitacaoEpiItemManager.validaDataDevolucao(dataDevolucao, solicitacaoEpiItemId, solicitacaoEpiItemDevolucaoId, 1, dataSolicitacao);
+		
+		
+		assertEquals("Não é possível inserir uma devolução anterior a primeira data de entrega ( Data:" + DateUtil.formataDiaMesAno(dataPrimeiraEntrega) +  " )", mensagem );
 	}
 	
 	@Test

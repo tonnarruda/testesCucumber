@@ -106,7 +106,7 @@ public class SolicitacaoEpiItemDevolucaoDaoHibernateTest extends GenericDaoHiber
 		SolicitacaoEpiItemDevolucao solicitacaoEpiItemDevolucao3 = SolicitacaoEpiItemDevolucaoFactory.getEntity(data2, 3, solicitacaoEpiItem2);
 		solicitacaoEpiItemDevolucaoDao.save(solicitacaoEpiItemDevolucao3);
 		
-		assertEquals(new Integer(1), solicitacaoEpiItemDevolucaoDao.findQtdDevolvidaByDataAndSolicitacaoItemId(data, solicitacaoEpiItem1.getId(), null));
+		assertEquals(new Integer(0), solicitacaoEpiItemDevolucaoDao.findQtdDevolvidaByDataAndSolicitacaoItemId(data, solicitacaoEpiItem1.getId(), solicitacaoEpiItemDevolucao1.getId()));
 		assertEquals(new Integer(2), solicitacaoEpiItemDevolucaoDao.findQtdDevolvidaByDataAndSolicitacaoItemId(data, solicitacaoEpiItem2.getId(), null));
 		assertEquals(new Integer(5), solicitacaoEpiItemDevolucaoDao.findQtdDevolvidaByDataAndSolicitacaoItemId(data2, solicitacaoEpiItem2.getId(), null));
 	}
