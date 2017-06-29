@@ -13,7 +13,7 @@
 		<Item visivel="N" motivo="P17060000269"><![CDATA[Sistema: Ajuste de inconsistência na contratação realizada através da "Solicitação de Pessoal" e "Cadastro de Candidatos" quando a validação da licença está ativa e a quantidade de contratações excede o limite.]]></Item>
 		<Item visivel="N" motivo="P17060000217"><![CDATA[Importador: Ajuste de inconsistência no arquivo implantação para novos clientes (create.sql), referente ao campo “Nome no Fortes Pessoal” na tabela de “Faixa Salarial” com 30 caracteres.]]></Item>
 		<Item visivel="N" motivo="P17050000189"><![CDATA[Integração com o Fortes Pessoal: Ajuste de inconsistência ao tentar excluir um histórico do colaborador pelo sistema Fortes Pessoal.]]></Item>
-		
+		<Item visivel="S" motivo="S17010000081"><![CDATA[Módulo Externo: Possibilitando que o candidato acesse o módulo externo mesmo quando existe mais de um cadastro com o mesmo CPF e na mesma empresa.]]></Item>
 	</Versao>
 	<Versao id="1.1.181.213" db="" data="20/06/2017">
 		<Item visivel="S" motivo="P17050000137"><![CDATA[R&S > Cadastros > Candidatos > Triagem> Triagem simples: Ajuste de inconsistências ao filtrar por escolaridade mínima.]]></Item>

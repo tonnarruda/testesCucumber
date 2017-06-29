@@ -1533,6 +1533,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		criteria.add(Expression.eq("c.senha", senha));
 		
 		criteria.setProjection(p);
+		criteria.addOrder(Order.desc("c.id"));
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Candidato.class));
 		return criteria.list();
 	}

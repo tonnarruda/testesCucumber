@@ -115,8 +115,6 @@ public class ExternoAction extends MyActionSupport
 		}
 
 		Map<String, Object> session = ActionContext.getContext().getSession();
-		
-		
 		candidato = candidatoManager.findPorEmpresaByCpfSenha(cpf, StringUtil.encodeString(senha), empresaId);
 		
 		if (candidato == null)
