@@ -183,6 +183,8 @@ public class ExtintorManutencaoDaoHibernateTest extends GenericDaoHibernateTest<
 		
 		extintorManutencaoDao.save(extintorManutencao);
 		
+		extintorManutencaoDao.getHibernateTemplateByGenericDao().flush();
+		
 		Collection<ExtintorManutencao> extintorManutencaoVencidas = extintorManutencaoDao.findManutencaoVencida(estabelecimento.getId(), DateUtil.criarDataMesAno(1, 10, 2009), MotivoExtintorManutencao.PRAZO_RECARGA);
 		assertEquals(1, extintorManutencaoVencidas.size());
 
@@ -219,6 +221,8 @@ public class ExtintorManutencaoDaoHibernateTest extends GenericDaoHibernateTest<
 		extintorManutencao.setServicos(servicos);
 		
 		extintorManutencaoDao.save(extintorManutencao);
+		
+		extintorManutencaoDao.getHibernateTemplateByGenericDao().flush();
 		
 		Collection<ExtintorManutencao> extintorManutencaoVencidas = extintorManutencaoDao.findManutencaoVencida(estabelecimento.getId(), DateUtil.criarDataMesAno(1, 10, 2009), MotivoExtintorManutencao.PRAZO_HIDROSTATICO);
 		assertEquals(1, extintorManutencaoVencidas.size());
@@ -298,7 +302,9 @@ public class ExtintorManutencaoDaoHibernateTest extends GenericDaoHibernateTest<
 		extintorManutencaoEmDia.setServicos(servicos);
 		extintorManutencaoDao.save(extintorManutencaoEmDia);
 
-		Collection<ExtintorManutencao> extintorManutencaoVencidas = extintorManutencaoDao.findManutencaoVencida(estabelecimento.getId(), DateUtil.criarDataMesAno(1, 10, 2009), MotivoExtintorManutencao.PRAZO_RECARGA);
+		extintorManutencaoDao.getHibernateTemplateByGenericDao().flush();
+		
+		Collection<ExtintorManutencao> extintorManutencaoVencidas = extintorManutencaoDao.findManutencaoVencida(estabelecimento.getId(), DateUtil.criarDataMesAno(3, 10, 2009), MotivoExtintorManutencao.PRAZO_RECARGA);
 		assertEquals(1, extintorManutencaoVencidas.size());
 	}
 	

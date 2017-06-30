@@ -3,8 +3,7 @@
 <html>
 	<head>
 		<@ww.head/>
-		<title> Extintores - Manutenção e Inspeção</title>
-		<#assign validarCampos="return validaFormulario('form', new Array('estabelecimento','data'), new Array('data'))"/>
+		<title>Extintores - Manutenção e Inspeção</title>
 		
 		<#assign date = ""/>
 		<#if dataVencimento?exists>
@@ -12,11 +11,21 @@
 		</#if>
 		
 		<#include "../ftl/mascarasImports.ftl" />
+		
+		<script type="text/javascript" >
+			function submeter(){
+					if($('.fieldsetPadrao').find("input:checked").length > 0)
+					return validaFormulario('form', new Array('estabelecimento','data'), new Array('data'));
+				else
+					jAlert('Marque pelo menos umas das opções de "Exibir Extintores com"');
+			}
+		</script>
+		
 	</head>
 	<body>
 		<@ww.actionerror />
 		<@ww.actionmessage />
-		<@ww.form name="form" action="relatorioManutencaoAndInspecao.action" onsubmit="${validarCampos}" method="POST">
+		<@ww.form name="form" action="relatorioManutencaoAndInspecao.action" onsubmit="submeter()" method="POST">
 			<@ww.select label="Estabelecimento" id="estabelecimento" name="historicoExtintor.estabelecimento.id" list="estabelecimentos" listKey="id" listValue="nome" headerValue="Selecione..." headerKey=""  cssStyle="width:240px;" required="true"/>
 			<@ww.datepicker label="Vencimentos até" id="data" name="dataVencimento" cssClass="mascaraData" value="${date}" required="true"/>
 			
@@ -34,7 +43,7 @@
 			
 		</@ww.form>
 		<div class="buttonGroup">
-			<button onclick="${validarCampos};" class="btnRelatorio" ></button>
+			<button onclick="submeter()" class="btnRelatorio" ></button>
 		</div>
 	</body>
 </html>

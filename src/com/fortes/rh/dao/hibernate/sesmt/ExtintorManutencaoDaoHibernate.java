@@ -1,14 +1,22 @@
 package com.fortes.rh.dao.hibernate.sesmt;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 import org.hibernate.Query;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.ExtintorManutencaoDao;
 import com.fortes.rh.model.dicionario.MotivoExtintorManutencao;
+import com.fortes.rh.model.sesmt.Extintor;
 import com.fortes.rh.model.sesmt.ExtintorManutencao;
+import com.fortes.rh.model.sesmt.HistoricoExtintor;
+import com.fortes.rh.util.DateUtil;
 
 @SuppressWarnings("unchecked")
 public class ExtintorManutencaoDaoHibernate extends GenericDaoHibernate<ExtintorManutencao> implements ExtintorManutencaoDao
@@ -110,37 +118,62 @@ public class ExtintorManutencaoDaoHibernate extends GenericDaoHibernate<Extintor
 			manutencaoServicoVencidoId = 3L;
 		}
 		
-		StringBuilder hql = new StringBuilder();
-		hql.append("select new ExtintorManutencao(em.id, em.saida, e. " + periodoMax + ", he.localizacao, e.numeroCilindro, e.tipo) ");
+		StringBuilder sql = new StringBuilder();
+		sql.append("select em.id as id, em.saida as saida, e. " + periodoMax + " as periodo, he.localizacao as local, e.numeroCilindro as numeroCilindro, e.tipo as tipo ");
 
-		hql.append("from ExtintorManutencao as em ");
-		hql.append("left join em.extintor as e ");
-		hql.append("inner join e.historicoExtintores as he ");
-		hql.append("where he.estabelecimento.id = :estabelecimentoId ");
-		hql.append("and e.ativo = true ");
-		hql.append("and (:vencimento - em.saida) >= (e. " + periodoMax + " * 30) ");
-		hql.append("and em.servicos.id = :manutencaoServicoVencidoId ");
+		sql.append("from ExtintorManutencao as em ");
+		sql.append("left join extintor as e on em.extintor_id = e.id ");
+		sql.append("inner join historicoExtintor as he on he.extintor_id = e.id ");
+		sql.append("left join extintormanutencao_extintormanutencaoservico ee on ee.ExtintorManutencao_id = em.id ");
+		sql.append("where he.estabelecimento_id = :estabelecimentoId ");
+		sql.append("and e.ativo = true ");
+		sql.append("and :vencimento  >= (em.saida + cast((coalesce(e." + periodoMax + ",0) || ' month') as interval)) ");
+		sql.append("and ee.servicos_id = :manutencaoServicoVencidoId ");
 		
-		hql.append("and em.saida = (select max(em2.saida) ");
-		hql.append("                 from ExtintorManutencao as em2 ");
-		hql.append("                 where em2.extintor.id = e.id ");
-		hql.append("                 and em2.servicos.id = :manutencaoServicoVencidoId ");
-		hql.append("                  ) ");
+		sql.append("and em.saida = (select max(em2.saida) ");
+		sql.append("                 from ExtintorManutencao as em2 ");
+		sql.append(" 				 left join extintormanutencao_extintormanutencaoservico ee2 on ee2.ExtintorManutencao_id = em2.id ");
+		sql.append("                 where em2.extintor_id = e.id ");
+		sql.append("                 and ee2.servicos_id = :manutencaoServicoVencidoId ");
+		sql.append("                  ) ");
 
-		hql.append("and he.data = (select max(he2.data) ");
-		hql.append("                 from HistoricoExtintor as he2 ");
-		hql.append("                 where he2.extintor.id = e.id ");
-		hql.append("                  ) ");
+		sql.append("and he.data = (select max(he2.data) ");
+		sql.append("                 from HistoricoExtintor as he2 ");
+		sql.append("                 where he2.extintor_id = e.id ");
+		sql.append("                  ) ");
 		
-		hql.append("order by he.localizacao, (em.saida + (e. " + periodoMax + " * 30)) ");
+		sql.append("order by he.localizacao, (em.saida + cast((coalesce(e." + periodoMax + ",0) || ' month') as interval)) ");
 
-		Query query = getSession().createQuery(hql.toString());
+		Query query = getSession().createSQLQuery(sql.toString());
 
 		query.setDate("vencimento", dataVencimento);
 		query.setLong("estabelecimentoId", estabelecimentoId);
 		query.setLong("manutencaoServicoVencidoId", manutencaoServicoVencidoId);
 
-		return query.list();
+		@SuppressWarnings("rawtypes")
+		List resultado = query.list();
+		Collection<ExtintorManutencao> extintorManutencoes = new ArrayList<ExtintorManutencao>();
+		
+		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();){
+			Object[] res = it.next();
+			ExtintorManutencao extintorManutencao = new ExtintorManutencao();
+			extintorManutencao.setId(((BigInteger)res[0]).longValue());
+			extintorManutencao.setSaida((Date)res[1]);
+			
+			Integer periodoMaxInt = (Integer)res[2];
+			if(periodoMaxInt != null)
+				extintorManutencao.setVencimento(DateUtil.incrementaMes(extintorManutencao.getSaida(), periodoMaxInt));
+			
+			extintorManutencao.setExtintor(new Extintor());
+			extintorManutencao.getExtintor().setHistoricoExtintores(Arrays.asList(new HistoricoExtintor()));
+			extintorManutencao.getExtintor().getUltimoHistorico().setLocalizacao((String)res[3]);
+			extintorManutencao.getExtintor().setNumeroCilindro((Integer)res[4]);
+			extintorManutencao.getExtintor().setTipo((String)res[5]);
+			
+			extintorManutencoes.add(extintorManutencao);
+		}
+		
+		return extintorManutencoes;
 	}
 
 	public ExtintorManutencao findByIdProjection(Long extintorManutencaoId) 

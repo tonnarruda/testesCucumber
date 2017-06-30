@@ -261,6 +261,8 @@ public class ExtintorInspecaoDaoHibernateTest extends GenericDaoHibernateTest<Ex
 		extintorInspecao.setData(dataDaInspecao);
 		extintorInspecaoDao.save(extintorInspecao);
 		
+		extintorInspecaoDao.getHibernateTemplateByGenericDao().flush();
+		
 		Collection<ExtintorInspecao> extintorInspecaos = extintorInspecaoDao.findInspecoesVencidas(estabelecimento.getId(), DateUtil.criarDataMesAno(1, 10, 2009));
 		assertEquals(1, extintorInspecaos.size());
 
@@ -324,7 +326,9 @@ public class ExtintorInspecaoDaoHibernateTest extends GenericDaoHibernateTest<Ex
 		extintorInspecaoEmDia.setData(DateUtil.criarDataMesAno(3, 8, 2009));//fronteira do vencimento
 		extintorInspecaoDao.save(extintorInspecaoEmDia);
 		
-		Collection<ExtintorInspecao> extintorInspecaos = extintorInspecaoDao.findInspecoesVencidas(estabelecimento.getId(), DateUtil.criarDataMesAno(1, 10, 2009));
+		extintorInspecaoDao.getHibernateTemplateByGenericDao().flush();
+		
+		Collection<ExtintorInspecao> extintorInspecaos = extintorInspecaoDao.findInspecoesVencidas(estabelecimento.getId(), DateUtil.criarDataMesAno(2, 10, 2009));
 		assertEquals(1, extintorInspecaos.size());
 		assertEquals(extintorInspecaoVencida, extintorInspecaos.toArray()[0]);
 	}

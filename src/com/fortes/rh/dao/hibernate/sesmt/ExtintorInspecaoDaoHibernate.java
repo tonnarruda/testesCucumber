@@ -1,7 +1,12 @@
 package com.fortes.rh.dao.hibernate.sesmt;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -12,7 +17,10 @@ import org.hibernate.criterion.Projections;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.ExtintorInspecaoDao;
+import com.fortes.rh.model.sesmt.Extintor;
 import com.fortes.rh.model.sesmt.ExtintorInspecao;
+import com.fortes.rh.model.sesmt.HistoricoExtintor;
+import com.fortes.rh.util.DateUtil;
 
 @SuppressWarnings("unchecked")
 public class ExtintorInspecaoDaoHibernate extends GenericDaoHibernate<ExtintorInspecao> implements ExtintorInspecaoDao
@@ -124,33 +132,55 @@ public class ExtintorInspecaoDaoHibernate extends GenericDaoHibernate<ExtintorIn
 
 	public Collection<ExtintorInspecao> findInspecoesVencidas(Long estabelecimentoId, Date dataVencimento)
 	{
-		StringBuilder hql = new StringBuilder();
-		hql.append("select new ExtintorInspecao(ei.id, ei.data, e.periodoMaxInspecao, he.localizacao, e.numeroCilindro, e.tipo) ");
+		StringBuilder sql = new StringBuilder();
+		sql.append("select ei.id, ei.data, e.periodoMaxInspecao, he.localizacao, e.numeroCilindro, e.tipo ");
+		sql.append("from ExtintorInspecao as ei ");
+		sql.append("left join extintor as e on ei.extintor_id = e.id ");
+		sql.append("inner join historicoExtintor as he on he.extintor_id = e.id ");
+		sql.append("where he.estabelecimento_id = :estabelecimentoId ");
+		sql.append("and e.ativo = :ativo ");
+		sql.append("and :vencimento  >= (ei.data + cast((coalesce(e.periodoMaxInspecao,0) || ' month') as interval)) ");
 
-		hql.append("from ExtintorInspecao as ei ");
-		hql.append("left join ei.extintor as e ");
-		hql.append("inner join e.historicoExtintores as he ");
-		hql.append("where he.estabelecimento.id = :estabelecimentoId ");
-		hql.append("and e.ativo = :ativo ");
-		hql.append("and (:vencimento - ei.data) >= (e.periodoMaxInspecao * 30) ");
-
-		hql.append("and ei.data = (select max(ei2.data) ");
-		hql.append("                 from ExtintorInspecao as ei2 ");
-		hql.append("                 where ei2.extintor.id = e.id) ");
+		sql.append("and ei.data = (select max(ei2.data) ");
+		sql.append("                 from ExtintorInspecao as ei2 ");
+		sql.append("                 where ei2.extintor_id = e.id) ");
 		
-		hql.append("and he.data = (select max(he2.data) ");
-		hql.append("                 from HistoricoExtintor as he2 ");
-		hql.append("                 where he2.extintor.id = e.id) ");
+		sql.append("and he.data = (select max(he2.data) ");
+		sql.append("                 from HistoricoExtintor as he2 ");
+		sql.append("                 where he2.extintor_id = e.id) ");
 		
-		hql.append("order by he.localizacao, (ei.data + (e.periodoMaxInspecao * 30))");
+		sql.append("order by he.localizacao, (ei.data + cast((coalesce(e.periodoMaxInspecao,0) || ' month') as interval)) ");
 
-		Query query = getSession().createQuery(hql.toString());
+		Query query = getSession().createSQLQuery(sql.toString());
 
 		query.setDate("vencimento", dataVencimento);
 		query.setLong("estabelecimentoId", estabelecimentoId);
 		query.setBoolean("ativo", true);
 
-		return query.list();
+		@SuppressWarnings("rawtypes")
+		List resultado = query.list();
+		Collection<ExtintorInspecao> extintorInspecoes = new ArrayList<ExtintorInspecao>();
+		
+		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();){
+			Object[] res = it.next();
+			ExtintorInspecao extintorInspecao = new ExtintorInspecao();
+			extintorInspecao.setId(((BigInteger)res[0]).longValue());
+			extintorInspecao.setData((Date)res[1]);
+			
+			Integer periodoMaxInt = (Integer)res[2];
+			if(periodoMaxInt != null)
+				extintorInspecao.setVencimento(DateUtil.incrementaMes(extintorInspecao.getData(), periodoMaxInt));
+			
+			extintorInspecao.setExtintor(new Extintor());
+			extintorInspecao.getExtintor().setHistoricoExtintores(Arrays.asList(new HistoricoExtintor()));
+			extintorInspecao.getExtintor().getUltimoHistorico().setLocalizacao((String)res[3]);
+			extintorInspecao.getExtintor().setNumeroCilindro((Integer)res[4]);
+			extintorInspecao.getExtintor().setTipo((String)res[5]);
+			
+			extintorInspecoes.add(extintorInspecao);
+		}
+		
+		return extintorInspecoes;
 	}
 
 	public ExtintorInspecao findByIdProjection(Long extintorInspecaoId) 
