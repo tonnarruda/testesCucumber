@@ -116,6 +116,14 @@
 				content: 'Será gerado um relatório individual para cada curso selecionado em um único arquivo.'
 			});
 			
+			if ($("#exibeCargaHorariaEfetiva").is(":checked")) {
+				$("#exibeTotalCargaHorariaEfetiva").removeAttr("disabled");
+			}
+		
+			$("#exibeCargaHorariaEfetiva").click(function(){
+				$("#exibeTotalCargaHorariaEfetiva").toggleDisabled();
+			});
+			
 		});
 		
 		function toggleNuncaRealizaraTreinamento(){
@@ -195,7 +203,8 @@
 		
 		<#if comTreinamento>
 			<@ww.checkbox label="Exibir cargos no relatório" name="exibeCargo" id="exibeCargo" labelPosition="left"/>
-			<@ww.checkbox label="Exibir carga horária efetiva" name="exibeCargaHorariaEfetiva" labelPosition="left"/>
+			<@ww.checkbox label="Exibir carga horária efetiva" name="exibeCargaHorariaEfetiva" id="exibeCargaHorariaEfetiva"  labelPosition="left"/>
+			<@ww.checkbox label="Exibir total geral da carga horária efetiva" name="exibeTotalCargaHorariaEfetiva" id="exibeTotalCargaHorariaEfetiva" disabled="true" labelPosition="left" cssStyle="margin-left: 20px;"/>
 		</#if>
 		
 		<@ww.hidden name="comTreinamento"/>

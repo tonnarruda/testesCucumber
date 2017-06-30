@@ -1,0 +1,630 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.0.0.final using JasperReports Library version 6.0.0  -->
+<!-- 2017-06-30T09:20:48 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="colaboradores_com_treinamento" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="13eab5c1-d37d-459b-af0d-204116c4ff1b">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="2.9282000000000026"/>
+	<property name="ireport.x" value="777"/>
+	<property name="ireport.y" value="181"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="CABECALHO" class="com.fortes.rh.model.relatorio.Cabecalho" isForPrompting="false"/>
+	<parameter name="EXIBIR_CARGO" class="java.lang.Boolean"/>
+	<field name="colaborador.nome" class="java.lang.String"/>
+	<field name="colaborador.areaOrganizacional.descricao" class="java.lang.String"/>
+	<field name="colaborador.estabelecimento.nome" class="java.lang.String"/>
+	<field name="colaborador.matricula" class="java.lang.String"/>
+	<field name="turma.descricao" class="java.lang.String"/>
+	<field name="turma.periodoFormatado" class="java.lang.String"/>
+	<field name="aprovado" class="java.lang.Boolean"/>
+	<field name="aprovadoMaisNota" class="java.lang.String"/>
+	<field name="colaborador.empresa.nome" class="java.lang.String"/>
+	<field name="colaborador.cargoFaixa" class="java.lang.String"/>
+	<field name="curso.nome" class="java.lang.String"/>
+	<field name="cargaHorariaEfetivaTime" class="java.sql.Timestamp"/>
+	<field name="curso.cargaHorariaEmHora" class="java.lang.String"/>
+	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Group" resetGroup="grpAreaOrganizacional" calculation="Count">
+		<variableExpression><![CDATA[$F{colaborador.nome}]]></variableExpression>
+	</variable>
+	<variable name="TotalizadorColaborador" class="java.lang.Long" resetType="Group" resetGroup="grpCurso" calculation="Count">
+		<variableExpression><![CDATA[$F{colaborador.nome}]]></variableExpression>
+	</variable>
+	<variable name="SubTotalizadorColaborador" class="java.lang.Long" resetType="Group" resetGroup="grpAreaOrganizacional" calculation="Count">
+		<variableExpression><![CDATA[$F{colaborador.nome}]]></variableExpression>
+	</variable>
+	<variable name="SubTotalCargaHorariaEfetivaHora" class="java.lang.Integer" resetType="Group" resetGroup="grpAreaOrganizacional" calculation="Sum">
+		<variableExpression><![CDATA[$F{cargaHorariaEfetivaTime}.getHours()]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<variable name="SubTotalCargaHorariaEfetivaMinutos" class="java.lang.Integer" resetType="Group" resetGroup="grpAreaOrganizacional" calculation="Sum">
+		<variableExpression><![CDATA[$F{cargaHorariaEfetivaTime}.getMinutes()]]></variableExpression>
+	</variable>
+	<variable name="SubTotalCargaHorariaEfetivaSegundos" class="java.lang.Integer" resetType="Group" resetGroup="grpAreaOrganizacional" calculation="Sum">
+		<variableExpression><![CDATA[$F{cargaHorariaEfetivaTime}.getSeconds()]]></variableExpression>
+	</variable>
+	<variable name="TotalCargaHorariaEfetivaHora" class="java.lang.Integer" resetType="Group" resetGroup="grpCurso" calculation="Sum">
+		<variableExpression><![CDATA[$F{cargaHorariaEfetivaTime}.getHours()]]></variableExpression>
+	</variable>
+	<variable name="TotalCargaHorariaEfetivaMinutos" class="java.lang.Integer" resetType="Group" resetGroup="grpCurso" calculation="Sum">
+		<variableExpression><![CDATA[$F{cargaHorariaEfetivaTime}.getMinutes()]]></variableExpression>
+	</variable>
+	<variable name="TotalCargaHorariaEfetivaSegundos" class="java.lang.Integer" resetType="Group" resetGroup="grpCurso" calculation="Sum">
+		<variableExpression><![CDATA[$F{cargaHorariaEfetivaTime}.getSeconds()]]></variableExpression>
+	</variable>
+	<variable name="TotalGeralCargaHorariaEfetivaHora" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{cargaHorariaEfetivaTime}.getHours()]]></variableExpression>
+	</variable>
+	<variable name="TotalGeralCargaHorariaEfetivaMinutos" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{cargaHorariaEfetivaTime}.getMinutes()]]></variableExpression>
+	</variable>
+	<variable name="TotalGeralCargaHorariaEfetivaSegundos" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{cargaHorariaEfetivaTime}.getSeconds()]]></variableExpression>
+	</variable>
+	<group name="grpCurso" isReprintHeaderOnEachPage="true">
+		<groupExpression><![CDATA[$F{curso.nome}]]></groupExpression>
+		<groupHeader>
+			<band height="17" splitType="Stretch">
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField" x="0" y="6" width="780" height="11" uuid="c63b78b8-2b8a-4e11-ac7a-9627ea5cba53"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{curso.nome} + " - Carga Horária: " + $F{curso.cargaHorariaEmHora}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="15">
+				<staticText>
+					<reportElement key="staticText-15" x="15" y="2" width="96" height="11" uuid="849701a4-6433-4558-b80c-a57592e2a4cd"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[Total de Colaboradores:]]></text>
+				</staticText>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-6" x="112" y="2" width="50" height="11" uuid="9473cd30-609a-443c-855d-bd21946050a3"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{TotalizadorColaborador}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-6" x="678" y="1" width="65" height="11" uuid="86f1eae5-bf96-4efc-a728-0a732bfb7a5d"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new Boolean($V{TotalCargaHorariaEfetivaHora} != null) &&
+new Boolean($V{TotalCargaHorariaEfetivaMinutos} != null) &&
+new Boolean($V{TotalCargaHorariaEfetivaSegundos} != null)
+? (
+(new Integer($V{TotalCargaHorariaEfetivaHora} + $V{TotalCargaHorariaEfetivaMinutos}/60).toString().length() == 1
+	? "0" + ($V{TotalCargaHorariaEfetivaHora} + $V{TotalCargaHorariaEfetivaMinutos}/60)
+	: ($V{TotalCargaHorariaEfetivaHora} + $V{TotalCargaHorariaEfetivaMinutos}/60))
++ ":" +
+(new Integer($V{TotalCargaHorariaEfetivaMinutos}%60 + $V{TotalCargaHorariaEfetivaSegundos}/60).toString().length() == 1
+	? "0" + ($V{TotalCargaHorariaEfetivaMinutos}%60 + $V{TotalCargaHorariaEfetivaSegundos}/60)
+	: ($V{TotalCargaHorariaEfetivaMinutos}%60 + $V{TotalCargaHorariaEfetivaSegundos}/60))
++ ":" +
+(new Integer($V{TotalCargaHorariaEfetivaSegundos}%60).toString().length() == 1
+	? "0" + $V{TotalCargaHorariaEfetivaSegundos}%60
+	: $V{TotalCargaHorariaEfetivaSegundos}%60)
+) : "00:00:00"]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-15" x="575" y="2" width="96" height="11" uuid="c390d299-6002-46ab-86b2-f2034e8987bc"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[Total de Horas Efetivas]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="grpEstabelecimento" isReprintHeaderOnEachPage="true">
+		<groupExpression><![CDATA[$F{colaborador.empresa.nome} + " - " + $F{colaborador.estabelecimento.nome}]]></groupExpression>
+		<groupHeader>
+			<band height="17" splitType="Stretch">
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField" x="5" y="5" width="535" height="11" uuid="89ef0f3d-e619-4ea7-b26f-3c90d8a7658a"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{colaborador.empresa.nome} + " - " + $F{colaborador.estabelecimento.nome}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band splitType="Stretch"/>
+		</groupFooter>
+	</group>
+	<group name="grpAreaOrganizacional" isReprintHeaderOnEachPage="true">
+		<groupExpression><![CDATA[$F{colaborador.areaOrganizacional.descricao}]]></groupExpression>
+		<groupHeader>
+			<band height="13" splitType="Prevent">
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField" x="11" y="2" width="524" height="11" uuid="cda349a0-eadd-45a7-b8bc-2eb6b8698f6e"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{colaborador.areaOrganizacional.descricao}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="15" splitType="Stretch">
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-7" x="52" y="2" width="33" height="11" uuid="044a5030-2d11-439f-9751-222816ee24cd"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font size="8" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{SubTotalizadorColaborador}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-16" x="15" y="2" width="36" height="11" uuid="01af4185-f9c8-4a39-8911-0279b3ffdf22"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[Subtotal:]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="678" y="1" width="65" height="11" uuid="1af114a8-3e25-4bd7-ae10-2bd2a0327129"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new Boolean($V{SubTotalCargaHorariaEfetivaHora} != null) &&
+new Boolean($V{SubTotalCargaHorariaEfetivaMinutos} != null) &&
+new Boolean($V{SubTotalCargaHorariaEfetivaSegundos} != null)
+? (
+(new Integer($V{SubTotalCargaHorariaEfetivaHora} + $V{SubTotalCargaHorariaEfetivaMinutos}/60).toString().length() == 1
+	? "0" + ($V{SubTotalCargaHorariaEfetivaHora} + $V{SubTotalCargaHorariaEfetivaMinutos}/60)
+	: ($V{SubTotalCargaHorariaEfetivaHora} + $V{SubTotalCargaHorariaEfetivaMinutos}/60))
++ ":" +
+(new Integer($V{SubTotalCargaHorariaEfetivaMinutos}%60 + $V{SubTotalCargaHorariaEfetivaSegundos}/60).toString().length() == 1
+	? "0" + ($V{SubTotalCargaHorariaEfetivaMinutos}%60 + $V{SubTotalCargaHorariaEfetivaSegundos}/60)
+	: ($V{SubTotalCargaHorariaEfetivaMinutos}%60 + $V{SubTotalCargaHorariaEfetivaSegundos}/60))
++ ":" +
+(new Integer($V{SubTotalCargaHorariaEfetivaSegundos}%60).toString().length() == 1
+	? "0" + $V{SubTotalCargaHorariaEfetivaSegundos}%60
+	: $V{SubTotalCargaHorariaEfetivaSegundos}%60)
+) : "00:00:00"]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-16" x="629" y="2" width="36" height="11" uuid="2963d100-0b36-4c66-9c24-58e226ac55f7"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[Subtotal:]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="60" splitType="Stretch">
+			<subreport isUsingCache="true">
+				<reportElement key="subreport-1" x="0" y="0" width="782" height="50" uuid="48fbfef0-cc48-4ade-863b-bfda510285b3"/>
+				<subreportParameter name="CABECALHO">
+					<subreportParameterExpression><![CDATA[$P{CABECALHO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "cabecalho_paisagem.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="52" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-2" x="18" y="39" width="212" height="11" uuid="02b77ade-36a5-415c-918a-3e9dec11cd31"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Colaborador]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-4" x="233" y="39" width="49" height="11" uuid="0f897ed2-f733-45f7-bdfa-8aa16edfe0d0"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Matrícula]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-10" x="4" y="13" width="278" height="11" uuid="db131f19-598b-4c33-905c-3ebc93e7319f"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Empresa - Estabelecimento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-11" x="11" y="26" width="205" height="11" uuid="d0f1e251-96a5-43b7-8c6f-8d88ca2e0391"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Área Organizacional]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-13" x="579" y="39" width="95" height="11" uuid="89926d84-95ef-444a-a1b2-2560a731b0dd"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Período]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-14" x="741" y="39" width="41" height="11" uuid="52e61ca9-18a5-43e5-b906-94e10daf1912"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Aprovado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="Cargo" x="285" y="39" width="120" height="11" uuid="4a6930fe-520b-40d3-bc35-0fc89b8ea7a9">
+					<printWhenExpression><![CDATA[$P{EXIBIR_CARGO}]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Cargo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-12" x="408" y="39" width="166" height="11" uuid="c882a873-73f2-45d7-9989-26864ceaa4c3">
+					<printWhenExpression><![CDATA[$P{EXIBIR_CARGO}]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Turma]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="Cargo" x="678" y="30" width="60" height="20" uuid="2b0d118b-d2ac-467d-b5f6-2f49269ea22d"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Carga Horária Efetiva]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-11" x="0" y="0" width="278" height="11" uuid="5ce323d4-0856-4de1-9b4d-3f400c5be76e"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Curso]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-12" x="285" y="39" width="289" height="11" uuid="987f3353-cfad-427b-9c82-57954fb6b82c">
+					<printWhenExpression><![CDATA[!$P{EXIBIR_CARGO}]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Turma]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="17" splitType="Prevent">
+			<rectangle>
+				<reportElement key="rectangle-1" positionType="Float" stretchType="RelativeToBandHeight" mode="Opaque" x="10" y="1" width="772" height="10" backcolor="#EEEEEE" uuid="8a22d1e1-ae02-4baa-901a-a2816bfcc7e1">
+					<printWhenExpression><![CDATA[new Boolean(($V{PAGE_ROW_NUMBER}.intValue() % 2) == 1)]]></printWhenExpression>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</graphicElement>
+			</rectangle>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField" x="13" y="1" width="216" height="11" uuid="91cce180-3808-48fb-a6b0-7e0a8f753be6"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{colaborador.nome}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+				<reportElement key="textField" x="233" y="1" width="50" height="11" uuid="2e82c611-51ea-4fea-a692-84059847fc6f"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{colaborador.matricula}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+				<reportElement key="textField-4" x="579" y="1" width="95" height="11" uuid="3bdc6b86-ffae-4b52-aa59-4b13553a1c88"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{turma.periodoFormatado}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement key="textField-5" x="741" y="1" width="41" height="11" uuid="2865dd72-1773-4905-9529-9d56eb9f6348"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{aprovadoMaisNota}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+				<reportElement key="cargoNome" x="285" y="1" width="120" height="11" uuid="e7634a67-ecd4-49a7-b9d1-50c54c5e1f32">
+					<printWhenExpression><![CDATA[$P{EXIBIR_CARGO}]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{colaborador.cargoFaixa}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+				<reportElement key="textField-3" x="408" y="1" width="166" height="11" printWhenGroupChanges="grpEstabelecimento" uuid="eea21d3c-6659-4fec-a14c-fd2cf9b6e57b">
+					<printWhenExpression><![CDATA[$P{EXIBIR_CARGO}]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{turma.descricao}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+				<reportElement key="cargoNome" x="678" y="0" width="65" height="11" uuid="1ab18b1c-50d9-41eb-8a3b-d04e4984fe5d"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("HH:mm:ss").format($F{cargaHorariaEfetivaTime})]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+				<reportElement key="textField-3" x="285" y="1" width="289" height="11" printWhenGroupChanges="grpEstabelecimento" uuid="4391d5c9-1001-4c84-9eb9-1b7556d597f8">
+					<printWhenExpression><![CDATA[!$P{EXIBIR_CARGO}]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{turma.descricao}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="15" splitType="Stretch">
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-1" x="555" y="2" width="186" height="13" uuid="497d4543-e6b6-4996-84cf-d6c1b08078fe"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Group" evaluationGroup="grpCurso" isBlankWhenNull="false">
+				<reportElement key="textField-2" x="748" y="2" width="32" height="13" uuid="3183ce46-f2bb-4387-91db-bce89ae99088"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textFieldExpression><![CDATA["" + $V{PAGE_NUMBER} + ""]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="15" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-21" x="538" y="4" width="133" height="11" isRemoveLineWhenBlank="true" uuid="3c2bd5cf-0b54-43bb-9f5e-7c2fce83eb43"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Total Geral de Horas Efetivas]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-6" x="678" y="4" width="63" height="11" uuid="5d5027be-25ab-4be6-9fdc-799cdab8f9cb"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new Boolean($V{TotalGeralCargaHorariaEfetivaHora} != null) &&
+new Boolean($V{TotalGeralCargaHorariaEfetivaMinutos} != null) &&
+new Boolean($V{TotalGeralCargaHorariaEfetivaSegundos} != null)
+? (
+(new Integer($V{TotalGeralCargaHorariaEfetivaHora} + $V{TotalGeralCargaHorariaEfetivaMinutos}/60).toString().length() == 1
+	? "0" + ($V{TotalGeralCargaHorariaEfetivaHora} + $V{TotalGeralCargaHorariaEfetivaMinutos}/60)
+	: ($V{TotalGeralCargaHorariaEfetivaHora}+ $V{TotalGeralCargaHorariaEfetivaMinutos}/60))
++ ":" +
+(new Integer($V{TotalGeralCargaHorariaEfetivaMinutos}%60 + $V{TotalGeralCargaHorariaEfetivaSegundos}/60).toString().length() == 1
+	? "0" + ($V{TotalGeralCargaHorariaEfetivaMinutos}%60 + $V{TotalGeralCargaHorariaEfetivaSegundos}/60)
+	: ($V{TotalGeralCargaHorariaEfetivaMinutos}%60 + $V{TotalGeralCargaHorariaEfetivaSegundos}/60))
++ ":" +
+(new Integer($V{TotalGeralCargaHorariaEfetivaSegundos}%60).toString().length() == 1
+	? "0" + $V{TotalGeralCargaHorariaEfetivaSegundos}%60
+	: $V{TotalGeralCargaHorariaEfetivaSegundos}%60)
+) : "00:00:00"]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

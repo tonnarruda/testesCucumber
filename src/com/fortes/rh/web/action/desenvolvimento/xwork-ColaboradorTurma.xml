@@ -125,6 +125,15 @@
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">colaboradores_com_treinamento.pdf</param>
 			</result>
+			<result name="successExibirTotalCargaHorariaEfetiva" type="jasper">
+				<param name="location">WEB-INF/report/colaboradores_com_treinamento_total_carga_horaria_efetiva.jasper</param>
+				<param name="dataSource">colaboradorTurmas</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">colaboradores_com_treinamento.pdf</param>
+			</result>
+			
+			
+			
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/relatorioColaboradorTreinamento.ftl</result>
 		</action>
 		<action name="relatorioColaboradorComTreinamentoXls" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorTurmaListAction" method="relatorioColaboradorComTreinamentoXls">

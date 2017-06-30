@@ -3,11 +3,16 @@ package com.fortes.rh.web.action.desenvolvimento;
 import static com.fortes.rh.util.CheckListBoxUtil.populaCheckListBox;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import org.joda.time.DateTime;
+import org.joda.time.Period;
+import org.joda.time.PeriodType;
 
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.cargosalario.GrupoOcupacionalManager;
@@ -144,6 +149,7 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 	
 	private boolean exibeCargo;
 	private boolean exibeCargaHorariaEfetiva;
+	private boolean exibeTotalCargaHorariaEfetiva;
 	
 	private char filtroAgrupamento;
 	private String status;
@@ -342,7 +348,11 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 		
 		reportTitle = "Colaboradores que fizeram um treinamento ";
 		reportFilter = "Emitido em: " + DateUtil.formataDiaMesAno(new Date()) + "\n";
-		
+		if(exibeTotalCargaHorariaEfetiva){
+		    reportFilter += "Total Geral de Horas Efetivas:  " +calcularAndFormatarTotalCargaHorariaEfetiva() + "\n";
+		    
+		}
+
 		dinamicColumns = "Curso,Carga Horária do Curso,Empresa,Estabelecimento,Área Organizacional,Colaborador,Matrícula,";
 		dinamicPropertiesGroup = "curso.nome,curso.cargaHorariaEmHora,colaborador.empresa.nome,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao";
 		dinamicProperties = "curso.nome,curso.cargaHorariaEmHora,colaborador.empresa.nome,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao,colaborador.nome,colaborador.matricula,";
@@ -366,7 +376,31 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 	
-	public String relatorioColaboradorComTreinamento(){
+	private String calcularAndFormatarTotalCargaHorariaEfetiva() {
+        Date dataBase = DateUtil.criarDataMesAno(new Date());
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(dataBase);
+
+        DateTime cargaHorariaEfetiva;
+
+        for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) {
+            if (colaboradorTurma.getCargaHorariaEfetivaTime() != null) {
+                cargaHorariaEfetiva = new DateTime(colaboradorTurma.getCargaHorariaEfetivaTime().getTime());
+                calendar.add(Calendar.HOUR, cargaHorariaEfetiva.getHourOfDay());
+                calendar.add(Calendar.MINUTE, cargaHorariaEfetiva.getMinuteOfHour());
+                calendar.add(Calendar.SECOND, cargaHorariaEfetiva.getSecondOfMinute());
+            }
+        }
+
+        Long dataFim = calendar.getTime().getTime();
+        
+        Period periodo= new Period(dataBase.getTime(), dataFim, PeriodType.yearMonthDayTime());
+        int horas = new Period(dataBase.getTime(), dataFim, PeriodType.hours()).getHours();
+        
+        return (horas<10 ? "0" + horas: horas)  + ":" + (periodo.getMinutes()<10 ? "0" + periodo.getMinutes(): periodo.getMinutes()) + ":" + (periodo.getSeconds() < 10 ? "0" + periodo.getSeconds() : periodo.getSeconds());
+    }
+
+    public String relatorioColaboradorComTreinamento(){
 		try{
 			empresaId = empresaManager.ajustaCombo(empresaId, getEmpresaSistema().getId());
 			
@@ -378,11 +412,17 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 
 			String retorno = Action.SUCCESS;
 			
-			if(exibeCargaHorariaEfetiva)
-				retorno += "ExibirHoraEfetiva";
-
-			if (exibeCargo) 
-				retorno += "ExibirCargos";
+			if(exibeTotalCargaHorariaEfetiva){ 
+                parametros.put("EXIBIR_CARGO", exibeCargo);
+                retorno += "ExibirTotalCargaHorariaEfetiva";
+            }else{			
+    			if(exibeCargaHorariaEfetiva)
+    				retorno += "ExibirHoraEfetiva";
+    
+    			if (exibeCargo) 
+    				retorno += "ExibirCargos";
+            }
+			
 			
 			return retorno;
 		}catch (ColecaoVaziaException e){
@@ -982,6 +1022,14 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 
 	public void setExibeCargaHorariaEfetiva(boolean exibeCargaHorariaEfetiva) {
 		this.exibeCargaHorariaEfetiva = exibeCargaHorariaEfetiva;
+	}
+	
+	public boolean isExibeTotalCargaHorariaEfetiva() {
+		return exibeTotalCargaHorariaEfetiva;
+	}
+
+	public void setExibeTotalCargaHorariaEfetiva(boolean exibeTotalCargaHorariaEfetiva) {
+		this.exibeTotalCargaHorariaEfetiva = exibeTotalCargaHorariaEfetiva;
 	}
 
 	public Long getLntId() {
