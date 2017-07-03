@@ -115,6 +115,8 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 			ufs = estadoManager.findAll(new String[]{"sigla"});
 		
 		grupoACs = grupoACManager.findAll(new String[]{"codigo"});
+		
+		parametrosDoSistema= parametrosDoSistemaManager.findById(1l);
 	}
 
 	private void montaCartoes() {

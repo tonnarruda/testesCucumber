@@ -94,7 +94,10 @@ public class MailSendRunnable implements Runnable {
 		message = (SimpleMailMessage) SpringUtil.getBeanOld("mailMessage");
 		mailSender = (JavaMailSenderImpl) SpringUtil.getBeanOld("mailSender");
 		
-		message.setFrom(from);
+		if(params.isSmtpRemetente())
+			message.setFrom(params.getEmailUser());
+		else
+			message.setFrom(from);
 
         mailSender.setHost(params.getEmailSmtp());
         mailSender.setPort(params.getEmailPort());

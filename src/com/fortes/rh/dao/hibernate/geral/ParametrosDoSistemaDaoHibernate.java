@@ -61,6 +61,7 @@ public class ParametrosDoSistemaDaoHibernate extends GenericDaoHibernate<Paramet
 		p.add(Projections.property("ps.compartilharCandidatos"), "compartilharCandidatos");
 		p.add(Projections.property("ps.autenticacao"), "autenticacao");
 		p.add(Projections.property("ps.tls"), "tls");
+		p.add(Projections.property("ps.smtpRemetente"), "smtpRemetente");
 		
 		criteria.setProjection(p);
 

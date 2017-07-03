@@ -257,9 +257,20 @@
 		<@ww.textfield label="CNAE 01 (Classificação Nacional de Atividades Econômicas)" name="empresa.cnae" cssStyle="width:100px;" onkeypress="return(somenteNumeros(event,'./-'));" maxLength="10"/>
 		<@ww.textfield label="CNAE 02 (Classificação Nacional de Atividades Econômicas)" name="empresa.cnae2" cssStyle="width:100px;" onkeypress="return(somenteNumeros(event,'./-'));" maxLength="10"/>
 		<@ww.textfield label="Grau de Risco" name="empresa.grauDeRisco" cssStyle="width:50px;" maxLength="10" onkeypress="return(somenteNumeros(event,''));"/>
-		<@ww.textfield label="Email Remetente" name="empresa.emailRemetente" id="remetente" required="true" cssClass="mascaraEmail" cssStyle="width:340px;" maxLength="100"/>
-		<@ww.textfield label="Email Resp. Setor Pessoal" name="empresa.emailRespSetorPessoal" id="respSetorPessoal" required="true" cssClass="mascaraEmail" cssStyle="width:340px;" maxLength="100"/>
-		<@ww.textfield label="Email Resp. RH" name="empresa.emailRespRH" id="respRH" required="true" cssClass="mascaraEmail" cssStyle="width:340px;" maxLength="100"/>
+	
+		<#if parametrosDoSistema.smtpRemetente>						
+			<@ww.textfield label="Email Remetente" id="remetente" cssStyle="width:340px;" disabled="true" value="${parametrosDoSistema.emailUser}"/>
+			<@ww.textfield label="Email Resp. Setor Pessoal"  id="respSetorPessoal" cssStyle="width:340px;"  disabled="true" value="${parametrosDoSistema.emailUser}"/>
+			<@ww.textfield label="Email Resp. RH" id="respRH" cssStyle="width:340px;"  disabled="true" value="${parametrosDoSistema.emailUser}"/>
+			<@ww.hidden name="empresa.emailRemetente"/>
+			<@ww.hidden name="empresa.emailRespSetorPessoal"/>
+			<@ww.hidden name="empresa.emailRespRH" />
+		<#else>
+			<@ww.textfield label="Email Remetente" name="empresa.emailRemetente" id="remetente" required="true" cssClass="mascaraEmail" cssStyle="width:340px;" maxLength="100"/>
+			<@ww.textfield label="Email Resp. Setor Pessoal" name="empresa.emailRespSetorPessoal" id="respSetorPessoal" required="true" cssClass="mascaraEmail" cssStyle="width:340px;" maxLength="100"/>
+			<@ww.textfield label="Email Resp. RH" name="empresa.emailRespRH" id="respRH" required="true" cssClass="mascaraEmail" cssStyle="width:340px;" maxLength="100"/>
+		</#if>
+	
 		<@ww.textfield label="Email Resp. pelo limite de Colaboradores por Cargo" name="empresa.emailRespLimiteContrato" id="respLimite" cssClass="mascaraEmail" cssStyle="width:340px;" maxLength="120"/>
 		<@ww.textfield label="Representante Legal" name="empresa.representanteLegal" cssClass="inputNome" maxLength="100"/>
 		<@ww.textfield label="NIT do Representante Legal" name="empresa.nitRepresentanteLegal" cssClass="inputNome" maxLength="100" onkeypress="return(somenteNumeros(event,'./-'));"/>

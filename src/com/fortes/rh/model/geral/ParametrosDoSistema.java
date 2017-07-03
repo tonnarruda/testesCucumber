@@ -96,6 +96,7 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
     private boolean tls;
     private Integer modulosPermitidosSomatorio = 0;
     private boolean autorizacaoGestorNaSolicitacaoPessoal;
+    private boolean smtpRemetente;
     
 	public String getAppContext()
 	{
@@ -484,5 +485,11 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
 	}
 	public void setAutorizacaoGestorNaSolicitacaoPessoal(boolean autorizacaoGestorNaSolicitacaoPessoal) {
 		this.autorizacaoGestorNaSolicitacaoPessoal = autorizacaoGestorNaSolicitacaoPessoal;
+	}
+	public boolean isSmtpRemetente() {
+		return smtpRemetente;
+	}
+	public void setSmtpRemetente(boolean smtpRemetente) {
+		this.smtpRemetente = smtpRemetente;
 	}
 }

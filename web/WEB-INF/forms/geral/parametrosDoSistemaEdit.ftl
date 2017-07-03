@@ -253,6 +253,7 @@
 					<@ww.textfield label="Usuário" name="parametrosDoSistema.emailUser" id="emailUser" size="40" maxLength="50" />
 					<@ww.password label="Senha" name="parametrosDoSistema.emailPass" id="emailPass" size="40" maxLength="50"  after="*Para manter a senha, deixe o campo em branco."/>
 					<@ww.checkbox label="Usar TLS" id="tls" name="parametrosDoSistema.tls" liClass="liLeft" labelPosition="left"/>
+					<@ww.checkbox label="Usar o remetente de emails igual ao usuário de autenticação do servidor SMTP" id="smtpRemetente" name="parametrosDoSistema.smtpRemetente" liClass="liLeft" labelPosition="left"/>
 				</div>
 			</ul>
 		</@ww.div>
