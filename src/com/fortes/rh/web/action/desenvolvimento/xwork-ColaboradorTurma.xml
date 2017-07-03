@@ -131,9 +131,6 @@
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">colaboradores_com_treinamento.pdf</param>
 			</result>
-			
-			
-			
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/relatorioColaboradorTreinamento.ftl</result>
 		</action>
 		<action name="relatorioColaboradorComTreinamentoXls" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorTurmaListAction" method="relatorioColaboradorComTreinamentoXls">

@@ -122,9 +122,26 @@
 		
 			$("#exibeCargaHorariaEfetiva").click(function(){
 				$("#exibeTotalCargaHorariaEfetiva").toggleDisabled();
+				$("#exibeTotalCargaHorariaEfetiva").click(function(){
+					decideExibirHelp($(this).is(":checked"));
+				});
+				decideExibirHelp($("#exibeTotalCargaHorariaEfetiva").is(":checked") && $(this).is(":checked"));
 			});
 			
+			$("#exibeTotalCargaHorariaEfetiva").click(function(){
+				decideExibirHelp($(this).is(":checked"));
+			});
 		});
+		
+		function decideExibirHelp(exibir){
+			console.log(exibir);
+				
+			if(exibir){
+				$("#cursosCheckToolTipHelp").hide();
+			}else{
+				$("#cursosCheckToolTipHelp").show();
+			}
+		}
 		
 		function toggleNuncaRealizaraTreinamento(){
 			if($("#status").val() == "ST") {
