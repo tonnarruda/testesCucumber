@@ -556,7 +556,7 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 
 		return query.list();
 	}
-	
+    
 	public Collection<Cargo> getCargosSemGrupoRelacionado(Long empresaId) 
 	{
 		StringBuilder hql = new StringBuilder();
@@ -637,4 +637,29 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 		String[] sql = new String[] {"delete from cargo_habilidade where habilidades_id = " + habilidadeId};
 		JDBCConnection.executeQuery(sql);
 	}
+
+    public Collection<Cargo> findCargoByEmpresaEArea(Long[] empresasIds, Long[] areaOrganizacionaisIds, boolean exibirSomenteCargosVinculadosAsAreasSeleciondas) {
+        ProjectionList p = Projections.projectionList().create();
+        p.add(Projections.property("c.id"), "id");
+        p.add(Projections.property("c.nomeMercado"), "nomeMercado");
+        p.add(Projections.property("c.nome"), "nome");
+        p.add(Projections.property("c.ativo"), "ativo");
+        p.add(Projections.property("e.id"), "empresaIdProjection");
+        p.add(Projections.property("e.nome"), "empresaNomeProjection");
+
+        Criteria criteria = getSession().createCriteria(Cargo.class, "c");
+        criteria.createCriteria("c.empresa", "e", Criteria.INNER_JOIN);
+        criteria.createCriteria("c.areasOrganizacionais","ao", Criteria.LEFT_JOIN);
+        
+        if(exibirSomenteCargosVinculadosAsAreasSeleciondas && areaOrganizacionaisIds != null && areaOrganizacionaisIds.length > 0)
+            criteria.add(Expression.in("ao.id", areaOrganizacionaisIds));
+        
+        criteria.add(Expression.in("e.id", empresasIds));
+        criteria.setProjection(Projections.distinct(p));
+        criteria.addOrder(Order.asc("c.nomeMercado"));
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        criteria.setResultTransformer(new AliasToBeanResultTransformer(Cargo.class));
+
+        return criteria.list();
+    }
 }

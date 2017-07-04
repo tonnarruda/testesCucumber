@@ -1,9 +1,15 @@
 package com.fortes.rh.test.dao.hibernate.cargosalario;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
-import org.mozilla.javascript.edu.emory.mathcs.backport.java.util.Arrays;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.captacao.SolicitacaoDao;
@@ -24,7 +30,7 @@ import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.GrupoAC;
-import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.dao.GenericDaoHibernateTest_JUnit4;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -35,18 +41,23 @@ import com.fortes.rh.test.factory.cargosalario.GrupoOcupacionalFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.util.DateUtil;
 
-public class CargoDaoHibernateTest extends GenericDaoHibernateTest<Cargo>
+public class CargoDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<Cargo>
 {
-	private CargoDao cargoDao;
-	private GrupoOcupacionalDao grupoOcupacionalDao;
-	private EmpresaDao empresaDao;
-	private AreaOrganizacionalDao areaOrganizacionalDao;
-	private FaixaSalarialDao faixaSalarialDao;
-	private ColaboradorDao colaboradorDao;
-	private HistoricoColaboradorDao historicoColaboradorDao;
-	private SolicitacaoDao solicitacaoDao;
-	private GrupoACDao grupoACDao;
+	@Autowired private CargoDao cargoDao;
+	@Autowired private GrupoOcupacionalDao grupoOcupacionalDao;
+	@Autowired private EmpresaDao empresaDao;
+	@Autowired private AreaOrganizacionalDao areaOrganizacionalDao;
+	@Autowired private FaixaSalarialDao faixaSalarialDao;
+	@Autowired private ColaboradorDao colaboradorDao;
+	@Autowired private HistoricoColaboradorDao historicoColaboradorDao;
+	@Autowired private SolicitacaoDao solicitacaoDao;
+	@Autowired private GrupoACDao grupoACDao;
 
+	public GenericDao<Cargo> getGenericDao()
+    {
+        return cargoDao;
+    }
+	
 	public Cargo getEntity()
 	{
 		Cargo cargo = new Cargo();
@@ -72,6 +83,7 @@ public class CargoDaoHibernateTest extends GenericDaoHibernateTest<Cargo>
 		return cargo;
 	}
 
+	@Test
 	public void testGetCount()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -104,6 +116,7 @@ public class CargoDaoHibernateTest extends GenericDaoHibernateTest<Cargo>
 		assertEquals("Por empresa, área organizacional e nome do cargo errado", 0, retorno4);
 	}
 
+	@Test
 	public void testFindCargos()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -136,6 +149,7 @@ public class CargoDaoHibernateTest extends GenericDaoHibernateTest<Cargo>
 		assertEquals("Por empresa, área organizacional e nome do cargo errado", 0, retorno4.size());
 	}
 
+	@Test
 	public void testFindByGrupoOcupacionalIdsProjection()
 	{
 		GrupoOcupacional grupoOcupacional = GrupoOcupacionalFactory.getGrupoOcupacional();
@@ -150,6 +164,7 @@ public class CargoDaoHibernateTest extends GenericDaoHibernateTest<Cargo>
 		assertEquals(1, retorno.size());
 	}
 	
+	@Test
 	public void testFindByEmpresaAC()
 	{
 		GrupoAC grupoAC = new GrupoAC("XXX", "desc");
@@ -169,6 +184,7 @@ public class CargoDaoHibernateTest extends GenericDaoHibernateTest<Cargo>
 		assertEquals(1, retorno.size());
 	}
 	
+	@Test
 	public void testFindByEmpresaACCodigoFaixa()
 	{
 		GrupoAC grupoAC = new GrupoAC("XXX", "desc");
@@ -192,6 +208,7 @@ public class CargoDaoHibernateTest extends GenericDaoHibernateTest<Cargo>
 		assertEquals(1, retorno.size());
 	}
 
+	@Test
 	public void testFindBySolicitacao()
 	{
 		Cargo cargo = CargoFactory.getEntity();
@@ -213,6 +230,7 @@ public class CargoDaoHibernateTest extends GenericDaoHibernateTest<Cargo>
 		assertTrue(retorno.isEmpty());
 	}
 
+	@Test
 	public void testFindByGrupoOcupacional()
 	{
 		GrupoOcupacional grupoOcupacional = GrupoOcupacionalFactory.getGrupoOcupacional();
@@ -227,6 +245,7 @@ public class CargoDaoHibernateTest extends GenericDaoHibernateTest<Cargo>
 		assertEquals(1, retorno.size());
 	}
 
+	@Test
 	public void testFindByAreaOrganizacionalIdsProjection()
 	{
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
@@ -251,6 +270,7 @@ public class CargoDaoHibernateTest extends GenericDaoHibernateTest<Cargo>
 		assertTrue("Ids das áreas nulo", retorno3.size() >= 2);
 	}
 
+	@Test
 	public void testFindCargosByIds()
 	{
 		Cargo cargo1 = CargoFactory.getEntity();
@@ -264,6 +284,7 @@ public class CargoDaoHibernateTest extends GenericDaoHibernateTest<Cargo>
 		assertEquals(2, retorno.size());
 	}
 
+	@Test
 	public void testFindAllSelect()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -282,6 +303,7 @@ public class CargoDaoHibernateTest extends GenericDaoHibernateTest<Cargo>
 		assertEquals(2, retorno.size());
 	}
 	
+	@Test
 	public void testFindAllSelectModuloExterno()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -312,6 +334,7 @@ public class CargoDaoHibernateTest extends GenericDaoHibernateTest<Cargo>
 		assertEquals(3, retorno.size());
 	}
 
+	@Test
 	public void testFindAllSelectEmpresas()
 	{
 		Empresa vega = EmpresaFactory.getEmpresa();
@@ -332,6 +355,7 @@ public class CargoDaoHibernateTest extends GenericDaoHibernateTest<Cargo>
 		assertEquals(2, retorno.size());
 	}
 
+	@Test
 	public void testGetCargoSemAreaRelacionadaTodosRelacionados()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -365,6 +389,7 @@ public class CargoDaoHibernateTest extends GenericDaoHibernateTest<Cargo>
 		assertEquals(0, cargoDao.getCargosSemAreaRelacionada(empresa.getId()).size());
 	}
 	
+	@Test
 	public void testGetCargoSemAreaRelacionada()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -389,6 +414,7 @@ public class CargoDaoHibernateTest extends GenericDaoHibernateTest<Cargo>
 		assertEquals(1, cargoDao.getCargosSemAreaRelacionada(empresa.getId()).size());
 	}
 	
+	@Test
 	public void testGetCargoSemGrupoRelacionado()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -415,6 +441,7 @@ public class CargoDaoHibernateTest extends GenericDaoHibernateTest<Cargo>
 		assertEquals(1, cargoDao.getCargosSemGrupoRelacionado(empresa.getId()).size());
 	}
 	
+	@Test
 	public void testGetCargoSemAreaRelacionadaSemCargo()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -423,6 +450,7 @@ public class CargoDaoHibernateTest extends GenericDaoHibernateTest<Cargo>
 		assertEquals(0, cargoDao.getCargosSemAreaRelacionada(empresa.getId()).size());
 	}
 	
+	@Test
 	public void testFindAllSelectDistinctNome()
 	{
 		Empresa empresa1 = EmpresaFactory.getEmpresa();
@@ -457,6 +485,7 @@ public class CargoDaoHibernateTest extends GenericDaoHibernateTest<Cargo>
 		assertEquals(1, cont);
 	}
 
+	@Test
 	public void testFindByIdProjection()
 	{
 		Cargo cargo = CargoFactory.getEntity();
@@ -467,6 +496,7 @@ public class CargoDaoHibernateTest extends GenericDaoHibernateTest<Cargo>
 		assertEquals(cargo.getId(), retorno.getId());
 	}
 
+	@Test
 	public void testFfindByIdAllProjection()
 	{
 		Cargo cargo = CargoFactory.getEntity();
@@ -477,6 +507,7 @@ public class CargoDaoHibernateTest extends GenericDaoHibernateTest<Cargo>
 		assertEquals(cargo.getId(), cargoRetorno.getId());
 	}
 
+	@Test
 	public void testVerifyExistCargoNome()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -490,6 +521,7 @@ public class CargoDaoHibernateTest extends GenericDaoHibernateTest<Cargo>
 		assertTrue(cargoDao.verifyExistCargoNome(cargo.getNome(), empresa.getId()));
 	}
 
+	@Test
 	public void testFindByAreaDoHistoricoColaborador()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -538,6 +570,7 @@ public class CargoDaoHibernateTest extends GenericDaoHibernateTest<Cargo>
 		assertEquals(cargo2, cargos.toArray()[0]);
 	}
 	
+	@Test
 	public void testFindSincronizarCargos()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -556,7 +589,7 @@ public class CargoDaoHibernateTest extends GenericDaoHibernateTest<Cargo>
 		assertEquals(2, retorno.size());
 	}
 
-	
+	@Test
 	public void testDeleteByAreaOrganizacional()
 	{
 		Exception exception = null;
@@ -570,7 +603,7 @@ public class CargoDaoHibernateTest extends GenericDaoHibernateTest<Cargo>
 		assertNull(exception);
 	}
 	
-	@SuppressWarnings("unchecked")
+	@Test
 	public void testFindByAreaGrupo()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -613,53 +646,77 @@ public class CargoDaoHibernateTest extends GenericDaoHibernateTest<Cargo>
 		assertEquals(2, cargoDao.findByAreaGrupo(null, new Long[] { grupo1.getId(), grupo2.getId() }, empresa.getId()).size());
 	}
 	
-	public GenericDao<Cargo> getGenericDao()
-	{
-		return cargoDao;
-	}
-
-	public void setCargoDao(CargoDao cargoDao)
-	{
-		this.cargoDao = cargoDao;
-	}
-
-	public void setGrupoOcupacionalDao(GrupoOcupacionalDao grupoOcupacionalDao)
-	{
-		this.grupoOcupacionalDao = grupoOcupacionalDao;
-	}
-
-	public void setEmpresaDao(EmpresaDao empresaDao)
-	{
-		this.empresaDao = empresaDao;
-	}
-
-	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao)
-	{
-		this.areaOrganizacionalDao = areaOrganizacionalDao;
-	}
-
-	public void setFaixaSalarialDao(FaixaSalarialDao faixaSalarialDao)
-	{
-		this.faixaSalarialDao = faixaSalarialDao;
-	}
-
-	public void setColaboradorDao(ColaboradorDao colaboradorDao)
-	{
-		this.colaboradorDao = colaboradorDao;
-	}
-
-	public void setHistoricoColaboradorDao(HistoricoColaboradorDao historicoColaboradorDao)
-	{
-		this.historicoColaboradorDao = historicoColaboradorDao;
-	}
-
-	public void setSolicitacaoDao(SolicitacaoDao solicitacaoDao)
-	{
-		this.solicitacaoDao = solicitacaoDao;
-	}
-
-	public void setGrupoACDao(GrupoACDao grupoACDao) {
-		this.grupoACDao = grupoACDao;
-	}
-
+	@Test
+    public void testFindCargoByEmpresaEAreaComFlagExibirSomenteCargosVnnculadosAsAreasMarcadas(){
+        Empresa empresa = EmpresaFactory.getEmpresa();
+        empresaDao.save(empresa);
+        
+        AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+        areaOrganizacionalDao.save(areaOrganizacional);
+        
+        Cargo cargoComAreaRelacionada = CargoFactory.getEntity("Cargo Vinculado a uma Area", empresa, Arrays.asList(areaOrganizacional));
+        cargoDao.save(cargoComAreaRelacionada);
+    
+        Cargo cargoSemAreaRelacionada = CargoFactory.getEntity("Cargo Vinculado a uma Area", empresa, null);
+        cargoDao.save(cargoSemAreaRelacionada);
+        
+        Collection<Cargo> cargosRetorno = cargoDao.findCargoByEmpresaEArea(new Long[]{empresa.getId()}, new Long[]{areaOrganizacional.getId()}, true);
+        
+        assertEquals(1, cargosRetorno.size());
+        assertEquals(cargoComAreaRelacionada.getId(), cargosRetorno.iterator().next().getId());
+    }
+	
+	@Test
+    public void testFindCargoByEmpresaEAreaComFlagExibirSomenteCargosVnnculadosAsAreasMarcadasMasSemAreasSelecionadas(){
+        Empresa empresa = EmpresaFactory.getEmpresa();
+        empresaDao.save(empresa);
+        
+        AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+        areaOrganizacionalDao.save(areaOrganizacional);
+        
+        Cargo cargoComAreaRelacionada = CargoFactory.getEntity("Cargo Vinculado a uma Area", empresa, Arrays.asList(areaOrganizacional));
+        cargoDao.save(cargoComAreaRelacionada);
+    
+        Cargo cargoSemAreaRelacionada = CargoFactory.getEntity("Cargo Vinculado a uma Area", empresa, null);
+        cargoDao.save(cargoSemAreaRelacionada);
+        
+        assertEquals(2,cargoDao.findCargoByEmpresaEArea(new Long[]{empresa.getId()}, new Long[]{}, true).size());
+        assertEquals(2, cargoDao.findCargoByEmpresaEArea(new Long[]{empresa.getId()}, null, true).size());
+    }
+	 
+	@Test
+	public void testFindCargoByEmpresaEAreaFlagExibirSomenteCargosVnnculadosAsAreasMarcadasDesmarcadaESemAreasSelecionadas(){
+        Empresa empresa = EmpresaFactory.getEmpresa();
+        empresaDao.save(empresa);
+        
+        AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+        areaOrganizacionalDao.save(areaOrganizacional);
+        
+        Cargo cargoComAreaRelacionada = CargoFactory.getEntity("Cargo Vinculado a uma Area", empresa, Arrays.asList(areaOrganizacional));
+        cargoDao.save(cargoComAreaRelacionada);
+        
+        Cargo cargoSemAreaRelacionada = CargoFactory.getEntity("Cargo Vinculado a uma Area", empresa, null);
+        cargoDao.save(cargoSemAreaRelacionada);
+        
+        assertEquals(2,cargoDao.findCargoByEmpresaEArea(new Long[]{empresa.getId()}, new Long[]{}, false).size());
+        assertEquals(2, cargoDao.findCargoByEmpresaEArea(new Long[]{empresa.getId()}, null, false).size());
+    }
+	
+	@Test
+    public void testFindCargoByEmpresaEAreaFlagExibirSomenteCargosVnnculadosAsAreasMarcadasDesmarcadaComAreasSelecionadas(){
+        Empresa empresa = EmpresaFactory.getEmpresa();
+        empresaDao.save(empresa);
+        
+        AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+        areaOrganizacionalDao.save(areaOrganizacional);
+        
+        Cargo cargoComAreaRelacionada = CargoFactory.getEntity("Cargo Vinculado a uma Area", empresa, Arrays.asList(areaOrganizacional));
+        cargoDao.save(cargoComAreaRelacionada);
+        
+        Cargo cargoSemAreaRelacionada = CargoFactory.getEntity("Cargo Vinculado a uma Area", empresa, null);
+        cargoDao.save(cargoSemAreaRelacionada);
+        
+        Collection<Cargo> cargosRetorno = cargoDao.findCargoByEmpresaEArea(new Long[]{empresa.getId()}, new Long[]{areaOrganizacional.getId()}, false);
+        assertEquals(2, cargosRetorno.size());
+    }
 }

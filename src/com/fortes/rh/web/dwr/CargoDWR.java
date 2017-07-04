@@ -12,9 +12,9 @@ import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CollectionUtil;
+import com.fortes.rh.util.EmpresaUtil;
 import com.fortes.rh.util.LongUtil;
 import com.opensymphony.webwork.dispatcher.SessionMap;
-import com.opensymphony.xwork.ActionContext;
 
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class CargoDWR
@@ -193,6 +193,13 @@ public class CargoDWR
 		return new CollectionUtil<Cargo>().convertCollectionToMap(cargos,"getId", "getNomeMercadoComEmpresaEStatus");
 	}
 	
+	public Map getByEmpresasEArea(Long[] idsEmpresasPermitidas, Long[] idsEmpresasSeleciondas, Long[] areaOrganizacionalIds, boolean exibirSomenteCargoVinculadoComAreasSelecionadas)
+    {
+	    Collection<Cargo> cargos = cargoManager.findCargoByEmpresaEArea(EmpresaUtil.empresasSelecionadas(idsEmpresasSeleciondas, idsEmpresasPermitidas), areaOrganizacionalIds, exibirSomenteCargoVinculadoComAreasSelecionadas);
+        
+	    return new CollectionUtil<Cargo>().convertCollectionToMap(cargos, "getId", "getNomeMercadoComEmpresaEStatus");
+    }
+   
 	public void setCargoManager(CargoManager cargoManager)
 	{
 		this.cargoManager = cargoManager;

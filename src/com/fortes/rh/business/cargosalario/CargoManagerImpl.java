@@ -560,6 +560,10 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 		getDao().removeViculoComHabilidade(habilidadeId);
 	}
 	
+	public Collection<Cargo> findCargoByEmpresaEArea(Long[] empresasIds, Long[] areaOrganizacionaisIds, boolean exibirSomenteCargosVinculadosAsAreasSeleciondas) {
+	    return getDao().findCargoByEmpresaEArea(empresasIds, areaOrganizacionaisIds, exibirSomenteCargosVinculadosAsAreasSeleciondas);
+	}
+	 
 	public void setHabilidadeManager(HabilidadeManager habilidadeManager) 
 	{
 		this.habilidadeManager = habilidadeManager;
@@ -614,5 +618,4 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 	{
 		this.codigoCBOManager = codigoCBOManager;
 	}
-
 }

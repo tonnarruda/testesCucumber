@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.Empresa;
 
 public class CargoFactory
 {
@@ -64,5 +66,12 @@ public class CargoFactory
 
 		return cargo;
 	}
+
+    public static Cargo getEntity(String string, Empresa empresa, Collection<AreaOrganizacional> areaOrganizacionais) {
+        Cargo cargo = getEntity(string);
+        cargo.setEmpresa(empresa);
+        cargo.setAreasOrganizacionais(areaOrganizacionais);
+        return cargo;
+    }
 
 }

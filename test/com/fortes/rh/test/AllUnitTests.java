@@ -64,6 +64,7 @@ import com.fortes.rh.test.business.captacao.SolicitacaoBDSManagerTest;
 import com.fortes.rh.test.business.captacao.SolicitacaoManagerTest;
 import com.fortes.rh.test.business.captacao.SolicitacaoManagerTest_Junit4;
 import com.fortes.rh.test.business.cargosalario.CargoManagerTest;
+import com.fortes.rh.test.business.cargosalario.CargoManagerTest_Junit4;
 import com.fortes.rh.test.business.cargosalario.FaixaSalarialHistoricoManagerTest;
 import com.fortes.rh.test.business.cargosalario.FaixaSalarialHistoricoManagerTest_JUnit4;
 import com.fortes.rh.test.business.cargosalario.FaixaSalarialManagerTest;
@@ -703,6 +704,7 @@ import com.fortes.rh.test.web.dwr.AvaliacaoDesempenhoDWRTest;
 import com.fortes.rh.test.web.dwr.BairroDWRTest;
 import com.fortes.rh.test.web.dwr.CandidatoDWRTest;
 import com.fortes.rh.test.web.dwr.CargoDWRTest;
+import com.fortes.rh.test.web.dwr.CargoDWRTest_Junit4;
 import com.fortes.rh.test.web.dwr.CidadeDWRTest;
 import com.fortes.rh.test.web.dwr.ColaboradorDWRTest;
 import com.fortes.rh.test.web.dwr.ColaboradorDWRTest_JUnit4;
@@ -860,6 +862,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 
     //CARGOSALARIO
 	CargoManagerTest.class,
+	CargoManagerTest_Junit4.class,
 	CargoDaoHibernateTest.class,
 	CargoEditActionTest.class,
 
@@ -1559,6 +1562,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	BairroDWRTest.class,
 	CandidatoDWRTest.class,
 	CargoDWRTest.class,
+	CargoDWRTest_Junit4.class,
 	CidadeDWRTest.class,
 	ColaboradorDWRTest.class,
 	ColaboradorDWRTest_JUnit4.class,

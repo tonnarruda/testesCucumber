@@ -22,4 +22,12 @@ public class EmpresaUtil {
 			return new Long[]{empresaId};
 		}
 	}
+	
+	public static Long[] empresasSelecionadas(Long[] idEmpresasSelecionadas, Long[] idsEmpresasPermitidas){
+        if(idEmpresasSelecionadas != null && idEmpresasSelecionadas.length > 0){
+            return idEmpresasSelecionadas;
+        }else{
+            return idsEmpresasPermitidas;
+        }
+    }
 }

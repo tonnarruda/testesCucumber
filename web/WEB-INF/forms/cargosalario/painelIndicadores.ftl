@@ -257,17 +257,8 @@
 				var areasIds = getArrayCheckeds(document.forms[0],'areasCheck');
 				var empresasIds = getArrayCheckeds(document.forms[0],'empresasCheck');
 				
-				if ($('#cargosVinculadosAreas').is(":checked"))
-				{
-					if(areasIds.length == 0)
-					{
-						CargoDWR.getByEmpresas(createListCargosByArea, 0, empresasIds);
-					}
-					else
-						CargoDWR.getCargoByArea(createListCargosByArea, areasIds, "getNomeMercadoComEmpresa", 0);
-				}
-				else
-					CargoDWR.getByEmpresas(createListCargosByArea, 0, empresasIds);
+				var exibirSomenteCargoVinculadoComAreasSelecionadas = $('#cargosVinculadosAreas').is(":checked")
+				CargoDWR.getByEmpresasEArea(empresasPermitidasIds, empresasIds, areasIds, exibirSomenteCargoVinculadoComAreasSelecionadas, createListCargosByArea);
 			}
 			
 			function createListCargosByArea(data)
