@@ -46,7 +46,7 @@ Funcionalidade: Cadastrar Avaliações dos Cursos
       E eu preencho "Mínimo para Aprovação" com "7"
       E eu clico no botão "Gravar"
       Então eu devo ver o alert do valida campos e clico no ok
-      E eu seleciono "Avaliacao de Aluno" de "Modelo da Avaliação"
+      E eu seleciono "Avaliaçao de Aluno Teste" de "Modelo da Avaliação"
       E eu clico no botão "Gravar"
       E eu devo ver o título "Avaliações dos Alunos"
       E eu devo ver "_avaliacao II"

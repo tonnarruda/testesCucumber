@@ -61,7 +61,7 @@
 					
 					if(dataEntrega.getTime() < data.getTime())
 					{
-						alert('Data da entrega inferior a data da solicitação.');
+						jAlert('Data da entrega inferior a data da solicitação.');
 						return false;
 					}				
 				}

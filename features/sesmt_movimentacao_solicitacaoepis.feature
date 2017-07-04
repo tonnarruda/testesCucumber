@@ -168,7 +168,7 @@ Funcionalidade: Gerenciamento de EPIs
          E eu preencho "Qtd. Devolvida" com "90"
          E eu preencho "Observação" com "Devolução de EPI do Empregado David Cameron"
          E eu clico no botão "Gravar"
-         E eu devo ver "O total de itens devolvidos não pode ser superior à quantidade de itens entregues"
+         E eu devo ver "Não é possível inserir uma devolução nessa data ( 13/05/2017 ) maior que 1 Item(ns)"
 
 #------------------------------------------------------------------------------------------------------------------------
 
@@ -201,7 +201,7 @@ Funcionalidade: Gerenciamento de EPIs
          E eu clico no botão "Gravar"
      Então eu clico na imagem com o título "Excluir"
          E eu devo ver o alert "Confirma exclusão?" e clico no ok
-         E eu devo ver "A exclusão da entrega não pode ser realizada, pois existem devoluções para o ítem entregue."
+         E eu devo ver "Devolução do EPI excluída com sucesso"
          E eu clico no botão "Voltar"
 
 #------------------------------------------------------------------------------------------------------------------------

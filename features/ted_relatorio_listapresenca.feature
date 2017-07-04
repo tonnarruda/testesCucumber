@@ -28,8 +28,7 @@ Funcionalidade: Relatório de Lista de Frequência
     E eu marco "Exibir nome comercial"
     E eu marco "Exibir espaço para nota"
     E eu preencho "Qtd. Linhas" com "15"
-
-    Então eu clico no botão "Relatorio"
-    E eu devo ver o alert "É necessário selecionar exatamente duas colunas extras." e clico no ok
-    E eu marco "Cargo"
+	E eu marco "Cargo"
     E eu marco "Estabelecimento"
+    Então eu clico no botão "Relatorio"   
+    

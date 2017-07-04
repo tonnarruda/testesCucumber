@@ -25265,3 +25265,41 @@ ALTER TABLE colaboradorafastamento RENAME COLUMN mediconome TO nomeProfissionalD
 
 insert into migrations values('20170613105904');--.go
 update parametrosdosistema set appversao = '1.1.181.213';--.go
+-- versao 1.1.182.214
+
+alter table solicitacao add column experiencias text;--.go
+insert into migrations values('20170620104742');--.go
+CREATE OR REPLACE FUNCTION removeFormacaoDuplicada() RETURNS integer AS $$
+DECLARE 
+    mviews RECORD; 
+BEGIN 
+    FOR mviews IN 
+	select  id,curso,situacao,local,conclusao,areaformacao_id,candidato_id 
+	from formacao  
+	where id in (select min(id) from formacao group by curso,situacao,local,conclusao,areaformacao_id, candidato_id having count(curso) >1)
+	order by curso,local
+	LOOP 
+		delete from formacao where id in 
+		(select id from formacao 
+		where curso = mviews.curso 
+		and situacao=mviews.situacao
+		and local=mviews.local 
+		and conclusao=mviews.conclusao
+		and areaformacao_id=mviews.areaformacao_id  
+		and candidato_id=mviews.candidato_id
+		and id <> mviews.id);
+	END LOOP; 
+    RETURN 1; 
+END; 
+$$ LANGUAGE plpgsql;--.go
+select removeFormacaoDuplicada();--.go
+drop function removeFormacaoDuplicada();--.go
+insert into migrations values('20170620141649');--.go
+ALTER TABLE faixasalarial ALTER COLUMN nomeacpessoal TYPE character varying(100);--.go
+insert into migrations values('20170623152959');--.go
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (705, 'ROLE_FORMULARIO_SOLICITACAO_EXTERNO', 'Formulário de Solicitação para o Sistema FortesRH', 'https://portaldocliente.fortestecnologia.com.br/portal_autentica_portal.php?location=/portal_solicitacao.php', 18, true, 37); --.go
+insert into perfil_papel(perfil_id, papeis_id) values(1, 705);--.go
+alter sequence papel_sequence restart with 706; --.go
+insert into migrations values('20170628094132');--.go
+update parametrosdosistema set appversao = '1.1.182.214';--.go

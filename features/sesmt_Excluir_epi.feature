@@ -30,7 +30,7 @@ Funcionalidade: Excluir Cadastro de EPI
      Entao eu acesso o menu "SESMT > Cadastros > EPI"
          E eu clico em excluir "EPI Proteção"
      Então eu devo ver o alert do confirmar exclusão e clico no ok
-         E eu devo ver "Erro ao remover EPI."
+         E eu devo ver "EPI excluído com sucesso"
 
 #------------------------------------------------------------------------------------------------------------------------
 
