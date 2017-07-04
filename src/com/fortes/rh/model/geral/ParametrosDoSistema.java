@@ -64,7 +64,6 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
     private Boolean compartilharCursos;
     private boolean inibirGerarRelatorioPesquisaAnonima;
     private int quantidadeColaboradoresRelatorioPesquisaAnonima;
-    private boolean bancoConsistente;
     private int quantidadeConstraints;
     private boolean versaoAcademica;
 
@@ -390,14 +389,6 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
 	public void setInibirGerarRelatorioPesquisaAnonima(	boolean inibirGerarRelatorioPesquisaAnonima) 
 	{
 		this.inibirGerarRelatorioPesquisaAnonima = inibirGerarRelatorioPesquisaAnonima;
-	}
-	
-	public boolean isBancoConsistente() {
-		return bancoConsistente;
-	}
-	
-	public void setBancoConsistente(boolean bancoConsistente) {
-		this.bancoConsistente = bancoConsistente;
 	}
 	
 	public int getQuantidadeConstraints() {

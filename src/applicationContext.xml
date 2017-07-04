@@ -106,14 +106,6 @@
     <property name="targetMethod" value="execute"/>
   </bean>
   
-  <bean name="bancoConsistenteJob" class="com.fortes.rh.business.geral.BancoConsistente">
-  </bean>
-  <bean name="bancoConsistente" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-  	<property name="name" value="Verificar se o banco está consistente"/>
-    <property name="targetObject" ref="bancoConsistenteJob"/>
-    <property name="targetMethod" value="execute"/>
-  </bean>
-
   <bean name="lembreteExamesPrevistosJob" class="com.fortes.rh.business.sesmt.LembreteExamesPrevistos">
   	<property name="exameManager" ref="exameManager" />
 	<property name="empresaManager" ref="empresaManager" />
@@ -312,10 +304,6 @@
     <property name="jobDetail" ref="lembretePesquisa" />
     <property name="cronExpression" value="0 0 6 * * ?" />
   </bean>
-  <bean id="cronTriggerBancoConsistente" class="org.springframework.scheduling.quartz.CronTriggerBean">
-    <property name="jobDetail" ref="bancoConsistente" />
-    <property name="cronExpression" value="0 0 4 * * ?" />
-  </bean>
   <bean id="cronTriggerLembreteExamesPrevistos" class="org.springframework.scheduling.quartz.CronTriggerBean">
     <property name="jobDetail" ref="lembreteExamesPrevistos" />
 	<property name="cronExpression" value="0 0 3 25 * ?" /> <!-- Todo dia 25 de cada mes as 03:00h am -->
@@ -371,7 +359,6 @@
       <list>
         <ref bean="cronTriggerImportadorGastosAC" />
 		<ref bean="cronTriggerLembretePesquisa" />
-		<ref bean="cronTriggerBancoConsistente" />
 		<ref bean="cronTriggerLembretePeriodoExperiencia" />
 		<ref bean="cronTriggerLogCleaner" />
 		<ref bean="cronTriggerBackup" />

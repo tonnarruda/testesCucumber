@@ -62,6 +62,7 @@ public class ParametrosDoSistemaDaoHibernate extends GenericDaoHibernate<Paramet
 		p.add(Projections.property("ps.autenticacao"), "autenticacao");
 		p.add(Projections.property("ps.tls"), "tls");
 		p.add(Projections.property("ps.smtpRemetente"), "smtpRemetente");
+		p.add(Projections.property("ps.quantidadeConstraints"), "quantidadeConstraints");
 		
 		criteria.setProjection(p);
 
@@ -93,14 +94,6 @@ public class ParametrosDoSistemaDaoHibernate extends GenericDaoHibernate<Paramet
 		query.executeUpdate();
 	}
 	
-	public void updateBancoConsistente(boolean bancoConsistente) 
-	{
-		String hql = "UPDATE ParametrosDoSistema SET bancoConsistente = :bancoConsistente";
-		Query query = getSession().createQuery(hql);
-		query.setBoolean("bancoConsistente", bancoConsistente );
-		query.executeUpdate();
-	}
-	
 	public Integer getQuantidadeConstraintsDoBanco() 
 	{
 		String sql = "SELECT COUNT(*) FROM information_schema.table_constraints WHERE constraint_type = 'FOREIGN KEY'";
@@ -108,13 +101,6 @@ public class ParametrosDoSistemaDaoHibernate extends GenericDaoHibernate<Paramet
 		return ((BigInteger) query.list().get(0)).intValue();
 	}
 	
-	public Integer getQuantidadeConstraintsQueOBancoDeveriaTer() 
-	{
-		String sql = "SELECT quantidadeconstraints from parametrosdosistema ";
-		Query query = getSession().createSQLQuery(sql);
-		return (Integer) query.list().get(0);
-	}
-
 	public String getContexto() 
 	{
 		StringBuilder hql = new StringBuilder("select appContext ");

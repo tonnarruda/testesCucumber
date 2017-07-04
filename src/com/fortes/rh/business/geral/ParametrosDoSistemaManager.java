@@ -15,9 +15,6 @@ public interface ParametrosDoSistemaManager extends GenericManager<ParametrosDoS
 	public String getUrlDaAplicacao();
 	public String getEmailDoSuporteTecnico();
 	public Boolean isIdiomaCorreto();
-//	public void ajustaCamposExtras(ParametrosDoSistema parametrosDoSistema, String[] findAllNomes);
 	public void updateServidorRemprot(String servidorRemprot);
 	public String getContexto();
-	public void verificaBancoConsistente();
-//	public void addCamposExtrasDoCamposVisivel(Collection<String> camposExtras, String camposVisivesisColaborador, String camposVisivesisCandidato);
 }

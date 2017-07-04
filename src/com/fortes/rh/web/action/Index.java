@@ -92,7 +92,6 @@ public class Index extends MyActionSupport
 	private boolean pgInicial = true;
 	private boolean primeiraExecucao;
 	private boolean idiomaIncorreto;
-	private boolean bancoConsistente;
 	
 	private boolean integradoAC;
 	private Collection<Solicitacao> solicitacaos = new ArrayList<Solicitacao>();
@@ -690,10 +689,6 @@ public class Index extends MyActionSupport
 		this.pendenciasAcsSerRemovida = pendenciasAcsSerRemovida;
 	}
 	
-	public boolean isBancoConsistente(){
-		return this.bancoConsistente;
-	}
-
 	public Collection<HistoricoColaborador> getHistoricoColaboradors() {
 		return historicoColaboradors;
 	}

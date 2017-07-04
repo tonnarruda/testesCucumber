@@ -200,21 +200,6 @@
 		</ul>
 	</div>
 	
-	<!--
-	<#if !bancoConsistente >
-		<div id="bancoconsistente" class="warning">
-			<div style="float:right;"><a title="Ocultar" href="javascript:;" onclick="$(this).parent().parent().remove();">x</a></div>
-			<ul>
-				<li>
-					Identificamos a necessidade de realizar uma análise da estrutura do seu banco de dados. </br>
-					A necessidade desta análise não interfere no funcionamento do sistema. </br>
-					Entre em contato com o suporte.  Suporte RH: (85) 4005.1127
-				</li>
-			</ul>
-		</div>
-	</#if>
-	-->
-	
 	<@authz.authorize ifAllGranted="ROLE_VISUALIZAR_PROGRESSAO">
 		<#if colaborador?exists && colaborador.id?exists>
 			<br>
