@@ -13,7 +13,7 @@ function formatamoney(c) {
     return t+","+d+Array(c+1-d.length).join(0);
 }
 
-String.prototype.formatCurrency=formatamoney
+String.prototype.formatCurrency=formatamoney;
 
 function demaskvalue(valor, currency){
 /*

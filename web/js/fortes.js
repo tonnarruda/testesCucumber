@@ -242,7 +242,7 @@ function addChecksByCollection(divName, dados, label, onClick)
 		result += "<label for=\"checkGroup"+ divName + dados[prop]['id'] +"\" >";
 		result += "<input name=\""+ divName +"\" value=\""+ dados[prop]['id'] +"\" type=\"checkbox\" "+ addOnClick +" id=\"checkGroup"+ divName + dados[prop]['id'] +"\" " + titulo + " " + selecionado + " " + desabilitado; 
 		for ( var i in parameters)
-			result += " "+i+"="+parameters[i];
+			result += " "+i+"='"+parameters[i] + "' ";
 		result += " />" + dados[prop][label];
     	result += "</label>";
 	}
