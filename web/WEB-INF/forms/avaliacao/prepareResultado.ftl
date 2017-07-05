@@ -68,12 +68,13 @@
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
 			var areasIds = getArrayCheckeds(document.forms[0],'areasCheck');
-			var empresaId = $('#empresa').val();
+			var empresaId = new Array(); 
 			
-			if ($('#cargosVinculadosAreas').is(":checked") && areasIds.length != 0)
-				CargoDWR.getCargoByArea(createListCargosByArea, areasIds, "getNomeMercadoComEmpresa", empresaId);
-			else
-				CargoDWR.getByEmpresas(createListCargosByArea, empresaId, empresaIds);
+			if($('#empresa').val() != "")
+				empresaId.push($('#empresa').val());
+			
+			var exibirSomenteCargoVinculadoComAreasSelecionadas = $('#cargosVinculadosAreas').is(":checked")
+			CargoDWR.getByEmpresasEArea(empresaIds, empresaId, areasIds, exibirSomenteCargoVinculadoComAreasSelecionadas, createListCargosByArea);
 		}
 		
 		function createListCargosByArea(data)

@@ -107,7 +107,7 @@
 				if (areasIds.length == 0)
 					CargoDWR.getByEmpresas(createListCargosByArea, 0, empresasIds);
 				else
-					CargoDWR.getCargoByArea(createListCargosByArea, areasIds, "getNomeMercadoComEmpresa", 0);
+					CargoDWR.getCargoByArea(createListCargosByArea, areasIds, "getNomeMercadoComEmpresaEStatus", 0);
 				
 		}
 		
@@ -210,7 +210,7 @@
 			<#else>
 				<@frt.checkListBox label="${descricaoAreas}" name="areasCheck" id="areasCheck" list="areaOrganizacionalsCheckList" onClick="populaCargosByArea();" filtro="true" selectAtivoInativo="true"/>
 			</#if>
-
+			
 			<@ww.checkbox label="Considerar cargos não vinculados a nenhuma Área Organizacional" id="cargoSemArea" name="" labelPosition="left"/>
 			
 			<@frt.checkListBox label="Cargos" id="cargosCheck" name="cargosCheck" list="cargosCheckList" filtro="true" selectAtivoInativo="true"/>

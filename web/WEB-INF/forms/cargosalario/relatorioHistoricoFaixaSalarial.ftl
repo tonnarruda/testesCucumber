@@ -75,14 +75,14 @@
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
 			var areasIds = getArrayCheckeds(document.forms[0],'areasCheck');
-			CargoDWR.getCargoByAreaMaisSemAreaRelacionada(createListCargos, areasIds, "getNomeMercado", ${empresaId});
+			CargoDWR.getCargoByAreaMaisSemAreaRelacionada(createListCargos, areasIds, "getNomeMercadoComStatus", ${empresaId});
 		}
 		
 		function populaCargosByArea()
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
 			var areasIds = getArrayCheckeds(document.forms[0],'areasCheck');
-			CargoDWR.getCargoByArea(createListCargos, areasIds, "getNomeMercado", ${empresaId});
+			CargoDWR.getCargoByArea(createListCargos, areasIds, "getNomeMercadoComStatus", ${empresaId});
 			
 			if($('#cargoSemArea').is(":checked"))
 				addCheckCargoSemArea();

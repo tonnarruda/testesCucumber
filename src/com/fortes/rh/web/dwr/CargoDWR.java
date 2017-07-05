@@ -194,12 +194,12 @@ public class CargoDWR
 	}
 	
 	public Map getByEmpresasEArea(Long[] idsEmpresasPermitidas, Long[] idsEmpresasSeleciondas, Long[] areaOrganizacionalIds, boolean exibirSomenteCargoVinculadoComAreasSelecionadas)
-    {
+	{
 	    Collection<Cargo> cargos = cargoManager.findCargoByEmpresaEArea(EmpresaUtil.empresasSelecionadas(idsEmpresasSeleciondas, idsEmpresasPermitidas), areaOrganizacionalIds, exibirSomenteCargoVinculadoComAreasSelecionadas);
-        
+
 	    return new CollectionUtil<Cargo>().convertCollectionToMap(cargos, "getId", "getNomeMercadoComEmpresaEStatus");
-    }
-   
+	}
+	
 	public void setCargoManager(CargoManager cargoManager)
 	{
 		this.cargoManager = cargoManager;

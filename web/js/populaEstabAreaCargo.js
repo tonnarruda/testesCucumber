@@ -10,14 +10,14 @@ function populaCargosByArea()
 		if(areasIds.length == 0)
 			CargoDWR.getByEmpresasMaisSemAreaRelacionada(createListCargosByArea, empresaId, empresaIds);
 		else
-			CargoDWR.getCargoByAreaMaisSemAreaRelacionada(createListCargosByArea, areasIds, "getNomeMercadoComEmpresa", empresaId);
+			CargoDWR.getCargoByAreaMaisSemAreaRelacionada(createListCargosByArea, areasIds, "getNomeMercadoComEmpresaEStatus", empresaId);
 	}
 	else
 	{
 		if(areasIds.length == 0)
 			CargoDWR.getByEmpresas(createListCargosByArea, empresaId, empresaIds);
 		else
-			CargoDWR.getCargoByArea(createListCargosByArea, areasIds, "getNomeMercadoComEmpresa", empresaId);
+			CargoDWR.getCargoByArea(createListCargosByArea, areasIds, "getNomeMercadoComEmpresaEStatus", empresaId);
 	}
 }
 

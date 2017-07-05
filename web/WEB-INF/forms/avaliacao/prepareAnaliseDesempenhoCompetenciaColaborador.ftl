@@ -261,7 +261,7 @@
 			var empresaId = ${empresaSistema.id};
 			
 			if ($('#cargosVinculadosAreas').is(":checked") && areasIds.length != 0)
-				CargoDWR.getCargoByArea(createListCargosByArea, areasIds, "getNomeMercadoComEmpresa", empresaId);
+				CargoDWR.getCargoByArea(createListCargosByArea, areasIds, "getNomeMercadoComEmpresaEStatus", empresaId);
 			else
 				CargoDWR.getByEmpresas(createListCargosByArea, empresaId, empresaIds);
 		}

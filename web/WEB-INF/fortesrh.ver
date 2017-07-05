@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.18X.21X" db="" data="xx/xx/2017">
+		<Item visivel="N" motivo="P17070000031"><![CDATA[Sistema: Ajuste de inconsistência que removia a informação de ativo e inativo do nome dos cargos.]]></Item>
+	</Versao>
 	<Versao id="1.1.182.214" db="" data="05/07/2017">
 		<Item visivel="S" motivo="P17060000045"><![CDATA[R&S > Cadastro > Candidatos > Editar > Formação Escolar > Inserir/Editar : Ajuste da inconsistência que ocasionava a duplicação de formações escolares ao salvar/editar um candidato.]]></Item>
 		<Item visivel="S" motivo="P17060000103"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Inserir/Editar: Novo campo para inserir experiências almejadas pela solicitação.]]></Item>
