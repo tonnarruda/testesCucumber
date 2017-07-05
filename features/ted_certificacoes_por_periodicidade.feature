@@ -9,7 +9,7 @@ Funcionalidade: Cadastrar Certificações dos Cursos
 
     Quando eu acesso o menu "Utilitários > Cadastros > Empresas"
     Entao eu clico em editar "Empresa Padrão"
-    E eu preencho "Email Resp. RH" com "sl@teste.com"
+    E eu preencho "Resp. RH" com "sl@teste.com"
     E eu seleciono "CE" de "Estado"
     E eu seleciono "Periodicidade da certificação" de "Controlar vencimento da certificação por"
     E eu clico no botão "Gravar"

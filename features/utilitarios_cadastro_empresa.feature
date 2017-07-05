@@ -27,9 +27,9 @@ Funcionalidade: Cadastrar Empresa
     E eu seleciono "Fortaleza" de "cidade"
     E eu seleciono "[(Admissões + Demissões / 2) / Ativos no final do mês anterior] * 100" de "Fórmula"
     E eu preencho "Base CNPJ" com "12345678"
-    E eu preencho "Email Remetente" com "ab@com.com"
-    E eu preencho "Email Resp. Setor Pessoal" com "ab@com.com"
-    E eu preencho "Email Resp. RH" com "ab@com.com"
+    E eu preencho "Remetente" com "ab@com.com"
+    E eu preencho "Resp. Setor Pessoal" com "ab@com.com"
+    E eu preencho "Resp. RH" com "ab@com.com"
     E eu clico no botão "Gravar"
     Então eu devo ver o título "Empresas"
 

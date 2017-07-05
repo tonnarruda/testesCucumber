@@ -25302,4 +25302,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (705,
 insert into perfil_papel(perfil_id, papeis_id) values(1, 705);--.go
 alter sequence papel_sequence restart with 706; --.go
 insert into migrations values('20170628094132');--.go
+ALTER TABLE parametrosdosistema ADD COLUMN smtpremetente boolean DEFAULT false;--.go
+insert into migrations values('20170704163743');--.go
 update parametrosdosistema set appversao = '1.1.182.214';--.go
