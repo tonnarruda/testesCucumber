@@ -72,6 +72,10 @@
 				content: 'Os dados informados a seguir serão utilizados no cadastro da Ordem de Serviço.'
 			});
 			
+			$('.tooltipHelpEmailConfgSMTP').qtip({
+				content: 'Os emails não podem ser diferentes da configuração de SMTP devido as regras de segurança do domínio de SMTP.'
+			});
+			
 			$('#nomeHomonimoEmpresa').change(function() {
 				if ($(this).is(":checked"))
 					$('#nomeHomonimo').attr("disabled", true);
@@ -257,21 +261,6 @@
 		<@ww.textfield label="CNAE 01 (Classificação Nacional de Atividades Econômicas)" name="empresa.cnae" cssStyle="width:100px;" onkeypress="return(somenteNumeros(event,'./-'));" maxLength="10"/>
 		<@ww.textfield label="CNAE 02 (Classificação Nacional de Atividades Econômicas)" name="empresa.cnae2" cssStyle="width:100px;" onkeypress="return(somenteNumeros(event,'./-'));" maxLength="10"/>
 		<@ww.textfield label="Grau de Risco" name="empresa.grauDeRisco" cssStyle="width:50px;" maxLength="10" onkeypress="return(somenteNumeros(event,''));"/>
-	
-		<#if parametrosDoSistema.smtpRemetente>						
-			<@ww.textfield label="Email Remetente" id="remetente" cssStyle="width:340px;" disabled="true" value="${parametrosDoSistema.emailUser}"/>
-			<@ww.textfield label="Email Resp. Setor Pessoal"  id="respSetorPessoal" cssStyle="width:340px;"  disabled="true" value="${parametrosDoSistema.emailUser}"/>
-			<@ww.textfield label="Email Resp. RH" id="respRH" cssStyle="width:340px;"  disabled="true" value="${parametrosDoSistema.emailUser}"/>
-			<@ww.hidden name="empresa.emailRemetente"/>
-			<@ww.hidden name="empresa.emailRespSetorPessoal"/>
-			<@ww.hidden name="empresa.emailRespRH" />
-		<#else>
-			<@ww.textfield label="Email Remetente" name="empresa.emailRemetente" id="remetente" required="true" cssClass="mascaraEmail" cssStyle="width:340px;" maxLength="100"/>
-			<@ww.textfield label="Email Resp. Setor Pessoal" name="empresa.emailRespSetorPessoal" id="respSetorPessoal" required="true" cssClass="mascaraEmail" cssStyle="width:340px;" maxLength="100"/>
-			<@ww.textfield label="Email Resp. RH" name="empresa.emailRespRH" id="respRH" required="true" cssClass="mascaraEmail" cssStyle="width:340px;" maxLength="100"/>
-		</#if>
-	
-		<@ww.textfield label="Email Resp. pelo limite de Colaboradores por Cargo" name="empresa.emailRespLimiteContrato" id="respLimite" cssClass="mascaraEmail" cssStyle="width:340px;" maxLength="120"/>
 		<@ww.textfield label="Representante Legal" name="empresa.representanteLegal" cssClass="inputNome" maxLength="100"/>
 		<@ww.textfield label="NIT do Representante Legal" name="empresa.nitRepresentanteLegal" cssClass="inputNome" maxLength="100" onkeypress="return(somenteNumeros(event,'./-'));"/>
 		<@ww.textfield label="Horário de Trabalho" name="empresa.horarioTrabalho"  cssClass="inputNome" maxLength="50"/>
@@ -294,6 +283,35 @@
 		
 		<@ww.textarea label="Mensagem a ser exibida no módulo externo" id="mensagemModuloExterno" name="empresa.mensagemModuloExterno" cssStyle="height:30px;"/>
 		
+		<li>&nbsp;</li>
+		
+		<li>
+			<@ww.div cssClass="divInfo">
+				<h2>
+					Configurações de Emails
+					<#if parametrosDoSistema.smtpRemetente>
+						<img class='tooltipHelpEmailConfgSMTP' src="<@ww.url value='/imgs/help.gif'/>" width='16' height='16' style='margin-bottom: 1px; margin-top: 1px;vertical-align: top;' />
+					</#if>
+				</h2>
+				<ul>
+					<#if parametrosDoSistema.smtpRemetente>						
+						<@ww.textfield label="Remetente" id="remetente" cssStyle="width:445px;" disabled="true" value="${parametrosDoSistema.emailUser}"/>
+						<@ww.textfield label="Resp. Setor Pessoal" id="respSetorPessoal" cssStyle="width:445px;"  disabled="true" value="${parametrosDoSistema.emailUser}"/>
+						<@ww.textfield label="Resp. RH" id="respRH" cssStyle="width:445px;"  disabled="true" value="${parametrosDoSistema.emailUser}"/>
+						<@ww.textfield label="Resp. pelo limite de Colaboradores por Cargo" id="respLimite" disabled="true" cssStyle="width:445px;" value="${parametrosDoSistema.emailUser}"/>
+						<@ww.hidden name="empresa.emailRemetente"/>
+						<@ww.hidden name="empresa.emailRespSetorPessoal"/>
+						<@ww.hidden name="empresa.emailRespRH" />
+						<@ww.hidden name="empresa.emailRespLimiteContrato" />
+					<#else>
+						<@ww.textfield label="Remetente" name="empresa.emailRemetente" id="remetente" required="true" cssClass="mascaraEmail" cssStyle="width:445px;" maxLength="100"/>
+						<@ww.textfield label="Resp. Setor Pessoal" name="empresa.emailRespSetorPessoal" id="respSetorPessoal" required="true" cssClass="mascaraEmail" cssStyle="width:445px;" maxLength="100"/>
+						<@ww.textfield label="Resp. RH" name="empresa.emailRespRH" id="respRH" required="true" cssClass="mascaraEmail" cssStyle="width:445px;" maxLength="100"/>
+						<@ww.textfield label="Resp. pelo limite de Colaboradores por Cargo" name="empresa.emailRespLimiteContrato" id="respLimite" cssClass="mascaraEmail" cssStyle="width:445px;" maxLength="120"/>
+					</#if>
+				</ul>
+			</@ww.div>
+		</li>
 		<li>&nbsp;</li>
 		
 		<li>

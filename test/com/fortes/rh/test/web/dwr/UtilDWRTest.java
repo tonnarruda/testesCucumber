@@ -132,12 +132,7 @@ public class UtilDWRTest {
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		String msgError = "550";
 		String email = "teste@mail.com";
-
-		when(WebContextFactory.get()).thenReturn(mock(WebContext.class));
-		when(WebContextFactory.get().getHttpServletRequest()).thenReturn(mock(HttpServletRequest.class));
-		when(WebContextFactory.get().getHttpServletRequest().getSession()).thenReturn(null);
-		when(SecurityUtil.getEmpresaByDWR(null)).thenReturn(empresa);
-
+		inicializaWebContextFactory(empresa);
 		MessagingException messagingException = new MessagingException("1", new SMTPAddressFailedException(null, "", 0, msgError));
 
 		doThrow(messagingException).when(mail).testEnvio(empresa, "Teste do envio de email do RH", "Este email foi enviado de forma automática, não responda.", email, true, false);
@@ -151,12 +146,7 @@ public class UtilDWRTest {
 	public void testEnviaEmailConfiguracaoSMTPExceptionQuandoAlgumCampoEstiverMarcadoDeFormaIndevida() throws Exception {
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		String email = "teste@mail.com";
-
-		when(WebContextFactory.get()).thenReturn(mock(WebContext.class));
-		when(WebContextFactory.get().getHttpServletRequest()).thenReturn(mock(HttpServletRequest.class));
-		when(WebContextFactory.get().getHttpServletRequest().getSession()).thenReturn(null);
-		when(SecurityUtil.getEmpresaByDWR(null)).thenReturn(empresa);
-
+		inicializaWebContextFactory(empresa);
 		MessagingException messagingException = new MessagingException("teste");
 
 		doThrow(messagingException).when(mail).testEnvio(empresa, "Teste do envio de email do RH", "Este email foi enviado de forma automática, não responda.", email, true, false);
@@ -169,11 +159,7 @@ public class UtilDWRTest {
 	public void testEnviaEmailComSucesso() throws Exception {
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		String email = "teste@mail.com";
-
-		when(WebContextFactory.get()).thenReturn(mock(WebContext.class));
-		when(WebContextFactory.get().getHttpServletRequest()).thenReturn(mock(HttpServletRequest.class));
-		when(WebContextFactory.get().getHttpServletRequest().getSession()).thenReturn(null);
-		when(SecurityUtil.getEmpresaByDWR(null)).thenReturn(empresa);
+		inicializaWebContextFactory(empresa);
 
 		doNothing().when(mail).testEnvio(empresa, "Teste do envio de email do RH", "Este email foi enviado de forma automática, não responda.", email, true, false);
 
@@ -185,12 +171,7 @@ public class UtilDWRTest {
 	public void testAutenticacaoException() throws Exception {
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		String email = "teste@mail.com";
-
-		when(WebContextFactory.get()).thenReturn(mock(WebContext.class));
-		when(WebContextFactory.get().getHttpServletRequest()).thenReturn(mock(HttpServletRequest.class));
-		when(WebContextFactory.get().getHttpServletRequest().getSession()).thenReturn(null);
-		when(SecurityUtil.getEmpresaByDWR(null)).thenReturn(empresa);
-
+		inicializaWebContextFactory(empresa);
 		AuthenticationFailedException authenticationFailedException = new AuthenticationFailedException();
 
 		doThrow(authenticationFailedException).when(mail).testEnvio(empresa, "Teste do envio de email do RH", "Este email foi enviado de forma automática, não responda.", email, true, false);
@@ -203,11 +184,7 @@ public class UtilDWRTest {
 	public void testErroInesperadoAoEnviarEmail() throws Exception {
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		String email = "teste@mail.com";
-
-		when(WebContextFactory.get()).thenReturn(mock(WebContext.class));
-		when(WebContextFactory.get().getHttpServletRequest()).thenReturn(mock(HttpServletRequest.class));
-		when(WebContextFactory.get().getHttpServletRequest().getSession()).thenReturn(null);
-		when(SecurityUtil.getEmpresaByDWR(null)).thenReturn(empresa);
+		inicializaWebContextFactory(empresa);
 
 		doThrow(mock(Exception.class)).when(mail).testEnvio(empresa, "Teste do envio de email do RH", "Este email foi enviado de forma automática, não responda.", email, true, false);
 
@@ -219,15 +196,18 @@ public class UtilDWRTest {
 	public void testErroInesperadoAoEnviarEmailComMensagemDeExcecao() throws Exception {
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		String email = "teste@mail.com";
-
-		when(WebContextFactory.get()).thenReturn(mock(WebContext.class));
-		when(WebContextFactory.get().getHttpServletRequest()).thenReturn(mock(HttpServletRequest.class));
-		when(WebContextFactory.get().getHttpServletRequest().getSession()).thenReturn(null);
-		when(SecurityUtil.getEmpresaByDWR(null)).thenReturn(empresa);
+		inicializaWebContextFactory(empresa);
 
 		doThrow(new Exception("teste")).when(mail).testEnvio(empresa, "Teste do envio de email do RH", "Este email foi enviado de forma automática, não responda.", email, true, false);
 
 		utilDWR.enviaEmail(email, true, false);
+	}
+
+	private void inicializaWebContextFactory(Empresa empresa) {
+		when(WebContextFactory.get()).thenReturn(mock(WebContext.class));
+		when(WebContextFactory.get().getHttpServletRequest()).thenReturn(mock(HttpServletRequest.class));
+		when(WebContextFactory.get().getHttpServletRequest().getSession()).thenReturn(null);
+		when(SecurityUtil.getEmpresaByDWR(null)).thenReturn(empresa);
 	}
 
 	public static String getSMTPAddressFailedExceptionMessageQuandoAlgumaRestricaoDoServidorSMTPForViolada() {

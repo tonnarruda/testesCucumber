@@ -1,1 +1,0 @@
-ALTER TABLE parametrosdosistema ADD COLUMN smtpremetente boolean DEFAULT false;--.go
