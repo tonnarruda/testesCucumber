@@ -6,8 +6,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import mockit.Mockit;
-
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
@@ -44,6 +42,8 @@ import com.fortes.rh.web.action.Index;
 import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.ActionContext;
 
+import mockit.Mockit;
+
 public class IndexTest extends MockObjectTestCase
 {
 	Index index;
@@ -72,9 +72,6 @@ public class IndexTest extends MockObjectTestCase
 		parametrosDoSistemaManager = new Mock(ParametrosDoSistemaManager.class);
 		index.setParametrosDoSistemaManager((ParametrosDoSistemaManager) parametrosDoSistemaManager.proxy());
 
-		colaboradorManager = new Mock(ColaboradorManager.class);
-		index.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
-		
 		Mockit.redefineMethods(ServletActionContext.class, MockServletActionContext.class);
 		Mockit.redefineMethods(ActionContext.class, MockActionContext.class);
 		Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
@@ -117,8 +114,12 @@ public class IndexTest extends MockObjectTestCase
 		
 		ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity();
 		parametrosDoSistema.setProximaVersao(new Date());
+		parametrosDoSistema.setQuantidadeConstraints(400);
 		parametrosDoSistema.setSessionTimeout(90);
 
+		MockSpringUtil.mocks.put("parametrosDoSistemaManager", parametrosDoSistemaManager);
+
+		parametrosDoSistemaManager.expects(once()).method("getQuantidadeConstraintsDoBanco").will(returnValue(400));
 		parametrosDoSistemaManager.expects(once()).method("findById").with(ANYTHING).will(returnValue(parametrosDoSistema));
 		colaboradorManager.expects(once()).method("findByUsuario").with(ANYTHING, ANYTHING).will(returnValue(colaborador));
 

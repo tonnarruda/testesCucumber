@@ -17,4 +17,5 @@ public interface ParametrosDoSistemaManager extends GenericManager<ParametrosDoS
 	public Boolean isIdiomaCorreto();
 	public void updateServidorRemprot(String servidorRemprot);
 	public String getContexto();
+	public Integer getQuantidadeConstraintsDoBanco();
 }

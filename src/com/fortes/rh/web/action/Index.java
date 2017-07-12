@@ -10,12 +10,15 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
+import org.apache.commons.collections4.Closure;
+import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.lang.StringUtils;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
@@ -50,6 +53,7 @@ import com.fortes.rh.security.MyDaoAuthenticationProvider;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.StringUtil;
+import com.fortes.rh.util.validacao.GerenciadorValidacao;
 import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionContext;
@@ -125,8 +129,6 @@ public class Index extends MyActionSupport
 			primeiraExecucao = true;
 		}
 		
-		//bancoConsistente = parametrosDoSistema.isBancoConsistente();
-
 		try
 		{
 			usuario = SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession());
@@ -159,6 +161,7 @@ public class Index extends MyActionSupport
 				avaliacaos = avaliacaoManager.findPeriodoExperienciaIsNull(TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA, empresaId);
 			
 			validaIntegracaoAC();
+			realizaValidacoes(parametrosDoSistema);
 			
 			if ( colaborador != null && colaborador.getId() != null && SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VISUALIZAR_PROGRESSAO"}))
 				historicoColaboradors = historicoColaboradorManager.progressaoColaborador(colaborador.getId(), getEmpresaSistema().getId());
@@ -182,6 +185,16 @@ public class Index extends MyActionSupport
 		return Action.SUCCESS;
 	}
 	
+	private void realizaValidacoes(ParametrosDoSistema parametrosDoSistema) {
+		List<String> mensagens = GerenciadorValidacao.valida(parametrosDoSistema);
+		IterableUtils.forEach(mensagens, new Closure<String>() {
+												@Override
+												public void execute(String mensagem) {
+													addActionWarning(mensagem);
+												}
+										 });			
+	}
+
 	public String mensagens()
 	{
 		pgInicial = false;

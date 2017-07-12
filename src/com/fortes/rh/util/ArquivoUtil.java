@@ -17,6 +17,8 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Properties;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.activation.DataSource;
 import javax.mail.util.ByteArrayDataSource;
@@ -30,6 +32,7 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.util.JRLoader;
 
+import org.apache.commons.lang.StringUtils;
 import org.mozilla.universalchardet.UniversalDetector;
 
 import com.fortes.model.type.File;
@@ -237,6 +240,41 @@ public class ArquivoUtil
 		path = path.replace('/', java.io.File.separatorChar);
 		
 		return path + java.io.File.separator;
+	}
+	
+	public static String getVersao()
+	{
+		String path = ServletActionContext.getServletContext().getRealPath("/WEB-INF/")
+		.replace("\\", "/")
+		.replace("%20", " ")
+		.replace('/', java.io.File.separatorChar);
+		path = path + java.io.File.separator + "fortesrh.ver";
+		
+		java.io.File file = new java.io.File(path);
+		String versao = null;
+		
+		try {
+			BufferedReader input =  new BufferedReader(new FileReader(file));
+			try {
+				String line = null; 
+				while (( line = input.readLine()) != null){
+					if(line.contains("Versao")){
+						Pattern p = Pattern.compile("<Versao id=\"(.*)\" db=.*");
+						Matcher m = p.matcher(line);
+						if(m.find()){
+							versao = m.group(1);
+							break;
+						}
+					}
+				}
+			} finally {
+				input.close();
+			}
+		}
+		catch (IOException ex){
+			ex.printStackTrace();
+		}
+		return versao;
 	}
 	
 	public static String getReportSource(String report)

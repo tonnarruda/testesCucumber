@@ -501,6 +501,8 @@ import com.fortes.rh.test.util.MontaRelatorioItextTest;
 import com.fortes.rh.test.util.SpringUtilTest;
 import com.fortes.rh.test.util.StringUtilTest;
 import com.fortes.rh.test.util.ZipTest;
+import com.fortes.rh.test.util.validacao.ValidacaoQuantidadeConstraintsTest;
+import com.fortes.rh.test.util.validacao.ValidacaoVersaoTest;
 import com.fortes.rh.test.web.action.IndexTest;
 import com.fortes.rh.test.web.action.MyActionSupportEditTest;
 import com.fortes.rh.test.web.action.MyActionSupportListTest;
@@ -748,6 +750,7 @@ import com.fortes.rh.test.web.dwr.TurmaDWRTest;
 import com.fortes.rh.test.web.dwr.TurmaDWRTest_Junit4;
 import com.fortes.rh.test.web.dwr.UsuarioMensagemDWRTest;
 import com.fortes.rh.test.web.dwr.lntDWRTest;
+import com.fortes.rh.util.validacao.ValidacaoQuantidadeConstraints;
 import com.fortes.rh.web.action.exportacao.ExportacaoActionTest;
 import com.fortes.rh.web.action.externo.ExternoActionTest;
 import com.fortes.test.web.tags.LinkTagTest;
@@ -1495,6 +1498,8 @@ import com.fortes.test.web.tags.LinkTagTest;
 	ZipTest.class,
 	ArquivoUtilTest.class,
 	NoticiaDaoHibernateTest.class,
+	ValidacaoQuantidadeConstraintsTest.class,
+	ValidacaoVersaoTest.class,
 
     // Avaliacao
 	AvaliacaoDaoHibernateTest.class,

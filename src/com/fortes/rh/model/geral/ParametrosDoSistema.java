@@ -64,7 +64,7 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
     private Boolean compartilharCursos;
     private boolean inibirGerarRelatorioPesquisaAnonima;
     private int quantidadeColaboradoresRelatorioPesquisaAnonima;
-    private int quantidadeConstraints;
+    private Integer quantidadeConstraints;
     private boolean versaoAcademica;
 
     private Integer sessionTimeout;
@@ -391,11 +391,11 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
 		this.inibirGerarRelatorioPesquisaAnonima = inibirGerarRelatorioPesquisaAnonima;
 	}
 	
-	public int getQuantidadeConstraints() {
+	public Integer getQuantidadeConstraints() {
 		return quantidadeConstraints;
 	}
 	
-	public void setQuantidadeConstraints(int quantidadeConstraints) {
+	public void setQuantidadeConstraints(Integer quantidadeConstraints) {
 		this.quantidadeConstraints = quantidadeConstraints;
 	}
 	
