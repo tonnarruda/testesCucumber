@@ -49,6 +49,7 @@ import com.fortes.rh.test.business.captacao.ConfiguracaoNivelCompetenciaCandidat
 import com.fortes.rh.test.business.captacao.ConfiguracaoNivelCompetenciaColaboradorManagerTest;
 import com.fortes.rh.test.business.captacao.ConfiguracaoNivelCompetenciaManagerTest;
 import com.fortes.rh.test.business.captacao.ConhecimentoManagerTest;
+import com.fortes.rh.test.business.captacao.ConhecimentoManagerTest_Junit4;
 import com.fortes.rh.test.business.captacao.DuracaoPreenchimentoVagaManagerTest;
 import com.fortes.rh.test.business.captacao.EmpresaBdsManagerTest;
 import com.fortes.rh.test.business.captacao.EtapaSeletivaManagerTest;
@@ -87,6 +88,7 @@ import com.fortes.rh.test.business.desenvolvimento.ColaboradorTurmaManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.ColaboradorTurmaManagerTest_Junit4;
 import com.fortes.rh.test.business.desenvolvimento.CursoLntManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.CursoManagerTest;
+import com.fortes.rh.test.business.desenvolvimento.CursoManagerTest_Junit4;
 import com.fortes.rh.test.business.desenvolvimento.DNTManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.DiaTurmaManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.LntManagerTest;
@@ -96,6 +98,7 @@ import com.fortes.rh.test.business.desenvolvimento.TurmaManagerTest_Junit4;
 import com.fortes.rh.test.business.geral.AreaFormacaoManagerTest;
 import com.fortes.rh.test.business.geral.AreaInteresseManagerTest;
 import com.fortes.rh.test.business.geral.AreaOrganizacionalManagerTest;
+import com.fortes.rh.test.business.geral.AreaOrganizacionalManagerTest_Junit4;
 import com.fortes.rh.test.business.geral.BairroManagerTest;
 import com.fortes.rh.test.business.geral.BeneficioManagerTest;
 import com.fortes.rh.test.business.geral.CamposExtrasManagerTest;
@@ -258,7 +261,9 @@ import com.fortes.rh.test.dao.hibernate.captacao.SolicitacaoBDSDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.captacao.SolicitacaoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.captacao.SolicitacaoDaoHibernateTest_JUnit4;
 import com.fortes.rh.test.dao.hibernate.cargosalario.CargoDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.cargosalario.CargoDaoHibernateTest_JUnit4;
 import com.fortes.rh.test.dao.hibernate.cargosalario.FaixaSalarialDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.cargosalario.FaixaSalarialDaoHibernateTest_JUnit4;
 import com.fortes.rh.test.dao.hibernate.cargosalario.FaixaSalarialHistoricoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.cargosalario.FaturamentoMensalDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.cargosalario.GrupoOcupacionalDaoHibernateTest_JUnit4;
@@ -280,6 +285,7 @@ import com.fortes.rh.test.dao.hibernate.desenvolvimento.ColaboradorPresencaDaoHi
 import com.fortes.rh.test.dao.hibernate.desenvolvimento.ColaboradorTurmaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.desenvolvimento.ColaboradorTurmaDaoHibernateTest_JUnit4;
 import com.fortes.rh.test.dao.hibernate.desenvolvimento.CursoDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.desenvolvimento.CursoDaoHibernateTest_JUnit4;
 import com.fortes.rh.test.dao.hibernate.desenvolvimento.CursoLntDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.desenvolvimento.DNTDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.desenvolvimento.DiaTurmaDaoHibernateTest;
@@ -291,6 +297,7 @@ import com.fortes.rh.test.dao.hibernate.desenvolvimento.TurmaDocumentoAnexoDaoHi
 import com.fortes.rh.test.dao.hibernate.geral.AreaFormacaoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.AreaInteresseDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.AreaOrganizacionalDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.geral.AreaOrganizacionalDaoHibernateTest_JUnit4;
 import com.fortes.rh.test.dao.hibernate.geral.BairroDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.BeneficioDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.CamposExtrasDaoHibernateTest;
@@ -535,6 +542,7 @@ import com.fortes.rh.test.web.action.captacao.indicador.IndicadorDuracaoPreenchi
 import com.fortes.rh.test.web.action.captacao.indicador.IndicadorTurnOverListActionTest;
 import com.fortes.rh.test.web.action.cargosalario.CargoEditActionTest;
 import com.fortes.rh.test.web.action.cargosalario.FaixaSalarialHistoricoEditActionTest;
+import com.fortes.rh.test.web.action.cargosalario.FaixaSalarialHistoricoEditActionTest_Junit4;
 import com.fortes.rh.test.web.action.cargosalario.FaixaSalarialHistoricoListActionTest;
 import com.fortes.rh.test.web.action.cargosalario.FaturamentoMensalEditActionTest;
 import com.fortes.rh.test.web.action.cargosalario.IndiceEditActionTest;
@@ -552,6 +560,7 @@ import com.fortes.rh.test.web.action.desenvolvimento.ColaboradorTurmaEditActionT
 import com.fortes.rh.test.web.action.desenvolvimento.ColaboradorTurmaListActionTest;
 import com.fortes.rh.test.web.action.desenvolvimento.CursoEditActionTest;
 import com.fortes.rh.test.web.action.desenvolvimento.CursoListActionTest;
+import com.fortes.rh.test.web.action.desenvolvimento.CursoListActionTest_Junit4;
 import com.fortes.rh.test.web.action.desenvolvimento.DNTEditActionTest;
 import com.fortes.rh.test.web.action.desenvolvimento.DNTListActionTest;
 import com.fortes.rh.test.web.action.desenvolvimento.DiaTurmaEditActionTest;
@@ -632,6 +641,7 @@ import com.fortes.rh.test.web.action.sesmt.AreaVivenciaEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.AreaVivenciaPcmatEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.AtividadeSegurancaPcmatEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.CandidatoEleicaoListActionTest;
+import com.fortes.rh.test.web.action.sesmt.CandidatoEleicaoListActionTest_JUnit4;
 import com.fortes.rh.test.web.action.sesmt.CatEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.CertificacaoEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.ClinicaAutorizadaEditActionTest;
@@ -778,6 +788,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	ConhecimentoListActionTest.class,
 	ConhecimentoDaoHibernateTest.class,
 	ConhecimentoManagerTest.class,
+	ConhecimentoManagerTest_Junit4.class,
 	        
 	AtitudeEditActionTest.class,
 	AtitudeDaoHibernateTest.class,
@@ -864,9 +875,11 @@ import com.fortes.test.web.tags.LinkTagTest;
 	CargoManagerTest.class,
 	CargoManagerTest_Junit4.class,
 	CargoDaoHibernateTest.class,
+	CargoDaoHibernateTest_JUnit4.class,
 	CargoEditActionTest.class,
 
 	FaixaSalarialDaoHibernateTest.class,
+	FaixaSalarialDaoHibernateTest_JUnit4.class,
 	FaixaSalarialManagerTest.class,
 	FaixaSalarialManagerTest_JUnit4.class,
 	FaixaSalarialHistoricoDaoHibernateTest.class,
@@ -874,6 +887,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	FaixaSalarialHistoricoManagerTest_JUnit4.class,
 	FaixaSalarialHistoricoListActionTest.class,
 	FaixaSalarialHistoricoEditActionTest.class,
+	FaixaSalarialHistoricoEditActionTest_Junit4.class,
 
 	GrupoOcupacionalManagerTest.class,
 	GrupoOcupacionalDaoHibernateTest_JUnit4.class,
@@ -919,9 +933,12 @@ import com.fortes.test.web.tags.LinkTagTest;
 
     //DESENVOLVIMENTO
 	CursoDaoHibernateTest.class,
+	CursoDaoHibernateTest_JUnit4.class,
 	CursoManagerTest.class,
+	CursoManagerTest_Junit4.class,
 	CursoEditActionTest.class,
 	CursoListActionTest.class,
+	CursoListActionTest_Junit4.class,
 
 	DiaTurmaDaoHibernateTest.class,
 	DiaTurmaEditActionTest.class,
@@ -1007,7 +1024,9 @@ import com.fortes.test.web.tags.LinkTagTest;
 	AreaInteresseListActionTest.class,
 	AreaInteresseEditActionTest.class,
 	AreaOrganizacionalDaoHibernateTest.class,
+	AreaOrganizacionalDaoHibernateTest_JUnit4.class,
 	AreaOrganizacionalManagerTest.class,
+	AreaOrganizacionalManagerTest_Junit4.class,
 	ColaboradorTest.class,
 	ColaboradorManagerTest.class,
 	ColaboradorManagerTest_Junit4.class,
@@ -1316,6 +1335,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	CandidatoEleicaoManagerTest.class,
 	CandidatoEleicaoTest.class,
 	CandidatoEleicaoListActionTest.class,
+	CandidatoEleicaoListActionTest_JUnit4.class,
 
 	ComissaoTest.class,
 	ComissaoEleicaoDaoHibernateTest.class,

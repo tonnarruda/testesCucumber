@@ -25,63 +25,52 @@ import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.web.tags.CheckBox;
 
-public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implements CursoManager
-{
+public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implements CursoManager {
 	private AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager;
 	private PlatformTransactionManager transactionManager;
 	private ColaboradorManager colaboradorManager;
 	private CursoLntManager cursoLntManager;
 
-	public Curso findByIdProjection(Long cursoId)
-	{
+	public Curso findByIdProjection(Long cursoId) {
 		return getDao().findByIdProjection(cursoId);
 	}
-	
-	public Collection<Curso> findByIdProjection(Long[] cursoIds)
-	{
+
+	public Collection<Curso> findByIdProjection(Long[] cursoIds) {
 		return getDao().findByIdProjection(cursoIds);
 	}
 
-	public Collection<Curso> findAllSelect(Long empresaId)
-	{
+	public Collection<Curso> findAllSelect(Long empresaId) {
 		return getDao().findAllSelect(empresaId);
 	}
 
-	public Collection<Curso> findCursosSemTurma(Long empresaId)
-	{
+	public Collection<Curso> findCursosSemTurma(Long empresaId) {
 		return getDao().findCursosSemTurma(empresaId);
 	}
 
-	public String getConteudoProgramatico(Long id)
-	{
+	public String getConteudoProgramatico(Long id) {
 		return getDao().getConteudoProgramatico(id);
 	}
 
-	public Collection<Curso> findByCertificacao(Long certificacaoId)
-	{
+	public Collection<Curso> findByCertificacao(Long certificacaoId) {
 		return getDao().findByCertificacao(certificacaoId);
 	}
 
-	public Collection<Curso> findAllByEmpresasParticipantes(Long... empresasIds) 
-	{
+	public Collection<Curso> findAllByEmpresasParticipantes(Long... empresasIds) {
 		return getDao().findAllByEmpresasParticipantes(empresasIds);
 	}
-	
-	public IndicadorTreinamento montaIndicadoresTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] areasIds, Long[] cursoIds, Long[] estabelecimentosIds, boolean considerarDiaTurmaCompreendidoNoPeriodo)
-	{
+
+	public IndicadorTreinamento montaIndicadoresTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] areasIds, Long[] cursoIds, Long[] estabelecimentosIds, boolean considerarDiaTurmaCompreendidoNoPeriodo) {
 		IndicadorTreinamento indicadorTreinamento;
-		if(considerarDiaTurmaCompreendidoNoPeriodo){
+		if (considerarDiaTurmaCompreendidoNoPeriodo) {
 			indicadorTreinamento = getDao().findIndicadorTreinamentoCustos(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, cursoIds);
-			indicadorTreinamento.setSomaHorasRatiada(getDao().findQtdHorasRatiada(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, cursoIds, true)
-					+ getDao().findQtdHorasRatiada(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, cursoIds, false));
+			indicadorTreinamento.setSomaHorasRatiada(getDao().findQtdHorasRatiada(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, cursoIds, true) + getDao().findQtdHorasRatiada(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, cursoIds, false));
 			indicadorTreinamento.setTotalHorasTreinamento(getDao().findCargaHorariaTreinamentoRatiada(cursoIds, empresaIds, estabelecimentosIds, areasIds, dataIni, dataFim, true, true)
 					+ getDao().findCargaHorariaTreinamentoRatiada(cursoIds, empresaIds, estabelecimentosIds, areasIds, dataIni, dataFim, true, false));
-		}
-		else{
+		} else {
 			indicadorTreinamento = getDao().findIndicadorHorasTreinamentos(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, cursoIds);
 			indicadorTreinamento.setTotalHorasTreinamento(getDao().findCargaHorariaTotalTreinamento(cursoIds, empresaIds, estabelecimentosIds, areasIds, dataIni, dataFim, true));
 		}
-		
+
 		indicadorTreinamento.setDataIni(dataIni);
 		indicadorTreinamento.setDataFim(dataFim);
 
@@ -89,13 +78,13 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 		Double qtdHorasRatiada = indicadorTreinamento.getSomaHorasRatiada();
 		Double somaCustos = indicadorTreinamento.getSomaCustos();
 
-		indicadorTreinamento.setCustoMedioHora( qtdHoras > 0 ? somaCustos / qtdHoras : 0);
-		
+		indicadorTreinamento.setCustoMedioHora(qtdHoras > 0 ? somaCustos / qtdHoras : 0);
+
 		Double custoPerCapita = 0d;
 		Double horasPerCapita = 0d;
 		Double percentualFrequencia = 0d;
 		Double percentualInvestimento = 0d;
-		
+
 		if (indicadorTreinamento.getQtdColaboradoresFiltrados() > 0)
 			custoPerCapita = (somaCustos / indicadorTreinamento.getQtdColaboradoresFiltrados());
 
@@ -107,62 +96,57 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 			horasPerCapita = qtdHorasRatiada / qtdAtivos;
 
 		indicadorTreinamento.setHorasPerCapita(horasPerCapita);
-		
+
 		ColaboradorTurmaManager colaboradorTurmaManager = (ColaboradorTurmaManager) SpringUtil.getBean("colaboradorTurmaManager");
 		percentualFrequencia = colaboradorTurmaManager.percentualFrequencia(dataIni, dataFim, empresaIds, cursoIds, areasIds, estabelecimentosIds);
 		indicadorTreinamento.setPercentualFrequencia(percentualFrequencia);
-		
+
 		TurmaManager turmaManager = (TurmaManager) SpringUtil.getBean("turmaManager");
 		percentualInvestimento = turmaManager.getPercentualInvestimento(somaCustos, dataIni, dataFim, empresaIds);
 		indicadorTreinamento.setPercentualInvestimento(percentualInvestimento);
-		
+
 		return indicadorTreinamento;
 	}
-	
-	public Integer findQtdColaboradoresInscritosTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursosIds)
-	{
+
+	public Integer findQtdColaboradoresInscritosTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursosIds) {
 		return getDao().findQtdColaboradoresInscritosTreinamentos(dataIni, dataFim, empresaIds, cursosIds);
 	}
 
-	public Integer findSomaColaboradoresPrevistosTreinamentos(Date dataIni, Date dataFim, Long empresaId)
-	{
+	public Integer findSomaColaboradoresPrevistosTreinamentos(Date dataIni, Date dataFim, Long empresaId) {
 		Integer resultado = getDao().findSomaColaboradoresPrevistosTreinamentos(dataIni, dataFim, empresaId);
 		return (resultado != null ? resultado : new Integer(0));
 	}
 
-	public Integer countTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds, Boolean realizado)
-	{
+	public Integer countTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds, Boolean realizado) {
 		return getDao().countTreinamentos(dataIni, dataFim, empresaIds, cursoIds, realizado);
 	}
 
-	public Collection<Long> findComAvaliacao(Long empresaId, Date dataIni, Date dataFim)
-	{
+	public Collection<Long> findComAvaliacao(Long empresaId, Date dataIni, Date dataFim) {
 		return getDao().findComAvaliacao(empresaId, dataIni, dataFim);
 	}
-	
+
 	@TesteAutomatico
 	public Collection<AutoCompleteVO> getAutoComplete(String descricao, Long empresaId) {
 		return getDao().getAutoComplete(descricao, empresaId);
 	}
 
-	public void update(Curso curso, Empresa empresa, String[] avaliacaoCursoIds) throws Exception
-	{
+	public void update(Curso curso, Empresa empresa, String[] avaliacaoCursoIds) throws Exception {
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		TransactionStatus status = transactionManager.getTransaction(def);
-		
+
 		if (avaliacaoCursoIds == null || avaliacaoCursoIds.length == 0)
 			avaliacaoCursoIds = null;
-		
+
 		try {
 			aproveitamentoAvaliacaoCursoManager.remove(curso.getId(), avaliacaoCursoIds);
 			CollectionUtil<AvaliacaoCurso> collectionUtil = new CollectionUtil<AvaliacaoCurso>();
 			curso.setAvaliacaoCursos(collectionUtil.convertArrayStringToCollection(AvaliacaoCurso.class, avaliacaoCursoIds));
 			update(curso);
 			transactionManager.commit(status);
-			
+
 			cursoLntManager.updateNomeNovoCurso(curso.getId(), curso.getNome());
-		
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			transactionManager.rollback(status);
@@ -170,25 +154,21 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 		}
 	}
 
-	public Collection<Curso> findByFiltro(Integer page, Integer pagingSize, Curso curso, Long empresaId)
-	{
+	public Collection<Curso> findByFiltro(Integer page, Integer pagingSize, Curso curso, Long empresaId) {
 		return getDao().findByFiltro(page, pagingSize, curso, empresaId);
 	}
 
-	public Integer getCount(Curso curso, Long empresaId)
-	{
+	public Integer getCount(Curso curso, Long empresaId) {
 		return getDao().getCount(curso, empresaId);
 	}
 
-	public Curso saveClone(Curso curso, Long empresaId)
-	{
+	public Curso saveClone(Curso curso, Long empresaId) {
 		curso.setId(null);
 		curso.setEmpresaId(empresaId);
 		return (Curso) getDao().save(curso);
 	}
 
-	public String somaCargaHoraria(Collection<Turma> turmas)
-	{
+	public String somaCargaHoraria(Collection<Turma> turmas) {
 		Integer totalCargaHoraria = 0;
 		for (Turma turma : turmas) {
 			totalCargaHoraria += (turma.getCurso().getCargaHoraria() == null ? 0 : turma.getCurso().getCargaHoraria());
@@ -196,35 +176,27 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 		return Curso.formataCargaHorariaMinutos(totalCargaHoraria, "");
 	}
 
-	public Collection<CheckBox> populaCheckOrderDescricao(Long empresaId)
-	{
+	public Collection<CheckBox> populaCheckOrderDescricao(Long empresaId) {
 		Collection<CheckBox> checks = new ArrayList<CheckBox>();
-		try
-		{
-			Collection<Curso> cursos = findToList(new String[]{"id", "nome"},new String[]{"id", "nome"},new String[]{"empresa.id"},new Object[]{empresaId},new String[]{"nome"});
+		try {
+			Collection<Curso> cursos = findToList(new String[] { "id", "nome" }, new String[] { "id", "nome" }, new String[] { "empresa.id" }, new Object[] { empresaId }, new String[] { "nome" });
 			CollectionUtil<Curso> cu1 = new CollectionUtil<Curso>();
 			cursos = cu1.sortCollectionStringIgnoreCase(cursos, "nome");
 
 			checks = CheckListBoxUtil.populaCheckListBox(cursos, "getId", "getNome", null);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		return checks;
 	}
 
-
-	public Collection<Curso> populaCursos(Long[] cursosCheckIds)
-	{
+	public Collection<Curso> populaCursos(Long[] cursosCheckIds) {
 		Collection<Curso> cursos = new ArrayList<Curso>();
 
-		if(cursosCheckIds != null && cursosCheckIds.length > 0)
-		{
+		if (cursosCheckIds != null && cursosCheckIds.length > 0) {
 			Curso curso;
-			for (Long cursoId: cursosCheckIds)
-			{
+			for (Long cursoId : cursosCheckIds) {
 				curso = new Curso();
 				curso.setId(cursoId);
 
@@ -234,37 +206,36 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 
 		return cursos;
 	}
-	
-	public Collection<Empresa> findAllEmpresasParticipantes(Long cursoId) 
-	{
+
+	public Collection<Empresa> findAllEmpresasParticipantes(Long cursoId) {
 		Collection<Empresa> empresas = getDao().findEmpresasParticipantes(cursoId);
 		empresas.add(getDao().findEmpresaByCurso(cursoId));
-		
+
 		return empresas;
 	}
-	
-	public boolean existeEmpresasNoCurso(Long empresaId, Long cursoId) 
-	{
+
+	public boolean existeEmpresasNoCurso(Long empresaId, Long cursoId) {
 		return getDao().existeEmpresasNoCurso(empresaId, cursoId);
 	}
 
-	public Collection<Curso> findByCompetencia(Long conhecimentoId, Character tipoCompetencia)
-	{
+	public Collection<Curso> findByCompetencia(Long conhecimentoId, Character tipoCompetencia) {
 		return getDao().findByCompetencia(conhecimentoId, tipoCompetencia);
 	}
-	
-	public boolean existeAvaliacaoAlunoDeTipoNotaOuPorcentagemRespondida(Long cursoId) 
-	{
-		return getDao().existeAvaliacaoAlunoRespondida(cursoId, TipoAvaliacaoCurso.NOTA); // Esse tipo pode ser também PERCENTUAL
+
+	public boolean existeAvaliacaoAlunoDeTipoNotaOuPorcentagemRespondida(Long cursoId) {
+		return getDao().existeAvaliacaoAlunoRespondida(cursoId, TipoAvaliacaoCurso.NOTA); // Esse
+																							// tipo
+																							// pode
+																							// ser
+																							// também
+																							// PERCENTUAL
 	}
-	
-	public boolean existeAvaliacaoAlunoDeTipoAvaliacaoRespondida(Long cursoId)
-	{
+
+	public boolean existeAvaliacaoAlunoDeTipoAvaliacaoRespondida(Long cursoId) {
 		return getDao().existeAvaliacaoAlunoRespondida(cursoId, TipoAvaliacaoCurso.AVALIACAO);
 	}
-	
-	public Collection<Curso> somaDespesasPorCurso(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds) 
-	{
+
+	public Collection<Curso> somaDespesasPorCurso(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds) {
 		return getDao().somaDespesasPorCurso(dataIni, dataFim, empresaIds, cursoIds);
 	}
 
@@ -276,7 +247,7 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 			clonarCurso(id, empresaSistemaId, novoTituloCursoClonado);
 	}
 
-	private void clonarCurso(Long id, Long empresaId, String novoTituloCursoClonado) throws Exception{
+	private void clonarCurso(Long id, Long empresaId, String novoTituloCursoClonado) throws Exception {
 		Empresa empresa = new Empresa();
 		empresa.setId(empresaId);
 
@@ -284,8 +255,8 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 
 		CollectionUtil<AvaliacaoCurso> collectionUtil = new CollectionUtil<AvaliacaoCurso>();
 		curso.setAvaliacaoCursos(collectionUtil.convertArrayStringToCollection(AvaliacaoCurso.class, collectionUtil.convertCollectionToArrayIdsString(curso.getAvaliacaoCursos())));
-		
-		if(novoTituloCursoClonado == null || novoTituloCursoClonado.isEmpty())
+
+		if (novoTituloCursoClonado == null || novoTituloCursoClonado.isEmpty())
 			curso.setNome(curso.getNome() + " (Clone)");
 		else
 			curso.setNome(novoTituloCursoClonado);
@@ -301,27 +272,23 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 		getDao().save(curso);
 	}
 
-	public Collection<Curso> findByEmpresaIdAndCursosId(Long[] empresasIds,	Long... cursosIds) 
-	{
+	public Collection<Curso> findByEmpresaIdAndCursosId(Long[] empresasIds, Long... cursosIds) {
 		return getDao().findByEmpresaIdAndCursosId(empresasIds, cursosIds);
 	}
-	
+
 	public boolean existePresenca(Long cursoId) {
 		return getDao().existePresenca(cursoId);
 	}
-	
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
+
+	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
 		this.colaboradorManager = colaboradorManager;
 	}
 
-	public void setAproveitamentoAvaliacaoCursoManager(AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager)
-	{
+	public void setAproveitamentoAvaliacaoCursoManager(AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager) {
 		this.aproveitamentoAvaliacaoCursoManager = aproveitamentoAvaliacaoCursoManager;
 	}
 
-	public void setTransactionManager(PlatformTransactionManager transactionManager)
-	{
+	public void setTransactionManager(PlatformTransactionManager transactionManager) {
 		this.transactionManager = transactionManager;
 	}
 
@@ -331,13 +298,10 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 
 	public Collection<CheckBox> populaCheckListCurso(Long empresaId) {
 		Collection<CheckBox> checks = new ArrayList<CheckBox>();
-		try
-		{
+		try {
 			Collection<Curso> cursos = findAllByEmpresasParticipantes(empresaId);
 			checks = CheckListBoxUtil.populaCheckListBox(cursos, "getId", "getNome", null);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -350,5 +314,9 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 
 	public boolean existeTurmaRealizada(Long cursoId) {
 		return getDao().existeTurmaRealizada(cursoId);
+	}
+
+	public void removeVinculoComConhecimento(Long conhecimentoId) {
+		getDao().removeVinculoComConhecimento(conhecimentoId);
 	}
 }

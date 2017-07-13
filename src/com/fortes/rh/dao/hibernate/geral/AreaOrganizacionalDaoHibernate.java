@@ -693,4 +693,9 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 		criteria.setProjection(p);
 		return criteria.list().size() > 0;
 	}
+
+	public void removeVinculoComConhecimento(Long conhecimentoId) {
+		String[] sql = new String[] {"delete from conhecimento_areaorganizacional where conhecimentos_id = " + conhecimentoId};
+		JDBCConnection.executeQuery(sql);
+	}
 }

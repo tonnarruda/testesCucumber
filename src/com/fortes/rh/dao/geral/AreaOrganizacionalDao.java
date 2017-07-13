@@ -37,4 +37,5 @@ public interface AreaOrganizacionalDao extends GenericDao<AreaOrganizacional>
 	public Collection<Long> getAncestraisIds (Long... areasIds);
 	public Collection<Long> getDescendentesIds (Long... areasIds);
 	public boolean isResposnsavelOrCoResponsavelPorPropriaArea(Long colaboradorId, int tipoResponsavel);
+	public void removeVinculoComConhecimento(Long conhecimentoId);
 }

@@ -1,8 +1,9 @@
 package com.fortes.rh.test.dao.hibernate.geral;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.Collection;
 import java.util.Date;
@@ -10,50 +11,42 @@ import java.util.Date;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.fortes.rh.dao.acesso.UsuarioDao;
-import com.fortes.rh.dao.captacao.ConhecimentoDao;
-import com.fortes.rh.dao.cargosalario.CargoDao;
+import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
-import com.fortes.rh.dao.desenvolvimento.LntDao;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
-import com.fortes.rh.dao.geral.EstabelecimentoDao;
-import com.fortes.rh.dao.geral.GrupoACDao;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.test.dao.DaoHibernateAnnotationTest;
+import com.fortes.rh.test.dao.GenericDaoHibernateTest_JUnit4;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 
-public class AreaOrganizacionalDaoHibernateTest_JUnit4  extends DaoHibernateAnnotationTest
+public class AreaOrganizacionalDaoHibernateTest_JUnit4  extends GenericDaoHibernateTest_JUnit4<AreaOrganizacional>
 {
 	@Autowired
 	private AreaOrganizacionalDao areaOrganizacionalDao;
 	@Autowired
-	private CargoDao cargoDao;
-	@Autowired
 	private EmpresaDao empresaDao;
-	@Autowired
-	private ConhecimentoDao conhecimentoDao;
-	@Autowired
-	private GrupoACDao grupoACDao;
 	@Autowired
 	private ColaboradorDao colaboradorDao;
 	@Autowired
-	private UsuarioDao usuarioDao;
-	@Autowired
-	private EstabelecimentoDao estabelecimentoDao;
-	@Autowired
 	private HistoricoColaboradorDao historicoColaboradorDao;
-	@Autowired
-	private LntDao lntDao;
 
+	@Override
+	public AreaOrganizacional getEntity() {
+		return AreaOrganizacionalFactory.getEntity();
+	}
+
+	public GenericDao<AreaOrganizacional> getGenericDao() {
+		return areaOrganizacionalDao;
+	}
+	
 	@Test
 	public void testGetAncestraisIds(){
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -134,5 +127,17 @@ public class AreaOrganizacionalDaoHibernateTest_JUnit4  extends DaoHibernateAnno
 		
 		assertTrue(areaOrganizacionalDao.isResposnsavelOrCoResponsavelPorPropriaArea(colaborador.getId(), AreaOrganizacional.RESPONSAVEL));
 		assertFalse(areaOrganizacionalDao.isResposnsavelOrCoResponsavelPorPropriaArea(colaborador.getId(), AreaOrganizacional.CORRESPONSAVEL));
+	}
+	
+	@Test
+	public void testRemoverVinculoComConhecimento() {
+
+		try {
+			areaOrganizacionalDao.removeVinculoComConhecimento(1l);
+			assertTrue(true);
+		} catch (Exception e) {
+			fail("Erro ao remover vinculo com conhecimento");
+		}
+
 	}
 }

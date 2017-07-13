@@ -100,6 +100,7 @@ public class ConhecimentoEditAction extends MyActionSupportEdit implements Model
 		
 		montaConhecimento();
 		conhecimentoManager.save(conhecimento);
+		addActionSuccess("Conhecimento cadastrado com sucesso.");
 		
 		return Action.SUCCESS;
 	}
@@ -115,6 +116,7 @@ public class ConhecimentoEditAction extends MyActionSupportEdit implements Model
 		
 		montaConhecimento();
 		conhecimentoManager.update(conhecimento);
+		addActionSuccess("Conhecimento atualizado com sucesso.");
 		
 		return Action.SUCCESS;
 	}

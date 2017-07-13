@@ -19,6 +19,7 @@ import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
+import com.fortes.rh.config.JDBCConnection;
 import com.fortes.rh.dao.desenvolvimento.CursoDao;
 import com.fortes.rh.model.desenvolvimento.AproveitamentoAvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.ColaboradorPresenca;
@@ -896,5 +897,11 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		
 		criteria.setProjection(p);
 		return criteria.list().size() > 0;
+	}
+
+	public void removeVinculoComConhecimento(Long conhecimentoId) {
+		
+		String[] sql = new String[] {"delete from conhecimento_curso where conhecimentos_id = " + conhecimentoId};
+		JDBCConnection.executeQuery(sql);
 	}
 }

@@ -1,30 +1,26 @@
 package com.fortes.rh.test.web.action.sesmt;
 
-import java.util.ArrayList;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-import mockit.Mockit;
-
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.mockito.Mockito.*;
 
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.sesmt.CandidatoEleicaoManager;
 import com.fortes.rh.business.sesmt.EleicaoManager;
 import com.fortes.rh.model.sesmt.CandidatoEleicao;
-import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.sesmt.CandidatoEleicaoFactory;
 import com.fortes.rh.test.factory.sesmt.EleicaoFactory;
 import com.fortes.rh.test.util.mockObjects.MockRelatorioUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.sesmt.CandidatoEleicaoListAction;
+
+import mockit.Mockit;
 
 public class CandidatoEleicaoListActionTest_JUnit4 
 {

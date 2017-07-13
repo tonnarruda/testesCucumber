@@ -45,4 +45,5 @@ public interface CursoManager extends GenericManager<Curso>
 	public boolean existePresenca(Long cursoId);
 	public Collection<AutoCompleteVO> getAutoComplete(String descricao, Long empresaId);
 	public boolean existeTurmaRealizada(Long cursoId);
+	public void removeVinculoComConhecimento(Long conhecimentoId) throws Exception;
 }

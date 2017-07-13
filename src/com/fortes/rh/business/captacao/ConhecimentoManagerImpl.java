@@ -20,75 +20,58 @@ import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.web.tags.CheckBox;
 
-public class ConhecimentoManagerImpl  extends GenericManagerImpl<Conhecimento, ConhecimentoDao> implements ConhecimentoManager
-{
+public class ConhecimentoManagerImpl extends GenericManagerImpl<Conhecimento, ConhecimentoDao> implements ConhecimentoManager {
 	AreaOrganizacionalManager areaOrganizacionalManager;
-	
 	CriterioAvaliacaoCompetenciaManager criterioAvaliacaoCompetenciaManager;
 
-	public Collection<Conhecimento> findByAreasOrganizacionalIds(Long[] areasOrganizacionais, Long empresaId)
-	{
-		return getDao().findByAreaOrganizacionalIds(areasOrganizacionais,empresaId);
+	public Collection<Conhecimento> findByAreasOrganizacionalIds(Long[] areasOrganizacionais, Long empresaId) {
+		return getDao().findByAreaOrganizacionalIds(areasOrganizacionais, empresaId);
 	}
 
-	public Collection<Conhecimento> findByAreaInteresse(Long[] areasChek, Long empresaId)
-	{
+	public Collection<Conhecimento> findByAreaInteresse(Long[] areasChek, Long empresaId) {
 		return getDao().findByAreaInteresse(areasChek, empresaId);
 	}
 
-	public Collection<Conhecimento> findAllSelect(Long... empresaIds)
-	{
+	public Collection<Conhecimento> findAllSelect(Long... empresaIds) {
 		return getDao().findAllSelect(empresaIds);
 	}
 
-	public Collection<Conhecimento> findByCargo(Long cargoId)
-	{
+	public Collection<Conhecimento> findByCargo(Long cargoId) {
 		return getDao().findByCargo(cargoId);
 	}
 
-	public Collection<CheckBox> populaCheckOrderNome(Long... empresaIds)
-	{
+	public Collection<CheckBox> populaCheckOrderNome(Long... empresaIds) {
 		Collection<CheckBox> checks = new ArrayList<CheckBox>();
-		try
-		{
+		try {
 			Collection<Conhecimento> conhecimentos = getDao().findAllSelect(empresaIds);
 			checks = CheckListBoxUtil.populaCheckListBox(conhecimentos, "getId", "getNome", null);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		return checks;
 	}
 
-	public Collection<CheckBox> populaCheckOrderNomeByAreaOrganizacionals(Long[] areasId, long empresaId)
-	{
+	public Collection<CheckBox> populaCheckOrderNomeByAreaOrganizacionals(Long[] areasId, long empresaId) {
 		Collection<CheckBox> checks = new ArrayList<CheckBox>();
-		try
-		{
+		try {
 			Collection<Conhecimento> conhecimentos = getDao().findByAreaOrganizacionalIds(areasId, empresaId);
 			checks = CheckListBoxUtil.populaCheckListBox(conhecimentos, "getId", "getNome", null);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		return checks;
 	}
 
-	public Collection<Conhecimento> populaConhecimentos(String[] conhecimentosCheck)
-	{
+	public Collection<Conhecimento> populaConhecimentos(String[] conhecimentosCheck) {
 		Collection<Conhecimento> conhecimentos = new ArrayList<Conhecimento>();
 
-		if(conhecimentosCheck != null && conhecimentosCheck.length > 0)
-		{
+		if (conhecimentosCheck != null && conhecimentosCheck.length > 0) {
 			Long conhecimentosIds[] = LongUtil.arrayStringToArrayLong(conhecimentosCheck);
 
 			Conhecimento conhecimento;
-			for (Long conhecimentoId: conhecimentosIds)
-			{
+			for (Long conhecimentoId : conhecimentosIds) {
 				conhecimento = new Conhecimento();
 				conhecimento.setId(conhecimentoId);
 
@@ -99,53 +82,46 @@ public class ConhecimentoManagerImpl  extends GenericManagerImpl<Conhecimento, C
 		return conhecimentos;
 	}
 
-	public Conhecimento findByIdProjection(Long conhecimentoId)
-	{
+	public Conhecimento findByIdProjection(Long conhecimentoId) {
 		Conhecimento conhecimento = getDao().findByIdProjection(conhecimentoId);
-		
-		if(conhecimento != null) {
+
+		if (conhecimento != null) {
 			CursoManager cursoManager = (CursoManager) SpringUtil.getBean("cursoManager");
 			conhecimento.setAreaOrganizacionals(areaOrganizacionalManager.findByConhecimento(conhecimentoId));
 			conhecimento.setCursos(cursoManager.findByCompetencia(conhecimentoId, TipoCompetencia.CONHECIMENTO));
-			conhecimento.setCriteriosAvaliacaoCompetencia(criterioAvaliacaoCompetenciaManager.findByCompetencia(conhecimentoId,TipoCompetencia.CONHECIMENTO));
+			conhecimento.setCriteriosAvaliacaoCompetencia(criterioAvaliacaoCompetenciaManager.findByCompetencia(conhecimentoId, TipoCompetencia.CONHECIMENTO));
 		}
 
 		return conhecimento;
 	}
 
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
-	{
+	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
 		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
-	
-	public void setCriterioAvaliacaoCompetenciaManager(
-			CriterioAvaliacaoCompetenciaManager criterioAvaliacaoCompetenciaManager) {
+
+	public void setCriterioAvaliacaoCompetenciaManager(CriterioAvaliacaoCompetenciaManager criterioAvaliacaoCompetenciaManager) {
 		this.criterioAvaliacaoCompetenciaManager = criterioAvaliacaoCompetenciaManager;
 	}
 
-	public Collection<Conhecimento> findAllSelectDistinctNome(Long[] empresaIds)
-	{
+	public Collection<Conhecimento> findAllSelectDistinctNome(Long[] empresaIds) {
 		return getDao().findAllSelectDistinctNome(empresaIds);
 	}
 
-	public Collection<Conhecimento> findByCandidato(Long candidatoId)
-	{
+	public Collection<Conhecimento> findByCandidato(Long candidatoId) {
 		return getDao().findByCandidato(candidatoId);
 	}
 
 	public void sincronizar(Long empresaOrigemId, Long empresaDestinoId, Map<Long, Long> areaIds, Map<Long, Long> conhecimentoIds) {
-		
+
 		Collection<Conhecimento> conhecimentosDeOrigem = getDao().findSincronizarConhecimentos(empresaOrigemId);
-		
-		for (Conhecimento conhecimento : conhecimentosDeOrigem)
-		{
+
+		for (Conhecimento conhecimento : conhecimentosDeOrigem) {
 			Long conhecimentoOrigemId = conhecimento.getId();
 			clonar(conhecimento, empresaDestinoId);
 			conhecimentoIds.put(conhecimentoOrigemId, conhecimento.getId());
 			Collection<CriterioAvaliacaoCompetencia> criterioAvaliacaoCompetencias = criterioAvaliacaoCompetenciaManager.sincronizaCriterioAvaliacaoCompetencia(conhecimentoOrigemId, TipoCompetencia.CONHECIMENTO);
 			conhecimento.setCriteriosAvaliacaoCompetencia(criterioAvaliacaoCompetencias);
-			if(areaIds != null && areaIds.size() > 0)
-			{
+			if (areaIds != null && areaIds.size() > 0) {
 				Collection<AreaOrganizacional> areas = areaOrganizacionalManager.findByConhecimento(conhecimentoOrigemId);
 				popularAreasComIds(areaIds, areas);
 				conhecimento.setAreaOrganizacionals(areas);
@@ -158,8 +134,7 @@ public class ConhecimentoManagerImpl  extends GenericManagerImpl<Conhecimento, C
 		}
 	}
 
-	private void popularAreasComIds(Map<Long, Long> areaIds, Collection<AreaOrganizacional> areas)
-	{
+	private void popularAreasComIds(Map<Long, Long> areaIds, Collection<AreaOrganizacional> areas) {
 		for (AreaOrganizacional areaOrganizacional : areas) {
 			Long id = areaIds.get(areaOrganizacional.getId());
 			if (id == null)
@@ -168,16 +143,24 @@ public class ConhecimentoManagerImpl  extends GenericManagerImpl<Conhecimento, C
 		}
 	}
 
-	private void clonar(Conhecimento conhecimento, Long empresaDestinoId)
-	{
+	private void clonar(Conhecimento conhecimento, Long empresaDestinoId) {
 		conhecimento.setId(null);
 		conhecimento.setAreaOrganizacionals(null);
 		conhecimento.setEmpresaId(empresaDestinoId);
 		getDao().save(conhecimento);
 	}
 
-	public void deleteByAreaOrganizacional(Long[] areaIds) throws Exception
-	{
+	public void deleteByAreaOrganizacional(Long[] areaIds) throws Exception {
 		getDao().deleteByAreaOrganizacional(areaIds);
+	}
+
+	public void delete(Long conhecimentoId) throws Exception {
+		CursoManager cursoManager = (CursoManager) SpringUtil.getBean("cursoManager");
+
+		criterioAvaliacaoCompetenciaManager.removeByCompetencia(conhecimentoId, TipoCompetencia.CONHECIMENTO, null);
+		areaOrganizacionalManager.removeVinculoComConhecimento(conhecimentoId);
+		cursoManager.removeVinculoComConhecimento(conhecimentoId);
+		
+		remove(conhecimentoId);
 	}
 }

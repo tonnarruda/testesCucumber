@@ -41,4 +41,5 @@ public interface CursoDao extends GenericDao<Curso>
 	public Integer findCargaHorariaTreinamentoRatiada(Long[] cursosIds, Long[] empresasIds, Long[] estabelecimentosIds, Long[] areasIds, Date dataInicio, Date dataFim, boolean realizada, boolean turmasComHorasNoDia);
 	public Collection<AutoCompleteVO> getAutoComplete(String descricao, Long empresaId);
 	public boolean existeTurmaRealizada(Long cursoId);
+	public void removeVinculoComConhecimento(Long conhecimentoId);
 }

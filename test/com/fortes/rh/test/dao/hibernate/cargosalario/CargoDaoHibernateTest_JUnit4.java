@@ -9,15 +9,9 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.dao.GenericDao;
-import com.fortes.rh.dao.captacao.SolicitacaoDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
-import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
-import com.fortes.rh.dao.cargosalario.GrupoOcupacionalDao;
-import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
-import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
-import com.fortes.rh.dao.geral.GrupoACDao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
@@ -31,49 +25,17 @@ public class CargoDaoHibernateTest_JUnit4 extends GenericDaoHibernateTest_JUnit4
 	@Autowired
 	private CargoDao cargoDao;
 	@Autowired
-	private GrupoOcupacionalDao grupoOcupacionalDao;
-	@Autowired
 	private EmpresaDao empresaDao;
 	@Autowired
 	private AreaOrganizacionalDao areaOrganizacionalDao;
-	@Autowired
-	private FaixaSalarialDao faixaSalarialDao;
-	@Autowired
-	private ColaboradorDao colaboradorDao;
-	@Autowired
-	private HistoricoColaboradorDao historicoColaboradorDao;
-	@Autowired
-	private SolicitacaoDao solicitacaoDao;
-	@Autowired
-	private GrupoACDao grupoACDao;
 
 	public Cargo getEntity()
 	{
-		Cargo cargo = new Cargo();
-
-		cargo.setAreaFormacaos(null);
-		cargo.setAreasOrganizacionais(null);
-		cargo.setCompetencias("competencias");
-		cargo.setConhecimentos(null);
-		cargo.setEscolaridade("e");
-		cargo.setExperiencia("e");
-		cargo.setFaixaSalarials(null);
-		cargo.setGrupoOcupacional(null);
-		cargo.setId(null);
-		cargo.setMissao("missão");
-		cargo.setNome("nome");
-		cargo.setNomeMercado("nomemercado");
-		cargo.setObservacao("observação");
-		cargo.setRecrutamento("recrutamento");
-		cargo.setResponsabilidades("responsabilidades");
-		cargo.setSelecao("seleção");
-		cargo.setEmpresa(null);
-
-		return cargo;
+		return CargoFactory.getEntity();
 	}
 	
 	public GenericDao<Cargo> getGenericDao() {
-		return null;
+		return cargoDao;
 	}
 
 	@Test
