@@ -8,6 +8,6 @@ public class ValidacaoQuantidadeConstraints extends Validacao{
 	public void execute(ParametrosDoSistema parametrosDoSistema) throws FortesException {
 		Integer qtdConstraints = getParametrosDoSistemaManager().getQuantidadeConstraintsDoBanco();
 		if(!qtdConstraints.equals(parametrosDoSistema.getQuantidadeConstraints()))
-			throw new FortesException("A integridade das tabelas do banco de dados está inconsistente. Entre em contato com o suporte.");
+			throw new FortesException("A estrutura do banco de dados está diferente da esperada. É de extrema importância que você entre em contato com a Fortes Tecnologia para que o problema seja analisado.");
 	}
 }

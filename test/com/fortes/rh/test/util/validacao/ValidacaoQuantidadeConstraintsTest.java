@@ -1,5 +1,6 @@
 package com.fortes.rh.test.util.validacao;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
@@ -70,6 +71,7 @@ public class ValidacaoQuantidadeConstraintsTest
 			fail("Erro na validação de quantidade constraints.");			
 		} catch (FortesException e) {
 			assertTrue(true);
+			assertEquals("A estrutura do banco de dados está diferente da esperada. É de extrema importância que você entre em contato com a Fortes Tecnologia para que o problema seja analisado.", e.getMessage());
 		}
 		
 		

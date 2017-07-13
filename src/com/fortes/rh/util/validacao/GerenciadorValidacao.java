@@ -33,7 +33,6 @@ public class GerenciadorValidacao {
 				} catch (FortesException e) {
 					mensagens.add(e.getMessage());
 				}
-				
 			}
 			
 		});		

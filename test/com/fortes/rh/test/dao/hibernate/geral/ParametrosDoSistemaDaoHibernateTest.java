@@ -71,4 +71,13 @@ public class ParametrosDoSistemaDaoHibernateTest extends GenericDaoHibernateTest
 		
 		assertEquals("/fortesrhteste", parametrosDoSistemaDao.getContexto());
 	}
+	
+    public void testGetQuantidadeConstraintsDoBanco() 
+    {
+        ParametrosDoSistema ps = ParametrosDoSistemaFactory.getEntity();
+        ps.setQuantidadeConstraints(426);
+        parametrosDoSistemaDao.save(ps);
+
+        assertTrue(parametrosDoSistemaDao.getQuantidadeConstraintsDoBanco() > 400);
+    }
 }

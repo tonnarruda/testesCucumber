@@ -1,5 +1,6 @@
 package com.fortes.rh.test.util.validacao;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
@@ -64,6 +65,7 @@ public class ValidacaoVersaoTest
 			fail("Erro na validação da versão.");			
 		} catch (FortesException e) {
 			assertTrue(true);
+			assertEquals("A versão do banco de dados está incompatível com a versão da aplicação. Entre em contato com a Fortes Tecnologia.", e.getMessage());
 		}
 	}
 }
