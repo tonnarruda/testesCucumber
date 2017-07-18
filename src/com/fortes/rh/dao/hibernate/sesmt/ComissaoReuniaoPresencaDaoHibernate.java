@@ -143,7 +143,10 @@ public class ComissaoReuniaoPresencaDaoHibernate extends GenericDaoHibernate<Com
 		criteria.createCriteria("c.comissaoReunioes", "cr", Criteria.LEFT_JOIN);
 		criteria.createCriteria("cr.comissaoReuniaoPresencas", "crp", Criteria.LEFT_JOIN);
 		criteria.setProjection(Projections.distinct(p));
+		
 		criteria.add(Expression.eq("c.id", comissaoId));
+		criteria.add(Expression.eqProperty("co.id", "crp.colaborador.id"));
+
 		criteria.addOrder(Order.asc("co.nome"));
 		criteria.addOrder(Order.asc("cr.data"));
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ComissaoReuniaoPresenca.class));

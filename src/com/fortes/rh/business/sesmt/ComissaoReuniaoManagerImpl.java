@@ -60,10 +60,10 @@ public class ComissaoReuniaoManagerImpl extends GenericManagerImpl<ComissaoReuni
 
 	public ComissaoReuniao saveOrUpdate(ComissaoReuniao comissaoReuniao, String[] colaboradorChecks, String[] colaboradorIds, String[] justificativas) throws Exception
 	{
-	if (comissaoReuniao.getId() == null)
-		this.save(comissaoReuniao);
-	else
-		this.update(comissaoReuniao);
+		if (comissaoReuniao.getId() == null)
+			this.save(comissaoReuniao);
+		else
+			this.update(comissaoReuniao);
 
 		comissaoReuniaoPresencaManager.saveOrUpdateByReuniao(comissaoReuniao.getId(), comissaoReuniao.getComissao().getId(), colaboradorChecks, colaboradorIds, justificativas);
 

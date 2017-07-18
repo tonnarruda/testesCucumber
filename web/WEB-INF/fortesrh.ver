@@ -2,11 +2,12 @@
 <Versoes>
 	<Versao id="1.1.18X.21X" db="" data="xx/xx/2017">
 		<Item visivel="S" motivo="S17060000280"><![CDATA[C&S > Cadastros > Conhecimentos > Excluir: Melhoria na mensagem exibida após tentar realizar exclusão de registro que tem relacionamento com outras entidades.]]></Item>
-		<Item visivel="S" motivo="S16060000240"><![CDATA[Sistema: Validação da quantidade de constraints e versão do banco de dados.]]></Item>
+		<Item visivel="S" motivo="P17070000103"><![CDATA[SESMT > Cadastros > CIPA > Comissões > Editar > Reuniões > Frequência: Ajuste na inconsistência ao visualizar as frequências.]]></Item>
+		<Item visivel="N" motivo="S16060000240"><![CDATA[Sistema: Validação da quantidade de constraints e versão do banco de dados.]]></Item>
 		<Item visivel="N" motivo="P17070000031"><![CDATA[Sistema: Ajuste de inconsistência que removia a informação de ativo e inativo do nome dos cargos.]]></Item>
 	</Versao>
 	<Versao id="1.1.182.214" db="" data="05/07/2017">
-		<Item visivel="S" motivo="P17060000045"><![CDATA[R&S > Cadastro > Candidatos > Editar > Formação Escolar > Inserir/Editar : Ajuste da inconsistência que ocasionava a duplicação de formações escolares ao salvar/editar um candidato.]]></Item>
+		<Item visivel="S" motivo="P17060000045"><![CDATA[R&S > Cadastros > Candidatos > Editar > Formação Escolar > Inserir/Editar : Ajuste da inconsistência que ocasionava a duplicação de formações escolares ao salvar/editar um candidato.]]></Item>
 		<Item visivel="S" motivo="P17060000103"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Inserir/Editar: Novo campo para inserir experiências almejadas pela solicitação.]]></Item>
 		<Item visivel="S" motivo="P17060000147"><![CDATA[C&S > Relatórios > Descrição de Cargos: Ajuste da inconsistência que ocasionava remoção dos filtros ativos e inativos quando o campo "Exibir somente os cargos vinculados às areas organizacionais acima" for desmarcado.]]></Item>
 		<Item visivel="S" motivo="S17010000267"><![CDATA[C&S > Relatórios > Análise de Tabela Salarial: Nova restrição nos filtros de áres organizacionais, grupo ocupacionais e cargos, para os usuários que são gestores das áreas organizacionais e/ou possuir em seu perfil a permissão "Visualizar todas as Áreas Organizacionais".]]></Item>
