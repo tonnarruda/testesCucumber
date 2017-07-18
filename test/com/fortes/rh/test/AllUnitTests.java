@@ -750,7 +750,6 @@ import com.fortes.rh.test.web.dwr.TurmaDWRTest;
 import com.fortes.rh.test.web.dwr.TurmaDWRTest_Junit4;
 import com.fortes.rh.test.web.dwr.UsuarioMensagemDWRTest;
 import com.fortes.rh.test.web.dwr.lntDWRTest;
-import com.fortes.rh.util.validacao.ValidacaoQuantidadeConstraints;
 import com.fortes.rh.web.action.exportacao.ExportacaoActionTest;
 import com.fortes.rh.web.action.externo.ExternoActionTest;
 import com.fortes.test.web.tags.LinkTagTest;
@@ -759,7 +758,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 @Suite.SuiteClasses({
 	
 //	SOMENTE PARA O COVERAGE
-	NoAllUnitTests.class, //Habilitado temporariamente
+//	NoAllUnitTests.class, //Habilitado temporariamente
 //	IntegracaoACTests.class,
 	
 	PapelManagerTest.class,
@@ -1672,6 +1671,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	
 	//EXTERNO
 	ExternoActionTest.class
+	
 	
 })
 public class AllUnitTests { }
