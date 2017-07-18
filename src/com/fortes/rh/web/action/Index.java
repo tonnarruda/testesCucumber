@@ -160,9 +160,6 @@ public class Index extends MyActionSupport
 			if (SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_CAD_PERIODOEXPERIENCIA"}) )
 				avaliacaos = avaliacaoManager.findPeriodoExperienciaIsNull(TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA, empresaId);
 			
-			validaIntegracaoAC();
-			realizaValidacoes(parametrosDoSistema);
-			
 			if ( colaborador != null && colaborador.getId() != null && SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VISUALIZAR_PROGRESSAO"}))
 				historicoColaboradors = historicoColaboradorManager.progressaoColaborador(colaborador.getId(), getEmpresaSistema().getId());
 			
@@ -175,6 +172,9 @@ public class Index extends MyActionSupport
 			
 			if (StringUtils.isNotBlank(actionMsg))
 				addActionMessage(actionMsg);
+			
+			validaIntegracaoAC();
+			realizaValidacoes(parametrosDoSistema);
 		}
 		catch (Exception e)
 		{
