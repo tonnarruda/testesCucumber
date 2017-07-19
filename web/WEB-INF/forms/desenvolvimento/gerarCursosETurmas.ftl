@@ -10,6 +10,8 @@
 		@import url('<@ww.url value="/css/displaytag.css"/>');
 		@import url('<@ww.url value="/css/lntList.css"/>');
 		@import url('<@ww.url value="/css/font-awesome.min.css?version=${versao}"/>');
+
+		#formDialog { display: none; }
 	</style>
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/TurmaDWR.js?version=${versao}"/>'></script>
@@ -17,8 +19,9 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/DiaTurmaDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/popupDespesasTurma.js?version=${versao}"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.price_format.1.6.min.js"/>"></script>
-
+	
 	<title>Gerar Cursos e Turmas</title>
 	
 	<style>
@@ -421,6 +424,8 @@
 				<@ww.textfield required="true" label="Descrição" name="turma.descricao" id="desc" maxLength="100" cssClass="valid" cssStyle="width: 491px;"/>
 				<@ww.textfield required="true" label="Instrutor" size="55" name="turma.instrutor" id="inst" maxLength="100" cssStyle="width: 396px;" liClass="liLeft"/>
 				<@ww.textfield required="true" label="Custo" id="custo" name="turma.custo" cssClass="moeda valid" maxlength="12" size="12" cssStyle="width:90px; text-align:right;"/>
+				<a href="javascript:;" id="detalharCusto"  onclick="abrirPopupDespesas();" title="Detalhamento dos custos"><img src="<@ww.url includeParams="none" value="/imgs/agrupar.gif"/>" border="0" align="absMiddle"/></a>
+				
 				<@ww.textfield label="Instituição" maxLength="100" name="turma.instituicao" id="instituicao"  cssStyle="width: 396px;" liClass="liLeft"/>
 				<@ww.textfield label="Horário" maxLength="20" name="turma.horario" id="horario" cssStyle="width: 90px;"/>
 				
@@ -458,6 +463,21 @@
 			</div>
 		</@ww.form>
 		
+	</div>
+	<div id="formDialog" title="Detalhamento dos custos">
+		<br />
+		
+		Total R$  
+		<span id="totalCustos"></span>
+		
+		<br /><br />
+		
+		<@display.table name="tipoDespesas" id="tipoDespesa" class="dados" style="width:450px;">
+			<@display.column property="descricao" title="Descrição"/>
+			<@display.column title="Custo (R$)" style="text-align: center; width:120px;">
+				<input type="text" name="${tipoDespesa.id}" class="despesa moedaCurso" maxlength="10" size="12" style="text-align:right; width: 90px;border:1px solid #BEBEBE;"/>
+			</@display.column>
+		</@display.table>
 	</div>
 </body>
 </html>
