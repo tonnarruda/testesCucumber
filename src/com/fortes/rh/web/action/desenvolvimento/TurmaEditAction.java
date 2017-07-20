@@ -196,26 +196,6 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	
 	private File assinaturaDigital;
 	
-	public AvaliacaoTurma getAvaliacaoTurma()
-	{
-		return avaliacaoTurma;
-	}
-
-	public void setAvaliacaoTurma(AvaliacaoTurma avaliacaoTurma)
-	{
-		this.avaliacaoTurma = avaliacaoTurma;
-	}
-
-	public Collection<AvaliacaoTurma> getAvaliacaoTurmas()
-	{
-		return avaliacaoTurmas;
-	}
-
-	public void setAvaliacaoTurmas(Collection<AvaliacaoTurma> avaliacaoTurmas)
-	{
-		this.avaliacaoTurmas = avaliacaoTurmas;
-	}
-
 	public void prepare() throws Exception
 	{
 		Long cursoId = 0L;
@@ -1378,5 +1358,25 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 
 	public void setColabTurmaId_notas(String[] colabTurmaId_notas) {
 		this.colabTurmaId_notas = colabTurmaId_notas;
+	}
+	
+	public AvaliacaoTurma getAvaliacaoTurma()
+	{
+		return avaliacaoTurma;
+	}
+
+	public void setAvaliacaoTurma(AvaliacaoTurma avaliacaoTurma)
+	{
+		this.avaliacaoTurma = avaliacaoTurma;
+	}
+
+	public Collection<AvaliacaoTurma> getAvaliacaoTurmas()
+	{
+		return avaliacaoTurmas;
+	}
+
+	public void setAvaliacaoTurmas(Collection<AvaliacaoTurma> avaliacaoTurmas)
+	{
+		this.avaliacaoTurmas = avaliacaoTurmas;
 	}
 }

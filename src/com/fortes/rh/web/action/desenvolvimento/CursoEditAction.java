@@ -55,9 +55,14 @@ public class CursoEditAction extends MyActionSupportEdit implements ModelDriven
 
 	private void prepare() throws Exception
 	{
-		if(curso != null && curso.getId() != null)
+		if(curso != null && curso.getId() != null){
 			curso = (Curso) cursoManager.findById(curso.getId());
-		
+		} else if(cursoLntId != null) {
+			CursoLnt cursoLnt = cursoLntManager.findById(cursoLntId);
+			curso.setNome(cursoLnt.getNomeNovoCurso());
+			curso.setCargaHoraria(cursoLnt.getCargaHoraria());
+		}
+			
 		codigoTRUCurso = getEmpresaSistema().isCodigoTruCurso();
 		Collection<AvaliacaoCurso> avaliacoes = avaliacaoCursoManager.findAll(new String[]{"titulo"});
 		avaliacaoCursoCheckList = CheckListBoxUtil.populaCheckListBox(avaliacoes, "getId", "getTitulo", null);

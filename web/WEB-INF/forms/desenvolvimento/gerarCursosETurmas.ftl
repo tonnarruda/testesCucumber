@@ -10,8 +10,6 @@
 		@import url('<@ww.url value="/css/displaytag.css"/>');
 		@import url('<@ww.url value="/css/lntList.css"/>');
 		@import url('<@ww.url value="/css/font-awesome.min.css?version=${versao}"/>');
-
-		#formDialog { display: none; }
 	</style>
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/TurmaDWR.js?version=${versao}"/>'></script>
@@ -19,7 +17,8 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/DiaTurmaDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/popupDespesasTurma.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/formataValores.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/popupDespesasTurmaLnt.js?version=${versao}"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.price_format.1.6.min.js"/>"></script>
 	
 	<title>Gerar Cursos e Turmas</title>
@@ -51,6 +50,9 @@
 		}
 		.curso .actions button:hover {
 			color: #448cbe;
+		}
+		.teste button {
+			height: 50px !important;
 		}
 		#participantes-turma{
 			float: top;
@@ -131,7 +133,16 @@
 				});
 			});
 			
-			$('#dialog').dialog({title: "Cadastro de Turma", resizable: false, modal: true, width: 960, close: function(ev, ui) { $('#continuarAdd').val('false'); $('#carregar').attr('disabled', true).css('opacity', '0.2'); $(this).dialog("close");  } });
+			$('#dialog').dialog({	title: "Cadastro de Turma", 
+									resizable: false, 
+									modal: true, 
+									width: 960, 
+									close: function(ev, ui) { 
+										$('#continuarAdd').val('false'); 
+										$('#carregar').attr('disabled', true).css('opacity', '0.2'); 
+										$(this).dialog("close");  
+									} 
+								});
 		}
 		
 		function populaDias()
@@ -297,7 +308,7 @@
 		
 		function populaTurma(turmaId)
 		{
-			turmaPopulada=null;
+			turmaPopulada = null;
 			$("#horario").val('').removeAttr('disabled').css('background-color','#FFF');
 			$("#instituicao").val('').removeAttr('disabled').css('background-color','#FFF');
 			$("#desc").val('').removeAttr('disabled').css('background-color','#FFF');
@@ -315,6 +326,7 @@
 			$('#prevFim_button').show();
 			
 			if(turmaId){
+				$('#detalharCusto').hide();
 				TurmaDWR.getTurma(turmaId, function(turma){
 					$("#horario").val(turma.horario).attr('disabled', 'disabled').css('background-color','#ececec');
 					$("#instituicao").val(turma.instituicao).attr('disabled', 'disabled').css('background-color','#ececec');
@@ -339,12 +351,12 @@
 						$("input[name='avaliacaoTurmasCheck'][value='" + avaliacaoTurma.id + "']").attr("checked","checked");
 					});
 				});
+			} else {
+				$('#detalharCusto').show();
 			}
 		}
 		
 		function carregaTurmaAnterior(){
-			console.log($('#turmaIdAnterior').val());
-			
 			if($('#turmaIdAnterior').val() != null && $('#turmaIdAnterior').val()){
 				TurmaDWR.getTurma($('#turmaIdAnterior').val(), function(turma){
 					$("#horario").val(turma.horario);
@@ -381,16 +393,16 @@
 			<@display.column title="Ações" class="acao" style = "width:90px;">
 			
 				<#if !cursoLnt.curso?exists>				
-					<@frt.link verifyRole="ROLE_MOV_CURSO" href="../../desenvolvimento/curso/prepareInsert.action?lntId=${lnt.id}&cursoLntId=${cursoLnt.id}&curso.nome=${cursoLnt.nomeNovoCurso}" imgTitle="Criar Curso" iconeClass="fa-edit"/>
-					<@frt.link verifyRole="ROLE_MOV_CURSO" imgTitle="Criar turmas/relacionar Participantes\n(Não existe curso)" iconeClass="fa-users" opacity=true/>
+					<@frt.link verifyRole="ROLE_MOV_CURSO" href="../../desenvolvimento/curso/prepareInsert.action?lntId=${lnt.id}&cursoLntId=${cursoLnt.id}" imgTitle="Criar Curso" iconeClass="fa-edit"/>
+					<@frt.link verifyRole="ROLE_MOV_CURSO" imgTitle="Criar turmas/relacionar participantes\n(Não existe curso)" iconeClass="fa-users" opacity=true/>
 					<@frt.link verifyRole="ROLE_MOV_LNT_GERAR_CURSOS_E_TURMAS" imgTitle="Visualizar\n(Não existe curso)" iconeClass="fa-eye" opacity=true/>
 				<#else>
 					<@frt.link verifyRole="ROLE_MOV_CURSO" imgTitle="Criar Curso\n(Curso já existe)" iconeClass="fa-edit" opacity=true/>
 
 					<#if cursoLnt.existePerticipanteASerRelacionado>
-						<@frt.link verifyRole="ROLE_MOV_CURSO" imgTitle="Criar turmas/relacionar Participantes" iconeClass="fa-users" onclick="criarTurma('${cursoLnt.curso.id}', '${cursoLnt.id}');"/>
+						<@frt.link verifyRole="ROLE_MOV_CURSO" imgTitle="Criar turmas/relacionar participantes" iconeClass="fa-users" onclick="criarTurma('${cursoLnt.curso.id}', '${cursoLnt.id}');"/>
 					<#else>
-						<@frt.link verifyRole="ROLE_MOV_CURSO" imgTitle="Criar turmas/relacionar Participantes\n(Não existem participantes a serem relacionados)" iconeClass="fa-users" opacity=true/>
+						<@frt.link verifyRole="ROLE_MOV_CURSO" imgTitle="Criar turmas/relacionar participantes\n(Não existem participantes a serem relacionados)" iconeClass="fa-users" opacity=true/>
 					</#if>
 					
 					<@frt.link verifyRole="ROLE_MOV_LNT_GERAR_CURSOS_E_TURMAS" imgTitle="Visualizar" iconeClass="fa-eye" href="visualizarParticipantesCursoLnt.action?cursoLntId=${cursoLnt.id}"/>
@@ -420,11 +432,20 @@
 				<@ww.hidden name="lnt.id" value="${lnt.id}" />
 				<@ww.hidden name="turmaIdAnterior" id="turmaIdAnterior"/>
 				<@ww.hidden name="continuarAdd" id="continuarAdd" value="false" />
-				<@ww.select onclick="populaTurma(this.value)" label="Turma" id="turma" name="turma.id" headerKey="" headerValue="Selecione..." list="turmas" listKey="id" listValue="descricao" cssStyle="width: 492px;"/>
+				<@ww.hidden name="custos" id="custos"/>
+				
+				<@ww.select onchange="populaTurma(this.value)" label="Turma" id="turma" name="turma.id" headerKey="" headerValue="Selecione..." list="turmas" listKey="id" listValue="descricao" cssStyle="width: 492px;"/>
 				<@ww.textfield required="true" label="Descrição" name="turma.descricao" id="desc" maxLength="100" cssClass="valid" cssStyle="width: 491px;"/>
 				<@ww.textfield required="true" label="Instrutor" size="55" name="turma.instrutor" id="inst" maxLength="100" cssStyle="width: 396px;" liClass="liLeft"/>
-				<@ww.textfield required="true" label="Custo" id="custo" name="turma.custo" cssClass="moeda valid" maxlength="12" size="12" cssStyle="width:90px; text-align:right;"/>
-				<a href="javascript:;" id="detalharCusto"  onclick="abrirPopupDespesas();" title="Detalhamento dos custos"><img src="<@ww.url includeParams="none" value="/imgs/agrupar.gif"/>" border="0" align="absMiddle"/></a>
+
+				<div class="wwctrl" id="wwctrl_custo">
+					<div class="wwlbl" id="wwlbl_custo">
+						<label class="desc" for="custo"> Custo (R$):<span class="req">* </span></label>
+					</div> 
+				
+					<@ww.textfield required="true" id="custo" name="turma.custo"  cssClass="moeda valid" maxlength="12" size="12" cssStyle="width:90px; text-align:right;" theme="simple"/>
+					<a href="javascript:;" id="detalharCusto"  onclick="abrirPopupDespesas();" title="Detalhamento dos custos"><img src="<@ww.url includeParams="none" value="/imgs/agrupar.gif"/>" border="0" align="absMiddle"/></a>
+				</div>				
 				
 				<@ww.textfield label="Instituição" maxLength="100" name="turma.instituicao" id="instituicao"  cssStyle="width: 396px;" liClass="liLeft"/>
 				<@ww.textfield label="Horário" maxLength="20" name="turma.horario" id="horario" cssStyle="width: 90px;"/>
@@ -464,7 +485,7 @@
 		</@ww.form>
 		
 	</div>
-	<div id="formDialog" title="Detalhamento dos custos">
+	<div id="formDialog" title="Detalhamento dos custos" style="display: none;">
 		<br />
 		
 		Total R$  

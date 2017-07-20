@@ -18,6 +18,7 @@ import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
+import com.fortes.rh.business.geral.TipoDespesaManager;
 import com.fortes.rh.business.pesquisa.AvaliacaoTurmaManager;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.CursoLnt;
@@ -27,6 +28,7 @@ import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.dicionario.StatusLnt;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.TipoDespesa;
 import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
@@ -53,6 +55,7 @@ public class LntEditAction extends MyActionSupportList
 	private TurmaManager turmaManager;
 	private TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager;
 	private ColaboradorTurmaManager colaboradorTurmaManager;
+	private TipoDespesaManager tipoDespesaManager;
 	
 	private Lnt lnt = new Lnt();
 	private char status = StatusLnt.TODOS;
@@ -65,6 +68,7 @@ public class LntEditAction extends MyActionSupportList
 	private Collection<CursoLnt> cursosLnt;
 	private Collection<ParticipanteCursoLnt> participantesCursosLnt = new ArrayList<ParticipanteCursoLnt>();
 	private Map<String, Object> parametros;
+	private Collection<TipoDespesa> tipoDespesas;
 	private Turma turma;
 	
 	private String[] participantesRemovidos;
@@ -96,6 +100,7 @@ public class LntEditAction extends MyActionSupportList
 	private String msg;
 	private boolean continuarAdd = false;
 	private CursoLnt cursoLnt;
+	private String custos;
 
 	@SuppressWarnings("static-access")
 	private void populaEmpresasLnt(Collection<Empresa> empresas) throws Exception {
@@ -147,6 +152,7 @@ public class LntEditAction extends MyActionSupportList
 		Collection<AvaliacaoTurma> avaliacaoTurmas = avaliacaoTurmaManager.findAllSelect(true, getEmpresaSistema().getId());
 		avaliacaoTurmasCheckList = CheckListBoxUtil.populaCheckListBox(avaliacaoTurmas, "getId", "getQuestionarioTitulo", null);
 		
+		tipoDespesas = tipoDespesaManager.find(new String[]{"empresa.id"}, new Object[]{getEmpresaSistema().getId()}, new String[]{"descricao"});
 		cursosLnt = cursoLntManager.findByLntId(lnt.getId());
 		
 		
@@ -471,7 +477,7 @@ public class LntEditAction extends MyActionSupportList
 				if (turma.getId() != null){
 					Collection<ColaboradorTurma> colaboradoresTurmas = colaboradorTurmaManager.findByTurma(turma.getId(), null, true, null, null, false, null);
 					colaboradorTurmaManager.insereColaboradorTurmas(participantesCheck, colaboradoresTurmas, turma, null, 0, null, getEmpresaSistema().isControlarVencimentoPorCertificacao(), new CursoLnt(cursoLntId));
-					msg = "Participantes salvos com sucesso.";
+					msg = "Participantes gravados com sucesso.";
 				}else{
 					turma.setEmpresa(getEmpresaSistema());
 					Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
@@ -479,8 +485,8 @@ public class LntEditAction extends MyActionSupportList
 					for (Long  colabId: participantesCheck) 
 						colaboradorTurmas.add(new ColaboradorTurma(new CursoLnt(cursoLntId), colabId, turma.getCurso().getId()));
 
-					turmaManager.salvarTurmaDiasCustosColaboradoresAvaliacoes(turma, diasCheck, null, colaboradorTurmas,  avaliacaoTurmasCheck, horasIni, horasFim, turmaAvaliacaoTurmaManager);
-					msg = "Turma e Participantes salvos com sucesso.";
+					turmaManager.salvarTurmaDiasCustosColaboradoresAvaliacoes(turma, diasCheck, custos, colaboradorTurmas,  avaliacaoTurmasCheck, horasIni, horasFim, turmaAvaliacaoTurmaManager);
+					msg = "Turma e participantes gravados com sucesso.";
 				}
 
 				cursoId = turma.getCurso().getId();
@@ -805,5 +811,21 @@ public class LntEditAction extends MyActionSupportList
 
 	public void setParticipantesRemovidos(String[] participantesRemovidos) {
 		this.participantesRemovidos = participantesRemovidos;
+	}
+
+	public Collection<TipoDespesa> getTipoDespesas() {
+		return tipoDespesas;
+	}
+
+	public void setTipoDespesas(Collection<TipoDespesa> tipoDespesas) {
+		this.tipoDespesas = tipoDespesas;
+	}
+	
+	public void setTipoDespesaManager(TipoDespesaManager tipoDespesaManager) {
+		this.tipoDespesaManager = tipoDespesaManager;
+	}
+
+	public void setCustos(String custos) {
+		this.custos = custos;
 	}
 }
