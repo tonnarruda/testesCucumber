@@ -14,6 +14,8 @@
 			.semAcidentes span { font-size: 22px; color: #333; }
 			.graph li { padding: 13px; }
 			.legendLabel { width: 210px; }
+			.icoImprimir { float: right; cursor: pointer; }
+			#indicadores li { padding: 7px; }
 		</style>
 	
 		<!--[if lte IE 8]><script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/excanvas.min.js"/>'></script><![endif]-->
@@ -25,15 +27,67 @@
 
 		<script type="text/javascript">
 			$(function () {
-				montaPie(${grfQtdCatsPorDiaSemana}, "#catsDiaSemana", {combinePercentMin: 0.05, percentMin: 0.05});
-				montaPie(${grfQtdCatsPorHorario}, "#catsHorario", {combinePercentMin: 0.05, percentMin: 0.05});
-				montaPie(${grfQtdAfastamentosPorMotivo}, "#afastamentosMotivo", {combinePercentMin: 0.05, percentMin: 0.05});
+				
+				var afastamentoPorMotivo = ${grfQtdAfastamentosPorMotivo};
+				var catsPorDiaSemana = ${grfQtdCatsPorDiaSemana};
+				var catsPorHorario = ${grfQtdCatsPorHorario};
+				
+				montaGrafico("#catsDiaSemana",catsPorDiaSemana,'CATs por Dia da Semana', 0.05);
+				montaGrafico("#catsHorario",catsPorHorario,'CATs por Horário', 0.05);
+				montaGrafico("#afastamentosMotivo",afastamentoPorMotivo,'Total de Afastamentos por Motivo', 0.05);
+				
+				$('#totalAfastamentoMotivo').text(afastamentoPorMotivo.length);
+				$('#totalCatsPorDiaSemana').text(catsPorDiaSemana.length);
+				$('#totalCatsPorHorario').text(catsPorHorario.length);
+			
 			});
+			
+			
+			function montaGrafico(obj, dados, titulo, combinePercMin)
+			{
+		
+				montaPie(dados, obj, { combinePercentMin: combinePercMin, percentMin: 0.03, noColumns: 2, container: obj + "Legenda" });
+				
+				$(obj + "Imprimir")
+					.unbind()
+					.bind('click', 
+						function(event) 
+						{ 
+							popup = window.open("<@ww.url includeParams="none" value="/grafico.jsp"/>");
+							popup.window.onload = function() 
+							{
+								popup.focus();
+								popup.document.getElementById('popupTitulo').innerHTML = titulo;
+								
+								popup.window.opener.montaPie(dados, popup.document.getElementById('popupGrafico'), { container: popup.document.getElementById('popupGraficoLegenda'), combinePercentMin: combinePercMin, percentMin: 0.03} );
+								
+								popup.window.print();
+								popup.window.close();
+							}
+						}
+					);
+			}
+			
 			
 			function validaForm()
 			{
 				return validaFormularioEPeriodo('formBusca', new Array('dataDe','dataAte'), new Array('dataDe','dataAte'));
 			}
+			
+			function imprimirDados(titulo, conteudo)
+			{
+			
+				popup = window.open("<@ww.url includeParams="none" value="/conteudo.jsp"/>");
+				popup.window.onload = function() 
+				{
+					popup.focus();
+					popup.document.getElementById('popupTitulo').innerHTML = titulo;
+					popup.document.getElementById('popupConteudo').innerHTML = conteudo;
+					popup.window.print();
+					popup.window.close();
+				}
+			}
+			
 		</script>
 	
 		
@@ -71,37 +125,61 @@
 			</@ww.form>
 		<#include "../util/bottomFiltro.ftl" />
 
-		<div class="fieldGraph">
-			<h1>CATs por Dia da Semana</h1>
-		    <div id="catsDiaSemana" class="graph"></div>
-	    </div>
-	    
-		<div class="fieldGraph">
-			<h1>CATs por Horário</h1>
-	    	<div id="catsHorario" class="graph"></div>
-	    </div>
-	    
-	    <div class="fieldGraph">
-			<h1>Total de Afastamentos por Motivo</h1>
-	    	<div id="afastamentosMotivo" class="graph"></div>
-	    </div>
-	    
-	    <div class="fieldGraph">
-			<h1>Estatísticas do SESMT</h1>
-	    	<div class="graph">
-	    		<ul>
-	    			<li>Nº de Exames Realizados: ${qtdExamesRealizados}</li>
-	    			<li>Nº de Registros de Prontuários:	${qtdProntuarios}</li>
-	    			<li>Nº de Afastamentos pelo INSS: ${qtdAfastamentosInss}</li>
-	    			<li>Nº de Afastamentos (não afastados pelo INSS): ${qtdAfastamentosNaoInss}</li>
-	    		</ul>
-	    	</div>
-	    </div>
-	    <div style="clear: both"></div>
-	    	    
+		<table class="grid" cellspacing="5">
+			<tr>
+				<td class="grid-cell">
+					<div class="cell-title">
+						CATs por Dia da Semana (total: <span id="totalCatsPorDiaSemana"></span>)
+						<img id="catsDiaSemanaImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
+					</div>
+					<div id="catsDiaSemana" class="graph"></div>
+			    	<div style="clear:both"></div>
+				</td>
+				<td class="grid-cell">
+					<div class="cell-title">
+						CATs por Horário (total: <span id="totalCatsPorHorario"></span>)
+						<img id="catsHorarioImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
+					</div>
+					<div id="catsHorario" class="graph"></div>
+			    	<div style="clear:both"></div>
+				</td>
+				
+			</tr>
+			<tr>
+				<td class="grid-cell">
+					<div class="cell-title">
+						Total de Afastamentos por Motivo (total: <span id="totalAfastamentoMotivo"></span>)
+						<img id="afastamentosMotivoImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
+					</div>
+			    	<div id="afastamentosMotivo" class="graph"></div>
+			    	<div style="clear:both"></div>
+				</td>
+				<td class="grid-cell">
+					<div class="cell-title">
+						Estatísticas do SESMT
+						<img onclick="imprimirDados('Estatísticas do SESMT', $('#estatisticaSESMT').html())" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
+					</div>
+				<div id="estatisticaSESMT">
+		    		<div id="indicadores">
+			    		<ul>
+			    			<li>Nº de Exames Realizados: ${qtdExamesRealizados}</li>
+			    			<li>Nº de Registros de Prontuários:	${qtdProntuarios}</li>
+			    			<li>Nº de Afastamentos pelo INSS: ${qtdAfastamentosInss}</li>
+			    			<li>Nº de Afastamentos (não afastados pelo INSS): ${qtdAfastamentosNaoInss}</li>
+			    		</ul>
+		    		</div>
+	    		</div>
+			    	<div style="clear:both"></div>
+				</td>
+			</tr>
+			
+		</table>
+
 		<div class="fieldGraph bigger">
-			<h1>Estatísticas de Resultados de Exames</h1>
-	   		<div style="height:300px; overflow:scroll; overflow-x: hidden;">
+			
+			<h1>Estatísticas de Resultados de Exames <img onclick="imprimirDados('Estatísticas de Resultados de Exames', $('#estatisticaResultado').html())" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/></h1>
+				
+	   		<div id="estatisticaResultado" style="height:300px; overflow:scroll; overflow-x: hidden;">
 		   		<@display.table name="exames" id="exame" class="dados" style="width: 945px;">
 					<@display.column property="nome" title="Exame"/>
 					<@display.column property="qtdNormal" title="Qtd. Normal" style="width: 100px; text-align: right;"/>
@@ -110,7 +188,6 @@
 			</div>
 	   	</div>
 	    <div style="clear: both"></div>
-	    
 		<a name="pagebottom"></a>
 	</body>
 </html>
