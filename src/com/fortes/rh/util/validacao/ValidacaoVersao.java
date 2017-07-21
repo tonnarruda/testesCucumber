@@ -7,8 +7,8 @@ import com.fortes.rh.util.ArquivoUtil;
 public class ValidacaoVersao extends Validacao{
 
 	public void execute(ParametrosDoSistema parametrosDoSistema) throws FortesException {
-		String versao = ArquivoUtil.getVersao();
-		if(!parametrosDoSistema.getAppVersao().equals(versao))
-			throw new FortesException("A versão do banco de dados está incompatível com a versão da aplicação. Entre em contato com a Fortes Tecnologia.");
+		String versaoAplicacao = ArquivoUtil.getVersao();
+		if(!parametrosDoSistema.getAppVersao().equals(versaoAplicacao))
+			throw new FortesException("A versão do banco de dados ("+parametrosDoSistema.getAppVersao()+") está incompatível com a versão da aplicação ("+versaoAplicacao+"). Entre em contato com a <br />Fortes Tecnologia.");
 	}
 }
