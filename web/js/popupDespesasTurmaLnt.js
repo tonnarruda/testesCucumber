@@ -56,7 +56,7 @@ function abrirPopupDespesas()
 									limpaDespesas();
 								}
 							});
-	$(".ui-dialog-buttonset button").removeClass().unbind('mouseover focus');
+	$(".ui-dialog-buttonset button").removeClass().unbind('mouseover mousedown focus');
 }
 
 function somaDespesas() 
