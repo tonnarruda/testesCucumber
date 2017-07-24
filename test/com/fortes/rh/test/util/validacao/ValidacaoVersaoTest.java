@@ -52,10 +52,9 @@ public class ValidacaoVersaoTest
 	
 	@Test
 	public void executeException() {
+	    String versaoCerta = "1.1.181.213";
+	    String versaoErrada = "1.1.181.212";
 		try {
-			String versaoCerta = "1.1.181.213";
-			String versaoErrada = "1.1.181.212";
-
 			ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity(1L);
 			parametrosDoSistema.setAppVersao(versaoCerta);
 			
@@ -65,7 +64,7 @@ public class ValidacaoVersaoTest
 			fail("Erro na validação da versão.");			
 		} catch (FortesException e) {
 			assertTrue(true);
-			assertEquals("A versão do banco de dados está incompatível com a versão da aplicação. Entre em contato com a Fortes Tecnologia.", e.getMessage());
+			assertEquals("A versão do banco de dados (" + versaoCerta + ") está incompatível com a versão da aplicação (" + versaoErrada +"). Entre em contato com a <br />Fortes Tecnologia.", e.getMessage());
 		}
 	}
 }
