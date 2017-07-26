@@ -75,7 +75,8 @@ public class OrdemDeServicoManagerTest
 		colaborador.setDataAdmissao(new Date());
 		colaborador.setFuncaoNome("Função");
 		colaborador.setFuncaoId(1L);
-		colaborador.setCargoCodigoCBO("012345");
+		colaborador.setFaixaSalarialCodigoCbo("012345");
+		colaborador.getFaixaSalarial().setNomeCargo("Cargo");
 		colaborador.setFuncaoHistoricoFuncaoAtualId(1L);
 		colaborador.setFuncaoHistoricoFuncaoAtualDescricao("Descricao");
 		

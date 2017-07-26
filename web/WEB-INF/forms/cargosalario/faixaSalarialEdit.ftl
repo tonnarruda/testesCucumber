@@ -13,19 +13,35 @@
 		<#assign edicao=false/>
 	</#if>
 
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/autoCompleteFortes.js?version=${versao}"/>'></script>
+	<script src='<@ww.url includeParams="none" value="/js/fortes.js?version=${versao}"/>'></script>
+	<script src='<@ww.url includeParams="none" value="/js/functions.js?version=${versao}"/>'></script>
+	<style type="text/css">
+	    @import url('<@ww.url includeParams="none" value="/css/fortes.css?version=${versao}"/>');
+	    @import url('<@ww.url includeParams="none" value="/css/cssYui/fonts-min.css"/>');
+	    
+	    #wwgrp_descricaoCBO
+	    {
+			float: left;
+	    	background-color: #E9E9E9;
+			width: 420px;
+			padding-left: 4px;
+		}
+    </style>
+    
 	<script type="text/javascript">
 		function validaForm(indice, edicao)
 		{
 			<#if edicao>
-				return validaFormulario('form', new Array('nome'), null);
+				return validaFormulario('form', new Array('nome', 'codigoCBO'), null);
 			<#else>
 				if(document.getElementById('tipo').value == indice)
 				{
-					return validaFormulario('form', new Array('nome','data','indice','quantidade'), new Array('data'));
+					return validaFormulario('form', new Array('nome','data','indice','quantidade','codigoCBO'), new Array('data'));
 				}
 				else
 				{
-					return validaFormulario('form', new Array('nome','data','valor'), new Array('data', 'valor'));
+					return validaFormulario('form', new Array('nome','data','valor', 'codigoCBO'), new Array('data', 'valor'));
 				}
 			</#if>
 		}
@@ -36,6 +52,22 @@
 			    $imgs.addClass('disabledImg').
 			    	attr('title', 'Não é possível excluir o último histórico.').
 			    	parent().removeAttr('onclick'); 
+		});
+		
+		$(document).ready(function() {
+			var urlFind = "<@ww.url includeParams="none" value="/geral/codigoCBO/find.action"/>";
+			
+			$("#descricaoCBO").autocomplete({
+				source: ajaxData(urlFind),				 
+				minLength: 2,
+				select: function( event, ui ) { 
+					$("#codigoCBO").val(ui.item.id);
+				}
+			}).data( "autocomplete" )._renderItem = renderData;
+
+			$('#descricaoCBO').focus(function() {
+			    $(this).select();
+			});
 		});
 			
 	</script>
@@ -56,6 +88,10 @@
 		<#else>
 			<@ww.hidden	name="faixaSalarialAux.nomeACPessoal" />
 		</#if>
+		
+		<@ww.textfield label="Cód. CBO" name="faixaSalarialAux.codigoCbo" id="codigoCBO" onkeypress="return(somenteNumeros(event,''));" size="6"  maxLength="6" liClass="liLeft" required="true"/>
+		<@ww.textfield label="Busca CBO (Código ou Descrição)" name="descricaoCBO" id="descricaoCBO" cssStyle="width: 414px;"/>
+		<div style="clear:both"></div>
 		
         <@frt.checkListBox label="Certificações" name="certificacaosCheck" list="certificacaosCheckList" filtro="true"/>
 

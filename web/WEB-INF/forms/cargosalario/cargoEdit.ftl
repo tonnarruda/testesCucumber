@@ -22,23 +22,9 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AtitudeDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/autoCompleteFortes.js?version=${versao}"/>'></script>
 	<script src='<@ww.url includeParams="none" value="/js/fortes.js?version=${versao}"/>'></script>
 	<script src='<@ww.url includeParams="none" value="/js/functions.js?version=${versao}"/>'></script>
-	
-	<style type="text/css">
-	    @import url('<@ww.url includeParams="none" value="/css/fortes.css?version=${versao}"/>');
-	    @import url('<@ww.url includeParams="none" value="/css/cssYui/fonts-min.css"/>');
-	    
-	    #wwgrp_descricaoCBO
-	    {
-			float: left;
-	    	background-color: #E9E9E9;
-			width: 420px;
-			padding-left: 4px;
-		}
-    </style>
-	
+		
 	<script language='javascript'>
 		function populaCHA(frm, nameCheck)
 		{
@@ -64,30 +50,6 @@
 																								marcarListCheckBox(frm, 'atitudesCheck', atitudesIds);			
 																							});
 		}
-
-		$(document).ready(function() {
-			var urlFind = "<@ww.url includeParams="none" value="/geral/codigoCBO/find.action"/>";
-			
-			
-			<#if empresaSistema.acIntegra>
-				$('#codigoCBO, #descricaoCBO').attr('readOnly','readOnly')
-												.attr('title','Não é possível alterar o CBO quando integrado com o Fortes Pessoal.')
-												.css('background-color','#F2F2F2');
-				
-			<#else>
-				$("#descricaoCBO").autocomplete({
-					source: ajaxData(urlFind),				 
-					minLength: 2,
-					select: function( event, ui ) { 
-						$("#codigoCBO").val(ui.item.id);
-					}
-				}).data( "autocomplete" )._renderItem = renderData;
-	
-				$('#descricaoCBO').focus(function() {
-				    $(this).select();
-				});
-			</#if>
-		});
 	</script>
 
 </head>
@@ -103,10 +65,6 @@
 	<@ww.textfield label="Nomenclatura" name="cargo.nome" id="nome" required="true" cssStyle="width:500px;" maxLength="100"/>
 	<@ww.checkbox labelPosition="right" label="Exibir no modulo externo" name="cargo.exibirModuloExterno" />
 	<@ww.textfield label="Nomenclatura de Mercado" name="cargo.nomeMercado" id="nomeMercado" required="true" cssStyle="width:500px;" maxLength="100"/>
-	
-	<@ww.textfield label="Cód. CBO" name="cargo.cboCodigo" id="codigoCBO" onkeypress="return(somenteNumeros(event,''));" size="6"  maxLength="6" liClass="liLeft"/>
-	<@ww.textfield label="Busca CBO (Código ou Descrição)" name="descricaoCBO" id="descricaoCBO" cssStyle="width: 414px;"/>
-	<div style="clear:both"></div>
 
 	<@ww.select label="Ativo" name="cargo.ativo" list=r"#{true:'Sim',false:'Não'}"/>
 	<@ww.select label="Grupo Ocupacional" name="cargo.grupoOcupacional.id" list="grupoOcupacionals" emptyOption="true" listKey="id" listValue="nome" headerKey="-1"/>

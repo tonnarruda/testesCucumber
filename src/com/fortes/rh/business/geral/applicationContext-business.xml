@@ -232,9 +232,6 @@
     <property name="transactionManager">
       <ref bean="transactionManager" />
     </property>
-    <property name="codigoCBOManager">
-      <ref bean="codigoCBOManager" />
-    </property>
   </bean>
   <bean id="cargoManager" parent="parentManager">
     <property name="proxyInterfaces">

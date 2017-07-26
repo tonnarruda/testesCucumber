@@ -90,8 +90,6 @@ public class Cargo extends AbstractModel implements Serializable
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="cargo")
 	private Collection<Funcao> funcaos;
 	
-	@Column(length=6)
-	private String cboCodigo;
 	private boolean ativo = ATIVO;
 	private Boolean exibirModuloExterno = false;
 	public Cargo()
@@ -332,16 +330,6 @@ public class Cargo extends AbstractModel implements Serializable
 		string.append("empresa", this.empresa);
 
 		return string.toString();
-	}
-
-	public String getCboCodigo()
-	{
-		return cboCodigo;
-	}
-
-	public void setCboCodigo(String cboCodigo)
-	{
-		this.cboCodigo = cboCodigo;
 	}
 
 	@NaoAudita

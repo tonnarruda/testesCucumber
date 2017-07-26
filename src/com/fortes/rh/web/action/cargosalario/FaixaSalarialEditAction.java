@@ -9,6 +9,7 @@ import com.fortes.rh.business.cargosalario.FaixaSalarialHistoricoManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.cargosalario.IndiceManager;
 import com.fortes.rh.business.desenvolvimento.CertificacaoManager;
+import com.fortes.rh.business.geral.CodigoCBOManager;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
@@ -32,6 +33,7 @@ public class FaixaSalarialEditAction extends MyActionSupportEdit implements Mode
 	private IndiceManager indiceManager;
 	private FaixaSalarialHistoricoManager faixaSalarialHistoricoManager;
 	private CertificacaoManager certificacaoManager;
+	private CodigoCBOManager codigoCBOManager;
 
 	private FaixaSalarial faixaSalarialAux;
 	private FaixaSalarialHistorico faixaSalarialHistorico;
@@ -50,7 +52,8 @@ public class FaixaSalarialEditAction extends MyActionSupportEdit implements Mode
 
 	private Double salario;
 	private boolean integradoAC;
-
+	private String descricaoCBO;
+	
 	public String execute() throws Exception
 	{
 		return Action.SUCCESS;
@@ -89,6 +92,8 @@ public class FaixaSalarialEditAction extends MyActionSupportEdit implements Mode
 		prepare();
 		certificacaosCheckList = CheckListBoxUtil.marcaCheckListBox(certificacaosCheckList, certificacaoManager.findByFaixa(faixaSalarialAux.getId()), "getId");
 		faixaSalarialHistoricoVOs = faixaSalarialHistoricoManager.findAllComHistoricoIndice(faixaSalarialAux.getId());
+		
+		descricaoCBO = codigoCBOManager.findDescricaoByCodigo(faixaSalarialAux.getCodigoCbo());
 		
 		return Action.SUCCESS;
 	}
@@ -298,4 +303,13 @@ public class FaixaSalarialEditAction extends MyActionSupportEdit implements Mode
 	public Collection<FaixaSalarialHistoricoVO> getFaixaSalarialHistoricoVOs() {
 		return faixaSalarialHistoricoVOs;
 	}
+	
+    public String getDescricaoCBO() {
+        return descricaoCBO;
+    }
+
+    public void setCodigoCBOManager(CodigoCBOManager codigoCBOManager) {
+        this.codigoCBOManager = codigoCBOManager;
+    }
+
 }

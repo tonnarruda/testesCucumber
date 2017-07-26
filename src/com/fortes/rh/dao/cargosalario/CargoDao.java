@@ -9,7 +9,6 @@ import java.util.Collection;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.model.cargosalario.Cargo;
-import com.fortes.rh.model.ws.TCargo;
 
 public interface CargoDao extends GenericDao<Cargo>
 {
@@ -30,7 +29,6 @@ public interface CargoDao extends GenericDao<Cargo>
 	public Collection<Cargo> findSincronizarCargos(Long empresaOrigemId);
 	public Collection<Cargo> findByEmpresaAC(String empCodigo, String codigoFaixa, String grupoAC);
 	public Collection<Cargo> findByEmpresaAC(String empCodigo, String grupoAC);
-	public void updateCBO(Long id, TCargo tCargo);
 	public Collection<Cargo> findAllSelect(Long[] empresaIds);
 	public Collection<Cargo> findByAreasAndGrupoOcapcinal(Long empresaId, Long[] grupoOcupacionaisIds, Boolean cargoAtivo, Long... areasOrganizacionalIds);
 	public void deleteByAreaOrganizacional(Long[] areaIds) throws Exception;

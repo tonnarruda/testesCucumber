@@ -234,7 +234,6 @@ public class CargoManagerTest extends MockObjectTestCase
 		
 		empresaManager.expects(once()).method("findByCodigoAC").with(ANYTHING, ANYTHING).will(returnValue(empresa));
 		cargoDao.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(cargo));
-		cargoDao.expects(once()).method("updateCBO").with(ANYTHING, ANYTHING);
 		assertEquals(cargo, cargoManager.preparaCargoDoAC(tCargo));
 		
 		//novo cargo

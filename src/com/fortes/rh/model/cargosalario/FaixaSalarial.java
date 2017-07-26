@@ -43,6 +43,8 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 	private Cargo cargo;
 	@Column(length=12)
 	private String codigoAC;
+	@Column(length=6)
+	private String codigoCbo;
 
 	@OneToMany(mappedBy="faixaSalarial",fetch=FetchType.LAZY)
 	private Collection<FaixaSalarialHistorico> faixaSalarialHistoricos;
@@ -340,14 +342,6 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 		this.cargo = cargo;
 	}
 	
-	public void setCargoCadigoCBO(String codigoCBO)
-	{
-		if(this.cargo == null)
-			this.cargo = new Cargo();
-		
-		this.cargo.setCboCodigo(codigoCBO);
-	}
-
 	public String getDescricao()
 	{
 		if(this.cargo != null && this.cargo.getNome() != null)
@@ -579,4 +573,12 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 			Long configuracaoNivelCompetenciaFaixaSalarialId) {
 		this.configuracaoNivelCompetenciaFaixaSalarialId = configuracaoNivelCompetenciaFaixaSalarialId;
 	}
+
+    public String getCodigoCbo() {
+        return codigoCbo;
+    }
+
+    public void setCodigoCbo(String codigoCbo) {
+        this.codigoCbo = codigoCbo;
+    }
 }

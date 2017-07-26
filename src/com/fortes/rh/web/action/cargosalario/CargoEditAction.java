@@ -17,7 +17,6 @@ import com.fortes.rh.business.cargosalario.GrupoOcupacionalManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.AreaFormacaoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
-import com.fortes.rh.business.geral.CodigoCBOManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
@@ -59,7 +58,6 @@ public class CargoEditAction extends MyActionSupportEdit
     private EtapaSeletivaManager etapaSeletivaManager;
     private EmpresaManager empresaManager;
     private ParametrosDoSistemaManager parametrosDoSistemaManager;
-    private CodigoCBOManager codigoCBOManager;
 
     private boolean exibirSalario;//padrão tem que ser falso
     private boolean exibirAreaOrganizacional;
@@ -74,7 +72,6 @@ public class CargoEditAction extends MyActionSupportEdit
 	private String vinculo;
 	private Map<String, Object> parametros;
 	private String filtro;
-	private String descricaoCBO;
 
 	private String[] areasCheck;
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
@@ -418,8 +415,6 @@ public class CargoEditAction extends MyActionSupportEdit
 		areasFormacaoCheckList = CheckListBoxUtil.marcaCheckListBox(areasFormacaoCheckList, cargo.getAreaFormacaos(), "getId");
 		etapaSeletivaCheckList = CheckListBoxUtil.marcaCheckListBox(etapaSeletivaCheckList, cargo.getEtapaSeletivas(), "getId");
 		populaCHA();
-		
-		descricaoCBO = codigoCBOManager.findDescricaoByCodigo(cargo.getCboCodigo());
 		
 		return Action.SUCCESS;
 	}
@@ -945,14 +940,7 @@ public class CargoEditAction extends MyActionSupportEdit
 		return atitudeManager;
 	}
 
-	public String getDescricaoCBO() {
-		return descricaoCBO;
-	}
-
-	public void setCodigoCBOManager(CodigoCBOManager codigoCBOManager) {
-		this.codigoCBOManager = codigoCBOManager;
-	}
-
+	
 	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
 		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}

@@ -72,9 +72,12 @@ public class AcPessoalClientCargo
         	if(faixaSalarialHistorico != null && faixaSalarialHistorico.getTipo() == TipoAplicacaoIndice.VALOR)
         		valor = faixaSalarialHistorico.getValor();
         	
-        	Object[] param = new Object[]{token.toString(), empresa.getCodigoAC(), "", faixaSalarial.getNome(),null,indiceCodicoAC, null, faixaSalarial.getNomeACPessoal(), valor, 0.0, 0};
+        	Object[] param = new Object[]{token.toString(), empresa.getCodigoAC(), "", faixaSalarial.getNome(),null,indiceCodicoAC, null, faixaSalarial.getNomeACPessoal(), valor, 0.0, 0, faixaSalarial.getCodigoCbo()};
         	if(faixaSalarialHistorico != null)
-        		param = new Object[]{token.toString(), empresa.getCodigoAC(), "", faixaSalarial.getNome(),formata.format(faixaSalarialHistorico.getData()),indiceCodicoAC, TipoAplicacaoIndice.getCodigoAC(faixaSalarialHistorico.getTipo()), faixaSalarial.getNomeACPessoal(), valor,	faixaSalarialHistorico.getQuantidade(), faixaSalarialHistorico.getId()};
+        		param = new Object[]{token.toString(), empresa.getCodigoAC(), "", faixaSalarial.getNome(),
+        	        formata.format(faixaSalarialHistorico.getData()),indiceCodicoAC, 
+        	        TipoAplicacaoIndice.getCodigoAC(faixaSalarialHistorico.getTipo()), 
+        	        faixaSalarial.getNomeACPessoal(), valor,faixaSalarialHistorico.getQuantidade(), faixaSalarialHistorico.getId(), faixaSalarial.getCodigoCbo()};
       
         	TFeedbackPessoalWebService result =  (TFeedbackPessoalWebService) call.invoke(param);
         	result.getSucesso("SetCargoComSituacao", param, this.getClass());
@@ -103,6 +106,7 @@ public class AcPessoalClientCargo
 		call.addParameter("Valor",xmldouble,ParameterMode.IN);
 		call.addParameter("IndiceQuantidade",xmldouble,ParameterMode.IN);
 		call.addParameter("rh_sca_id",xmlint,ParameterMode.IN);
+		call.addParameter("CBO_Codigo",xmlstring,ParameterMode.IN);
 	}
 
 	public String createOrUpdateCargo(FaixaSalarial faixaSalarial, Empresa empresa) throws Exception{
@@ -116,13 +120,14 @@ public class AcPessoalClientCargo
 			call.addParameter("Codigo",xmlstring,ParameterMode.IN);
 			call.addParameter("Nome",xmlstring,ParameterMode.IN);
 			call.addParameter("NomeACPessoal",xmlstring,ParameterMode.IN);
+			call.addParameter("CBO_Codigo",xmlstring,ParameterMode.IN);
 
 			acPessoalClient.setReturnType(call, grupoAC.getAcUrlWsdl());
 			String codigo = "";
 			if(faixaSalarial.getCodigoAC() != null && !faixaSalarial.getCodigoAC().equals(""))
 				codigo = faixaSalarial.getCodigoAC();
 			
-			Object[] param = new Object[]{token.toString(), empresa.getCodigoAC(), codigo, faixaSalarial.getNome(), faixaSalarial.getNomeACPessoal()};
+			Object[] param = new Object[]{token.toString(), empresa.getCodigoAC(), codigo, faixaSalarial.getNome(), faixaSalarial.getNomeACPessoal(), faixaSalarial.getCodigoCbo()};
         	TFeedbackPessoalWebService result =  (TFeedbackPessoalWebService) call.invoke(param);
         	result.getSucesso("SetCargo", param, this.getClass());
 			return result.getCodigoretorno();

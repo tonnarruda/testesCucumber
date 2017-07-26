@@ -30,6 +30,7 @@
     <property name="pesquisaManager" ref="pesquisaManager" />
     <property name="parametrosDoSistemaManager" ref="parametrosDoSistemaManager" />
     <property name="auditoriaManager" ref="auditoriaManager" />
+    <property name="codigoCBOManager" ref="codigoCBOManager" />
   </bean>
   <bean id="rhWebService" class="org.codehaus.xfire.spring.remoting.XFireExporter">
     <property name="serviceFactory">

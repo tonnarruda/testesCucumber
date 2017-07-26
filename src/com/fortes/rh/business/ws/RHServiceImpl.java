@@ -25,6 +25,7 @@ import com.fortes.rh.business.cargosalario.IndiceManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.CidadeManager;
+import com.fortes.rh.business.geral.CodigoCBOManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorOcorrenciaManager;
 import com.fortes.rh.business.geral.EmpresaManager;
@@ -116,6 +117,7 @@ public class RHServiceImpl implements RHService
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private AuditoriaManager auditoriaManager;
 	private TokenManager tokenManager;
+	private CodigoCBOManager codigoCBOManager;
 
 	private final String MSG_ERRO_REMOVER_SITUACAO_LOTE = "Não é possível excluir situação dos empregados, existem outros cadastros utilizando essa situação.";
 	private final String MSG_ERRO_REMOVER_SITUACAO = "Não é possível excluir situação do empregado, existem outros cadastros utilizando essa situação.";
@@ -1320,12 +1322,12 @@ public class RHServiceImpl implements RHService
 			verifyToken(token, true);
 			if (StringUtils.defaultString(tCargo.getDescricao()).equals("")) 
 				throw new Exception("Descrição da faixa está vazia.");
-			if (StringUtils.defaultString(tCargo.getCargoDescricao()).length() > 30) 
-				throw new Exception("Descrição do cargo deve ter no máximo 30 caracteres.");
+			if (StringUtils.defaultString(tCargo.getCargoDescricao()).length() > 100) 
+				throw new Exception("Descrição do cargo deve ter no máximo 100 caracteres.");
 			
 			FaixaSalarial faixaSalarial = faixaSalarialManager.montaFaixa(tCargo);
 			faixaSalarial.setCargo(cargoManager.preparaCargoDoAC(tCargo));
-
+			codigoCBOManager.updateCBO(tCargo);
 			faixaSalarialManager.save(faixaSalarial);
 			
 			return new FeedbackWebService(true);
@@ -1349,7 +1351,7 @@ public class RHServiceImpl implements RHService
 			
 			tCargo.setId(faixaSalarial.getId());
 			faixaSalarialManager.updateAC(tCargo);
-			cargoManager.updateCBO(faixaSalarial.getCargo().getId(), tCargo);
+			codigoCBOManager.updateCBO(tCargo);
 			
 			return new FeedbackWebService(true);
 		}catch (TokenException e) {
@@ -1673,4 +1675,8 @@ public class RHServiceImpl implements RHService
 	public void setTokenManager(TokenManager tokenManager) {
 		this.tokenManager = tokenManager;
 	}
+
+    public void setCodigoCBOManager(CodigoCBOManager codigoCBOManager) {
+        this.codigoCBOManager = codigoCBOManager;
+    }	
 }

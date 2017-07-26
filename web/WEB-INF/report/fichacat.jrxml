@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.693421790161515"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="159"/>
+	<property name="ireport.y" value="59"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -67,7 +67,7 @@
 	<field name="colaborador.contato.ddd" class="java.lang.String"/>
 	<field name="colaborador.contato.foneFixoFormatado" class="java.lang.String"/>
 	<field name="colaborador.faixaSalarial.cargo.nomeMercado" class="java.lang.String"/>
-	<field name="colaborador.faixaSalarial.cargo.cboCodigo" class="java.lang.String"/>
+	<field name="colaborador.faixaSalarial.codigoCbo" class="java.lang.String"/>
 	<field name="colaborador.pessoal.mae" class="java.lang.String"/>
 	<field name="colaborador.pessoal.dataNascimentoFormatada" class="java.lang.String"/>
 	<field name="colaborador.pessoal.sexoDic" class="java.lang.String"/>
@@ -950,7 +950,7 @@
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{colaborador.faixaSalarial.cargo.cboCodigo}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{colaborador.faixaSalarial.codigoCbo}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
 				<reportElement key="textField-7" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="2" y="9" width="255" height="10" uuid="bd2876a1-82b4-4d8f-861d-1cfaa6fe1c5a"/>

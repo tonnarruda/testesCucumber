@@ -140,6 +140,7 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 		p.add(Projections.property("f.nome"), "nome");
 		p.add(Projections.property("f.nomeACPessoal"), "nomeACPessoal");
 		p.add(Projections.property("f.codigoAC"), "codigoAC");
+		p.add(Projections.property("f.codigoCbo"), "codigoCbo");
 		p.add(Projections.property("c.id"), "projectionCargoId");
 		p.add(Projections.property("c.nome"), "nomeCargo");
 		criteria.setProjection(p);
@@ -341,6 +342,7 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 		p.add(Projections.property("fs.id"), "id");
 		p.add(Projections.property("fs.nome"), "nome");
 		p.add(Projections.property("c.nome"), "nomeCargo");
+		p.add(Projections.property("fs.codigoCbo"), "codigoCbo");
 		criteria.setProjection(p);
 
 		criteria.add(Expression.eq("c.id", cargoId));
@@ -356,7 +358,7 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 	public Collection<FaixaSalarial> findByCargoComCompetencia(Long cargoId) 
 	{
 		StringBuilder sql = new StringBuilder();
-		sql.append("select fs.id as faixaId, fs.nome as faixaNome, ");
+		sql.append("select fs.id as faixaId, fs.nome as faixaNome, fs.codigocbo as codigoCbo, ");
 		sql.append("   case hf.tipo ");
 		sql.append("      when "+TipoAplicacaoIndice.VALOR+" then hf.valor ");
 		sql.append("      when "+TipoAplicacaoIndice.INDICE+" then hf.quantidade*hi.valor ");
@@ -410,7 +412,8 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 				faixaSalarial = new FaixaSalarial(); 
 				faixaSalarial.setId(((BigInteger)faixa[0]).longValue());
 				faixaSalarial.setNome((String)faixa[1]);
-				faixaSalarial.setHistoricoFaixaValor((Double)faixa[2]);
+				faixaSalarial.setCodigoCbo((String)faixa[2]);
+				faixaSalarial.setHistoricoFaixaValor((Double)faixa[3]);
 				faixaSalarial.setCompetencias(new ArrayList<Competencia>());
 				
 				// Insere uma faixa salarial num map para que esta nao seja criada novamente.
@@ -421,17 +424,17 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 			}
 			
 			// Adiciona competência somente quando a mesma não for nula
-			if ((String)faixa[3] != null) {
+			if ((String)faixa[4] != null) {
 				NivelCompetencia nivelCompetencia = new NivelCompetencia();
 				Competencia comp = new Competencia();
-				comp.setNome((String)faixa[3]);
-				nivelCompetencia.setDescricao((String)faixa[4]);
+				comp.setNome((String)faixa[4]);
+				nivelCompetencia.setDescricao((String)faixa[5]);
 				comp.setNivelCompetencia(nivelCompetencia);
 
 				faixaSalarial.getCompetencias().add(comp);
 			}
-			if ((Date)faixa[5] != null)
-				faixaSalarial.setDataConfiguracaoNivelCompetenciaFaixaSalariall((Date)faixa[5]);
+			if ((Date)faixa[6] != null)
+				faixaSalarial.setDataConfiguracaoNivelCompetenciaFaixaSalariall((Date)faixa[6]);
 		}
 		
 		return faixaSalarials;
@@ -468,12 +471,13 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 
 	public void updateAC(TCargo tCargo)
 	{
-		String hql = "update FaixaSalarial set nome = :faixaNome, nomeACPessoal = :faixaNomeAC where id = :id";
+		String hql = "update FaixaSalarial set nome = :faixaNome, nomeACPessoal = :faixaNomeAC, codigoCbo = :codigoCbo where id = :id";
 
 		Query q = getSession().createQuery(hql);
 
 		q.setString("faixaNome", tCargo.getDescricao());
 		q.setString("faixaNomeAC", tCargo.getDescricaoACPessoal());
+		q.setString("codigoCbo", tCargo.getCboCodigo());
 		q.setLong("id", tCargo.getId());//tem que ser por ID, ta correto(CUIDADO: caso mude tem que verificar o grupoAC)
 
 		q.executeUpdate();		

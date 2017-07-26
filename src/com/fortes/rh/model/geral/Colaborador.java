@@ -2958,21 +2958,21 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	}
 	
 	@NaoAudita
-	public String getCargoCodigoCBO()
+	public String getFaixaSalarialCodigoCbo()
 	{
 		try {
-			return faixaSalarial.getCargo().getCboCodigo();
+			return faixaSalarial.getCodigoCbo();
 		} catch (Exception e) {
 			return "-";
 		}
 	}
 	
-	public void setCargoCodigoCBO(String codigoCBO)
+	public void setFaixaSalarialCodigoCbo(String codigoCbo)
 	{
 		if(faixaSalarial == null)
 			faixaSalarial = new FaixaSalarial();
 		
-		this.faixaSalarial.setCargoCadigoCBO(codigoCBO);
+		this.faixaSalarial.setCodigoCbo(codigoCbo);
 	}
 	
 	@NaoAudita

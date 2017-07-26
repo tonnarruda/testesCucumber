@@ -229,7 +229,7 @@ public class CatDaoHibernate extends GenericDaoHibernate<Cat> implements CatDao
 		StringBuilder hql = new StringBuilder("select new Cat(cat, emp.razaoSocial, emp.cnpj, emp.cnae, emp.endereco, empCid.nome, empUf.sigla, emp.ddd, emp.telefone, " +
 				"col.nome, col.pessoal.mae, col.pessoal.dataNascimento, col.pessoal.sexo, col.pessoal.estadoCivil, col.pessoal.ctps.ctpsNumero, col.pessoal.ctps.ctpsSerie, col.pessoal.ctps.ctpsDataExpedicao, ctpsUf, col.pessoal.rg, col.pessoal.rgDataExpedicao, col.pessoal.rgOrgaoEmissor, rgUf, col.pessoal.pis, hc.salario," +
 				"col.endereco.logradouro, col.endereco.numero, col.endereco.bairro, col.endereco.cep, cid, uf, " +
-				"col.contato.ddd, col.contato.foneFixo, ca.nomeMercado, ca.cboCodigo, " +
+				"col.contato.ddd, col.contato.foneFixo, ca.nomeMercado, fs.codigoCbo, " +
 				"nat.descricao ) ");
 		hql.append(" from Cat cat");
 		hql.append(" left join cat.testemunha1");

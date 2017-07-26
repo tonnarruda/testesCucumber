@@ -44,7 +44,6 @@ public interface CargoManager extends GenericManager<Cargo>
 	public void sincronizar(Long empresaOrigemId, Empresa empresaDestino, Map<Long, Long> areaIds, Map<Long, Long> areaInteresseIds, Map<Long, Long> conhecimentoIds, Map<Long, Long> habilidadeIds, Map<Long, Long> atitudeIds, List<String> mensagens);
 	public Collection<Cargo> findByEmpresaAC(String empCodigo, String codigo, String grupoAC);
 	public Cargo preparaCargoDoAC(TCargo tCargo);
-	public void updateCBO(Long id, TCargo tCargo);
 	public Collection<Cargo> findAllSelect(Long[] empresaIds);
 	public Collection<Cargo> findByAreasAndGrupoOcapcinal(Long empresaId, Long[] grupoOcupacionaisIds, Boolean cargoAtivo, Long... areasOrganizacionalIds);
 	public String nomeCargos(Long[] cargosIds);

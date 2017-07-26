@@ -20,6 +20,7 @@ import com.fortes.rh.business.cargosalario.IndiceHistoricoManager;
 import com.fortes.rh.business.cargosalario.IndiceManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.CidadeManager;
+import com.fortes.rh.business.geral.CodigoCBOManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorOcorrenciaManager;
 import com.fortes.rh.business.geral.EmpresaManager;
@@ -106,6 +107,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 	private Mock transactionManager;
 	private Mock auditoriaManager;
 	private Mock tokenManager;
+	private Mock codigoCBOManager;
 
 	protected void setUp() throws Exception
 	{
@@ -157,6 +159,8 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		rHServiceManager.setAuditoriaManager((AuditoriaManager) auditoriaManager.proxy());
 		tokenManager = new Mock(TokenManager.class);
 		rHServiceManager.setTokenManager((TokenManager) tokenManager.proxy());
+		codigoCBOManager = new Mock(CodigoCBOManager.class);
+		rHServiceManager.setCodigoCBOManager((CodigoCBOManager) codigoCBOManager.proxy());
 	}
 	
 	public void testBindIndice() throws Exception
@@ -630,11 +634,13 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		Cargo cargo = CargoFactory.getEntity(1L);
 		TCargo tCargo = new TCargo();
 		tCargo.setDescricao("Nome da Faixa");
+		tCargo.setCodigo("252105");
 		
 		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
 		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		faixaSalarialManager.expects(once()).method("montaFaixa").with(eq(tCargo)).will(returnValue(faixaSalarial));
 		cargoManager.expects(once()).method("preparaCargoDoAC").with(eq(tCargo)).will(returnValue(cargo));
+		codigoCBOManager.expects(once()).method("updateCBO").with(eq(tCargo)).isVoid();
 		faixaSalarialManager.expects(once()).method("save").with(ANYTHING);
 		
 		assertEquals(true, rHServiceManager.criarCargo("TOKEN", tCargo).isSucesso());
@@ -653,7 +659,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		faixaSalarialManager.expects(once()).method("findFaixaSalarialByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(faixaSalarial));
 		faixaSalarialManager.expects(once()).method("updateAC").with(eq(tCargo));
-		cargoManager.expects(once()).method("updateCBO").with(ANYTHING, ANYTHING);
+		codigoCBOManager.expects(once()).method("updateCBO").with(eq(tCargo)).isVoid();
 		
 		assertEquals(true, rHServiceManager.atualizarCargo("TOKEN", tCargo).isSucesso());
 	}

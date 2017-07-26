@@ -35,7 +35,7 @@ public class CidDaoHibernate extends GenericDaoHibernate<Cid> implements CidDao
 		return criteria.list();
 	}
 
-	public String findDescricaoByCodigo(String cboCodigo)
+	public String findDescricaoByCodigo(String codigo)
 	{
 		Criteria criteria = getSession().createCriteria(Cid.class, "c");
 		
@@ -43,7 +43,7 @@ public class CidDaoHibernate extends GenericDaoHibernate<Cid> implements CidDao
 		p.add(Projections.property("c.descricao"), "descricao");
 		criteria.setProjection(p);
 		
-		criteria.add(Expression.eq("c.codigo", cboCodigo));
+		criteria.add(Expression.eq("c.codigo", codigo));
 		
 		return (String) criteria.uniqueResult();
 	}

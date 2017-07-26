@@ -25,7 +25,6 @@ import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
-import com.fortes.rh.model.ws.TCargo;
 
 @SuppressWarnings("unchecked")
 public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements CargoDao
@@ -171,7 +170,6 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 		p.add(Projections.property("c.experiencia"), "experiencia");
 		p.add(Projections.property("c.recrutamento"), "recrutamento");
 		p.add(Projections.property("c.observacao"), "observacao");
-		p.add(Projections.property("c.cboCodigo"), "cboCodigo");
 		p.add(Projections.property("c.atitude"), "atitude");
 		p.add(Projections.property("c.complementoConhecimento"), "complementoConhecimento");
 		p.add(Projections.property("go.nome"), "grupoNome");
@@ -261,7 +259,6 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 		p.add(Projections.property("c.experiencia"), "experiencia");
 		p.add(Projections.property("c.recrutamento"), "recrutamento");
 		p.add(Projections.property("c.observacao"), "observacao");
-		p.add(Projections.property("c.cboCodigo"), "cboCodigo");
 		p.add(Projections.property("c.ativo"), "ativo");
 		p.add(Projections.property("c.exibirModuloExterno"), "exibirModuloExterno");
 		p.add(Projections.property("c.atitude"), "atitude");
@@ -396,7 +393,6 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 		p.add(Projections.property("c.experiencia"), "experiencia");
 		p.add(Projections.property("c.recrutamento"), "recrutamento");
 		p.add(Projections.property("c.observacao"), "observacao");
-		p.add(Projections.property("c.cboCodigo"), "cboCodigo");
 		p.add(Projections.property("c.ativo"), "ativo");
 		p.add(Projections.property("c.exibirModuloExterno"), "exibirModuloExterno");
 		p.add(Projections.property("c.atitude"), "atitude");
@@ -453,18 +449,6 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Cargo.class));
 		
 		return criteria.list();
-	}
-
-	public void updateCBO(Long id, TCargo tCargo)
-	{
-		String hql = "update Cargo c set c.cboCodigo = :cbo where c.id = :id  ";
-		
-		Query query = getSession().createQuery(hql);
-		
-		query.setString("cbo", tCargo.getCboCodigo());
-		query.setLong("id", id);//tem que ser por ID, ta correto(CUIDADO: caso mude tem que verificar o grupoAC)
-		
-		query.executeUpdate();
 	}
 
 	public Collection<Cargo> findAllSelect(Long[] empresaIds)

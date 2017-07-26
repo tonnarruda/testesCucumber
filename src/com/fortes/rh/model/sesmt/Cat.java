@@ -164,7 +164,7 @@ public class Cat extends AbstractModel implements Serializable
 			String colaboradorCtpsSerie, Date colaboradorCtpsDataExpedicao, Estado colaboradorCtpsUf, String colaboradorRg, Date colaboradorRgDataExpedicao, String colaboradorRgOrgaoEmissor,
 			Estado colaboradorRgUf, String colaboradorPis, Double colaboradorSalario,
 			String colaboradorLogradouro, String colaboradorNumero, String colaboradorBairro, String colaboradorCep, Cidade colaboradorCidade, Estado colaboradorUf, 
-			String colaboradorDdd, String colaboradorFoneFixo, String cargoNomeMercado, String cargoCboCodigo, String naturezaLesaoDescricao )
+			String colaboradorDdd, String colaboradorFoneFixo, String cargoNomeMercado, String faixaSalarialCodigoCbo, String naturezaLesaoDescricao )
     {
 		setId(cat.getId());
 		this.data = cat.getData();
@@ -207,8 +207,8 @@ public class Cat extends AbstractModel implements Serializable
 
 		Cargo cargo =  new Cargo();
 		cargo.setNomeMercado(cargoNomeMercado);
-		cargo.setCboCodigo(cargoCboCodigo);
 		FaixaSalarial faixaSalarial = new FaixaSalarial();
+		faixaSalarial.setCodigoCbo(faixaSalarialCodigoCbo);
 		faixaSalarial.setCargo(cargo);
 		colaborador.setFaixaSalarial(faixaSalarial);
 		

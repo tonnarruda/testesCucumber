@@ -72,7 +72,7 @@ public class OrdemDeServicoManagerImpl extends GenericManagerImpl<OrdemDeServico
 		ordemDeServico.setColaboradorId(colaborador.getId());
 		ordemDeServico.setNomeColaborador(colaborador.getNome());
 		ordemDeServico.setDataAdmisaoColaborador(colaborador.getDataAdmissao());
-		ordemDeServico.setCodigoCBO(colaborador.getFaixaSalarial().getCargo().getCboCodigo());
+		ordemDeServico.setCodigoCBO(colaborador.getFaixaSalarial().getCodigoCbo());
 		ordemDeServico.setNomeCargo(colaborador.getFaixaSalarial().getCargo().getNome());
 		ordemDeServico.setNomeFuncao(colaborador.getFuncaoNome());
 		ordemDeServico.setNomeEstabelecimento(colaborador.getEstabelecimentoNome());

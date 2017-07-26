@@ -72,11 +72,13 @@ public class AcPessoalClientCargoTest extends AcPessoalClientTest
 		
 		faixaSalarial.setNome("Motorista de Nave");
 		faixaSalarial.setNomeACPessoal("Motorista de Nave AC");
+		faixaSalarial.setCodigoCbo("252105");
 		
 		faixaSalarialHistorico.setTipo(TipoAplicacaoIndice.VALOR);
 		faixaSalarialHistorico.setValor(200.00);
 		faixaSalarialHistorico.setData(data);
 		
+		execute("delete from SCAR where car_codigo = (select codigo from car where nome = '" + faixaSalarial.getNomeACPessoal() + "')");
 		execute("delete from car where nome = '" + faixaSalarial.getNomeACPessoal() + "'");
 		String codigoAC = acPessoalClientCargo.criarCargo(faixaSalarial, faixaSalarialHistorico, empresa);
 		String sql = "select data, saltipo, valor, rh_sca_id from rhsca where emp_codigo = '" + getEmpresa().getCodigoAC() + "' and car_codigo = '" + codigoAC + "'";
@@ -107,6 +109,7 @@ public class AcPessoalClientCargoTest extends AcPessoalClientTest
 		faixaSalarial.setNome("Chefe Castelo RH");
 		faixaSalarial.setNomeACPessoal("Castelo do AC");
 		
+		execute("delete from SCAR where car_codigo = (select codigo from car where nome = '" + faixaSalarial.getNomeACPessoal() + "')");
 		execute("delete from car where nome = '" + faixaSalarial.getNomeACPessoal() + "'");
 		acPessoalClientCargo.createOrUpdateCargo(faixaSalarial, empresa);
 		
@@ -159,6 +162,7 @@ public class AcPessoalClientCargoTest extends AcPessoalClientTest
 		
 		faixaSalarial.setNome("Motorista de Nave");
 		faixaSalarial.setNomeACPessoal("Motorista de Nave AC");
+		faixaSalarial.setCodigoCbo("252105");
 		
 		faixaSalarialHistorico.setTipo(TipoAplicacaoIndice.INDICE);
 		faixaSalarialHistorico.setIndice(indice);
