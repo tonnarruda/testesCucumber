@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang.ArrayUtils;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
@@ -50,9 +52,10 @@ import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientLotacao;
 import com.fortes.web.tags.CheckBox;
+import com.opensymphony.webwork.dispatcher.SessionMap;
 import com.opensymphony.xwork.ActionContext;
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({ "rawtypes", "unchecked", "static-access" })
 public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrganizacional, AreaOrganizacionalDao> implements AreaOrganizacionalManager {
 	private AcPessoalClientLotacao acPessoalClientLotacao;
 	private PlatformTransactionManager transactionManager;
@@ -161,7 +164,6 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	public void transferirColabDaAreaMaeParaAreaFilha(AreaOrganizacional areaOrganizacional) {
 		try {
 			if (areaOrganizacional.getAreaMae() != null && areaOrganizacional.getAreaMae().getId() != null) {
@@ -979,6 +981,30 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		return areasIds;
 	}
 
+	public Collection<AreaOrganizacional> filtraPermitidasByEmpresasAndUsuario(HttpServletRequest request, Long empresaId, Long[] empresaIds) throws Exception {
+		Collection<AreaOrganizacional> areaOrganizacionals;
+		Map session = new SessionMap(request);
+		boolean verTodasAreas = SecurityUtil.verifyRole(session, new String[]{"ROLE_VER_AREAS"});
+		Long usuarioLogedId = SecurityUtil.getIdUsuarioLoged(session);
+		Empresa empresaSession = SecurityUtil.getEmpresaSession(session);
+		boolean todasAsEmpresas = (empresaId == null || empresaId <= 0); 
+		
+		if(verTodasAreas){
+			if(todasAsEmpresas)
+				areaOrganizacionals = findByEmpresasIds(empresaIds, AreaOrganizacional.TODAS);
+			else
+				areaOrganizacionals = findAllListAndInativas(AreaOrganizacional.TODAS, null, empresaId);
+			
+			areaOrganizacionals = montaFamilia(areaOrganizacionals);
+			areaOrganizacionals = new CollectionUtil<AreaOrganizacional>().sortCollectionStringIgnoreCase(areaOrganizacionals, "descricaoComEmpresaStatusAtivo");
+		}else{
+			areaOrganizacionals = findAllListAndInativasByUsuarioId((todasAsEmpresas ? empresaSession.getId() : empresaId), usuarioLogedId, AreaOrganizacional.TODAS, null);
+			areaOrganizacionals = new CollectionUtil<AreaOrganizacional>().sortCollectionStringIgnoreCase(areaOrganizacionals, "descricaoComEmpresaStatusAtivoSimples");
+		}
+		
+		return areaOrganizacionals;
+	}
+	
 	public String getEmailResponsavel(Long areaId) throws Exception {
 		AreaOrganizacional areaOrganizacional = getDao().findByIdProjection(areaId);
 		return areaOrganizacional.getResponsavelEmail();

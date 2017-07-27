@@ -145,6 +145,7 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 		return getDescricao() + (ativo ? " (Ativa)" : " (Inativa)");
 	}
 	
+	@NaoAudita
 	public String getDescricao()
 	{
 		if (getAreaMae() == null || getAreaMae().getDescricao() == null)
@@ -152,6 +153,12 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 		else
 			descricao = getAreaMae().getDescricao() + " > " + nome;
 
+		return descricao;
+	}
+	
+	@NaoAudita
+	public String getDescricaoSimples()
+	{
 		return descricao;
 	}
 	
@@ -184,9 +191,17 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 	}
 	
 	@NaoAudita
+	public String getDescricaoComEmpresaStatusAtivoSimples()
+	{
+		descricao = empresa.getNome() + " - " + nome + (ativo ? " (Ativa)" : " (Inativa)");
+		return descricao;
+	}
+	
+	@NaoAudita
 	public String getDescricaoComEmpresaStatusAtivo()
 	{
-		return getDescricaoComEmpresa() + (ativo ? " (Ativa)" : " (Inativa)");
+		descricao = getDescricaoComEmpresa() + (ativo ? " (Ativa)" : " (Inativa)");
+		return descricao;
 	}
 	
 	@NaoAudita

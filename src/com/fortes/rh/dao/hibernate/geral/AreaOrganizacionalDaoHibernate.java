@@ -497,6 +497,9 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 			area.setNome((String)res[1]);
 			area.setAtivo((Boolean)res[2]);
 			area.setEmpresaNome((String)res[3]);
+			area.setIdAreaMae(res[4] == null ? null : ((BigInteger)res[4]).longValue());
+//			area.setNomeAreaMae((String)res[5]);
+//			area.setEmpresaAreaMaeNome((String)res[3]);
 			areas.add(area);
 		}
 

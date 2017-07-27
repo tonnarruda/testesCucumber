@@ -21,7 +21,7 @@
 
 	<#include "../ftl/mascarasImports.ftl" />
 
-	<#assign validarCampos="return validaFormularioEPeriodo('form', new Array('avaliacaoExperiencia'), new Array('periodoIni','periodoFim'))"/>
+	<#assign validarCampos="return validaFormularioEPeriodo('form', new Array('avaliacaoExperiencia','@areasCheck'), new Array('periodoIni','periodoFim'))"/>
 
 	<#if periodoIni?exists>
 		<#assign periodoIniFormatado = periodoIni?date/>
@@ -39,6 +39,15 @@
 		<#if empresaIds?exists>
 			<#list empresaIds as empresaId>
 				empresaIds.push(${empresaId});
+			</#list>
+		</#if>
+		
+		var areasMarcadasIds = new Array();
+		<#if areasCheckList?exists>
+			<#list areasCheckList as areasChecked>
+				<#if areasChecked.selecionado>
+					areasMarcadasIds.push(${areasChecked.id});
+				</#if>
 			</#list>
 		</#if>
 		
@@ -104,13 +113,74 @@
 		
 		function createListArea(data)
 		{
-			addChecks('areasCheck',data);
+			addChecksCheckBox('areasCheck', data, areasMarcadasIds);
+			eventoArea();
 		}
 		
 		function populaArea(empresaId)
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
-			AreaOrganizacionalDWR.getByEmpresas(createListArea, empresaId, empresaIds, null);
+		
+			if(empresaId && empresaId!='-1' ){
+				AreaOrganizacionalDWR.getPermitidasCheckboxByEmpresas(createListArea,false, empresaId, null);
+			}
+			else{
+				AreaOrganizacionalDWR.getPermitidasCheckboxByEmpresas(createListArea,false, null, empresaIds);
+			}
+		}
+		
+		function eventoArea(){
+			$("input[name=areasCheck]").change(function(){
+				addAreasMarcadasIds(parseInt(this.value));
+				if($(this).is(":checked")){
+					checarFilhos(this, true);
+				}else{
+					checarFilhos(this, false);
+					removeAreasMarcadasIds(parseInt(this.value));
+				}
+				
+				if($(this).attr("idareamae") != undefined)
+					checarMae(this);
+			});
+		}
+		
+		function checarFilhos(areaMae, check){
+			var idAreaMae = $(areaMae).val();
+			$("input[idareamae="+idAreaMae+"]").each(function(){
+				if(check)
+					$(this).attr("checked", "checked");
+				else
+					$(this).removeAttr("checked");
+				
+			}).change();
+		};
+		
+		function checarMae(areaFilha){
+				var idAreaMae = $(areaFilha).attr("idareamae");
+				if(idAreaMae != undefined){
+					if($("input[idareamae="+idAreaMae+"]").size() == $("input[idareamae="+idAreaMae+"]:checked").size()){
+						$("#checkGroupareasCheck"+idAreaMae).attr("checked", "checked");
+						checarMae($("#checkGroupareasCheck"+idAreaMae));
+					}else{
+						$("#checkGroupareasCheck"+idAreaMae).removeAttr("checked");
+						removeAreasMarcadasIds(parseInt(idAreaMae));
+						checarMae($("#checkGroupareasCheck"+idAreaMae));
+					}
+				}
+			};
+		
+		function addAreasMarcadasIds(valor){
+				if(areasMarcadasIds && areasMarcadasIds.indexOf(valor) == -1) 
+					areasMarcadasIds.push(valor);
+			}
+
+
+		function removeAreasMarcadasIds(valor){
+			for(var i = 0; i < areasMarcadasIds.length ; i++) {
+			    if(areasMarcadasIds[i] === valor) {
+			       areasMarcadasIds.splice(i, 1);
+			    }
+			}
 		}
 		
 		$(document).ready(function($)
@@ -177,7 +247,7 @@
 			</@ww.div>
 			<@ww.select label="Empresa" name="empresa.id" id="empresaId" listKey="id" listValue="nome" list="empresas" headerKey="-1" headerValue="Todas" cssClass="selectEmpresa" onchange="populaArea(this.value);"/>
 			
-			<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areasCheck" list="areasCheckList" filtro="true" selectAtivoInativo="true"/>
+			<@frt.checkListBox label="Áreas Organizacionais" required="true" name="areasCheck" id="areasCheck" list="areasCheckList" filtro="true" selectAtivoInativo="true"/>
 			<@frt.checkListBox label="Exibir apenas os Aspectos" name="aspectosCheck" id="aspectosCheck" list="aspectosCheckList" filtro="true"/>
 			<@frt.checkListBox label="Exibir apenas as Perguntas" name="perguntasCheck" id="perguntasCheck" list="perguntasCheckList" filtro="true"/>
 

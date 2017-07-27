@@ -10,6 +10,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.fortes.business.GenericManager;
 import com.fortes.rh.exception.AreaColaboradorException;
 import com.fortes.rh.exception.IntegraACException;
@@ -93,6 +95,7 @@ public interface AreaOrganizacionalManager extends GenericManager<AreaOrganizaci
 	public void transferirColabDaAreaMaeParaAreaFilha(AreaOrganizacional areaOrganizacional);
 	public boolean possuiAreaFilhasByCodigoAC(String codigoAC, Long empresaId);
 	public String[] filtraPermitidas(String[] areasIds, Long empresaId);
+	public Collection<AreaOrganizacional> filtraPermitidasByEmpresasAndUsuario(HttpServletRequest request, Long empresaId, Long[] empresaIds) throws Exception;
 	public Collection<AreaOrganizacional> findByLntId(Long lntId, Long... empresaIdAreaOrganizacional);
 	public Collection<AreaOrganizacional> findByLntIdComEmpresa(Long lntId, Long... empresaIdAreaOrganizacional);
 	public Map<Long, AreaOrganizacional> findAllMapAreasIds(Long empresaId);

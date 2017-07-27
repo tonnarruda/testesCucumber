@@ -14,13 +14,11 @@ import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.AreaOrganizacionalOrganograma;
-import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.BooleanUtil;
+import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.web.tags.CheckBox;
-import com.opensymphony.webwork.dispatcher.SessionMap;
 
 public class AreaOrganizacionalDWR
 {
@@ -85,29 +83,14 @@ public class AreaOrganizacionalDWR
 		return areas;
 	}
 	
-	public Map<Object, Object> getPemitidasByEmpresas(String naoApagar, HttpServletRequest request, Long empresaId, Long[] empresaIds) throws Exception
+	public Collection<CheckBox> getPermitidasCheckboxByEmpresas(String naoApagar, HttpServletRequest request, Long empresaId, Long[] empresaIds) throws Exception
 	{
-		Collection<AreaOrganizacional> areaOrganizacionals = new ArrayList<AreaOrganizacional>();
+		Collection<CheckBox> checks = new ArrayList<CheckBox>();
 
-		Map session = new SessionMap(request);
-		boolean verTodasAreas = SecurityUtil.verifyRole(session, new String[]{"ROLE_VER_AREAS"});
-		Long usuarioLogedId = SecurityUtil.getIdUsuarioLoged(session);
-		Empresa empresaSession = SecurityUtil.getEmpresaSession(session);
-		boolean todasAsEmpresas = (empresaId == null || empresaId == 0 || empresaId == -1); 
-
-		if(verTodasAreas){
-			if(todasAsEmpresas)
-				areaOrganizacionals = areaOrganizacionalManager.findByEmpresasIds(empresaIds, AreaOrganizacional.TODAS);
-			else
-				areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativas(AreaOrganizacional.TODAS, null, empresaId);
-		}else{
-			areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativasByUsuarioId((todasAsEmpresas ? empresaSession.getId() : empresaId), usuarioLogedId, AreaOrganizacional.TODAS, null);
-		}
-
-		areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
-		areaOrganizacionals = new CollectionUtil<AreaOrganizacional>().sortCollectionStringIgnoreCase(areaOrganizacionals, "descricaoComEmpresaStatusAtivo");
-
-		return new CollectionUtil<AreaOrganizacional>().convertCollectionToMap(areaOrganizacionals, "getId", "getDescricaoComEmpresaStatusAtivo");
+		Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.filtraPermitidasByEmpresasAndUsuario(request, empresaId, empresaIds);
+		checks = CheckListBoxUtil.populaCheckListBox(areaOrganizacionals, "getId", "getDescricaoSimples", new String[] { "getIdAreaMae" });
+	
+		return checks;
 	}
 	
 	public Collection<Long> excluiFilhas(Long areasOrganizacionaisId) throws Exception{
