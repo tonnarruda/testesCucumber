@@ -3,6 +3,7 @@ package com.fortes.rh.web.action.sesmt;
 import java.util.Collection;
 import java.util.HashSet;
 
+import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.business.sesmt.ExameManager;
@@ -28,6 +29,7 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 	private EpiManager epiManager;
 	private RiscoManager riscoManager;
 	private CursoManager cursoManager;
+	private CargoManager cargoManager;
 
 	private HistoricoFuncao historicoFuncao = new HistoricoFuncao();
 	private Funcao funcao;
@@ -61,6 +63,7 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 			epiAtivo = null;
 		}
 
+		cargoTmp = cargoManager.findByIdProjection(cargoTmp.getId());
 		Collection<Exame> exames = exameManager.findByEmpresaComAsoPadrao(getEmpresaSistema().getId());
 		examesCheckList = CheckListBoxUtil.populaCheckListBox(exames, "getId", "getNome", null);
 		episCheckList = epiManager.populaCheckToEpi(getEmpresaSistema().getId(), epiAtivo);
@@ -96,7 +99,7 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 				return Action.SUCCESS;
 		
 		} catch (FortesException e) {
-			addActionError(e.getMessage());
+			addActionWarning(e.getMessage());
 			prepareInsert(); 
 			return Action.INPUT;
 		
@@ -255,5 +258,9 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 
 	public void setCursoManager(CursoManager cursoManager) {
 		this.cursoManager = cursoManager;
+	}
+
+	public void setCargoManager(CargoManager cargoManager) {
+		this.cargoManager = cargoManager;
 	}
 }

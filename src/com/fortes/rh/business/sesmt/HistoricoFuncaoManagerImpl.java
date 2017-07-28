@@ -202,7 +202,7 @@ public class HistoricoFuncaoManagerImpl extends GenericManagerImpl<HistoricoFunc
 	public void saveHistorico(HistoricoFuncao historicoFuncao, Long[] examesChecked, Long[] episChecked, Long[] riscoChecks, Long[] cursosChecked, Collection<RiscoFuncao> riscoFuncoes) throws FortesException, Exception 
 	{
 		if (this.findByData(historicoFuncao.getData(), historicoFuncao.getId(), historicoFuncao.getFuncao().getId()) != null)
-			throw new FortesException("Já existe um histórico para a data informada");			
+			throw new FortesException("Já existe um histórico para a data informada.");			
 		
 		historicoFuncao.setExames(addExames(examesChecked));
 		CollectionUtil<Epi> collectionUtil = new CollectionUtil<Epi>(); 

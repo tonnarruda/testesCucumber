@@ -7,6 +7,7 @@
 		<Item visivel="S" motivo="S17060000175"><![CDATA[T&D > Movimentações > Levantamento de Necessidade de Treinamento (LNT) > Gerar cursos e turmas > Criar turmas/relacionar participantes: Nova opção para detalhar os custos das turmas.]]></Item>
 		<Item visivel="S" motivo="S17010000136"><![CDATA[SESMT > Painel de Indicadores: Possibilidade de impressão dos gráficos do painel.]]></Item>
 		<Item visivel="S" motivo="P17070000103"><![CDATA[SESMT > Cadastros > CIPA > Comissões > Editar > Reuniões > Frequência: Ajuste na inconsistência ao visualizar as frequências.]]></Item>
+		<Item visivel="S" motivo="P17070000155"><![CDATA[SESMT > Cadastros > Funções > Inserir/Editar > Inserir/Editar: Exibição correta do nome do cargo quando o mesmo é acentuado.]]></Item>
 		<Item visivel="N" motivo="S16060000240"><![CDATA[Sistema: Validação da quantidade de constraints e versão do banco de dados.]]></Item>
 		<Item visivel="N" motivo="P17070000031"><![CDATA[Sistema: Ajuste de inconsistência que removia a informação de ativo e inativo do nome dos cargos.]]></Item>
 		<Item visivel="N" motivo="P17070000118"><![CDATA[Sistema: Ajuste na tela inicial relacionado à progressão salarial quando não houver conexão com Fortes Pessoal(para sistemas integrados).]]></Item>
@@ -156,8 +157,8 @@
 		<Item visivel="S" motivo="S15120000091"><![CDATA[R&S > Painel de Indicadores: Novo indicador "Índice de vagas preenchidas no prazo".]]></Item>
 		<Item visivel="S" motivo="P16100000180"><![CDATA[Pesquisas > Movimentações > Pesquisas: Ajuste na inconsistência para que não seja mais possível responder a pesquisa mais de uma vez.]]></Item>
 		<Item visivel="S" motivo="S16060000187"><![CDATA[Info. Funcionais > Relatórios > Listagem de Colaboradores: Nova opção para exibir a data de encerramento do contrato no relatório.]]></Item>
-		<Item visivel="S" motivo="S16080000346"><![CDATA[SESMT > Cadastros > Cipa > Eleições > Editar > Resultado > Imprimir resultado: Ordenação dos candidatos considerando o maior tempo de serviço como critério de desempate na votação]]></Item>
-		<Item visivel="S" motivo="S16080000346"><![CDATA[SESMT > Cadastros > Cipa > Eleições > Editar > Atas e Comunicados > Imprimir Ata da Eleição: Ordenação dos candidatos considerando o maior tempo de serviço como critério de desempate na votação.]]></Item>
+		<Item visivel="S" motivo="S16080000346"><![CDATA[SESMT > Cadastros > CIPA > Eleições > Editar > Resultado > Imprimir resultado: Ordenação dos candidatos considerando o maior tempo de serviço como critério de desempate na votação]]></Item>
+		<Item visivel="S" motivo="S16080000346"><![CDATA[SESMT > Cadastros > CIPA > Eleições > Editar > Atas e Comunicados > Imprimir Ata da Eleição: Ordenação dos candidatos considerando o maior tempo de serviço como critério de desempate na votação.]]></Item>
 		<Item visivel="S" motivo="P16090000330"><![CDATA[SESMT > Cadastros > CIPA > Comissões > Editar > Reuniões > Frequência: Ajuste de inconsistência ao criar reuniões utilizando a funcionalidade "Sugerir reuniões ordinárias".]]></Item>
 		<Item visivel="S" motivo="P16100000145"><![CDATA[SESMT > Movimentações > Solicitações/Atendimentos Médicos > Imprimir Solicitação de Exames: Ajuste na informação da função do candidato.]]></Item>
 		<Item visivel="S" motivo="P16100000025"><![CDATA[SESMT > Relatórios > PCMSO:  Ajuste de inconsistência na contagem de exames realizados.]]></Item>

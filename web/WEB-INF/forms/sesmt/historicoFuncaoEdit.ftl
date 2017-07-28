@@ -4,6 +4,7 @@
 <html>
 <head>
 <@ww.head/>
+
 <#if historicoFuncao.id?exists>
 	<title>Editar Histórico da Função - ${cargoTmp.nome} / ${funcao.nome}</title>
 	<#assign formAction="update.action"/>
@@ -15,7 +16,7 @@
 </#if>
 
 <#if historicoFuncao.data?exists>
-		<#assign data = historicoFuncao.data>
+		<#assign data = historicoFuncao.data?date>
 	<#else>
 		<#assign data = "">
 </#if>
