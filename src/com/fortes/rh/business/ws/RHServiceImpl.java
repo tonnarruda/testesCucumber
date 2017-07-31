@@ -51,10 +51,8 @@ import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.cargosalario.IndiceHistorico;
-import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
 import com.fortes.rh.model.dicionario.MovimentacaoAC;
 import com.fortes.rh.model.dicionario.OrigemCandidato;
-import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoMensagem;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Cidade;
@@ -588,8 +586,8 @@ public class RHServiceImpl implements RHService
 		
 		try{
 			verifyToken(token, true);
-			Colaborador colaborador = verifyAndUpdateColaborador(empregado);
-			verifyAndUpdateHistoricoColaborador(situacao, colaborador);
+			verifyAndUpdateColaborador(empregado);
+			historicoColaboradorManager.updateSituacao(situacao);
 				
 			transactionManager.commit(status);
 			return new FeedbackWebService(true);
@@ -603,22 +601,22 @@ public class RHServiceImpl implements RHService
 			return new FeedbackWebService(false, "Erro ao atualizar empregado e/ou situação.",  formataException(parametros, e));
 		}
 	}
-
-	private void verifyAndUpdateHistoricoColaborador(TSituacao situacao, Colaborador colaborador) throws Exception {
-		try	{
-			HistoricoColaborador historicoColaborador = historicoColaboradorManager.updateSituacao(situacao);
-			
-			if (historicoColaborador.getMotivo().equals(MotivoHistoricoColaborador.CONTRATADO)){ 
-				colaboradorManager.criarUsuarioParaColaborador(historicoColaborador.getColaborador(), historicoColaborador.getColaborador().getEmpresa());
-				if(historicoColaborador.getStatusAnterior() == StatusRetornoAC.AGUARDANDO)
-					gerenciadorComunicacaoManager.enviaEmailBoasVindasColaborador(colaborador);
-			}
-		}catch (Exception e){
-			e.printStackTrace();
-			throw new Exception("Erro ao atualizar situação do colaborador.");
-		}
-	}
-
+	
+    public FeedbackWebService confirmarContratacao(String token, TEmpregado empregado, TSituacao situacao) {
+        String parametros = "empregado: " + empregado.getCodigoAC() + " \nsituacao: " + situacao.getData();
+        try {
+            verifyToken(token, true);
+            colaboradorManager.confirmarContratacao(empregado, situacao);
+            return new FeedbackWebService(true);
+        } catch (TokenException e) {
+            e.printStackTrace();
+            return new FeedbackWebService(false, "Token incorreto.", "");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new FeedbackWebService(false, "Erro ao atualizar empregado e/ou situação.", formataException(parametros, e));
+        }
+    }
+	
 	private Colaborador verifyAndUpdateColaborador(TEmpregado empregado) throws Exception {
 		Colaborador colaborador = colaboradorManager.updateEmpregado(empregado);
 		if(colaborador == null)
@@ -1678,5 +1676,5 @@ public class RHServiceImpl implements RHService
 
     public void setCodigoCBOManager(CodigoCBOManager codigoCBOManager) {
         this.codigoCBOManager = codigoCBOManager;
-    }	
+    }
 }

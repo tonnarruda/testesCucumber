@@ -49,6 +49,7 @@ import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.avaliacao.relatorio.AcompanhamentoExperienciaColaborador;
 import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.Escolaridade;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
@@ -75,7 +76,6 @@ import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.geral.CidadeFactory;
 import com.fortes.rh.test.factory.geral.EstadoFactory;
 import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
-import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientColaborador;
@@ -636,7 +636,7 @@ public class ColaboradorManagerTest_Junit4
 	}
     
     @Test
-    public void getVinculo() {
+    public void testGetVinculo() {
     	assertEquals(Vinculo.ESTAGIO, colaboradorManager.getVinculo("00", null, null));
     	assertEquals(Vinculo.TEMPORARIO, colaboradorManager.getVinculo(null, 50, null));
     	assertEquals(Vinculo.TEMPORARIO, colaboradorManager.getVinculo(null, 60, null));
@@ -654,7 +654,7 @@ public class ColaboradorManagerTest_Junit4
     }
     
     @Test
-    public void excedeuContratacoes() throws Exception {
+    public void testExcedeuContratacoes() throws Exception {
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		
     	doThrow(FortesException.class).when(mockColaboradorManager).validaQtdCadastros(empresa.getId());
@@ -665,7 +665,7 @@ public class ColaboradorManagerTest_Junit4
 	}
     
     @Test
-    public void naoExcedeuContratacoes() throws Exception {
+    public void testNaoExcedeuContratacoes() throws Exception {
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
     	
     	doNothing().when(mockColaboradorManager).validaQtdCadastros(empresa.getId());
@@ -917,4 +917,44 @@ public class ColaboradorManagerTest_Junit4
 		return demitido;
 	}
 
+    public void testConfirmarContratacaoColaboradorNaoEncontradoNoRH() throws Exception {
+        TEmpregado empregado = new TEmpregado();
+        TSituacao situacao = new TSituacao();
+
+        when(colaboradorManager.updateEmpregado(empregado)).thenReturn(null);
+
+        String msg = "";
+        try {
+            colaboradorManager.confirmarContratacao(empregado, situacao);
+        } catch (Exception e) {
+            msg = e.getMessage();
+        }
+
+        assertEquals("Empregado não encontrado.", msg);
+    }
+
+    @Test
+    public void testConfirmarContratacao() throws Exception {
+        TEmpregado empregado = new TEmpregado();
+        TSituacao situacao = new TSituacao();
+
+        Empresa empresa = EmpresaFactory.getEmpresa(2L);
+        Colaborador colaborador = ColaboradorFactory.getEntity(1L, empresa);
+        HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1L, colaborador);
+        
+
+        when(colaboradorManager.updateEmpregado(empregado)).thenReturn(colaborador);
+        when(historicoColaboradorManager.atualizarHistoricoContratacao(situacao)).thenReturn(historicoColaborador);
+        when(empresaManager.findEntidadeComAtributosSimplesById(empresa.getId())).thenReturn(empresa);
+        
+
+        Exception exception = null;
+        try {
+            colaboradorManager.confirmarContratacao(empregado, situacao);
+        } catch (Exception e) {
+            exception = e;
+        }
+
+        assertNull(exception);
+    }
 }

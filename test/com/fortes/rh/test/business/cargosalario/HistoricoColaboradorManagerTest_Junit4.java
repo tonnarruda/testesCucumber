@@ -1,6 +1,6 @@
 package com.fortes.rh.test.business.cargosalario;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -155,4 +155,132 @@ public class HistoricoColaboradorManagerTest_Junit4
 		HistoricoColaborador historicoColaboradorRetorno = historicoColaboradorManagerImpl.cancelarSituacao(situacao, mensagem);
 		assertEquals(historicoColaborador, historicoColaboradorRetorno);
 	}
+	
+    @Test
+    public void testAtualizarHistoricoContratacaoHistoricoNaoEncontradoNoRH() {
+        Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+
+        HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1L);
+        historicoColaborador.setColaborador(colaborador);
+        TSituacao situacao = montaTSituacao();
+
+        when(historicoColaboradorDao.findHistoricoMotivoContratacao(situacao.getEmpregadoCodigoAC(), situacao.getEmpresaCodigoAC(), situacao.getGrupoAC())).thenReturn(null);
+
+        String msg = "";
+        try {
+            historicoColaboradorManagerImpl.atualizarHistoricoContratacao(situacao);
+        } catch (Exception e) {
+            msg = e.getMessage();
+        }
+        assertEquals(msg, "Situação não encontrada no Fortes RH.");
+    }
+
+    @Test
+    public void testAtualizarHistoricoContratacaoEstabelecimentoNaoExisteNoRH() {
+        Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+
+        HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1L);
+        historicoColaborador.setColaborador(colaborador);
+        TSituacao situacao = montaTSituacao();
+
+        when(historicoColaboradorDao.findHistoricoMotivoContratacao(situacao.getEmpregadoCodigoAC(), situacao.getEmpresaCodigoAC(), situacao.getGrupoAC())).thenReturn(
+                historicoColaborador);
+        when(estabelecimentoManager.findEstabelecimentoByCodigoAc(situacao.getEstabelecimentoCodigoAC(), situacao.getEmpresaCodigoAC(), situacao.getGrupoAC())).thenReturn(null);
+
+        String msg = "";
+        try {
+            historicoColaboradorManagerImpl.atualizarHistoricoContratacao(situacao);
+        } catch (Exception e) {
+            msg = e.getMessage();
+        }
+
+        assertEquals(msg, "Não foi possível realizar a operação. Estabelecimento não existe no RH.");
+    }
+
+    @Test
+    public void testAtualizarHistoricoContratacaoAreaOrganizacionalNaoExisteNoRH() {
+        Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+
+        HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1L);
+        historicoColaborador.setColaborador(colaborador);
+        TSituacao situacao = montaTSituacao();
+
+        when(historicoColaboradorDao.findHistoricoMotivoContratacao(situacao.getEmpregadoCodigoAC(), situacao.getEmpresaCodigoAC(), situacao.getGrupoAC())).thenReturn(
+                historicoColaborador);
+        when(estabelecimentoManager.findEstabelecimentoByCodigoAc(situacao.getEstabelecimentoCodigoAC(), situacao.getEmpresaCodigoAC(), situacao.getGrupoAC())).thenReturn(
+                EstabelecimentoFactory.getEntity(1L));
+        when(areaOrganizacionalManager.findAreaOrganizacionalByCodigoAc(situacao.getLotacaoCodigoAC(), situacao.getEmpresaCodigoAC(), situacao.getGrupoAC())).thenReturn(null);
+
+        String msg = "";
+        try {
+            historicoColaboradorManagerImpl.atualizarHistoricoContratacao(situacao);
+        } catch (Exception e) {
+            msg = e.getMessage();
+        }
+
+        assertEquals(msg, "Não foi possível realizar a operação. Área organizacional não existe no RH.");
+    }
+
+    @Test
+    public void testAtualizarHistoricoContratacaoFaixaSalarialNaoExisteNoRH() throws Exception {
+        Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+
+        HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1L);
+        historicoColaborador.setColaborador(colaborador);
+        TSituacao situacao = montaTSituacao();
+
+        when(historicoColaboradorDao.findHistoricoMotivoContratacao(situacao.getEmpregadoCodigoAC(), situacao.getEmpresaCodigoAC(), situacao.getGrupoAC())).thenReturn(
+                historicoColaborador);
+        when(estabelecimentoManager.findEstabelecimentoByCodigoAc(situacao.getEstabelecimentoCodigoAC(), situacao.getEmpresaCodigoAC(), situacao.getGrupoAC())).thenReturn(
+                EstabelecimentoFactory.getEntity(1L));
+        when(areaOrganizacionalManager.findAreaOrganizacionalByCodigoAc(situacao.getLotacaoCodigoAC(), situacao.getEmpresaCodigoAC(), situacao.getGrupoAC())).thenReturn(
+                AreaOrganizacionalFactory.getEntity(2L));
+        when(faixaSalarialManager.findFaixaSalarialByCodigoAc(situacao.getCargoCodigoAC(), situacao.getEmpresaCodigoAC(), situacao.getGrupoAC())).thenReturn(null);
+
+        String msg = "";
+        try {
+            historicoColaboradorManagerImpl.atualizarHistoricoContratacao(situacao);
+        } catch (Exception e) {
+            msg = e.getMessage();
+        }
+        assertEquals(msg, "Não foi possível realizar a operação. Faixa salarial não existe no RH.");
+    }
+
+    @Test
+    public void testAtualizarHistoricoContratacaoSucesso() throws Exception {
+        Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+
+        HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1L);
+        historicoColaborador.setColaborador(colaborador);
+        TSituacao situacao = montaTSituacao();
+
+        when(historicoColaboradorDao.findHistoricoMotivoContratacao(situacao.getEmpregadoCodigoAC(), situacao.getEmpresaCodigoAC(), situacao.getGrupoAC())).thenReturn(
+                historicoColaborador);
+        when(estabelecimentoManager.findEstabelecimentoByCodigoAc(situacao.getEstabelecimentoCodigoAC(), situacao.getEmpresaCodigoAC(), situacao.getGrupoAC())).thenReturn(
+                EstabelecimentoFactory.getEntity(1L));
+        when(areaOrganizacionalManager.findAreaOrganizacionalByCodigoAc(situacao.getLotacaoCodigoAC(), situacao.getEmpresaCodigoAC(), situacao.getGrupoAC())).thenReturn(
+                AreaOrganizacionalFactory.getEntity(2L));
+        when(faixaSalarialManager.findFaixaSalarialByCodigoAc(situacao.getCargoCodigoAC(), situacao.getEmpresaCodigoAC(), situacao.getGrupoAC())).thenReturn(
+                FaixaSalarialFactory.getEntity(1L));
+
+        Exception exception = null;
+        try {
+            historicoColaboradorManagerImpl.atualizarHistoricoContratacao(situacao);
+        } catch (Exception e) {
+            exception = e;
+        }
+        assertNull(exception);
+    }
+
+    private TSituacao montaTSituacao() {
+        String empresaCodigoAC = "001";
+        TSituacao situacao = new TSituacao();
+        situacao.setTipoSalario("C");
+        situacao.setId(1);
+        situacao.setEmpresaCodigoAC(empresaCodigoAC);
+        situacao.setEstabelecimentoCodigoAC("0001");
+        situacao.setLotacaoCodigoAC("0001");
+        situacao.setCargoCodigoAC("0003");
+        return situacao;
+    }
 }

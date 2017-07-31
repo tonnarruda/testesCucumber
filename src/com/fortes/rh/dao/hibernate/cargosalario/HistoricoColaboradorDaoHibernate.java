@@ -1579,4 +1579,17 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(HistoricoColaborador.class));
 		return (HistoricoColaborador) criteria.uniqueResult();
 	}
+	
+    public HistoricoColaborador findHistoricoMotivoContratacao(String empregadoCodigoAC, String empresaCodigoAC, String grupoAC) {
+        Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
+        criteria.createCriteria("hc.colaborador", "c");
+        criteria.createCriteria("c.empresa", "e");
+
+        criteria.add(Expression.eq("hc.motivo", MotivoHistoricoColaborador.CONTRATADO));
+        criteria.add(Expression.eq("c.codigoAC", empregadoCodigoAC));
+        criteria.add(Expression.eq("e.codigoAC", empresaCodigoAC));
+        criteria.add(Expression.eq("e.grupoAC", grupoAC));
+
+        return (HistoricoColaborador) criteria.uniqueResult();
+    }
 }

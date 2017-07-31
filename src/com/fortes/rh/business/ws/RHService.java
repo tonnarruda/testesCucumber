@@ -54,6 +54,7 @@ public interface RHService
 	FeedbackWebService cancelarContratacao(String token, TEmpregado empregado, TSituacao situacao,  String mensagem);
 	FeedbackWebService cancelarSolicitacaoDesligamentoAC(String token, TEmpregado empregado, String mensagem);
 	void reSincronizarTabelaTemporariaAC (String token, String gruposAC) throws Exception;
+	FeedbackWebService confirmarContratacao(String token, TEmpregado empregado, TSituacao situacao);
 
 	//Tabela situacao no AC -> SEP
 	FeedbackWebService removerSituacao(String token, TSituacao situacao);

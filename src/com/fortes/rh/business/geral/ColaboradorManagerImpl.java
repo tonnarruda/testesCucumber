@@ -3271,6 +3271,16 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	public Collection<Colaborador> findDadosBasicosNotIds(Set<Long> notColabIds, Long[] colabIds, Long[] areasIds, Long[] estabelecimentosIds, String situacaoColaborador, Long empresaId) {
 		return getDao().findDadosBasicosNotIds(notColabIds, colabIds, areasIds, estabelecimentosIds, situacaoColaborador, empresaId);
 	}
+
+	public void confirmarContratacao(TEmpregado empregado, TSituacao situacao) throws Exception {
+        Colaborador colaborador = this.updateEmpregado(empregado);
+        if (colaborador == null)
+            throw new Exception("Empregado não encontrado.");
+
+        HistoricoColaborador historicoColaborador = historicoColaboradorManager.atualizarHistoricoContratacao(situacao);
+        this.criarUsuarioParaColaborador(historicoColaborador.getColaborador(), historicoColaborador.getColaborador().getEmpresa());
+        gerenciadorComunicacaoManager.enviaEmailBoasVindasColaborador(colaborador);
+    }
 	
 	public void setColaboradorPeriodoExperienciaAvaliacaoManager(ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager) 
 	{

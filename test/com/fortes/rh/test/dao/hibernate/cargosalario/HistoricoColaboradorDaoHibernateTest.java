@@ -1968,6 +1968,35 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		
 		assertEquals(historicoColaborador2.getId(), historicoColaboradorRetornadoDoBanco.getId());
 	}
+	
+	public void testFindHistoricoMotivoContratacao(){
+	    GrupoAC grupoAC = new GrupoAC("XXX", "desc");
+        grupoACDao.save(grupoAC);
+        
+        Empresa empresa = EmpresaFactory.getEmpresa();
+        empresa.setCodigoAC("333AA11");
+        empresa.setGrupoAC(grupoAC.getCodigo());
+        empresa = empresaDao.save(empresa);
+
+        Colaborador colaborador = ColaboradorFactory.getEntity();
+        colaborador.setCodigoAC("1233FF55");
+        colaborador.setEmpresa(empresa);
+        colaborador = colaboradorDao.save(colaborador);
+
+        HistoricoColaborador hcContratacao = HistoricoColaboradorFactory.getEntity();
+        hcContratacao.setColaborador(colaborador);
+        hcContratacao.setMotivo(MotivoHistoricoColaborador.CONTRATADO);
+        hcContratacao.setData(new Date());
+        historicoColaboradorDao.save(hcContratacao);
+        
+        HistoricoColaborador hcOutroHistorico = HistoricoColaboradorFactory.getEntity();
+        hcOutroHistorico.setColaborador(colaborador);
+        hcOutroHistorico.setMotivo(MotivoHistoricoColaborador.PROMOCAO);
+        hcOutroHistorico.setData(DateUtil.incrementaMes(new Date(), 1));
+        historicoColaboradorDao.save(hcOutroHistorico);
+        
+        assertEquals(hcContratacao.getId(), historicoColaboradorDao.findHistoricoMotivoContratacao(colaborador.getCodigoAC(), empresa.getCodigoAC(), empresa.getGrupoAC()).getId());
+	}
 
 	private void criaHistoricoColaborador(Indice indice, Date dataPrimeiroHistoricoIndice, int tipoSalario, int status, boolean criaNovoHistorico)
 	{

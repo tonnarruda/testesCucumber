@@ -66,4 +66,5 @@ public interface HistoricoColaboradorDao extends GenericDao<HistoricoColaborador
 	public boolean existeDependenciaComHistoricoIndice(Date dataHistoricoExcluir, Date dataSegundoHistoricoIndice, Long indiceId);
 	public void updateArea(Long areaIdMae, Long areaId);
 	public HistoricoColaborador findHistoricoColaboradorByData(Long colaboradorId, Date data);
+	public HistoricoColaborador findHistoricoMotivoContratacao(String empregadoCodigoAC, String empresaCodigoAC, String grupoAC);
 }

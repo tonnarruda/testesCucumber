@@ -180,4 +180,6 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 	public void updateArea(Long areaIdMae, Long areaId) ;
 
 	public HistoricoColaborador findHistoricoColaboradorByData(Long colaboradorId, Date data);
+
+    public HistoricoColaborador atualizarHistoricoContratacao(TSituacao situacao) throws Exception;
 }

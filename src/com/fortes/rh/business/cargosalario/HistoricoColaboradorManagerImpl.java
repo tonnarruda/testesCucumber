@@ -1598,6 +1598,25 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		acPessoalClientTabelaReajuste.saveHistoricoColaborador(historicosColaboradores, empresa, null, false);
 	}
 	
+    @TesteAutomatico
+    public HistoricoColaborador findHistoricoColaboradorByData(Long colaboradorId, Date data) {
+        return getDao().findHistoricoColaboradorByData(colaboradorId, data);
+    }
+
+    public HistoricoColaborador atualizarHistoricoContratacao(TSituacao situacao) throws Exception {
+        HistoricoColaborador historicoColaborador = getDao().findHistoricoMotivoContratacao(situacao.getEmpregadoCodigoAC(), situacao.getEmpresaCodigoAC(), situacao.getGrupoAC());
+        if (historicoColaborador == null)
+            throw new Exception("Situação não encontrada no Fortes RH.");
+
+        historicoColaborador = bindSituacao(situacao, historicoColaborador);
+        historicoColaborador.setStatusAnterior(historicoColaborador.getStatus());
+        historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
+
+        getDao().update(historicoColaborador);
+
+        return historicoColaborador;
+    }
+	
 	public void setEmpresaManager(EmpresaManager empresaManager) {
 		this.empresaManager = empresaManager;
 	}
@@ -1610,10 +1629,6 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
 	}
 
-	@TesteAutomatico
-	public HistoricoColaborador findHistoricoColaboradorByData(Long colaboradorId, Date data) {
-		return getDao().findHistoricoColaboradorByData(colaboradorId, data);
-	}
 
 	public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager) {
 		this.solicitacaoManager = solicitacaoManager;
