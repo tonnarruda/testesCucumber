@@ -3,8 +3,6 @@ package com.fortes.rh.test.business.cargosalario;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 import mockit.Mockit;
 
@@ -30,10 +28,8 @@ import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.geral.QuantidadeLimiteColaboradoresPorCargoManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.dao.cargosalario.CargoDao;
-import com.fortes.rh.model.captacao.Atitude;
 import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.captacao.EtapaSeletiva;
-import com.fortes.rh.model.captacao.Habilidade;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
@@ -581,45 +577,5 @@ public class CargoManagerTest extends MockObjectTestCase
 		cargoDao.expects(once()).method("verifyExistCargoNome").with(ANYTHING,ANYTHING).will(returnValue(true));
 
 		assertTrue(cargoManager.verifyExistCargoNome(cargo.getNome(), 1L));
-	}
-	
-	public void testSincronizar()
-	{
-		Long empresaOrigemId = 1L;
-		Map<Long, Long> areaIds = new HashMap<Long, Long>();
-		Map<Long, Long> areaInteresseIds = new HashMap<Long, Long>();
-		Map<Long, Long> conhecimentoIds = new HashMap<Long, Long>();
-		Map<Long, Long> habilidadeIds = new HashMap<Long, Long>();
-		Map<Long, Long> atitudeIds = new HashMap<Long, Long>();
-		
-		Collection<Cargo> cargos = new ArrayList<Cargo>();
-		Cargo cargo = CargoFactory.getEntity(1L);
-		cargos.add(cargo);
-		
-		cargoDao.expects(once()).method("findSincronizarCargos").with(eq(empresaOrigemId)).will(returnValue(cargos));
-		cargoDao.expects(once()).method("save").will(returnValue(cargo));
-		
-		Collection<AreaOrganizacional> areasOrganizacionais = new ArrayList<AreaOrganizacional>();
-		areaOrganizacionalManager.expects(once()).method("findByCargo").will(returnValue(areasOrganizacionais ));
-		
-		Collection<Conhecimento> conhecimentos = new ArrayList<Conhecimento>(); 
-		conhecimentoManager.expects(once()).method("findByCargo").will(returnValue(conhecimentos ));
-
-		Collection<Habilidade> habilidades = new ArrayList<Habilidade>(); 
-		habilidadeManager.expects(once()).method("findByCargo").will(returnValue(habilidades ));
-		
-		Collection<Atitude> atitudes = new ArrayList<Atitude>(); 
-		atitudeManager.expects(once()).method("findByCargo").will(returnValue(atitudes ));
-		
-		Collection<AreaFormacao> areasFormacao = new ArrayList<AreaFormacao>(); 
-		areaFormacaoManager.expects(once()).method("findByCargo").will(returnValue(areasFormacao ));
-		
-		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
-		cargoDao.expects(once()).method("update");
-		transactionManager.expects(once()).method("commit").with(ANYTHING);
-		
-		faixaSalarialManager.expects(once()).method("sincronizar");
-		
-		cargoManager.sincronizar(empresaOrigemId, EmpresaFactory.getEmpresa(), areaIds, areaInteresseIds, conhecimentoIds, habilidadeIds, atitudeIds, null);
 	}
 }

@@ -374,13 +374,15 @@ public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaS
 		return pendenciaACs;
 	}
 
-	public FaixaSalarialHistorico sincronizar(Long faixaSalarialOrigemId, Long faixaSalarialDestinoId, Empresa empresaDestino)
+	public FaixaSalarialHistorico sincronizar(Long faixaSalarialOrigemId, Long faixaSalarialDestinoId, Empresa empresaDestino, String grupoAcOrigem) throws FortesException
 	{
 		FaixaSalarialHistorico faixaSalarialHistorico = getDao().findHistoricoAtual(faixaSalarialOrigemId);
 
 		if(faixaSalarialHistorico != null){
+		    if(empresaDestino.isAcIntegra() && faixaSalarialHistorico.getTipo() == TipoAplicacaoIndice.INDICE && !empresaDestino.getGrupoAC().equals(grupoAcOrigem))
+		        throw new FortesException("Entre empresas com Grupo AC diferentes não é possível importar cargos que possuem situação por indíce.");
+		        
 			faixaSalarialHistorico.setId(null);
-			faixaSalarialHistorico.setIndice(null);
 			faixaSalarialHistorico.setProjectionFaixaSalarialId(faixaSalarialDestinoId);
 	
 			prepareSaveUpdate(faixaSalarialHistorico, faixaSalarialHistorico.getFaixaSalarial(), empresaDestino);

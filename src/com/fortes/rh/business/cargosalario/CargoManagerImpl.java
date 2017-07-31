@@ -25,6 +25,7 @@ import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.QuantidadeLimiteColaboradoresPorCargoManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.dao.cargosalario.CargoDao;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.captacao.Atitude;
 import com.fortes.rh.model.captacao.Conhecimento;
@@ -309,72 +310,99 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 		return getDao().findAllSelectDistinctNomeMercado(empresaIds);
 	}
 
-	public void sincronizar(Long empresaOrigemId, Empresa empresaDestino, Map<Long, Long> areaIds, Map<Long, Long> areaInteresseIds, Map<Long, Long> conhecimentoIds, Map<Long, Long> habilidadeIds, Map<Long, Long> atitudeIds, List<String> mensagens)
+	public void sincronizar(Long empresaOrigemId, Empresa empresaDestino, Map<Long, Long> areaIds, Map<Long, Long> conhecimentoIds, Map<Long, Long> habilidadeIds, Map<Long, Long> atitudeIds, List<String> mensagens)
 	{
 		faixaSalarialManager = (FaixaSalarialManager) SpringUtil.getBean("faixaSalarialManager");
-		Collection<Cargo> cargos = getDao().findSincronizarCargos(empresaOrigemId);
+		Empresa empresaOrigem = empresaManager.findByIdProjection(empresaOrigemId);
 		Map<Long, GrupoOcupacional> novosGruposOcupacionais = new HashMap<Long, GrupoOcupacional>();
+		
+		GrupoOcupacionalManager grupoOcupacionalManager = (GrupoOcupacionalManager) SpringUtil.getBean("grupoOcupacionalManager");
+		sincronizarGruposOcupacionais(empresaOrigemId, empresaDestino.getId(), novosGruposOcupacionais, grupoOcupacionalManager);
+		        
+		Collection<Cargo> cargos = getDao().findSincronizarCargos(empresaOrigemId);
 		
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
 		TransactionStatus status = null;
 
-		// Clona cargo, Grupo ocupacional; Popula o cargo com as áreas e conhecimentos clonados
 		for (Cargo cargo : cargos) 
 		{
 			try{
-				status = transactionManager.getTransaction(def);
-				Long cargoOrigemId = cargo.getId();
-				GrupoOcupacional grupoOcupacionalOrigem = cargo.getGrupoOcupacional();
-				
-				Collection<AreaOrganizacional> areasOrganizacionais = popularAreasOrganizacionaisComIds(areaIds, cargoOrigemId);
-				cargo.setAreasOrganizacionais(areasOrganizacionais);
-				clonar(cargo, empresaDestino.getId());
+                status = transactionManager.getTransaction(def);
+                Long cargoOrigemId = cargo.getId();
+                GrupoOcupacional grupoOcupacionalOrigem = cargo.getGrupoOcupacional();
+                clonar(cargo, empresaDestino.getId());
 
-				Collection<Conhecimento> conhecimentos = popularConhecimentosComIds(conhecimentoIds, cargoOrigemId);
-				cargo.setConhecimentos(conhecimentos);
+                if (areaIds != null && areaIds.size() > 0) {
+                    Collection<AreaOrganizacional> areasOrganizacionais = popularAreasOrganizacionaisComIds(areaIds, cargoOrigemId);
+                    cargo.setAreasOrganizacionais(areasOrganizacionais);
+                }
 
-				Collection<Habilidade> habilidades = popularHabilidadesComIds(habilidadeIds, cargoOrigemId);
-				cargo.setHabilidades(habilidades);
+                if (conhecimentoIds != null && conhecimentoIds.size() > 0) {
+                    Collection<Conhecimento> conhecimentos = popularConhecimentosComIds(conhecimentoIds, cargoOrigemId);
+                    cargo.setConhecimentos(conhecimentos);
+                }
 
-				Collection<Atitude> atitudes = popularAtitudesComIds(atitudeIds, cargoOrigemId);
-				cargo.setAtitudes(atitudes);
+                if (habilidadeIds != null && habilidadeIds.size() > 0) {
+                    Collection<Habilidade> habilidades = popularHabilidadesComIds(habilidadeIds, cargoOrigemId);
+                    cargo.setHabilidades(habilidades);
+                }
 
-				Collection<AreaFormacao> areaFormacaos = areaFormacaoManager.findByCargo(cargoOrigemId);
-				cargo.setAreaFormacaos(areaFormacaos);
+                if (atitudeIds != null && atitudeIds.size() > 0) {
+                    Collection<Atitude> atitudes = popularAtitudesComIds(atitudeIds, cargoOrigemId);
+                    cargo.setAtitudes(atitudes);
+                }
 
-				if (grupoOcupacionalOrigem != null)
-				{
-					if (!novosGruposOcupacionais.containsKey(grupoOcupacionalOrigem.getId()))
-						novosGruposOcupacionais.put(grupoOcupacionalOrigem.getId(), clonarGrupoOcupacional(grupoOcupacionalOrigem, empresaDestino.getId()));
+                Collection<AreaFormacao> areaFormacaos = areaFormacaoManager.findByCargo(cargoOrigemId);
+                cargo.setAreaFormacaos(areaFormacaos);
+                cargo.setGrupoOcupacional(grupoOcupacionalOrigem);
 
-					cargo.setGrupoOcupacional(novosGruposOcupacionais.get(grupoOcupacionalOrigem.getId()));
-				}
+                if (cargo.getGrupoOcupacional() != null) {
+                    cargo.setGrupoOcupacional(novosGruposOcupacionais.get(cargo.getGrupoOcupacional().getId()));
+                }
 
-				faixaSalarialManager.sincronizar(cargoOrigemId, cargo, empresaDestino);
+				faixaSalarialManager.sincronizar(cargoOrigemId, cargo, empresaDestino, empresaOrigem.getGrupoAC());
 				getDao().update(cargo);
 				transactionManager.commit(status);
 			}catch (IntegraACException e){
 				mensagens.add("Não foi possível importar o cargo <strong>" + cargo.getNome() + "</strong> para o Fortes Pessoal.<br>Possíveis Motivos: <br>&nbsp&nbsp&nbsp- Cargo existente com a mesma descrição no Fortes Pessoal. <br>&nbsp&nbsp&nbsp- Limite de cadastros de cargos excedido no Fortes Pessoal.");
 				transactionManager.rollback(status);
-			}catch (Exception e)
+			}catch (FortesException e) {
+			    mensagens.add("Não é possível importar o cargo <strong>" + cargo.getNome() + "</strong><br>&nbsp&nbsp&nbsp- " + e.getMessage());
+			    transactionManager.rollback(status);
+                e.printStackTrace();
+            }catch (Exception e)
 			{
 				mensagens.add("Ocorreu um erro ao importar o cargo <strong>" + cargo.getNome() + "</strong>");
 				transactionManager.rollback(status);
 				e.printStackTrace();
 			}
 		}
+		grupoOcupacionalManager.deletarGruposInseridosENaoUtilizadosAposImportarCadastroEntreEmpresas(LongUtil.collectionToArrayLong(novosGruposOcupacionais.values()), empresaDestino.getId());
 	}
 
-	private GrupoOcupacional clonarGrupoOcupacional(GrupoOcupacional grupoOcupacional, Long empresaDestinoId) 
+    private void sincronizarGruposOcupacionais(Long empresaOrigemId, Long empresaDestinoId, Map<Long, GrupoOcupacional> novosGruposOcupacionais, GrupoOcupacionalManager grupoOcupacionalManager) {
+        Collection<GrupoOcupacional> gruposOcupacionais = grupoOcupacionalManager.findGruposUsadosPorCargosByEmpresaId(empresaOrigemId);
+		
+		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+        def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+        TransactionStatus status = transactionManager.getTransaction(def);
+
+        for (GrupoOcupacional grupoOcupacional : gruposOcupacionais) 
+		    novosGruposOcupacionais.put(grupoOcupacional.getId(), clonarGrupoOcupacional(grupoOcupacionalManager, grupoOcupacional, empresaDestinoId));
+		
+		transactionManager.commit(status);
+    }
+
+	private GrupoOcupacional clonarGrupoOcupacional(GrupoOcupacionalManager grupoOcupacionalManager, GrupoOcupacional grupoOcupacional, Long empresaDestinoId) 
 	{
-		GrupoOcupacionalManager grupoOcupacionalManager = (GrupoOcupacionalManager) SpringUtil.getBean("grupoOcupacionalManager");
 		GrupoOcupacional grupoOcupacionalDestino = new GrupoOcupacional();
 		
 		grupoOcupacionalDestino.setNome(grupoOcupacional.getNome());
 		grupoOcupacionalDestino.setProjectionEmpresaId(empresaDestinoId);
 		
 		grupoOcupacionalManager.save(grupoOcupacionalDestino);
+		getDao().getHibernateTemplateByGenericDao().flush();
 		
 		return grupoOcupacionalDestino;
 	}

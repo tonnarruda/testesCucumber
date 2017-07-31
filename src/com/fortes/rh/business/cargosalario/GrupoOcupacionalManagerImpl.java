@@ -80,4 +80,12 @@ public class GrupoOcupacionalManagerImpl extends GenericManagerImpl<GrupoOcupaci
 	{
 		this.cargoManager = cargoManager;
 	}
+
+    public Collection<GrupoOcupacional> findGruposUsadosPorCargosByEmpresaId(Long empresaId) {
+        return getDao().findGruposUsadosPorCargosByEmpresaId(empresaId);
+    }
+
+    public void deletarGruposInseridosENaoUtilizadosAposImportarCadastroEntreEmpresas(Long[] gruposOcupacionaisIds, Long empresaId) {
+        getDao().deletarGruposInseridosENaoUtilizadosAposImportarCadastroEntreEmpresas(gruposOcupacionaisIds, empresaId);
+    }
 }

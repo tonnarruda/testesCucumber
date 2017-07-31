@@ -3,6 +3,7 @@ package com.fortes.rh.test.business.cargosalario;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -57,7 +58,7 @@ public class FaixaSalarialManagerTest_JUnit4
 	}
 
 	@Test
-	public void testSincronizar() throws Exception{
+	public void testSincronizar() throws Exception {
 		Empresa empresaDestino = EmpresaFactory.getEmpresa();
 		empresaDestino.setAcIntegra(true);
 
@@ -75,38 +76,43 @@ public class FaixaSalarialManagerTest_JUnit4
 		FaixaSalarialHistorico faixaSalarialHistorico = FaixaSalarialHistoricoFactory.getEntity(faixaSalarial, new Date(), StatusRetornoAC.CONFIRMADO);
 
 		when(faixaSalarialDao.findByCargo(cargoOrigem.getId())).thenReturn(faixas);
-		when(faixaSalarialHistoricoManager.sincronizar(faixaSalarial.getId(), null, empresaDestino)).thenReturn(faixaSalarialHistorico);
+		when(faixaSalarialHistoricoManager.sincronizar(faixaSalarial.getId(), null, empresaDestino, "")).thenReturn(faixaSalarialHistorico);
 		when(acPessoalClientCargo.criarCargo(faixaSalarial, faixaSalarialHistorico, empresaDestino)).thenReturn("codigo");
 		
-		faixaSalarialManager.sincronizar(cargoOrigem.getId(), cargoDestino, empresaDestino);
-		
-		verify(faixaSalarialDao).save(faixaSalarial);
-		verify(faixaSalarialDao).updateCodigoAC("codigo", faixaSalarial.getId());
+		Exception exception = null;
+		try {
+            faixaSalarialManager.sincronizar(cargoOrigem.getId(), cargoDestino, empresaDestino, null);
+        } catch (Exception e) {
+            exception = e;
+        }
+		assertNotNull(exception);
+		assertEquals("Não é possível importar cargos que possuem faixa sem o CBO.", exception.getMessage());
 	}
 	
-	@Test
-	public void testSincronizarComHistoricoDaFaixaNula() throws Exception{
-		Empresa empresaDestino = EmpresaFactory.getEmpresa();
-		empresaDestino.setAcIntegra(true);
-		
-		Cargo cargoOrigem = CargoFactory.getEntity(2L);
-		Cargo cargoDestino = CargoFactory.getEntity(5L);
-		
-		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(99L);		
-		faixaSalarial.setCargo(cargoOrigem);
-		faixaSalarial.setNome("I");
-		Collection<FaixaSalarial> faixas = new ArrayList<FaixaSalarial>();
-		faixas.add(faixaSalarial);
-		
-		FaixaSalarial faixaSalarialDepoisDoSave = FaixaSalarialFactory.getEntity(130L);
-		faixaSalarialDepoisDoSave.setCargo(CargoFactory.getEntity(12L));
-		
-		when(faixaSalarialDao.findByCargo(cargoOrigem.getId())).thenReturn(faixas);
-		when(faixaSalarialHistoricoManager.sincronizar(faixaSalarial.getId(), null, empresaDestino)).thenReturn(null);
-		when(acPessoalClientCargo.createOrUpdateCargo(faixaSalarial, empresaDestino)).thenReturn("codigo");
-		
-		faixaSalarialManager.sincronizar(cargoOrigem.getId(), cargoDestino, empresaDestino);
-		verify(faixaSalarialDao).save(faixaSalarial);
-		verify(faixaSalarialDao).updateCodigoAC("codigo", faixaSalarial.getId());
-	}
+    @Test
+    public void testSincronizarComHistoricoDaFaixaNula() throws Exception {
+        Empresa empresaDestino = EmpresaFactory.getEmpresa();
+        empresaDestino.setAcIntegra(true);
+
+        Cargo cargoOrigem = CargoFactory.getEntity(2L);
+        Cargo cargoDestino = CargoFactory.getEntity(5L);
+
+        FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(99L);
+        faixaSalarial.setCargo(cargoOrigem);
+        faixaSalarial.setNome("I");
+        faixaSalarial.setCodigoCbo("791120");
+        Collection<FaixaSalarial> faixas = new ArrayList<FaixaSalarial>();
+        faixas.add(faixaSalarial);
+
+        FaixaSalarial faixaSalarialDepoisDoSave = FaixaSalarialFactory.getEntity(130L);
+        faixaSalarialDepoisDoSave.setCargo(CargoFactory.getEntity(12L));
+
+        when(faixaSalarialDao.findByCargo(cargoOrigem.getId())).thenReturn(faixas);
+        when(faixaSalarialHistoricoManager.sincronizar(faixaSalarial.getId(), null, empresaDestino, "")).thenReturn(null);
+        when(acPessoalClientCargo.createOrUpdateCargo(faixaSalarial, empresaDestino)).thenReturn("codigo");
+
+        faixaSalarialManager.sincronizar(cargoOrigem.getId(), cargoDestino, empresaDestino, null);
+        verify(faixaSalarialDao).save(faixaSalarial);
+        verify(faixaSalarialDao).updateCodigoAC("codigo", faixaSalarial.getId());
+    }
 }

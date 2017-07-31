@@ -2,9 +2,10 @@ package com.fortes.rh.test.business.cargosalario;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 import org.junit.Before;
@@ -80,20 +81,20 @@ public class GrupoOcupacionalManagerTest
 		assertEquals(grupoOcupacional, grupoOcupacionalManager.findByIdProjection(grupoOcupacional.getId()));
 	}
 
-	@Test
-	public void testPopulaCheckOrderNome()
-	{
-		Long empresaId = 1L;
-		Collection<GrupoOcupacional> grupoOcupacionals = GrupoOcupacionalFactory.getCollection();
+    @Test
+    public void testPopulaCheckOrderNome() 
+    {
+        Long empresaId = 1L;
+        Collection<GrupoOcupacional> grupoOcupacionals = GrupoOcupacionalFactory.getCollection();
 
-		when(grupoOcupacionalDao.findAllSelect(0, 0, empresaId)).thenReturn(grupoOcupacionals);
-		Collection<CheckBox> checks = grupoOcupacionalManager.populaCheckOrderNome(empresaId);
-		assertEquals(1, checks.size());
+        when(grupoOcupacionalDao.findAllSelect(0, 0, empresaId)).thenReturn(grupoOcupacionals);
+        Collection<CheckBox> checks = grupoOcupacionalManager.populaCheckOrderNome(empresaId);
+        assertEquals(1, checks.size());
 
-		when(grupoOcupacionalDao.findAllSelect(0, 0, empresaId)).thenReturn(new ArrayList<GrupoOcupacional>());
-		checks = grupoOcupacionalManager.populaCheckOrderNome(empresaId);
-		assertEquals(0, checks.size());
-	}
+        when(grupoOcupacionalDao.findAllSelect(0, 0, empresaId)).thenReturn(new ArrayList<GrupoOcupacional>());
+        checks = grupoOcupacionalManager.populaCheckOrderNome(empresaId);
+        assertEquals(0, checks.size());
+    }
 	
 	@Test
 	public void testPopulaCheckByAreasResponsavelCoresponsavel(){
@@ -101,8 +102,29 @@ public class GrupoOcupacionalManagerTest
 		Long[] areasIds = new Long[]{2L};
 		Collection<GrupoOcupacional> grupoOcupacionals = GrupoOcupacionalFactory.getCollection();
 		
-		when( grupoOcupacionalDao.findAllSelectByAreasResponsavelCoresponsavel(empresaId, areasIds)).thenReturn(grupoOcupacionals);
+		when(grupoOcupacionalDao.findAllSelectByAreasResponsavelCoresponsavel(empresaId, areasIds)).thenReturn(grupoOcupacionals);
 		Collection<CheckBox> checks = grupoOcupacionalManager.populaCheckByAreasResponsavelCoresponsavel(empresaId, areasIds);
 		assertEquals(1, checks.size());
 	}
+	
+    @Test
+    public void testFindGruposUsadosPorCargosByEmpresaId() {
+        Long empresaId = 2L;
+        Collection<GrupoOcupacional> grupos = Arrays.asList(GrupoOcupacionalFactory.getGrupoOcupacional());
+
+        when(grupoOcupacionalDao.findGruposUsadosPorCargosByEmpresaId(empresaId)).thenReturn(grupos);
+        grupoOcupacionalManager.findGruposUsadosPorCargosByEmpresaId(empresaId);
+        verify(grupoOcupacionalDao).findGruposUsadosPorCargosByEmpresaId(empresaId);
+        assertEquals(1, grupos.size());
+    }
+
+    @Test
+    public void testDeletarGruposInseridosENaoUtilizadosAposImportarCadastroEntreEmpresas() {
+        Long empresaId = 2L;
+        Collection<GrupoOcupacional> grupos = Arrays.asList(GrupoOcupacionalFactory.getGrupoOcupacional(1L));
+
+        grupoOcupacionalManager.deletarGruposInseridosENaoUtilizadosAposImportarCadastroEntreEmpresas(new Long[] { 1L }, empresaId);
+        verify(grupoOcupacionalDao).deletarGruposInseridosENaoUtilizadosAposImportarCadastroEntreEmpresas(new Long[] { 1L }, empresaId);
+        assertEquals(1, grupos.size());
+    }
 }

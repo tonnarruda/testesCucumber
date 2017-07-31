@@ -12,4 +12,6 @@ public interface GrupoOcupacionalDao extends GenericDao<GrupoOcupacional>
 	GrupoOcupacional findByIdProjection(Long grupoOcupacionalId);
 	Collection<GrupoOcupacional> findByEmpresasIds(Long... empresaIds);
 	Collection<GrupoOcupacional> findAllSelectByAreasResponsavelCoresponsavel(Long empresaId, Long[] areasIds);
+    Collection<GrupoOcupacional> findGruposUsadosPorCargosByEmpresaId(Long empresaId);
+    void deletarGruposInseridosENaoUtilizadosAposImportarCadastroEntreEmpresas(Long[] gruposOcupacionaisIds, Long empresaId);
 }

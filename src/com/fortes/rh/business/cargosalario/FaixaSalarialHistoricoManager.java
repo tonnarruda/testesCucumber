@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import com.fortes.business.GenericManager;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistoricoVO;
@@ -36,7 +37,7 @@ public interface FaixaSalarialHistoricoManager extends GenericManager<FaixaSalar
 	void remove(Long faixaSalarialHistoricoId, Empresa empresa, boolean removerDoAC) throws Exception;
 	void removeByFaixas(Long[] faixaSalarialIds);
 	Collection<PendenciaAC> findPendenciasByFaixaSalarialHistorico(Long empresaId);
-	FaixaSalarialHistorico sincronizar(Long faixaSalarialOrigemId, Long faixaSalarialDestinoId, Empresa empresaDestino);
+	FaixaSalarialHistorico sincronizar(Long faixaSalarialOrigemId, Long faixaSalarialDestinoId, Empresa empresaDestino, String grupoAcOrigem) throws FortesException;
 	FaixaSalarialHistorico bind(TSituacaoCargo tSituacaoCargo, FaixaSalarial faixaSalarial);
 	Long findIdByDataFaixa(FaixaSalarialHistorico faixaSalarialHistorico);
 	Collection<FaixaSalarialHistoricoVO> findAllComHistoricoIndice(Long faixaSalarialId);

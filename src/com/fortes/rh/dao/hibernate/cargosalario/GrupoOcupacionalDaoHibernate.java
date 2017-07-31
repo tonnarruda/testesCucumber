@@ -3,9 +3,9 @@ package com.fortes.rh.dao.hibernate.cargosalario;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
@@ -123,4 +123,33 @@ public class GrupoOcupacionalDaoHibernate extends GenericDaoHibernate<GrupoOcupa
 
 		return criteria.list();
 	}
+
+    @SuppressWarnings("unchecked")
+    public Collection<GrupoOcupacional> findGruposUsadosPorCargosByEmpresaId(Long empresaId) {
+        Criteria criteria = getSession().createCriteria(GrupoOcupacional.class,"g");
+        criteria.createCriteria("g.cargos", "cg", Criteria.INNER_JOIN);
+
+        ProjectionList p = Projections.projectionList().create();
+        p.add(Projections.property("g.id"), "id");
+        p.add(Projections.property("g.nome"), "nome");
+
+        criteria.setProjection(Projections.distinct(p));
+
+        criteria.add(Expression.eq("g.empresa.id", empresaId));
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        criteria.setResultTransformer(new AliasToBeanResultTransformer(GrupoOcupacional.class));
+
+        return criteria.list();
+    }
+
+    public void deletarGruposInseridosENaoUtilizadosAposImportarCadastroEntreEmpresas(Long[] gruposOcupacionaisIds, Long empresaId) {
+        StringBuilder hql = new StringBuilder("delete from GrupoOcupacional where id in(:gruposOcupacionaisIds) ");
+        hql.append("and id not in(select grupoOcupacional.id from Cargo where empresa.id = :empresaId and grupoOcupacional.id is not null)");
+        
+        Query query = getSession().createQuery(hql.toString());
+        query.setParameterList("gruposOcupacionaisIds", gruposOcupacionaisIds);
+        query.setLong("empresaId", empresaId);
+
+        query.executeUpdate();
+    }
 }

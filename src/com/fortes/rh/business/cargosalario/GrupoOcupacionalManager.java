@@ -16,4 +16,6 @@ public interface GrupoOcupacionalManager extends GenericManager<GrupoOcupacional
 	Collection<GrupoOcupacional> findByEmpresasIds(Long... empresaIds);
 	Collection<CheckBox> populaCheckByAreasResponsavelCoresponsavel(Long empresaId, Long[] areasIds);
 	Collection<GrupoOcupacional> findAllSelectByAreasResponsavelCoresponsavel(Long empresaId, Long[] areasIds);
+    Collection<GrupoOcupacional> findGruposUsadosPorCargosByEmpresaId(Long empresaId);
+    void deletarGruposInseridosENaoUtilizadosAposImportarCadastroEntreEmpresas(Long[] gruposOcupacionaisIds, Long empresaId);
 }

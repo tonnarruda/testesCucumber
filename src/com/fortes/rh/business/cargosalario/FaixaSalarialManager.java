@@ -39,7 +39,7 @@ public interface FaixaSalarialManager extends GenericManager<FaixaSalarial>
 	Map<Object, Object> findByCargo(String cargoId);
 	Collection<FaixaSalarial> findByCargo(Long cargoId);
 	public Collection<FaixaSalarial> findByCargoComCompetencia(Long cargoId) throws Exception;
-	void sincronizar(Long cargoOrigemId, Cargo cargoDestino, Empresa empresaDestino) throws Exception;
+	void sincronizar(Long cargoOrigemId, Cargo cargoDestino, Empresa empresaDestino, String grupoAcOrigem) throws Exception;
 	FaixaSalarial montaFaixa(TCargo tCargo);
 	void updateAC(TCargo tCargo);
 	TCargo[] getFaixasAC();

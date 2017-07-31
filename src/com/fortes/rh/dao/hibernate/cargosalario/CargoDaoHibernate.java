@@ -380,6 +380,7 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 	 * @see EmpresaManager.sincronizaEntidades() */
 	public Collection<Cargo> findSincronizarCargos(Long empresaOrigemId) {
 		Criteria criteria = getSession().createCriteria(Cargo.class, "c");
+		criteria.createCriteria("c.grupoOcupacional", "go", Criteria.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
 		
@@ -396,8 +397,9 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 		p.add(Projections.property("c.ativo"), "ativo");
 		p.add(Projections.property("c.exibirModuloExterno"), "exibirModuloExterno");
 		p.add(Projections.property("c.atitude"), "atitude");
-		p.add(Projections.property("c.grupoOcupacional"), "grupoOcupacional");
-		
+		p.add(Projections.property("go.id"), "grupoOcupacionalIdProjection");
+		p.add(Projections.property("go.nome"), "grupoNome");
+
 		criteria.setProjection(p);
 		criteria.add(Expression.eq("c.empresa.id", empresaOrigemId));
 

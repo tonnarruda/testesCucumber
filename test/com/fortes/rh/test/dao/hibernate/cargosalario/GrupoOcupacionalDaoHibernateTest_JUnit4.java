@@ -68,9 +68,7 @@ public class GrupoOcupacionalDaoHibernateTest_JUnit4 extends GenericDaoHibernate
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa = empresaDao.save(empresa);
 
-		GrupoOcupacional grupoOcupacional = GrupoOcupacionalFactory.getGrupoOcupacional();
-		grupoOcupacional.setEmpresa(empresa);
-		grupoOcupacional = grupoOcupacionalDao.save(grupoOcupacional);
+		saveGrupoOcupacional("Gerentes", empresa);
 
 		Collection<GrupoOcupacional> retorno = grupoOcupacionalDao.findAllSelect(1, 15, empresa.getId());
 
@@ -83,9 +81,7 @@ public class GrupoOcupacionalDaoHibernateTest_JUnit4 extends GenericDaoHibernate
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa = empresaDao.save(empresa);
 		
-		GrupoOcupacional grupoOcupacional = GrupoOcupacionalFactory.getGrupoOcupacional();
-		grupoOcupacional.setEmpresa(empresa);
-		grupoOcupacional = grupoOcupacionalDao.save(grupoOcupacional);
+		GrupoOcupacional grupoOcupacional = saveGrupoOcupacional("Gerentes", empresa);
 		
 		assertEquals(grupoOcupacional, grupoOcupacionalDao.findByIdProjection(grupoOcupacional.getId()));
 	}
@@ -99,28 +95,21 @@ public class GrupoOcupacionalDaoHibernateTest_JUnit4 extends GenericDaoHibernate
 		Empresa emp2 = EmpresaFactory.getEmpresa();
 		empresaDao.save(emp2);
 		
-		GrupoOcupacional g1 = GrupoOcupacionalFactory.getGrupoOcupacional();
-		g1.setNome("gerentes");
-		g1.setEmpresa(emp1);
-		grupoOcupacionalDao.save(g1);
-		
-		GrupoOcupacional g2 = GrupoOcupacionalFactory.getGrupoOcupacional();
-		g2.setNome("coordenadores");
-		g2.setEmpresa(emp2);
-		grupoOcupacionalDao.save(g2);
+        saveGrupoOcupacional("Gerentes", emp1);
+        saveGrupoOcupacional("Coordenadores", emp2);
 		
 		Collection<GrupoOcupacional> retorno;
 		
 		retorno = grupoOcupacionalDao.findByEmpresasIds(emp1.getId()); 
 		
 		assertEquals(1, retorno.size());
-		assertEquals("gerentes", ((GrupoOcupacional) retorno.toArray()[0]).getNome());
+		assertEquals("Gerentes", ((GrupoOcupacional) retorno.toArray()[0]).getNome());
 		
 		retorno = grupoOcupacionalDao.findByEmpresasIds(emp1.getId(), emp2.getId());
 		
 		assertEquals(2, retorno.size());
-		assertEquals("coordenadores", ((GrupoOcupacional) retorno.toArray()[0]).getNome());
-		assertEquals("gerentes", ((GrupoOcupacional) retorno.toArray()[1]).getNome());
+		assertEquals("Coordenadores", ((GrupoOcupacional) retorno.toArray()[0]).getNome());
+		assertEquals("Gerentes", ((GrupoOcupacional) retorno.toArray()[1]).getNome());
 	}
 	
 	@Test
@@ -134,20 +123,14 @@ public class GrupoOcupacionalDaoHibernateTest_JUnit4 extends GenericDaoHibernate
 		AreaOrganizacional area = AreaOrganizacionalFactory.getEntity();
 		areaOrganizacionalDao.save(area);
 		
-		GrupoOcupacional g1 = GrupoOcupacionalFactory.getGrupoOcupacional();
-		g1.setNome("gerentes");
-		g1.setEmpresa(emp1);
-		grupoOcupacionalDao.save(g1);
+		GrupoOcupacional g1 = saveGrupoOcupacional("Gerentes", emp1);
 
 		Cargo cargoG1 = CargoFactory.getEntity();
 		cargoG1.setAreasOrganizacionais(Arrays.asList(area));
 		cargoG1.setGrupoOcupacional(g1);
 		cargoDao.save(cargoG1);
 		
-		GrupoOcupacional g2 = GrupoOcupacionalFactory.getGrupoOcupacional();
-		g2.setNome("coordenadores");
-		g2.setEmpresa(emp2);
-		grupoOcupacionalDao.save(g2);
+		GrupoOcupacional g2 = saveGrupoOcupacional("Coordenadores", emp2);
 		
 		Cargo cargoG2 = CargoFactory.getEntity();
 		cargoG2.setAreasOrganizacionais(Arrays.asList(area));
@@ -163,6 +146,58 @@ public class GrupoOcupacionalDaoHibernateTest_JUnit4 extends GenericDaoHibernate
 		Collection<GrupoOcupacional> retorno = grupoOcupacionalDao.findAllSelectByAreasResponsavelCoresponsavel(emp1.getId(), new Long[]{area.getId()}); 
 		
 		assertEquals(1, retorno.size());
-		assertEquals("gerentes", ((GrupoOcupacional) retorno.toArray()[0]).getNome());
+		assertEquals("Gerentes", ((GrupoOcupacional) retorno.toArray()[0]).getNome());
 	}
+
+    @Test
+    public void testFindGruposUsadosPorCargosByEmpresaId() {
+        Empresa empresa = EmpresaFactory.getEmpresa();
+        empresaDao.save(empresa);
+
+        GrupoOcupacional g1 = saveGrupoOcupacional("Gerentes", empresa);
+        saveCargo(empresa, g1);
+
+        saveGrupoOcupacional("Coordenadores", empresa);
+
+        Collection<GrupoOcupacional> grupos = grupoOcupacionalDao.findGruposUsadosPorCargosByEmpresaId(empresa.getId());
+
+        assertEquals(1, grupos.size());
+        assertEquals(g1.getId(), grupos.iterator().next().getId());
+    }
+
+    @Test
+    public void testDeleteGruposInseridosENaoUtilizadosAposImportarCadastroEntreEmpresas() {
+        Empresa empresa = EmpresaFactory.getEmpresa();
+        empresaDao.save(empresa);
+
+        GrupoOcupacional grupo1 = saveGrupoOcupacional("Gerentes", empresa);
+        GrupoOcupacional grupo2 = saveGrupoOcupacional("Coordenadores", empresa);
+        saveCargo(empresa, grupo1);
+
+        Long[] gruposOcupacionaisIds = new Long[] { grupo1.getId(), grupo2.getId() };
+
+        assertEquals(2, grupoOcupacionalDao.findByEmpresasIds(empresa.getId()).size());
+
+        grupoOcupacionalDao.deletarGruposInseridosENaoUtilizadosAposImportarCadastroEntreEmpresas(gruposOcupacionaisIds, empresa.getId());
+        Collection<GrupoOcupacional> grupos = grupoOcupacionalDao.findByEmpresasIds(empresa.getId());
+
+        assertEquals(1, grupos.size());
+        assertEquals(grupo1.getId(), grupos.iterator().next().getId());
+    }
+
+    private GrupoOcupacional saveGrupoOcupacional(String nome, Empresa empresa) {
+        GrupoOcupacional grupoOcupacional = GrupoOcupacionalFactory.getGrupoOcupacional();
+        grupoOcupacional.setNome(nome);
+        grupoOcupacional.setEmpresa(empresa);
+        grupoOcupacionalDao.save(grupoOcupacional);
+        return grupoOcupacional;
+    }
+
+    private Cargo saveCargo(Empresa empresa, GrupoOcupacional grupoOcupacional) {
+        Cargo cargo = CargoFactory.getEntity();
+        cargo.setGrupoOcupacional(grupoOcupacional);
+        cargo.setEmpresa(empresa);
+        cargoDao.save(cargo);
+        return cargo;
+    }
 }

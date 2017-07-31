@@ -18,6 +18,7 @@ import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.desenvolvimento.CertificacaoManager;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
@@ -286,13 +287,16 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 		return getDao().findByCargoComCompetencia(cargoId);
 	}
 	
-	public void sincronizar(Long cargoOrigemId, Cargo cargoDestino, Empresa empresaDestino) throws Exception 
+	public void sincronizar(Long cargoOrigemId, Cargo cargoDestino, Empresa empresaDestino, String grupoAcOrigem) throws Exception 
 	{
 		Collection<FaixaSalarial> faixas = getDao().findByCargo(cargoOrigemId);
 		
 		for (FaixaSalarial faixaSalarial : faixas)
 		{
-			Long faixaOrigemId = faixaSalarial.getId();
+		    if(empresaDestino.isAcIntegra() && StringUtils.isBlank(faixaSalarial.getCodigoCbo()))
+		        throw new FortesException("Não é possível importar cargos que possuem faixa sem o CBO.");
+		        
+		    Long faixaOrigemId = faixaSalarial.getId();
 			
 			faixaSalarial.setId(null);
 			faixaSalarial.setCodigoAC(null);
@@ -303,7 +307,7 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 			
 			getDao().save(faixaSalarial);
 
-			FaixaSalarialHistorico faixaSalarialHistoricoAtualClonado = faixaSalarialHistoricoManager.sincronizar(faixaOrigemId, faixaSalarial.getId(), empresaDestino);
+			FaixaSalarialHistorico faixaSalarialHistoricoAtualClonado = faixaSalarialHistoricoManager.sincronizar(faixaOrigemId, faixaSalarial.getId(), empresaDestino, grupoAcOrigem);
 
 			if(empresaDestino.isAcIntegra()){
 				String codigoAC = "";

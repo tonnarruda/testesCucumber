@@ -234,7 +234,7 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		
 		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.CARGOS)){
 			cargoManager = (CargoManager) SpringUtil.getBean("cargoManager");
-			cargoManager.sincronizar(empresaOrigemId, empresaDestino, areaIds, areaInteresseIds, conhecimentoIds, habilidadeIds, atitudeIds, mensagens);
+			cargoManager.sincronizar(empresaOrigemId, empresaDestino, areaIds, conhecimentoIds, habilidadeIds, atitudeIds, mensagens);
 		}
 		
 		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.TIPOS_OCORRENCIA)){
