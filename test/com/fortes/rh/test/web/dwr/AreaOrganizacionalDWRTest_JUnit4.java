@@ -54,4 +54,24 @@ public class AreaOrganizacionalDWRTest_JUnit4
 		assertEquals(1, areaOrganizacionalDWR.getPermitidasCheckboxByEmpresas("", request, null, new Long[]{empresa.getId()}).size());
 	}
 	
+    @Test
+    public void testGetPermitidasByEmpresasComVerAreasTodasComTodasEmpresas() throws Exception {
+        Long empresaId = 0L;
+        Collection<AreaOrganizacional> areaOrganizacionals = AreaOrganizacionalFactory.getCollection();
+        ((AreaOrganizacional) areaOrganizacionals.toArray()[0]).setEmpresa(EmpresaFactory.getEmpresa(1L));
+
+        when(areaOrganizacionalManager.filtraPermitidasByEmpresasAndUsuario(request, empresaId, new Long[] { 1L })).thenReturn(areaOrganizacionals);
+        assertEquals(1, areaOrganizacionalDWR.getPermitidasByEmpresas("", request, empresaId, new Long[] { 1L }).size());
+
+    }
+
+    @Test
+    public void testGetPermitidasByEmpresasComVerTodasAreasComUmaEmpresa() throws Exception {
+        Long empresaId = 1L;
+        Collection<AreaOrganizacional> areaOrganizacionals = AreaOrganizacionalFactory.getCollection();
+        ((AreaOrganizacional) areaOrganizacionals.toArray()[0]).setEmpresa(EmpresaFactory.getEmpresa(1L));
+
+        when(areaOrganizacionalManager.filtraPermitidasByEmpresasAndUsuario(request, null, new Long[] { empresaId })).thenReturn(areaOrganizacionals);
+        assertEquals(1, areaOrganizacionalDWR.getPermitidasByEmpresas("", request, null, new Long[] { empresaId }).size());
+    }
 }

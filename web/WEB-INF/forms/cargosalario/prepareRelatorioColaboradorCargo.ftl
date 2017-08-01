@@ -59,7 +59,7 @@
 		{
 			DWREngine.setAsync(true);
 			DWRUtil.useLoadingMessage('Carregando...');
-			AreaOrganizacionalDWR.getPemitidasByEmpresas(createListArea,false, empresaId, empresaIds);
+			AreaOrganizacionalDWR.getPermitidasByEmpresas(createListArea,false, empresaId, empresaIds);
 		}
 		
 		function createListArea(data)

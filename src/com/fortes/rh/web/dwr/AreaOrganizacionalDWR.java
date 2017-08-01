@@ -83,6 +83,12 @@ public class AreaOrganizacionalDWR
 		return areas;
 	}
 	
+    @SuppressWarnings("unchecked")
+    public Map<Object, Object> getPermitidasByEmpresas(String naoApagar, HttpServletRequest request, Long empresaId, Long[] empresaIds) throws Exception {
+        Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.filtraPermitidasByEmpresasAndUsuario(request, empresaId, empresaIds);
+        return new CollectionUtil<AreaOrganizacional>().convertCollectionToMap(areaOrganizacionals, "getId", "getDescricaoComEmpresaStatusAtivo");
+    }
+	
 	public Collection<CheckBox> getPermitidasCheckboxByEmpresas(String naoApagar, HttpServletRequest request, Long empresaId, Long[] empresaIds) throws Exception
 	{
 		Collection<CheckBox> checks = new ArrayList<CheckBox>();
