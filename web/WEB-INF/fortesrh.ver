@@ -54,6 +54,7 @@
 		<Item visivel="N" motivo="P17070000031"><![CDATA[Sistema: Ajuste de inconsistência que removia a informação de ativo e inativo do nome dos cargos.]]></Item>
 		<Item visivel="N" motivo="P17070000118"><![CDATA[Sistema: Ajuste na tela inicial relacionado à progressão salarial quando não houver conexão com Fortes Pessoal(para sistemas integrados).]]></Item>
 		<Item visivel="N" motivo="S17070000161"><![CDATA[Sistema: Atualização do link do blog da Fortes Tecnologia.]]></Item>
+		<Item visivel="N" motivo="S17060000306"><![CDATA[WebService: Novo método para confirmar contratação do colaborador.]]></Item>
 	</Versao>
 	<Versao id="1.1.182.214" db="" data="05/07/2017">
 		<Item visivel="S" motivo="P17060000045"><![CDATA[R&S > Cadastros > Candidatos > Editar > Formação Escolar > Inserir/Editar : Ajuste da inconsistência que ocasionava a duplicação de formações escolares ao salvar/editar um candidato.]]></Item>

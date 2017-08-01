@@ -1585,11 +1585,24 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
         criteria.createCriteria("hc.colaborador", "c");
         criteria.createCriteria("c.empresa", "e");
 
+        ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("hc.id"), "id");
+		p.add(Projections.property("hc.gfip"), "gfip");
+		p.add(Projections.property("hc.funcao.id"), "funcaoId");
+		p.add(Projections.property("hc.ambiente.id"), "ambienteId");
+		p.add(Projections.property("c.id"), "colaboradorId");
+		criteria.setProjection(p);
+        
         criteria.add(Expression.eq("hc.motivo", MotivoHistoricoColaborador.CONTRATADO));
         criteria.add(Expression.eq("c.codigoAC", empregadoCodigoAC));
         criteria.add(Expression.eq("e.codigoAC", empresaCodigoAC));
         criteria.add(Expression.eq("e.grupoAC", grupoAC));
+        
+        criteria.setResultTransformer(new AliasToBeanResultTransformer(HistoricoColaborador.class));
 
+        if(criteria.uniqueResult() == null)
+        	return null;
+        
         return (HistoricoColaborador) criteria.uniqueResult();
     }
 }

@@ -3277,8 +3277,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
         if (colaborador == null)
             throw new Exception("Empregado não encontrado.");
 
-        HistoricoColaborador historicoColaborador = historicoColaboradorManager.atualizarHistoricoContratacao(situacao);
-        this.criarUsuarioParaColaborador(historicoColaborador.getColaborador(), historicoColaborador.getColaborador().getEmpresa());
+        historicoColaboradorManager.atualizarHistoricoContratacao(situacao);
+        this.criarUsuarioParaColaborador(colaborador, colaborador.getEmpresa());
         gerenciadorComunicacaoManager.enviaEmailBoasVindasColaborador(colaborador);
     }
 	
