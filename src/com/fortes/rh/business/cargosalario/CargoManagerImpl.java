@@ -361,24 +361,35 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
                     cargo.setGrupoOcupacional(novosGruposOcupacionais.get(cargo.getGrupoOcupacional().getId()));
                 }
 
-				faixaSalarialManager.sincronizar(cargoOrigemId, cargo, empresaDestino, empresaOrigem.getGrupoAC());
-				getDao().update(cargo);
-				transactionManager.commit(status);
-			}catch (IntegraACException e){
+                getDao().update(cargo);
+
+                Collection<FaixaSalarial> faixas = faixaSalarialManager.findByCargo(cargoOrigemId);
+				Collection<String> msgsErros = faixaSalarialManager.sincronizar(faixas, cargo, empresaDestino, empresaOrigem.getGrupoAC());
+				
+				if(msgsErros.size() > 0)
+					mensagens.addAll(msgsErros);
+
+				if(faixas.size() != 0 && msgsErros.size() == faixas.size())
+					transactionManager.rollback(status);
+				else	
+					transactionManager.commit(status);
+				
+			}catch (IntegraACException e) {
 				mensagens.add("Não foi possível importar o cargo <strong>" + cargo.getNome() + "</strong> para o Fortes Pessoal.<br>Possíveis Motivos: <br>&nbsp&nbsp&nbsp- Cargo existente com a mesma descrição no Fortes Pessoal. <br>&nbsp&nbsp&nbsp- Limite de cadastros de cargos excedido no Fortes Pessoal.");
 				transactionManager.rollback(status);
 			}catch (FortesException e) {
 			    mensagens.add("Não é possível importar o cargo <strong>" + cargo.getNome() + "</strong><br>&nbsp&nbsp&nbsp- " + e.getMessage());
 			    transactionManager.rollback(status);
                 e.printStackTrace();
-            }catch (Exception e)
-			{
+            }catch (Exception e) {
 				mensagens.add("Ocorreu um erro ao importar o cargo <strong>" + cargo.getNome() + "</strong>");
 				transactionManager.rollback(status);
 				e.printStackTrace();
 			}
 		}
-		grupoOcupacionalManager.deletarGruposInseridosENaoUtilizadosAposImportarCadastroEntreEmpresas(LongUtil.collectionToArrayLong(novosGruposOcupacionais.values()), empresaDestino.getId());
+		
+		if(novosGruposOcupacionais.size() > 0)
+			grupoOcupacionalManager.deletarGruposInseridosENaoUtilizadosAposImportarCadastroEntreEmpresas(LongUtil.collectionToArrayLong(novosGruposOcupacionais.values()), empresaDestino.getId());
 	}
 
     private void sincronizarGruposOcupacionais(Long empresaOrigemId, Long empresaDestinoId, Map<Long, GrupoOcupacional> novosGruposOcupacionais, GrupoOcupacionalManager grupoOcupacionalManager) {

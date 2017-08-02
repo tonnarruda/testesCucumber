@@ -287,14 +287,16 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 		return getDao().findByCargoComCompetencia(cargoId);
 	}
 	
-	public void sincronizar(Long cargoOrigemId, Cargo cargoDestino, Empresa empresaDestino, String grupoAcOrigem) throws Exception 
+	public Collection<String> sincronizar(Collection<FaixaSalarial> faixas, Cargo cargoDestino, Empresa empresaDestino, String grupoAcOrigem) throws Exception, FortesException 
 	{
-		Collection<FaixaSalarial> faixas = getDao().findByCargo(cargoOrigemId);
+		Collection<String> msgsRetorno = new ArrayList<>();
 		
 		for (FaixaSalarial faixaSalarial : faixas)
 		{
-		    if(empresaDestino.isAcIntegra() && StringUtils.isBlank(faixaSalarial.getCodigoCbo()))
-		        throw new FortesException("Não é possível importar cargos que possuem faixa sem o CBO.");
+		    if(empresaDestino.isAcIntegra() && StringUtils.isBlank(faixaSalarial.getCodigoCbo())){
+		    	msgsRetorno.add("Não é possível importar a faixa salarial " + faixaSalarial.getNome() + " do cargo " + faixaSalarial.getCargo().getNome() + ", pois não possue CBO.");
+		    	continue;
+		    }
 		        
 		    Long faixaOrigemId = faixaSalarial.getId();
 			
@@ -307,7 +309,15 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 			
 			getDao().save(faixaSalarial);
 
-			FaixaSalarialHistorico faixaSalarialHistoricoAtualClonado = faixaSalarialHistoricoManager.sincronizar(faixaOrigemId, faixaSalarial.getId(), empresaDestino, grupoAcOrigem);
+			FaixaSalarialHistorico faixaSalarialHistoricoAtualClonado = null;
+			try {
+				faixaSalarialHistoricoAtualClonado = faixaSalarialHistoricoManager.sincronizar(faixaOrigemId, faixaSalarial.getId(), empresaDestino, grupoAcOrigem);
+			} catch (FortesException e) {
+				msgsRetorno.add("Não é possível importar a faixa salarial " + faixaSalarial.getNome() + " do cargo " + faixaSalarial.getCargo().getNome() + ", "
+						+ "pois entre empresas com Grupo AC diferentes não é possível importar cargos que possuem histórico por indíce.");
+				getDao().remove(faixaSalarial);
+				continue;
+			}
 
 			if(empresaDestino.isAcIntegra()){
 				String codigoAC = "";
@@ -316,12 +326,17 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 				else
 					codigoAC = acPessoalClientCargo.criarCargo(faixaSalarial, faixaSalarialHistoricoAtualClonado, empresaDestino);
 
-				if (codigoAC == null || codigoAC.equals(""))
-					throw new IntegraACException();
+				if (codigoAC == null || codigoAC.equals("")){
+					msgsRetorno.add("Não é possível importar a faixa " + faixaSalarial.getNome() + " do cargo " + faixaSalarial.getCargo().getNome() + ", pois não possui código Fortes Pessoal.");
+					getDao().remove(faixaSalarial);
+					continue;
+				}
 
 				getDao().updateCodigoAC(codigoAC, faixaSalarial.getId());
 			}
 		}
+		
+		return msgsRetorno;
 	}
 
 	public FaixaSalarial montaFaixa(TCargo tCargo)

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.fortes.business.GenericManager;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
@@ -39,7 +40,7 @@ public interface FaixaSalarialManager extends GenericManager<FaixaSalarial>
 	Map<Object, Object> findByCargo(String cargoId);
 	Collection<FaixaSalarial> findByCargo(Long cargoId);
 	public Collection<FaixaSalarial> findByCargoComCompetencia(Long cargoId) throws Exception;
-	void sincronizar(Long cargoOrigemId, Cargo cargoDestino, Empresa empresaDestino, String grupoAcOrigem) throws Exception;
+	Collection<String> sincronizar(Collection<FaixaSalarial> faixas, Cargo cargoDestino, Empresa empresaDestino, String grupoAcOrigem) throws Exception, FortesException;
 	FaixaSalarial montaFaixa(TCargo tCargo);
 	void updateAC(TCargo tCargo);
 	TCargo[] getFaixasAC();
