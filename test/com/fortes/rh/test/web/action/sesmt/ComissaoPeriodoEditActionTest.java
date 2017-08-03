@@ -107,14 +107,14 @@ public class ComissaoPeriodoEditActionTest extends MockObjectTestCase
     public void testUpdate() throws Exception
     {
     	action.setComissaoPeriodo(ComissaoPeriodoFactory.getEntity(1L));
-    	manager.expects(once()).method("update");
+    	manager.expects(once()).method("atualiza");
     	manager.expects(once()).method("findByComissao").will(returnValue(new ArrayList<ComissaoPeriodo>()));
     	assertEquals("success", action.update());
     }
     public void testUpdateException() throws Exception
     {
     	action.setComissaoPeriodo(ComissaoPeriodoFactory.getEntity(1L));
-    	manager.expects(once()).method("update").with(ANYTHING,ANYTHING,ANYTHING,ANYTHING).will(throwException(new RuntimeException()));
+    	manager.expects(once()).method("atualiza").with(ANYTHING,ANYTHING,ANYTHING,ANYTHING).will(throwException(new RuntimeException()));
     	manager.expects(once()).method("findByIdProjection").will(returnValue(action.getComissaoPeriodo()));
     	comissaoMembroManager.expects(once()).method("findByComissaoPeriodo").will(returnValue(new ArrayList<ComissaoMembro>()));
     	areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao");

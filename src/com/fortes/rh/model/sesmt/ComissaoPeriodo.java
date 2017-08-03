@@ -15,6 +15,7 @@ import javax.persistence.Transient;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.security.auditoria.ChaveDaAuditoria;
 import com.fortes.security.auditoria.NaoAudita;
 
 @SuppressWarnings("serial")
@@ -47,6 +48,7 @@ public class ComissaoPeriodo extends AbstractModel implements Serializable
 	}
 
 	@NaoAudita
+	@ChaveDaAuditoria
 	public String getPeriodoFormatado()
 	{
 		String periodoFmt = "";

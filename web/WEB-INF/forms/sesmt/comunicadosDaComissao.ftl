@@ -6,7 +6,7 @@
   </style>
   <script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
 
-  <title></title>
+  <title>CIPA</title>
   
   <style type="text/css">
 		#tt {position:absolute; display:block;}

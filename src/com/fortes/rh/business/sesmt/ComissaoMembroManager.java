@@ -24,4 +24,5 @@ public interface ComissaoMembroManager extends GenericManager<ComissaoMembro>
 	Collection<Colaborador> findColaboradoresNaComissao(Long comissaoId);
 	public Collection<Comissao> findComissaoByColaborador(Long colaboradorId);
 	Map<Long, Date> colaboradoresComEstabilidade(Long[] colaboradoresIds);
+	Collection<ComissaoMembro> findByComissaoPeriodo(Long comissaoPeriodId);
 }

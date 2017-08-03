@@ -14,7 +14,7 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ComissaoReuniaoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
-	<title></title>
+	<title>CIPA</title>
 	<#assign validarCampos="return validaFormulario('form',new Array('reuniaoData','reuniaoHorario','reuniaoTipo'),new Array('reuniaoData'));"/>
 	<script type="text/javascript">
 		function limpaForm()

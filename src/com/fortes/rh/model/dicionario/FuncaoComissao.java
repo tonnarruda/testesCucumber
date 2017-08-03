@@ -2,7 +2,7 @@ package com.fortes.rh.model.dicionario;
 
 import java.util.LinkedHashMap;
 
-public class FuncaoComissao extends LinkedHashMap
+public class FuncaoComissao extends LinkedHashMap<String,String>
 {
 	private static final long serialVersionUID = 1L;
 	public static final String PRESIDENTE = "P";
@@ -21,7 +21,6 @@ public class FuncaoComissao extends LinkedHashMap
 		return funcaoComissao;
 	}
 
-	@SuppressWarnings("unchecked")
 	private FuncaoComissao()
 	{
 		put(SECRETARIO, "Secretário");

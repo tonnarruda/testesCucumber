@@ -107,6 +107,10 @@ public class ComissaoMembroManagerImpl extends GenericManagerImpl<ComissaoMembro
 		return getDao().colaboradoresComEstabilidade(colaboradoresIds);
 	}
 	
+	public Collection<ComissaoMembro> findByComissaoPeriodo(Long comissaoPeriodoId) {
+		return getDao().findByComissaoPeriodo(comissaoPeriodoId);
+	}
+	
 	public void setComissaoReuniaoPresencaManager(ComissaoReuniaoPresencaManager comissaoReuniaoPresencaManager) {
 		this.comissaoReuniaoPresencaManager = comissaoReuniaoPresencaManager;
 	}

@@ -81,13 +81,10 @@ public class LntDaoHibernateTest extends DaoHibernateAnnotationTest
 	
 	@Test
 	public void testFindAllLntRetornaColecaoVazia(){
-		Empresa empresa = EmpresaFactory.getEmpresa();
-		empresaDao.save(empresa);
-		
 		Lnt lnt = LntFactory.getEntity(null, "Primeira LNT", new Date(), new Date(), null);
 		lntDao.save(lnt);
 		
-		Lnt lntFiltro = LntFactory.getEntity("LNT", null);
+		Lnt lntFiltro = LntFactory.getEntity("LNT []", null);
 		
 		assertEquals(0, lntDao.findAllLnt(lntFiltro.getDescricao(), StatusLnt.EM_ANALISE, 0, 15).size());
 	}
@@ -95,9 +92,6 @@ public class LntDaoHibernateTest extends DaoHibernateAnnotationTest
 	@Test
 	public void testFindLntEmAndamentoComDataInicioIgualAAtual()
 	{
-		Empresa empresa = EmpresaFactory.getEmpresa();
-		empresaDao.save(empresa);
-
 		Lnt lnt1 = LntFactory.getEntity(null, "LNT 1", DateUtil.incrementaDias(new Date(), -1), new Date(), null);
 		lntDao.save(lnt1);
 

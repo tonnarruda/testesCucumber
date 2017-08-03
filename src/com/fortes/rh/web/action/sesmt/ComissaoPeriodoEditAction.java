@@ -68,7 +68,7 @@ public class ComissaoPeriodoEditAction extends MyActionSupportList
 		try
 		{
 			comissaoPeriodo.setComissao(comissao);
-			comissaoPeriodoManager.update(comissaoPeriodo, comissaoMembroIds, funcaoComissaos, tipoComissaos);
+			comissaoPeriodoManager.atualiza(comissaoPeriodo, comissaoMembroIds, funcaoComissaos, tipoComissaos);
 			list();
 		}
 		catch (Exception e)
@@ -88,7 +88,7 @@ public class ComissaoPeriodoEditAction extends MyActionSupportList
 			comissaoPeriodoManager.remove(comissaoPeriodo);
 		} catch (PersistenceException e)
 		{
-			addActionError(e.getMessage());
+			addActionWarning(e.getMessage());
 		}
 		return list();
 	}

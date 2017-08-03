@@ -18,6 +18,7 @@ import com.fortes.rh.security.spring.aop.GeraDadosAuditadosTest;
 import com.fortes.rh.security.spring.aop.ProcuraChaveNaEntidadeTest;
 import com.fortes.rh.security.spring.aop.callback.crud.CandidatoSolicitacaoAuditorCallbackImplTest;
 import com.fortes.rh.security.spring.aop.callback.crud.ColaboradorQuestionarioAuditorCallbackImplTest;
+import com.fortes.rh.security.spring.aop.callback.crud.ComissaoPeriodoAuditorCallbackImplTest;
 import com.fortes.rh.security.spring.aop.callback.crud.InsertAuditorCallbackImplTest;
 import com.fortes.rh.security.spring.aop.callback.crud.RemoveAuditorCallbackImplTest;
 import com.fortes.rh.security.spring.aop.callback.crud.UpdateAuditorCallbackImplTest;
@@ -1661,6 +1662,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	DateFormatJsonValueProcessorTest.class,
 	AbstractModelJsonValueProcessorTest.class,
 	CandidatoSolicitacaoAuditorCallbackImplTest.class,
+	ComissaoPeriodoAuditorCallbackImplTest.class,
 	        
 	LinkTagTest.class,
 	ExportacaoActionTest.class,

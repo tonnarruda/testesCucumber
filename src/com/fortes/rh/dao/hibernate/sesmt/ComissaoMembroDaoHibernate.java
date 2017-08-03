@@ -274,4 +274,23 @@ public class ComissaoMembroDaoHibernate extends GenericDaoHibernate<ComissaoMemb
 		
 		return map;
 	}
+
+	public Collection<ComissaoMembro> findByComissaoPeriodo(Long comissaoPeriodoId) {
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "cm");
+		criteria = criteria.createCriteria("cm.colaborador", "co");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("cm.id"), "id");
+		p.add(Projections.property("cm.funcao"), "funcao");
+		p.add(Projections.property("cm.tipo"), "tipo");
+		p.add(Projections.property("co.nome"), "projectionColaboradorNome");
+		p.add(Projections.property("co.id"), "projectionColaboradorId");
+		criteria.setProjection(p);
+
+		criteria.add(Expression.eq("cm.comissaoPeriodo.id", comissaoPeriodoId));
+
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+
+		return criteria.list();
+	}
 }

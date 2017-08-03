@@ -26,6 +26,7 @@
 </head>
 <body>
 	<#if edicao?exists>
+		<title>CIPA</title>
 		<#include "comissaoLinks.ftl" />
     <#else>
 		<title>Inserir Comissão</title>

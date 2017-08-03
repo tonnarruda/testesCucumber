@@ -21,4 +21,5 @@ public interface ComissaoMembroDao extends GenericDao<ComissaoMembro>
 	Collection<Colaborador> findColaboradoresNaComissao(Long comissaoId);
 	Collection<Comissao> findComissaoByColaborador(Long colaboradorId);
 	public Map<Long, Date> colaboradoresComEstabilidade(Long[] colaboradoresIds);
+	Collection<ComissaoMembro> findByComissaoPeriodo(Long comissaoPeriodoId);
 }

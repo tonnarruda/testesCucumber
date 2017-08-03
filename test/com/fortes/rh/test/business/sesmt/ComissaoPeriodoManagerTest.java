@@ -151,7 +151,7 @@ public class ComissaoPeriodoManagerTest extends MockObjectTestCase
 		comissaoMembroManager.expects(once()).method("updateFuncaoETipo").with(eq(comissaoMembroIds),eq(funcaoComissaos),eq(tipoComissaos)).isVoid();
 //		transactionManager.expects(once()).method("commit").with(ANYTHING);
 		
-		comissaoPeriodoManager.update(comissaoPeriodo, comissaoMembroIds, funcaoComissaos, tipoComissaos);
+		comissaoPeriodoManager.atualiza(comissaoPeriodo, comissaoMembroIds, funcaoComissaos, tipoComissaos);
 	}
 	
 	public void testUpdateException() 
@@ -164,7 +164,7 @@ public class ComissaoPeriodoManagerTest extends MockObjectTestCase
 		
 		Exception ex = null;
 		try {
-			comissaoPeriodoManager.update(comissaoPeriodo, null, null, null);
+			comissaoPeriodoManager.atualiza(comissaoPeriodo, null, null, null);
 		} catch (Exception e) {
 			ex = e;
 		}

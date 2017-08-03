@@ -107,7 +107,7 @@ public class ComissaoPeriodoManagerImpl extends GenericManagerImpl<ComissaoPerio
 		return getDao().findByIdProjection(id);
 	}
 
-	public void update(ComissaoPeriodo comissaoPeriodo, String[] comissaoMembroIds, String[] funcaoComissaos, String [] tipoComissaos) throws Exception
+	public void atualiza(ComissaoPeriodo comissaoPeriodo, String[] comissaoMembroIds, String[] funcaoComissaos, String [] tipoComissaos) throws Exception
 	{
 		super.update(comissaoPeriodo);
 		comissaoMembroManager.updateFuncaoETipo(comissaoMembroIds, funcaoComissaos, tipoComissaos);
@@ -138,15 +138,6 @@ public class ComissaoPeriodoManagerImpl extends GenericManagerImpl<ComissaoPerio
 		this.remove(ids);
 	}
 
-	public void setComissaoMembroManager(ComissaoMembroManager comissaoMembroManager)
-	{
-		this.comissaoMembroManager = comissaoMembroManager;
-	}
-	public void setCandidatoEleicaoManager(CandidatoEleicaoManager candidatoEleicaoManager)
-	{
-		this.candidatoEleicaoManager = candidatoEleicaoManager;
-	}
-	
 	public Date getDataFim(ComissaoPeriodo comissaoPeriodo) {
 		
 		if (comissaoPeriodo == null || comissaoPeriodo.getId() == null)
@@ -187,6 +178,20 @@ public class ComissaoPeriodoManagerImpl extends GenericManagerImpl<ComissaoPerio
 			return false;
 		
 		return true;
+	}
+	
+	public Collection<ComissaoMembro> findComissaoMembro(Long comissaoPeriodoId) {
+		return comissaoMembroManager.findByComissaoPeriodo(comissaoPeriodoId);
+	}
+
+	public void setComissaoMembroManager(ComissaoMembroManager comissaoMembroManager)
+	{
+		this.comissaoMembroManager = comissaoMembroManager;
+	}
+
+	public void setCandidatoEleicaoManager(CandidatoEleicaoManager candidatoEleicaoManager)
+	{
+		this.candidatoEleicaoManager = candidatoEleicaoManager;
 	}
 	
 	public void setComissaoReuniaoPresencaManager(ComissaoReuniaoPresencaManager comissaoReuniaoPresencaManager) {
