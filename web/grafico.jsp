@@ -25,6 +25,14 @@
 		#popupGrafico { width: 800px; height: 300px; }
 		#popupGraficoLegenda { width: 800px; max-height: 300px; text-align: left}
 		#popupObs { width: 600px; float:left; text-align: left; font-size: 13px;}
+		.tabelaResultadoImpressao {	background-color: #FFF ;border: 1px solid #666;	width: 60%;	margin: 100px 0px 0px 80px;	border:1px solid #BEBEBE;}
+		.tabelaResultadoImpressao td{padding: 5px 5px;}
+		.tabelaResultadoImpressao th{padding: 5px 0;font-weight: normal;}
+		.tabelaResultadoImpressao td{color: #454C54;font-size: 12px;}
+		.tabelaResultadoImpressao thead tr {background-color: #999999;font-family: Arial, Helvetica, sans-serif;font-size: 12px;color: #FFF;}
+		.tabelaResultadoImpressao tr.even {	background-color: #EFEFEF;}
+		.tabelaResultadoImpressao tr.odd {	background-color: #FFF;}
+	
 	</style>
 </head>
 <body>

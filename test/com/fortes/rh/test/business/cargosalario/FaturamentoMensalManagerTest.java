@@ -49,6 +49,6 @@ public class FaturamentoMensalManagerTest extends MockObjectTestCase
 		
 		faturamentoMensalDao.expects(once()).method("findByPeriodo").with(eq(inicio), eq(fim),eq(empresaId)).will(returnValue(faturamentoMensals));
 		faturamentoMensalDao.expects(once()).method("findAtual").with(eq(inicio),eq(empresaId)).will(returnValue(null));
-		assertEquals(9, faturamentoMensalManager.findByPeriodo(inicio, fim, empresaId).size());
+		assertEquals(10, faturamentoMensalManager.findByPeriodo(inicio, fim, empresaId).size());
 	}
 }

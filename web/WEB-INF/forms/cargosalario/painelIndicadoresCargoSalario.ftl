@@ -115,7 +115,7 @@
 		<#else>
 		  <#assign dateFim = ""/>
 		</#if>
-
+		
 		<script type="text/javascript">
 			$(function() {
 			
@@ -128,7 +128,9 @@
 						$("#listCheckBoxareasPieChartCheck label:contains("+descricaoArea+" >) input").toggleDisabled(isChecked);
 						$("#listCheckBoxareasPieChartCheck label:contains("+descricaoArea+" >) input").removeAttr("checked","checked");
 					}
+			
 				});
+				
 				$("input[name=areasPieChartCheck]:checked").change();
 			
 				BrowserDetect.init( function ( informacaoesDesteBrowser ){
@@ -198,26 +200,38 @@
 					$('#abaMarcada').val(idAba);
 					$('.conteudo-' + idAba).show();
 				});
-				
+		
 				$('#aba${abaMarcada} a').click();
+				
 			});
+			
+			function calculaDiferencaMesesEntreDatas(d1, d2) {
+		
+			    var meses = (d2.getFullYear() - d1.getFullYear()) * 12;
+			    
+			    meses -= d1.getMonth() + 1;
+			    meses += d2.getMonth();
+			    return meses <= 0 ? 0 : meses;
+			}
 			
 			function graficoLinha(dados, obj, titulo)
 			{
-				montaLine(dados, obj, null);
+				var exibirTotal= $('#exibirTotalEvolucaoSalarial').is(':checked');
 				
+				montaLineComValores(dados, obj, null,null,exibirTotal);
+
 				$(obj + "Imprimir")
 						.unbind()
 						.bind('click', 
 							function(event) 
 							{ 
-								popup = window.open("<@ww.url includeParams="none" value="/grafico.jsp"/>");
+								popup = window.open("<@ww.url includeParams="none" value="/grafico.jsp"/> ");
 								popup.window.onload = function() 
 								{
 									popup.focus();
 									popup.document.getElementById('popupTitulo').innerHTML = titulo;
 									popup.document.getElementById('popupGraficoLegenda').innerHTML = '<br />' + $(obj + 'Info .formula').text()+'<br /><br />' + $(obj + 'Info .fieldDados').text();
-									popup.window.opener.montaLine(dados, popup.document.getElementById('popupGrafico'));
+									popup.window.opener.montaLineComValores(dados, popup.document.getElementById('popupGrafico'),null,null,exibirTotal);
 									popup.window.print();
 									
 									if($.browser.mozilla)
@@ -238,7 +252,7 @@
 					hoverable: true,
         			clickable: true,
 					legendLabelFormatter: function(label, series) {
-						return '<span class="legend">' + label + ' &#x2013; '+ series.percent.toFixed(2) + '% ('+ formataNumero(series.datapoints.points[1], valorEmDinheiro) + ')</span>';
+						return '<span class="legend">' + label + '&#x2013; '+ series.percent.toFixed(2) + '% ('+ formataNumero(series.datapoints.points[1], valorEmDinheiro) + ')</span>';
 					}
 				});
 				
@@ -396,7 +410,7 @@
 						popup.window.close();
 				}
 			}
-
+			
 			//CUIDADO com o tamanho do grafico(bug da sombra)http://code.google.com/p/flot/issues/detail?id=5#c110
 			var dataBase_ = '${dateBase}';
 			var empresaId_ = '${empId}';
@@ -489,12 +503,111 @@
 		            'z-index': 20000
 		        }).appendTo("body").fadeIn(0);
 		    }
-			
-			function enviaForm()
-			{
-				return validaFormulario('formBusca', new Array('dataBase','mesAnoIni','mesAnoFim'), new Array('dataBase','mesAnoIni','mesAnoFim'));
+		    
+		    function showManyTooltipLine(classSelector,x, y, contents,idGrafico){
+
+				if($(idGrafico).attr('id')==='popupGrafico'){
+					$('<div class="'+classSelector+'">' + contents + '</div>').css( {
+						position: 'absolute',
+						display: 'none',
+						top: y - 90,
+						left: x - 10,
+						border: '1px solid #fdd',
+						padding: '2px',
+						'background-color': '#fee',
+						opacity: 0.80,
+						'z-index': 20000
+					}).appendTo(popup.document.getElementById('popupGrafico')).fadeIn(0);
+				}
+				else{
+					$('<div class="'+classSelector+'">' + contents + '</div>').css( {
+						position: 'absolute',
+						display: 'none',
+						top: y - 30,
+						left: x + 5,
+						border: '1px solid #fdd',
+						padding: '2px',
+						'background-color': '#fee',
+						opacity: 0.80,
+						'z-index': 20000
+					}).appendTo('body').fadeIn(0);
+				
+				}
 			}
 			
+			function createManyTooltipLine(classSelector,data,plot,precisao,idGrafico){
+				
+				var divPos = plot.offset();
+			
+		        for (var i = 0; i < data.length; i++) {
+		
+		            pos = plot.p2c({
+		                x: data[i][0],
+		                y: data[i][1]
+		            });
+		
+		            var posicaoEsquerda = pos.left + divPos.left;
+		            var posicaoAcima = pos.top + divPos.top;
+		
+		            if (i % 2 != 0) {
+		                showManyTooltipLine(classSelector, posicaoEsquerda, posicaoAcima, formataNumero(data[i][1], precisao),idGrafico);
+		            } else {
+		                showManyTooltipLine(classSelector, posicaoEsquerda, posicaoAcima + 40, formataNumero(data[i][1], precisao),idGrafico);
+		            }
+		        }
+			}
+			
+			function enviaForm(){
+		
+				var isFormularioValido = validaFormulario('formBusca', new Array('dataBase','mesAnoIni','mesAnoFim'), new Array('dataBase','mesAnoIni','mesAnoFim'),true);
+				
+				if(isFormularioValido){
+					if(validaMesAnoIniFim())
+						$("#formBusca").submit()
+					else
+						return false;
+				}
+					
+				return isFormularioValido;
+			}
+			
+			function validaMesAnoIniFim()
+			{
+				var mesAnoInicial=  $('#mesAnoIni').val();
+				mesAnoInicial=mesAnoInicial.split('/');
+				
+				var mesAnoFinal=  $('#mesAnoFim').val();
+				mesAnoFinal=mesAnoFinal.split('/');
+
+				var mesInicial=parseInt(mesAnoInicial[0]);					
+				var mesFinal=parseInt(mesAnoFinal[0]);					
+					
+				if((mesInicial>0 && mesInicial<=12) && (mesFinal>0 && mesFinal<=12)) {
+				
+					var dataInicio= new Date(mesAnoInicial[1],mesAnoInicial[0]-1,01)
+					var dataFim= new Date(mesAnoFinal[1],mesAnoFinal[0]-1,01)
+					var diferencaMeses= calculaDiferencaMesesEntreDatas(dataInicio,dataFim);
+					
+				    if(dataInicio > dataFim){
+					    jAlert('Data inicial não pode ser maior que a data final.');
+					   	$('#mesAnoIni, #mesAnoFim').css("background", "#FFEEC2");
+				    
+			   			 return false;
+				    }
+						
+					if(diferencaMeses>0 && diferencaMeses>10){
+						jAlert('O intervalo de busca tem que ser de um ano.');
+						$('#mesAnoIni, #mesAnoFim').css("background", "#FFEEC2");
+						
+						return false;
+					}
+					else{
+						$('#mesAnoIni, #mesAnoFim').css("background", "#FFF");
+						return true;
+					}
+				}
+			}
+		
 			function formataNumero(value, valorEmDinheiro)
 			{
 				var retorno = "";
@@ -524,6 +637,141 @@
 	
 			function createListAreasPieChart(data){
 				addChecks('areasPieChartCheck', data, 'escondeFilhas()');
+			}
+
+			function exibirTotalizadorGrafico(){
+				
+				var folha = ${grfEvolucaoFolha};
+				var faturamento = ${grfEvolucaoFaturamento};
+				var dadosLinha = [{label: 'Evolução Salarial', data: folha}, {label: 'Faturamento', data: faturamento }];
+				
+				graficoLinha(dadosLinha, "#evolucaoFolha", "Evolução Salarial - Faturamento ");
+				
+			}
+			
+		    function montaLineComValores(data, idGrafico, precisao, options, exibirTotal){
+		   
+			    var config = {
+			        series: {
+			            lines: {
+			                show: true
+			            },
+			            points: {
+			                show: true
+			            }
+			        },
+			        grid: {
+			            hoverable: exibirTotal === true ? false : true,
+			        },
+				    xaxis: {
+				        	tickSize: [1, "month"],
+				        	mode: 'time',
+				        	timeformat: '%b/%y ',
+				        	monthNames: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
+				        },
+			        yaxis: {
+			            show: true,
+			            tickFormatter: function(v) {
+			                return formataNumero(v, precisao);
+			            }
+			        },
+			    };
+
+			    if (options) {
+			        $.extend(config, options);
+			    }
+
+			    var plot = $.plot($(idGrafico), data, config);
+			    var dadosEvolucaoSalarial = data[0].data;
+			    var dadosFaturamento = data[1].data;
+			    
+			    createTable(plot,dadosEvolucaoSalarial,dadosFaturamento,idGrafico);
+	
+		    	if (exibirTotal) {
+					createManyTooltipLine('evolucaoSalarial',dadosEvolucaoSalarial,plot,precisao,idGrafico);
+					createManyTooltipLine('faturamento',dadosFaturamento,plot,precisao,idGrafico);
+				} 
+			    else{
+			       	removeTooltipsLine(dadosEvolucaoSalarial,dadosFaturamento);
+			     	
+			     	var previousPoint = null;
+			        $(idGrafico).bind("plothover", function(event, pos, item) {
+			            if (item) {
+			                if (previousPoint != item.dataIndex) {
+			                    previousPoint = item.dataIndex;
+			                    $("#tooltip").remove();
+			                    var y = formataNumero(item.datapoint[1], precisao);
+			                    showTooltip(item.pageX, item.pageY, y);
+			                }
+			            } else {
+			                $("#tooltip").remove();
+			                previousPoint = null;
+			            }
+			        });
+			}
+    
+		    function removeTooltipsLine(dadosEvolucaoSalarial,dadosFaturamento) {
+			    
+			    for (var i = 0; i < dadosEvolucaoSalarial.length; i++) {
+			        $('.evolucaoSalarial').remove();
+			        for (var i = 0; i < dadosFaturamento.length; i++) {
+			            $('.faturamento').remove();
+			        }
+			    }
+			}
+		
+			function createTable(plot,dadosEvolucaoSalarial,dadosFaturamento,idGrafico) {
+				
+			   	  var $divTabelaEvolucaoFaturamento=$('#tabelaEvolucaoFaturamento');
+			   
+				  if($('#tabelaEvolucaoFaturamento table').length==0){
+				  
+					   var axes = plot.getAxes();
+			 		   var mesesGerados =axes.xaxis.ticks;
+			 		  			
+					   var $tabela = $('<table class="dados" align="center"></table>');
+					   var $cabecalho= $('<thead></thead>');	
+					   var $linha = "";
+					   
+					   $cabecalho.append('<tr> <th>Mês</th> <th>Folha</th> <th>Faturamento</th></tr>');
+					   $tabela.append($cabecalho);
+			
+					   for (var i = 0; i < dadosEvolucaoSalarial.length; i++) {
+					      
+						  if(i%2==0){
+						  	$linha = $('<tr class="odd"></tr>');
+						  }else{
+						  	$linha = $('<tr class="even"></tr>');
+						  }
+						  
+						  var $celulaMeses= $('<td align="center"> </td>').append(mesesGerados[i].label);
+					      var $celulaEvolucao= $('<td align="right" class="celulaEvolucao">'+ formataNumero(dadosEvolucaoSalarial[i][1])+ '</td>');
+					      var $celulaFaturamento= $('<td align="right" class="celulaFaturamento">'+ formataNumero(dadosFaturamento[i][1])+ '</td>');
+					      
+					      $linha.append($celulaMeses);
+					      $linha.append($celulaEvolucao);
+					      $linha.append($celulaFaturamento);
+					      
+			    		  $tabela.append($linha);
+					    }
+					    
+					    $divTabelaEvolucaoFaturamento.append($tabela);
+					    
+				      	$('.celulaEvolucao').css('padding-right','235px');
+					    $('.celulaFaturamento').css('padding-right','113px');
+					   
+					  } 
+					  
+				     if($(idGrafico).attr('id')==='popupGrafico'){
+						 
+						 var $clone= $divTabelaEvolucaoFaturamento.clone().css({'padding-left': '', 'padding-right': ''}).addClass('tabelaResultadoImpressao');
+						
+						 $clone.find('.celulaEvolucao').css({'padding-right':'80px'})
+						 $clone.find('.celulaFaturamento').css({'padding-right':'60px'})
+						 $clone.appendTo(popup.document.getElementById('popupGrafico'));
+			  		 }
+		
+				}
 			}
 
 		</script>
@@ -587,6 +835,14 @@
 						<img id="evolucaoFolhaImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
 					</h1>
 			   		<div id="evolucaoFolha" style="margin: 25px; height: 300px; width: 900px"></div>
+			   		<ul style="padding-left: 13px;">
+			   			<@ww.checkbox label="Mostrar os valores" name="" id="exibirTotalEvolucaoSalarial"  labelPosition="left" onclick="exibirTotalizadorGrafico();"/>
+			   		</ul>
+			    
+			    <div id="tabelaEvolucaoFaturamento" style="padding-left: 15px;padding-right: 15px;">
+			    
+			    </div>
+			    
 			    </div>
 		
 				<div class="fieldGraph bigger">

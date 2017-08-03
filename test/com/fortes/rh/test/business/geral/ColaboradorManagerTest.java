@@ -1416,12 +1416,10 @@ public class ColaboradorManagerTest extends MockObjectTestCaseManager<Colaborado
     	assertEquals(2, dados.size());
     	
     	Object[] result = (Object[]) dados.toArray()[0];
-    	dataIni = DateUtil.getUltimoDiaMes(dataIni);
     	assertEquals((Long) dataIni.getTime(), (Long) result[0]);
     	assertEquals(650.0, (Double) result[1]);
 
     	Object[] result2 = (Object[]) dados.toArray()[1];
-    	dataFim = DateUtil.getUltimoDiaMes(dataFim);
     	assertEquals((Long) dataFim.getTime(), (Long) result2[0]);
     	assertEquals(605.05, (Double) result2[1]);
     }

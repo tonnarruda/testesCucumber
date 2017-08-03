@@ -2434,11 +2434,11 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	public Collection<Object[]> montaGraficoEvolucaoFolha(Date dataIni, Date dataFim, Long empresaId, Long[] areasIds)
 	{
 		Collection<Object[]>  graficoEvolucaoFolha = new ArrayList<Object[]>();
-		dataFim = DateUtil.getUltimoDiaMes(dataFim);
+		dataIni=DateUtil.criarDataMesAno(dataIni);
+		dataFim=DateUtil.criarDataMesAno(dataFim);
 		while (!dataIni.after(dataFim))
 		{
-			dataIni = DateUtil.getUltimoDiaMes(dataIni);
-			double valor = totalFolhaDia (dataIni, empresaId, areasIds);
+			double valor = totalFolhaDia (DateUtil.getUltimoDiaMes(dataIni), empresaId, areasIds);
 			graficoEvolucaoFolha.add(new Object[]{dataIni.getTime(), valor}); 
 			dataIni = DateUtil.incrementaMes(dataIni, 1);
 		}

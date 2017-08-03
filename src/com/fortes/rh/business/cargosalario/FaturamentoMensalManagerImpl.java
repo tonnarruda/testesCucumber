@@ -19,20 +19,26 @@ public class FaturamentoMensalManagerImpl extends GenericManagerImpl<Faturamento
 
 	public Collection<Object[]> findByPeriodo(Date inicio, Date fim, Long empresaId) 
 	{
-		FaturamentoMensal ultimoFaturamento = getDao().findAtual(inicio, empresaId);
+		FaturamentoMensal faturamentoInicial = getDao().findAtual(inicio, empresaId);
 		Collection<FaturamentoMensal> faturamentos = getDao().findByPeriodo(inicio, fim, empresaId);
 		Collection<Object[]> graficoEvolucaoFaturamento = new ArrayList<Object[]>();
 
-		Date mesAno = inicio;
-		double faturamentoAtual = (ultimoFaturamento != null && ultimoFaturamento.getValor() != null) ? ultimoFaturamento.getValor() : 0;
+		Date mesAno=DateUtil.criarDataMesAno(inicio);
+		fim=DateUtil.criarDataMesAno(fim);
 		
-		while (mesAno.before(fim))
+		double faturamentoAtual = (faturamentoInicial != null && faturamentoInicial.getValor() != null) ? faturamentoInicial.getValor() : 0;
+		
+		while (!mesAno.after(fim))
 		{
-			for (FaturamentoMensal faturamento : faturamentos)
-				if (DateUtil.equalsMesAno(mesAno, faturamento.getMesAno()))
+			for (FaturamentoMensal faturamento : faturamentos){
+				if (DateUtil.equalsMesAno(mesAno, faturamento.getMesAno())){
 					faturamentoAtual = faturamento.getValor();
-					
-			graficoEvolucaoFaturamento.add(new Object[]{DateUtil.getUltimoDiaMes(mesAno).getTime(), faturamentoAtual});			
+					break;
+				}
+				else
+					faturamentoAtual = 0;			
+			}
+			graficoEvolucaoFaturamento.add(new Object[]{mesAno.getTime(), faturamentoAtual});			
 			mesAno = DateUtil.incrementaMes(mesAno, 1);
 		}
 

@@ -312,7 +312,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		if (dataMesAnoIni == null || dataMesAnoIni.equals("  /    ") || dataMesAnoIni.equals(""))
 			dataMesAnoIni = DateUtil.formataMesAno(DateUtil.retornaDataAnteriorQtdMeses(hoje, 9, true));
 		if (dataMesAnoFim == null || dataMesAnoFim.equals("  /    ") || dataMesAnoFim.equals(""))
-			dataMesAnoFim = DateUtil.formataMesAno(DateUtil.incrementaMes(hoje, 3));
+			dataMesAnoFim = DateUtil.formataMesAno(DateUtil.incrementaMes(hoje, 2));
 		
 		
 		AreaOrganizacional area;
@@ -321,15 +321,17 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		else
 			area = new AreaOrganizacional();
 		
-		
 		Collection<DataGrafico> graficoSalarioArea  = colaboradorManager.montaSalarioPorArea(dataBase, empresa.getId(), area);
 		
 		Long[] areasIds = LongUtil.arrayStringToArrayLong(areasCheck);
 		
 		Long[] areasPieChartIds = LongUtil.arrayStringToArrayLong(areasPieChartCheck);
 
-		Collection<Object[]> graficoEvolucaoFolha   = colaboradorManager.montaGraficoEvolucaoFolha(DateUtil.criarDataMesAno(dataMesAnoIni), DateUtil.criarDataMesAno(dataMesAnoFim), empresa.getId(), areasIds);
-		Collection<Object[]> graficoEvolucaoFaturamento   = faturamentoMensalManager.findByPeriodo(DateUtil.criarDataMesAno(dataMesAnoIni), DateUtil.criarDataMesAno(dataMesAnoFim), empresa.getId());
+		Date criarDataMesAnoInicial = DateUtil.criarDataMesAno(dataMesAnoIni);
+		Date criarDataMesAnoFinal = DateUtil.criarDataMesAno(dataMesAnoFim);
+
+		Collection<Object[]> graficoEvolucaoFolha   = colaboradorManager.montaGraficoEvolucaoFolha(criarDataMesAnoInicial, criarDataMesAnoFinal, empresa.getId(), areasIds);
+		Collection<Object[]> graficoEvolucaoFaturamento   = faturamentoMensalManager.findByPeriodo(criarDataMesAnoInicial, criarDataMesAnoFinal, empresa.getId());
 		
 		grfSalarioAreas  = StringUtil.toJSON(graficoSalarioArea, null);
 		grfEvolucaoFolha = StringUtil.toJSON(graficoEvolucaoFolha, null);
@@ -339,8 +341,8 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		for (DataGrafico dataGrafico : graficoSalarioArea) 
 			valorTotalFolha += dataGrafico.getData();
 
-		dataIni = DateUtil.criarDataMesAno(dataMesAnoIni);
-		dataFim = DateUtil.criarDataMesAno(dataMesAnoFim);
+		dataIni = criarDataMesAnoInicial;
+		dataFim = criarDataMesAnoFinal;
 		
 		calculaGraficosPromocao(areasIds, areasPieChartIds);
 		
