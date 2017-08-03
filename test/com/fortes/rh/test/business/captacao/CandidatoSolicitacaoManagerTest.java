@@ -106,6 +106,32 @@ public class CandidatoSolicitacaoManagerTest extends MockObjectTestCase
 
 	    assertEquals( "teste@fortes.com.br", candidatoSolicitacaoManager.getEmailNaoAptos(solicitacaoId, empresa)[0]);
     }
+    
+    public void testGetEmailNaoAptoComCandidatoSolicitacaoVazio() throws Exception{
+    	
+    	Empresa empresa = EmpresaFactory.getEmpresa();
+    	empresa.setMailNaoAptos("mailNaoAptos");
+    	Long solicitacaoId = 1L;
+    	
+    	Collection<CandidatoSolicitacao> candidatoSolicitacoes = new ArrayList<CandidatoSolicitacao>();
+    	
+    	candidatoSolicitacaoDao.expects(once()).method("findNaoAptos").with(eq(solicitacaoId)).will(returnValue(candidatoSolicitacoes));
+    	
+    	assertEquals(0, candidatoSolicitacaoManager.getEmailNaoAptos(solicitacaoId, empresa).length);
+    }
+    
+    public void testGetEmailNaoAptoComCandidatoSolicitacaoNulo() throws Exception{
+    	
+    	Empresa empresa = EmpresaFactory.getEmpresa();
+    	empresa.setMailNaoAptos("mailNaoAptos");
+    	Long solicitacaoId = 1L;
+    	
+    	Collection<CandidatoSolicitacao> candidatoSolicitacoes = null;
+    	
+    	candidatoSolicitacaoDao.expects(once()).method("findNaoAptos").with(eq(solicitacaoId)).will(returnValue(candidatoSolicitacoes));
+    	
+    	assertEquals(0, candidatoSolicitacaoManager.getEmailNaoAptos(solicitacaoId, empresa).length);
+    }
 
     public void testVerificaExisteColaborador(){
     	Long empresaId = 1L;

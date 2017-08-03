@@ -159,7 +159,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 
 				for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
 					if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.CANDIDATO_NAO_APTO.getId())){
-						mail.send(empresa, subject, body, null, emails);
+						mail.send(empresa, subject, body.replace("\n", "<br />"), null, emails);
 					} 		
 				}
 			}

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import org.apache.commons.collections4.Closure;
+import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.lang.StringUtils;
 
 import com.fortes.business.GenericManagerImpl;
@@ -120,20 +122,18 @@ public class CandidatoSolicitacaoManagerImpl extends GenericManagerImpl<Candidat
     
     public String[] getEmailNaoAptos(Long solicitacaoId, Empresa empresa) throws Exception
     {
-    	ArrayList<String> emailNaoAptos = new ArrayList<String>();
+    	final ArrayList<String> emailNaoAptos = new ArrayList<String>();
 
     	Collection<CandidatoSolicitacao> candidatoSolicitacoes = getDao().findNaoAptos(solicitacaoId);
 
-    	if (candidatoSolicitacoes != null  && !candidatoSolicitacoes.isEmpty())
-    	{
-    		for (CandidatoSolicitacao candidatoSolicitacao : candidatoSolicitacoes)
-    		{
+    	IterableUtils.forEach(candidatoSolicitacoes, new Closure<CandidatoSolicitacao>() {
+    		@Override
+    		public void execute(CandidatoSolicitacao candidatoSolicitacao) {
     			if (StringUtils.isNotBlank(candidatoSolicitacao.getCandidato().getContato().getEmail()))
     				emailNaoAptos.add(candidatoSolicitacao.getCandidato().getContato().getEmail());
     		}
+    	});		
 
-    	}
-        
 		return emailNaoAptos.toArray(new String[]{});
     }
 
