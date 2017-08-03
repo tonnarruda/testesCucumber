@@ -107,6 +107,7 @@ public class Empresa extends AbstractModel implements Serializable
 	@ManyToOne
 	private Cidade cidade;
 	private boolean campoExtraColaborador;
+	private boolean campoExtraAtualizarMeusDados;
 	private boolean campoExtraCandidato;
 	private boolean exibirLogoEmpresaPpraLtcat;
 	@Lob
@@ -727,5 +728,13 @@ public class Empresa extends AbstractModel implements Serializable
 
 	public void setConfiguracaoCamposExtrasVisiveisObrigadotorios(Collection<ConfiguracaoCampoExtraVisivelObrigadotorio> configuracaoCamposExtrasVisiveisObrigadotorios) {
 		this.configuracaoCamposExtrasVisiveisObrigadotorios = configuracaoCamposExtrasVisiveisObrigadotorios;
+	}
+
+	public boolean isCampoExtraAtualizarMeusDados() {
+		return campoExtraAtualizarMeusDados;
+	}
+
+	public void setCampoExtraAtualizarMeusDados(boolean campoExtraAtualizarMeusDados) {
+		this.campoExtraAtualizarMeusDados = campoExtraAtualizarMeusDados;
 	}
 }

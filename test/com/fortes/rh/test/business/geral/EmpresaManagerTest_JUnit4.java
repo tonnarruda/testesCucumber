@@ -154,6 +154,7 @@ public class EmpresaManagerTest_JUnit4
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
     	boolean habilitaCampoExtraCandidato = true;
     	boolean habilitaCampoExtraColaborador = true;
+    	boolean habilitaCampoExtraAtualizarMeusDados = true;
     	
     	ConfiguracaoCampoExtra confText1 = ConfiguracaoCampoExtraFactory.getEntity(1L, empresa, "Campo de Texto 1", "texto1", true, true);
     	confText1.setEmpresa(empresa);
@@ -163,10 +164,10 @@ public class EmpresaManagerTest_JUnit4
     	String camposVisivesisCandidato = "texto1,";
     	
     	Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras = Arrays.asList(confText1, confData1); 
-    	empresaManager.atualizaCamposExtras(configuracaoCampoExtras, empresa, habilitaCampoExtraColaborador, habilitaCampoExtraCandidato);
+    	empresaManager.atualizaCamposExtras(configuracaoCampoExtras, empresa, habilitaCampoExtraColaborador, habilitaCampoExtraCandidato, habilitaCampoExtraAtualizarMeusDados);
     	
     	verify(configuracaoCampoExtraManager, never()).removeAllNotModelo();
-    	verify(empresaDao, times(1)).updateCampoExtra(empresa.getId(), habilitaCampoExtraColaborador, habilitaCampoExtraCandidato);
+    	verify(empresaDao, times(1)).updateCampoExtra(empresa.getId(), habilitaCampoExtraColaborador, habilitaCampoExtraCandidato, habilitaCampoExtraAtualizarMeusDados);
     	verify(configuracaoCampoExtraVisivelObrigadotorioManager).saveOrUpdateConfCamposExtras(empresa.getId(), camposVisivesisColaborador, new String[]{TipoConfiguracaoCampoExtra.COLABORADOR.getTipo()});
     	verify(configuracaoCampoExtraVisivelObrigadotorioManager).saveOrUpdateConfCamposExtras(empresa.getId(), camposVisivesisCandidato, new String[]{TipoConfiguracaoCampoExtra.CANDIDATO_EXTERNO.getTipo(), TipoConfiguracaoCampoExtra.CANDIDATO.getTipo()});
 	}
@@ -177,7 +178,8 @@ public class EmpresaManagerTest_JUnit4
     	Empresa empresa = EmpresaFactory.getEmpresa(null);
     	boolean habilitaCampoExtraCandidato = true;
     	boolean habilitaCampoExtraColaborador = false;
-    	
+    	boolean habilitaCampoExtraAtualizarMeusDados = false;
+    			
     	ConfiguracaoCampoExtra confText1 = ConfiguracaoCampoExtraFactory.getEntity(1L, empresa, "Campo de Texto 1", "texto1", true, true);
     	confText1.setEmpresa(empresa);
     	ConfiguracaoCampoExtra confData1 = ConfiguracaoCampoExtraFactory.getEntity(2L, empresa, "Campo de Data 1", "data1", true, false);
@@ -190,10 +192,10 @@ public class EmpresaManagerTest_JUnit4
     	
     	when(empresaDao.findTodasEmpresas()).thenReturn(empresas);
     	
-    	empresaManager.atualizaCamposExtras(configuracaoCampoExtras, empresa, habilitaCampoExtraColaborador, habilitaCampoExtraCandidato);
+    	empresaManager.atualizaCamposExtras(configuracaoCampoExtras, empresa, habilitaCampoExtraColaborador, habilitaCampoExtraCandidato, habilitaCampoExtraAtualizarMeusDados);
     	
     	verify(configuracaoCampoExtraManager, times(1)).removeAllNotModelo();
-    	verify(empresaDao, times(1)).updateCampoExtra(empresa.getId(), habilitaCampoExtraColaborador, habilitaCampoExtraCandidato);
+    	verify(empresaDao, times(1)).updateCampoExtra(empresa.getId(), habilitaCampoExtraColaborador, habilitaCampoExtraCandidato, habilitaCampoExtraAtualizarMeusDados);
     	verify(configuracaoCampoExtraVisivelObrigadotorioManager).saveOrUpdateConfCamposExtras(empresa.getId(), camposVisivesisColaborador, new String[]{TipoConfiguracaoCampoExtra.COLABORADOR.getTipo()});
     	verify(configuracaoCampoExtraVisivelObrigadotorioManager).saveOrUpdateConfCamposExtras(empresa.getId(), camposVisivesisCandidato, new String[]{TipoConfiguracaoCampoExtra.CANDIDATO_EXTERNO.getTipo(), TipoConfiguracaoCampoExtra.CANDIDATO.getTipo()});
 	}

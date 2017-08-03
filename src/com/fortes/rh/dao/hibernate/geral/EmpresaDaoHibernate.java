@@ -126,6 +126,7 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		p.add(Projections.property("e.logoUrl"), "logoUrl");
 		p.add(Projections.property("e.campoExtraColaborador"), "campoExtraColaborador");
 		p.add(Projections.property("e.campoExtraCandidato"), "campoExtraCandidato");
+		p.add(Projections.property("e.campoExtraAtualizarMeusDados"), "campoExtraAtualizarMeusDados");
 		p.add(Projections.property("e.mensagemModuloExterno"), "mensagemModuloExterno");
 		p.add(Projections.property("e.emailRespLimiteContrato"), "emailRespLimiteContrato");
 		p.add(Projections.property("e.emailRemetente"), "emailRemetente");
@@ -463,16 +464,17 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		return (Empresa) criteria.uniqueResult();
 	}
 	
-	public void updateCampoExtra(Long id, boolean habilitaCampoExtraColaborador, boolean habilitaCampoExtraCandidato) 
+	public void updateCampoExtra(Long id, boolean habilitaCampoExtraColaborador, boolean habilitaCampoExtraCandidato, boolean habilitaCampoExtraAtualizarMeusDados) 
 	{
 		String whereId = " where e.id = :empresaId ";
 		if(id == null || id.equals(-1L))
 			whereId = "";
 		
-		String hql = "update Empresa e set e.campoExtraColaborador = :campoExtraColaborador, e.campoExtraCandidato = :campoExtraCandidato " + whereId;
+		String hql = "update Empresa e set e.campoExtraColaborador = :campoExtraColaborador, e.campoExtraCandidato = :campoExtraCandidato, e.campoExtraAtualizarMeusDados = :campoExtraAtualizarMeusDados " + whereId;
 		Query query = getSession().createQuery(hql);
 		query.setBoolean("campoExtraColaborador", habilitaCampoExtraColaborador);
 		query.setBoolean("campoExtraCandidato", habilitaCampoExtraCandidato);
+		query.setBoolean("campoExtraAtualizarMeusDados", habilitaCampoExtraAtualizarMeusDados);
 
 		if(id != null && !id.equals(-1L))
 			query.setLong("empresaId", id);

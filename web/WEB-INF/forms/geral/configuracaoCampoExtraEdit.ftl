@@ -69,7 +69,8 @@
 			<@ww.select label="Aplicar na empresa" name="empresa.id" id="empresa" listKey="id" listValue="nome" list="empresas" cssClass="selectEmpresa" headerKey="" headerValue="Todas" onchange="carregarConfiguracoesEmpresa(this.value)"/>
 			
 			<@ww.checkbox label="Habilitar campos extras no cadastro de Colaboradores" name="habilitaCampoExtraColaborador" labelPosition="left"/>
-			<@ww.checkbox label="Habilitar campos extras no cadastro de Candidato" name="habilitaCampoExtraCandidato" labelPosition="left"/><br>
+			<@ww.checkbox label="Habilitar campos extras no cadastro de Candidato" name="habilitaCampoExtraCandidato" labelPosition="left"/>
+			<@ww.checkbox label="Habilitar campos extras em Atualizar Meus Dados" name="habilitaCampoExtraAtualizarMeusDados" labelPosition="left"/><br>
 			
 			<@display.table name="configuracaoCampoExtras" id="configuracaoCampoExtra" class="dados">
 			

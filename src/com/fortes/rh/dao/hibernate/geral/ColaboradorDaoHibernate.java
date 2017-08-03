@@ -510,7 +510,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("emp.grupoAC"), "empresaGrupoAC");
 		p.add(Projections.property("emp.acIntegra"), "empresaAcIntegra");
 		p.add(Projections.property("emp.campoExtraColaborador"), "campoExtraColaborador");
+		p.add(Projections.property("emp.campoExtraAtualizarMeusDados"), "campoExtraAtualizarMeusDados");
 		p.add(Projections.property("c.naoIntegraAc"), "naoIntegraAc");
+		p.add(Projections.property("c.camposExtras.id"), "camposExtrasId");
 		criteria.setProjection(p);
 		criteria.add(Expression.eq("c.id", id));
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
@@ -2189,6 +2191,10 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		StringBuilder hql = new StringBuilder();
 
 		hql.append("update Colaborador set ");
+		
+		if(colaborador.getCamposExtras() != null && colaborador.getCamposExtras().getId() != null)
+			hql.append(" camposExtras.id = :camposExtrasId, ");
+		
 		hql.append(" endereco.logradouro = :logradouro ,");
 		hql.append(" endereco.numero = :numero ,");
 		hql.append(" endereco.complemento = :complemento ,");
@@ -2292,7 +2298,6 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			query.setCharacter("ctpsDv", ' ');
 		}
 		
-		
 		if(colaborador.getPessoal().getCtps().getCtpsUf() != null && colaborador.getPessoal().getCtps().getCtpsUf().getId() != null)
 			query.setLong("ctpsUfId", colaborador.getPessoal().getCtps().getCtpsUf().getId());
 		else
@@ -2300,6 +2305,10 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		query.setDate("ctpsDataExpedicao", colaborador.getPessoal().getCtps().getCtpsDataExpedicao());
 		query.setString("pis", colaborador.getPessoal().getPis());
+		
+		if(colaborador.getCamposExtras() != null && colaborador.getCamposExtras().getId() != null)
+			query.setLong("camposExtrasId", colaborador.getCamposExtras().getId());
+		
 		query.setLong("id", colaborador.getId());
 
 		query.executeUpdate();

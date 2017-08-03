@@ -2,14 +2,14 @@ package com.fortes.rh.test.web.action.geral;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyChar;
 import static org.mockito.Matchers.anyCollection;
 import static org.mockito.Matchers.anyDouble;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -54,6 +54,7 @@ import com.fortes.rh.business.sesmt.CatManager;
 import com.fortes.rh.business.sesmt.ColaboradorAfastamentoManager;
 import com.fortes.rh.business.sesmt.ComissaoManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
+import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.captacao.Experiencia;
@@ -67,6 +68,8 @@ import com.fortes.rh.model.dicionario.OrigemAnexo;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoConfiguracaoCampoExtra;
 import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.CamposExtras;
+import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorIdioma;
 import com.fortes.rh.model.geral.ColaboradorOcorrencia;
@@ -75,7 +78,9 @@ import com.fortes.rh.model.geral.ConfiguracaoCampoExtraVisivelObrigadotorio;
 import com.fortes.rh.model.geral.DocumentoAnexo;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.geral.Ocorrencia;
+import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.relatorio.ParticipacaoColaboradorCipa;
 import com.fortes.rh.model.sesmt.Cat;
@@ -92,6 +97,7 @@ import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorTurmaFactory;
+import com.fortes.rh.test.factory.geral.CamposExtrasFactory;
 import com.fortes.rh.test.factory.geral.ColaboradorIdiomaFactory;
 import com.fortes.rh.test.factory.geral.ColaboradorOcorrenciaFactory;
 import com.fortes.rh.test.factory.geral.ConfiguracaoCampoExtraFactory;
@@ -107,6 +113,7 @@ import com.fortes.rh.web.action.geral.ColaboradorEditAction;
 import com.fortes.rh.web.ws.AcPessoalClientSistema;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionContext;
+import com.sun.net.httpserver.Authenticator.Success;
 
 public class ColaboradorEditActionTest_JUnit4 
 {
@@ -146,7 +153,7 @@ public class ColaboradorEditActionTest_JUnit4
 	private ConfiguracaoPerformanceManager configuracaoPerformanceManager;
 	private UsuarioEmpresaManager usuarioEmpresaManager;
 	private HistoricoCandidatoManager historicoCandidatoManager;
-
+	
 	@Before
 	public void setUp () throws Exception
 	{
@@ -422,5 +429,137 @@ public class ColaboradorEditActionTest_JUnit4
 		retorno = action.preparePerformanceFuncional();
 		assertEquals("Colaborador não selecionado", action.getActionErrors().iterator().next());
 		assertEquals(retorno, "input");
+	}
+	
+	@Test
+	public void testPrepareUpdateInfoPessoais() throws Exception
+	{
+		ConfiguracaoCampoExtra configuracaoCampoExtra = new ConfiguracaoCampoExtra();
+		configuracaoCampoExtra.setId(1L);
+		configuracaoCampoExtra.setAtivoColaborador(true);
+		Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras = new ArrayList<ConfiguracaoCampoExtra>();
+		configuracaoCampoExtras.add(configuracaoCampoExtra);
+	
+		Empresa empresa = EmpresaFactory.getEmpresa(2L);
+		empresa.setCampoExtraColaborador(true);
+		empresa.setCampoExtraAtualizarMeusDados(true);
+		action.setEmpresaSistema(empresa);
+		
+		ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity();
+		CamposExtras camposExtras = CamposExtrasFactory.getEntity(1L);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setEmpresa(empresa);
+		colaborador.getEndereco().setUf(EstadoFactory.getEntity(1L));
+		colaborador.setCamposExtras(camposExtras);
+		
+		when(parametrosDoSistemaManager.findByIdProjection(1L)).thenReturn(parametrosDoSistema);
+		when(colaboradorManager.findColaboradorById(colaborador.getId())).thenReturn(colaborador);
+		
+		when(cidadeManager.find(new String[]{"uf.id"}, new Object[]{colaborador.getEndereco().getUf().getId()}, new String[]{"nome"})).thenReturn(new ArrayList<Cidade>());
+		when(estadoManager.findAll(new String[]{"sigla"})).thenReturn(new ArrayList<Estado>());
+
+		when(camposExtrasManager.findById(colaborador.getCamposExtras().getId())).thenReturn(camposExtras);
+
+		assertEquals("success", action.prepareUpdateInfoPessoais());
+	}
+	
+	@Test
+	public void testPrepareUpdateInfoPessoaisEmpresaErrada() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(2L);
+		action.setEmpresaSistema(empresa);
+		
+		ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity();
+		
+		Empresa empresaColab = EmpresaFactory.getEmpresa(44L);
+		empresaColab.setNome("babau");
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setEmpresa(empresaColab);
+		
+		when(colaboradorManager.findColaboradorById(colaborador.getId())).thenReturn(colaborador);
+		when(parametrosDoSistemaManager.findByIdProjection(1L)).thenReturn(parametrosDoSistema);
+		
+		assertEquals("success", action.prepareUpdateInfoPessoais());
+		assertTrue(((String)action.getActionWarnings().toArray()[0]).equals("Só é possível editar dados pessoais para empresa na qual você foi contratado(a). Acesse a empresa babau para alterar suas informações."));
+	}
+	
+	@Test
+	public void testPrepareUpdateInfoPessoaisEmpresaSemColaborador() throws Exception
+	{
+		ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity();
+		
+		when(colaboradorManager.findColaboradorById(null)).thenReturn(null);
+		when(parametrosDoSistemaManager.findByIdProjection(1L)).thenReturn(parametrosDoSistema);
+		
+		assertEquals("success", action.prepareUpdateInfoPessoais());
+		assertTrue(((String)action.getActionWarnings().toArray()[0]).equals("Sua conta de usuário não está vinculada à nenhum colaborador"));
+	}
+	
+	@Test 
+	public void testUpdateInfoPessoais() throws Exception{
+		Empresa empresa = EmpresaFactory.getEmpresa(2L);
+		empresa.setCampoExtraAtualizarMeusDados(true);
+		action.setEmpresaSistema(empresa);
+		
+		CamposExtras camposExtras = CamposExtrasFactory.getEntity(1L);
+		action.setCamposExtras(camposExtras);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setEmpresa(empresa);
+		colaborador.getEndereco().setUf(EstadoFactory.getEntity(1L));
+		colaborador.setCamposExtras(camposExtras);
+		action.setColaborador(colaborador);
+		
+		action.setHabilitaCampoExtra(true);
+		
+		assertEquals(Action.SUCCESS, action.updateInfoPessoais());
+		assertEquals("Dados atualizado com sucesso.", action.getActionSuccess().toArray()[0]);
+	}
+	
+	@Test 
+	public void testUpdateInfoPessoaisIntegraACException() throws Exception{
+		Empresa empresa = EmpresaFactory.getEmpresa(2L);
+		empresa.setCampoExtraAtualizarMeusDados(true);
+		action.setEmpresaSistema(empresa);
+		
+		CamposExtras camposExtras = CamposExtrasFactory.getEntity(1L);
+		action.setCamposExtras(camposExtras);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setEmpresa(empresa);
+		colaborador.getEndereco().setUf(EstadoFactory.getEntity(1L));
+		colaborador.setCamposExtras(camposExtras);
+		action.setColaborador(colaborador);
+		
+		action.setHabilitaCampoExtra(true);
+		
+		doThrow(new IntegraACException("IntegraACException")).when(colaboradorManager).updateInfoPessoais(action.getColaborador(), null, null, null, empresa, null, false);
+		
+		assertEquals(Action.SUCCESS, action.updateInfoPessoais());
+		assertEquals("IntegraACException", action.getActionErrors().toArray()[0]);
+	}
+	
+	@Test 
+	public void testUpdateInfoPessoaisException() throws Exception{
+		Empresa empresa = EmpresaFactory.getEmpresa(2L);
+		empresa.setCampoExtraAtualizarMeusDados(true);
+		action.setEmpresaSistema(empresa);
+		
+		CamposExtras camposExtras = CamposExtrasFactory.getEntity(1L);
+		action.setCamposExtras(camposExtras);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setEmpresa(empresa);
+		colaborador.getEndereco().setUf(EstadoFactory.getEntity(1L));
+		colaborador.setCamposExtras(camposExtras);
+		action.setColaborador(colaborador);
+		
+		action.setHabilitaCampoExtra(true);
+		
+		doThrow(new Exception()).when(colaboradorManager).updateInfoPessoais(action.getColaborador(), null, null, null, empresa, null, false);
+		
+		assertEquals(Action.SUCCESS, action.updateInfoPessoais());
+		assertEquals("Não foi possível atualizar os dados.", action.getActionErrors().toArray()[0]);
 	}
 }

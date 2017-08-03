@@ -325,7 +325,7 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 			return empresaId;
 	}
 
-	public void atualizaCamposExtras(Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras, Empresa empresa, boolean habilitaCampoExtraColaborador, boolean habilitaCampoExtraCandidato) 
+	public void atualizaCamposExtras(Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras, Empresa empresa, boolean habilitaCampoExtraColaborador, boolean habilitaCampoExtraCandidato, boolean habilitaCampoExtraAtualizarMeusDados) 
 	{
 		Collection<Empresa> empresas = null;
 
@@ -349,12 +349,12 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 
 		if(empresa.getId() == null || empresa.getId().equals(-1L)){
 			for (Empresa emp : empresas) {
-				getDao().updateCampoExtra(emp.getId(), habilitaCampoExtraColaborador, habilitaCampoExtraCandidato);
+				getDao().updateCampoExtra(emp.getId(), habilitaCampoExtraColaborador, habilitaCampoExtraCandidato, habilitaCampoExtraAtualizarMeusDados);
 				decideRemoverOrAtualizarConfigCamposVisiveiAndObrigatorios(emp.getId(), camposVisivesisColaborador, camposVisivesisCandidato);
 			}
 		}
 		else{
-			getDao().updateCampoExtra(empresa.getId(), habilitaCampoExtraColaborador, habilitaCampoExtraCandidato);
+			getDao().updateCampoExtra(empresa.getId(), habilitaCampoExtraColaborador, habilitaCampoExtraCandidato, habilitaCampoExtraAtualizarMeusDados);
 			decideRemoverOrAtualizarConfigCamposVisiveiAndObrigatorios(empresa.getId(), camposVisivesisColaborador, camposVisivesisCandidato);
 		}
 	}

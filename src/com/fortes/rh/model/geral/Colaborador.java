@@ -2093,6 +2093,14 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 			empresa.setCampoExtraColaborador(campoExtraColaborador);			
 		}
 	}
+	
+	public void setCampoExtraAtualizarMeusDados(Boolean campoExtraAtualizarMeusDados)
+	{
+		if(campoExtraAtualizarMeusDados != null){
+			criarEmpresa();
+			empresa.setCampoExtraAtualizarMeusDados(campoExtraAtualizarMeusDados);			
+		}
+	}
 
 	public void setProjectionNitRepresentanteLegal(String projectionNitRepresentanteLegal)
 	{
@@ -2809,6 +2817,15 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	{
 		this.camposExtras = camposExtras;
 	}
+	
+	public void setCamposExtrasId(Long camposExtrasId)
+	{
+		if(this.camposExtras == null)
+			this.camposExtras = new CamposExtras();
+		
+		this.camposExtras.setId(camposExtrasId);
+	}
+	
 	@NaoAudita
 	public String getAdmitidoHa() 
 	{

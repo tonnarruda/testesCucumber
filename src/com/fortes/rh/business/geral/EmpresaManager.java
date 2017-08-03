@@ -38,7 +38,7 @@ public interface EmpresaManager extends GenericManager<Empresa>
 	Collection<Empresa> findEmailsEmpresa();
 	public Empresa findEmailsEmpresa(Long empresaId);
 	Long ajustaCombo(Long empresaId, Long empresaDoSistemaId);
-	void atualizaCamposExtras(Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras, Empresa empresa, boolean habilitaCampoExtraColaborador, boolean habilitaCampoExtraCandidato);
+	void atualizaCamposExtras(Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras, Empresa empresa, boolean habilitaCampoExtraColaborador, boolean habilitaCampoExtraCandidato, boolean habilitaCampoExtraAtualizarMeusDados);
 	Collection<Empresa> findTodasEmpresas();
 	boolean checkEmpresaCodACGrupoAC(Empresa empresa);
 	Collection<Empresa> findEmpresasPermitidas(Boolean compartilharCandidatos, Long empresId, Long usuarioId, String... roles);

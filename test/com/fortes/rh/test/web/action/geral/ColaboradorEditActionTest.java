@@ -1,8 +1,5 @@
 package com.fortes.rh.test.web.action.geral;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import mockit.Mockit;
 
 import org.jmock.Mock;
@@ -41,20 +38,12 @@ import com.fortes.rh.business.sesmt.ColaboradorAfastamentoManager;
 import com.fortes.rh.business.sesmt.ComissaoManager;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.captacao.Candidato;
-import com.fortes.rh.model.geral.CamposExtras;
-import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
-import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.model.geral.Estado;
-import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
-import com.fortes.rh.test.factory.geral.CamposExtrasFactory;
-import com.fortes.rh.test.factory.geral.EstadoFactory;
-import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
 import com.fortes.rh.test.util.mockObjects.MockActionContext;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.web.action.geral.ColaboradorEditAction;
@@ -187,68 +176,6 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
     {
     	assertEquals(action.execute(), "success");
     }
-	
-	public void testPrepareUpdateInfoPessoais() throws Exception
-	{
-		ConfiguracaoCampoExtra configuracaoCampoExtra = new ConfiguracaoCampoExtra();
-		configuracaoCampoExtra.setId(1L);
-		configuracaoCampoExtra.setAtivoColaborador(true);
-		Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras = new ArrayList<ConfiguracaoCampoExtra>();
-		configuracaoCampoExtras.add(configuracaoCampoExtra);
-	
-		Empresa empresa = EmpresaFactory.getEmpresa(2L);
-		empresa.setCampoExtraColaborador(true);
-		action.setEmpresaSistema(empresa);
-		
-		ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity();
-		
-		CamposExtras camposExtras = CamposExtrasFactory.getEntity(1L);
-		
-		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
-		colaborador.setEmpresa(empresa);
-		colaborador.getEndereco().setUf(EstadoFactory.getEntity(1L));
-		colaborador.setCamposExtras(camposExtras);
-		
-		parametrosDoSistemaManager.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(parametrosDoSistema));
-		colaboradorManager.expects(once()).method("findColaboradorById").with(ANYTHING).will(returnValue(colaborador));
-		
-		cidadeManager.expects(once()).method("find").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<Cidade>()));
-		estadoManager.expects(once()).method("findAll").with(ANYTHING).will(returnValue(new ArrayList<Estado>()));
-		
-		candidatoIdiomaManager.expects(once()).method("montaListCandidatoIdioma").with(ANYTHING);
-		experienciaManager.expects(once()).method("findByColaborador").with(ANYTHING);
-		formacaoManager.expects(once()).method("findByColaborador").with(ANYTHING);
-
-		assertEquals("success", action.prepareUpdateInfoPessoais());
-	}
-	
-	public void testPrepareUpdateInfoPessoaisEmpresaErrada() throws Exception
-	{
-		Empresa empresa = EmpresaFactory.getEmpresa(2L);
-		action.setEmpresaSistema(empresa);
-		
-		ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity();
-		
-		Empresa empresaColab = EmpresaFactory.getEmpresa(44L);
-		empresaColab.setNome("babau");
-		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
-		colaborador.setEmpresa(empresaColab);
-		
-		colaboradorManager.expects(once()).method("findColaboradorById").with(ANYTHING).will(returnValue(colaborador));
-		parametrosDoSistemaManager.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(parametrosDoSistema));
-		
-		assertEquals("success", action.prepareUpdateInfoPessoais());
-		assertTrue(((String)action.getActionWarnings().toArray()[0]).equals("Só é possível editar dados pessoais para empresa na qual você foi contratado(a). Acesse a empresa babau para alterar suas informações."));
-	}
-	
-	public void testPrepareUpdateInfoPessoaisEmpresaSemColaborador() throws Exception
-	{
-		ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity();
-		colaboradorManager.expects(once()).method("findColaboradorById").with(ANYTHING).will(returnValue(null));
-		parametrosDoSistemaManager.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(parametrosDoSistema));
-		assertEquals("success", action.prepareUpdateInfoPessoais());
-		assertTrue(((String)action.getActionWarnings().toArray()[0]).equals("Sua conta de usuário não está vinculada à nenhum colaborador"));
-	}
 	
 	public void testPrepareColaboradorSolicitacaoTendoOutroColaboradorComMesmoCpf() throws Exception
 	{

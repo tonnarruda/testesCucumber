@@ -21,6 +21,7 @@ public class ConfiguracaoCampoExtraEditAction extends MyActionSupportList
 	private Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras;
 	private int[] ordens = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16};
 	private boolean habilitaCampoExtraColaborador;
+	private boolean habilitaCampoExtraAtualizarMeusDados;
 	private boolean habilitaCampoExtraCandidato;
 	private Collection<Empresa> empresas;
 	private Empresa empresa;
@@ -32,6 +33,7 @@ public class ConfiguracaoCampoExtraEditAction extends MyActionSupportList
 		Empresa emp = empresaManager.findByIdProjection(empresaId);//tem que pegar do banco, pois pode ter mudado
 		habilitaCampoExtraColaborador = emp.isCampoExtraColaborador();
 		habilitaCampoExtraCandidato = emp.isCampoExtraCandidato();
+		habilitaCampoExtraAtualizarMeusDados = emp.isCampoExtraAtualizarMeusDados(); 
 		
 		boolean atualizaTodas = configuracaoCampoExtraManager.atualizaTodas();
 		
@@ -56,6 +58,7 @@ public class ConfiguracaoCampoExtraEditAction extends MyActionSupportList
 					empresaId = -1L;
 					habilitaCampoExtraColaborador = false;
 					habilitaCampoExtraCandidato = false;
+					habilitaCampoExtraAtualizarMeusDados = false;
 				}
 			}
 			else
@@ -64,6 +67,7 @@ public class ConfiguracaoCampoExtraEditAction extends MyActionSupportList
 				emp = empresaManager.findByIdProjection(empresaId);
 				habilitaCampoExtraColaborador = emp.isCampoExtraColaborador();
 				habilitaCampoExtraCandidato = emp.isCampoExtraCandidato();
+				habilitaCampoExtraAtualizarMeusDados = emp.isCampoExtraAtualizarMeusDados();
 			}
 		}
 		
@@ -79,7 +83,7 @@ public class ConfiguracaoCampoExtraEditAction extends MyActionSupportList
 	public String update() throws Exception
 	{
 		try {
-			empresaManager.atualizaCamposExtras(configuracaoCampoExtras, empresa, habilitaCampoExtraColaborador, habilitaCampoExtraCandidato);
+			empresaManager.atualizaCamposExtras(configuracaoCampoExtras, empresa, habilitaCampoExtraColaborador, habilitaCampoExtraCandidato, habilitaCampoExtraAtualizarMeusDados);
 			SecurityUtil.setEmpresaSession(ActionContext.getContext().getSession(), empresaManager.findById(getEmpresaSistema().getId()));
 
 			addActionSuccess("Configurações gravadas com sucesso.");
@@ -147,5 +151,13 @@ public class ConfiguracaoCampoExtraEditAction extends MyActionSupportList
 
 	public void setHabilitaCampoExtraCandidato(boolean habilitaCampoExtraCandidato) {
 		this.habilitaCampoExtraCandidato = habilitaCampoExtraCandidato;
+	}
+
+	public boolean isHabilitaCampoExtraAtualizarMeusDados() {
+		return habilitaCampoExtraAtualizarMeusDados;
+	}
+
+	public void setHabilitaCampoExtraAtualizarMeusDados(boolean habilitaCampoExtraAtualizarMeusDados) {
+		this.habilitaCampoExtraAtualizarMeusDados = habilitaCampoExtraAtualizarMeusDados;
 	}
 }

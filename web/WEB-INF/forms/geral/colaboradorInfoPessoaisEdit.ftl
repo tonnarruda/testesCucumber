@@ -58,8 +58,26 @@
 	<style type="text/css">@import url('<@ww.url includeParams="none" value="/css/jquery.autocomplete.css"/>');</style>
 
 	<#include "../cargosalario/calculaSalarioInclude.ftl" />
-
-	<#assign totalAbas = 4/>
+	
+	<#assign validaDataCamposExtras = ""/>
+	<#if habilitaCampoExtra>
+		<#list configuracaoCampoExtras as configuracaoCampoExtra>		
+			<#if configuracaoCampoExtra.nome?exists && configuracaoCampoExtra.nome == "data1">
+				<#assign validaDataCamposExtras = validaDataCamposExtras + ", 'data1'"/>
+			</#if>
+			<#if configuracaoCampoExtra.nome?exists && configuracaoCampoExtra.nome == "data2">
+				<#assign validaDataCamposExtras = validaDataCamposExtras + ", 'data2'"/>
+			</#if>
+			<#if configuracaoCampoExtra.nome?exists && configuracaoCampoExtra.nome == "data3">
+				<#assign validaDataCamposExtras = validaDataCamposExtras + ", 'data3'"/>
+			</#if>
+		</#list>
+		
+		<#assign totalAbas = 5/>
+	<#else>
+		<#assign totalAbas = 4/>
+	</#if>
+	
 	<#assign dadosIntegradosAtualizados = "${dadosIntegradosAtualizados?string}"/>
 	
 	<script type="text/javascript">
@@ -192,7 +210,7 @@
 	
 			arrayValidacao = arrayObrigatorios;
 			
-			var validaCampos = validaFormulario('form', arrayValidacao, new Array('ende','num','uf','cidade','ddd','fone','escolaridade','cep','emissao','vencimento','rgDataExpedicao','ctpsDataExpedicao', 'pis'), true);
+			var validaCampos = validaFormulario('form', arrayValidacao, new Array('ende','num','uf','cidade','ddd','fone','escolaridade','cep','emissao','vencimento','rgDataExpedicao','ctpsDataExpedicao', 'pis'  ${validaDataCamposExtras}), true);
 			
 			if(validaCampos){
 				dialogIntegraAc();		
@@ -306,6 +324,10 @@
 			<div id="aba2" class="abaFormacaoEscolar"><a href="javascript: abas(2, '', true, ${totalAbas})">Formação Escolar</a></div>
 			<div id="aba3" class="abaExperiencias"><a href="javascript: abas(3, '', true, ${totalAbas})">Experiências</a></div>
 			<div id="aba4" class="abaDocumentos"><a href="javascript: abas(4, '', true, ${totalAbas})">Documentos</a></div>
+			
+			<#if habilitaCampoExtra>
+				<div id="aba5" class="abaExtra"><a href="javascript: abas(5, '', true, ${totalAbas})">Extra</a></div>
+			</#if>
 		</div>
 	
 		<#-- Campos fora do formulário por causa do ajax.
@@ -423,18 +445,27 @@
 				</@ww.div>
 			</li>
 	    </div>
-			
-			<@ww.hidden name="colaborador.cursos" id="colaborador.cursos" />
-			<@ww.hidden name="colaborador.observacao" id="colaborador.observacao" />
-			<@ww.hidden name="colaborador.candidato.id"/>
-			<@ww.hidden name="colaborador.id"/>
-			<@ww.hidden name="colaborador.codigoAC"/>
-			<@ww.hidden name="dadosIntegradosAtualizados" id="dadosIntegradosAtualizados" value="${dadosIntegradosAtualizados}"/>
-			<@ww.hidden name="dataAlteracao" id="dataAlteracao"/>
-			
-			<@ww.token/>
+	    
+		<#if habilitaCampoExtra>
+			<div id="content5" style="display: none;">
+				<#include "camposExtras.ftl" />
+				<div style="clear: both;"></div>
+		    </div>
+		</#if>
+		
+		<@ww.hidden name="colaborador.camposExtras.id" />
+		<@ww.hidden name="colaborador.cursos" id="colaborador.cursos" />
+		<@ww.hidden name="colaborador.observacao" id="colaborador.observacao" />
+		<@ww.hidden name="colaborador.candidato.id"/>
+		<@ww.hidden name="colaborador.id"/>
+		<@ww.hidden name="colaborador.codigoAC"/>
+		<@ww.hidden name="dadosIntegradosAtualizados" id="dadosIntegradosAtualizados" value="${dadosIntegradosAtualizados}"/>
+		<@ww.hidden name="dataAlteracao" id="dataAlteracao"/>
+		
+		<@ww.token/>
 		</@ww.form>
 	
+
 		<#-- Campo para controle das abas -->
 		<@ww.hidden id="aba" name="aba" value="1"/>
 	

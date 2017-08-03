@@ -19,7 +19,7 @@ public interface EmpresaDao extends GenericDao<Empresa>
 	Collection<Empresa> findByUsuarioPermissao(Long usuarioId, String... roles);
 	void removeEmpresaPadrao(long id);
 	Collection<Empresa> findTodasEmpresas();
-	void updateCampoExtra(Long id, boolean habilitaCampoExtraColaborador, boolean habilitaCampoExtraCandidato);
+	void updateCampoExtra(Long id, boolean habilitaCampoExtraColaborador, boolean habilitaCampoExtraCandidato, boolean habilitaCampoExtraAtualizarMeusDados);
 	boolean checkEmpresaCodACGrupoAC(Empresa empresa);
 	boolean checkEmpresaIntegradaAc();
 	boolean checkEmpresaIntegradaAc(Long empresaId);

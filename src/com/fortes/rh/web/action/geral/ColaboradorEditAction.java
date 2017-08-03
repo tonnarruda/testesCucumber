@@ -297,7 +297,8 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
 		
 		obrigarAmbienteFuncao = getEmpresaSistema().isObrigarAmbienteFuncao();
-		configuraCamposExtras();
+		habilitaCampoExtra = getEmpresaSistema().isCampoExtraColaborador();
+		configuraCamposExtras(habilitaCampoExtra);
 			
 		indices = indiceManager.findAll(getEmpresaSistema());
 		
@@ -366,8 +367,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
 	}
 	
-	private void configuraCamposExtras(){
-		habilitaCampoExtra = getEmpresaSistema().isCampoExtraColaborador();
+	private void configuraCamposExtras(boolean habilitaCampoExtra){
 		if(habilitaCampoExtra){
 			configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{"ativoColaborador", "empresa.id"}, new Object[]{true, getEmpresaSistema().getId()}, new String[]{"ordem"});
 			campoExtraVisivelObrigadotorio = configuracaoCampoExtraVisivelObrigadotorioManager.findByEmpresaId(getEmpresaSistema().getId(), TipoConfiguracaoCampoExtra.COLABORADOR.getTipo());
@@ -438,8 +438,13 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			session.put("SESSION_IDIOMA", candidatoIdiomaManager.montaListCandidatoIdioma(colaborador.getId()));
 			session.put("SESSION_EXPERIENCIA", experienciaManager.findByColaborador(colaborador.getId()));
 			session.put("SESSION_FORMACAO", formacaoManager.findByColaborador(colaborador.getId()));			
+			
+			habilitaCampoExtra = colaborador.getEmpresa().isCampoExtraAtualizarMeusDados();
+			configuraCamposExtras(habilitaCampoExtra);
+			if(habilitaCampoExtra && colaborador.getCamposExtras() != null && colaborador.getCamposExtras().getId() != null)
+				camposExtras = camposExtrasManager.findById(colaborador.getCamposExtras().getId());
 		}
-
+		
 		return Action.SUCCESS;
 	}
 
@@ -898,23 +903,25 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 	public String updateInfoPessoais() throws Exception
 	{
-		try
-		{
+		try{
 			recuperarSessao();
+
+			if(camposExtras != null && habilitaCampoExtra)
+				colaborador.setCamposExtras(camposExtrasManager.update(camposExtras, colaborador.getCamposExtras().getId(), getEmpresaSistema().getId()));
 			
+			if(colaborador.getCamposExtras() == null || colaborador.getCamposExtras().getId() == null)
+				colaborador.setCamposExtras(null);
+
 			colaborador.setDataAtualizacao(new Date());
 			colaboradorManager.updateInfoPessoais(colaborador, formacaos, idiomas, experiencias, getEmpresaSistema(), dataAlteracao, dadosIntegradosAtualizados);
 			prepareUpdateInfoPessoais();
 			addActionSuccess("Dados atualizado com sucesso.");
-		}
-		catch (IntegraACException e){
+		}catch (IntegraACException e){
 			dataAlteracao = new Date();
 			dadosIntegradosAtualizados = true;
 			prepareUpdateInfoPessoais();
 			addActionError(e.getMessage());
-		}
-		catch (Exception e)
-		{
+		}catch (Exception e){
 			prepareUpdateInfoPessoais();
 			addActionError("Não foi possível atualizar os dados.");
 		}
