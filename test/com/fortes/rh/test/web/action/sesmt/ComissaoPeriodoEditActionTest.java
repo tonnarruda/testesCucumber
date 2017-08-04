@@ -82,7 +82,7 @@ public class ComissaoPeriodoEditActionTest extends MockObjectTestCase
     	manager.expects(once()).method("findByComissao").will(returnValue(new ArrayList<ComissaoPeriodo>()));
 
     	assertEquals("success", action.delete());
-    	assertEquals(1, action.getActionErrors().size());
+    	assertEquals(1, action.getActionWarnings().size());
     }
 
     public void testPrepare() throws Exception

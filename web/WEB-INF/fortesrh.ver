@@ -6,6 +6,7 @@
 		<Item visivel="S" motivo="S16120000044"><![CDATA[Aval. Desempenho > Relatórios > Resultado das Avaliações de Desempenho e Acompanhamento do Período de Experiência: Exibir somente áreas organizacionais relacionadas aos gestores e/ou para usuários que possuírem em seu perfil a permissão "Visualizar todas as Áreas Organizacionais".]]></Item>
 		<Item visivel="S" motivo="S17060000175"><![CDATA[T&D > Movimentações > Levantamento de Necessidade de Treinamento (LNT) > Gerar cursos e turmas > Criar turmas/relacionar participantes: Nova opção para detalhar os custos das turmas.]]></Item>
 		<Item visivel="S" motivo="S17010000136"><![CDATA[SESMT > Painel de Indicadores: Possibilidade de impressão dos gráficos do painel.]]></Item>
+		<Item visivel="S" motivo="S17070000200"><![CDATA[SESMT > Cadastros > CIPA > Comissões > Editar > Comissão: Auditoria para a inserção e atualização do "Período da Comissão" com seus membros.]]></Item>
 		<Item visivel="S" motivo="P17070000103"><![CDATA[SESMT > Cadastros > CIPA > Comissões > Editar > Reuniões > Frequência: Ajuste na inconsistência ao visualizar as frequências.]]></Item>
 		<Item visivel="S" motivo="P17070000155"><![CDATA[SESMT > Cadastros > Funções > Inserir/Editar > Inserir/Editar: Exibição correta do nome do cargo quando o mesmo é acentuado.]]></Item>
 		<Item visivel="S" motivo="P17060000306"><![CDATA[Utilitários > Importar Cadastros: Ajuste na importação de cargos entre empresas.]]></Item>

@@ -50,7 +50,7 @@ public class ComissaoPeriodoAuditorCallbackImpl implements AuditorCallback {
 			dados.append("\n");
 		}
 		dados.append("\n ]");
-		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), comissaoPeriodo.getPeriodoFormatado(), dados.toString());
+		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), "Comissão da CIPA a partir de " + comissaoPeriodo.getPeriodoFormatado(), dados.toString());
 	}
 	
 	private Map<String, String> getMembros(MetodoInterceptado metodo, Long comissaoPeriodoId) {

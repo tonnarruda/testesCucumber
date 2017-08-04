@@ -61,9 +61,9 @@ public class ComissaoPeriodoAuditorCallbackImplTest {
 		MethodInvocation atualiza = new MethodInvocationDefault<ComissaoPeriodoManager>("atualiza", ComissaoPeriodoManager.class, new Object[]{comissaoPeriodo, comissaoMembroIds, funcoes, tipos}, comissaoPeriodoManager);
 		Auditavel auditavel = callback.processa(new MetodoInterceptadoImpl(atualiza));
 
-		assertEquals("Período da Comissão", auditavel.getModulo());
+		assertEquals("Período da Comissão(Membros)", auditavel.getModulo());
 		assertEquals("Atualização", auditavel.getOperacao());
-		assertEquals(DateUtil.formataDiaMesAno(new Date()), auditavel.getChave());
+		assertEquals("Comissão da CIPA a partir de "  + DateUtil.formataDiaMesAno(new Date()), auditavel.getChave());
 		
 		String data = DateUtil.formataDiaMesAno(new Date());
 		
