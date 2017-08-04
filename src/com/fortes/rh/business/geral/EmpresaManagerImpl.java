@@ -374,8 +374,12 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 				campoExtraTmp.setId(null);
 				configuracaoCampoExtraManager.save(campoExtraTmp);
 			}
-		}else
-			configuracaoCampoExtraManager.update(campoExtra);
+		}else{
+			if(campoExtra.getId() == null)
+				configuracaoCampoExtraManager.save(campoExtra);	
+			else
+				configuracaoCampoExtraManager.update(campoExtra);
+		}
 	}
 
 	private void decideRemoverOrAtualizarConfigCamposVisiveiAndObrigatorios( Long empresaId, String camposVisivesisColaborador, String camposVisivesisCandidato) {
