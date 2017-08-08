@@ -59,23 +59,36 @@
 			});
 		}
 		
-		var i = 0;
 		function addCargo(cargoId, cargoNomeMercado, limite)
 		{
+			var i = $('#listaCargos').find(":text").size() + 1 ;
+			
 			if(limite == undefined)
 				limite = '';
 			
 			$("#listaCargos").append("<tr><td><img src='<@ww.url includeParams="none" value="/imgs/delete.gif"/>' style='cursor: pointer;' onclick='removerCargo(this)' title='Remover cargo'/></td><td id='cargo_" + i + "'></td><td>" + cargoNomeMercado + "</td></tr>");
 			
-			$("#cargo_" + i).append('<input type="text" name="' + 'quantidadeLimiteColaboradoresPorCargos['+ i +'].limite' + '" value="' + limite + '" style="text-align:right;" onkeypress="return somenteNumeros(event,\"\")" id="c_' + i + '" class="valida" size="4" maxlength="3"/>');
+			$("#cargo_" + i).append('<input type="text" name="' + 'quantidadeLimiteColaboradoresPorCargos['+ i +'].limite' + '" value="' + limite + '" style="text-align:right;" onkeypress="return somenteNumeros(event,\'\');" id="c_' + i + '" class="valida" size="4" maxlength="3"/>');
 			$("#cargo_" + i).append('<input type="hidden" name="' + 'quantidadeLimiteColaboradoresPorCargos['+ i +'].cargo.id' + '" value="' + cargoId + '"/>');
-		
-			i++;
 		}
 		
 		function removerCargo(obj)
 		{
 			$(obj).parent().parent().remove();
+			redefineIds();
+		}
+		
+		function redefineIds()
+		{
+			$('td[id^="cargo_"]').each(function (i) {   $(this).attr('id','cargo_'+(++i));   });
+
+			$('input[name$=".limite"]').each(function (i) {   
+				i++;
+				$(this).attr('id','c_'+(i));   
+				$(this).attr('name','quantidadeLimiteColaboradoresPorCargos['+ (i) +'].limite');   
+			});
+
+			$('input[name$=".cargo.id"]').each(function (i) {   $(this).attr('name','quantidadeLimiteColaboradoresPorCargos['+ (++i) +'].cargo.id');   });
 		}
 		
 		function novoCargo()

@@ -5,6 +5,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
+import org.apache.commons.collections4.Closure;
+import org.apache.commons.collections4.IterableUtils;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.dao.geral.QuantidadeLimiteColaboradoresPorCargoDao;
@@ -23,16 +26,20 @@ public class QuantidadeLimiteColaboradoresPorCargoManagerImpl extends GenericMan
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private ConfiguracaoLimiteColaboradorManager configuracaoLimiteColaboradorManager;
 	
-	public void saveLimites(Collection<QuantidadeLimiteColaboradoresPorCargo> quantidadeLimiteColaboradoresPorCargos, AreaOrganizacional areaOrganizacional) 
+	public void saveLimites(Collection<QuantidadeLimiteColaboradoresPorCargo> quantidadeLimiteColaboradoresPorCargos, final AreaOrganizacional areaOrganizacional) 
 	{
-		for (QuantidadeLimiteColaboradoresPorCargo limite : quantidadeLimiteColaboradoresPorCargos) 
-		{
-			if(limite != null)//javascrip pode mandar obj null dentro do array
-			{
-				limite.setAreaOrganizacional(areaOrganizacional);
-				getDao().save(limite);				
+		IterableUtils.forEach(quantidadeLimiteColaboradoresPorCargos, new Closure<QuantidadeLimiteColaboradoresPorCargo>() {
+
+			@Override
+			public void execute(QuantidadeLimiteColaboradoresPorCargo quantidadeLimiteColaboradoresPorCargo) {
+				if(quantidadeLimiteColaboradoresPorCargo != null)//javascrip pode mandar obj null dentro do array
+				{
+					quantidadeLimiteColaboradoresPorCargo.setAreaOrganizacional(areaOrganizacional);
+					getDao().save(quantidadeLimiteColaboradoresPorCargo);				
+				}
+				
 			}
-		}
+		});
 	}
 
 	public Collection<QuantidadeLimiteColaboradoresPorCargo> findByArea(Long areaId) 

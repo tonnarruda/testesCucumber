@@ -9,7 +9,8 @@
 		<Item visivel="S" motivo="S17070000200"><![CDATA[SESMT > Cadastros > CIPA > Comissões > Editar > Comissão: Auditoria para a inserção e atualização do "Período da Comissão" com seus membros.]]></Item>
 		<Item visivel="S" motivo="P17070000103"><![CDATA[SESMT > Cadastros > CIPA > Comissões > Editar > Reuniões > Frequência: Ajuste na inconsistência ao visualizar as frequências.]]></Item>
 		<Item visivel="S" motivo="P17070000155"><![CDATA[SESMT > Cadastros > Funções > Inserir/Editar > Inserir/Editar: Exibição correta do nome do cargo quando o mesmo é acentuado.]]></Item>
-		<Item visivel="S" motivo="P17080000033"><![CDATA[Utilitários > Configuração > Campos Extras: Ajuste de inconsistência ao tentar gravar campos extras para novas empresas.]]></Item>
+		<Item visivel="S" motivo="P17080000033"><![CDATA[Utilitários > Configurações > Campos Extras: Ajuste de inconsistência ao tentar gravar campos extras para novas empresas.]]></Item>
+		<Item visivel="S" motivo="P17080000044"><![CDATA[Utilitários > Configurações > Limite de Colab. por Cargo > Adicionar Cargo: Ajuste na inconsistência do posicionamento incorreto do campo para inserir a quantidade limite de colaboradores por cargo.]]></Item>
 		<Item visivel="S" motivo="P17060000306"><![CDATA[Utilitários > Importar Cadastros: Ajuste na importação de cargos entre empresas.]]></Item>
 		<Item visivel="N" motivo="S16060000240"><![CDATA[Sistema: Validação da quantidade de constraints e versão do banco de dados.]]></Item>
 		<Item visivel="N" motivo="P17070000031"><![CDATA[Sistema: Ajuste de inconsistência que removia a informação de ativo e inativo do nome dos cargos.]]></Item>
