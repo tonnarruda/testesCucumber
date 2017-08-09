@@ -13,8 +13,10 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7526,5 +7528,66 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<
 		
 		Collection<Colaborador> retorno = colaboradorDao.findByAdmitidos(new Date());
 		assertTrue(retorno.size() >= 1);
+	}
+	
+	@Test
+	public void testFindDadosBasicosNotIds() {
+		Date data1 = DateUtil.criarDataMesAno(1, 1, 2017);
+		Date data2 = DateUtil.criarDataMesAno(1, 2, 2017);
+		
+		Empresa empresa = saveEmpresa();
+
+		Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento1);
+		
+		Estabelecimento estabelecimento2 = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento2);
+		
+		Cargo cargo = CargoFactory.getEntity("Cargo");
+		cargoDao.save(cargo);
+		
+		FaixaSalarial faixa1 = FaixaSalarialFactory.getEntity("I", cargo);
+		faixaSalarialDao.save(faixa1);
+		
+		FaixaSalarial faixa2 = FaixaSalarialFactory.getEntity("II", cargo);
+		faixaSalarialDao.save(faixa2);
+		
+		AreaOrganizacional area1 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(area1);
+		
+		AreaOrganizacional area2 = AreaOrganizacionalFactory.getEntity();
+		area2.setAreaMae(area1);
+		areaOrganizacionalDao.save(area2);
+		
+		AreaOrganizacional area3 = AreaOrganizacionalFactory.getEntity();
+		area3.setAreaMae(area1);
+		areaOrganizacionalDao.save(area3);
+		
+		Colaborador colaborador1 = saveColaborador(empresa, "C1", "012345", "01234567890", data1);
+		colaboradorDao.save(colaborador1);
+		saveHistoricoColaborador(colaborador1, estabelecimento1, area2, faixa1, data1, StatusRetornoAC.CONFIRMADO);
+		
+		Colaborador colaborador2 = saveColaborador(empresa, "C2", "012346", "01234567890", data2);
+		colaboradorDao.save(colaborador2);
+		saveHistoricoColaborador(colaborador2, estabelecimento2, area3, faixa2, data2, StatusRetornoAC.CONFIRMADO);
+		
+		Colaborador colaborador3 = saveColaborador(empresa, "C3", "012347", "01234567890", data2);
+		colaboradorDao.save(colaborador3);
+		saveHistoricoColaborador(colaborador3, estabelecimento2, area3, faixa2, data2, StatusRetornoAC.AGUARDANDO);
+		
+		Colaborador colaborador4 = saveColaborador(empresa, "C4", "012347", "01234567890", data1);
+		colaboradorDao.save(colaborador4);
+		saveHistoricoColaborador(colaborador4, estabelecimento1, area2, faixa2, data1, StatusRetornoAC.CONFIRMADO);
+		
+		Set<Long> colabsIds = new HashSet<Long>();
+		colabsIds.add(colaborador1.getId());
+		
+		Collection<Colaborador> retorno = colaboradorDao.findDadosBasicosNotIds(colabsIds, null, new Long[]{area3.getId()}, null, SituacaoColaborador.ATIVO, empresa.getId());
+		assertEquals(1, retorno.size());
+		assertEquals(colaborador2.getNome(), ((Colaborador)retorno.toArray()[0]).getNome());
+		
+		retorno = colaboradorDao.findDadosBasicosNotIds(colabsIds, new Long[]{colaborador4.getId()}, new Long[]{}, new Long[]{estabelecimento1.getId()}, SituacaoColaborador.TODOS, empresa.getId());
+		assertEquals(1, retorno.size());
+		assertEquals(colaborador4.getNome(), ((Colaborador)retorno.toArray()[0]).getNome());
 	}
 }

@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
@@ -255,4 +256,5 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public TNaturalidadeAndNacionalidade getNaturalidadeAndNacionalidade(Empresa empresa, String codigoAc) throws IntegraACException;
 	public Collection<Colaborador> getNaturalidadesAndNacionalidades(Collection<Colaborador> colaboradores, Long... empresasIds);
 	public boolean excedeuContratacao(Long empresaId);
+	public Collection<Colaborador> findDadosBasicosNotIds(Set<Long> notColabIds, Long[] colabIds, Long[] areasIds, Long[] estabelecimentosIds, String situacaoColaborador, Long empresaId);
 }

@@ -13,14 +13,13 @@
 	<script type="text/javascript">
 		$(function() {
 			$('#listCheckBoxFiltercertificacoesCheck').parent().find('#mt').removeAttr('onclick').css('color', '#5C5C5A' );
-			$('#listCheckBoxFiltercertificacoesCheck').parent().find('#dt').removeAttr('onclick').css('color', '#5C5C5A' );
 
 			$('#tooltipHelpPeriodo').qtip({
 				content: 'Os campos "Período Certificado" e "Com certificação a vencer em até" só serão habilitados ao marcar a opção "Certificados".'
 			});
 
 			habilitaCampos();
-			populaColaborador();
+			populaColaboradores();
 			
 			$('#listCheckBoxcolaboradoresCheck tbody').remove();
 			$('#listCheckBoxcolaboradoresCheck').append('<tbody> <tr> <td colspan="7"> <div class="info">  <ul> <li>Utilize os filtros acima para popular os colaboradores. </br> Filtro obrigatório: "Certificações".</li> </ul> </div> </tr></td> </tbody>');
@@ -52,19 +51,44 @@
 			}
 		}
 		
-		function populaColaborador()
-		{
-			$('#listCheckBoxcolaboradoresCheck tbody').remove();
-			$('#listCheckBoxcolaboradoresCheck label').remove();
+		var filtrouColaboradoresNaoCertificados = false;
+		var buscouPorEstabelecimentoOuArea = false;
+		function populaColaboradores(){
 			DWRUtil.useLoadingMessage('Carregando...');
 			var areasIds = getArrayCheckeds(document.forms[0], 'areasCheck');
 			var estabelecimentosIds = getArrayCheckeds(document.forms[0], 'estabelecimentosCheck');
 			var certificacoesIds = getArrayCheckeds(document.forms[0], 'certificacoesCheck');
 			
-			if(certificacoesIds.length > 0)
-				CertificacaoDWR.getColaboradores(createListColaborador, $('#dataIni').val(), $('#dataFim').val(),   
-												$('#colaboradorCertificado').is(':checked'), $('#colaboradorNaoCertificado').is(':checked'),  
-												$('#meses').val(), areasIds, estabelecimentosIds, certificacoesIds, $('#situacao').val());
+			if(certificacoesIds.length){
+				
+				if((!filtrouColaboradoresNaoCertificados && $('#colaboradorNaoCertificado').is(':checked')) || estabelecimentosIds.length > 0 || areasIds.length > 0){
+					carregaColaboradoresByDWR(true, areasIds, estabelecimentosIds, certificacoesIds);
+				}else if(!$('#colaboradorNaoCertificado').is(':checked')){
+					carregaColaboradoresByDWR(false, areasIds, estabelecimentosIds, certificacoesIds);
+				}else if(estabelecimentosIds.length == 0 && areasIds.length == 0 && buscouPorEstabelecimentoOuArea){
+					carregaColaboradoresByDWR(false, areasIds, estabelecimentosIds, certificacoesIds);
+					buscouPorEstabelecimentoOuArea=false;
+				}
+				
+				if(estabelecimentosIds.length > 0 || areasIds.length > 0)
+					buscouPorEstabelecimentoOuArea=true;
+				
+			}else{
+				$('#listCheckBoxcolaboradoresCheck tbody').remove();
+				$('#listCheckBoxcolaboradoresCheck label').remove();
+				filtrouColaboradoresNaoCertificados = false;
+			}
+		}
+		
+		function carregaColaboradoresByDWR(filtrou, areasIds, estabelecimentosIds, certificacoesIds){
+			filtrouColaboradoresNaoCertificados = filtrou;
+			$('#listCheckBoxcolaboradoresCheck tbody').remove();
+			$('#listCheckBoxcolaboradoresCheck label').remove();
+			
+			CertificacaoDWR.getColaboradores(createListColaborador, $('#dataIni').val(), $('#dataFim').val(),   
+											$('#colaboradorCertificado').is(':checked'), $('#colaboradorNaoCertificado').is(':checked'),  
+											$('#meses').val(), areasIds, estabelecimentosIds, certificacoesIds, $('#situacao').val(), ${empresaSistema.id});
+		
 		}
 		
 		function createListColaborador(data)
@@ -119,25 +143,25 @@
 				Considerar colaboradores:*  
 				<img id="tooltipHelpPeriodo" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: -5px" />
 			</legend>
-			<@ww.checkbox label="Não certificados" id="colaboradorNaoCertificado" name="colaboradorNaoCertificado" liClass="liLeft" labelPosition="left" cssStyle="margin-left: 15px;"  onchange="populaColaborador()"/>
-			<@ww.checkbox label="Certificados" id="colaboradorCertificado" name="colaboradorCertificado" liClass="liLeft" labelPosition="left" cssStyle="margin-left: 15px;" onclick="habilitaCampos()" onchange="populaColaborador()"/>
+			<@ww.checkbox label="Não certificados" id="colaboradorNaoCertificado" name="colaboradorNaoCertificado" liClass="liLeft" labelPosition="left" cssStyle="margin-left: 15px;"  onchange="populaColaboradores()"/>
+			<@ww.checkbox label="Certificados" id="colaboradorCertificado" name="colaboradorCertificado" liClass="liLeft" labelPosition="left" cssStyle="margin-left: 15px;" onclick="habilitaCampos()" onchange="populaColaboradores()"/>
 			
 			<@ww.div cssStyle="margin-left: 50px;">
 				Período em que os colaboradores foram certificados:<br>
-				<@ww.datepicker name="dataIni" id="dataIni" value="${dateIni}" liClass="liLeft" cssClass="mascaraData validaDataIni" onchange="populaColaborador();"/>
+				<@ww.datepicker name="dataIni" id="dataIni" value="${dateIni}" liClass="liLeft" cssClass="mascaraData validaDataIni" onchange="populaColaboradores();"/>
 				<@ww.label value="a" liClass="liLeft" />
-				<@ww.datepicker name="dataFim" id="dataFim" value="${dateFim}" cssClass="mascaraData validaDataFim" onchange="populaColaborador();"/>
+				<@ww.datepicker name="dataFim" id="dataFim" value="${dateFim}" cssClass="mascaraData validaDataFim" onchange="populaColaboradores();"/>
 				Com certificação a vencer em até 
-				<@ww.textfield id="meses" theme="simple" name="mesesCertificacoesAVencer" onkeypress="somenteNumeros(event,'');" maxLength="3" cssStyle="width:30px; text-align:right; margin-top: 8px;" onchange="populaColaborador();"/>
+				<@ww.textfield id="meses" theme="simple" name="mesesCertificacoesAVencer" onkeypress="somenteNumeros(event,'');" maxLength="3" cssStyle="width:30px; text-align:right; margin-top: 8px;" onchange="populaColaboradores();"/>
 				meses.
 			</@ww.div>
 		</fieldset>
 		</br>
-		<@frt.checkListBox name="certificacoesCheck" label="Certificações (máx. 15 opções)" id="certificacoesCheck" list="certificacoesCheckList" filtro="true" onClick="populaColaborador();validaQtd();" required="true"/>
-		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" filtro="true" onClick="populaColaborador();"/>
-		<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList" filtro="true" selectAtivoInativo="true" onClick="populaColaborador();"/>
+		<@frt.checkListBox name="certificacoesCheck" label="Certificações (máx. 15 opções)" id="certificacoesCheck" list="certificacoesCheckList" filtro="true" onClick="populaColaboradores();validaQtd();" required="true"/>
+		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" filtro="true" onClick="populaColaboradores();"/>
+		<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList" filtro="true" selectAtivoInativo="true" onClick="populaColaboradores();"/>
 		<@frt.checkListBox name="colaboradoresCheck" id="colaboradoresCheck" label="Colaboradores" list="colaboradoresCheckList" filtro="true"/>
-		<@ww.select label="Situação do colaborador" name="situacao" id="situacao" list="situacaos" onchange="populaColaborador();" cssStyle="width: 500px;"/>
+		<@ww.select label="Situação do colaborador" name="situacao" id="situacao" list="situacaos" onchange="populaColaboradores();" cssStyle="width: 500px;"/>
 		<@ww.select label="Agrupar por" name="agruparPor" id="agruparPor" list=r"#{'C':'Colaborador','T':'Certificação'}" cssStyle="width: 500px;"/>
 	</@ww.form>
 	<div class="buttonGroup">

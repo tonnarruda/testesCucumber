@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
@@ -5707,5 +5708,59 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
 
 		return criteria.list();
-	}		
+	}
+
+	public Collection<Colaborador> findDadosBasicosNotIds(Set<Long> notColabIds, Long[] colabIds, Long[] areasIds, Long[] estabelecimentosIds, String situacaoColaborador, Long empresaId) {
+		DetachedCriteria ultimoHistoricoColaborador = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2").setProjection(Projections.max("hc2.data"))
+				.add(Restrictions.eqProperty("hc2.colaborador.id", "hc.colaborador.id")).add(Restrictions.eq("hc2.status", StatusRetornoAC.CONFIRMADO));
+		
+		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
+		criteria.createCriteria("c.historicoColaboradors", "hc");
+		criteria.createCriteria("hc.areaOrganizacional", "ao");
+		criteria.createCriteria("hc.estabelecimento", "es");
+		criteria.createCriteria("hc.faixaSalarial", "fs");
+		criteria.createCriteria("fs.cargo", "ca");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("c.id"), "id");
+		p.add(Projections.property("c.nome"), "nome");
+		p.add(Projections.property("c.nomeComercial"), "nomeComercial");
+		p.add(Projections.property("c.matricula"), "matricula");
+		p.add(Projections.property("es.nome"), "estabelecimentoNomeProjection");
+		p.add(Projections.property("ao.id"), "areaOrganizacionalId");
+		p.add(Projections.property("ca.id"), "cargoIdProjection");
+		p.add(Projections.property("ca.nome"), "cargoNomeProjection");
+		p.add(Projections.property("fs.id"), "faixaSalarialIdProjection");
+		p.add(Projections.property("fs.nome"), "faixaSalarialNomeProjection");
+		p.add(Projections.alias(Projections.sqlProjection("monta_familia_area(ao2_.id) as areaOrganizacionalNome", new String[] {"areaOrganizacionalNome"}, new Type[] {Hibernate.TEXT}), "areaOrganizacionalNome"));
+		criteria.setProjection(Projections.distinct(p));
+		
+		criteria.add(Expression.eq("c.empresa.id",empresaId));
+		criteria.add(Subqueries.propertyEq("hc.data", ultimoHistoricoColaborador));
+		situacaoColaborador(situacaoColaborador, criteria, "c");
+		
+		if(colabIds != null && colabIds.length > 0)
+			criteria.add(Expression.in("c.id", colabIds));
+		if(notColabIds != null && notColabIds.size() > 0)
+			criteria.add(Expression.not(Expression.in("c.id", notColabIds)));
+		if(areasIds != null && areasIds.length > 0)
+			criteria.add(Expression.in("hc.areaOrganizacional.id",areasIds));
+		if(estabelecimentosIds != null && estabelecimentosIds.length > 0)
+			criteria.add(Expression.in("hc.estabelecimento.id" , estabelecimentosIds));
+		
+		criteria.addOrder(Order.asc("c.nome"));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
+
+		return criteria.list();
+	}	
+	
+	private void situacaoColaborador(String situacaoColaborador, Criteria criteria, String aliasColaborador) {
+		if (situacaoColaborador != null){
+			if (situacaoColaborador.equals(SituacaoColaborador.ATIVO))
+				criteria.add(Expression.disjunction().add(Expression.or(Expression.isNull(aliasColaborador + ".dataDesligamento"), Expression.ge(aliasColaborador + ".dataDesligamento",new Date()))));
+			else if (situacaoColaborador.equals(SituacaoColaborador.DESLIGADO))
+				criteria.add(Expression.le(aliasColaborador + ".dataDesligamento",new Date()));
+		}
+	}
 }

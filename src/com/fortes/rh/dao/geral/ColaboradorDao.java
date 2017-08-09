@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.model.acesso.Usuario;
@@ -161,4 +162,5 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Collection<Colaborador> findByEmpresaEstabelecimentoAndAreaOrganizacional(Long[] empresasIds, Long[] estabelecimentosIds, Long[] areasIds, String situacaoColaborador);
 	public Collection<Colaborador> findColaboradoresQueNuncaRealizaramTreinamento(Long[] empresasIds, Long[] areasIds, Long[] estabelecimentosIds);
 	public Collection<Colaborador> findByAdmitidos(Date data);
+	public Collection<Colaborador> findDadosBasicosNotIds(Set<Long> notColabIds, Long[] colabIds, Long[] areasIds, Long[] estabelecimentosIds, String situacaoColaborador, Long empresaId);
 }

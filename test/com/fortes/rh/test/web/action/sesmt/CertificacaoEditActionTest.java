@@ -213,7 +213,7 @@ public class CertificacaoEditActionTest
 		Collection<ColaboradorCertificacao> colaboradorCertificacaos = new ArrayList<ColaboradorCertificacao>();
 		colaboradorCertificacaos.add(colaboradorCertificacao);
 		
-		when(colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(null, null, null, null, new Long[]{}, new Long[]{}, new Long[]{}, new Long[]{}, null)).thenReturn(colaboradorCertificacaos);
+		when(colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(null, null, null, null, new Long[]{}, new Long[]{}, new Long[]{}, new Long[]{}, null, action.getEmpresaSistema().getId())).thenReturn(colaboradorCertificacaos);
 		
 		assertEquals("success", action.imprimirCertificadosVencidosAVencer());
 	}
@@ -223,7 +223,7 @@ public class CertificacaoEditActionTest
 	{
 		Collection<ColaboradorCertificacao> colaboradorCertificacaos = new ArrayList<ColaboradorCertificacao>();
 		
-		when(colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(null, null, null, null, new Long[]{}, new Long[]{}, new Long[]{}, new Long[]{}, null)).thenReturn(colaboradorCertificacaos);
+		when(colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(null, null, null, null, new Long[]{}, new Long[]{}, new Long[]{}, new Long[]{}, null, null)).thenReturn(colaboradorCertificacaos);
 		mocksPrepareImprimir();
 		
 		assertEquals("input", action.imprimirCertificadosVencidosAVencer());
@@ -232,7 +232,7 @@ public class CertificacaoEditActionTest
 	@Test
 	public void testImprimirCertificadosVencidosAVencerException() throws Exception
 	{
-		when(colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(null, null, null, true, new Long[]{}, new Long[]{}, new Long[]{}, new Long[]{}, null)).thenReturn(null);
+		when(colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(null, null, null, true, new Long[]{}, new Long[]{}, new Long[]{}, new Long[]{}, null, null)).thenReturn(null);
 		mocksPrepareImprimir();
 		
 		assertEquals("input", action.imprimirCertificadosVencidosAVencer());
@@ -244,6 +244,7 @@ public class CertificacaoEditActionTest
 		action.setColaboradorNaoCertificado(true);
 		action.setColaboradorCertificado(true);
 		action.setAgruparPor('T');;
+		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
 		
 		Colaborador colaboradorAprovado = ColaboradorFactory.getEntity(1L);
 		Colaborador colaboradorNaoAprovado = ColaboradorFactory.getEntity(2L);
@@ -261,7 +262,7 @@ public class CertificacaoEditActionTest
 		colaboradorCertificacaos.add(colaboradorAprovadoCertificacao);
 		colaboradorCertificacaos.add(colaboradorNaoAprovadoCertificacao);
 		
-		when(colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(null, null, null, null, new Long[]{}, new Long[]{}, new Long[]{}, new Long[]{}, null)).thenReturn(colaboradorCertificacaos);
+		when(colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(null, null, null, null, new Long[]{}, new Long[]{}, new Long[]{}, new Long[]{}, null, action.getEmpresaSistema().getId())).thenReturn(colaboradorCertificacaos);
 		
 		assertEquals("sucessoAgrupadoPorCertificacao", action.imprimirCertificadosVencidosAVencer());
 	}

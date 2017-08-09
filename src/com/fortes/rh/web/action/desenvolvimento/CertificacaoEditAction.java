@@ -187,7 +187,7 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 			else if(!colaboradorCertificado && colaboradorNaoCertificado)
 				certificado = false;
 			
-			colaboradorCertificacoes = colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(dataIni, dataFim, mesesCertificacoesAVencer, certificado, areaIds, estabelecimentoIds, certificacoesIds, colaboradoresIds, situacao);
+			colaboradorCertificacoes = colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(dataIni, dataFim, mesesCertificacoesAVencer, certificado, areaIds, estabelecimentoIds, certificacoesIds, colaboradoresIds, situacao, getEmpresaSistema().getId());
 			if(colaboradorCertificacoes.size() == 0){
 				addActionMessage("Não existem dados para o filtro informado.");
 				prepareImprimirCertificadosVencidosAVencer();
@@ -216,12 +216,18 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 		qtdTotalColaboradoresCertificados = 0;
 		qtdTotalColaboradoresNaoCertificados = 0;
 		Collection<ColaboradorCertificacao> colabsCertiticacaoOrdenados = new ArrayList<ColaboradorCertificacao>(); 
-
-		if(agruparPorCertificacao)
-			colaboradorCertificacoes = new CollectionUtil<ColaboradorCertificacao>().sortCollectionStringIgnoreCase(colaboradorCertificacoes, "certificacao.nome");
-		else
-			colaboradorCertificacoes = new CollectionUtil().sortCollectionStringIgnoreCase(colaboradorCertificacoes, "colaborador.nome");
+		colaboradorCertificacoes = new CollectionUtil().sortCollectionStringIgnoreCase(colaboradorCertificacoes, "nomeCurso");
 		
+		if(agruparPorCertificacao){
+			colaboradorCertificacoes = new CollectionUtil().sortCollectionStringIgnoreCase(colaboradorCertificacoes, "colaborador.nome");
+			colaboradorCertificacoes = new CollectionUtil<ColaboradorCertificacao>().sortCollectionStringIgnoreCase(colaboradorCertificacoes, "certificacao.nome");
+		}else{
+			colaboradorCertificacoes = new CollectionUtil<ColaboradorCertificacao>().sortCollectionStringIgnoreCase(colaboradorCertificacoes, "certificacao.nome");
+			colaboradorCertificacoes = new CollectionUtil().sortCollectionStringIgnoreCase(colaboradorCertificacoes, "colaborador.nome");
+		}
+		
+		String ADITIVO_AV_PRATICA_PARA_ORDENACAO = "zzzzzz";//Inserido quando foi criado o nome da Avaliação Prítica no manager para colocar a avaliação no fim da ordenação do nome do curso.
+				
 		for (Long certificacaoId : certificacoesIds) {
 			Map <Long, Collection<ColaboradorCertificacao>> colabsCertificado = new HashMap<Long, Collection<ColaboradorCertificacao>>();
 			Map <Long, Collection<ColaboradorCertificacao>> colabsCertificadoVencido = new HashMap<Long, Collection<ColaboradorCertificacao>>();
@@ -232,6 +238,7 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 			Collection<ColaboradorCertificacao> colabsCertiticacoes = new ArrayList<ColaboradorCertificacao>();
 			
 			for(ColaboradorCertificacao colabcertificacao : colaboradorCertificacoes){
+				colabcertificacao.setNomeCurso(colabcertificacao.getNomeCurso().replace(ADITIVO_AV_PRATICA_PARA_ORDENACAO, ""));
 				if(colabcertificacao.getCertificacao().getId().equals(certificacaoId)){
 					Long colaboradorId = colabcertificacao.getColaborador().getId();
 					

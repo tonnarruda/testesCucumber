@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.activation.DataSource;
 import javax.mail.MessagingException;
@@ -3265,6 +3266,10 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		} catch (Exception e) {
 			return true;
 		}
+	}
+	
+	public Collection<Colaborador> findDadosBasicosNotIds(Set<Long> notColabIds, Long[] colabIds, Long[] areasIds, Long[] estabelecimentosIds, String situacaoColaborador, Long empresaId) {
+		return getDao().findDadosBasicosNotIds(notColabIds, colabIds, areasIds, estabelecimentosIds, situacaoColaborador, empresaId);
 	}
 	
 	public void setColaboradorPeriodoExperienciaAvaliacaoManager(ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager) 
