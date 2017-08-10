@@ -44,6 +44,8 @@ Funcionalidade: Afastamentos
     E o campo "fim" deve conter "29/07/2011"
     E eu preencho o campo (JS) "inicio" com "27/07/2011"
     E eu preencho o campo (JS) "fim" com "01/08/2011"
+    E eu seleciono "CRO" de "Registro"
+    E eu seleciono "RMS" de "Registro"
     E eu clico no botão "Gravar"
     E eu devo ver o título "Afastamentos"
 

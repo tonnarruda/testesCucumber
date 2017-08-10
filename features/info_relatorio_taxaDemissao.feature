@@ -29,8 +29,8 @@ Funcionalidade: Emissão de Relatório de Taxa de Demissão
       Dado que exista um colaborador "Christina Yang", da area "Cirurgia Cardíaca", com o cargo "Cirurgiao Chefe" e a faixa salarial "IB"
       Dado que exista um colaborador "Owen Hunt", da area "Traumatologia", com o cargo "Chefe de Cirurgia Geral" e a faixa salarial "IA"
       
-      Dado que eu desligue o colaborador "Mark Sloan" na data "25/04/2017" com motivo de deligamento "Redução de Quadro"
-      Dado que eu desligue o colaborador "Lexie Grey" na data "31/03/2017" com motivo de deligamento "Redução de Quadro"
+      Dado que eu desligue o colaborador "Mark Sloan" na data "25/04/2017" com motivo de desligamento "Redução de Quadro"
+      Dado que eu desligue o colaborador "Lexie Grey" na data "31/03/2017" com motivo de desligamento "Redução de Quadro"
       Dado que eu esteja logado com o usuário "SOS"    
     Quando eu acesso o menu "Info. Funcionais > Relatórios > Taxa de Demissão"
          E eu preencho o campo (JS) "dataDe" com "01/2017"
@@ -48,8 +48,8 @@ Funcionalidade: Emissão de Relatório de Taxa de Demissão
       Dado que exista um colaborador "Christina Yang", da area "Cirurgia Cardíaca", com o cargo "Cirurgiao Chefe" e a faixa salarial "IB"
       Dado que exista um colaborador "Owen Hunt", da area "Traumatologia", com o cargo "Chefe de Cirurgia Geral" e a faixa salarial "IA"
       
-      Dado que eu desligue o colaborador "Mark Sloan" na data "25/04/2017" com motivo de deligamento "Redução de Quadro"
-      Dado que eu desligue o colaborador "Lexie Grey" na data "31/03/2017" com motivo de deligamento "Redução de Quadro"
+      Dado que eu desligue o colaborador "Mark Sloan" na data "25/04/2017" com motivo de desligamento "Redução de Quadro"
+      Dado que eu desligue o colaborador "Lexie Grey" na data "31/03/2017" com motivo de desligamento "Redução de Quadro"
       Dado que eu esteja logado com o usuário "SOS"    
     Quando eu acesso o menu "Info. Funcionais > Relatórios > Taxa de Demissão"
          E eu preencho o campo (JS) "dataDe" com "01/2017"

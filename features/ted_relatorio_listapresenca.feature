@@ -28,7 +28,8 @@ Funcionalidade: Relatório de Lista de Frequência
     E eu marco "Exibir nome comercial"
     E eu marco "Exibir espaço para nota"
     E eu preencho "Qtd. Linhas" com "15"
-	E eu marco "Cargo"
+    Então eu clico no botão "Relatorio"
+    E eu marco "Cargo"
     E eu marco "Estabelecimento"
-    Então eu clico no botão "Relatorio"   
-    
+    E eu marco "Assinatura"
+    E eu devo ver o alert "Não é permitido exibir mais de duas colunas extras." e clico no ok

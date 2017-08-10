@@ -81,7 +81,7 @@ Funcionalidade: Motivos de Desligamento
   Cenário: Excluir Cadastro de Motivos de Desligamento vinculados a empregados
        Dado que exista um motivo de desligamento "Sem Justa Causa"
        Dado que exista um colaborador "Ellen Pompeo", da area "Desenvolvimento", com o cargo "Product Owner" e a faixa salarial "A"
-       Dado que eu desligue o colaborador "Ellen Pompeo" na data "29/05/2017" com motivo de deligamento "Sem Justa Causa"
+       Dado que eu desligue o colaborador "Ellen Pompeo" na data "29/05/2017" com motivo de desligamento "Sem Justa Causa"
        Dado que eu esteja logado com o usuário "SOS"
      Quando eu acesso o menu "Info. Funcionais > Cadastros > Motivos de Desligamento"
        Entao eu clico em excluir "Sem Justa Causa"

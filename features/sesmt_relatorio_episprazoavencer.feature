@@ -23,3 +23,8 @@ Funcionalidade: Relatório de EPIs com Prazo a Vencer
 
     Então eu clico no botão "Relatorio"
     E eu devo ver "Não existem EPIs com prazo a vencer para os filtros informados."
+
+
+#REFATORAR
+
+# Nova regra para considerar o vencimento do EPI somente se o mesmo não tiver sido devolvido.    

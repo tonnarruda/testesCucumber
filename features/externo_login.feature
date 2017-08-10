@@ -205,3 +205,14 @@ Funcionalidade: Login no modulo externo
             E eu preencho "cpf" com "060.607.223-34"
              E eu clico no botão "Enviar"  
         Então eu devo ver "Nova Senha enviada por e-mail (email@teste.com.br)."      
+
+#------------------------------------------------------------------------------------------------------------------------
+@teste
+  Cenário: Acessar modulo externo com login e senha com 2 candidatos com mesmo CPF
+         Dado que exista um candidato "Ellen Pompeo"
+         Dado que exista um candidato "Sandra Oh"
+       Quando eu acesso "externo/prepareLogin.action?empresaId=1"
+            E eu preencho o campo (JS) "cpfRH" com "060.607.223-34"
+            E eu preencho "senhaRH" com "1234"
+            E eu clico no botão "Entrar"
+        Então eu devo ver "Bem vindo(a)"

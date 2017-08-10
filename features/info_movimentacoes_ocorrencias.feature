@@ -77,3 +77,20 @@ Funcionalidade: Movimentação de Ocorrências
      Então eu clico em excluir "Faltas"
          E eu devo ver o alert do confirmar e clico no ok
      Então eu devo ver "Ocorrência do colaborador removida com sucesso."   
+
+#------------------------------------------------------------------------------------------------------------------------    
+  
+  Cenário: Inserir Mesma ocorrencia dentro de um período existente 
+      Dado que exista uma ocorrência "Faltas"
+      Dado que exista um colaborador "Ellen Pompeo", da area "DEV", com o cargo "DEV" e a faixa salarial "A"
+      Dado que eu insira a ocorrencia "Faltas" para o colaborador  "Ellen Pompeo" no período de "01/07/2017" a "30/07/2017"
+      Dado que eu esteja logado com o usuário "SOS"
+    Quando eu acesso o menu "Info. Funcionais > Movimentações > Ocorrências"
+         E eu clico no botão "Pesquisar"
+         E eu seleciono "Ellen Pompeo" de "Colaborador"
+     Então eu clico no botão "Inserir"
+         E eu seleciono "Faltas" de "Ocorrência"
+         E eu preencho o campo (JS) "Data de Início" com "10/07/2017"
+         E eu preencho "Observações" com "Faltou sem avisar."
+     Então eu clico no botão "Gravar" 
+     Então eu devo ver "A ocorrência não pôde ser gravada com as datas informadas."        

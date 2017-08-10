@@ -255,7 +255,7 @@ Funcionalidade: Cadastrar Colaborador
      Dado que exista um colaborador "Tony Blair", da area "Desenvolvimento", com o cargo "Diretor de Produto" e a faixa salarial "II"
      Dado que exista um colaborador "Ellen Pompeo", da area "Suporte", com o cargo "Gerente de Suporte" e a faixa salarial "4F"
      Dado que exista um motivo de desligamento "Redução de Quadro"
-     Dado que eu desligue o colaborador "Ellen Pompeo" na data "25/04/2017" com motivo de deligamento "Redução de Quadro"
+     Dado que eu desligue o colaborador "Ellen Pompeo" na data "25/04/2017" com motivo de desligamento "Redução de Quadro"
      Dado que eu esteja logado com o usuário "SOS"
     Então eu acesso o menu "Info. Funcionais > Cadastros > Colaboradores"
         #E eu clico "Exibir Filtro"

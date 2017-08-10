@@ -50,3 +50,4 @@ Funcionalidade: Cadastrar Avaliações dos Cursos
       E eu clico no botão "Gravar"
       E eu devo ver o título "Avaliações dos Alunos"
       E eu devo ver "_avaliacao II"
+

@@ -19,3 +19,9 @@ Funcionalidade: Relatório de Extintores - Manutenção e Inspeção
 
     Então eu clico no botão "Relatorio"
     E eu devo ver "Nenhum extintor com prazo vencido."
+
+#REFATORAR
+
+#    Ajuste de inconsistência ao gerar relatório listando itens de extintores com data posterior a data do filtro de "Vencimentos até".
+
+#TESTE MANUAL EXECUTADO COM SUCESSO
