@@ -314,7 +314,6 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		if (dataMesAnoFim == null || dataMesAnoFim.equals("  /    ") || dataMesAnoFim.equals(""))
 			dataMesAnoFim = DateUtil.formataMesAno(DateUtil.incrementaMes(hoje, 2));
 		
-		
 		AreaOrganizacional area;
 		if(areaOrganizacioanal != null && areaOrganizacioanal.getId() != null )
 			area = areaOrganizacionalManager.findById(areaOrganizacioanal.getId());
@@ -327,11 +326,11 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		
 		Long[] areasPieChartIds = LongUtil.arrayStringToArrayLong(areasPieChartCheck);
 
-		Date criarDataMesAnoInicial = DateUtil.criarDataMesAno(dataMesAnoIni);
-		Date criarDataMesAnoFinal = DateUtil.criarDataMesAno(dataMesAnoFim);
+		dataIni = DateUtil.criarDataMesAno(dataMesAnoIni);
+		dataFim = DateUtil.criarDataMesAno(dataMesAnoFim);
 
-		Collection<Object[]> graficoEvolucaoFolha   = colaboradorManager.montaGraficoEvolucaoFolha(criarDataMesAnoInicial, criarDataMesAnoFinal, empresa.getId(), areasIds);
-		Collection<Object[]> graficoEvolucaoFaturamento   = faturamentoMensalManager.findByPeriodo(criarDataMesAnoInicial, criarDataMesAnoFinal, empresa.getId());
+		Collection<Object[]> graficoEvolucaoFolha   = colaboradorManager.montaGraficoEvolucaoFolha(dataIni, dataFim, empresa.getId(), areasIds);
+		Collection<Object[]> graficoEvolucaoFaturamento   = faturamentoMensalManager.findByPeriodo(dataIni, dataFim, empresa.getId());
 		
 		grfSalarioAreas  = StringUtil.toJSON(graficoSalarioArea, null);
 		grfEvolucaoFolha = StringUtil.toJSON(graficoEvolucaoFolha, null);
@@ -341,21 +340,18 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		for (DataGrafico dataGrafico : graficoSalarioArea) 
 			valorTotalFolha += dataGrafico.getData();
 
-		dataIni = criarDataMesAnoInicial;
-		dataFim = criarDataMesAnoFinal;
-		
-		calculaGraficosPromocao(areasIds, areasPieChartIds);
+		calculaGraficosPromocao(dataIni, dataFim, areasIds, areasPieChartIds);
 		
 		return Action.SUCCESS;
 	}
 
-	private void calculaGraficosPromocao(Long[] areasIds, Long[] areasPieChartIds) 
+	private void calculaGraficosPromocao(Date dataInicial, Date dataFinal, Long[] areasIds, Long[] areasPieChartIds) 
 	{
-		Map<Character, Collection<Object[]>> graficosPromocao = historicoColaboradorManager.montaPromocoesHorizontalEVertical(dataIni, dataFim, empresa.getId(), areasIds);
+		Map<Character, Collection<Object[]>> graficosPromocao = historicoColaboradorManager.montaPromocoesHorizontalEVertical(dataInicial, dataFinal, empresa.getId(), areasIds);
 		grfPromocaoHorizontal = StringUtil.toJSON(graficosPromocao.get('H'), null);
 		grfPromocaoVertical = StringUtil.toJSON(graficosPromocao.get('V'), null);
 
-		Map<Character, Collection<DataGrafico>> graficosPromocaoAreas = historicoColaboradorManager.montaPromocoesHorizontalEVerticalPorArea(dataIni, dataFim, empresa.getId(), false, areasPieChartIds);
+		Map<Character, Collection<DataGrafico>> graficosPromocaoAreas = historicoColaboradorManager.montaPromocoesHorizontalEVerticalPorArea(dataInicial, dataFinal, empresa.getId(), false, areasPieChartIds);
 		
 		grfBarraPromocaoHorizontalArea = convertDataGraficoInObject(graficosPromocaoAreas.get('H'));
 		grfBarraPromocaoVerticalArea = convertDataGraficoInObject(graficosPromocaoAreas.get('V'));

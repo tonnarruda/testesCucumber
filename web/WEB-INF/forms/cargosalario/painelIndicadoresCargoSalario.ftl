@@ -3,7 +3,6 @@
 <#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 	<head>
 	<@ww.head/>
-	
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
 		
@@ -86,6 +85,7 @@
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.pie.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/grafico.js?version=${versao}"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/moment.min.2.18.1.js?version=${versao}"/>'></script>
 		
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js?version=${versao}"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
@@ -204,15 +204,6 @@
 				$('#aba${abaMarcada} a').click();
 				
 			});
-			
-			function calculaDiferencaMesesEntreDatas(d1, d2) {
-		
-			    var meses = (d2.getFullYear() - d1.getFullYear()) * 12;
-			    
-			    meses -= d1.getMonth() + 1;
-			    meses += d2.getMonth();
-			    return meses <= 0 ? 0 : meses;
-			}
 			
 			function graficoLinha(dados, obj, titulo)
 			{
@@ -573,41 +564,36 @@
 			
 			function validaMesAnoIniFim()
 			{
-				var mesAnoInicial=  $('#mesAnoIni').val();
-				mesAnoInicial=mesAnoInicial.split('/');
-				
-				var mesAnoFinal=  $('#mesAnoFim').val();
-				mesAnoFinal=mesAnoFinal.split('/');
+				var dataInicial = moment('01/'+$('#mesAnoIni').val(),'DD-MM-YYYY').locale('pt-BR');
+				var dataFinal = moment('01/'+$('#mesAnoFim').val(),'DD-MM-YYYY').locale('pt-BR');
 
-				var mesInicial=parseInt(mesAnoInicial[0]);					
-				var mesFinal=parseInt(mesAnoFinal[0]);					
+				var diferenca = diferencaEntreMesAno(dataInicial, dataFinal)
+
+				if( dataInicial > dataFinal){
+				    jAlert('Data inicial não pode ser maior que a data final.');
+				   	$('#mesAnoIni, #mesAnoFim').css("background", "#FFEEC2");
+			    
+		   			 return false;
+				} else if(diferenca._months < 1 || diferenca._months > 11){
+					jAlert('O intervalo do filtro deve ser de 2(dois) a  12(doze) meses.');
+					$('#mesAnoIni, #mesAnoFim').css("background", "#FFEEC2");
 					
-				if((mesInicial>0 && mesInicial<=12) && (mesFinal>0 && mesFinal<=12)) {
-				
-					var dataInicio= new Date(mesAnoInicial[1],mesAnoInicial[0]-1,01)
-					var dataFim= new Date(mesAnoFinal[1],mesAnoFinal[0]-1,01)
-					var diferencaMeses= calculaDiferencaMesesEntreDatas(dataInicio,dataFim);
-					
-				    if(dataInicio > dataFim){
-					    jAlert('Data inicial não pode ser maior que a data final.');
-					   	$('#mesAnoIni, #mesAnoFim').css("background", "#FFEEC2");
-				    
-			   			 return false;
-				    }
-						
-					if(diferencaMeses>0 && diferencaMeses>10){
-						jAlert('O intervalo de busca tem que ser de um ano.');
-						$('#mesAnoIni, #mesAnoFim').css("background", "#FFEEC2");
-						
-						return false;
-					}
-					else{
-						$('#mesAnoIni, #mesAnoFim').css("background", "#FFF");
-						return true;
-					}
+					return false;
 				}
+
+				$('#mesAnoIni, #mesAnoFim').css("background", "#FFF");
+				return true;
 			}
-		
+			
+			function diferencaEntreMesAno(dtIni, dtFim)
+			{
+				return moment.duration({
+						    years: dtFim.year() - dtIni.year(),
+						    months: dtFim.month() - dtIni.month(),
+						    days: dtFim.date() - dtIni.date()
+						});
+			}
+					
 			function formataNumero(value, valorEmDinheiro)
 			{
 				var retorno = "";
@@ -684,7 +670,14 @@
 			    var plot = $.plot($(idGrafico), data, config);
 			    var dadosEvolucaoSalarial = data[0].data;
 			    var dadosFaturamento = data[1].data;
-			    
+	
+				// Devido a um bug no Flot foi necessário criar as linhas abaixo para colocar o label do primeiro ponto no gráfico de linhas. 
+				
+			 	var mesesGerados = plot.getAxes().xaxis.ticks;
+				$('#evolucaoFolha > div > div > div').first().before('<div class="tickLabel" style="position:absolute;text-align:center;left:50px;top:284px;width:69px">'+mesesGerados[0].label+ '</div>');
+				
+				//
+										    
 			    createTable(plot,dadosEvolucaoSalarial,dadosFaturamento,idGrafico);
 	
 		    	if (exibirTotal) {
@@ -727,10 +720,10 @@
 				  if($('#tabelaEvolucaoFaturamento table').length==0){
 				  
 					   var axes = plot.getAxes();
-			 		   var mesesGerados =axes.xaxis.ticks;
+			 		   var mesesGerados = axes.xaxis.ticks;
 			 		  			
 					   var $tabela = $('<table class="dados" align="center"></table>');
-					   var $cabecalho= $('<thead></thead>');	
+					   var $cabecalho = $('<thead></thead>');	
 					   var $linha = "";
 					   
 					   $cabecalho.append('<tr> <th>Mês</th> <th>Folha</th> <th>Faturamento</th></tr>');
@@ -836,7 +829,7 @@
 					</h1>
 			   		<div id="evolucaoFolha" style="margin: 25px; height: 300px; width: 900px"></div>
 			   		<ul style="padding-left: 13px;">
-			   			<@ww.checkbox label="Mostrar os valores" name="" id="exibirTotalEvolucaoSalarial"  labelPosition="left" onclick="exibirTotalizadorGrafico();"/>
+			   			<@ww.checkbox label="Exibir valores no gráfico" name="" id="exibirTotalEvolucaoSalarial"  labelPosition="left" onclick="exibirTotalizadorGrafico();"/>
 			   		</ul>
 			    
 			    <div id="tabelaEvolucaoFaturamento" style="padding-left: 15px;padding-right: 15px;">
