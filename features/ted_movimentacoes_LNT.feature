@@ -107,8 +107,8 @@ Funcionalidade: Levantamento de Necessidade de Treinamento (LNT)
     E eu devo ver o título "Gerar Cursos e Turmas"
     E eu clico no icone "Criar Curso" da linha contendo "Curso Lnt 1"
     E eu clico no botão "Gravar"
-
-    Então eu clico no icone "Criar turmas/relacionar Participantes" da linha contendo "Curso Lnt 1"
+    
+    Então eu clico no icone "Criar turmas/relacionar participantes" da linha contendo "Curso Lnt 1"
     E eu devo ver "Cadastro de Turma"
     E eu clico no botão novo "Gravar"
     E eu devo ver o alert "Marque pelo menos um participante para ser inserido na turma selecionada" e clico no ok
@@ -121,7 +121,7 @@ Funcionalidade: Levantamento de Necessidade de Treinamento (LNT)
     E eu preencho campo pelo id "prevFim" com "30/01/2017"
     E eu preencho "Custo" com "5000"
     E eu clico no botão novo "Gravar e criar nova"
-    E eu devo ver o alert "Turma e Participantes salvos com sucesso" e clico no ok
+    E eu devo ver o alert "Turma e participantes gravados com sucesso." e clico no ok
 
     Então eu clico no botão novo "Carregar dados da turma anterior"
     E eu preencho "Descrição" com "Turma Lnt 2"

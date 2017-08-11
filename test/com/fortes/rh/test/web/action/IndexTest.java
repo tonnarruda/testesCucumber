@@ -119,7 +119,7 @@ public class IndexTest extends MockObjectTestCase
 
 		MockSpringUtil.mocks.put("parametrosDoSistemaManager", parametrosDoSistemaManager);
 
-		parametrosDoSistemaManager.expects(once()).method("getQuantidadeConstraintsDoBanco").will(returnValue(400));
+		//parametrosDoSistemaManager.expects(once()).method("getQuantidadeConstraintsDoBanco").will(returnValue(400));
 		parametrosDoSistemaManager.expects(once()).method("findById").with(ANYTHING).will(returnValue(parametrosDoSistema));
 		colaboradorManager.expects(once()).method("findByUsuario").with(ANYTHING, ANYTHING).will(returnValue(colaborador));
 

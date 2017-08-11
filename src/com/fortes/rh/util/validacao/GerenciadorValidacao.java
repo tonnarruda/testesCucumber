@@ -14,7 +14,7 @@ public class GerenciadorValidacao {
 	
 	private static List<Validacao> getValidacoes(){
 		if(validacoes.isEmpty()){
-			validacoes.add(new ValidacaoQuantidadeConstraints());
+//			validacoes.add(new ValidacaoQuantidadeConstraints());
 			validacoes.add(new ValidacaoVersao());
 		}
 		

@@ -16,7 +16,7 @@ Funcionalidade: Configuração do limite de Colaboradores por Cargo
     E eu seleciono "geral" de "Área Organizacional"
     E eu seleciono "Fazendeiro" de "cargo"
     E eu clico "Adicionar Cargo"
-    E eu preencho "quantidadeLimiteColaboradoresPorCargos[0].limite" com "2"
+    E eu preencho "quantidadeLimiteColaboradoresPorCargos[1].limite" com "2"
 
     E eu clico no botão "Gravar"
     Então eu devo ver "Configuração gravada com sucesso."

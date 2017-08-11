@@ -674,7 +674,7 @@
 				// Devido a um bug no Flot foi necessário criar as linhas abaixo para colocar o label do primeiro ponto no gráfico de linhas. 
 				
 			 	var mesesGerados = plot.getAxes().xaxis.ticks;
-				$('#evolucaoFolha > div > div > div').first().before('<div class="tickLabel" style="position:absolute;text-align:center;left:50px;top:284px;width:69px">'+mesesGerados[0].label+ '</div>');
+				$('#evolucaoFolha > div > div > div').first().before('<div class="tickLabel" style="position:absolute;text-align:center;left:10px;top:284px;width:69px">'+mesesGerados[0].label+ '</div>');
 				
 				//
 										    
