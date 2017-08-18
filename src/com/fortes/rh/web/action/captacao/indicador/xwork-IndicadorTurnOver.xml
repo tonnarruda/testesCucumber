@@ -16,11 +16,29 @@
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">Turnover.pdf</param>
 			</result>
+			<result name="success_turnover_agrupado_por_area_ou_cargo" type="jasper">
+				<param name="location">/WEB-INF/report/indicadorTurnOverAgrupadoAreaCargo.jasper</param>
+				<param name="dataSource">dataSource</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">indicadorTurnOverAgrupadoAreaCargo.pdf</param>
+			</result>
 			<result name="success_temposervico" type="jasper">
 				<param name="location">/WEB-INF/report/indicadorTurnOverTempoServico.jasper</param>
 				<param name="dataSource">colaboradores</param>
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">TurnoverPorTempoServico.pdf</param>
+			</result>
+			<result name="success_temposervico_agrupado_por_area" type="jasper">
+				<param name="location">/WEB-INF/report/indicadorTurnOverTempoServicoAgrupadoPorArea.jasper</param>
+				<param name="dataSource">colaboradores</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">TurnoverPorTempoServicoAgrupadoPorArea.pdf</param>
+			</result>
+			<result name="success_temposervico_agrupado_por_cargo" type="jasper">
+				<param name="location">/WEB-INF/report/indicadorTurnOverTempoServicoAgrupadoPorCargo.jasper</param>
+				<param name="dataSource">colaboradores</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">TurnoverPorTempoServicoAgrupadoPorCargo.pdf</param>
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/indicador/prepareIndicadorTurnOver.ftl</result>
 		</action>
@@ -29,15 +47,45 @@
 				<param name="location">/WEB-INF/report/indicadorTurnOver.jasper</param>
 				<param name="dataSource">dataSource</param>
 				<param name="parametersMap">parametros</param>
-				<param name="documentName">Turnover.pdf</param>
+				<param name="documentName">Turnover</param>
 				<param name="format">XLS</param>
 			</result>
-			<result name="success_temposervico" type="jasper">
-				<param name="location">/WEB-INF/report/indicadorTurnOverTempoServico.jasper</param>
-				<param name="dataSource">colaboradores</param>
+			<result name="success_turnover_agrupado_por_area_ou_cargo" type="jasper">
+				<param name="location">/WEB-INF/report/indicadorTurnOverAgrupadoAreaCargo.jasper</param>
+				<param name="dataSource">dataSource</param>
 				<param name="parametersMap">parametros</param>
-				<param name="documentName">TurnoverPorTempoServico.xls</param>
+				<param name="documentName">indicadorTurnOverAgrupadoAreaCargo</param>
 				<param name="format">XLS</param>
+			</result>
+			<result name="success_temposervico" type="xls">
+				<param name="dataSource">colaboradores</param>
+				<param name="documentName">indicadorTurnOverTempoServico.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Tempo de Serviço,Nome,Data de Desligamento,Tempo de Serviço</param>
+				<param name="propertiesGroup">tempoServicoString</param>
+				<param name="properties">tempoServicoString,nome,dataDesligamentoFormatada,tempoServicoMaisMes</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
+			<result name="success_temposervico_agrupado_por_area" type="xls">
+				<param name="dataSource">colaboradores</param>
+				<param name="documentName">indicadorTurnOverTempoServico.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Tempo de Serviço,Área Organizacional,Nome,Data de Desligamento,Tempo de Serviço</param>
+				<param name="propertiesGroup">tempoServicoString,areaOrganizacionalNome</param>
+				<param name="properties">tempoServicoString,areaOrganizacionalNome,nome,dataDesligamentoFormatada,tempoServicoMaisMes</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
+			<result name="success_temposervico_agrupado_por_cargo" type="xls">
+				<param name="dataSource">colaboradores</param>
+				<param name="documentName">indicadorTurnOverTempoServico.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Tempo de Serviço,Cargo,Nome,Data de Desligamento,Tempo de Serviço</param>
+				<param name="propertiesGroup">tempoServicoString,faixaSalarial.nomeDoCargo</param>
+				<param name="properties">tempoServicoString,faixaSalarial.nomeDoCargo,nome,dataDesligamentoFormatada,tempoServicoMaisMes</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/indicador/prepareIndicadorTurnOver.ftl</result>
 		</action>

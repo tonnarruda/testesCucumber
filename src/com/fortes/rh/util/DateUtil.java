@@ -472,6 +472,18 @@ public class DateUtil
 
 		 return calendar.getTime();
 	}
+	public static Date getUltimoDiaMesComHoraZerada(Date data)
+	{
+		GregorianCalendar calendar = new GregorianCalendar();
+		calendar.setTime(data);
+		calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+		calendar.set(GregorianCalendar.HOUR_OF_DAY, 0);
+		calendar.set(GregorianCalendar.MINUTE, 0);
+		calendar.set(GregorianCalendar.SECOND, 0);
+		calendar.set(GregorianCalendar.MILLISECOND, 0);
+		
+		return calendar.getTime();
+	}
 
 	public static Date setaMesPosterior(Date data)
 	{

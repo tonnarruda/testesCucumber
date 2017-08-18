@@ -240,6 +240,24 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 		return (Cargo) criteria.uniqueResult();
 	}
 
+	public Collection<Cargo> findCollectionByIdProjection(Long... cargoId)
+	{
+		Criteria criteria = getSession().createCriteria(Cargo.class, "c");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("c.id"), "id");
+		p.add(Projections.property("c.nome"), "nome");
+		p.add(Projections.property("c.nomeMercado"), "nomeMercado");
+
+		criteria.setProjection(p);
+		criteria.add(Expression.in("c.id", cargoId));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Cargo.class));
+
+		return criteria.list();
+	}
+	
 	public Cargo findByIdAllProjection(Long cargoId)
 	{
 		Criteria criteria = getSession().createCriteria(Cargo.class, "c");

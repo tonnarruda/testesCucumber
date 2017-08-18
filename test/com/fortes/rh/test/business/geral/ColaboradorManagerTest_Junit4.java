@@ -5,8 +5,8 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.junit.Before;
@@ -28,6 +29,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
+import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.CidadeManager;
@@ -46,6 +48,7 @@ import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.avaliacao.relatorio.AcompanhamentoExperienciaColaborador;
+import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.dicionario.Escolaridade;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
@@ -57,6 +60,8 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.geral.Pessoal;
+import com.fortes.rh.model.geral.relatorio.TurnOver;
+import com.fortes.rh.model.geral.relatorio.TurnOverCollection;
 import com.fortes.rh.model.json.ColaboradorJson;
 import com.fortes.rh.model.ws.TEmpregado;
 import com.fortes.rh.model.ws.TNaturalidadeAndNacionalidade;
@@ -65,10 +70,12 @@ import com.fortes.rh.test.factory.avaliacao.PeriodoExperienciaFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.geral.CidadeFactory;
 import com.fortes.rh.test.factory.geral.EstadoFactory;
 import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
+import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientColaborador;
@@ -94,6 +101,7 @@ public class ColaboradorManagerTest_Junit4
     private ParametrosDoSistemaManager parametrosDoSistemaManager;
     private UsuarioEmpresaManager usuarioEmpresaManager;
     private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+    private CargoManager cargoManager;
 
     @SuppressWarnings("deprecation")
 	@Before
@@ -113,6 +121,7 @@ public class ColaboradorManagerTest_Junit4
         empresaManager = mock(EmpresaManager.class);
         parametrosDoSistemaManager = mock(ParametrosDoSistemaManager.class);
         gerenciadorComunicacaoManager = mock(GerenciadorComunicacaoManager.class);
+        cargoManager=mock(CargoManager.class);
         
         colaboradorManager.setDao(colaboradorDao);
         colaboradorManager.setCandidatoManager(candidatoManager);
@@ -127,6 +136,7 @@ public class ColaboradorManagerTest_Junit4
         colaboradorManager.setEmpresaManager(empresaManager);
         colaboradorManager.setParametrosDoSistemaManager(parametrosDoSistemaManager);
         colaboradorManager.setGerenciadorComunicacaoManager(gerenciadorComunicacaoManager);
+        colaboradorManager.setCargoManager(cargoManager);
         
         usuarioManager = mock(UsuarioManager.class);
         usuarioEmpresaManager = mock(UsuarioEmpresaManager.class);
@@ -664,4 +674,247 @@ public class ColaboradorManagerTest_Junit4
     	
     	assertTrue(excedeuContratacoes);
     }
+    
+    @Test
+    public void testFindDemitidosTurnoverTempoServicoSemAgrupamento() throws Exception
+    {
+    	Colaborador colaboradorA = ColaboradorFactory.getEntity(1L);
+    	colaboradorA.setNome("Colaborador a");
+    	colaboradorA.setTempoServico(2);
+    	
+    	Colaborador colaboradorB = ColaboradorFactory.getEntity(1L);
+    	colaboradorB.setNome("Colaborador b");
+    	colaboradorB.setTempoServico(7);
+    	
+    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
+    	
+    	Integer[] mesesIniciais = new Integer[]{1};
+    	Integer[] mesesFinais = new Integer[]{12};
+
+    	Character semAgrupamento = 'S';
+    	int filtrarPor = 1;
+    	
+    	Date dataAtual = new Date();
+    	Date dataInicial = DateUtil.getInicioMesData(dataAtual);
+    	Date dataFinal = DateUtil.getUltimoDiaMes(dataAtual);
+    	
+    	Collection<Colaborador> colaboradores = Arrays.asList(colaboradorB,colaboradorA);
+    	
+    	when(empresaManager.findByIdProjection(empresa.getId())).thenReturn(empresa);
+    	when(colaboradorDao.findDemitidosTurnover(empresa, dataInicial, dataFinal,mesesIniciais,mesesFinais,null,null,null,null,semAgrupamento)).thenReturn(colaboradores);
+    	
+		colaboradorManager.findDemitidosTurnoverTempoServico(mesesIniciais, mesesFinais, empresa.getId(), dataInicial, dataFinal, null, null, null, null, filtrarPor, semAgrupamento);
+		
+		assertEquals(colaboradorA.getNome(), ((Colaborador)colaboradores.toArray()[0]).getNome());
+		assertNotNull(((Colaborador)colaboradores.toArray()[0]).getTempoServicoString());
+    }
+    @Test
+    public void testFindDemitidosTurnoverTempoServicoAgrupadoPorArea() throws Exception
+    {
+    	Colaborador colaboradorA = ColaboradorFactory.getEntity(1L);
+    	colaboradorA.setNome("Colaborador a");
+    	colaboradorA.setTempoServico(2);
+    	
+    	AreaOrganizacional areaOrganizacionalA = AreaOrganizacionalFactory.getEntity(1l);
+    	areaOrganizacionalA.setNome("area a");
+		
+    	colaboradorA.setAreaOrganizacional(areaOrganizacionalA);
+    	
+		AreaOrganizacional areaOrganizacionalB = AreaOrganizacionalFactory.getEntity(2l);
+		areaOrganizacionalB.setNome("area b");
+
+		Colaborador colaboradorB = ColaboradorFactory.getEntity(1L);
+    	colaboradorB.setNome("Colaborador b");
+    	colaboradorB.setTempoServico(7);
+    	colaboradorB.setAreaOrganizacional(areaOrganizacionalB);
+
+    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
+    	
+    	Integer[] mesesIniciais = new Integer[]{1};
+    	Integer[] mesesFinais = new Integer[]{12};
+    	
+    	char agruparPorArea = 'A';
+    	int filtrarPorArea = 1;
+    	
+    	Date dataAtual = new Date();
+    	Date dataInicial = DateUtil.getInicioMesData(dataAtual);
+    	Date dataFinal = DateUtil.getUltimoDiaMes(dataAtual);
+    	
+    	Collection<Colaborador> colaboradores = Arrays.asList(colaboradorB,colaboradorA);
+    	
+    	when(empresaManager.findByIdProjection(empresa.getId())).thenReturn(empresa);
+    	when(colaboradorDao.findDemitidosTurnover(empresa, dataInicial, dataFinal,mesesIniciais,mesesFinais,null,null,null,null,agruparPorArea)).thenReturn(colaboradores);
+    	
+    	colaboradorManager.findDemitidosTurnoverTempoServico(mesesIniciais, mesesFinais, empresa.getId(), dataInicial, dataFinal, null, null, null, null, filtrarPorArea, agruparPorArea);
+    	
+    	assertEquals(colaboradorA.getAreaOrganizacional().getNome(), ((Colaborador)colaboradores.toArray()[0]).getAreaOrganizacional().getNome());
+		assertNotNull(((Colaborador)colaboradores.toArray()[0]).getTempoServicoString());
+    }
+    @Test
+    public void testFindDemitidosTurnoverTempoServicoAgrupadoPorCargo() throws Exception
+    {
+    	Colaborador colaboradorA = ColaboradorFactory.getEntity(1L);
+    	colaboradorA.setNome("Colaborador a");
+    	colaboradorA.setTempoServico(2);
+    	
+    	Cargo cargoA = CargoFactory.getEntity(1l);
+    	cargoA.setNome("cargo a");
+    	
+    	colaboradorA.setCargoNomeProjection(cargoA.getNome());
+
+    	Colaborador colaboradorB = ColaboradorFactory.getEntity(1L);
+    	colaboradorB.setNome("Colaborador b");
+    	colaboradorB.setTempoServico(20);
+    	
+    	Cargo cargoB = CargoFactory.getEntity(1l);
+    	cargoB.setNome("cargo b");
+    	
+    	colaboradorB.setCargoNomeProjection(cargoB.getNome());
+    	
+    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
+    	
+    	Integer[] mesesIniciais = new Integer[]{1};
+    	Integer[] mesesFinais = new Integer[]{12};
+    	
+    	char agruparPorCargo = 'C';
+    	int filtrarPorCargo = 2;
+    	
+    	Date dataAtual = new Date();
+    	Date dataInicial = DateUtil.getInicioMesData(dataAtual);
+    	Date dataFinal = DateUtil.getUltimoDiaMes(dataAtual);
+    	
+    	Collection<Colaborador> colaboradores = Arrays.asList(colaboradorB,colaboradorA);
+    	
+    	when(empresaManager.findByIdProjection(empresa.getId())).thenReturn(empresa);
+    	when(colaboradorDao.findDemitidosTurnover(empresa, dataInicial, dataFinal,mesesIniciais,mesesFinais,null,null,null,null,agruparPorCargo)).thenReturn(colaboradores);
+    	
+    	colaboradorManager.findDemitidosTurnoverTempoServico(mesesIniciais, mesesFinais, empresa.getId(), dataInicial, dataFinal, null, null, null, null, filtrarPorCargo, agruparPorCargo);
+
+    	assertEquals(colaboradorA.getNome(), ((Colaborador)colaboradores.toArray()[0]).getNome());
+    	assertNull(((Colaborador)colaboradores.toArray()[1]).getTempoServicoString());
+		assertNotNull(((Colaborador)colaboradores.toArray()[0]).getTempoServicoString());
+    }
+    @Test
+    public void testMontaTurnOverCargo() throws Exception
+    {
+    	Date dataAtual = new Date();
+    	Date dataInicial = DateUtil.getInicioMesData(dataAtual);
+    	Date dataFinal = DateUtil.getUltimoDiaMesComHoraZerada(dataAtual);
+    	
+    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
+    	Character agruparPorCargo = 'C';
+    	int filtrarPorCargo = 2;
+    	
+    	Cargo cargoA = CargoFactory.getEntity("cargoA");
+    	cargoA.setId(1l);
+
+    	Cargo cargoB = CargoFactory.getEntity("cargoB");
+    	cargoB.setId(2l);
+    	
+    	Collection<TurnOver> admitidos = new ArrayList<TurnOver>();
+    	admitidos.add(montaAdmitido(dataInicial, 21, cargoA.getId()));
+    	admitidos.add(montaAdmitido(dataInicial, 5, cargoB.getId()));
+    	
+    	Collection<TurnOver> demitidos = new ArrayList<TurnOver>();
+    	demitidos.add(montaDemitido(dataFinal, 25, cargoA.getId()));
+    	demitidos.add(montaDemitido(dataFinal, 10, cargoB.getId()));
+    	
+    	List<Long> listaCargos = Arrays.asList(cargoA.getId(),cargoB.getId());
+    	
+    	when(empresaManager.findByIdProjection(empresa.getId())).thenReturn(empresa);
+		when(colaboradorDao.countAdmitidosDemitidosPeriodoTurnover(dataInicial,dataFinal,empresa,null,null,listaCargos,null,true,'C')).thenReturn(admitidos);
+    	when(colaboradorDao.countAdmitidosDemitidosPeriodoTurnover(dataInicial,dataFinal,empresa,null,null,listaCargos,null,false,'C')).thenReturn(demitidos);
+    	when(cargoManager.findCollectionByIdProjection(new Long[]{cargoA.getId(),cargoB.getId()})).thenReturn(Arrays.asList(cargoA, cargoB));
+
+    	HashMap<Long, Double> hashMapCargosColaboradoresAtivosInicioMes = new HashMap<Long,Double>();
+    	hashMapCargosColaboradoresAtivosInicioMes.put(cargoA.getId(), 30.0);
+    	hashMapCargosColaboradoresAtivosInicioMes.put(cargoB.getId(), 10.0);
+    	
+    	HashMap<Long, Double> hashMapCargosColaboradoresAtivosFinalMes = new HashMap<Long,Double>();
+    	hashMapCargosColaboradoresAtivosFinalMes.put(cargoA.getId(), 5.0);
+    	hashMapCargosColaboradoresAtivosFinalMes.put(cargoB.getId(), 20.0);
+    	
+    	when(colaboradorDao.countAtivosPeriodoAreaOuCargo(DateUtil.getUltimoDiaMesAnterior(dataInicial), Arrays.asList(empresa.getId()), null, null, listaCargos, null, null, false, null, false, agruparPorCargo)).thenReturn(hashMapCargosColaboradoresAtivosInicioMes);
+    	when(colaboradorDao.countAtivosPeriodoAreaOuCargo(DateUtil.getUltimoDiaMes(dataInicial), Arrays.asList(empresa.getId()), null, null, listaCargos, null, null, false, null, false, agruparPorCargo)).thenReturn(hashMapCargosColaboradoresAtivosFinalMes);
+    			
+    	Collection<TurnOverCollection> turnOverCollectionsCargo = colaboradorManager.montaTurnOverAreaOuCargo(dataInicial, dataFinal, empresa.getId(), null, null, listaCargos, null, filtrarPorCargo, agruparPorCargo);
+    	
+    	assertEquals(2, turnOverCollectionsCargo.size());
+    	
+    	Collection<TurnOver> turnOversRetornoCargoA = ((TurnOverCollection) turnOverCollectionsCargo.toArray()[0]).getTurnOvers();
+    	assertEquals(new Double(76.67), ((TurnOver) turnOversRetornoCargoA.toArray()[0]).getTurnOver());
+    	
+    	Collection<TurnOver> turnOversRetornoCargoB = ((TurnOverCollection) turnOverCollectionsCargo.toArray()[1]).getTurnOvers();
+    	assertEquals(new Double(75.0), ((TurnOver) turnOversRetornoCargoB.toArray()[0]).getTurnOver());
+    }
+    @Test
+    public void testMontaTurnOverArea() throws Exception
+    {
+    	Date dataAtual = new Date();
+    	Date dataInicial = DateUtil.getInicioMesData(dataAtual);
+    	Date dataFinal = DateUtil.getUltimoDiaMesComHoraZerada(dataAtual);
+    	
+    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
+    	Character agruparPorArea = 'A';
+    	int filtrarPorArea = 1;
+    	
+    	AreaOrganizacional areaA = AreaOrganizacionalFactory.getEntity(1l);
+    	areaA.setNome("areaA");
+    	
+    	AreaOrganizacional areaB = AreaOrganizacionalFactory.getEntity(2l);
+    	areaB.setNome("areaB");
+    	
+    	Collection<TurnOver> admitidos = new ArrayList<TurnOver>();
+    	admitidos.add(montaAdmitido(dataInicial, 30, areaA.getId()));
+    	admitidos.add(montaAdmitido(dataInicial, 18, areaB.getId()));
+    	
+    	Collection<TurnOver> demitidos = new ArrayList<TurnOver>();
+    	demitidos.add(montaDemitido(dataFinal, 29, areaA.getId()));
+    	demitidos.add(montaDemitido(dataFinal, 23, areaB.getId()));
+
+    	List<Long> listaAreas = Arrays.asList(areaA.getId(),areaB.getId());
+    	
+    	when(empresaManager.findByIdProjection(empresa.getId())).thenReturn(empresa);
+    	when(colaboradorDao.countAdmitidosDemitidosPeriodoTurnover(dataInicial,dataFinal,empresa,null,listaAreas,null,null,true,'A')).thenReturn(admitidos);
+    	when(colaboradorDao.countAdmitidosDemitidosPeriodoTurnover(dataInicial,dataFinal,empresa,null,listaAreas,null,null,false,'A')).thenReturn(demitidos);
+    	when(areaOrganizacionalManager.findCollectionFilhasByAreasIds(new Long[]{areaA.getId(),areaB.getId()})).thenReturn(Arrays.asList(areaA,areaB));
+    
+    	HashMap<Long, Double> hashMapAreasColaboradoresAtivosInicioMes = new HashMap<Long,Double>();
+    	hashMapAreasColaboradoresAtivosInicioMes.put(areaA.getId(), 50.0);
+    	hashMapAreasColaboradoresAtivosInicioMes.put(areaB.getId(), 30.0);
+    	
+    	HashMap<Long, Double> hashMapAreasColaboradoresAtivosFinalMes = new HashMap<Long,Double>();
+    	hashMapAreasColaboradoresAtivosFinalMes.put(areaA.getId(), 15.0);
+    	hashMapAreasColaboradoresAtivosFinalMes.put(areaB.getId(), 25.0);
+    	
+    	when(colaboradorDao.countAtivosPeriodoAreaOuCargo(DateUtil.getUltimoDiaMesAnterior(dataInicial), Arrays.asList(empresa.getId()), null,listaAreas, null, null, null, false, null, false, agruparPorArea)).thenReturn(hashMapAreasColaboradoresAtivosInicioMes);
+    	when(colaboradorDao.countAtivosPeriodoAreaOuCargo(DateUtil.getUltimoDiaMes(dataInicial), Arrays.asList(empresa.getId()), null, listaAreas, null, null, null, false, null, false, agruparPorArea)).thenReturn(hashMapAreasColaboradoresAtivosFinalMes);
+    	
+    	Collection<TurnOverCollection> turnOverCollectionsArea = colaboradorManager.montaTurnOverAreaOuCargo(dataInicial, dataFinal, empresa.getId(), null,listaAreas, null, null, filtrarPorArea, agruparPorArea);
+    	
+    	assertEquals(2, turnOverCollectionsArea.size());
+    	
+    	Collection<TurnOver> turnOversRetornoAreaA = ((TurnOverCollection) turnOverCollectionsArea.toArray()[0]).getTurnOvers();
+    	assertEquals(new Double(59.0), ((TurnOver) turnOversRetornoAreaA.toArray()[0]).getTurnOver());
+    	
+    	Collection<TurnOver> turnOversRetornoAreaB = ((TurnOverCollection) turnOverCollectionsArea.toArray()[1]).getTurnOvers();
+    	assertEquals(new Double(68.33), ((TurnOver) turnOversRetornoAreaB.toArray()[0]).getTurnOver());
+    }
+	private TurnOver montaAdmitido(Date data, double qtdAdmitidos,Long idAreaOuCargo) 
+	{
+		TurnOver admitido = new TurnOver();
+    	admitido.setMesAnoQtdAdmitidos(data, qtdAdmitidos);
+    	admitido.setIdAreaOuCargo(idAreaOuCargo);
+    	
+		return admitido;
+	}
+	private TurnOver montaDemitido(Date data, double qtdDemitidos, Long idAreaOuCargo) 
+	{
+		TurnOver demitido = new TurnOver();
+		demitido.setMesAnoQtdDemitidos(data, qtdDemitidos);
+		demitido.setIdAreaOuCargo(idAreaOuCargo);
+		
+		return demitido;
+	}
+
 }

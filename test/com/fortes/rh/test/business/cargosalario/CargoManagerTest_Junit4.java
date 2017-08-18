@@ -105,4 +105,21 @@ public class CargoManagerTest_Junit4
         
         cargoManager.sincronizar(empresaOrigemId, EmpresaFactory.getEmpresa(), areaIds, conhecimentoIds, habilidadeIds, atitudeIds, null);
     }
+
+	@Test
+	public void testFindCollectionByIdProjection() {
+		Collection<Cargo> cargos = new ArrayList<Cargo>();
+		Cargo cargo = CargoFactory.getEntity(1L);
+		Cargo cargo2 = CargoFactory.getEntity(2L);
+
+		cargos.add(cargo);
+
+		Long[] cargosIds = new Long[] { cargo.getId(), cargo2.getId() };
+		
+		when(cargoDao.findCollectionByIdProjection(cargosIds)).thenReturn(cargos);
+
+		Collection<Cargo> cargoCollections = cargoManager.findCollectionByIdProjection(cargosIds);
+		
+		assertEquals(cargos.size(), cargoCollections.size());
+	}
 }

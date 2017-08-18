@@ -10,6 +10,7 @@ public class TurnOverCollection
 	private String formula;
 	private Double qtdAdmitidos;
 	private Double qtdDemitidos;
+	private String nomeAreaOuCargo;
 	private Collection<TurnOver> turnOvers = new ArrayList<TurnOver>();
 	
 	public TurnOverCollection() 
@@ -78,12 +79,19 @@ public class TurnOverCollection
 		this.qtdDemitidos = qtdDemitidos;
 	}
 	
-
 	public Collection<TurnOver> getTurnOvers() {
 		return turnOvers;
 	}
 
 	public void setTurnOvers(Collection<TurnOver> turnOvers) {
 		this.turnOvers = turnOvers;
+	}
+
+	public String getNomeAreaOuCargo() {
+		return nomeAreaOuCargo;
+	}
+
+	public void setNomeAreaOuCargo(String nomeAreaOuCargo) {
+		this.nomeAreaOuCargo = nomeAreaOuCargo;
 	}
 }

@@ -5,6 +5,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -1389,15 +1390,31 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return (Colaborador) criteria.uniqueResult();
 	}
 	
-	public Collection<TurnOver> countAdmitidosDemitidosPeriodoTurnover(Date dataIni, Date dataFim, Empresa empresa, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos, boolean isAdmitidos)
+	public Collection<TurnOver> countAdmitidosDemitidosPeriodoTurnover(Date dataIni, Date dataFim, Empresa empresa, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos, boolean isAdmitidos, Character agruparPor)
 	{
 		StringBuilder sql = new StringBuilder();
 		String coluna = isAdmitidos ? "c.dataAdmissao" : "c.dataDesligamento";
 		
-		sql.append("select cast(date_part('month', " + coluna + ") as int) as mes, cast(date_part('year', " + coluna + ") as int) as ano, cast(count(distinct c.id) as double precision) as qtd from historicoColaborador as hc ");
+		sql.append("select cast(date_part('month', " + coluna + ") as int) as mes, cast(date_part('year', " + coluna + ") as int) as ano, cast(count(distinct c.id) as double precision) as qtd ");
+	
+		if(agruparPor!=null){
+			if(agruparPor=='A'){
+				sql.append( ", ao.id as areaId " );
+			}else if(agruparPor=='C'){
+				sql.append( ", cg.id as cargoId " );
+			}
+		}
+		
+		sql.append("from historicoColaborador as hc ");
 		sql.append("join colaborador c on hc.colaborador_id = c.id ");
 		sql.append("join faixaSalarial fs on hc.faixasalarial_id = fs.id ");
 		
+		if(agruparPor!=null){
+			if(agruparPor=='A')
+				sql.append(" join areaOrganizacional ao on hc.areaOrganizacional_id = ao.id ");
+			else if(agruparPor=='C')
+				sql.append(" join cargo cg on fs.cargo_id = cg.id ");
+		}
 		if (empresa.isTurnoverPorSolicitacao())
 		{
 			if (isAdmitidos)
@@ -1434,9 +1451,19 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			else
 				sql.append("and md.turnover = true ");
 		}
-		
-		sql.append("group by date_part('year', " + coluna + "), date_part('month', " + coluna + ") ");
-		sql.append("order by date_part('year', " + coluna + "), date_part('month', " + coluna + ") ");
+		if(agruparPor==null || agruparPor=='S' ){
+			sql.append(" group by date_part('year', " + coluna + "), date_part('month', " + coluna + ") ");
+			sql.append(" order by date_part('year', " + coluna + "), date_part('month', " + coluna + ") ");
+		}else{
+			if(agruparPor=='C'){
+				sql.append(" group by cg.id, date_part('year', " + coluna + "), date_part('month', " + coluna + ") ");
+				sql.append(" order by cg.nome, date_part('year', " + coluna + "), date_part('month', " + coluna + ") ");
+			}
+			else if(agruparPor=='A'){
+				sql.append(" group by ao.id, date_part('year', " + coluna + "), date_part('month', " + coluna + ") ");
+				sql.append(" order by ao.nome, date_part('year', " + coluna + "), date_part('month', " + coluna + ") ");
+			}
+		}
 		
 		Query query = getSession().createSQLQuery(sql.toString());
 		
@@ -1444,7 +1471,6 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.setDate("dataFim", dataFim);
 		query.setLong("empresaId", empresa.getId());
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
-		
 		
 		if(estabelecimentosIds != null && estabelecimentosIds.size() > 0)
 			query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
@@ -1462,17 +1488,21 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
 		{
 			Object[] res = it.next();
-			Date dataMesAno = DateUtil.criarDataMesAno(01, (Integer)res[0], (Integer)res[1]);
-			
-			TurnOver colabs = new TurnOver();
-			if (isAdmitidos)
-				colabs.setMesAnoQtdAdmitidos(dataMesAno, (Double)res[2]);
-			else
-				colabs.setMesAnoQtdDemitidos(dataMesAno, (Double)res[2]);
-			
-			turnOvers.add(colabs);
-		}
 
+			Date dataMesAno = DateUtil.criarDataMesAno(01, (Integer)res[0], (Integer)res[1]);
+			TurnOver turnOver = new TurnOver();
+
+			if (isAdmitidos)
+				turnOver.setMesAnoQtdAdmitidos(dataMesAno, (Double)res[2]);
+			else
+				turnOver.setMesAnoQtdDemitidos(dataMesAno, (Double)res[2]);
+			
+			if(agruparPor!=null){
+				if(agruparPor=='A' || agruparPor=='C')
+					turnOver.setIdAreaOuCargo(Long.parseLong(res[3].toString()));
+			}
+			turnOvers.add(turnOver);
+		}
 		return turnOvers;
 	}
 	
@@ -1587,11 +1617,30 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return ((BigInteger) count.toArray()[0]).intValue();
 	}
 	
-	public Collection<Colaborador> findDemitidosTurnover(Empresa empresa, Date dataIni, Date dataFim, Integer[] tempoServicoIni, Integer[] tempoServicoFim, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos) 
+	public Collection<Colaborador> findDemitidosTurnover(Empresa empresa, Date dataIni, Date dataFim, Integer[] tempoServicoIni, Integer[] tempoServicoFim, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos, Character agruparPor) 
 	{
-		StringBuilder hql = new StringBuilder("select new Colaborador(co.id, co.nome, co.nomeComercial, co.dataAdmissao, co.dataDesligamento, (extract(month from age(co.dataDesligamento, co.dataAdmissao)) + (extract(year from age(co.dataDesligamento, co.dataAdmissao)) * 12)) as tempoServico) from Colaborador co ");
+		StringBuilder hql = new StringBuilder();
+		
+		if(agruparPor!=null && agruparPor!='S'){
+			if(agruparPor== 'A')
+				hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, co.dataAdmissao, co.dataDesligamento, (extract(month from age(co.dataDesligamento, co.dataAdmissao)) + (extract(year from age(co.dataDesligamento, co.dataAdmissao)) * 12)) as tempoServico,cast(monta_familia_area(ao.id), text) as col_6_0_ ) from Colaborador co");
+			else if(agruparPor== 'C')
+				hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, co.dataAdmissao, co.dataDesligamento, (extract(month from age(co.dataDesligamento, co.dataAdmissao)) + (extract(year from age(co.dataDesligamento, co.dataAdmissao)) * 12)) as tempoServico,cg.id,cg.nome ) from Colaborador co");
+		}
+		else{
+			hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, co.dataAdmissao, co.dataDesligamento, (extract(month from age(co.dataDesligamento, co.dataAdmissao)) + (extract(year from age(co.dataDesligamento, co.dataAdmissao)) * 12)) as tempoServico) from Colaborador co ");
+		}
+
 		hql.append("	inner join co.historicoColaboradors hc ");
+		
+		if(agruparPor!=null && agruparPor=='A')
+			hql.append("	inner join hc.areaOrganizacional ao ");
+		
 		hql.append("	inner join hc.faixaSalarial fs ");
+		
+		if (agruparPor!=null && agruparPor== 'C')
+			hql.append("left join fs.cargo as cg ");
+		
 		if (empresa.isTurnoverPorSolicitacao())
 		{
 			hql.append("	inner join co.motivoDemissao md ");
@@ -1632,7 +1681,14 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			hql.append(" ) ");
 		}
 		
-		hql.append("order by (extract(month from age(co.dataDesligamento, co.dataAdmissao)) + (extract(year from age(co.dataDesligamento, co.dataAdmissao)) * 12)) "); 
+		if(agruparPor!=null && agruparPor!= 'S'){
+			if(agruparPor == 'A')
+				hql.append("order by col_6_0_");
+			else if(agruparPor=='C')
+				hql.append("order by cg.nome");
+		}else{
+			hql.append("order by (extract(month from age(co.dataDesligamento, co.dataAdmissao)) + (extract(year from age(co.dataDesligamento, co.dataAdmissao)) * 12)) "); 
+		}
 		
 		Query query = getSession().createQuery(hql.toString());
 		query.setLong("empresaId", empresa.getId());
@@ -1711,6 +1767,83 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			query.setParameterList("vinculos", vinculos, Hibernate.STRING);
 
 		return (Integer) query.uniqueResult();
+	}
+	public HashMap<Long, Double> countAtivosPeriodoAreaOuCargo(Date dataIni, Collection<Long> empresaIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos, Collection<Long> ocorrenciasIds, boolean consideraDataAdmissao, Long colaboradorId, boolean isAbsenteismo, Character agruparPor) 
+	{
+		String cargoOuArea = agruparPor=='C' ? " cg.id" : " ao.id";
+		StringBuilder hql = new StringBuilder("select "+cargoOuArea+",count(co.id) from Colaborador co ");
+		
+		hql.append("left join co.historicoColaboradors as hc ");
+		hql.append("left join hc.faixaSalarial as fs ");
+		
+		if(agruparPor=='C')
+			hql.append(" join fs.cargo as cg ");
+		else if(agruparPor=='A')
+			hql.append(" join hc.areaOrganizacional as ao ");
+		
+		hql.append("	where ( co.dataDesligamento is null ");
+		hql.append("          or co.dataDesligamento > :data ) ");//desligado no futuro
+		
+		if(empresaIds != null && ! empresaIds.isEmpty())
+			hql.append("	and co.empresa.id in (:empresaIds) ");
+		
+		if(colaboradorId != null)
+			hql.append("	and co.id <> :colaboradorId ");
+		if(consideraDataAdmissao)
+			hql.append("	and co.dataAdmissao <= :data ");
+		
+		if(estabelecimentosIds != null && estabelecimentosIds.size() > 0)
+			hql.append("	and hc.estabelecimento.id in (:estabelecimentosIds) ");
+		if(areasIds != null && areasIds.size() > 0)
+			hql.append("	and hc.areaOrganizacional.id in (:areasIds) ");
+		if(cargosIds != null && cargosIds.size() > 0)
+			hql.append("	and fs.cargo.id in (:cargosIds) ");
+		if(vinculos != null && vinculos.size() > 0)
+			hql.append("	and co.vinculo in (:vinculos) ");
+		
+		hql.append("	and hc.status = :status ");
+		hql.append("	and hc.data = (");
+		hql.append("		select max(hc2.data) ");
+		hql.append("		from HistoricoColaborador as hc2 ");
+		hql.append("			where hc2.colaborador.id = co.id ");
+		hql.append("			and hc2.data <= :data and hc2.status = :status ");
+		hql.append("		) ");
+		
+		if(agruparPor=='C')
+			hql.append("group by cg.id order by cg.id ");
+		else if(agruparPor=='A')
+			hql.append("group by ao.id order by ao.id");
+		
+		Query query = getSession().createQuery(hql.toString());
+		query.setDate("data", dataIni);
+		
+		if(empresaIds != null && ! empresaIds.isEmpty())
+			query.setParameterList("empresaIds", empresaIds, Hibernate.LONG);
+		
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+		
+		if(colaboradorId != null)
+			query.setLong("colaboradorId", colaboradorId);
+		
+		if(estabelecimentosIds != null && estabelecimentosIds.size() > 0)
+			query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
+		if(areasIds != null && areasIds.size() > 0)
+			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
+		if(cargosIds != null && cargosIds.size() > 0)
+			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);
+		if(vinculos != null && vinculos.size() > 0)
+			query.setParameterList("vinculos", vinculos, Hibernate.STRING);
+
+		List resultado = query.list();
+		
+		HashMap<Long, Double> hashRetorno = new HashMap<Long, Double>();
+		
+		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();){
+			Object[] res = it.next();
+			hashRetorno.put(Long.parseLong(res[0].toString()),new Double(res[1].toString()));
+		}
+		
+		return hashRetorno;
 	}
 	
 	public Collection<Colaborador> findColaboradoresMotivoDemissao(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim, String agruparPor, String vinculo)
@@ -5311,7 +5444,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("c.dataDesligamento"), "dataDesligamento");
 		p.add(Projections.property("f.nome"), "funcaoNome");
 		p.add(Projections.property("f.id"), "funcaoId");
-		p.add(Projections.property("fs.codigoCbo"), "faixaSalarialCodigoCbo");
+		p.add(Projections.property("ca.cboCodigo"), "cargoCodigoCBO");
 		p.add(Projections.property("ca.nome"), "cargoNomeProjection");
 		p.add(Projections.property("est.nome"), "estabelecimentoNomeProjection");
 		p.add(Projections.property("est.endereco.logradouro"), "estabelecimentoEnderecoLogradouro");

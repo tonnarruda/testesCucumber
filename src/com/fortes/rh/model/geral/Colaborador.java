@@ -312,6 +312,31 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.dataDesligamento = dataDesligamento;
 		this.tempoServico = tempoServico;
 	}
+	//findDemitidosTurnoverAgrupadosPorAreaOrganizacional
+	public Colaborador(Long id, String nome, String nomeComercial, Date dataAdmissao, Date dataDesligamento, Integer tempoServico, String areaOrganizacionalNome)
+	{
+		this.setId(id);
+		this.nome = nome;
+		this.nomeComercial = nomeComercial;
+		this.dataAdmissao = dataAdmissao;
+		this.dataDesligamento = dataDesligamento;
+		this.tempoServico = tempoServico;
+		
+		setAreaOrganizacionalNome(areaOrganizacionalNome);
+		
+	}
+	//findDemitidosTurnoverAgrupadosPorCargo
+	public Colaborador(Long id, String nome, String nomeComercial, Date dataAdmissao, Date dataDesligamento, Integer tempoServico, Long cardoId,String cargoNome)
+	{
+		this.setId(id);
+		this.nome = nome;
+		this.nomeComercial = nomeComercial;
+		this.dataAdmissao = dataAdmissao;
+		this.dataDesligamento = dataDesligamento;
+		this.tempoServico = tempoServico;
+		
+		setCargoNomeProjection(cargoNome);
+	}
 	
 	public Colaborador(String nome, String nomeComercial)
 	{
@@ -3117,6 +3142,14 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	public Integer getTempoServico() {
 		return tempoServico;
 	}
+	
+	@NaoAudita
+	public String getTempoServicoMaisMes() {
+		if(tempoServico == 1)
+			return tempoServico +  " mes";
+		else
+			return tempoServico +  " meses";
+	}
 
 	public void setTempoServico(Integer tempoServico) {
 		this.tempoServico = tempoServico;
@@ -3470,4 +3503,14 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	public void setNacionalidade(String nacionalidade) {
 		this.nacionalidade = nacionalidade;
 	}
+	
+	@NaoAudita
+	public String getAreaOrganizacionalNome()
+	{
+		if(areaOrganizacional == null || areaOrganizacional.getNome()==null)
+			return "";
+		
+		return areaOrganizacional.getNome();
+	}
+
 }

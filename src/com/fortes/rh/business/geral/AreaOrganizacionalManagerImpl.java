@@ -1073,4 +1073,8 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 	public void removeVinculoComConhecimento(Long conhecimentoId) {
 		getDao().removeVinculoComConhecimento(conhecimentoId);
 	}
+	
+	public Collection<AreaOrganizacional> findCollectionFilhasByAreasIds(Long... areasOrganizacionaisIds){
+		return getDao().findCollectionFilhasByAreasIds(areasOrganizacionaisIds);
+	}
 }

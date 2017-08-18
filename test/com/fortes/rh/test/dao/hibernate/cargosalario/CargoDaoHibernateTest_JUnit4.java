@@ -64,4 +64,17 @@ public class CargoDaoHibernateTest_JUnit4 extends GenericDaoHibernateTest_JUnit4
 		
 		assertEquals(2, retorno.size());
 	}
+	
+	@Test
+	public void testFindCollectionByIdProjection()
+	{
+		Cargo cobrador = CargoFactory.getEntity();
+		cobrador.setNome("Cobrador");
+		cargoDao.save(cobrador);
+		
+		Collection<Cargo> cargos = cargoDao.findCollectionByIdProjection(cobrador.getId());
+		
+		assertEquals(1, cargos.size());
+		assertEquals("Cobrador", ((Cargo)cargos.toArray()[0]).getNome());
+	}
 }

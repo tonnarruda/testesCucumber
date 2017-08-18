@@ -701,4 +701,30 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 		String[] sql = new String[] {"delete from conhecimento_areaorganizacional where conhecimentos_id = " + conhecimentoId};
 		JDBCConnection.executeQuery(sql);
 	}
+	
+	public Collection<AreaOrganizacional> findCollectionFilhasByAreasIds(Long... areasOrganizacionaisIds) 
+	{
+		DetachedCriteria subQuery = DetachedCriteria.forClass(AreaOrganizacional.class, "a2")
+				.setProjection(Projections.property("a2.areaMae.id"))
+				.add(Restrictions.in("a2.id", areasOrganizacionaisIds))
+				.add(Restrictions.isNotNull("a2.areaMae.id"));
+		
+		Criteria criteria = getSession().createCriteria(AreaOrganizacional.class, "a");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("a.id"), "id");
+		p.add(Projections.sqlProjection("monta_familia_area(this_.id) as nome", new String[] {"nome"}, new Type[] {Hibernate.TEXT}), "nome");
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.in("a.id", areasOrganizacionaisIds));
+		criteria.add(Subqueries.propertyNotIn("a.id", subQuery));
+		
+		criteria.addOrder(Order.asc("nome"));
+		
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(AreaOrganizacional.class));
+		
+		return criteria.list();
+	}
+	
 }

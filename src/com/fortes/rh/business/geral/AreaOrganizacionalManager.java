@@ -106,4 +106,5 @@ public interface AreaOrganizacionalManager extends GenericManager<AreaOrganizaci
 	public boolean isResposnsavelOrCoResponsavelPorPropriaArea(Long colaboradorId, int tipoResponsavel);
 	public Integer defineTipoResponsavel(Long colaboradorId);
 	public void removeVinculoComConhecimento(Long conhecimentoId);
+	public Collection<AreaOrganizacional> findCollectionFilhasByAreasIds(Long... areasOrganizacionaisIds);
 }

@@ -43,6 +43,7 @@ import com.fortes.rh.business.captacao.DuracaoPreenchimentoVagaManager;
 import com.fortes.rh.business.captacao.ExperienciaManager;
 import com.fortes.rh.business.captacao.FormacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
+import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.cargosalario.IndiceManager;
@@ -70,6 +71,7 @@ import com.fortes.rh.model.captacao.Formacao;
 import com.fortes.rh.model.captacao.Habilitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.TituloEleitoral;
+import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
 import com.fortes.rh.model.dicionario.Entidade;
@@ -161,6 +163,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	private CandidatoIdiomaManager candidatoIdiomaManager;
 	private SolicitacaoExameManager solicitacaoExameManager;
 	private CartaoManager cartaoManager;
+	private CargoManager cargoManager;
 	
 	private static final String RETIRAFOTO = "S";
 	private static final String NAORETIRAFOTO = "N";
@@ -2177,12 +2180,13 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		}
 
 		colaboradores = new CollectionUtil<Colaborador>().sortCollectionStringIgnoreCase(colaboradores, orderAgrupadoPor);
+		
 		colaboradores = new CollectionUtil<Colaborador>().sortCollectionStringIgnoreCase(colaboradores, "tempoServicoString");
 
 		return colaboradores;
 	}
 	
-	public Collection<Colaborador> findDemitidosTurnoverTempoServico(Integer[] tempoServicoIni, Integer[] tempoServicoFim, Long empresaId, Date dataIni, Date dataFim, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos, int filtrarPor) 
+	public Collection<Colaborador> findDemitidosTurnoverTempoServico(Integer[] tempoServicoIni, Integer[] tempoServicoFim, Long empresaId, Date dataIni, Date dataFim, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos, int filtrarPor, Character agruparPor) 
 	{
 		if (filtrarPor == 1)
 			cargosIds = null;
@@ -2190,9 +2194,19 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			areasIds = null;
 		
 		Empresa empresa = empresaManager.findByIdProjection(empresaId);
-		Collection<Colaborador> colaboradores = getDao().findDemitidosTurnover(empresa, dataIni, dataFim, tempoServicoIni, tempoServicoFim, estabelecimentosIds, areasIds, cargosIds, vinculos);
+		Collection<Colaborador> colaboradores = getDao().findDemitidosTurnover(empresa, dataIni, dataFim, tempoServicoIni, tempoServicoFim, estabelecimentosIds, areasIds, cargosIds, vinculos, agruparPor);
+		String orderAgrupadoPor = "nome";
 		
-		return this.montaTempoServico(colaboradores, tempoServicoIni, tempoServicoFim, "nome");
+		if(agruparPor!=null && agruparPor!='S') {
+			if(agruparPor=='A'){
+				colaboradores = new CollectionUtil<Colaborador>().sortCollectionStringIgnoreCase(colaboradores, "areaOrganizacionalNome");		
+			}else if (agruparPor=='C') {
+				colaboradores = new CollectionUtil<Colaborador>().sortCollectionStringIgnoreCase(colaboradores, "faixaSalarial.nomeDoCargo");
+			}
+			orderAgrupadoPor="";
+		}
+			
+		return this.montaTempoServico(colaboradores, tempoServicoIni, tempoServicoFim, orderAgrupadoPor);
 	}
 
 	public Collection<Colaborador> insereGrupoPorTempoServico(Collection<Colaborador> colaboradores, Integer[] tempoServicoIni, Integer[] tempoServicoFim)
@@ -2308,7 +2322,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 		return totalPorEmpresas;
 	}
-
+	
 	public TurnOverCollection montaTurnOver(Date dataIni, Date dataFim, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos, int filtrarPor) throws Exception {
 		if(filtrarPor == 1)	cargosIds = null; 
 		else if(filtrarPor == 2) areasIds = null;
@@ -2323,14 +2337,14 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			dataFim = DateUtil.getUltimoDiaMes(dataTmp);
 
 			qtdAdmitidos = 0;
-			Collection<TurnOver>  admitidos = getDao().countAdmitidosDemitidosPeriodoTurnover(dataTmp, dataFim, empresa, estabelecimentosIds, areasIds, cargosIds, vinculos, true);
+			Collection<TurnOver>  admitidos = getDao().countAdmitidosDemitidosPeriodoTurnover(dataTmp, dataFim, empresa, estabelecimentosIds, areasIds, cargosIds, vinculos, true,'S');
 			if(admitidos != null && admitidos.size() > 0){
 				qtdAdmitidos = ((TurnOver) admitidos.toArray()[0]).getQtdAdmitidos();
 				totalAdmitidos += qtdAdmitidos;
 			}
 
 			qtdDemitidos = 0;
-			Collection<TurnOver> demitidos = getDao().countAdmitidosDemitidosPeriodoTurnover(dataTmp, dataFim, empresa, estabelecimentosIds, areasIds, cargosIds, vinculos, false);
+			Collection<TurnOver> demitidos = getDao().countAdmitidosDemitidosPeriodoTurnover(dataTmp, dataFim, empresa, estabelecimentosIds, areasIds, cargosIds, vinculos, false,'S');
 			if(demitidos != null && demitidos.size() > 0){
 				qtdDemitidos = ((TurnOver) demitidos.toArray()[0]).getQtdDemitidos();
 				totalDemitidos += qtdDemitidos;
@@ -2340,10 +2354,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			qtdAtivosFinalMes = getDao().countAtivosPeriodo(DateUtil.getUltimoDiaMes(dataTmp), Arrays.asList(empresaId), estabelecimentosIds, areasIds, cargosIds, vinculos, null, false, null, false);
 			
 			TurnOver turnOverTmp = new TurnOver(dataTmp, qtdAtivosInicioMes, qtdAtivosFinalMes, qtdAdmitidos, qtdDemitidos);
-			if (empresa.getFormulaTurnover() == FormulaTurnover.MEDIA_ATIVOS_MES)
-				turnOverTmp.setTurnOver((((qtdAdmitidos + qtdDemitidos) / 2) / ((qtdAtivosInicioMes + qtdAtivosFinalMes) / 2)) * 100);
-			else
-				turnOverTmp.setTurnOver((((qtdAdmitidos + qtdDemitidos) / 2) / qtdAtivosInicioMes) * 100);
+			turnOverTmp.setTurnOver(calculaTurnOver(turnOverTmp, empresa.getFormulaTurnover(), qtdAtivosInicioMes, qtdAtivosFinalMes));
 			
 			turnOvers.add(turnOverTmp);
 			dataTmp = DateUtil.setaMesPosterior(dataTmp);
@@ -2361,6 +2372,114 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		turnOverCollection.setQtdDemitidos(totalDemitidos);
 
 		return turnOverCollection;
+	}
+	
+	public Collection<TurnOverCollection> montaTurnOverAreaOuCargo(Date dataIni, Date dataFim, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos, int filtrarPor, Character agruparPor) throws Exception {
+		if(filtrarPor == 1)	cargosIds = null; 
+		else if(filtrarPor == 2) areasIds = null;
+
+		int ate = DateUtil.mesesEntreDatas(dataIni, dataFim);
+		Date dataTmp = DateUtil.getInicioMesData(dataIni);
+		Empresa empresa = empresaManager.findByIdProjection(empresaId);
+		Collection<TurnOver>  admitidos = null;
+		Collection<TurnOver>  demitidos = null;
+		Map<Long, TurnOver> areasOuCargoMap = new HashMap<Long, TurnOver>();
+		Map<Long, TurnOverCollection> turnOverCollectionMap = new HashMap<Long, TurnOverCollection>();
+		Collection<AreaOrganizacional> areas = new ArrayList<AreaOrganizacional>(); 
+		Collection<Cargo> cargos = new ArrayList<Cargo>();
+		
+		if(areasIds!=null)
+			areas = areaOrganizacionalManager.findCollectionFilhasByAreasIds(new CollectionUtil<Long>().convertCollectionToArrayLong(areasIds));
+		else if(cargosIds!=null)
+			cargos = cargoManager.findCollectionByIdProjection(new CollectionUtil<Long>().convertCollectionToArrayLong(cargosIds));  
+		
+		for (int i = 0; i <= ate; i++){
+			dataFim = DateUtil.getUltimoDiaMes(dataTmp);
+
+			admitidos = getDao().countAdmitidosDemitidosPeriodoTurnover(dataTmp, dataFim, empresa, estabelecimentosIds, areasIds, cargosIds, vinculos, true, agruparPor);
+			for (TurnOver admitido : admitidos){ 
+				if(!areasOuCargoMap.containsKey(admitido.getIdAreaOuCargo()))
+					areasOuCargoMap.put(admitido.getIdAreaOuCargo(), admitido);
+				
+				areasOuCargoMap.get(admitido.getIdAreaOuCargo()).setQtdAdmitidos(admitido.getQtdAdmitidos());
+			}
+			
+			demitidos = getDao().countAdmitidosDemitidosPeriodoTurnover(dataTmp, dataFim, empresa, estabelecimentosIds, areasIds, cargosIds, vinculos, false, agruparPor);
+			for (TurnOver demitido : demitidos){ 
+				if(!areasOuCargoMap.containsKey(demitido.getIdAreaOuCargo()))
+					areasOuCargoMap.put(demitido.getIdAreaOuCargo(), demitido);
+				
+				areasOuCargoMap.get(demitido.getIdAreaOuCargo()).setQtdDemitidos(demitido.getQtdDemitidos());
+			}
+			 
+			HashMap<Long, Double> colaboradoresAtivosInicioMesMap = getDao().countAtivosPeriodoAreaOuCargo(DateUtil.getUltimoDiaMesAnterior(dataTmp), Arrays.asList(empresaId), estabelecimentosIds, areasIds, cargosIds, vinculos, null, false, null, false, agruparPor);
+			HashMap<Long, Double> colaboradoresAtivosFinalMesMap = getDao().countAtivosPeriodoAreaOuCargo(DateUtil.getUltimoDiaMes(dataTmp), Arrays.asList(empresaId), estabelecimentosIds, areasIds, cargosIds, vinculos, null, false, null, false, agruparPor);
+
+ 			if(agruparPor=='A'){
+				for (AreaOrganizacional areaOrganizacional : areas) 
+					montaMapTurnoverCollection(areaOrganizacional.getId(),"Área Organizacional: " + areaOrganizacional.getNome(), dataTmp, empresa, areasOuCargoMap, turnOverCollectionMap, colaboradoresAtivosInicioMesMap, colaboradoresAtivosFinalMesMap);
+				
+			}else if(agruparPor=='C'){
+				for (Cargo cargo : cargos) 
+					montaMapTurnoverCollection(cargo.getId(), "Cargo: " + cargo.getNome(), dataTmp, empresa, areasOuCargoMap, turnOverCollectionMap, colaboradoresAtivosInicioMesMap, colaboradoresAtivosFinalMesMap);
+			}
+
+			dataTmp = DateUtil.setaMesPosterior(dataTmp);
+		}
+		return turnOverCollectionMap.values();
+	}
+
+	private void montaMapTurnoverCollection(Long areaOuCargoId, String nomeAreaOuCargo, Date dataTmp, Empresa empresa, Map<Long, TurnOver> areasOuCargoMap, Map<Long, TurnOverCollection> turnOverCollectionMap, HashMap<Long, Double> colaboradoresAtivosInicioMesMap, HashMap<Long, Double> colaboradoresAtivosFinalMesMap) {
+		double qtdAtivosInicioMes;
+		double qtdAtivosFinalMes;
+		
+		TurnOver turnOverTmp = new TurnOver(dataTmp, 0.0, 0.0, 0.0, 0.0);
+		if(areasOuCargoMap.containsKey(areaOuCargoId) && areasOuCargoMap.get(areaOuCargoId).getMesAno().equals(dataTmp)){
+			turnOverTmp = areasOuCargoMap.get(areaOuCargoId);
+		}
+		
+		qtdAtivosInicioMes = 0.0;
+		if(colaboradoresAtivosInicioMesMap.containsKey(areaOuCargoId)){
+			qtdAtivosInicioMes = colaboradoresAtivosInicioMesMap.get(areaOuCargoId);
+			turnOverTmp.setQtdAtivosInicioMes(qtdAtivosInicioMes);
+		}
+		
+		qtdAtivosFinalMes = 0.0;
+		if(colaboradoresAtivosFinalMesMap.containsKey(areaOuCargoId)){
+			qtdAtivosFinalMes = colaboradoresAtivosFinalMesMap.get(areaOuCargoId);
+			turnOverTmp.setQtdAtivosFinalMes(qtdAtivosFinalMes);
+		}
+		
+		turnOverTmp.setTurnOver(calculaTurnOver(turnOverTmp, empresa.getFormulaTurnover(), qtdAtivosInicioMes, qtdAtivosFinalMes));
+		
+		if(!turnOverCollectionMap.containsKey(areaOuCargoId)){
+			TurnOverCollection turnOverCollection = new TurnOverCollection();
+			turnOverCollection.setEmpresaId(empresa.getId());
+			turnOverCollection.setEmpresaNome(empresa.getNome());
+			turnOverCollection.setFormula(empresa.getFormulaTurnoverDescricao());
+			turnOverCollection.setTurnOvers(new ArrayList<TurnOver>());
+			turnOverCollection.setQtdAdmitidos(0.0);
+			turnOverCollection.setQtdDemitidos(0.0);
+			turnOverCollection.setNomeAreaOuCargo(nomeAreaOuCargo);
+			
+			turnOverCollectionMap.put(areaOuCargoId, turnOverCollection);
+		}
+		
+		turnOverCollectionMap.get(areaOuCargoId).getTurnOvers().add(turnOverTmp);
+		turnOverCollectionMap.get(areaOuCargoId).setQtdAdmitidos(turnOverCollectionMap.get(areaOuCargoId).getQtdAdmitidos() + turnOverTmp.getQtdAdmitidos());
+		turnOverCollectionMap.get(areaOuCargoId).setQtdDemitidos(turnOverCollectionMap.get(areaOuCargoId).getQtdDemitidos() + turnOverTmp.getQtdDemitidos());
+	}
+	
+	public Double calculaTurnOver(TurnOver turnOver,int formulaTurnOver,double qtdAtivosInicioMes, double qtdAtivosFinalMes){
+		double somaAtivos = qtdAtivosInicioMes + qtdAtivosFinalMes;
+		double resultado = 0.0;
+		
+		if(formulaTurnOver==FormulaTurnover.MEDIA_ATIVOS_MES){
+			resultado = (somaAtivos == 0.0 ? 0.0 : (((turnOver.getQtdAdmitidos() + turnOver.getQtdDemitidos()) / 2) / (somaAtivos / 2)) * 100);
+		}else{
+			resultado = (qtdAtivosInicioMes == 0.0 ? 0.0 : (((turnOver.getQtdAdmitidos() + turnOver.getQtdDemitidos()) / 2) / qtdAtivosInicioMes) * 100);
+		}
+		return resultado;
 	}
 	
 	public TaxaDemissaoCollection montaTaxaDemissao(Date dataIni, Date dataFim, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos, int filtrarPor) throws Exception{
@@ -3194,5 +3313,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public void setCartaoManager(CartaoManager cartaoManager) {
 		this.cartaoManager = cartaoManager;
+	}
+	public void setCargoManager(CargoManager cargoManager) {
+		this.cargoManager = cargoManager;
 	}
 }

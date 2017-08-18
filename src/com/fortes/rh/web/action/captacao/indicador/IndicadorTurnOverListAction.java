@@ -54,12 +54,14 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 
 	private Map<String, Object> parametros = new HashMap<String, Object>();
+	
 	private Collection<TurnOverCollection> dataSource;
 	private Collection<TaxaDemissaoCollection> taxaDemissoesCollection;
 	private Collection<Empresa> empresas;
 	private Collection<Colaborador> colaboradores;
 	private Empresa empresa;
 	private int filtrarPor = 1;
+	private Character agruparPor = 'S';
 	
 	private boolean agruparPorTempoServico;
 	private Integer[] tempoServicoIni;
@@ -67,6 +69,8 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 	private String formulaTaxaDemissao = "[ ( Demitidos no perído - Demitidos por Redução de quadro ) / ( ( Ativos Início Mês + Ativos no fim do mês ) / 2 ) ] * 100";
 	
 	private Map<Long, String> empresasFormulas;
+	private String reportFilter;
+	private String reportTitle;
 
 	@SuppressWarnings("unchecked")
 	public String prepare() throws Exception
@@ -101,23 +105,34 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 		{
 			CollectionUtil<String> cUtil = new CollectionUtil<String>();
 			empresa = empresaManager.findByIdProjection(empresa.getId());//os managers/parametroRelatorio precisam da empresa com turnoverPorSolicitacao, logoUrl
+
+			reportTitle = "Turnover (rotatividade de colaboradores)";
+			reportFilter = montaFiltroRelatorio();
 			
-			String filtro = montaFiltroRelatorio();
-			
-			parametros = RelatorioUtil.getParametrosRelatorio("Turnover (rotatividade de colaboradores)", empresa, filtro);
+			parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, empresa, reportFilter);
 			parametros.put("FORMULA", empresa.getFormulaTurnover());
 			parametros.put("FORMULA_DESCRICAO", empresa.getFormulaTurnoverDescricao());
-
-			if ( agruparPorTempoServico )
-			{
-				colaboradores = colaboradorManager.findDemitidosTurnoverTempoServico(tempoServicoIni, tempoServicoFim, empresa.getId(), dataIni, dataFim, LongUtil.arrayStringToCollectionLong(estabelecimentosCheck), LongUtil.arrayStringToCollectionLong(areasCheck), LongUtil.arrayStringToCollectionLong(cargosCheck), cUtil.convertArrayToCollection(vinculosCheck), filtrarPor);
-				return "success_temposervico";
+			
+			if(!agruparPor.equals('S'))
+				filtrarPor=(agruparPor=='A'  ? 1: 2);
+			
+			if (agruparPorTempoServico)
+			{	
+				colaboradores = colaboradorManager.findDemitidosTurnoverTempoServico(tempoServicoIni, tempoServicoFim, empresa.getId(), dataIni, dataFim, LongUtil.arrayStringToCollectionLong(estabelecimentosCheck), LongUtil.arrayStringToCollectionLong(areasCheck), LongUtil.arrayStringToCollectionLong(cargosCheck), cUtil.convertArrayToCollection(vinculosCheck), filtrarPor, agruparPor);
+				if(colaboradores == null || colaboradores.size() == 0)
+					throw new ColecaoVaziaException("Não existem dados para o filtro informado.");
+				
+				return selecionaRelatorioTempoServico();
 			}
-			else
-			{
-				TurnOverCollection turnOverCollection = colaboradorManager.montaTurnOver(dataIni, dataFim, empresa.getId(), LongUtil.arrayStringToCollectionLong(estabelecimentosCheck), LongUtil.arrayStringToCollectionLong(areasCheck), LongUtil.arrayStringToCollectionLong(cargosCheck), cUtil.convertArrayToCollection(vinculosCheck), filtrarPor);
-				dataSource = Arrays.asList(turnOverCollection);
-				return Action.SUCCESS;
+			else{
+				if(agruparPor=='A' || agruparPor=='C'){
+					dataSource = colaboradorManager.montaTurnOverAreaOuCargo(dataIni, dataFim, empresa.getId(), LongUtil.arrayStringToCollectionLong(estabelecimentosCheck), LongUtil.arrayStringToCollectionLong(areasCheck), LongUtil.arrayStringToCollectionLong(cargosCheck), cUtil.convertArrayToCollection(vinculosCheck), filtrarPor, agruparPor);
+				}
+				else{
+					dataSource = Arrays.asList(colaboradorManager.montaTurnOver(dataIni, dataFim, empresa.getId(), LongUtil.arrayStringToCollectionLong(estabelecimentosCheck), LongUtil.arrayStringToCollectionLong(areasCheck), LongUtil.arrayStringToCollectionLong(cargosCheck), cUtil.convertArrayToCollection(vinculosCheck), filtrarPor));
+				}
+				
+				return selecionaRelatorioTurnOver();
 			}
 		
 		} catch (ColecaoVaziaException e) {
@@ -128,6 +143,32 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 		}
 	}
 	
+	private String selecionaRelatorioTurnOver() {
+		
+		String resultNome = "";
+	
+		if(agruparPor== 'A' || agruparPor== 'C')
+			resultNome="success_turnover_agrupado_por_area_ou_cargo";
+		else
+			resultNome=Action.SUCCESS;
+		
+		return resultNome;
+	}
+
+	private String selecionaRelatorioTempoServico() {
+		
+		String resultNome = "";
+		
+		if(agruparPor== 'A')
+			resultNome="success_temposervico_agrupado_por_area";
+		else if(agruparPor == 'C')	
+			resultNome="success_temposervico_agrupado_por_cargo";
+		else
+			resultNome="success_temposervico";
+
+		return resultNome;
+	}
+
 	public String taxaDeDemissao() throws Exception 
 	{
 		Date dataIni = DateUtil.criarDataMesAno(dataDe);
@@ -167,26 +208,30 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 
 	private String montaFiltroRelatorio() {
 		String filtro =  "Período: " + dataDe + " a " + dataAte;
-
+		
 		if (estabelecimentosCheck != null && estabelecimentosCheck.length > 0)
 			filtro +=  "\nEstabelecimentos: " + StringUtil.subStr(estabelecimentoManager.nomeEstabelecimentos(LongUtil.arrayStringToArrayLong(estabelecimentosCheck), null), 90, "...");
 		else
 			filtro +=  "\nTodos os Estabelecimentos";
 		
-		if (filtrarPor == 1)
-		{
-			if (areasCheck != null && areasCheck.length > 0)
-				filtro +=  "\nÁreas Organizacionais: " + areaOrganizacionalManager.nomeAreas(LongUtil.arrayStringToArrayLong(areasCheck));
-			else
-				filtro +=  "\nTodas as Áreas Organizacionais";
+		if(agruparPor=='A'){
+			filtro +=  "\nAgrupado por Área Organizacional";
+		} else if(agruparPor=='C'){
+			filtro +=  "\nAgrupado por Cargo";
+		}else {
+			if (filtrarPor == 1){
+				if (areasCheck != null && areasCheck.length > 0)
+					filtro +=  "\nÁreas Organizacionais: " + areaOrganizacionalManager.nomeAreas(LongUtil.arrayStringToArrayLong(areasCheck));
+				else
+					filtro +=  "\nTodas as Áreas Organizacionais";
+			}else{
+				if (cargosCheck != null && cargosCheck.length > 0)
+					filtro +=  "\nCargos: " + cargoManager.nomeCargos(LongUtil.arrayStringToArrayLong(cargosCheck));
+				else
+					filtro +=  "\nTodos os Cargos";
+			}
 		}
-		else
-		{
-			if (cargosCheck != null && cargosCheck.length > 0)
-				filtro +=  "\nCargos: " + cargoManager.nomeCargos(LongUtil.arrayStringToArrayLong(cargosCheck));
-			else
-				filtro +=  "\nTodos os Cargos";
-		}
+		
 		return filtro;
 	}
 
@@ -300,16 +345,6 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 		this.cargoManager = cargoManager;
 	}
 
-	public Collection<TurnOverCollection> getDataSource()
-	{
-		return dataSource;
-	}
-
-	public void setDataSource(Collection<TurnOverCollection> dataSource)
-	{
-		this.dataSource = dataSource;
-	}
-
 	public int getFiltrarPor() {
 		return filtrarPor;
 	}
@@ -396,5 +431,29 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 
 	public String getFormulaTaxaDemissao() {
 		return formulaTaxaDemissao;
+	}
+
+	public Character getAgruparPor() {
+		return agruparPor;
+	}
+
+	public void setAgruparPor(Character agruparPor) {
+		this.agruparPor = agruparPor;
+	}
+
+	public Collection<TurnOverCollection> getDataSource() {
+		return dataSource;
+	}
+
+	public void setDataSource(Collection<TurnOverCollection> dataSource) {
+		this.dataSource = dataSource;
+	}
+
+	public String getReportFilter() {
+		return reportFilter;
+	}
+
+	public String getReportTitle() {
+		return reportTitle;
 	}
 }

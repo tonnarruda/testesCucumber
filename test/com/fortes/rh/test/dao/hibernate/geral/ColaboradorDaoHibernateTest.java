@@ -4314,6 +4314,88 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<
 		
 		assertEquals(new Integer(2), colaboradorDao.countAtivosPeriodo(data_21_07_2011, Arrays.asList(vega.getId()), null, null, null, Arrays.asList(Vinculo.EMPREGO), null, false, null, false));
 	}
+	@Test public void testCountAtivosPeriodoArea() 
+	{
+		Character agruparPor='A';
+		Date dataContratacaoJoao = DateUtil.criarDataMesAno(01, 05, 2010);
+		Date data_21_07_2011 = DateUtil.criarDataMesAno(21, 07, 2011);
+		
+		Empresa vega = EmpresaFactory.getEmpresa();
+		empresaDao.save(vega);
+		
+		FaixaSalarial faixa = FaixaSalarialFactory.getEntity();
+		faixaSalarialDao.save(faixa);
+		
+		AreaOrganizacional areaA = AreaOrganizacionalFactory.getEntity(1l);
+    	areaA.setNome("areaA");
+    	areaOrganizacionalDao.save(areaA);
+    	
+    	AreaOrganizacional areaB = AreaOrganizacionalFactory.getEntity(2l);
+    	areaB.setNome("areaB");
+    	areaOrganizacionalDao.save(areaB);
+    	
+		Colaborador joao = montaColaboradorDoTestCountAtivo(vega, dataContratacaoJoao);
+		
+		HistoricoColaborador hc1 = HistoricoColaboradorFactory.getEntity();
+		hc1.setColaborador(joao);
+		hc1.setAreaOrganizacional(areaA);
+		hc1.setData(dataContratacaoJoao);
+		hc1.setFaixaSalarial(faixa);
+		hc1.setStatus(StatusRetornoAC.CONFIRMADO);
+		hc1 = historicoColaboradorDao.save(hc1);
+
+		HashMap<Long, Double> totalAtivosArea = colaboradorDao.countAtivosPeriodoAreaOuCargo(data_21_07_2011, Arrays.asList(vega.getId()), null, Arrays.asList(areaA.getId(),areaB.getId()), null, null, null, false, null, false, agruparPor);
+		assertEquals(1, totalAtivosArea.size());
+}
+	@Test public void testCountAtivosPeriodoCargo() 
+	{
+		Character agruparPorCargo='C';
+		Date dataContratacaoJoao = DateUtil.criarDataMesAno(01, 05, 2010);
+		Date dataContratacaoPedro = DateUtil.criarDataMesAno(20, 05, 2011);
+		
+		Date data_21_07_2011 = DateUtil.criarDataMesAno(21, 07, 2011);
+		
+		Empresa vega = EmpresaFactory.getEmpresa();
+		empresaDao.save(vega);
+		
+		Cargo cargoA  = CargoFactory.getEntity(1l);
+		cargoA.setNome("cargoA");
+		cargoDao.save(cargoA);
+		
+		Cargo cargoB  = CargoFactory.getEntity(2l);
+		cargoB.setNome("cargoB");
+		cargoDao.save(cargoB);
+
+		FaixaSalarial faixaCargoA = FaixaSalarialFactory.getEntity();
+		faixaCargoA.setCargo(cargoA);
+		faixaSalarialDao.save(faixaCargoA);
+		
+		FaixaSalarial faixaCargoB = FaixaSalarialFactory.getEntity();
+		faixaCargoB.setCargo(cargoB);
+		faixaSalarialDao.save(faixaCargoB);
+		
+		Colaborador joao = montaColaboradorDoTestCountAtivo(vega, dataContratacaoJoao);
+		Colaborador pedro = montaColaboradorDoTestCountAtivo(vega, dataContratacaoPedro);
+		
+		HistoricoColaborador hc1 = HistoricoColaboradorFactory.getEntity();
+		hc1.setColaborador(joao);
+		hc1.setCargoId(cargoA.getId());
+		hc1.setData(dataContratacaoJoao);
+		hc1.setFaixaSalarial(faixaCargoA);
+		hc1.setStatus(StatusRetornoAC.CONFIRMADO);
+		hc1 = historicoColaboradorDao.save(hc1);
+		
+		HistoricoColaborador hc2 = HistoricoColaboradorFactory.getEntity();
+		hc2.setColaborador(pedro);
+		hc2.setCargoId(cargoB.getId());
+		hc2.setData(dataContratacaoPedro);
+		hc2.setFaixaSalarial(faixaCargoB);
+		hc2.setStatus(StatusRetornoAC.CONFIRMADO);
+		hc2 = historicoColaboradorDao.save(hc2);
+		
+		HashMap<Long, Double> totalAtivosCargo = colaboradorDao.countAtivosPeriodoAreaOuCargo(data_21_07_2011, Arrays.asList(vega.getId()), null,null , Arrays.asList(cargoA.getId(),cargoB.getId()), null, null, false, null, false, agruparPorCargo);
+		assertEquals(2, totalAtivosCargo.size());
+	}
 	
 	@Test public void testCountAtivosPeriodoComAbsenteismo() 
 	{
@@ -4385,28 +4467,163 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<
 		Collection<Long> longs = new ArrayList<Long>();
 		longs.add(1L);
 
-		Collection<TurnOver> colaboradores = colaboradorDao.countAdmitidosDemitidosPeriodoTurnover(DateUtil.criarDataMesAno(01, 01, 2010), DateUtil.criarDataMesAno(30, 12, 2010), empresa, longs, longs, longs, null, false);
+		Collection<TurnOver> colaboradores = colaboradorDao.countAdmitidosDemitidosPeriodoTurnover(DateUtil.criarDataMesAno(01, 01, 2010), DateUtil.criarDataMesAno(30, 12, 2010), empresa, longs, longs, longs, null, false, null);
 		assertEquals(0, colaboradores.size());
+	}
+	
+	@Test public void testCountDesligadosPorArea() {
+		Character agruparPorArea= 'A';
+		Date dataContratacaoJoao = DateUtil.criarDataMesAno(01, 05, 2010);
+
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador joao = ColaboradorFactory.getEntity(true, dataContratacaoJoao, DateUtil.criarDataMesAno(29, 12, 2010));
+		joao.setEmpresa(empresa);
+		colaboradorDao.save(joao);
+		
+		Cargo cargo = CargoFactory.getEntity();
+		cargoDao.save(cargo);
+		
+		FaixaSalarial faixaSalarial= FaixaSalarialFactory.getEntity();
+		faixaSalarial.setCargo(cargo);
+		faixaSalarialDao.save(faixaSalarial);
+		
+		AreaOrganizacional areaOrganizacional= AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional);
+		
+		HistoricoColaborador hc1 = HistoricoColaboradorFactory.getEntity();
+		hc1.setColaborador(joao);
+		hc1.setData(dataContratacaoJoao);
+		hc1.setFaixaSalarial(faixaSalarial);
+		hc1.setStatus(StatusRetornoAC.CONFIRMADO);
+		hc1.setAreaOrganizacional(areaOrganizacional);
+		hc1 = historicoColaboradorDao.save(hc1);
+
+		colaboradorDao.getHibernateTemplateByGenericDao().flush();
+		
+		Collection<TurnOver> colaboradores = colaboradorDao.countAdmitidosDemitidosPeriodoTurnover(DateUtil.criarDataMesAno(01, 01, 2010), DateUtil.criarDataMesAno(30, 12, 2010), empresa, null, Arrays.asList(areaOrganizacional.getId()), null, null, false, agruparPorArea);
+		assertEquals(1, colaboradores.size());
+	}
+	@Test public void testCountDesligadosPorCargo() {
+		Character agruparPorCargo= 'C';
+		Date dataContratacaoJoao = DateUtil.criarDataMesAno(01, 05, 2010);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador joao = ColaboradorFactory.getEntity(true, dataContratacaoJoao, DateUtil.criarDataMesAno(29, 12, 2010));
+		joao.setEmpresa(empresa);
+		colaboradorDao.save(joao);
+		
+		Cargo cargo = CargoFactory.getEntity();
+		cargoDao.save(cargo);
+		
+		FaixaSalarial faixaSalarial= FaixaSalarialFactory.getEntity();
+		faixaSalarial.setCargo(cargo);
+		faixaSalarialDao.save(faixaSalarial);
+		
+		
+		HistoricoColaborador hc1 = HistoricoColaboradorFactory.getEntity();
+		hc1.setColaborador(joao);
+		hc1.setData(dataContratacaoJoao);
+		hc1.setFaixaSalarial(faixaSalarial);
+		hc1.setStatus(StatusRetornoAC.CONFIRMADO);
+		hc1 = historicoColaboradorDao.save(hc1);
+		
+		colaboradorDao.getHibernateTemplateByGenericDao().flush();
+		
+		Collection<TurnOver> colaboradores = colaboradorDao.countAdmitidosDemitidosPeriodoTurnover(DateUtil.criarDataMesAno(01, 01, 2010), DateUtil.criarDataMesAno(30, 12, 2010), empresa, null, null, Arrays.asList(cargo.getId()), null, false, agruparPorCargo);
+		assertEquals(1, colaboradores.size());
 	}
 
 	@Test public void testCountAdmitidosPeriodoTurnover() {
+		Character semAgrupamento= 'S';
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 
 		Collection<Long> longs = new ArrayList<Long>();
 		longs.add(1L);
-		Collection<TurnOver> colaboradores = colaboradorDao.countAdmitidosDemitidosPeriodoTurnover(DateUtil.criarDataMesAno(01, 01, 2010), DateUtil.criarDataMesAno(30, 12, 2010), empresa, longs, longs, longs, Arrays.asList(Vinculo.EMPREGO), true);
+		Collection<TurnOver> colaboradores = colaboradorDao.countAdmitidosDemitidosPeriodoTurnover(DateUtil.criarDataMesAno(01, 01, 2010), DateUtil.criarDataMesAno(30, 12, 2010), empresa, longs, longs, longs, Arrays.asList(Vinculo.EMPREGO), true, semAgrupamento);
 		assertEquals(0, colaboradores.size());
+	}
+	
+	@Test public void testCountAdmitidosPeriodoTurnoverArea() {
+		Character agruparPorArea= 'A';
+		Date dataContratacaoJoao = DateUtil.criarDataMesAno(01, 05, 2010);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador joao = ColaboradorFactory.getEntity();
+		joao.setDataAdmissao(dataContratacaoJoao);
+		joao.setEmpresa(empresa);
+		colaboradorDao.save(joao);
+		
+		Cargo cargo = CargoFactory.getEntity();
+		cargoDao.save(cargo);
+		
+		FaixaSalarial faixaSalarial= FaixaSalarialFactory.getEntity();
+		faixaSalarial.setCargo(cargo);
+		faixaSalarialDao.save(faixaSalarial);
+		
+		AreaOrganizacional areaOrganizacional= AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional);
+		
+		HistoricoColaborador hc1 = HistoricoColaboradorFactory.getEntity();
+		hc1.setColaborador(joao);
+		hc1.setData(dataContratacaoJoao);
+		hc1.setFaixaSalarial(faixaSalarial);
+		hc1.setStatus(StatusRetornoAC.CONFIRMADO);
+		hc1.setAreaOrganizacional(areaOrganizacional);
+		hc1 = historicoColaboradorDao.save(hc1);
+
+		colaboradorDao.getHibernateTemplateByGenericDao().flush();
+	
+		Collection<TurnOver> colaboradores = colaboradorDao.countAdmitidosDemitidosPeriodoTurnover(DateUtil.criarDataMesAno(01, 01, 2010), DateUtil.criarDataMesAno(30, 12, 2010), empresa, null, Arrays.asList(areaOrganizacional.getId()), null, Arrays.asList(Vinculo.EMPREGO), true, agruparPorArea);
+		assertEquals(1, colaboradores.size());
+	}
+	@Test public void testCountAdmitidosPeriodoTurnoverCargo() {
+		Character agruparPorCargo= 'C';
+		Date dataContratacaoJoao = DateUtil.criarDataMesAno(01, 05, 2010);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador joao = ColaboradorFactory.getEntity();
+		joao.setDataAdmissao(dataContratacaoJoao);
+		joao.setEmpresa(empresa);
+		colaboradorDao.save(joao);
+		
+		Cargo cargo = CargoFactory.getEntity();
+		cargoDao.save(cargo);
+		
+		FaixaSalarial faixaSalarial= FaixaSalarialFactory.getEntity();
+		faixaSalarial.setCargo(cargo);
+		faixaSalarialDao.save(faixaSalarial);
+		
+		HistoricoColaborador hc1 = HistoricoColaboradorFactory.getEntity();
+		hc1.setColaborador(joao);
+		hc1.setData(dataContratacaoJoao);
+		hc1.setFaixaSalarial(faixaSalarial);
+		hc1.setStatus(StatusRetornoAC.CONFIRMADO);
+		hc1 = historicoColaboradorDao.save(hc1);
+		
+		colaboradorDao.getHibernateTemplateByGenericDao().flush();
+		
+		Collection<TurnOver> colaboradores = colaboradorDao.countAdmitidosDemitidosPeriodoTurnover(DateUtil.criarDataMesAno(01, 01, 2010), DateUtil.criarDataMesAno(30, 12, 2010), empresa, null, null, Arrays.asList(cargo.getId()), Arrays.asList(Vinculo.EMPREGO), true, agruparPorCargo);
+		assertEquals(1, colaboradores.size());
 	}
 
 	@Test public void testCountAdmitidosPeriodoTurnoverSolicitacao() {
+		Character semAgrupamento= 'S';
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa.setTurnoverPorSolicitacao(true);
 		empresaDao.save(empresa);
 		
 		Collection<Long> longs = new ArrayList<Long>();
 		longs.add(1L);
-		Collection<TurnOver> colaboradores = colaboradorDao.countAdmitidosDemitidosPeriodoTurnover(DateUtil.criarDataMesAno(01, 01, 2010), DateUtil.criarDataMesAno(30, 12, 2010), empresa, longs, longs, longs, Arrays.asList(Vinculo.EMPREGO), true);
+		Collection<TurnOver> colaboradores = colaboradorDao.countAdmitidosDemitidosPeriodoTurnover(DateUtil.criarDataMesAno(01, 01, 2010), DateUtil.criarDataMesAno(30, 12, 2010), empresa, longs, longs, longs, Arrays.asList(Vinculo.EMPREGO), true, semAgrupamento);
 		assertEquals(0, colaboradores.size());
 	}
 
@@ -6371,16 +6588,16 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<
 		
 		criarColaboradorHistorico(null, null, empresaTurnover, DateUtil.criarDataMesAno(1, 5, 2011), DateUtil.criarDataMesAno(1, 11, 2011), null, null, md, null, a1, fs1, can1, null, false);
 		
-		Collection<Colaborador> retorno = colaboradorDao.findDemitidosTurnover(empresa, DateUtil.criarDataMesAno(1, 1, 2010), DateUtil.criarDataMesAno(1, 1, 2013), null, null, null, Arrays.asList(a1.getId()), Arrays.asList(cargo.getId()), Arrays.asList(Vinculo.EMPREGO));
+		Collection<Colaborador> retorno = colaboradorDao.findDemitidosTurnover(empresa, DateUtil.criarDataMesAno(1, 1, 2010), DateUtil.criarDataMesAno(1, 1, 2013), null, null, null, Arrays.asList(a1.getId()), Arrays.asList(cargo.getId()), Arrays.asList(Vinculo.EMPREGO), null);
 		assertEquals("Todos do intervalo", 3, retorno.size());
 
-		retorno = colaboradorDao.findDemitidosTurnover(empresa, DateUtil.criarDataMesAno(1, 1, 2010), DateUtil.criarDataMesAno(1, 1, 2013), new Integer[] {0}, new Integer[] {6}, null, Arrays.asList(a1.getId()), Arrays.asList(cargo.getId()), Arrays.asList(Vinculo.EMPREGO));
+		retorno = colaboradorDao.findDemitidosTurnover(empresa, DateUtil.criarDataMesAno(1, 1, 2010), DateUtil.criarDataMesAno(1, 1, 2013), new Integer[] {0}, new Integer[] {6}, null, Arrays.asList(a1.getId()), Arrays.asList(cargo.getId()), Arrays.asList(Vinculo.EMPREGO), null);
 		assertEquals("Passando intervalos de tempo de servico", 2, retorno.size());
 
-		retorno = colaboradorDao.findDemitidosTurnover(empresa, DateUtil.criarDataMesAno(1, 1, 2010), DateUtil.criarDataMesAno(1, 1, 2013), null, null, Arrays.asList(e1.getId()), Arrays.asList(a1.getId()), Arrays.asList(cargo.getId()), Arrays.asList(Vinculo.EMPREGO));
+		retorno = colaboradorDao.findDemitidosTurnover(empresa, DateUtil.criarDataMesAno(1, 1, 2010), DateUtil.criarDataMesAno(1, 1, 2013), null, null, Arrays.asList(e1.getId()), Arrays.asList(a1.getId()), Arrays.asList(cargo.getId()), Arrays.asList(Vinculo.EMPREGO), null);
 		assertEquals("Filtro por estabelecimento", 1, retorno.size());
 
-		retorno = colaboradorDao.findDemitidosTurnover(empresaTurnover, DateUtil.criarDataMesAno(1, 1, 2010), DateUtil.criarDataMesAno(1, 1, 2013), null, null, null, Arrays.asList(a1.getId()), Arrays.asList(cargo.getId()), Arrays.asList(Vinculo.EMPREGO));
+		retorno = colaboradorDao.findDemitidosTurnover(empresaTurnover, DateUtil.criarDataMesAno(1, 1, 2010), DateUtil.criarDataMesAno(1, 1, 2013), null, null, null, Arrays.asList(a1.getId()), Arrays.asList(cargo.getId()), Arrays.asList(Vinculo.EMPREGO),null);
 		assertEquals("Empresa com turnover por solicitacao", 1, retorno.size());
 	}
 	

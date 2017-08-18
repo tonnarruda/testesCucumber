@@ -1,7 +1,3 @@
-/* Autor: Bruno Bachiega
- * Data: 8/06/2006
- * Requisito: RFA0026
- */
 package com.fortes.rh.business.cargosalario;
 
 import java.util.Collection;
@@ -30,6 +26,7 @@ public interface CargoManager extends GenericManager<Cargo>
 	public Collection<Cargo> getCargosByIds(Long[] cargoDoubleList, Long empresaId) throws Exception;
 	public Collection<Cargo> findAllSelect(String ordenarPor, Boolean exibirModuloExterno, Boolean ativo, Long... empresaIds);
 	public Cargo findByIdProjection(Long id);
+	public Collection<Cargo> findCollectionByIdProjection(Long... cargoId);
 	public Collection<Cargo> populaCargos(String[] cargosCheck);
 	public Collection<Cargo> populaCargos(Long[] ids);
 	public Cargo findByIdAllProjection(Long cargoId);

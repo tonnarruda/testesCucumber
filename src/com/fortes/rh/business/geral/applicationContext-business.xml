@@ -189,6 +189,9 @@
     <property name="cartaoManager">
       <ref bean="cartaoManager" />
     </property>
+    <property name="cargoManager">
+      <ref bean="cargoManager" />
+    </property>
   </bean>
   <bean id="colaboradorManager" parent="parentManager">
     <property name="proxyInterfaces">

@@ -8,14 +8,15 @@ import com.fortes.rh.util.DateUtil;
 public class TurnOver
 {
 	private Date mesAno;
-	private Double turnOver;
-	private Double qtdAdmitidos;
-	private Double qtdDemitidos;
-	private Double qtdAtivosInicioMes;
-	private Double qtdAtivosFinalMes;
+	private Double turnOver = 0.0;
+	private Double qtdAdmitidos = 0.0;
+	private Double qtdDemitidos = 0.0;
+	private Double qtdAtivosInicioMes = 0.0;
+	private Double qtdAtivosFinalMes = 0.0;
 	
 	private Integer qtdColaboradores;
 	private Integer tempoServico;
+	private Long idAreaOuCargo;
 	
 	public TurnOver() 
 	{
@@ -130,5 +131,13 @@ public class TurnOver
 
 	public void setQtdAtivosFinalMes(Double qtdAtivosFinalMes) {
 		this.qtdAtivosFinalMes = qtdAtivosFinalMes;
+	}
+
+	public Long getIdAreaOuCargo() {
+		return idAreaOuCargo;
+	}
+
+	public void setIdAreaOuCargo(Long idAreaOuCargo) {
+		this.idAreaOuCargo = idAreaOuCargo;
 	}
 }

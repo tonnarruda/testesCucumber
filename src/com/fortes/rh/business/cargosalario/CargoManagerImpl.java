@@ -141,6 +141,11 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 	{
 		return getDao().findByIdProjection(cargoId);
 	}
+	
+	public Collection<Cargo> findCollectionByIdProjection(Long... cargoId)
+	{
+		return getDao().findCollectionByIdProjection(cargoId);
+	}
 
 	public Collection<Cargo> populaCargos(String[] cargosCheck)
 	{

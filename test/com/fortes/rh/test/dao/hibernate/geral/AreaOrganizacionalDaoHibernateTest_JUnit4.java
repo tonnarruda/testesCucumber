@@ -138,6 +138,27 @@ public class AreaOrganizacionalDaoHibernateTest_JUnit4  extends GenericDaoHibern
 		} catch (Exception e) {
 			fail("Erro ao remover vinculo com conhecimento");
 		}
+	}
+	
+	@Test
+	public void testFindCollectionFilhasByAreasIds() {
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		AreaOrganizacional areaAvo = AreaOrganizacionalFactory.getEntity(null, "Area Avó", true, empresa);
+		areaOrganizacionalDao.save(areaAvo);
+		
+		AreaOrganizacional areaMae = AreaOrganizacionalFactory.getEntity(null, "Area Mãe", true, empresa);
+		areaMae.setAreaMae(areaAvo);
+		areaOrganizacionalDao.save(areaMae);
 
+		AreaOrganizacional areaFilha = AreaOrganizacionalFactory.getEntity(null, "Area Filha", true, empresa);
+		areaFilha.setAreaMae(areaMae);
+		areaOrganizacionalDao.save(areaFilha);
+	
+		Collection<AreaOrganizacional> areas = areaOrganizacionalDao.findCollectionFilhasByAreasIds(new Long[]{areaAvo.getId(), areaMae.getId(), areaFilha.getId()}); 
+		
+		assertEquals(1, areas.size());
+		assertEquals("Area Avó > Area Mãe > Area Filha", ((AreaOrganizacional)areas.toArray()[0]).getNome());
 	}
 }
