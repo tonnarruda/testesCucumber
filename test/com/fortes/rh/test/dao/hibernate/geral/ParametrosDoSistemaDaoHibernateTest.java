@@ -17,6 +17,7 @@ public class ParametrosDoSistemaDaoHibernateTest extends GenericDaoHibernateTest
 		parametrosDoSistema.setId(null);
 		parametrosDoSistema.setAppUrl("url");
 		parametrosDoSistema.setTelaInicialModuloExterno('L');
+		parametrosDoSistema.setQuantidadeConstraints(426);
 
 		return parametrosDoSistema;
 	}
@@ -79,5 +80,14 @@ public class ParametrosDoSistemaDaoHibernateTest extends GenericDaoHibernateTest
         parametrosDoSistemaDao.save(ps);
 
         assertTrue(parametrosDoSistemaDao.getQuantidadeConstraintsDoBanco() > 400);
+    }
+	
+    public void testIsUtilizarCaptchaNoLogin() 
+    {
+        ParametrosDoSistema ps = ParametrosDoSistemaFactory.getEntity();
+        ps.setUtilizarCaptchaNoLogin(true);
+        parametrosDoSistemaDao.save(ps);
+
+        assertTrue(parametrosDoSistemaDao.isUtilizarCaptchaNoLogin(ps.getId()));
     }
 }

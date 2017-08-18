@@ -16,6 +16,8 @@ public class MyAuthenticationProcessingFilter extends AuthenticationProcessingFi
     	String password  = obtainPassword(request);
     	String empresaId = obtainEmpresa(request);
     	String SOSSeed = obtainContraSenha(request);
+    	String recaptchaResponse = obtainRecaptchaResponse(request);
+    	String contexto = request.getContextPath();
 
 	    if (username == null) 
 	        username = "";
@@ -32,7 +34,7 @@ public class MyAuthenticationProcessingFilter extends AuthenticationProcessingFi
 	    if (SOSSeed == null) 
 	    	SOSSeed = "";
 
-	    UsernamePasswordEmpresaAuthenticationToken authRequest = new UsernamePasswordEmpresaAuthenticationToken(username, password, empresaId, SOSSeed);
+	    UsernamePasswordEmpresaAuthenticationToken authRequest = new UsernamePasswordEmpresaAuthenticationToken(username, password, empresaId, SOSSeed, recaptchaResponse, contexto);
 
 	    // Allow subclasses to set the "details" property
 	    setDetails(request, authRequest);
@@ -52,4 +54,9 @@ public class MyAuthenticationProcessingFilter extends AuthenticationProcessingFi
     {
         return request.getParameter("j_SOSSeed");
     }
+    
+	protected String obtainRecaptchaResponse(HttpServletRequest request) 
+	{
+		return request.getParameter("g-recaptcha-response");
+	}
 }

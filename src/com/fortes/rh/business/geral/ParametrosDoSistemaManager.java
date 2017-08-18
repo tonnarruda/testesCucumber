@@ -18,4 +18,5 @@ public interface ParametrosDoSistemaManager extends GenericManager<ParametrosDoS
 	public void updateServidorRemprot(String servidorRemprot);
 	public String getContexto();
 	public Integer getQuantidadeConstraintsDoBanco();
+	public boolean isUtilizarCaptchaNoLogin(Long id);
 }

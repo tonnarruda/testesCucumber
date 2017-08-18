@@ -10,4 +10,5 @@ public interface ParametrosDoSistemaDao extends GenericDao<ParametrosDoSistema>
 	void updateServidorRemprot(String servidorRemprot);
 	Integer getQuantidadeConstraintsDoBanco();
 	String getContexto();
+	boolean isUtilizarCaptchaNoLogin(Long id);
 }

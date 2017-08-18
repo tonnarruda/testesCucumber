@@ -146,6 +146,7 @@
 	</bean>
 	<bean id="usuarioDWR" class="com.fortes.rh.web.dwr.UsuarioDWR">
 		<property name="usuarioManager" ref="usuarioManager"/>
+		<property name="parametrosDoSistemaManager" ref="parametrosDoSistemaManager"/>
 	</bean>
 	<bean id="etapaProcessoEleitoralDWR" class="com.fortes.rh.web.dwr.EtapaProcessoEleitoralDWR">
 		<property name="etapaProcessoEleitoralManager" ref="etapaProcessoEleitoralManager"/>

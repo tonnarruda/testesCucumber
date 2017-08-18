@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Map;
 
 import com.fortes.rh.business.acesso.UsuarioManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.dicionario.TipoMensagem;
 import com.fortes.rh.model.geral.ConfiguracaoCaixasMensagens;
@@ -15,6 +16,7 @@ import com.fortes.rh.util.StringUtil;
 public class UsuarioDWR
 {
 	private UsuarioManager usuarioManager;
+	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	
 	public void gravarLayoutCaixasMensagens(Long usuarioId, Character[] caixasEsquerda, Character[] caixasDireita, Character[] caixasMinimizadas) throws Exception 
 	{
@@ -71,8 +73,16 @@ public class UsuarioDWR
 		return new CollectionUtil<Usuario>().sortCollectionStringIgnoreCase(usuarios, "nome"); 
 	}
 	
+	public boolean utilizaCaptchaNoLogin(){
+		return parametrosDoSistemaManager.isUtilizarCaptchaNoLogin(1L);
+	}
+	
 	public void setUsuarioManager(UsuarioManager usuarioManager) 
 	{
 		this.usuarioManager = usuarioManager;
+	}
+
+	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
+		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 }

@@ -1,5 +1,6 @@
 package com.fortes.rh.security;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -24,6 +25,7 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.util.CollectionUtil;
+import com.fortes.rh.util.UrlUtil;
 
 public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider
 {
@@ -41,18 +43,21 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider
 		
 		try {
 			String credentials = "";
+			Boolean captchaValido; 
+			UsernamePasswordEmpresaAuthenticationToken usernameAuthentication = (UsernamePasswordEmpresaAuthenticationToken)authentication;
+			
 			if(authentication.getPrincipal().toString().toUpperCase().equals("SOS")){
-				credentials = Access.check(authentication.getCredentials().toString(), ((UsernamePasswordEmpresaAuthenticationToken)authentication).getSOSSeed());
+				credentials = Access.check(authentication.getCredentials().toString(), usernameAuthentication.getSOSSeed());
 				if(credentials != null && !"".equals(credentials) && credentials.equals("Bad credentials"))
 					throw new BadCredentialsException(messages.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentialsSOS", "Bad credentials"), userDetails);
+				captchaValido = true;
 			}else{
 				credentials = authentication.getCredentials().toString();
+				captchaValido = checaCaptcha(usernameAuthentication); 
 			}
 
-			if (!this.getPasswordEncoder().isPasswordValid(userDetails.getPassword(), credentials, salt))
+			if (!captchaValido || !this.getPasswordEncoder().isPasswordValid(userDetails.getPassword(), credentials, salt))
 				throw new BadCredentialsException(messages.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"), userDetails);
-
-			Long empresaId = Long.parseLong(((UsernamePasswordEmpresaAuthenticationToken)authentication).getEmpresa());
 
 			if( ((UserDetailsImpl)userDetails).getColaborador() != null && ((UserDetailsImpl)userDetails).getColaborador().getId() != null ) {
 				Colaborador colaborador = colaboradorManager.findByIdProjectionEmpresa(((UserDetailsImpl)userDetails).getColaborador().getId());
@@ -61,7 +66,7 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider
 					throw new BadCredentialsException(messages.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"), userDetails);
 			}
 
-			configuraPapeis(userDetails, empresaId);
+			configuraPapeis(userDetails, Long.parseLong(usernameAuthentication.getEmpresa()));
 		} catch (Exception e) {
 			e.printStackTrace();
 			if(e instanceof BadCredentialsException)
@@ -69,6 +74,23 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider
 			else
 				throw new BadCredentialsException(messages.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"), userDetails);
 		}
+	}
+
+	private boolean checaCaptcha(UsernamePasswordEmpresaAuthenticationToken usernameAuthentication) throws IOException {
+		boolean captchaValido = true;
+		
+		if(parametrosDoSistemaManager.isUtilizarCaptchaNoLogin(1L)){
+			boolean possueInternet = UrlUtil.pingUrl("http://www.google.com/");
+			if(possueInternet)
+				captchaValido = verificaCotexto(usernameAuthentication.getContexto()) && VerifyRecaptcha.verify(usernameAuthentication.getRecaptchaResponse());
+		}
+
+		return captchaValido;
+	}
+	
+	private boolean verificaCotexto(String contexto)
+	{
+		return contexto.equals(parametrosDoSistemaManager.getContexto());
 	}
 	
 	public void configuraPapeis(UserDetails userDetails, Long empresaId) throws Exception 

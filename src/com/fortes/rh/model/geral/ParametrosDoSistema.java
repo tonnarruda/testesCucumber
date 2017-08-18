@@ -66,6 +66,7 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
     private int quantidadeColaboradoresRelatorioPesquisaAnonima;
     private Integer quantidadeConstraints;
     private boolean versaoAcademica;
+    private boolean utilizarCaptchaNoLogin;
 
     private Integer sessionTimeout;
     private Integer tamanhoMaximoUpload;
@@ -482,5 +483,11 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
 	}
 	public void setSmtpRemetente(boolean smtpRemetente) {
 		this.smtpRemetente = smtpRemetente;
+	}
+	public boolean isUtilizarCaptchaNoLogin() {
+		return utilizarCaptchaNoLogin;
+	}
+	public void setUtilizarCaptchaNoLogin(boolean utilizarCaptchaNoLogin) {
+		this.utilizarCaptchaNoLogin = utilizarCaptchaNoLogin;
 	}
 }

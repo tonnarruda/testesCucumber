@@ -110,4 +110,22 @@ public class ParametrosDoSistemaDaoHibernate extends GenericDaoHibernate<Paramet
 				
 		return query.uniqueResult().toString();
 	}
+
+	public boolean isUtilizarCaptchaNoLogin(Long id) 
+	{
+		Criteria criteria = getSession().createCriteria(ParametrosDoSistema.class,"ps");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("ps.utilizarCaptchaNoLogin"), "utilizarCaptchaNoLogin");
+		criteria.setProjection(p);
+
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(ParametrosDoSistema.class));
+
+		ParametrosDoSistema parametrosDoSistema = (ParametrosDoSistema) criteria.add(Expression.eq("ps.id", id)).uniqueResult();
+		
+		if(parametrosDoSistema != null)
+			return parametrosDoSistema.isUtilizarCaptchaNoLogin();
+		else
+			return false;
+	}
 }

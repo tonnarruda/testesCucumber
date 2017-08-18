@@ -87,4 +87,9 @@ public class ParametrosDoSistemaManagerImpl extends GenericManagerImpl<Parametro
 	public Integer getQuantidadeConstraintsDoBanco() {
 		return getDao().getQuantidadeConstraintsDoBanco();
 	}
+	
+	public boolean isUtilizarCaptchaNoLogin(Long id)
+	{
+		return getDao().isUtilizarCaptchaNoLogin(id);
+	}
 }

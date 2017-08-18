@@ -7,11 +7,15 @@ public class UsernamePasswordEmpresaAuthenticationToken extends UsernamePassword
 {
 	private String empresa;
 	private String SOSSeed;
+	private String recaptchaResponse;
+	private String contexto;
 
-	public UsernamePasswordEmpresaAuthenticationToken(String username, String password, String empresa, String SOSSeed){
+	public UsernamePasswordEmpresaAuthenticationToken(String username, String password, String empresa, String SOSSeed, String recaptchaResponse, String contexto){
 		super(username, password);
 		this.empresa = empresa;
 		this.SOSSeed = SOSSeed;
+		this.recaptchaResponse = recaptchaResponse;
+		this.contexto = contexto;
 	}
 
 	public String getEmpresa(){
@@ -26,7 +30,11 @@ public class UsernamePasswordEmpresaAuthenticationToken extends UsernamePassword
 		return SOSSeed;
 	}
 
-	public void setSOSSeed(String sOSSeed) {
-		SOSSeed = sOSSeed;
+	public String getRecaptchaResponse() {
+		return recaptchaResponse;
+	}
+
+	public String getContexto() {
+		return contexto;
 	}
 }
