@@ -41,35 +41,21 @@
 		{
 			return validaFormulario('form', null, null, true);
 		}
-
-		function checkNetConnection(){
-			var xhr = new XMLHttpRequest();
-			var file = "https://www.blablacar.com.br/images/logo-blabla.png";
-			http://fortespae.com.br/rh/img/fortesrh.png
-			var r = Math.round(Math.random() * 900000);
-			xhr.open('HEAD', file + "?subins=" + r, false);
-			try {
-				xhr.send();
-				if (xhr.status >= 200 && xhr.status < 304) {
-					return true;
-				} else {
-					return false;
-				}
-			}catch (e) {
-				return false;
+		
+		function checaCarregamentoApiCaptcha(){
+			if($('.g-recaptcha').find('div').length){
+				$('#alertaCaptcha').remove();				
+			}else{
+				$('.g-recaptcha').remove();
+				$('#alertaCaptcha').show();
 			}
 		}
-
+		
 		function captcha()
 		{
 			UsuarioDWR.utilizaCaptchaNoLogin(function (utilizaCaptcha){
 				if(utilizaCaptcha){
-					if(!checkNetConnection()){
-						$('.g-recaptcha').remove();
-						$('#alertaCaptcha').show();
-					}else{
-						$('#alertaCaptcha').remove();				
-					}
+					setTimeout("checaCarregamentoApiCaptcha()",1000);
 				}else{
 					$('.g-recaptcha').remove();
 					$('#alertaCaptcha').remove();
@@ -109,7 +95,7 @@
 				empresasUsuario();
 				checkSOS();
 			}
-			
+
 			captcha();
 		});
 
@@ -124,6 +110,7 @@
 		</li>
 	</ul>
 </div>
+
 <form name="form" action="<ww:url value='j_acegi_security_check'/>" onsubmit="validaCampos();" method="POST">
 	<br><br><br>
 	<% if("1".equals(request.getParameter("login_error"))) { %>
