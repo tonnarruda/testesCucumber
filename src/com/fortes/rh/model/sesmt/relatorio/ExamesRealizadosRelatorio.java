@@ -27,7 +27,7 @@ public class ExamesRealizadosRelatorio
 	public ExamesRealizadosRelatorio() {
 	}
 	
-	public ExamesRealizadosRelatorio(Long exameId, String nome, String tipoPessoa, String exameNome, Date realizacaoData, Long clinicaId, String clinicaNome, String exameResultado, String motivoSolicitacaoExame, Long estabelecimentoId, String estabelecimentoNome, String solicitacaoExameObservacao)
+	public ExamesRealizadosRelatorio(String nome, Long estabelecimentoId, String estabelecimentoNome, String tipoPessoa, Long exameId, String exameNome, Date realizacaoData, Long clinicaId, String clinicaNome, String exameResultado, String motivoSolicitacaoExame, String solicitacaoExameObservacao)
 	{
 		this.exameId = exameId;
 		this.clinicaId = clinicaId;

@@ -53,6 +53,7 @@ import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
 import com.fortes.rh.test.factory.cargosalario.FuncaoFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
+import com.fortes.rh.test.factory.sesmt.ClinicaAutorizadaFactory;
 import com.fortes.rh.test.factory.sesmt.ExameFactory;
 import com.fortes.rh.test.factory.sesmt.ExameSolicitacaoExameFactory;
 import com.fortes.rh.test.factory.sesmt.RealizacaoExameFactory;
@@ -343,8 +344,8 @@ public class ExameDaoHibernateTest extends GenericDaoHibernateTest<Exame>
 		Estabelecimento estabelecimento2 = EstabelecimentoFactory.getEntity("Estabelecimento 2");
 		estabelecimentoDao.save(estabelecimento2);
 		
-		Colaborador colaborador1 = criaColaboradorComHistorico(empresa, "Colaborador 1", dataDoisMesesAtras, estabelecimento1, StatusRetornoAC.CONFIRMADO);
-		Colaborador colaborador2 = criaColaboradorComHistorico(empresa, "Colaborador 2", hoje, estabelecimento2, StatusRetornoAC.CONFIRMADO);
+		Colaborador colaborador1 = criaColaboradorComHistorico(empresa, "Colaborador UM Teste", dataDoisMesesAtras, estabelecimento1, StatusRetornoAC.CONFIRMADO);
+		Colaborador colaborador2 = criaColaboradorComHistorico(empresa, "Colaborador DOIS Teste", hoje, estabelecimento2, StatusRetornoAC.CONFIRMADO);
 		
 		Exame exame1 = ExameFactory.getEntity(empresa);
 		exameDao.save(exame1);
@@ -359,12 +360,15 @@ public class ExameDaoHibernateTest extends GenericDaoHibernateTest<Exame>
 		
 		SolicitacaoExame solicitacaoExame2 = SolicitacaoExameFactory.getSolitacaoExameColaborador(hoje, empresa, colaborador2, MotivoSolicitacaoExame.ADMISSIONAL);
 		solicitacaoExameDao.save(solicitacaoExame2);
-		montaSolicitacaoExame(solicitacaoExame1, DateUtil.incrementaDias(hoje, -1), ResultadoExame.ANORMAL.toString(), null, exame2);
+		montaSolicitacaoExame(solicitacaoExame2, DateUtil.incrementaDias(hoje, -1), ResultadoExame.ANORMAL.toString(), null, exame2);
 
 		Long[] estabelecimentoIds = {estabelecimento1.getId(), estabelecimento2.getId()};
 		Long[] exameIds = {exame1.getId(), exame2.getId()};
 		
+		exameDao.getHibernateTemplateByGenericDao().flush();
+
 		assertEquals(2, exameDao.findExamesRealizadosCandidatosAndColaboradores(empresa.getId(),null, dataDoisMesesAtras, hoje, null, ResultadoExame.ANORMAL.toString(), null, exameIds, estabelecimentoIds,TipoPessoa.COLABORADOR.getChave()).size());
+		assertEquals(1, exameDao.findExamesRealizadosCandidatosAndColaboradores(empresa.getId(),"UM", dataDoisMesesAtras, hoje, null, ResultadoExame.ANORMAL.toString(), null, exameIds, estabelecimentoIds,TipoPessoa.COLABORADOR.getChave()).size());
 	}
 	
 	public void testFindExamesRealizadosNaoInformado()
@@ -386,21 +390,26 @@ public class ExameDaoHibernateTest extends GenericDaoHibernateTest<Exame>
     	Exame exame2 = ExameFactory.getEntity(empresa);
     	exameDao.save(exame2);
 
+    	ClinicaAutorizada clinicaAutorizada = ClinicaAutorizadaFactory.getEntity("Clinica 1", "I");
+    	clinicaAutorizadaDao.save(clinicaAutorizada);
+    	
 		SolicitacaoExame solicitacaoExame1 = SolicitacaoExameFactory.getSolitacaoExameColaborador(hoje, empresa, colaborador1, MotivoSolicitacaoExame.PERIODICO);
 		solicitacaoExameDao.save(solicitacaoExame1);
-		montaSolicitacaoExame(solicitacaoExame1, dataDoisMesesAtras.getTime(), ResultadoExame.NORMAL.toString(), null, exame1);
-		montaSolicitacaoExame(solicitacaoExame1, hoje, ResultadoExame.ANORMAL.toString(), null, exame1);
+		montaSolicitacaoExame(solicitacaoExame1, dataDoisMesesAtras.getTime(), ResultadoExame.NORMAL.toString(), clinicaAutorizada, exame1);
+		montaSolicitacaoExame(solicitacaoExame1, hoje, ResultadoExame.ANORMAL.toString(), clinicaAutorizada, exame1);
 		
 		SolicitacaoExame solicitacaoExame2 = SolicitacaoExameFactory.getSolitacaoExameColaborador(hoje, empresa, colaborador1, MotivoSolicitacaoExame.PERIODICO);
 		solicitacaoExameDao.save(solicitacaoExame2);
-
+		
 		ExameSolicitacaoExame exameSolicitacaoExame2 = new ExameSolicitacaoExame();
 		exameSolicitacaoExame2.setExame(exame2);
 		exameSolicitacaoExame2.setPeriodicidade(exame2.getPeriodicidade());
 		exameSolicitacaoExame2.setSolicitacaoExame(solicitacaoExame2);
+		exameSolicitacaoExame2.setClinicaAutorizada(clinicaAutorizada);
 		exameSolicitacaoExameDao.save(exameSolicitacaoExame2);
 		
-		Collection<ExamesRealizadosRelatorio> examesRealizadosRelatorios = exameDao.findExamesRealizadosCandidatosAndColaboradores(empresa.getId(), colaborador1.getNome(), dataDoisMesesAtras.getTime(), hoje, MotivoSolicitacaoExame.PERIODICO, null, null, null, null,TipoPessoa.COLABORADOR.getChave());
+		exameDao.getHibernateTemplateByGenericDao().flush();
+		Collection<ExamesRealizadosRelatorio> examesRealizadosRelatorios = exameDao.findExamesRealizadosCandidatosAndColaboradores(empresa.getId(), colaborador1.getNome(), dataDoisMesesAtras.getTime(), hoje, MotivoSolicitacaoExame.PERIODICO, null, clinicaAutorizada.getId(), null, null,TipoPessoa.COLABORADOR.getChave());
 		
 		assertEquals(2, examesRealizadosRelatorios.size());
 	}
@@ -413,10 +422,10 @@ public class ExameDaoHibernateTest extends GenericDaoHibernateTest<Exame>
     	Empresa empresa = EmpresaFactory.getEmpresa();
     	empresaDao.save(empresa);
 
-    	Candidato candidato1 = CandidatoFactory.getCandidato();
+    	Candidato candidato1 = CandidatoFactory.getCandidato("Candidato DOIS Teste");
     	candidatoDao.save(candidato1);
     	
-    	Candidato candidato2 = CandidatoFactory.getCandidato();
+    	Candidato candidato2 = CandidatoFactory.getCandidato("Candidato UM Teste");
     	candidatoDao.save(candidato2);
     	
     	Estabelecimento estabelecimentoFora = EstabelecimentoFactory.getEntity("Est fora da consulta");
@@ -467,7 +476,98 @@ public class ExameDaoHibernateTest extends GenericDaoHibernateTest<Exame>
 		Long[] estabelecimentoIds = {estabelecimento1.getId(), estabelecimentoFora.getId()};
 		Long[] exameIds = {exame1.getId(), exame2.getId()};
 		
+		exameDao.getHibernateTemplateByGenericDao().flush();
+		
 		assertEquals(2, exameDao.findExamesRealizadosCandidatosAndColaboradores(empresa.getId(),null, dataDoisMesesAtras, hoje, MotivoSolicitacaoExame.PERIODICO, ResultadoExame.ANORMAL.toString(), null, exameIds, estabelecimentoIds,TipoPessoa.CANDIDATO.getChave()).size());
+		assertEquals(1, exameDao.findExamesRealizadosCandidatosAndColaboradores(empresa.getId(),"UM", dataDoisMesesAtras, hoje, MotivoSolicitacaoExame.PERIODICO, ResultadoExame.ANORMAL.toString(), null, exameIds, estabelecimentoIds,TipoPessoa.CANDIDATO.getChave()).size());
+	}
+
+	public void testFindExamesRealizadosParaColaboradoresECandidatos()
+	{
+		// CANDIDATO
+		Date hoje = new Date();
+		Date dataDoisMesesAtras = DateUtil.incrementaMes(hoje, -2);
+
+    	Empresa empresa = EmpresaFactory.getEmpresa();
+    	empresaDao.save(empresa);
+
+    	Candidato candidato1 = CandidatoFactory.getCandidato("Candidato DOIS Teste");
+    	candidatoDao.save(candidato1);
+    	
+    	Candidato candidato2 = CandidatoFactory.getCandidato("Candidato UM Teste");
+    	candidatoDao.save(candidato2);
+    	
+    	Estabelecimento estabelecimentoFora = EstabelecimentoFactory.getEntity("Est fora da consulta");
+		estabelecimentoDao.save(estabelecimentoFora);
+
+		Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity("Estabelecimento 1");
+		estabelecimentoDao.save(estabelecimento1);
+
+    	Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao(empresa, estabelecimento1, hoje);
+    	solicitacaoDao.save(solicitacao);
+    	
+    	CandidatoSolicitacao candidatoSolicitacao1 = CandidatoSolicitacaoFactory.getEntity(candidato1, solicitacao, DateUtil.criarDataMesAno(1, 2, 2015));
+    	candidatoSolicitacaoDao.save(candidatoSolicitacao1);
+
+    	CandidatoSolicitacao candidatoSolicitacao2 = CandidatoSolicitacaoFactory.getEntity(candidato2, solicitacao, DateUtil.criarDataMesAno(2, 2, 2015));
+    	candidatoSolicitacaoDao.save(candidatoSolicitacao2);
+    	
+		Exame exame1 = ExameFactory.getEntity(empresa);
+		exameDao.save(exame1);
+		
+		Exame exame2 = ExameFactory.getEntity(empresa);
+		exameDao.save(exame2);
+
+		SolicitacaoExame solicitacaoExame1 = SolicitacaoExameFactory.getEntity(null, hoje, empresa, null, candidato1, MotivoSolicitacaoExame.PERIODICO);
+		solicitacaoExameDao.save(solicitacaoExame1);
+
+		RealizacaoExame realizacaoExame1 = RealizacaoExameFactory.getEntity(dataDoisMesesAtras, ResultadoExame.ANORMAL.toString());
+		realizacaoExameDao.save(realizacaoExame1);
+		
+		RealizacaoExame realizacaoExame1Fora = RealizacaoExameFactory.getEntity(hoje, ResultadoExame.NORMAL.toString());
+		realizacaoExameDao.save(realizacaoExame1Fora);
+
+		ExameSolicitacaoExame exameSolicitacaoExame1 = ExameSolicitacaoExameFactory.getEntity(exame1, solicitacaoExame1, realizacaoExame1, exame1.getPeriodicidade());
+		exameSolicitacaoExameDao.save(exameSolicitacaoExame1);
+		
+		ExameSolicitacaoExame exameSolicitacaoExame1Fora = ExameSolicitacaoExameFactory.getEntity(exame1, solicitacaoExame1, realizacaoExame1Fora, 0);
+		exameSolicitacaoExameDao.save(exameSolicitacaoExame1Fora);
+
+		SolicitacaoExame solicitacaoExame2 = SolicitacaoExameFactory.getEntity(null, hoje, empresa, null, candidato2, MotivoSolicitacaoExame.PERIODICO);
+		solicitacaoExameDao.save(solicitacaoExame2);
+
+		RealizacaoExame realizacaoExame2 = RealizacaoExameFactory.getEntity(hoje,ResultadoExame.ANORMAL.toString());
+		realizacaoExameDao.save(realizacaoExame2);
+
+		ExameSolicitacaoExame exameSolicitacaoExame2 = ExameSolicitacaoExameFactory.getEntity(exame2, solicitacaoExame2, realizacaoExame2, 0);
+		exameSolicitacaoExameDao.save(exameSolicitacaoExame2);
+		
+		// COLABORADOR
+
+    	Colaborador colaborador1 = criaColaboradorComHistorico(empresa, "Colaborador UM Teste", dataDoisMesesAtras, estabelecimento1, StatusRetornoAC.CONFIRMADO);
+
+		SolicitacaoExame solicitacaoExame1Colab = SolicitacaoExameFactory.getSolitacaoExameColaborador(hoje, empresa, colaborador1, MotivoSolicitacaoExame.PERIODICO);
+		solicitacaoExameDao.save(solicitacaoExame1Colab);
+		montaSolicitacaoExame(solicitacaoExame1Colab, dataDoisMesesAtras, ResultadoExame.NORMAL.toString(), null, exame1);
+		montaSolicitacaoExame(solicitacaoExame1Colab, hoje, ResultadoExame.ANORMAL.toString(), null, exame1);
+		
+		SolicitacaoExame solicitacaoExame2Colab = SolicitacaoExameFactory.getSolitacaoExameColaborador(hoje, empresa, colaborador1, MotivoSolicitacaoExame.PERIODICO);
+		solicitacaoExameDao.save(solicitacaoExame2Colab);
+
+		ExameSolicitacaoExame exameSolicitacaoExame2Colab = new ExameSolicitacaoExame();
+		exameSolicitacaoExame2Colab.setExame(exame2);
+		exameSolicitacaoExame2Colab.setPeriodicidade(exame2.getPeriodicidade());
+		exameSolicitacaoExame2Colab.setSolicitacaoExame(solicitacaoExame2Colab);
+		exameSolicitacaoExameDao.save(exameSolicitacaoExame2Colab);
+		
+		Long[] estabelecimentoIds = {estabelecimento1.getId(), estabelecimentoFora.getId()};
+		Long[] exameIds = {exame1.getId(), exame2.getId()};
+		
+		exameDao.getHibernateTemplateByGenericDao().flush();
+
+		assertEquals(3, exameDao.findExamesRealizadosCandidatosAndColaboradores(empresa.getId(),null, dataDoisMesesAtras, hoje, MotivoSolicitacaoExame.PERIODICO, ResultadoExame.ANORMAL.toString(), null, exameIds, estabelecimentoIds,TipoPessoa.TODOS.getChave()).size());
+		assertEquals(2, exameDao.findExamesRealizadosCandidatosAndColaboradores(empresa.getId(),"Candidato", dataDoisMesesAtras, hoje, MotivoSolicitacaoExame.PERIODICO, ResultadoExame.ANORMAL.toString(), null, exameIds, estabelecimentoIds,TipoPessoa.TODOS.getChave()).size());
+		assertEquals(1, exameDao.findExamesRealizadosCandidatosAndColaboradores(empresa.getId(),"Colaborador", dataDoisMesesAtras, hoje, MotivoSolicitacaoExame.PERIODICO, ResultadoExame.ANORMAL.toString(), null, exameIds, estabelecimentoIds,TipoPessoa.TODOS.getChave()).size());
 	}
 
 	public void testFindExamesRealizadosRelatorioResumidoComFiltros()
@@ -475,8 +575,8 @@ public class ExameDaoHibernateTest extends GenericDaoHibernateTest<Exame>
 		Date dataIni = DateUtil.criarDataMesAno(1, 1, 2009); 
 		Date dataFim = DateUtil.criarDataMesAno(1, 1, 2011); 
 		
-		Empresa empresa = EmpresaFactory.getEmpresa();
-		empresaDao.save(empresa);
+		Empresa empresa1 = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa1);
 		
 		Empresa empresa2 = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa2);
@@ -484,7 +584,7 @@ public class ExameDaoHibernateTest extends GenericDaoHibernateTest<Exame>
 		Exame exame1 = ExameFactory.getEntity();
 		exameDao.save(exame1);
 		
-		Exame exame2 = ExameFactory.getEntity(empresa);
+		Exame exame2 = ExameFactory.getEntity(empresa1);
 		exameDao.save(exame2);
 		
 		ClinicaAutorizada clinica1 = new ClinicaAutorizada();
@@ -495,7 +595,7 @@ public class ExameDaoHibernateTest extends GenericDaoHibernateTest<Exame>
 		clinica2.setNome("clinica de loucos");
 		clinicaAutorizadaDao.save(clinica2);
 		
-		SolicitacaoExame solicitacaoExameEmpresa1 = SolicitacaoExameFactory.getEntity(dataFim, empresa, MotivoSolicitacaoExame.PERIODICO);
+		SolicitacaoExame solicitacaoExameEmpresa1 = SolicitacaoExameFactory.getEntity(dataFim, empresa1, MotivoSolicitacaoExame.PERIODICO);
 		solicitacaoExameDao.save(solicitacaoExameEmpresa1);
 		
 		SolicitacaoExame solicitacaoExameEmpresa2 = SolicitacaoExameFactory.getEntity(dataFim, empresa2, MotivoSolicitacaoExame.PERIODICO);
@@ -508,7 +608,7 @@ public class ExameDaoHibernateTest extends GenericDaoHibernateTest<Exame>
 		
 		Long[] examesIds = new Long[]{exame1.getId(),exame2.getId()};
 		
-		assertEquals(2, exameDao.findExamesRealizadosRelatorioResumido(empresa.getId(), dataIni, dataFim, clinica1, examesIds, ResultadoExame.NORMAL.toString()).size());
+		assertEquals(2, exameDao.findExamesRealizadosRelatorioResumido(empresa1.getId(), dataIni, dataFim, clinica1, examesIds, ResultadoExame.NORMAL.toString()).size());
 	}
 	
 	public void testFindExamesRealizadosRelatorioResumidoSemUtilizarFiltros()

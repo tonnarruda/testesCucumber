@@ -1,6 +1,7 @@
 package com.fortes.rh.util;
 
 import java.lang.reflect.Field;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -116,7 +117,6 @@ public class LongUtil
 		Collection<Long> collection = new ArrayList<Long>();
 		try {
 			if(modelos != null && modelos.size() > 0) {
-				int i = 0;
 				for (Object model : modelos)
 				{
 					Class<?> c = model.getClass();
@@ -142,5 +142,13 @@ public class LongUtil
 	public static boolean isNotEmpty(Collection<Long> ids)
 	{
 		return ids != null && !ids.isEmpty();
+	}
+	
+	public static Long bigIntegerToLong(Object object, Long valorDefault)
+	{
+		if(object == null)
+			return valorDefault;
+		
+		return new BigInteger(object.toString()).longValue();
 	}
 }

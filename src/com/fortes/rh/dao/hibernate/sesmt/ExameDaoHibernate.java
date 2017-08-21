@@ -6,6 +6,8 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
@@ -36,6 +38,7 @@ import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.model.sesmt.SolicitacaoExame;
 import com.fortes.rh.model.sesmt.relatorio.ExamesPrevistosRelatorio;
 import com.fortes.rh.model.sesmt.relatorio.ExamesRealizadosRelatorio;
+import com.fortes.rh.util.LongUtil;
 
 @SuppressWarnings("unchecked")
 public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements ExameDao
@@ -268,64 +271,61 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 		
 		return query.list();
 	}
+
+	private Examinado getExaminado(Character tipoPessoa) {
+		
+		Map<Character, Examinado> listaTipoPessoa = new HashMap<Character, ExameDaoHibernate.Examinado>();
+		listaTipoPessoa.put(TipoPessoa.COLABORADOR.getChave(), new TipoPessoaColaborador());
+		listaTipoPessoa.put(TipoPessoa.CANDIDATO.getChave(), new TipoPessoaCandidato());
+		listaTipoPessoa.put(TipoPessoa.TODOS.getChave(), new TipoPessoaTodos());
+		
+		return listaTipoPessoa.get(tipoPessoa);
+	}
 	
 	public Collection<ExamesRealizadosRelatorio> findExamesRealizadosCandidatosAndColaboradores(Long empresaId, String nomeBusca, Date inicio, Date fim, String solicitacaoMotivo, String exameResultado, Long clinicaAutorizadaId, Long[] examesIds, Long[] estabelecimentosIds, Character tipoPessoa)  
 	{
-		StringBuilder hql = new StringBuilder("select ");
+		Examinado examinado = getExaminado(tipoPessoa);
+		
+		StringBuilder sql = new StringBuilder("select ");
+		examinado.setSelect(sql);
+		sql.append("(case when se.colaborador_id is not null then 'C' else 'A' end) as tipo, ");
+		sql.append("e.id as exameId,e.nome as exameNome,se.data,clinica.id as clinicaId,clinica.nome as clinicaNome,re.resultado,se.motivo, ");
+		sql.append("re.observacao ");
+		sql.append("from ExameSolicitacaoExame ese ");
+		sql.append("left join realizacaoExame re on ese.realizacaoExame_id = re.id ");
+		sql.append("left join clinicaAutorizada clinica on ese.clinicaAutorizada_id = clinica.id ");
+		sql.append("left join exame e on ese.exame_id = e.id ");
+		sql.append("left join solicitacaoExame se on ese.solicitacaoExame_id = se.id ");
+		
+		examinado.setJoins(sql);
+		
+		sql.append("where se.empresa_id = :empresaId ");
+		sql.append("and re.data between :inicio and :fim ");
 
-		Examinado examinado = new Colaborador();
-		if (tipoPessoa.equals(TipoPessoa.CANDIDATO.getChave())){
-			examinado = new Candidato();
-			hql.append("distinct ");
-		}
-		
-		hql.append("new com.fortes.rh.model.sesmt.relatorio.ExamesRealizadosRelatorio(e.id,");
-		examinado.setSelect(hql);
-		hql.append("(case when se.colaborador.id is not null then 'C' else 'A' end),");
-		hql.append("e.nome,se.data,clinica.id,clinica.nome,re.resultado,se.motivo,es.id,es.nome, re.observacao) ");
-		hql.append("from ExameSolicitacaoExame ese ");
-		hql.append("left join ese.realizacaoExame re ");
-		hql.append("left join ese.clinicaAutorizada clinica ");
-		hql.append("left join ese.exame e ");
-		hql.append("left join ese.solicitacaoExame se ");
-		
-		examinado.setJoins(hql);
-		
-		hql.append("where se.empresa.id = :empresaId ");
-		hql.append("and re.data between :inicio and :fim ");
-
-		if (isNotBlank(nomeBusca))
-			hql.append("and lower(examinado.nome) like :nome ");
-		
-		if (estabelecimentosIds != null && estabelecimentosIds.length > 0)
-			hql.append("and es.id in (:estabelecimentoIds) ");
-		
-		if (examesIds != null && examesIds.length > 0)
-			hql.append("and e.id in (:exameIds) ");
+		if (LongUtil.arrayIsNotEmpty(examesIds))
+			sql.append("and e.id in (:exameIds) ");
 		
 		if (clinicaAutorizadaId != null)
-			hql.append("and clinica.id = :clinicaId ");
+			sql.append("and clinica.id = :clinicaId ");
 		
 		if (StringUtils.isNotBlank(solicitacaoMotivo))
-			hql.append("and se.motivo = :motivo ");
+			sql.append("and se.motivo = :motivo ");
 		
 		if (StringUtils.isNotBlank(exameResultado))
 		{
 			if(exameResultado.equalsIgnoreCase(ResultadoExame.NAO_REALIZADO.toString()))
-				hql.append("and (re = null or re.resultado = :resultado) ");
+				sql.append("and (re = null or re.resultado = :resultado) ");
 			else
-				hql.append("and re.resultado = :resultado ");
+				sql.append("and re.resultado = :resultado ");
 		}
 		
-		if (!tipoPessoa.equals(TipoPessoa.TODOS.getChave()))
-			examinado.setWhereMaxData(hql);
+		examinado.setWhereMaxData(sql, nomeBusca, estabelecimentosIds);
 	
-		hql.append("order by e.nome, clinica.id, se.data ");
+		sql.append("order by e.nome, clinica.id, se.data ");
 		
-		Query query = getSession().createQuery(hql.toString());
+		SQLQuery query = getSession().createSQLQuery(sql.toString());
 		
-		if (!tipoPessoa.equals(TipoPessoa.TODOS.getChave()))
-			examinado.setParametros(query);
+		examinado.setParametros(query);
 		
 		if (isNotBlank(nomeBusca))
 			query.setString("nome", "%" + nomeBusca.toLowerCase() + "%");
@@ -334,10 +334,10 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 		query.setDate("fim", fim);
 		query.setLong("empresaId", empresaId);
 		
-		if (estabelecimentosIds != null && estabelecimentosIds.length > 0)
+		if (LongUtil.arrayIsNotEmpty(estabelecimentosIds))
 			query.setParameterList("estabelecimentoIds", estabelecimentosIds, Hibernate.LONG);
 		
-		if (examesIds != null && examesIds.length > 0)
+		if (LongUtil.arrayIsNotEmpty(examesIds))
 			query.setParameterList("exameIds", examesIds, Hibernate.LONG);
 		
 		if (clinicaAutorizadaId != null)
@@ -349,7 +349,33 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 		if (StringUtils.isNotBlank(exameResultado))
 			query.setString("resultado", exameResultado);
 		
-		return query.list();
+		Collection<Object[]> lista = query.list();
+
+		int i = 0;
+		Collection<ExamesRealizadosRelatorio> examesRealizadosRelatorios = new ArrayList<ExamesRealizadosRelatorio>();
+		ExamesRealizadosRelatorio examesRealizadosRelatorio;
+		
+		for (Object[] obj : lista) {
+			i = 0;
+			examesRealizadosRelatorio = new ExamesRealizadosRelatorio(
+					(String) obj[i],
+					LongUtil.bigIntegerToLong(obj[++i], null),
+					(String) obj[++i],
+					(String) obj[++i],
+					LongUtil.bigIntegerToLong(obj[++i], null),
+					(String) obj[++i],
+					(Date) obj[++i],
+					LongUtil.bigIntegerToLong(obj[++i], null),
+					(String) obj[++i],
+					(String) obj[++i],
+					(String) obj[++i],
+					(String) obj[++i]
+					);
+			
+			examesRealizadosRelatorios.add(examesRealizadosRelatorio);
+		}
+
+		return examesRealizadosRelatorios;
 	}
 	
 	private void montaQuery(Long empresaId, Exame exame, Criteria criteria) {
@@ -396,6 +422,7 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 
 	public Collection<Exame> findPriorizandoExameRelacionado(Long empresaId, Long colaboradorId) 
 	{
+		// Utilizado para que os inserts do testes sejam executados. Necessário entender o porque disto.
 		getSession().flush();
 		
 		StringBuilder sqlBody = new StringBuilder();
@@ -509,43 +536,52 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 	private interface Examinado {
 		public void setJoins(StringBuilder hql);
 		public void setSelect(StringBuilder hql);
-		public void setWhereMaxData(StringBuilder hql);
+		public void setWhereMaxData(StringBuilder sql, String nomeBusca, Long[] estabelecimentosIds);
 		public void setParametros(Query query);
 	}
 	
-	private class Colaborador implements Examinado{
+	private class TipoPessoaColaborador implements Examinado{
 		
-		public void setSelect(StringBuilder hql) {
-			hql.append("(case when examinado.nome is not null then examinado.nome else cand.nome end),");
+		public void setSelect(StringBuilder sql) {
+			sql.append("colab.nome as nome,");
+			sql.append("estabColab.id  as estId, ");
+			sql.append("estabColab.nome as estNome, ");
+
 		}
 		
-		public void setJoins(StringBuilder hql)
+		public void setJoins(StringBuilder sql)
 		{
-			hql.append("left join se.colaborador examinado ");
-			hql.append("left join examinado.historicoColaboradors as hc ");
-			hql.append("left join hc.estabelecimento as es ");
-			hql.append("left join se.candidato as cand ");
+			sql.append("left join colaborador colab on se.colaborador_id = colab.id ");
+			sql.append("left join historicoColaborador as hc on colab.id = hc.colaborador_id ");
+			sql.append("left join estabelecimento as estabColab on hc.estabelecimento_id = estabColab.id ");
+			sql.append("left join candidato as cand on se.candidato_id = cand.id ");
 		}
 
-		public void setWhereMaxData(StringBuilder hql)
+		public void setWhereMaxData(StringBuilder sql, String nomeBusca, Long[] estabelecimentosIds)
 		{
-			hql.append("and ( ");
-			hql.append("	  ( se.motivo = :motivoSolicitacaoExame ");
-			hql.append("		and (");
-			hql.append("			(se.candidato.id is not null and cand.contratado = true) ");
-			hql.append("			or hc.data = (select min(hc2.data) ");
-			hql.append("	        	from HistoricoColaborador as hc2 ");
-			hql.append("	   			where hc2.status = :status ");
-			hql.append("	   			and hc2.colaborador.id = examinado.id ) ");
-			hql.append("	 		) ");
-			hql.append("	  ) or");
-			hql.append("	  ( se.motivo != :motivoSolicitacaoExame ");
-			hql.append("		   and hc.data = ( select max(hc2.data) ");
-			hql.append("	        	from HistoricoColaborador as hc2 ");
-			hql.append("	   			where hc2.data <= re.data and hc2.status = :status ");
-			hql.append("	   			and hc2.colaborador.id = examinado.id )");
-			hql.append("	  ) ");
-			hql.append("	) ");
+			if (isNotBlank(nomeBusca))
+				sql.append("and lower(colab.nome) like :nome ");
+
+			if (LongUtil.arrayIsNotEmpty(estabelecimentosIds))
+				sql.append("and estabColab.id in (:estabelecimentoIds) ");
+
+			sql.append("and ( ");
+			sql.append("	  ( se.motivo = :motivoSolicitacaoExame ");
+			sql.append("		and (");
+			sql.append("			(se.candidato_id is not null and cand.contratado = true) ");
+			sql.append("			or hc.data = (select min(hc2.data) ");
+			sql.append("	        	from HistoricoColaborador as hc2 ");
+			sql.append("	   			where hc2.status = :status ");
+			sql.append("	   			and hc2.colaborador_id = colab.id ) ");
+			sql.append("	 		) ");
+			sql.append("	  ) or");
+			sql.append("	  ( se.motivo != :motivoSolicitacaoExame ");
+			sql.append("		   and hc.data = ( select max(hc2.data) ");
+			sql.append("	        	from HistoricoColaborador as hc2 ");
+			sql.append("	   			where hc2.data <= re.data and hc2.status = :status ");
+			sql.append("	   			and hc2.colaborador_id = colab.id )");
+			sql.append("	  ) ");
+			sql.append("	) ");
 		}
 
 		public void setParametros(Query query)
@@ -556,32 +592,115 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 
 	}
 	
-	private class Candidato implements Examinado{
+	private class TipoPessoaCandidato implements Examinado{
 		
-		public void setSelect(StringBuilder hql) {
-			hql.append("examinado.nome,");
+		public void setSelect(StringBuilder sql) {
+			sql.append("distinct cand.nome as nome,");
+			sql.append("estabCand.id  as estId, ");
+			sql.append("estabCand.nome as estNome, ");
+
 		}
 		
 		public void setJoins(StringBuilder hql)
 		{
-			hql.append("inner join se.candidato examinado ");
-			hql.append("left join examinado.candidatoSolicitacaos as cs ");
-			hql.append("left join cs.solicitacao as s ");
-			hql.append("left join s.estabelecimento as es ");
+			hql.append("inner join candidato cand on se.candidato_id = cand.id ");
+			hql.append("left join candidatoSolicitacao as cs on cand.id = cs.candidato_id ");
+			hql.append("left join solicitacao as s on cs.solicitacao_id = s.id ");
+			hql.append("left join estabelecimento as estabCand on s.estabelecimento_id = estabCand.id ");
 		}
 
-		public void setWhereMaxData(StringBuilder hql)
+		public void setWhereMaxData(StringBuilder sql, String nomeBusca, Long[] estabelecimentosIds)
 		{
-			hql.append("and (s.data = ( select max(s2.data) from CandidatoSolicitacao cs2 ");
-			hql.append("				inner join cs2.solicitacao as s2 ");
-			hql.append("				where cs2.candidato.id = examinado.id ");
-			hql.append("				and s2.data <= se.data ");
-			hql.append("				and s2.empresa.id = :empresaId) ");
-			hql.append("	or s.data is null) "); 
+			if (isNotBlank(nomeBusca))
+				sql.append("and lower(cand.nome) like :nome ");
+
+			if (LongUtil.arrayIsNotEmpty(estabelecimentosIds))
+				sql.append("and estabCand.id in (:estabelecimentoIds) ");
+
+			sql.append("and (s.data = ( select max(s2.data) from CandidatoSolicitacao cs2 ");
+			sql.append("				inner join solicitacao as s2 on cs2.solicitacao_id = s2.id ");
+			sql.append("				where cs2.candidato_id = cand.id ");
+			sql.append("				and s2.data <= se.data ");
+			sql.append("				and s2.empresa_id = :empresaId) ");
+			sql.append("	or s.data is null) "); 
 		}
 
 		public void setParametros(Query query)
 		{
 		}
 	}
-}
+	
+	private class TipoPessoaTodos implements Examinado{
+		
+		public void setSelect(StringBuilder sql) {
+			sql.append("(case when se.colaborador_id is not null then colab.nome else cand.nome end) as nome,");
+			sql.append("(case when se.colaborador_id is not null then estabColab.id else estabCand.id end) as estId, ");
+			sql.append("(case when se.colaborador_id is not null then estabColab.nome else estabCand.nome end) as estNome, ");
+
+		}
+		
+		public void setJoins(StringBuilder hql)
+		{
+			hql.append("left join colaborador colab on se.colaborador_id = colab.id ");
+			hql.append("left join historicoColaborador as hc on colab.id = hc.colaborador_id ");
+			hql.append("left join estabelecimento as estabColab on hc.estabelecimento_id = estabColab.id ");
+			hql.append("left join candidato as cand on se.candidato_id = cand.id ");
+			hql.append("left join candidatoSolicitacao as cs on cand.id = cs.candidato_id ");
+			hql.append("left join solicitacao as s on cs.solicitacao_id = s.id ");
+			hql.append("left join estabelecimento as estabCand on s.estabelecimento_id = estabCand.id ");
+		}
+
+		public void setWhereMaxData(StringBuilder sql, String nomeBusca, Long[] estabelecimentosIds)
+		{
+			if (isNotBlank(nomeBusca)){
+				sql.append("and ( ");
+				sql.append("    case when colab.id is not null then ");
+				sql.append("       lower(colab.nome) ");
+				sql.append("    else ");
+				sql.append("       lower(cand.nome)  ");
+ 	 			sql.append("    end ) like :nome ");
+			}
+			
+			if (LongUtil.arrayIsNotEmpty(estabelecimentosIds)){
+				sql.append("and ( ");
+				sql.append("    case when colab.id is not null then ");
+				sql.append("       estabColab.id ");
+				sql.append("    else ");
+				sql.append("       estabCand.id ");
+ 	 			sql.append("    end ) in (:estabelecimentoIds) ");
+			}
+
+			sql.append("and  ");
+			sql.append("    case when colab.id is not null then ");
+			sql.append("    	  ( se.motivo = :motivoSolicitacaoExame ");
+			sql.append("    		and (");
+			sql.append("    			(se.candidato_id is not null and cand.contratado = true) ");
+			sql.append("    			or hc.data = (select min(hc2.data) ");
+			sql.append("    	        	from HistoricoColaborador as hc2 ");
+			sql.append("    	   			where hc2.status = :status ");
+			sql.append("    	   			and hc2.colaborador_id = colab.id ) ");
+			sql.append("    	 		) ");
+			sql.append("    	  ) or");
+			sql.append("    	  ( se.motivo != :motivoSolicitacaoExame ");
+			sql.append("    		   and hc.data = ( select max(hc2.data) ");
+			sql.append("    	        	from HistoricoColaborador as hc2 ");
+			sql.append("    	   			where hc2.data <= re.data and hc2.status = :status ");
+			sql.append("    	   			and hc2.colaborador_id = colab.id )");
+			sql.append("    	  ) ");
+			sql.append("    else ");
+			sql.append("        (s.data = ( select max(s2.data) from CandidatoSolicitacao cs2 ");
+			sql.append("    				inner join solicitacao as s2 on s2.id = cs2.solicitacao_id");
+			sql.append("    				where cs2.candidato_id = cand.id ");
+			sql.append("    				and s2.data <= se.data ");
+			sql.append("    				and s2.empresa_id = :empresaId) ");
+			sql.append("    	) or (s.data is null) "); 
+			sql.append("    end ");
+		}
+
+		public void setParametros(Query query)
+		{
+			query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+			query.setString("motivoSolicitacaoExame", MotivoSolicitacaoExame.ADMISSIONAL);
+		}
+
+	}}
