@@ -4314,7 +4314,9 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<
 		
 		assertEquals(new Integer(2), colaboradorDao.countAtivosPeriodo(data_21_07_2011, Arrays.asList(vega.getId()), null, null, null, Arrays.asList(Vinculo.EMPREGO), null, false, null, false));
 	}
-	@Test public void testCountAtivosPeriodoArea() 
+	
+	@Test 
+	public void testCountAtivosPeriodoArea() 
 	{
 		Character agruparPor='A';
 		Date dataContratacaoJoao = DateUtil.criarDataMesAno(01, 05, 2010);
@@ -4323,14 +4325,20 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<
 		Empresa vega = EmpresaFactory.getEmpresa();
 		empresaDao.save(vega);
 		
-		FaixaSalarial faixa = FaixaSalarialFactory.getEntity();
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity("Estabelecimento", vega);
+		estabelecimentoDao.save(estabelecimento);
+		
+		Cargo cargo = CargoFactory.getEntity("Cargo");
+		cargoDao.save(cargo);
+
+		FaixaSalarial faixa = FaixaSalarialFactory.getEntity("Faixa 1", cargo);
 		faixaSalarialDao.save(faixa);
 		
-		AreaOrganizacional areaA = AreaOrganizacionalFactory.getEntity(1l);
+		AreaOrganizacional areaA = AreaOrganizacionalFactory.getEntity();
     	areaA.setNome("areaA");
     	areaOrganizacionalDao.save(areaA);
     	
-    	AreaOrganizacional areaB = AreaOrganizacionalFactory.getEntity(2l);
+    	AreaOrganizacional areaB = AreaOrganizacionalFactory.getEntity();
     	areaB.setNome("areaB");
     	areaOrganizacionalDao.save(areaB);
     	
@@ -4341,11 +4349,17 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<
 		hc1.setAreaOrganizacional(areaA);
 		hc1.setData(dataContratacaoJoao);
 		hc1.setFaixaSalarial(faixa);
+		hc1.setEstabelecimento(estabelecimento);
 		hc1.setStatus(StatusRetornoAC.CONFIRMADO);
 		hc1 = historicoColaboradorDao.save(hc1);
 
-		HashMap<Long, Double> totalAtivosArea = colaboradorDao.countAtivosPeriodoAreaOuCargo(data_21_07_2011, Arrays.asList(vega.getId()), null, Arrays.asList(areaA.getId(),areaB.getId()), null, null, null, false, null, false, agruparPor);
+		HashMap<Long, Double> totalAtivosArea = colaboradorDao.countAtivosPeriodoAreaOuCargo(data_21_07_2011, Arrays.asList(vega.getId()), Arrays.asList(estabelecimento.getId()),  Arrays.asList(areaA.getId(),areaB.getId()), Arrays.asList(cargo.getId()), null, null, false, null, false, agruparPor);
 		assertEquals(1, totalAtivosArea.size());
+		assertEquals(areaA.getId(), ((Long) totalAtivosArea.keySet().toArray()[0]));
+		
+		totalAtivosArea = colaboradorDao.countAtivosPeriodoAreaOuCargo(data_21_07_2011, Arrays.asList(vega.getId()), Arrays.asList(estabelecimento.getId()),  Arrays.asList(areaA.getId(),areaB.getId()), Arrays.asList(cargo.getId()), null, null, false, null, false, 'C');
+		assertEquals(1, totalAtivosArea.size());
+		assertEquals(cargo.getId(), ((Long) totalAtivosArea.keySet().toArray()[0]));
 }
 	@Test public void testCountAtivosPeriodoCargo() 
 	{
@@ -4662,8 +4676,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<
 		assertEquals(new Integer(15), colaboradorTmp.getQtdDiasRespondeuAvExperiencia());
 	}
 
-	@Test 
-	public void testFindAdmitidos() {
+	@Test public void testFindAdmitidos() {
 		Date dataAdmissao1 = DateUtil.montaDataByString("20/01/2010");
 		Date dataAdmissao2 = DateUtil.montaDataByString("13/01/2011");
 

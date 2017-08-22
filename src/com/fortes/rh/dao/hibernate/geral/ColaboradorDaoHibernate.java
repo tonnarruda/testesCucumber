@@ -1415,6 +1415,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			else if(agruparPor=='C')
 				sql.append(" join cargo cg on fs.cargo_id = cg.id ");
 		}
+		
 		if (empresa.isTurnoverPorSolicitacao())
 		{
 			if (isAdmitidos)
@@ -1428,7 +1429,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		}
 		
 		sql.append("where " + coluna + " between :dataIni and :dataFim "); 
-		sql.append("and c.empresa_id= :empresaId ");
+		sql.append("and c.empresa_id = :empresaId ");
 		sql.append("and hc.status = :status ");
 		
 		if(estabelecimentosIds != null && estabelecimentosIds.size() > 0)
@@ -1442,7 +1443,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		sql.append("and hc.data = (select max(hc2.data) from historicoColaborador as hc2 ");
 		sql.append("where hc2.data <= :dataFim ");
-		sql.append("and c.id=hc2.colaborador_id and hc2.status = :status ) ");
+		sql.append("and c.id = hc2.colaborador_id and hc2.status = :status ) ");
 		
 		if (empresa.isTurnoverPorSolicitacao())
 		{
@@ -1456,17 +1457,16 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			sql.append(" order by date_part('year', " + coluna + "), date_part('month', " + coluna + ") ");
 		}else{
 			if(agruparPor=='C'){
-				sql.append(" group by cg.id, date_part('year', " + coluna + "), date_part('month', " + coluna + ") ");
+				sql.append(" group by cg.id, cg.nome, date_part('year', " + coluna + "), date_part('month', " + coluna + ") ");
 				sql.append(" order by cg.nome, date_part('year', " + coluna + "), date_part('month', " + coluna + ") ");
 			}
 			else if(agruparPor=='A'){
-				sql.append(" group by ao.id, date_part('year', " + coluna + "), date_part('month', " + coluna + ") ");
+				sql.append(" group by ao.id, ao.nome, date_part('year', " + coluna + "), date_part('month', " + coluna + ") ");
 				sql.append(" order by ao.nome, date_part('year', " + coluna + "), date_part('month', " + coluna + ") ");
 			}
 		}
 		
 		Query query = getSession().createSQLQuery(sql.toString());
-		
 		query.setDate("dataIni", dataIni);
 		query.setDate("dataFim", dataFim);
 		query.setLong("empresaId", empresa.getId());
@@ -1482,13 +1482,11 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			query.setParameterList("vinculos", vinculos, Hibernate.STRING);
 		
 		List resultado = query.list();
-		
 		Collection<TurnOver> turnOvers = new ArrayList<TurnOver>();
 		
 		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
 		{
 			Object[] res = it.next();
-
 			Date dataMesAno = DateUtil.criarDataMesAno(01, (Integer)res[0], (Integer)res[1]);
 			TurnOver turnOver = new TurnOver();
 
@@ -1497,12 +1495,12 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			else
 				turnOver.setMesAnoQtdDemitidos(dataMesAno, (Double)res[2]);
 			
-			if(agruparPor!=null){
-				if(agruparPor=='A' || agruparPor=='C')
+			if(agruparPor!=null && (agruparPor=='A' || agruparPor=='C'))
 					turnOver.setIdAreaOuCargo(Long.parseLong(res[3].toString()));
-			}
+
 			turnOvers.add(turnOver);
 		}
+		
 		return turnOvers;
 	}
 	
@@ -1619,32 +1617,25 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	
 	public Collection<Colaborador> findDemitidosTurnover(Empresa empresa, Date dataIni, Date dataFim, Integer[] tempoServicoIni, Integer[] tempoServicoFim, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos, Character agruparPor) 
 	{
-		StringBuilder hql = new StringBuilder();
+		StringBuilder hql = new StringBuilder("select new Colaborador(co.id, co.nome, co.nomeComercial, co.dataAdmissao, co.dataDesligamento, (extract(month from age(co.dataDesligamento, co.dataAdmissao)) + (extract(year from age(co.dataDesligamento, co.dataAdmissao)) * 12)) as tempoServico ");
 		
-		if(agruparPor!=null && agruparPor!='S'){
-			if(agruparPor== 'A')
-				hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, co.dataAdmissao, co.dataDesligamento, (extract(month from age(co.dataDesligamento, co.dataAdmissao)) + (extract(year from age(co.dataDesligamento, co.dataAdmissao)) * 12)) as tempoServico,cast(monta_familia_area(ao.id), text) as col_6_0_ ) from Colaborador co");
-			else if(agruparPor== 'C')
-				hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, co.dataAdmissao, co.dataDesligamento, (extract(month from age(co.dataDesligamento, co.dataAdmissao)) + (extract(year from age(co.dataDesligamento, co.dataAdmissao)) * 12)) as tempoServico,cg.id,cg.nome ) from Colaborador co");
-		}
-		else{
-			hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, co.dataAdmissao, co.dataDesligamento, (extract(month from age(co.dataDesligamento, co.dataAdmissao)) + (extract(year from age(co.dataDesligamento, co.dataAdmissao)) * 12)) as tempoServico) from Colaborador co ");
-		}
+		if(agruparPor!=null && agruparPor== 'A')
+			hql.append(", cast(monta_familia_area(ao.id), text) as areaNome ");
+		else if(agruparPor!=null && agruparPor== 'C')
+			hql.append(", cg.id as cargoId, cg.nome as cargoNome ");
 
+		hql.append("	) from Colaborador co");
 		hql.append("	inner join co.historicoColaboradors hc ");
+		hql.append("	inner join hc.faixaSalarial fs ");
 		
 		if(agruparPor!=null && agruparPor=='A')
 			hql.append("	inner join hc.areaOrganizacional ao ");
-		
-		hql.append("	inner join hc.faixaSalarial fs ");
-		
-		if (agruparPor!=null && agruparPor== 'C')
+		else if (agruparPor!=null && agruparPor== 'C')
 			hql.append("left join fs.cargo as cg ");
 		
 		if (empresa.isTurnoverPorSolicitacao())
-		{
 			hql.append("	inner join co.motivoDemissao md ");
-		}
+		
 		hql.append("	where co.empresa.id = :empresaId ");
 		hql.append("	and (co.dataDesligamento between :dataIni and :dataFim)  ");
 		hql.append("    and hc.data = ( ");
@@ -1770,8 +1761,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	}
 	public HashMap<Long, Double> countAtivosPeriodoAreaOuCargo(Date dataIni, Collection<Long> empresaIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos, Collection<Long> ocorrenciasIds, boolean consideraDataAdmissao, Long colaboradorId, boolean isAbsenteismo, Character agruparPor) 
 	{
-		String cargoOuArea = agruparPor=='C' ? " cg.id" : " ao.id";
-		StringBuilder hql = new StringBuilder("select "+cargoOuArea+",count(co.id) from Colaborador co ");
+		String cargoOuArea = (agruparPor=='C' ? " cg.id" : " ao.id");
+		StringBuilder hql = new StringBuilder("select " + cargoOuArea + ", count(co.id) from Colaborador co ");
 		
 		hql.append("left join co.historicoColaboradors as hc ");
 		hql.append("left join hc.faixaSalarial as fs ");

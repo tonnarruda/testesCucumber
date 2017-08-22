@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
 	<Versao id="1.1.1xx.2xx" db="" data="xx/xx/2017">
-		<Item visivel="S" motivo="S17030000372"><![CDATA[Login: Nova forma de logar com mais seguraça utilizando captcha.]]></Item>
+		<Item visivel="S" motivo="S17040000087"><![CDATA[Info Funcionais > Relatórios > Turnover (rotatividade): Novo campo "Agrupar Por", para a imprimir o relatório agrupado por área ou cargo]]></Item>
+		<Item visivel="S" motivo="S17030000372"><![CDATA[Utilitários > Configuração > Sistema: Nova opção de logar utilizando captcha.]]></Item>
 	</Versao>
 	<Versao id="1.1.183.215" db="" data="16/08/2017">
 		<Item visivel="S" motivo="S17060000280"><![CDATA[C&S > Cadastros > Conhecimentos > Excluir: Melhoria na mensagem exibida após tentar realizar exclusão de registro que tem relacionamento com outras entidades.]]></Item>

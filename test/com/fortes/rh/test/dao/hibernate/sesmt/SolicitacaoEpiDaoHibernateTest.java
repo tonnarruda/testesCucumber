@@ -746,7 +746,7 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		SolicitacaoEpiItem item4 = saveSolicitacaoEpiItem(solicitacaoEpi3, epi4, 3);
 		
 		saveSolicitacaoEpiItemEntrega(dataIni, item2, 2);
-		saveSolicitacaoEpiItemDevolucao(DateUtil.criarDataMesAno(01, 06, 2010), item2, 1);
+		saveSolicitacaoEpiItemDevolucao(DateUtil.criarDataMesAno(01, 06, 2010), item2, 2);
 
 		saveSolicitacaoEpiItemEntrega(dataIni, item3, 3);
 		saveSolicitacaoEpiItemDevolucao(DateUtil.criarDataMesAno(01, 06, 2010), item3, 3);
@@ -754,28 +754,28 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		saveSolicitacaoEpiItemEntrega(dataIni, item4, 2);
 		
 		Collection<SolicitacaoEpiItemVO> lista = solicitacaoEpiDao.findEpisWithItens(empresa.getId(), null, dataFim, SituacaoSolicitacaoEpi.TODAS, colaborador, null, SituacaoColaborador.TODOS, null, 'N');
-		
-		SolicitacaoEpiItemVO vo1 = (SolicitacaoEpiItemVO) lista.toArray()[0];		
-		SolicitacaoEpiItemVO vo2 = (SolicitacaoEpiItemVO) lista.toArray()[1];		
-		SolicitacaoEpiItemVO vo3 = (SolicitacaoEpiItemVO) lista.toArray()[2];		
-		SolicitacaoEpiItemVO vo4 = (SolicitacaoEpiItemVO) lista.toArray()[3];		
 
 		assertEquals(4, lista.size());
-		assertEquals(item4.getQtdSolicitado(), vo1.getQtdSolicitadoItem());
-		assertEquals(item2.getQtdSolicitado(), vo2.getQtdSolicitadoItem());
-		assertEquals(item3.getQtdSolicitado(), vo3.getQtdSolicitadoItem());
-		assertEquals(item1.getQtdSolicitado(), vo4.getQtdSolicitadoItem());
 		
-		assertEquals(new Integer(3), vo1.getQtdSolicitadoTotal());
-		assertEquals(new Integer(5), vo2.getQtdSolicitadoTotal());
-		assertEquals(new Integer(5), vo3.getQtdSolicitadoTotal());
-		assertEquals(new Integer(3), vo4.getQtdSolicitadoTotal());
-		
-
-		assertEquals("Sem Devolução", vo1.getSituacaoDescricaoDevolucao(), SituacaoSolicitacaoEpi.getSituacaoDescricaoDevolucao(vo1.getQtdDevolvida(), vo1.getQtdEntregue()));
-		assertEquals("Devolvido Parcialmente", vo2.getSituacaoDescricaoDevolucao(), SituacaoSolicitacaoEpi.getSituacaoDescricaoDevolucao(vo2.getQtdDevolvida(), vo2.getQtdEntregue()));
-		assertEquals("Devolvido", vo3.getSituacaoDescricaoDevolucao(), SituacaoSolicitacaoEpi.getSituacaoDescricaoDevolucao(vo3.getQtdDevolvida(), vo3.getQtdEntregue()));
-		assertEquals("Sem EPI a devolver", vo4.getSituacaoDescricaoDevolucao(), SituacaoSolicitacaoEpi.getSituacaoDescricaoDevolucao(vo4.getQtdDevolvida(), vo4.getQtdEntregue()));
+		for (SolicitacaoEpiItemVO solicitacaoEpiItemVO : lista) {
+			if(solicitacaoEpiItemVO.getItemId().equals(item4.getId())){
+				assertEquals(item4.getQtdSolicitado(), solicitacaoEpiItemVO.getQtdSolicitadoItem());
+				assertEquals(new Integer(3), solicitacaoEpiItemVO.getQtdSolicitadoTotal());
+				assertEquals("Sem Devolução", solicitacaoEpiItemVO.getSituacaoDescricaoDevolucao(), SituacaoSolicitacaoEpi.getSituacaoDescricaoDevolucao(solicitacaoEpiItemVO.getQtdDevolvida(), solicitacaoEpiItemVO.getQtdEntregue()));
+			}else if(solicitacaoEpiItemVO.getItemId().equals(item2.getId())){
+				assertEquals(item2.getQtdSolicitado(), solicitacaoEpiItemVO.getQtdSolicitadoItem());
+				assertEquals(new Integer(5), solicitacaoEpiItemVO.getQtdSolicitadoTotal());
+				assertEquals("Devolvido Parcialmente", solicitacaoEpiItemVO.getSituacaoDescricaoDevolucao(), SituacaoSolicitacaoEpi.getSituacaoDescricaoDevolucao(solicitacaoEpiItemVO.getQtdDevolvida(), solicitacaoEpiItemVO.getQtdEntregue()));
+			}else if(solicitacaoEpiItemVO.getItemId().equals(item3.getId())){
+				assertEquals(item3.getQtdSolicitado(), solicitacaoEpiItemVO.getQtdSolicitadoItem());
+				assertEquals(new Integer(5), solicitacaoEpiItemVO.getQtdSolicitadoTotal());
+				assertEquals("Devolvido", solicitacaoEpiItemVO.getSituacaoDescricaoDevolucao(), SituacaoSolicitacaoEpi.getSituacaoDescricaoDevolucao(solicitacaoEpiItemVO.getQtdDevolvida(), solicitacaoEpiItemVO.getQtdEntregue()));
+			}else if(solicitacaoEpiItemVO.getItemId().equals(item4.getId())){
+				assertEquals(item1.getQtdSolicitado(), solicitacaoEpiItemVO.getQtdSolicitadoItem());
+				assertEquals(new Integer(3), solicitacaoEpiItemVO.getQtdSolicitadoTotal());
+				assertEquals("Sem EPI a devolver", solicitacaoEpiItemVO.getSituacaoDescricaoDevolucao(), SituacaoSolicitacaoEpi.getSituacaoDescricaoDevolucao(solicitacaoEpiItemVO.getQtdDevolvida(), solicitacaoEpiItemVO.getQtdEntregue()));
+			}
+		}
 	}
 
 	private SolicitacaoEpi saveSolicitacaoEpi(Date dataIni, Empresa empresa, Colaborador colaborador, Estabelecimento estabelecimento, Cargo cargo) {

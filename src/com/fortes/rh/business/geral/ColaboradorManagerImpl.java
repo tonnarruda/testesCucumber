@@ -2180,7 +2180,6 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		}
 
 		colaboradores = new CollectionUtil<Colaborador>().sortCollectionStringIgnoreCase(colaboradores, orderAgrupadoPor);
-		
 		colaboradores = new CollectionUtil<Colaborador>().sortCollectionStringIgnoreCase(colaboradores, "tempoServicoString");
 
 		return colaboradores;
@@ -2188,23 +2187,17 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	
 	public Collection<Colaborador> findDemitidosTurnoverTempoServico(Integer[] tempoServicoIni, Integer[] tempoServicoFim, Long empresaId, Date dataIni, Date dataFim, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos, int filtrarPor, Character agruparPor) 
 	{
-		if (filtrarPor == 1)
-			cargosIds = null;
-		else if (filtrarPor == 2)
-			areasIds = null;
+		if (filtrarPor == 1) cargosIds = null;
+		else if (filtrarPor == 2) areasIds = null;
 		
 		Empresa empresa = empresaManager.findByIdProjection(empresaId);
 		Collection<Colaborador> colaboradores = getDao().findDemitidosTurnover(empresa, dataIni, dataFim, tempoServicoIni, tempoServicoFim, estabelecimentosIds, areasIds, cargosIds, vinculos, agruparPor);
+
 		String orderAgrupadoPor = "nome";
-		
-		if(agruparPor!=null && agruparPor!='S') {
-			if(agruparPor=='A'){
-				colaboradores = new CollectionUtil<Colaborador>().sortCollectionStringIgnoreCase(colaboradores, "areaOrganizacionalNome");		
-			}else if (agruparPor=='C') {
-				colaboradores = new CollectionUtil<Colaborador>().sortCollectionStringIgnoreCase(colaboradores, "faixaSalarial.nomeDoCargo");
-			}
-			orderAgrupadoPor="";
-		}
+		if(agruparPor!=null && agruparPor=='A') 
+			orderAgrupadoPor = "areaOrganizacionalNome";		
+		else if (agruparPor!=null && agruparPor=='C') 
+			orderAgrupadoPor = "faixaSalarial.nomeDoCargo";
 			
 		return this.montaTempoServico(colaboradores, tempoServicoIni, tempoServicoFim, orderAgrupadoPor);
 	}

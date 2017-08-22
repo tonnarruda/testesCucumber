@@ -116,19 +116,16 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 			if(!agruparPor.equals('S'))
 				filtrarPor=(agruparPor=='A'  ? 1: 2);
 			
-			if (agruparPorTempoServico)
-			{	
+			if (agruparPorTempoServico){	
 				colaboradores = colaboradorManager.findDemitidosTurnoverTempoServico(tempoServicoIni, tempoServicoFim, empresa.getId(), dataIni, dataFim, LongUtil.arrayStringToCollectionLong(estabelecimentosCheck), LongUtil.arrayStringToCollectionLong(areasCheck), LongUtil.arrayStringToCollectionLong(cargosCheck), cUtil.convertArrayToCollection(vinculosCheck), filtrarPor, agruparPor);
 				if(colaboradores == null || colaboradores.size() == 0)
 					throw new ColecaoVaziaException("Não existem dados para o filtro informado.");
 				
 				return selecionaRelatorioTempoServico();
-			}
-			else{
+			}else{
 				if(agruparPor=='A' || agruparPor=='C'){
 					dataSource = colaboradorManager.montaTurnOverAreaOuCargo(dataIni, dataFim, empresa.getId(), LongUtil.arrayStringToCollectionLong(estabelecimentosCheck), LongUtil.arrayStringToCollectionLong(areasCheck), LongUtil.arrayStringToCollectionLong(cargosCheck), cUtil.convertArrayToCollection(vinculosCheck), filtrarPor, agruparPor);
-				}
-				else{
+				}else{
 					dataSource = Arrays.asList(colaboradorManager.montaTurnOver(dataIni, dataFim, empresa.getId(), LongUtil.arrayStringToCollectionLong(estabelecimentosCheck), LongUtil.arrayStringToCollectionLong(areasCheck), LongUtil.arrayStringToCollectionLong(cargosCheck), cUtil.convertArrayToCollection(vinculosCheck), filtrarPor));
 				}
 				
@@ -143,8 +140,8 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 		}
 	}
 	
-	private String selecionaRelatorioTurnOver() {
-		
+	private String selecionaRelatorioTurnOver() 
+	{
 		String resultNome = "";
 	
 		if(agruparPor== 'A' || agruparPor== 'C')
@@ -155,8 +152,8 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 		return resultNome;
 	}
 
-	private String selecionaRelatorioTempoServico() {
-		
+	private String selecionaRelatorioTempoServico() 
+	{
 		String resultNome = "";
 		
 		if(agruparPor== 'A')
@@ -187,7 +184,7 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 		try 
 		{
 			CollectionUtil<String> cUtil = new CollectionUtil<String>();
-			
+
 			String filtro = montaFiltroRelatorio();
 
 			parametros = RelatorioUtil.getParametrosRelatorio("Taxa de Demissão", empresaManager.findByIdProjection(empresa.getId()), filtro);

@@ -315,26 +315,13 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	//findDemitidosTurnoverAgrupadosPorAreaOrganizacional
 	public Colaborador(Long id, String nome, String nomeComercial, Date dataAdmissao, Date dataDesligamento, Integer tempoServico, String areaOrganizacionalNome)
 	{
-		this.setId(id);
-		this.nome = nome;
-		this.nomeComercial = nomeComercial;
-		this.dataAdmissao = dataAdmissao;
-		this.dataDesligamento = dataDesligamento;
-		this.tempoServico = tempoServico;
-		
+		this(id, nome, nomeComercial, dataAdmissao, dataDesligamento, tempoServico);
 		setAreaOrganizacionalNome(areaOrganizacionalNome);
-		
 	}
 	//findDemitidosTurnoverAgrupadosPorCargo
-	public Colaborador(Long id, String nome, String nomeComercial, Date dataAdmissao, Date dataDesligamento, Integer tempoServico, Long cardoId,String cargoNome)
+	public Colaborador(Long id, String nome, String nomeComercial, Date dataAdmissao, Date dataDesligamento, Integer tempoServico, Long cardoId, String cargoNome)
 	{
-		this.setId(id);
-		this.nome = nome;
-		this.nomeComercial = nomeComercial;
-		this.dataAdmissao = dataAdmissao;
-		this.dataDesligamento = dataDesligamento;
-		this.tempoServico = tempoServico;
-		
+		this(id, nome, nomeComercial, dataAdmissao, dataDesligamento, tempoServico);		
 		setCargoNomeProjection(cargoNome);
 	}
 	

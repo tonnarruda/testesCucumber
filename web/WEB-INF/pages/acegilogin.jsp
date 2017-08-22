@@ -43,7 +43,7 @@
 		}
 		
 		function checaCarregamentoApiCaptcha(){
-			if($('.g-recaptcha').find('div').length){
+			if($('.g-recaptcha').find('div').length > 0){
 				$('#alertaCaptcha').remove();				
 			}else{
 				$('.g-recaptcha').remove();
