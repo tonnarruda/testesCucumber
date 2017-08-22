@@ -688,6 +688,7 @@
 	<@ww.form id="form" name="form" action="${formAction}" method="POST" enctype="multipart/form-data">
 		<div id="content1">
 
+			<@ww.hidden id="respondeuEntrevista" name="colaborador.respondeuEntrevista"/>
 			<#assign somenteLeituraIntegraAC="false" />
 
 			<#if integraAc>

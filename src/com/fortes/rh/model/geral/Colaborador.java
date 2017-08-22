@@ -638,6 +638,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.candidato = colaborador.getCandidato();
 		this.motivoDemissao = colaborador.getMotivoDemissao();
 		this.regimeRevezamento = colaborador.getRegimeRevezamento();
+		this.respondeuEntrevista= colaborador.isRespondeuEntrevista();
 		this.funcao = historicoColaborador.getFuncao();
 		this.naoIntegraAc = colaborador.isNaoIntegraAc();
 		this.camposExtras = colaborador.getCamposExtras();
