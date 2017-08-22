@@ -1,0 +1,1 @@
+update colaborador set respondeuentrevista  = true where respondeuentrevista = false and id in ( select colaborador_id from colaboradorquestionario cq inner join questionario q on q.id = cq.questionario_id where q.tipo = 1 );--.go

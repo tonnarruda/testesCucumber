@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
 	<Versao id="1.1.1xx.2xx" db="" data="xx/xx/2017">
+		<Item visivel="S" motivo="P17080000066"><![CDATA[Info.Funcionais > Colaboradores > Entrevista de Desligamento: Ajuste de inconsistência na exibição do ícone de entrevista de desligamento quando respondida.]]></Item>
 		<Item visivel="S" motivo="S17040000087"><![CDATA[Info Funcionais > Relatórios > Turnover (rotatividade): Novo campo "Agrupar Por", para a imprimir o relatório agrupado por área ou cargo]]></Item>
 		<Item visivel="S" motivo="S17030000372"><![CDATA[Utilitários > Configuração > Sistema: Nova opção de logar utilizando captcha.]]></Item>
 	</Versao>
