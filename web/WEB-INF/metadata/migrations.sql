@@ -1,1 +1,0 @@
-ALTER TABLE empresa ADD COLUMN campoExtraAtualizarMeusDados boolean default false;--.go

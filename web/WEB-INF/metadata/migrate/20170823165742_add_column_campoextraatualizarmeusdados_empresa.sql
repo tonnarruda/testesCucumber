@@ -1,0 +1,1 @@
+ALTER TABLE empresa ADD COLUMN campoextraatualizarmeusdados boolean default false;--.go
