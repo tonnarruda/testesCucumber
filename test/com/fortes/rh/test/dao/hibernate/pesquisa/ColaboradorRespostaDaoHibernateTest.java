@@ -207,10 +207,110 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaboradorDao.save(colaborador);
 		
+		Colaborador colaborador2 = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador2);
+
+		Colaborador colaborador3 = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador3);
+		
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity();
 		avaliacaoDesempenhoDao.save(avaliacaoDesempenho);
 		
-		colaboradorRespostaDao.countRespostas(colaborador.getId(), avaliacaoDesempenho.getId(), false);
+		Pergunta pergunta = PerguntaFactory.getEntity();
+		pergunta.setTipo(TipoPergunta.OBJETIVA);
+		pergunta.setTexto("Voce foi criado com a avo?");
+		pergunta = perguntaDao.save(pergunta);
+		
+		Resposta respostaA = RespostaFactory.getEntity("Sim", pergunta, 1);
+		respostaA = respostaDao.save(respostaA);
+
+		Resposta respostaB = RespostaFactory.getEntity("Não", pergunta, 2);
+		respostaB = respostaDao.save(respostaB);
+		
+		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario.setAvaliacaoDesempenho(avaliacaoDesempenho);
+		colaboradorQuestionario.setColaborador(colaborador);
+		colaboradorQuestionario.setRespondida(Boolean.TRUE);
+		colaboradorQuestionario.setRespondidaParcialmente(Boolean.FALSE);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario);
+		
+		ColaboradorResposta colaboradorResposta= ColaboradorRespostaFactory.getEntity();
+		colaboradorResposta.setPergunta(pergunta);
+		colaboradorResposta.setResposta(respostaA);
+		colaboradorResposta.setColaboradorQuestionario(colaboradorQuestionario);
+		colaboradorRespostaDao.save(colaboradorResposta);
+		
+		ColaboradorQuestionario colaboradorQuestionarioParcialmenteRespondido = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionarioParcialmenteRespondido.setAvaliacaoDesempenho(avaliacaoDesempenho);
+		colaboradorQuestionarioParcialmenteRespondido.setColaborador(colaborador2);
+		colaboradorQuestionarioParcialmenteRespondido.setRespondida(Boolean.FALSE);
+		colaboradorQuestionarioParcialmenteRespondido.setRespondidaParcialmente(Boolean.TRUE);
+		colaboradorQuestionarioDao.save(colaboradorQuestionarioParcialmenteRespondido);
+		
+		ColaboradorResposta colaboradorRespostaParcialmente= ColaboradorRespostaFactory.getEntity();
+		colaboradorRespostaParcialmente.setPergunta(pergunta);
+		colaboradorRespostaParcialmente.setResposta(respostaB);
+		colaboradorRespostaParcialmente.setColaboradorQuestionario(colaboradorQuestionarioParcialmenteRespondido);
+		colaboradorRespostaDao.save(colaboradorRespostaParcialmente);
+		
+		ColaboradorQuestionario colaboradorQuestionarioNaoRespondido = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionarioNaoRespondido.setAvaliacaoDesempenho(avaliacaoDesempenho);
+		colaboradorQuestionarioNaoRespondido.setColaborador(colaborador3);
+		colaboradorQuestionarioNaoRespondido.setRespondida(Boolean.FALSE);
+		colaboradorQuestionarioNaoRespondido.setRespondidaParcialmente(Boolean.FALSE);
+		colaboradorQuestionarioDao.save(colaboradorQuestionarioNaoRespondido);
+		
+		ColaboradorResposta colaboradorSemResposta= ColaboradorRespostaFactory.getEntity();
+		colaboradorSemResposta.setPergunta(pergunta);
+		colaboradorSemResposta.setColaboradorQuestionario(colaboradorQuestionarioNaoRespondido);
+		colaboradorRespostaDao.save(colaboradorSemResposta);
+		
+		List<Object[]> countRespostasRespondidas = colaboradorRespostaDao.countRespostas(colaborador.getId(), avaliacaoDesempenho.getId(), false);
+		List<Object[]> countRespostasParcialmenteRespondidas = colaboradorRespostaDao.countRespostas(colaborador2.getId(), avaliacaoDesempenho.getId(), false);
+		List<Object[]> countSemRespostas = colaboradorRespostaDao.countRespostas(colaborador3.getId(), avaliacaoDesempenho.getId(), false);
+		
+		assertEquals(1, countRespostasRespondidas.size());
+		assertEquals(0, countRespostasParcialmenteRespondidas.size());
+		assertEquals(0, countSemRespostas.size());
+	}
+	@Test
+	public void testCountRespostasComAvaliacaoDesempenhoDesconsiderandoAutoAvaliacao()
+	{
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador);
+		
+		Colaborador colaborador2 = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador2);
+		
+		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity();
+		avaliacaoDesempenhoDao.save(avaliacaoDesempenho);
+		
+		Pergunta pergunta = PerguntaFactory.getEntity();
+		pergunta.setTipo(TipoPergunta.OBJETIVA);
+		pergunta.setTexto("Voce foi criado com a avo?");
+		pergunta = perguntaDao.save(pergunta);
+		
+		Resposta respostaA = RespostaFactory.getEntity("Sim", pergunta, 1);
+		respostaA = respostaDao.save(respostaA);
+		
+		Resposta respostaB = RespostaFactory.getEntity("Não", pergunta, 2);
+		respostaB = respostaDao.save(respostaB);
+		
+		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario.setAvaliacaoDesempenho(avaliacaoDesempenho);
+		colaboradorQuestionario.setColaborador(colaborador);
+		colaboradorQuestionario.setAvaliador(colaborador2);
+		colaboradorQuestionario.setRespondida(Boolean.TRUE);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario);
+		
+		ColaboradorResposta colaboradorResposta= ColaboradorRespostaFactory.getEntity();
+		colaboradorResposta.setPergunta(pergunta);
+		colaboradorResposta.setResposta(respostaA);
+		colaboradorResposta.setColaboradorQuestionario(colaboradorQuestionario);
+		colaboradorRespostaDao.save(colaboradorResposta);
+		
+		List<Object[]> countRespostas = colaboradorRespostaDao.countRespostas(colaborador.getId(), avaliacaoDesempenho.getId(), true);
+		assertEquals(1, countRespostas.size());
 	}
 	
 	@Test
