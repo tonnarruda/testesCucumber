@@ -40,7 +40,7 @@ public class AreaOrganizacionalDaoHibernateTest_JUnit4  extends GenericDaoHibern
 
 	@Override
 	public AreaOrganizacional getEntity() {
-		return AreaOrganizacionalFactory.getEntity();
+		return new AreaOrganizacional();
 	}
 
 	public GenericDao<AreaOrganizacional> getGenericDao() {
@@ -121,7 +121,7 @@ public class AreaOrganizacionalDaoHibernateTest_JUnit4  extends GenericDaoHibern
 		historicoColaboradorDao.save(historicoColaborador);
 		
 		areaFilha.setResponsavel(colaborador);
-		areaOrganizacionalDao.update(areaFilha);
+		areaOrganizacionalDao.save(areaFilha);
 		
 		areaOrganizacionalDao.getHibernateTemplateByGenericDao().flush();
 		
