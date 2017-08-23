@@ -515,6 +515,9 @@
 		<@ww.hidden name="empresa.logoUrl" />
 		<@ww.hidden name="empresa.logoCertificacaoUrl" />
 		<@ww.hidden name="empresa.codigoAC" id="codigoAC" />
+		<@ww.hidden name="empresa.campoExtraColaborador"/>
+		<@ww.hidden name="empresa.campoExtraCandidato"/>
+		<@ww.hidden name="empresa.campoExtraAtualizarMeusDados"/>
 		
 		<@ww.hidden name="cartaoAniversario.empresa.id" />
 		<@ww.hidden name="cartaoAniversario.tipoCartao" value="A" />

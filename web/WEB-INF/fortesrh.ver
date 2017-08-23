@@ -15,6 +15,7 @@
 		<Item visivel="S" motivo="P17080000063"><![CDATA[SESMT > Relatórios > Exames > Exames Realizados: Ajuste na inconsistência que repete registros dos colaboradores.]]></Item>
 		<Item visivel="S" motivo="S17030000372"><![CDATA[Utilitários > Configuração > Sistema: Nova opção de logar utilizando captcha.]]></Item>
 		<Item visivel="S" motivo="P17080000033"><![CDATA[Utilitários > Configurações > Campos Extras: Ajuste de inconsistência ao tentar gravar campos extras para novas empresas.]]></Item>
+		<Item visivel="S" motivo="P17020000292"><![CDATA[Utilitários > Configurações > Campos Extras: Nova opção para habilitar campos extras na tela "Atualizar meus dados".]]></Item>
 		<Item visivel="S" motivo="P17080000044"><![CDATA[Utilitários > Configurações > Limite de Colab. por Cargo > Adicionar Cargo: Ajuste na inconsistência do posicionamento incorreto do campo para inserir a quantidade limite de colaboradores por cargo.]]></Item>
 		<Item visivel="S" motivo="P17060000306"><![CDATA[Utilitários > Importar Cadastros: Ajuste na importação de cargos entre empresas.]]></Item>
 		<Item visivel="N" motivo="S16060000240"><![CDATA[Sistema: Validação da quantidade de constraints e versão do banco de dados.]]></Item>

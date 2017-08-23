@@ -229,7 +229,7 @@
 		    color: #2b7bb5;
 		    width: 922px;
 		    background: #DCEBFC;
-		    background-image: url(/fortesrh/imgs/infoHelp.png);
+		    background-image: url(${request.contextPath}/imgs/infoHelp.png);
 		    background-repeat: no-repeat;
 		    background-size: 17px 17px;
 			background-position: 10px center;

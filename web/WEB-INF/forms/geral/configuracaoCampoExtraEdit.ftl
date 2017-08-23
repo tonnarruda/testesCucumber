@@ -5,9 +5,23 @@
 		
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
+
+		.mini-info {
+			padding: 7px 12px;
+		    padding-left: 36px;
+		    margin-top: 5px;
+		    border-radius: 3px;
+		    color: #2b7bb5;
+		    width: 922px;
+		    background: #DCEBFC;
+		    background-image: url(${request.contextPath}/imgs/infoHelp.png);
+		    background-repeat: no-repeat;
+		    background-size: 17px 17px;
+			background-position: 10px center;
+		}
 	</style>
 		
-		<title>Configurações de Campos Extras</title>
+	<title>Configurações de Campos Extras</title>
 		
 	<#assign validarCampos="return validaDinamico();"/>
 	
@@ -25,7 +39,22 @@
 		$('#configuracaoCampoExtra tbody tr').each(function(){
 			setDisabled($(this));
 		});
+		
+		$('input[name="habilitaCampoExtraColaborador"]').click(function(){
+			configuraCampoExtraAtualizarMeusDados();
+		});
+		
+		configuraCampoExtraAtualizarMeusDados();
 	});
+	
+	function configuraCampoExtraAtualizarMeusDados()
+	{
+		var marcado = $('input[name="habilitaCampoExtraColaborador"]').is(":checked");
+		$('input[name="habilitaCampoExtraAtualizarMeusDados"]').toggleDisabled(!marcado);
+		if(!marcado){
+			$('input[name="habilitaCampoExtraAtualizarMeusDados"]').removeAttr("checked");
+		}
+	}
 	
 	function habilitaTexto(checkbox)
 	{
@@ -56,6 +85,7 @@
 		
 		window.location='prepareUpdate.action?empresa.id=' + empresaId;	
 	}
+	
 </script>
 
 	</head>
@@ -67,11 +97,10 @@
 			<#assign i = 0 />
 			
 			<@ww.select label="Aplicar na empresa" name="empresa.id" id="empresa" listKey="id" listValue="nome" list="empresas" cssClass="selectEmpresa" headerKey="" headerValue="Todas" onchange="carregarConfiguracoesEmpresa(this.value)"/>
-			
 			<@ww.checkbox label="Habilitar campos extras no cadastro de Colaboradores" name="habilitaCampoExtraColaborador" labelPosition="left"/>
+			<@ww.checkbox label="Habilitar campos extras em Atualizar Meus Dados" name="habilitaCampoExtraAtualizarMeusDados" labelPosition="left" cssStyle="margin-left: 20px;" />
 			<@ww.checkbox label="Habilitar campos extras no cadastro de Candidato" name="habilitaCampoExtraCandidato" labelPosition="left"/>
-			<@ww.checkbox label="Habilitar campos extras em Atualizar Meus Dados" name="habilitaCampoExtraAtualizarMeusDados" labelPosition="left"/><br>
-			
+			</br>
 			<@display.table name="configuracaoCampoExtras" id="configuracaoCampoExtra" class="dados">
 			
 				<@display.column title="Colaborador" style="text-align: center; width:40px;">
@@ -105,7 +134,7 @@
 			
 			<@ww.token/>
 		</@ww.form>
-	
+		<div class="mini-info"> Caso grave as informações desta tela será necessário reconfigurar os campos visíveis em Utilitários > Configurações > Configurar Cadastro de Colaborador e Candidato > Campos Extras, pois todos os campos selecionados acima se tornarão visíveis nos respectivos cadastros.</div>
 		<div class="buttonGroup">
 			<button onclick="${validarCampos};" class="btnGravar"></button>
 		</div>
