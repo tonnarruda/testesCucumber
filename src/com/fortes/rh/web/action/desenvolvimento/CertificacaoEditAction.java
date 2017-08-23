@@ -194,7 +194,7 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 				return Action.INPUT;	
 			}
 
-			calculoCertificadoENaocertificados(certificacoesIds, (agruparPor != null && agruparPor == 'T'));
+			calculoCertificadoENaoCertificados(certificacoesIds, (agruparPor != null && agruparPor == 'T'));
 			montaReportTitleAndFilter();
 			parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), reportFilter);
 			
@@ -212,7 +212,7 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private void calculoCertificadoENaocertificados(Long[] certificacoesIds, boolean agruparPorCertificacao){
+	private void calculoCertificadoENaoCertificados(Long[] certificacoesIds, boolean agruparPorCertificacao){
 		qtdTotalColaboradoresCertificados = 0;
 		qtdTotalColaboradoresNaoCertificados = 0;
 		Collection<ColaboradorCertificacao> colabsCertiticacaoOrdenados = new ArrayList<ColaboradorCertificacao>(); 
@@ -226,8 +226,6 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 			colaboradorCertificacoes = new CollectionUtil().sortCollectionStringIgnoreCase(colaboradorCertificacoes, "colaborador.nome");
 		}
 		
-		String ADITIVO_AV_PRATICA_PARA_ORDENACAO = "zzzzzz";//Inserido quando foi criado o nome da Avaliação Prítica no manager para colocar a avaliação no fim da ordenação do nome do curso.
-				
 		for (Long certificacaoId : certificacoesIds) {
 			Map <Long, Collection<ColaboradorCertificacao>> colabsCertificado = new HashMap<Long, Collection<ColaboradorCertificacao>>();
 			Map <Long, Collection<ColaboradorCertificacao>> colabsCertificadoVencido = new HashMap<Long, Collection<ColaboradorCertificacao>>();
@@ -238,7 +236,7 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 			Collection<ColaboradorCertificacao> colabsCertiticacoes = new ArrayList<ColaboradorCertificacao>();
 			
 			for(ColaboradorCertificacao colabcertificacao : colaboradorCertificacoes){
-				colabcertificacao.setNomeCurso(colabcertificacao.getNomeCurso().replace(ADITIVO_AV_PRATICA_PARA_ORDENACAO, ""));
+				colabcertificacao.setNomeCurso(colabcertificacao.getNomeCurso().replace(AvaliacaoPratica.SUFIXO_ORDENACAO_ULTIMA_POSICAO, ""));
 				if(colabcertificacao.getCertificacao().getId().equals(certificacaoId)){
 					Long colaboradorId = colabcertificacao.getColaborador().getId();
 					

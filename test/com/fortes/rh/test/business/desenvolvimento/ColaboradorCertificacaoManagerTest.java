@@ -182,7 +182,7 @@ public class ColaboradorCertificacaoManagerTest
 		
 		AvaliacaoPratica avaliacaoPratica = AvaliacaoPraticaFactory.getEntity(1L);
 		avaliacaoPratica.setNotaMinima(90.0);
-		avaliacaoPratica.setTitulo("Beber Cachaça");
+		avaliacaoPratica.setTitulo("Avaliação Prática Z");
 		
 		Collection<AvaliacaoPratica> avaliacoesPraticas = new ArrayList<AvaliacaoPratica>();
 		avaliacoesPraticas.add(avaliacaoPratica);
@@ -236,7 +236,7 @@ public class ColaboradorCertificacaoManagerTest
 		Boolean certificado = null;
 		Collection<ColaboradorCertificacao> colaboradoresNasCertificacoes = colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(dataIni, dataFim, null, certificado, null, null, certificacoesIds, filtroColaboradoresIds, null, empresa.getId());
 		assertEquals(9, colaboradoresNasCertificacoes.size());
-		assertEquals("zzzzzzAvaliação Prática: Beber Cachaça", ((ColaboradorCertificacao) colaboradoresNasCertificacoes.toArray()[2]).getNomeCurso());
+		assertEquals("zzzzzzAvaliação Prática: Avaliação Prática Z", ((ColaboradorCertificacao) colaboradoresNasCertificacoes.toArray()[2]).getNomeCurso());
 		
 		certificado = true;
 		colaboradoresNasCertificacoes = colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(dataIni, dataFim, null, certificado, null, null, certificacoesIds, filtroColaboradoresIds, null, empresa.getId());
@@ -480,7 +480,7 @@ public class ColaboradorCertificacaoManagerTest
 		
 		AvaliacaoPratica avaliacaoPratica = AvaliacaoPraticaFactory.getEntity(1L);
 		avaliacaoPratica.setNotaMinima(90.0);
-		avaliacaoPratica.setTitulo("Beber Cachaça");
+		avaliacaoPratica.setTitulo("Avaliação Prática Z");
 		
 		ColaboradorAvaliacaoPratica colaboradorAvaliacaoPratica1 = ColaboradorAvaliacaoPraticaFactory.getEntity(colaboradorCertificacao, colaborador, certificacao, avaliacaoPratica, 90.0);
 		colaboradorAvaliacaoPratica1.setData(DateUtil.criarDataMesAno(1, 1, 2016));
