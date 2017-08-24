@@ -80,8 +80,6 @@ public class AcPessoalClientCargo
         	        faixaSalarial.getNomeACPessoal(), valor,faixaSalarialHistorico.getQuantidade(), faixaSalarialHistorico.getId(), faixaSalarial.getCodigoCbo()};
       
         	TFeedbackPessoalWebService result =  (TFeedbackPessoalWebService) call.invoke(param);
-        	result.getSucesso("SetCargoComSituacao", param, this.getClass());
-
             return result.getCodigoretorno();
         }catch(Exception e){
             e.printStackTrace();

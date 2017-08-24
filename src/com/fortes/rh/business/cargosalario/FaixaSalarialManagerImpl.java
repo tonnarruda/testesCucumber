@@ -78,7 +78,10 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 			{
 				String codigoAC = acPessoalClientCargo.criarCargo(faixaSalarial, faixaSalarialHistorico, empresa);
 				if (codigoAC == null || codigoAC.equals(""))
-					throw new Exception("O cargo não pôde ser cadastrado no Fortes Pessoal. <br>Possíveis Motivos: <br>&nbsp&nbsp&nbsp- Cargo existente com a mesma descrição no Fortes Pessoal. <br>&nbsp&nbsp&nbsp- Limite de cadastros de cargos excedido no Fortes Pessoal.");
+					throw new Exception("O cargo não pôde ser cadastrado no Fortes Pessoal. <br>Possíveis Motivos: "
+							+ "<br>&nbsp&nbsp&nbsp- Cargo existente com a mesma descrição no Fortes Pessoal. "
+							+ "<br>&nbsp&nbsp&nbsp- Limite de cadastros de cargos excedido no Fortes Pessoal."
+							+ "<br>&nbsp&nbsp&nbsp- O CBO informado não está cadastrado no Fortes Pessoal.");
 
 				getDao().updateCodigoAC(codigoAC, faixaSalarial.getId());
 			}

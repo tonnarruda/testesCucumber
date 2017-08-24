@@ -18,127 +18,6 @@ drop function inserirCodigoCboNaFaixa();--.go
 
 ALTER TABLE cargo drop COLUMN cbocodigo;--.go
 
-insert into codigocbo (codigo, descricao) select '212320','Administrador em segurança da informação' where not exists( select * from codigocbo where codigo = '212320'); --.go
-insert into codigocbo (codigo, descricao) select '515302','Agente de açao social' where not exists( select * from codigocbo where codigo = '515302'); --.go
-insert into codigocbo (codigo, descricao) select '351905','Agente de inteligência' where not exists( select * from codigocbo where codigo = '351905'); --.go
-insert into codigocbo (codigo, descricao) select '411050','Agente de microcrédito' where not exists( select * from codigocbo where codigo = '411050'); --.go
-insert into codigocbo (codigo, descricao) select '411050','Agente de Micro-Crédito' where not exists( select * from codigocbo where codigo = '411050'); --.go
-insert into codigocbo (codigo, descricao) select '342550','Agente de proteção de aviação civil' where not exists( select * from codigocbo where codigo = '342550'); --.go
-insert into codigocbo (codigo, descricao) select '515130','Agente indígena de saneamento' where not exists( select * from codigocbo where codigo = '515130'); --.go
-insert into codigocbo (codigo, descricao) select '515125','Agente indígena de saúde' where not exists( select * from codigocbo where codigo = '515125'); --.go
-insert into codigocbo (codigo, descricao) select '351910','Agente técnico de inteligência' where not exists( select * from codigocbo where codigo = '351910'); --.go
-insert into codigocbo (codigo, descricao) select '763125','Ajudante de confecçao' where not exists( select * from codigocbo where codigo = '763125'); --.go
-insert into codigocbo (codigo, descricao) select '142330','Analista de negócios' where not exists( select * from codigocbo where codigo = '142330'); --.go
-insert into codigocbo (codigo, descricao) select '142335','Analista de pesquisa de mercado' where not exists( select * from codigocbo where codigo = '142335'); --.go
-insert into codigocbo (codigo, descricao) select '111502','Analista de planejamento e orçamento - apo' where not exists( select * from codigocbo where codigo = '111502'); --.go
-insert into codigocbo (codigo, descricao) select '226310','Arteterapeuta' where not exists( select * from codigocbo where codigo = '226310'); --.go
-insert into codigocbo (codigo, descricao) select '261430','Audiodescritor' where not exists( select * from codigocbo where codigo = '261430'); --.go
-insert into codigocbo (codigo, descricao) select '322250','Auxiliar de enfermagem da estratégia de saúde da família' where not exists( select * from codigocbo where codigo = '322250'); --.go
-insert into codigocbo (codigo, descricao) select '514310','Auxiliar de manutençao predial' where not exists( select * from codigocbo where codigo = '514310'); --.go
-insert into codigocbo (codigo, descricao) select '322430','Auxiliar em saúde bucal da estratégia de saúde da família' where not exists( select * from codigocbo where codigo = '322430'); --.go
-insert into codigocbo (codigo, descricao) select '513440','Barista' where not exists( select * from codigocbo where codigo = '513440'); --.go
-insert into codigocbo (codigo, descricao) select '221201','Biomédico' where not exists( select * from codigocbo where codigo = '221201'); --.go
-insert into codigocbo (codigo, descricao) select '783230','Bloqueiro (trabalhador portuário)' where not exists( select * from codigocbo where codigo = '783230'); --.go
-insert into codigocbo (codigo, descricao) select '271105','Chefe de cozinha' where not exists( select * from codigocbo where codigo = '271105'); --.go
-insert into codigocbo (codigo, descricao) select '223293','Cirurgião-dentista da estratégia de saúde da família' where not exists( select * from codigocbo where codigo = '223293'); --.go
-insert into codigocbo (codigo, descricao) select '223280','Cirurgiao dentista - dentística' where not exists( select * from codigocbo where codigo = '223280'); --.go
-insert into codigocbo (codigo, descricao) select '223284','Cirurgiao dentista - disfunçao temporomandibular e dor orofacial' where not exists( select * from codigocbo where codigo = '223284'); --.go
-insert into codigocbo (codigo, descricao) select '223276','Cirurgiao dentista - odontologia do trabalho' where not exists( select * from codigocbo where codigo = '223276'); --.go
-insert into codigocbo (codigo, descricao) select '223288','Cirurgiao dentista - odontologia para pacientes com necessidades especiais' where not exists( select * from codigocbo where codigo = '223288'); --.go
-insert into codigocbo (codigo, descricao) select '848425','Classificador de graos' where not exists( select * from codigocbo where codigo = '848425'); --.go
-insert into codigocbo (codigo, descricao) select '514230','Coletor de resíduos sólidos de serviços de saúde' where not exists( select * from codigocbo where codigo = '514230'); --.go
-insert into codigocbo (codigo, descricao) select '515304','Conselheiro tutelar' where not exists( select * from codigocbo where codigo = '515304'); --.go
-insert into codigocbo (codigo, descricao) select '262415','Conservador-restaurador de bens  culturais' where not exists( select * from codigocbo where codigo = '262415'); --.go
-insert into codigocbo (codigo, descricao) select '262425','Desenhista industrial de produto de moda (designer de moda)' where not exists( select * from codigocbo where codigo = '262425'); --.go
-insert into codigocbo (codigo, descricao) select '262420','Desenhista industrial de produto (designer de produto)' where not exists( select * from codigocbo where codigo = '262420'); --.go
-insert into codigocbo (codigo, descricao) select '239435','Designer educacional' where not exists( select * from codigocbo where codigo = '239435'); --.go
-insert into codigocbo (codigo, descricao) select '423110','Despachante de trânsito' where not exists( select * from codigocbo where codigo = '423110'); --.go
-insert into codigocbo (codigo, descricao) select '374145','Dj (disc jockey)' where not exists( select * from codigocbo where codigo = '374145'); --.go
-insert into codigocbo (codigo, descricao) select '322135','Doula' where not exists( select * from codigocbo where codigo = '322135'); --.go
-insert into codigocbo (codigo, descricao) select '515301','Educador social' where not exists( select * from codigocbo where codigo = '515301'); --.go
-insert into codigocbo (codigo, descricao) select '223565','Enfermeiro da estratégia de saúde da família' where not exists( select * from codigocbo where codigo = '223565'); --.go
-insert into codigocbo (codigo, descricao) select '214005','Engenheiro ambiental' where not exists( select * from codigocbo where codigo = '214005'); --.go
-insert into codigocbo (codigo, descricao) select '214275','Engenheiro ambiental' where not exists( select * from codigocbo where codigo = '214275'); --.go
-insert into codigocbo (codigo, descricao) select '222205','Engenheiro de alimentos' where not exists( select * from codigocbo where codigo = '222205'); --.go
-insert into codigocbo (codigo, descricao) select '202110','Engenheiro de controle e automação' where not exists( select * from codigocbo where codigo = '202110'); --.go
-insert into codigocbo (codigo, descricao) select '226315','Equoterapeuta' where not exists( select * from codigocbo where codigo = '226315'); --.go
-insert into codigocbo (codigo, descricao) select '111501','Especialista de políticas públicas e gestao governamental - eppgg' where not exists( select * from codigocbo where codigo = '111501'); --.go
-insert into codigocbo (codigo, descricao) select '142610','Especialista em desenvolvimento de cigarros' where not exists( select * from codigocbo where codigo = '142610'); --.go
-insert into codigocbo (codigo, descricao) select '223415','Farmacêutico analista clínico' where not exists( select * from codigocbo where codigo = '223415'); --.go
-insert into codigocbo (codigo, descricao) select '223420','Farmacêutico de alimentos' where not exists( select * from codigocbo where codigo = '223420'); --.go
-insert into codigocbo (codigo, descricao) select '223430','Farmacêutico em saúde pública' where not exists( select * from codigocbo where codigo = '223430'); --.go
-insert into codigocbo (codigo, descricao) select '223445','Farmacêutico hospitalar e clínico' where not exists( select * from codigocbo where codigo = '223445'); --.go
-insert into codigocbo (codigo, descricao) select '223435','Farmacêutico industrial' where not exists( select * from codigocbo where codigo = '223435'); --.go
-insert into codigocbo (codigo, descricao) select '223425','Farmacêutico práticas integrativas e complementares' where not exists( select * from codigocbo where codigo = '223425'); --.go
-insert into codigocbo (codigo, descricao) select '223440','Farmacêutico toxicologista' where not exists( select * from codigocbo where codigo = '223440'); --.go
-insert into codigocbo (codigo, descricao) select '223650','Fisioterapeuta acupunturista' where not exists( select * from codigocbo where codigo = '223650'); --.go
-insert into codigocbo (codigo, descricao) select '223660','Fisioterapeuta  do trabalho' where not exists( select * from codigocbo where codigo = '223660'); --.go
-insert into codigocbo (codigo, descricao) select '223655','Fisioterapeuta esportivo' where not exists( select * from codigocbo where codigo = '223655'); --.go
-insert into codigocbo (codigo, descricao) select '223630','Fisioterapeuta neurofuncional' where not exists( select * from codigocbo where codigo = '223630'); --.go
-insert into codigocbo (codigo, descricao) select '223640','Fisioterapeuta osteopata' where not exists( select * from codigocbo where codigo = '223640'); --.go
-insert into codigocbo (codigo, descricao) select '223645','Fisioterapeuta quiropraxista' where not exists( select * from codigocbo where codigo = '223645'); --.go
-insert into codigocbo (codigo, descricao) select '223625','Fisioterapeuta respiratória' where not exists( select * from codigocbo where codigo = '223625'); --.go
-insert into codigocbo (codigo, descricao) select '223635','Fisioterapeuta traumato-ortopédica funcional' where not exists( select * from codigocbo where codigo = '223635'); --.go
-insert into codigocbo (codigo, descricao) select '223815','Fonoaudiólogo educacional' where not exists( select * from codigocbo where codigo = '223815'); --.go
-insert into codigocbo (codigo, descricao) select '223820','Fonoaudiólogo em audiologia' where not exists( select * from codigocbo where codigo = '223820'); --.go
-insert into codigocbo (codigo, descricao) select '223825','Fonoaudiólogo em disfagia' where not exists( select * from codigocbo where codigo = '223825'); --.go
-insert into codigocbo (codigo, descricao) select '223830','Fonoaudiólogo em linguagem' where not exists( select * from codigocbo where codigo = '223830'); --.go
-insert into codigocbo (codigo, descricao) select '223835','Fonoaudiólogo em motricidade orofacial' where not exists( select * from codigocbo where codigo = '223835'); --.go
-insert into codigocbo (codigo, descricao) select '223840','Fonoaudiólogo em saúde coletiva' where not exists( select * from codigocbo where codigo = '223840'); --.go
-insert into codigocbo (codigo, descricao) select '223845','Fonoaudiólogo em voz' where not exists( select * from codigocbo where codigo = '223845'); --.go
-insert into codigocbo (codigo, descricao) select '141525','Gerente de turismo' where not exists( select * from codigocbo where codigo = '141525'); --.go
-insert into codigocbo (codigo, descricao) select '252605','Gestor em segurança' where not exists( select * from codigocbo where codigo = '252605'); --.go
-insert into codigocbo (codigo, descricao) select '517335','Guarda portuário' where not exists( select * from codigocbo where codigo = '517335'); --.go
-insert into codigocbo (codigo, descricao) select '261425','Intérprete de língua de sinais' where not exists( select * from codigocbo where codigo = '261425'); --.go
-insert into codigocbo (codigo, descricao) select '514330','Limpador de piscinas' where not exists( select * from codigocbo where codigo = '514330'); --.go
-insert into codigocbo (codigo, descricao) select '782721','Marinheiro de esporte e recreio' where not exists( select * from codigocbo where codigo = '782721'); --.go
-insert into codigocbo (codigo, descricao) select '322116','Massoterapeuta' where not exists( select * from codigocbo where codigo = '322116'); --.go
-insert into codigocbo (codigo, descricao) select '223162','Médico da estratégia de saúde da família' where not exists( select * from codigocbo where codigo = '223162'); --.go
-insert into codigocbo (codigo, descricao) select '515303','Monitor de dependente químico' where not exists( select * from codigocbo where codigo = '515303'); --.go
-insert into codigocbo (codigo, descricao) select '226305','Musicoterapeuta' where not exists( select * from codigocbo where codigo = '226305'); --.go
-insert into codigocbo (codigo, descricao) select '223915','Musicoterapeuta' where not exists( select * from codigocbo where codigo = '223915'); --.go
-insert into codigocbo (codigo, descricao) select '213440','Oceanógrafo' where not exists( select * from codigocbo where codigo = '213440'); --.go
-insert into codigocbo (codigo, descricao) select '242905','Oficial de inteligência' where not exists( select * from codigocbo where codigo = '242905'); --.go
-insert into codigocbo (codigo, descricao) select '242910','Oficial técnico de inteligência' where not exists( select * from codigocbo where codigo = '242910'); --.go
-insert into codigocbo (codigo, descricao) select '842135','Operador de máquina de preparaçao de matéria prima para produçao de cigarros' where not exists( select * from codigocbo where codigo = '842135'); --.go
-insert into codigocbo (codigo, descricao) select '226110','Osteopata' where not exists( select * from codigocbo where codigo = '226110'); --.go
-insert into codigocbo (codigo, descricao) select '142340','Ouvidor' where not exists( select * from codigocbo where codigo = '142340'); --.go
-insert into codigocbo (codigo, descricao) select '354150','Propagandista de produtos famacêuticos' where not exists( select * from codigocbo where codigo = '354150'); --.go
-insert into codigocbo (codigo, descricao) select '251555','Psicólogo acupunturista' where not exists( select * from codigocbo where codigo = '251555'); --.go
-insert into codigocbo (codigo, descricao) select '226105','Quiropraxista' where not exists( select * from codigocbo where codigo = '226105'); --.go
-insert into codigocbo (codigo, descricao) select '142325','Relações públicas' where not exists( select * from codigocbo where codigo = '142325'); --.go
-insert into codigocbo (codigo, descricao) select '515325','Sócioeducador' where not exists( select * from codigocbo where codigo = '515325'); --.go
-insert into codigocbo (codigo, descricao) select '322245','Técnico de enfermagem da estratégia de saúde da família' where not exists( select * from codigocbo where codigo = '322245'); --.go
-insert into codigocbo (codigo, descricao) select '325115','Técnico em farmácia' where not exists( select * from codigocbo where codigo = '325115'); --.go
-insert into codigocbo (codigo, descricao) select '325210','Técnico em nutriçao e dietética' where not exists( select * from codigocbo where codigo = '325210'); --.go
-insert into codigocbo (codigo, descricao) select '322425','Técnico em saúde bucal da estratégia de saúde da família' where not exists( select * from codigocbo where codigo = '322425'); --.go
-insert into codigocbo (codigo, descricao) select '222215','Tecnólogo em alimentos' where not exists( select * from codigocbo where codigo = '222215'); --.go
-insert into codigocbo (codigo, descricao) select '202120','Tecnólogo em automação industrial' where not exists( select * from codigocbo where codigo = '202120'); --.go
-insert into codigocbo (codigo, descricao) select '214280','Tecnólogo em construção civil' where not exists( select * from codigocbo where codigo = '214280'); --.go
-insert into codigocbo (codigo, descricao) select '214435','Tecnólogo em fabricação mecânica' where not exists( select * from codigocbo where codigo = '214435'); --.go
-insert into codigocbo (codigo, descricao) select '271110','Tecnólogo em gastronomia' where not exists( select * from codigocbo where codigo = '271110'); --.go
-insert into codigocbo (codigo, descricao) select '142120','Tecnólogo em gestão administrativo- financeira' where not exists( select * from codigocbo where codigo = '142120'); --.go
-insert into codigocbo (codigo, descricao) select '142535','Tecnólogo em gestão da tecnologia da informação' where not exists( select * from codigocbo where codigo = '142535'); --.go
-insert into codigocbo (codigo, descricao) select '342125','Tecnólogo em logistica de transporte' where not exists( select * from codigocbo where codigo = '342125'); --.go
-insert into codigocbo (codigo, descricao) select '202115','Tecnólogo em mecatrônica' where not exists( select * from codigocbo where codigo = '202115'); --.go
-insert into codigocbo (codigo, descricao) select '214010','Tecnólogo em meio ambiente' where not exists( select * from codigocbo where codigo = '214010'); --.go
-insert into codigocbo (codigo, descricao) select '214615','Tecnólogo em metalurgia' where not exists( select * from codigocbo where codigo = '214615'); --.go
-insert into codigocbo (codigo, descricao) select '214745','Tecnólogo em petróleo e gás' where not exists( select * from codigocbo where codigo = '214745'); --.go
-insert into codigocbo (codigo, descricao) select '213215','Técnólogo em processos químicos' where not exists( select * from codigocbo where codigo = '213215'); --.go
-insert into codigocbo (codigo, descricao) select '262135','Tecnólogo em produção audiovisual' where not exists( select * from codigocbo where codigo = '262135'); --.go
-insert into codigocbo (codigo, descricao) select '262130','Tecnólogo em produção fonográfica' where not exists( select * from codigocbo where codigo = '262130'); --.go
-insert into codigocbo (codigo, descricao) select '214930','Tecnólogo em produção industrial' where not exists( select * from codigocbo where codigo = '214930'); --.go
-insert into codigocbo (codigo, descricao) select '214535','Tecnólogo em produção sulcroalcooleira' where not exists( select * from codigocbo where codigo = '214535'); --.go
-insert into codigocbo (codigo, descricao) select '214750','Tecnólogo em rochas ornamentais' where not exists( select * from codigocbo where codigo = '214750'); --.go
-insert into codigocbo (codigo, descricao) select '214935','Tecnólogo em segurança do trabalho' where not exists( select * from codigocbo where codigo = '214935'); --.go
-insert into codigocbo (codigo, descricao) select '214370','Tecnólogo em telecomunicações' where not exists( select * from codigocbo where codigo = '214370'); --.go
-insert into codigocbo (codigo, descricao) select '324125','Tecnólogo oftálmico' where not exists( select * from codigocbo where codigo = '324125'); --.go
-insert into codigocbo (codigo, descricao) select '322117','Terapeuta holístico' where not exists( select * from codigocbo where codigo = '322117'); --.go
-insert into codigocbo (codigo, descricao) select '223905','Terapeuta ocupacional' where not exists( select * from codigocbo where codigo = '223905'); --.go
-insert into codigocbo (codigo, descricao) select '514325','Trabalhador da manutençao de edificaçoes' where not exists( select * from codigocbo where codigo = '514325'); --.go
-insert into codigocbo (codigo, descricao) select '122520','Turismólogo' where not exists( select * from codigocbo where codigo = '122520'); --.go
-insert into codigocbo (codigo, descricao) select '214130','Urbanista' where not exists( select * from codigocbo where codigo = '214130'); --.go
-
 update codigocbo set codigo = '514320' where codigo = '514210' and not exists (select * from codigocbo where codigo = '514320'); --.go
 update faixasalarial set codigocbo = '514320' where codigocbo = '514210'; --.go
 
@@ -160,9 +39,6 @@ delete from codigocbo where codigo = '322310'; --.go
 update faixasalarial set codigocbo = '514315' where codigocbo = '991410'; --.go
 delete from codigocbo where codigo = '991410'; --.go
 
-update codigocbo set codigo = '322116' where codigo = '516135' and not exists (select * from codigocbo where codigo = '322116'); --.go
-update faixasalarial set codigocbo = '322116' where codigocbo = '516135'; --.go
-
 update codigocbo set descricao = 'Abatedor' where codigo = '848505'; --.go
 update codigocbo set descricao = 'Acabador de calçados' where codigo = '764305'; --.go
 update codigocbo set descricao = 'Acabador de embalagens (flexíveis e cartotécnicas)' where codigo = '766305'; --.go
@@ -176,7 +52,6 @@ update codigocbo set descricao = 'Administrador de edifícios' where codigo = '5
 update codigocbo set descricao = 'Administrador de fundos e carteiras de investimento' where codigo = '252505'; --.go
 update codigocbo set descricao = 'Administrador de redes' where codigo = '212310'; --.go
 update codigocbo set descricao = 'Administrador de sistemas operacionais' where codigo = '212315'; --.go
-update codigocbo set descricao = 'Administrador em segurança da informação' where codigo = '212320'; --.go
 update codigocbo set descricao = 'Advogado' where codigo = '241005'; --.go
 update codigocbo set descricao = 'Advogado (áreas especiais)' where codigo = '241030'; --.go
 update codigocbo set descricao = 'Advogado da uniao' where codigo = '241205'; --.go
@@ -193,19 +68,14 @@ update codigocbo set descricao = 'Afinador de instrumentos musicais' where codig
 update codigocbo set descricao = 'Afretador' where codigo = '342120'; --.go
 update codigocbo set descricao = 'Agenciador de propaganda' where codigo = '354110'; --.go
 update codigocbo set descricao = 'Agente comunitário de saúde' where codigo = '515105'; --.go
-update codigocbo set descricao = 'Agente de açao social' where codigo = '515302'; --.go
 update codigocbo set descricao = 'Agente de defesa ambiental' where codigo = '352205'; --.go
 update codigocbo set descricao = 'Agente de direitos autorais' where codigo = '352405'; --.go
 update codigocbo set descricao = 'Agente de estaçao (ferrovia e metrô)' where codigo = '342405'; --.go
 update codigocbo set descricao = 'Agente de higiene e segurança' where codigo = '254310'; --.go
-update codigocbo set descricao = 'Agente de inteligência' where codigo = '351905'; --.go
 update codigocbo set descricao = 'Agente de manobra e docagem' where codigo = '215105'; --.go
-update codigocbo set descricao = 'Agente de microcrédito' where codigo = '411050'; --.go
-update codigocbo set descricao = 'Agente de Micro-Crédito' where codigo = '411050'; --.go
 update codigocbo set descricao = 'Agente de pátio' where codigo = '783105'; --.go
 update codigocbo set descricao = 'Agente de polícia federal' where codigo = '517205'; --.go
 update codigocbo set descricao = 'Agente de proteçao de aeroporto' where codigo = '517305'; --.go
-update codigocbo set descricao = 'Agente de proteção de aviação civil' where codigo = '342550'; --.go
 update codigocbo set descricao = 'Agente de recrutamento e seleçao' where codigo = '351315'; --.go
 update codigocbo set descricao = 'Agente de saúde pública' where codigo = '352210'; --.go
 update codigocbo set descricao = 'Agente de segurança' where codigo = '517310'; --.go
@@ -217,12 +87,8 @@ update codigocbo set descricao = 'Agente fiscal de qualidade' where codigo = '35
 update codigocbo set descricao = 'Agente fiscal metrológico' where codigo = '352315'; --.go
 update codigocbo set descricao = 'Agente fiscal têxtil' where codigo = '352320'; --.go
 update codigocbo set descricao = 'Agente funerário' where codigo = '516505'; --.go
-update codigocbo set descricao = 'Agente indígena de saneamento' where codigo = '515130'; --.go
-update codigocbo set descricao = 'Agente indígena de saúde' where codigo = '515125'; --.go
 update codigocbo set descricao = 'Agente publicitário' where codigo = '253115'; --.go
-update codigocbo set descricao = 'Agente técnico de inteligência' where codigo = '351910'; --.go
 update codigocbo set descricao = 'Ajudante de carvoaria' where codigo = '632615'; --.go
-update codigocbo set descricao = 'Ajudante de confecçao' where codigo = '763125'; --.go
 update codigocbo set descricao = 'Ajudante de despachante aduaneiro' where codigo = '342205'; --.go
 update codigocbo set descricao = 'Ajudante de motorista' where codigo = '783225'; --.go
 update codigocbo set descricao = 'Ajustador de instrumentos de precisao' where codigo = '741105'; --.go
@@ -247,11 +113,8 @@ update codigocbo set descricao = 'Analista de exportaçao e importaçao' where c
 update codigocbo set descricao = 'Analista de folha de pagamento' where codigo = '413105'; --.go
 update codigocbo set descricao = 'Analista de informaçoes (pesquisador de informaçoes de rede)' where codigo = '261215'; --.go
 update codigocbo set descricao = 'Analista de leasing' where codigo = '252535'; --.go
-update codigocbo set descricao = 'Analista de negócios' where codigo = '142330'; --.go
 update codigocbo set descricao = 'Analista de negócios' where codigo = '253120'; --.go
-update codigocbo set descricao = 'Analista de pesquisa de mercado' where codigo = '142335'; --.go
 update codigocbo set descricao = 'Analista de pesquisa de mercado' where codigo = '253125'; --.go
-update codigocbo set descricao = 'Analista de planejamento e orçamento - apo' where codigo = '111502'; --.go
 update codigocbo set descricao = 'Analista de produtos bancários' where codigo = '252540'; --.go
 update codigocbo set descricao = 'Analista de recursos humanos' where codigo = '252405'; --.go
 update codigocbo set descricao = 'Analista de redes e de comunicaçao de dados' where codigo = '212410'; --.go
@@ -297,7 +160,6 @@ update codigocbo set descricao = 'Arquivista de documentos' where codigo = '4151
 update codigocbo set descricao = 'Arquivista pesquisador (jornalismo)' where codigo = '261105'; --.go
 update codigocbo set descricao = 'Arrematadeira' where codigo = '763305'; --.go
 update codigocbo set descricao = 'Artesao modelador (vidros)' where codigo = '752105'; --.go
-update codigocbo set descricao = 'Arteterapeuta' where codigo = '226310'; --.go
 update codigocbo set descricao = 'Artífice do couro' where codigo = '768305'; --.go
 update codigocbo set descricao = 'Artista aéreo' where codigo = '376210'; --.go
 update codigocbo set descricao = 'Artista (artes visuais)' where codigo = '262405'; --.go
@@ -330,7 +192,6 @@ update codigocbo set descricao = 'Atleta profissional de tênis' where codigo = 
 update codigocbo set descricao = 'Atleta profissional (outras modalidades)' where codigo = '377105'; --.go
 update codigocbo set descricao = 'Ator' where codigo = '262505'; --.go
 update codigocbo set descricao = 'Atuário' where codigo = '211105'; --.go
-update codigocbo set descricao = 'Audiodescritor' where codigo = '261430'; --.go
 update codigocbo set descricao = 'Auditor (contadores e afins)' where codigo = '252205'; --.go
 update codigocbo set descricao = 'Auditor-fiscal da previdência social' where codigo = '254205'; --.go
 update codigocbo set descricao = 'Auditor-fiscal da receita federal' where codigo = '254105'; --.go
@@ -343,7 +204,6 @@ update codigocbo set descricao = 'Auxiliar de contabilidade' where codigo = '413
 update codigocbo set descricao = 'Auxiliar de corte (preparaçao da confecçao de roupas)' where codigo = '763105'; --.go
 update codigocbo set descricao = 'Auxiliar de desenvolvimento infantil' where codigo = '331110'; --.go
 update codigocbo set descricao = 'Auxiliar de enfermagem' where codigo = '322230'; --.go
-update codigocbo set descricao = 'Auxiliar de enfermagem da estratégia de saúde da família' where codigo = '322250'; --.go
 update codigocbo set descricao = 'Auxiliar de enfermagem do trabalho' where codigo = '322235'; --.go
 update codigocbo set descricao = 'Auxiliar de escritório, em geral' where codigo = '411005'; --.go
 update codigocbo set descricao = 'Auxiliar de estatística' where codigo = '411035'; --.go
@@ -354,7 +214,6 @@ update codigocbo set descricao = 'Auxiliar de laboratório de análises clínica
 update codigocbo set descricao = 'Auxiliar de laboratório de análises físico-químicas' where codigo = '818110'; --.go
 update codigocbo set descricao = 'Auxiliar de laboratório de imunobiológicos' where codigo = '515220'; --.go
 update codigocbo set descricao = 'Auxiliar de lavanderia' where codigo = '516345'; --.go
-update codigocbo set descricao = 'Auxiliar de manutençao predial' where codigo = '514310'; --.go
 update codigocbo set descricao = 'Auxiliar de maquinista de trem' where codigo = '782625'; --.go
 update codigocbo set descricao = 'Auxiliar de pessoal' where codigo = '411030'; --.go
 update codigocbo set descricao = 'Auxiliar de processamento de fumo' where codigo = '842120'; --.go
@@ -366,7 +225,6 @@ update codigocbo set descricao = 'Auxiliar de seguros' where codigo = '411040'; 
 update codigocbo set descricao = 'Auxiliar de serviços de importaçao e exportaçao' where codigo = '411045'; --.go
 update codigocbo set descricao = 'Auxiliar de serviços jurídicos' where codigo = '351430'; --.go
 update codigocbo set descricao = 'Auxiliar de veterinário' where codigo = '519305'; --.go
-update codigocbo set descricao = 'Auxiliar em saúde bucal da estratégia de saúde da família' where codigo = '322430'; --.go
 update codigocbo set descricao = 'Auxiliar geral de conservaçao de vias permanentes (exceto trilhos)' where codigo = '992225'; --.go
 update codigocbo set descricao = 'Auxiliar nos serviços de alimentaçao' where codigo = '513501'; --.go
 update codigocbo set descricao = 'Auxiliar técnico em laboratório de farmácia' where codigo = '325105'; --.go
@@ -383,7 +241,6 @@ update codigocbo set descricao = 'Balanceiro' where codigo = '414115'; --.go
 update codigocbo set descricao = 'Bamburista' where codigo = '811705'; --.go
 update codigocbo set descricao = 'Banhista de animais domésticos' where codigo = '519315'; --.go
 update codigocbo set descricao = 'Barbeiro' where codigo = '516105'; --.go
-update codigocbo set descricao = 'Barista' where codigo = '513440'; --.go
 update codigocbo set descricao = 'Barman' where codigo = '513420'; --.go
 update codigocbo set descricao = 'Bate-folha a  máquina' where codigo = '751105'; --.go
 update codigocbo set descricao = 'Bibliotecário' where codigo = '261205'; --.go
@@ -392,9 +249,7 @@ update codigocbo set descricao = 'Bilheteiro (estaçoes de metrô, ferroviárias
 update codigocbo set descricao = 'Bilheteiro no serviço de diversoes' where codigo = '421115'; --.go
 update codigocbo set descricao = 'Bioengenheiro' where codigo = '201105'; --.go
 update codigocbo set descricao = 'Biólogo' where codigo = '221105'; --.go
-update codigocbo set descricao = 'Biomédico' where codigo = '221201'; --.go
 update codigocbo set descricao = 'Biotecnologista' where codigo = '201110'; --.go
-update codigocbo set descricao = 'Bloqueiro (trabalhador portuário)' where codigo = '783230'; --.go
 update codigocbo set descricao = 'Bobinador eletricista, à mao' where codigo = '731165'; --.go
 update codigocbo set descricao = 'Bobinador eletricista, à máquina' where codigo = '731170'; --.go
 update codigocbo set descricao = 'Boiadeiro' where codigo = '782815'; --.go
@@ -480,7 +335,6 @@ update codigocbo set descricao = 'Chaveiro' where codigo = '523115'; --.go
 update codigocbo set descricao = 'Chefe de bar' where codigo = '510130'; --.go
 update codigocbo set descricao = 'Chefe de confeitaria' where codigo = '840120'; --.go
 update codigocbo set descricao = 'Chefe de contabilidade (técnico)' where codigo = '351110'; --.go
-update codigocbo set descricao = 'Chefe de cozinha' where codigo = '271105'; --.go
 update codigocbo set descricao = 'Chefe de cozinha' where codigo = '510125'; --.go
 update codigocbo set descricao = 'Chefe de estaçao portuária' where codigo = '342605'; --.go
 update codigocbo set descricao = 'Chefe de portaria de hotel' where codigo = '510120'; --.go
@@ -494,17 +348,12 @@ update codigocbo set descricao = 'Cilindrista (petroquímica e afins)' where cod
 update codigocbo set descricao = 'Cimentador (poços de petróleo)' where codigo = '316340'; --.go
 update codigocbo set descricao = 'Cirurgiao dentista - auditor' where codigo = '223204'; --.go
 update codigocbo set descricao = 'Cirurgiao dentista - clínico geral' where codigo = '223208'; --.go
-update codigocbo set descricao = 'Cirurgião-dentista da estratégia de saúde da família' where codigo = '223293'; --.go
-update codigocbo set descricao = 'Cirurgiao dentista - dentística' where codigo = '223280'; --.go
 update codigocbo set descricao = 'Cirurgiao dentista de saúde coletiva' where codigo = '223272'; --.go
-update codigocbo set descricao = 'Cirurgiao dentista - disfunçao temporomandibular e dor orofacial' where codigo = '223284'; --.go
 update codigocbo set descricao = 'Cirurgiao dentista - endodontista' where codigo = '223212'; --.go
 update codigocbo set descricao = 'Cirurgiao dentista - epidemiologista' where codigo = '223216'; --.go
 update codigocbo set descricao = 'Cirurgiao dentista - estomatologista' where codigo = '223220'; --.go
 update codigocbo set descricao = 'Cirurgiao dentista - implantodontista' where codigo = '223224'; --.go
 update codigocbo set descricao = 'Cirurgiao dentista - odontogeriatra' where codigo = '223228'; --.go
-update codigocbo set descricao = 'Cirurgiao dentista - odontologia do trabalho' where codigo = '223276'; --.go
-update codigocbo set descricao = 'Cirurgiao dentista - odontologia para pacientes com necessidades especiais' where codigo = '223288'; --.go
 update codigocbo set descricao = 'Cirurgiao dentista - odontologista legal' where codigo = '223232'; --.go
 update codigocbo set descricao = 'Cirurgiao dentista - odontopediatra' where codigo = '223236'; --.go
 update codigocbo set descricao = 'Cirurgiao dentista - ortopedista e ortodontista' where codigo = '223240'; --.go
@@ -519,7 +368,6 @@ update codigocbo set descricao = 'Classificador de charutos' where codigo = '842
 update codigocbo set descricao = 'Classificador de couros' where codigo = '762210'; --.go
 update codigocbo set descricao = 'Classificador de fibras têxteis' where codigo = '761105'; --.go
 update codigocbo set descricao = 'Classificador de fumo' where codigo = '842115'; --.go
-update codigocbo set descricao = 'Classificador de graos' where codigo = '848425'; --.go
 update codigocbo set descricao = 'Classificador de madeira' where codigo = '772105'; --.go
 update codigocbo set descricao = 'Classificador de peles' where codigo = '762105'; --.go
 update codigocbo set descricao = 'Classificador de toras' where codigo = '632105'; --.go
@@ -531,7 +379,6 @@ update codigocbo set descricao = 'Codificador de dados' where codigo = '415115';
 update codigocbo set descricao = 'Colchoeiro (confecçao de colchoes)' where codigo = '765205'; --.go
 update codigocbo set descricao = 'Colecionador de selos e moedas' where codigo = '371205'; --.go
 update codigocbo set descricao = 'Coletor de lixo domiciliar' where codigo = '514205'; --.go
-update codigocbo set descricao = 'Coletor de resíduos sólidos de serviços de saúde' where codigo = '514230'; --.go
 update codigocbo set descricao = 'Colorista de papel' where codigo = '311705'; --.go
 update codigocbo set descricao = 'Colorista têxtil' where codigo = '311710'; --.go
 update codigocbo set descricao = 'Comandante da marinha mercante' where codigo = '215115'; --.go
@@ -572,9 +419,7 @@ update codigocbo set descricao = 'Confeiteiro' where codigo = '848310'; --.go
 update codigocbo set descricao = 'Conferente de carga e descarga' where codigo = '414215'; --.go
 update codigocbo set descricao = 'Conferente de serviços bancários' where codigo = '413220'; --.go
 update codigocbo set descricao = 'Conferente-expedidor de roupas (lavanderias)' where codigo = '516335'; --.go
-update codigocbo set descricao = 'Conselheiro tutelar' where codigo = '515304'; --.go
 update codigocbo set descricao = 'Conservador de via permanente (trilhos)' where codigo = '991105'; --.go
-update codigocbo set descricao = 'Conservador-restaurador de bens  culturais' where codigo = '262415'; --.go
 update codigocbo set descricao = 'Consultor contábil (técnico)' where codigo = '351115'; --.go
 update codigocbo set descricao = 'Consultor jurídico' where codigo = '241040'; --.go
 update codigocbo set descricao = 'Contador' where codigo = '252210'; --.go
@@ -680,8 +525,6 @@ update codigocbo set descricao = 'Deputado federal' where codigo = '111110'; --.
 update codigocbo set descricao = 'Descarnador de couros e peles, à maquina' where codigo = '762110'; --.go
 update codigocbo set descricao = 'Desenhista copista' where codigo = '318010'; --.go
 update codigocbo set descricao = 'Desenhista detalhista' where codigo = '318015'; --.go
-update codigocbo set descricao = 'Desenhista industrial de produto de moda (designer de moda)' where codigo = '262425'; --.go
-update codigocbo set descricao = 'Desenhista industrial de produto (designer de produto)' where codigo = '262420'; --.go
 update codigocbo set descricao = 'Desenhista industrial (designer)' where codigo = '262410'; --.go
 update codigocbo set descricao = 'Desenhista projetista de arquitetura' where codigo = '318505'; --.go
 update codigocbo set descricao = 'Desenhista projetista de construçao civil' where codigo = '318510'; --.go
@@ -708,11 +551,9 @@ update codigocbo set descricao = 'Desenhista técnico naval' where codigo = '318
 update codigocbo set descricao = 'Desidratador de alimentos' where codigo = '841432'; --.go
 update codigocbo set descricao = 'Designer de interiores' where codigo = '375105'; --.go
 update codigocbo set descricao = 'Designer de vitrines' where codigo = '375110'; --.go
-update codigocbo set descricao = 'Designer educacional' where codigo = '239435'; --.go
 update codigocbo set descricao = 'Desincrustador (poços de petróleo)' where codigo = '316335'; --.go
 update codigocbo set descricao = 'Desossador' where codigo = '848515'; --.go
 update codigocbo set descricao = 'Despachante aduaneiro' where codigo = '342210'; --.go
-update codigocbo set descricao = 'Despachante de trânsito' where codigo = '423110'; --.go
 update codigocbo set descricao = 'Despachante de transportes coletivos (exceto trem)' where codigo = '511210'; --.go
 update codigocbo set descricao = 'Despachante documentalista' where codigo = '423105'; --.go
 update codigocbo set descricao = 'Despachante operacional de vôo' where codigo = '342510'; --.go
@@ -783,10 +624,8 @@ update codigocbo set descricao = 'Dirigente e administrador de organizaçao da s
 update codigocbo set descricao = 'Dirigente e administrador de organizaçao religiosa' where codigo = '114305'; --.go
 update codigocbo set descricao = 'Dirigentes de entidades de trabalhadores' where codigo = '114205'; --.go
 update codigocbo set descricao = 'Dirigentes de entidades patronais' where codigo = '114210'; --.go
-update codigocbo set descricao = 'Dj (disc jockey)' where codigo = '374145'; --.go
 update codigocbo set descricao = 'Documentalista' where codigo = '261210'; --.go
 update codigocbo set descricao = 'Domador de animais (circense)' where codigo = '376225'; --.go
-update codigocbo set descricao = 'Doula' where codigo = '322135'; --.go
 update codigocbo set descricao = 'Drageador (medicamentos)' where codigo = '811810'; --.go
 update codigocbo set descricao = 'Dramaturgo de dança' where codigo = '262820'; --.go
 update codigocbo set descricao = 'Economista' where codigo = '251205'; --.go
@@ -805,7 +644,6 @@ update codigocbo set descricao = 'Editor de revista' where codigo = '261620'; --
 update codigocbo set descricao = 'Editor de revista científica' where codigo = '261625'; --.go
 update codigocbo set descricao = 'Editor de texto e imagem' where codigo = '766120'; --.go
 update codigocbo set descricao = 'Editor de tv  e vídeo' where codigo = '374405'; --.go
-update codigocbo set descricao = 'Educador social' where codigo = '515301'; --.go
 update codigocbo set descricao = 'Eletricista de bordo' where codigo = '341315'; --.go
 update codigocbo set descricao = 'Eletricista de instalaçoes' where codigo = '715615'; --.go
 update codigocbo set descricao = 'Eletricista de instalaçoes (aeronaves)' where codigo = '953105'; --.go
@@ -842,7 +680,6 @@ update codigocbo set descricao = 'Encarregado de manutençao mecânica de sistem
 update codigocbo set descricao = 'Encarregado geral de operaçoes de conservaçao de vias permanentes (exceto trilhos)' where codigo = '992205'; --.go
 update codigocbo set descricao = 'Enfermeiro' where codigo = '223505'; --.go
 update codigocbo set descricao = 'Enfermeiro auditor' where codigo = '223510'; --.go
-update codigocbo set descricao = 'Enfermeiro da estratégia de saúde da família' where codigo = '223565'; --.go
 update codigocbo set descricao = 'Enfermeiro de bordo' where codigo = '223515'; --.go
 update codigocbo set descricao = 'Enfermeiro de centro cirúrgico' where codigo = '223520'; --.go
 update codigocbo set descricao = 'Enfermeiro de terapia intensiva' where codigo = '223525'; --.go
@@ -859,8 +696,6 @@ update codigocbo set descricao = 'Engenheiro aeronáutico' where codigo = '21442
 update codigocbo set descricao = 'Engenheiro agrícola' where codigo = '222105'; --.go
 update codigocbo set descricao = 'Engenheiro agrimensor' where codigo = '214805'; --.go
 update codigocbo set descricao = 'Engenheiro agrônomo' where codigo = '222110'; --.go
-update codigocbo set descricao = 'Engenheiro ambiental' where codigo = '214275'; --.go
-update codigocbo set descricao = 'Engenheiro ambiental' where codigo = '214005'; --.go
 update codigocbo set descricao = 'Engenheiro cartógrafo' where codigo = '214810'; --.go
 update codigocbo set descricao = 'Engenheiro civil' where codigo = '214205'; --.go
 update codigocbo set descricao = 'Engenheiro civil (aeroportos)' where codigo = '214210'; --.go
@@ -876,11 +711,9 @@ update codigocbo set descricao = 'Engenheiro civil (rodovias)' where codigo = '2
 update codigocbo set descricao = 'Engenheiro civil (saneamento)' where codigo = '214260'; --.go
 update codigocbo set descricao = 'Engenheiro civil (transportes e trânsito)' where codigo = '214270'; --.go
 update codigocbo set descricao = 'Engenheiro civil (túneis)' where codigo = '214265'; --.go
-update codigocbo set descricao = 'Engenheiro de alimentos' where codigo = '222205'; --.go
 update codigocbo set descricao = 'Engenheiro de aplicativos em computaçao' where codigo = '212205'; --.go
 update codigocbo set descricao = 'Engenheiro de controle de qualidade' where codigo = '214910'; --.go
 update codigocbo set descricao = 'Engenheiro de controle e automaçao' where codigo = '214355'; --.go
-update codigocbo set descricao = 'Engenheiro de controle e automação' where codigo = '202110'; --.go
 update codigocbo set descricao = 'Engenheiro de equipamentos em computaçao' where codigo = '212210'; --.go
 update codigocbo set descricao = 'Engenheiro de manutençao de telecomunicaçoes' where codigo = '214335'; --.go
 update codigocbo set descricao = 'Engenheiro de materiais' where codigo = '214605'; --.go
@@ -931,7 +764,6 @@ update codigocbo set descricao = 'Entrevistador de pesquisas de mercado' where c
 update codigocbo set descricao = 'Entrevistador de preços' where codigo = '424120'; --.go
 update codigocbo set descricao = 'Enxugador de couros' where codigo = '762215'; --.go
 update codigocbo set descricao = 'Equilibrista' where codigo = '376230'; --.go
-update codigocbo set descricao = 'Equoterapeuta' where codigo = '226315'; --.go
 update codigocbo set descricao = 'Escarfador' where codigo = '821410'; --.go
 update codigocbo set descricao = 'Escolhedor de papel' where codigo = '391225'; --.go
 update codigocbo set descricao = 'Escorador de minas' where codigo = '711125'; --.go
@@ -944,9 +776,7 @@ update codigocbo set descricao = 'Escrivao de polícia' where codigo = '351420';
 update codigocbo set descricao = 'Escrivao extra - judicial' where codigo = '351415'; --.go
 update codigocbo set descricao = 'Escrivao judicial' where codigo = '351410'; --.go
 update codigocbo set descricao = 'Esotérico' where codigo = '516805'; --.go
-update codigocbo set descricao = 'Especialista de políticas públicas e gestao governamental - eppgg' where codigo = '111501'; --.go
 update codigocbo set descricao = 'Especialista em calibraçoes metrológicas' where codigo = '201210'; --.go
-update codigocbo set descricao = 'Especialista em desenvolvimento de cigarros' where codigo = '142610'; --.go
 update codigocbo set descricao = 'Especialista em ensaios metrológicos' where codigo = '201215'; --.go
 update codigocbo set descricao = 'Especialista em instrumentaçao metrológica' where codigo = '201220'; --.go
 update codigocbo set descricao = 'Especialista em materiais de referência metrológica' where codigo = '201225'; --.go
@@ -969,14 +799,7 @@ update codigocbo set descricao = 'Estofador de móveis' where codigo = '765235';
 update codigocbo set descricao = 'Examinador de cabos, linhas elétricas e telefônicas' where codigo = '732115'; --.go
 update codigocbo set descricao = 'Extrusor de fios ou fibras de vidro' where codigo = '823210'; --.go
 update codigocbo set descricao = 'Farmacêutico' where codigo = '223405'; --.go
-update codigocbo set descricao = 'Farmacêutico analista clínico' where codigo = '223415'; --.go
 update codigocbo set descricao = 'Farmacêutico bioquímico' where codigo = '223410'; --.go
-update codigocbo set descricao = 'Farmacêutico de alimentos' where codigo = '223420'; --.go
-update codigocbo set descricao = 'Farmacêutico em saúde pública' where codigo = '223430'; --.go
-update codigocbo set descricao = 'Farmacêutico hospitalar e clínico' where codigo = '223445'; --.go
-update codigocbo set descricao = 'Farmacêutico industrial' where codigo = '223435'; --.go
-update codigocbo set descricao = 'Farmacêutico práticas integrativas e complementares' where codigo = '223425'; --.go
-update codigocbo set descricao = 'Farmacêutico toxicologista' where codigo = '223440'; --.go
 update codigocbo set descricao = 'Faxineiro' where codigo = '514320'; --.go
 update codigocbo set descricao = 'Feirante' where codigo = '524205'; --.go
 update codigocbo set descricao = 'Fermentador' where codigo = '841715'; --.go
@@ -1007,26 +830,11 @@ update codigocbo set descricao = 'Físico (óptica)' where codigo = '213160'; --
 update codigocbo set descricao = 'Físico (partículas e campos)' where codigo = '213165'; --.go
 update codigocbo set descricao = 'Físico (plasma)' where codigo = '213170'; --.go
 update codigocbo set descricao = 'Físico (térmica)' where codigo = '213175'; --.go
-update codigocbo set descricao = 'Fisioterapeuta acupunturista' where codigo = '223650'; --.go
-update codigocbo set descricao = 'Fisioterapeuta  do trabalho' where codigo = '223660'; --.go
-update codigocbo set descricao = 'Fisioterapeuta esportivo' where codigo = '223655'; --.go
 update codigocbo set descricao = 'Fisioterapeuta geral' where codigo = '223605'; --.go
-update codigocbo set descricao = 'Fisioterapeuta neurofuncional' where codigo = '223630'; --.go
-update codigocbo set descricao = 'Fisioterapeuta osteopata' where codigo = '223640'; --.go
-update codigocbo set descricao = 'Fisioterapeuta quiropraxista' where codigo = '223645'; --.go
-update codigocbo set descricao = 'Fisioterapeuta respiratória' where codigo = '223625'; --.go
-update codigocbo set descricao = 'Fisioterapeuta traumato-ortopédica funcional' where codigo = '223635'; --.go
 update codigocbo set descricao = 'Fitotecário' where codigo = '415120'; --.go
 update codigocbo set descricao = 'Foguista (locomotivas a vapor)' where codigo = '862105'; --.go
 update codigocbo set descricao = 'Folheador de móveis de madeira' where codigo = '775110'; --.go
 update codigocbo set descricao = 'Fonoaudiólogo' where codigo = '223810'; --.go
-update codigocbo set descricao = 'Fonoaudiólogo educacional' where codigo = '223815'; --.go
-update codigocbo set descricao = 'Fonoaudiólogo em audiologia' where codigo = '223820'; --.go
-update codigocbo set descricao = 'Fonoaudiólogo em disfagia' where codigo = '223825'; --.go
-update codigocbo set descricao = 'Fonoaudiólogo em linguagem' where codigo = '223830'; --.go
-update codigocbo set descricao = 'Fonoaudiólogo em motricidade orofacial' where codigo = '223835'; --.go
-update codigocbo set descricao = 'Fonoaudiólogo em saúde coletiva' where codigo = '223840'; --.go
-update codigocbo set descricao = 'Fonoaudiólogo em voz' where codigo = '223845'; --.go
 update codigocbo set descricao = 'Forjador' where codigo = '722105'; --.go
 update codigocbo set descricao = 'Forjador a martelo' where codigo = '722110'; --.go
 update codigocbo set descricao = 'Forjador prensista' where codigo = '722115'; --.go
@@ -1120,11 +928,9 @@ update codigocbo set descricao = 'Gerente de serviços educacionais da área pú
 update codigocbo set descricao = 'Gerente de serviços sociais' where codigo = '131120'; --.go
 update codigocbo set descricao = 'Gerente de suporte técnico de tecnologia da informaçao' where codigo = '142530'; --.go
 update codigocbo set descricao = 'Gerente de suprimentos' where codigo = '142410'; --.go
-update codigocbo set descricao = 'Gerente de turismo' where codigo = '141525'; --.go
 update codigocbo set descricao = 'Gerente de vendas' where codigo = '142320'; --.go
 update codigocbo set descricao = 'Gerente financeiro' where codigo = '142115'; --.go
 update codigocbo set descricao = 'Gesseiro' where codigo = '716405'; --.go
-update codigocbo set descricao = 'Gestor em segurança' where codigo = '252605'; --.go
 update codigocbo set descricao = 'Governador de estado' where codigo = '111230'; --.go
 update codigocbo set descricao = 'Governador do distrito federal' where codigo = '111235'; --.go
 update codigocbo set descricao = 'Governanta de hotelaria' where codigo = '513115'; --.go
@@ -1141,7 +947,6 @@ update codigocbo set descricao = 'Gravador de vidro a  jato de areia' where codi
 update codigocbo set descricao = 'Gravador (joalheria e ourivesaria)' where codigo = '751115'; --.go
 update codigocbo set descricao = 'Guarda-civil municipal' where codigo = '517215'; --.go
 update codigocbo set descricao = 'Guardador de veículos' where codigo = '519925'; --.go
-update codigocbo set descricao = 'Guarda portuário' where codigo = '517335'; --.go
 update codigocbo set descricao = 'Guarda-roupeira de cinema' where codigo = '513325'; --.go
 update codigocbo set descricao = 'Guia de turismo' where codigo = '511405'; --.go
 update codigocbo set descricao = 'Guia florestal' where codigo = '632005'; --.go
@@ -1205,7 +1010,6 @@ update codigocbo set descricao = 'Instrutor de auto-escola' where codigo = '3331
 update codigocbo set descricao = 'Instrutor de cursos livres' where codigo = '333110'; --.go
 update codigocbo set descricao = 'Instrutor de vôo' where codigo = '215315'; --.go
 update codigocbo set descricao = 'Intérprete' where codigo = '261410'; --.go
-update codigocbo set descricao = 'Intérprete de língua de sinais' where codigo = '261425'; --.go
 update codigocbo set descricao = 'Investigador de polícia' where codigo = '351810'; --.go
 update codigocbo set descricao = 'Jardineiro' where codigo = '622010'; --.go
 update codigocbo set descricao = 'Joalheiro' where codigo = '751010'; --.go
@@ -1240,7 +1044,6 @@ update codigocbo set descricao = 'Líder de comunidade caiçara' where codigo = 
 update codigocbo set descricao = 'Ligador de linhas telefônicas' where codigo = '732135'; --.go
 update codigocbo set descricao = 'Limpador a seco, à máquina' where codigo = '516320'; --.go
 update codigocbo set descricao = 'Limpador de fachadas' where codigo = '514315'; --.go
-update codigocbo set descricao = 'Limpador de piscinas' where codigo = '514330'; --.go
 update codigocbo set descricao = 'Limpador de roupas a seco, à mao' where codigo = '516410'; --.go
 update codigocbo set descricao = 'Limpador de vidros' where codigo = '514305'; --.go
 update codigocbo set descricao = 'Lingotador' where codigo = '722210'; --.go
@@ -1285,11 +1088,9 @@ update codigocbo set descricao = 'Marcador de produtos (siderúrgico e metalúrg
 update codigocbo set descricao = 'Marceneiro' where codigo = '771105'; --.go
 update codigocbo set descricao = 'Marcheteiro' where codigo = '775120'; --.go
 update codigocbo set descricao = 'Marinheiro de convés (marítimo e fluviário)' where codigo = '782705'; --.go
-update codigocbo set descricao = 'Marinheiro de esporte e recreio' where codigo = '782721'; --.go
 update codigocbo set descricao = 'Marinheiro de máquinas' where codigo = '782710'; --.go
 update codigocbo set descricao = 'Marmorista (construçao)' where codigo = '716525'; --.go
 update codigocbo set descricao = 'Masseiro (massas alimentícias)' where codigo = '848315'; --.go
-update codigocbo set descricao = 'Massoterapeuta' where codigo = '322116'; --.go
 update codigocbo set descricao = 'Matemático' where codigo = '211115'; --.go
 update codigocbo set descricao = 'Matemático aplicado' where codigo = '211120'; --.go
 update codigocbo set descricao = 'Matizador de couros e peles' where codigo = '762320'; --.go
@@ -1344,7 +1145,6 @@ update codigocbo set descricao = 'Médico cirurgiao plástico' where codigo = '2
 update codigocbo set descricao = 'Médico cirurgiao torácico' where codigo = '223113'; --.go
 update codigocbo set descricao = 'Médico citopatologista' where codigo = '223114'; --.go
 update codigocbo set descricao = 'Médico clínico' where codigo = '223115'; --.go
-update codigocbo set descricao = 'Médico da estratégia de saúde da família' where codigo = '223162'; --.go
 update codigocbo set descricao = 'Médico dermatologista' where codigo = '223117'; --.go
 update codigocbo set descricao = 'Médico de saúde da família' where codigo = '223116'; --.go
 update codigocbo set descricao = 'Médico do trabalho' where codigo = '223118'; --.go
@@ -1462,7 +1262,6 @@ update codigocbo set descricao = 'Moleiro de cereais (exceto arroz)' where codig
 update codigocbo set descricao = 'Moleiro de especiarias' where codigo = '841110'; --.go
 update codigocbo set descricao = 'Moleiro de minérios' where codigo = '712105'; --.go
 update codigocbo set descricao = 'Moleiro (tratamentos químicos e afins)' where codigo = '811105'; --.go
-update codigocbo set descricao = 'Monitor de dependente químico' where codigo = '515303'; --.go
 update codigocbo set descricao = 'Monitor de teleatendimento' where codigo = '422215'; --.go
 update codigocbo set descricao = 'Monotipista' where codigo = '768615'; --.go
 update codigocbo set descricao = 'Montador de andaimes (edificaçoes)' where codigo = '715545'; --.go
@@ -1522,17 +1321,13 @@ update codigocbo set descricao = 'Músico intérprete cantor' where codigo = '26
 update codigocbo set descricao = 'Músico intérprete instrumentista' where codigo = '262710'; --.go
 update codigocbo set descricao = 'Musicólogo' where codigo = '262620'; --.go
 update codigocbo set descricao = 'Músico regente' where codigo = '262615'; --.go
-update codigocbo set descricao = 'Musicoterapeuta' where codigo = '223915'; --.go
-update codigocbo set descricao = 'Musicoterapeuta' where codigo = '226305'; --.go
 update codigocbo set descricao = 'Narrador em programas de rádio e televisao' where codigo = '261725'; --.go
 update codigocbo set descricao = 'Neuropsicólogo' where codigo = '251545'; --.go
 update codigocbo set descricao = 'Normalizador de metais e de compósitos' where codigo = '723110'; --.go
 update codigocbo set descricao = 'Numerólogo' where codigo = '516710'; --.go
 update codigocbo set descricao = 'Nutricionista' where codigo = '223710'; --.go
-update codigocbo set descricao = 'Oceanógrafo' where codigo = '213440'; --.go
 update codigocbo set descricao = 'Oficial da aeronáutica' where codigo = '010205'; --.go
 update codigocbo set descricao = 'Oficial da marinha' where codigo = '010215'; --.go
-update codigocbo set descricao = 'Oficial de inteligência' where codigo = '242905'; --.go
 update codigocbo set descricao = 'Oficial de justiça' where codigo = '351425'; --.go
 update codigocbo set descricao = 'Oficial de quarto de navegaçao da marinha mercante' where codigo = '215140'; --.go
 update codigocbo set descricao = 'Oficial de registro de contratos marítimos' where codigo = '241305'; --.go
@@ -1546,7 +1341,6 @@ update codigocbo set descricao = 'Oficial general da aeronáutica' where codigo 
 update codigocbo set descricao = 'Oficial general da marinha' where codigo = '010115'; --.go
 update codigocbo set descricao = 'Oficial general do exército' where codigo = '010110'; --.go
 update codigocbo set descricao = 'Oficial superior de máquinas da marinha mercante' where codigo = '215205'; --.go
-update codigocbo set descricao = 'Oficial técnico de inteligência' where codigo = '242910'; --.go
 update codigocbo set descricao = 'Oleiro (fabricaçao de telhas)' where codigo = '828105'; --.go
 update codigocbo set descricao = 'Oleiro (fabricaçao de tijolos)' where codigo = '828110'; --.go
 update codigocbo set descricao = 'Operador de abertura (fiaçao)' where codigo = '761205'; --.go
@@ -1699,7 +1493,6 @@ update codigocbo set descricao = 'Operador de máquina de fabricar papel  (fase 
 update codigocbo set descricao = 'Operador de máquina de fundir sob pressao' where codigo = '722225'; --.go
 update codigocbo set descricao = 'Operador de máquina de lavar fios e tecidos' where codigo = '761430'; --.go
 update codigocbo set descricao = 'Operador de máquina de moldar automatizada' where codigo = '722330'; --.go
-update codigocbo set descricao = 'Operador de máquina de preparaçao de matéria prima para produçao de cigarros' where codigo = '842135'; --.go
 update codigocbo set descricao = 'Operador de máquina de produtos farmacêuticos' where codigo = '811805'; --.go
 update codigocbo set descricao = 'Operador de máquina de secar celulose' where codigo = '831125'; --.go
 update codigocbo set descricao = 'Operador de máquina de sinterizar' where codigo = '821110'; --.go
@@ -1814,9 +1607,7 @@ update codigocbo set descricao = 'Operador polivalente da indústria têxtil' wh
 update codigocbo set descricao = 'Organizador de evento' where codigo = '354820'; --.go
 update codigocbo set descricao = 'Orientador educacional' where codigo = '239410'; --.go
 update codigocbo set descricao = 'Ortoptista' where codigo = '223910'; --.go
-update codigocbo set descricao = 'Osteopata' where codigo = '226110'; --.go
 update codigocbo set descricao = 'Ourives' where codigo = '751125'; --.go
-update codigocbo set descricao = 'Ouvidor' where codigo = '142340'; --.go
 update codigocbo set descricao = 'Ouvidor (ombudsman) do meio de comunicaçao' where codigo = '352415'; --.go
 update codigocbo set descricao = 'Oxicortador a mao e a  máquina' where codigo = '724310'; --.go
 update codigocbo set descricao = 'Oxidador' where codigo = '723240'; --.go
@@ -2137,10 +1928,8 @@ update codigocbo set descricao = 'Projetista de som' where codigo = '374120'; --
 update codigocbo set descricao = 'Promotor de justiça' where codigo = '242235'; --.go
 update codigocbo set descricao = 'Promotor de vendas' where codigo = '521115'; --.go
 update codigocbo set descricao = 'Promotor de vendas especializado' where codigo = '354130'; --.go
-update codigocbo set descricao = 'Propagandista de produtos famacêuticos' where codigo = '354150'; --.go
 update codigocbo set descricao = 'Protético dentário' where codigo = '322410'; --.go
 update codigocbo set descricao = 'Psicanalista' where codigo = '251550'; --.go
-update codigocbo set descricao = 'Psicólogo acupunturista' where codigo = '251555'; --.go
 update codigocbo set descricao = 'Psicólogo clínico' where codigo = '251510'; --.go
 update codigocbo set descricao = 'Psicólogo do esporte' where codigo = '251515'; --.go
 update codigocbo set descricao = 'Psicólogo do trabalho' where codigo = '251540'; --.go
@@ -2154,7 +1943,6 @@ update codigocbo set descricao = 'Pugilista' where codigo = '377145'; --.go
 update codigocbo set descricao = 'Queijeiro na fabricaçao de laticínio' where codigo = '848210'; --.go
 update codigocbo set descricao = 'Químico' where codigo = '213205'; --.go
 update codigocbo set descricao = 'Químico industrial' where codigo = '213210'; --.go
-update codigocbo set descricao = 'Quiropraxista' where codigo = '226105'; --.go
 update codigocbo set descricao = 'Rachador de couros e peles' where codigo = '762125'; --.go
 update codigocbo set descricao = 'Radiotelegrafista' where codigo = '372210'; --.go
 update codigocbo set descricao = 'Raizeiro' where codigo = '632010'; --.go
@@ -2180,7 +1968,6 @@ update codigocbo set descricao = 'Redeiro (pesca)' where codigo = '631420'; --.g
 update codigocbo set descricao = 'Refinador de óleo e gordura' where codigo = '841472'; --.go
 update codigocbo set descricao = 'Refinador de sal' where codigo = '841210'; --.go
 update codigocbo set descricao = 'Relaçoes públicas' where codigo = '253105'; --.go
-update codigocbo set descricao = 'Relações públicas' where codigo = '142325'; --.go
 update codigocbo set descricao = 'Relojoeiro (fabricaçao)' where codigo = '741120'; --.go
 update codigocbo set descricao = 'Relojoeiro (reparaçao)' where codigo = '741125'; --.go
 update codigocbo set descricao = 'Remetedor de fios' where codigo = '761363'; --.go
@@ -2235,7 +2022,6 @@ update codigocbo set descricao = 'Serralheiro' where codigo = '724440'; --.go
 update codigocbo set descricao = 'Servente de obras' where codigo = '717020'; --.go
 update codigocbo set descricao = 'Sexador' where codigo = '623325'; --.go
 update codigocbo set descricao = 'Sinaleiro (ponte-rolante)' where codigo = '782145'; --.go
-update codigocbo set descricao = 'Sócioeducador' where codigo = '515325'; --.go
 update codigocbo set descricao = 'Sociólogo' where codigo = '251120'; --.go
 update codigocbo set descricao = 'Soldado bombeiro militar' where codigo = '031210'; --.go
 update codigocbo set descricao = 'Soldado da polícia militar' where codigo = '021210'; --.go
@@ -2367,7 +2153,6 @@ update codigocbo set descricao = 'Técnico de contabilidade' where codigo = '351
 update codigocbo set descricao = 'Técnico de controle de meio ambiente' where codigo = '311505'; --.go
 update codigocbo set descricao = 'Técnico de desporto individual e coletivo (exceto futebol)' where codigo = '224125'; --.go
 update codigocbo set descricao = 'Técnico de enfermagem' where codigo = '322205'; --.go
-update codigocbo set descricao = 'Técnico de enfermagem da estratégia de saúde da família' where codigo = '322245'; --.go
 update codigocbo set descricao = 'Técnico de enfermagem de terapia intensiva' where codigo = '322210'; --.go
 update codigocbo set descricao = 'Técnico de enfermagem do trabalho' where codigo = '322215'; --.go
 update codigocbo set descricao = 'Técnico de enfermagem psiquiátrica' where codigo = '322220'; --.go
@@ -2434,7 +2219,6 @@ update codigocbo set descricao = 'Técnico em curtimento' where codigo = '311115
 update codigocbo set descricao = 'Técnico em direitos autorais' where codigo = '352420'; --.go
 update codigocbo set descricao = 'Técnico em eletromecânica' where codigo = '300305'; --.go
 update codigocbo set descricao = 'Técnico em estruturas metálicas' where codigo = '314615'; --.go
-update codigocbo set descricao = 'Técnico em farmácia' where codigo = '325115'; --.go
 update codigocbo set descricao = 'Técnico em fotônica' where codigo = '313505'; --.go
 update codigocbo set descricao = 'Técnico em geodésia e cartografia' where codigo = '312310'; --.go
 update codigocbo set descricao = 'Técnico em geofísica' where codigo = '316105'; --.go
@@ -2466,7 +2250,6 @@ update codigocbo set descricao = 'Técnico em métodos gráficos em cardiologia'
 update codigocbo set descricao = 'Técnico em mitilicultura' where codigo = '321315'; --.go
 update codigocbo set descricao = 'Técnico em mixagem de áudio' where codigo = '374130'; --.go
 update codigocbo set descricao = 'Técnico em museologia' where codigo = '371210'; --.go
-update codigocbo set descricao = 'Técnico em nutriçao e dietética' where codigo = '325210'; --.go
 update codigocbo set descricao = 'Técnico em operaçao de equipamento de exibiçao de televisao' where codigo = '373210'; --.go
 update codigocbo set descricao = 'Técnico em operaçao de equipamentos de produçao para televisao  e produtoras de vídeo' where codigo = '373205'; --.go
 update codigocbo set descricao = 'Técnico em operaçao de equipamentos de transmissao/recepçao de televisao' where codigo = '373215'; --.go
@@ -2483,7 +2266,6 @@ update codigocbo set descricao = 'Técnico em programaçao visual' where codigo 
 update codigocbo set descricao = 'Técnico em quiropraxia' where codigo = '322115'; --.go
 update codigocbo set descricao = 'Técnico em radiologia e imagenologia' where codigo = '324115'; --.go
 update codigocbo set descricao = 'Técnico em ranicultura' where codigo = '321320'; --.go
-update codigocbo set descricao = 'Técnico em saúde bucal da estratégia de saúde da família' where codigo = '322425'; --.go
 update codigocbo set descricao = 'Técnico em secretariado' where codigo = '351505'; --.go
 update codigocbo set descricao = 'Técnico em segurança no trabalho' where codigo = '351605'; --.go
 update codigocbo set descricao = 'Técnico em soldagem' where codigo = '314620'; --.go
@@ -2508,29 +2290,8 @@ update codigocbo set descricao = 'Técnico têxtil de fiaçao' where codigo = '3
 update codigocbo set descricao = 'Técnico têxtil de malharia' where codigo = '311620'; --.go
 update codigocbo set descricao = 'Técnico têxtil de tecelagem' where codigo = '311625'; --.go
 update codigocbo set descricao = 'Técnico têxtil (tratamentos químicos)' where codigo = '311610'; --.go
-update codigocbo set descricao = 'Tecnólogo em alimentos' where codigo = '222215'; --.go
-update codigocbo set descricao = 'Tecnólogo em automação industrial' where codigo = '202120'; --.go
-update codigocbo set descricao = 'Tecnólogo em construção civil' where codigo = '214280'; --.go
 update codigocbo set descricao = 'Tecnólogo em eletricidade' where codigo = '214360'; --.go
 update codigocbo set descricao = 'Tecnólogo em eletrônica' where codigo = '214365'; --.go
-update codigocbo set descricao = 'Tecnólogo em fabricação mecânica' where codigo = '214435'; --.go
-update codigocbo set descricao = 'Tecnólogo em gastronomia' where codigo = '271110'; --.go
-update codigocbo set descricao = 'Tecnólogo em gestão administrativo- financeira' where codigo = '142120'; --.go
-update codigocbo set descricao = 'Tecnólogo em gestão da tecnologia da informação' where codigo = '142535'; --.go
-update codigocbo set descricao = 'Tecnólogo em logistica de transporte' where codigo = '342125'; --.go
-update codigocbo set descricao = 'Tecnólogo em mecatrônica' where codigo = '202115'; --.go
-update codigocbo set descricao = 'Tecnólogo em meio ambiente' where codigo = '214010'; --.go
-update codigocbo set descricao = 'Tecnólogo em metalurgia' where codigo = '214615'; --.go
-update codigocbo set descricao = 'Tecnólogo em petróleo e gás' where codigo = '214745'; --.go
-update codigocbo set descricao = 'Técnólogo em processos químicos' where codigo = '213215'; --.go
-update codigocbo set descricao = 'Tecnólogo em produção audiovisual' where codigo = '262135'; --.go
-update codigocbo set descricao = 'Tecnólogo em produção fonográfica' where codigo = '262130'; --.go
-update codigocbo set descricao = 'Tecnólogo em produção industrial' where codigo = '214930'; --.go
-update codigocbo set descricao = 'Tecnólogo em produção sulcroalcooleira' where codigo = '214535'; --.go
-update codigocbo set descricao = 'Tecnólogo em rochas ornamentais' where codigo = '214750'; --.go
-update codigocbo set descricao = 'Tecnólogo em segurança do trabalho' where codigo = '214935'; --.go
-update codigocbo set descricao = 'Tecnólogo em telecomunicações' where codigo = '214370'; --.go
-update codigocbo set descricao = 'Tecnólogo oftálmico' where codigo = '324125'; --.go
 update codigocbo set descricao = 'Telefonista' where codigo = '422205'; --.go
 update codigocbo set descricao = 'Teleoperador' where codigo = '422210'; --.go
 update codigocbo set descricao = 'Telhador (telhas de argila e materias similares)' where codigo = '716205'; --.go
@@ -2543,8 +2304,6 @@ update codigocbo set descricao = 'Tenente-coronel bombeiro militar' where codigo
 update codigocbo set descricao = 'Tenente-coronel da polícia militar' where codigo = '020110'; --.go
 update codigocbo set descricao = 'Tenente do corpo de bombeiros militar' where codigo = '030305'; --.go
 update codigocbo set descricao = 'Teólogo' where codigo = '263115'; --.go
-update codigocbo set descricao = 'Terapeuta holístico' where codigo = '322117'; --.go
-update codigocbo set descricao = 'Terapeuta ocupacional' where codigo = '223905'; --.go
 update codigocbo set descricao = 'Tesoureiro de banco' where codigo = '353230'; --.go
 update codigocbo set descricao = 'Tingidor de couros e peles' where codigo = '311725'; --.go
 update codigocbo set descricao = 'Tingidor de roupas' where codigo = '516330'; --.go
@@ -2606,7 +2365,6 @@ update codigocbo set descricao = 'Trabalhador da extraçao de substâncias arom�
 update codigocbo set descricao = 'Trabalhador da fabricaçao de muniçao e explosivos' where codigo = '812110'; --.go
 update codigocbo set descricao = 'Trabalhador da fabricaçao de pedras artificiais' where codigo = '823330'; --.go
 update codigocbo set descricao = 'Trabalhador da fabricaçao de resinas e vernizes' where codigo = '811125'; --.go
-update codigocbo set descricao = 'Trabalhador da manutençao de edificaçoes' where codigo = '514325'; --.go
 update codigocbo set descricao = 'Trabalhador da ovinocultura' where codigo = '623210'; --.go
 update codigocbo set descricao = 'Trabalhador da pecuária (asininos e muares)' where codigo = '623105'; --.go
 update codigocbo set descricao = 'Trabalhador da pecuária (bovinos corte)' where codigo = '623110'; --.go
@@ -2672,8 +2430,6 @@ update codigocbo set descricao = 'Trefilador (joalheria e ourivesaria)' where co
 update codigocbo set descricao = 'Treinador profissional de futebol' where codigo = '224135'; --.go
 update codigocbo set descricao = 'Tricoteiro, à mao' where codigo = '768115'; --.go
 update codigocbo set descricao = 'Tropeiro' where codigo = '782810'; --.go
-update codigocbo set descricao = 'Turismólogo' where codigo = '122520'; --.go
-update codigocbo set descricao = 'Urbanista' where codigo = '214130'; --.go
 update codigocbo set descricao = 'Vaqueador de couros e peles' where codigo = '762345'; --.go
 update codigocbo set descricao = 'Varredor de rua' where codigo = '514215'; --.go
 update codigocbo set descricao = 'Vassoureiro' where codigo = '776430'; --.go

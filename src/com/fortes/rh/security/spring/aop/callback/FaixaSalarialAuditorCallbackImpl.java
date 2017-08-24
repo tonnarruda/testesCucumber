@@ -27,9 +27,7 @@ public class FaixaSalarialAuditorCallbackImpl implements AuditorCallback {
 
 			return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), faixa.getDescricao(), dados);
 		} catch (Exception e) {
-			System.out.println("Auditoria ao salvar Faixa Salarial não funcionou.");
-			e.printStackTrace();
-			return null;
+			throw e;
 		}
 	}
 
