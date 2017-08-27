@@ -13,6 +13,7 @@
 		<Item visivel="S" motivo="S17070000200"><![CDATA[SESMT > Cadastros > CIPA > Comissões > Editar > Comissão: Auditoria para a inserção e atualização do "Período da Comissão" com seus membros.]]></Item>
 		<Item visivel="S" motivo="P17070000103"><![CDATA[SESMT > Cadastros > CIPA > Comissões > Editar > Reuniões > Frequência: Ajuste na inconsistência ao visualizar as frequências.]]></Item>
 		<Item visivel="S" motivo="P17070000155"><![CDATA[SESMT > Cadastros > Funções > Inserir/Editar > Inserir/Editar: Exibição correta do nome do cargo quando o mesmo é acentuado.]]></Item>
+		<Item visivel="S" motivo="P17080000184"><![CDATA[SESMT > Movimentações > Solicitações/Atendimentos Médicos > Inserir/Editar: Ajuste de inconsistência ao selecionar ASO em "Motivo do Atendimento" marcando automaticamente os exames obrigatórios.]]></Item>
 		<Item visivel="S" motivo="P17080000063"><![CDATA[SESMT > Relatórios > Exames > Exames Realizados: Ajuste na inconsistência que repete registros dos colaboradores.]]></Item>
 		<Item visivel="S" motivo="S17030000372"><![CDATA[Utilitários > Configuração > Sistema: Nova opção de logar utilizando captcha.]]></Item>
 		<Item visivel="S" motivo="P17080000033"><![CDATA[Utilitários > Configurações > Campos Extras: Ajuste de inconsistência ao tentar gravar campos extras para novas empresas.]]></Item>

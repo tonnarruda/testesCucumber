@@ -976,7 +976,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCaseManager<Are
 		areaInativa.setNome("areaInativa");
 		areaInativa.setAtivo(false);
 		
-		areaOrganizacionalDao.expects(once()).method("findAreasDoResponsavelCoResponsavel").with(eq(usuarioLogado.getId()), eq(empresa.getId()), eq(true), eq(Arrays.asList(areaInativa.getId()))).will(returnValue(Arrays.asList(areaAvo, areaInativa)));
+		areaOrganizacionalDao.expects(once()).method("findAreasDoResponsavelCoResponsavel").with(new Constraint[]{eq(usuarioLogado.getId()), eq(empresa.getId()), eq(true), eq(Arrays.asList(areaInativa.getId())), eq(true)}).will(returnValue(Arrays.asList(areaAvo, areaInativa)));
 		
 		Collection<AreaOrganizacional> areasIds = null;
 		Exception exception = null;

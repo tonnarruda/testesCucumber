@@ -367,7 +367,7 @@
 			<#if (listaExames?exists && listaExames?size > 0)>
 				<@ww.datepicker label="Data" id="data" name="solicitacaoExame.data" required="true" cssClass="mascaraData" value="${data}" liClass="liLeft" onchange="findProxOrdem(),validaDatasColaborador()" onblur="findProxOrdem(),validaDatasColaborador()"/>
 				<@ww.textfield label="Ordem de Atendimento" name="solicitacaoExame.ordem" id="ordem" maxLength="2" size="3" onkeypress="return somenteNumeros(event,'')" required="true" cssStyle="text-align:right;"/>
-					<@ww.select label="Motivo do Atendimento" name="solicitacaoExame.motivo" id="motivoExame" list="motivos" headerKey="" headerValue="Selecione..." required="true" cssStyle="width:300px;" onchange="validaDatasColaborador();configuraCampos();" onblur="validaDatasColaborador();"/>
+					<@ww.select label="Motivo do Atendimento" name="solicitacaoExame.motivo" id="motivoExame" list="motivos" headerKey="" headerValue="Selecione..." required="true" cssStyle="width:300px;" onchange="validaDatasColaborador();configuraCampos();" onblur="validaDatasColaborador();configuraCampos();"/>
 				 	<@ww.select label="Médico Coordenador" name="solicitacaoExame.medicoCoordenador.id" id="medico" list="medicoCoordenadors" required="true" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." cssStyle="width:300px;" />
 			
 					<@ww.textfield label="Observação" name="solicitacaoExame.observacao" id="observacao" maxLength="100" cssClass="inputNome"/>
