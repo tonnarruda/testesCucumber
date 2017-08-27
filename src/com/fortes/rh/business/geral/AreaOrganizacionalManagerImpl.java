@@ -495,8 +495,8 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		Collection<Long> areasInativas = null;
 		if (areaInativaId != null)
 			areasInativas = Arrays.asList(areaInativaId);
-
-		return findAllListAndInativasByUsuarioId(empresaId, usuarioId, ativo, areasInativas);
+		
+		return getDao().findAreasDoResponsavelCoResponsavel(usuarioId, empresaId, ativo, areasInativas, true);
 	}
 
 	@TesteAutomatico
@@ -958,7 +958,7 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 
 	@TesteAutomatico(metodoMock = "findAreasDoResponsavelCoResponsavel")
 	public Collection<AreaOrganizacional> findAllListAndInativasByUsuarioId(Long empresaId, Long usuarioId, Boolean ativo, Collection<Long> areaInativaIds) {
-		return getDao().findAreasDoResponsavelCoResponsavel(usuarioId, empresaId, ativo, areaInativaIds);
+		return getDao().findAreasDoResponsavelCoResponsavel(usuarioId, empresaId, ativo, areaInativaIds, false);
 	}
 
 	@TesteAutomatico

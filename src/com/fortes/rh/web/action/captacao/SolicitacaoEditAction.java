@@ -282,8 +282,6 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
     	prepare();
 
     	bairrosCheckList = CheckListBoxUtil.marcaCheckListBox(bairrosCheckList, bairroManager.getBairrosBySolicitacao(solicitacao.getId()), "getId");
-    	areas = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.TODAS, null, false);
-    	estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
 
     	solicitacao.setId(null);
     	solicitacao.setSolicitante(null);
@@ -292,7 +290,6 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
     	solicitacao.setData(null);
     	solicitacao.setDataStatus(null);
     	solicitacao.setStatus(StatusAprovacaoSolicitacao.ANALISE);
-
     	clone = true;
 
     	return Action.SUCCESS;

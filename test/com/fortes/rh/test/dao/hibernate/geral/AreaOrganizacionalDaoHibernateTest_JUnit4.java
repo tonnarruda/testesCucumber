@@ -12,16 +12,19 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.dao.GenericDao;
+import com.fortes.rh.dao.acesso.UsuarioDao;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
+import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest_JUnit4;
+import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -37,6 +40,8 @@ public class AreaOrganizacionalDaoHibernateTest_JUnit4  extends GenericDaoHibern
 	private ColaboradorDao colaboradorDao;
 	@Autowired
 	private HistoricoColaboradorDao historicoColaboradorDao;
+	@Autowired
+	private UsuarioDao usuarioDao;
 
 	@Override
 	public AreaOrganizacional getEntity() {
@@ -160,5 +165,60 @@ public class AreaOrganizacionalDaoHibernateTest_JUnit4  extends GenericDaoHibern
 		
 		assertEquals(1, areas.size());
 		assertEquals("Area Avó > Area Mãe > Area Filha", ((AreaOrganizacional)areas.toArray()[0]).getNome());
+	}
+	
+	@Test
+	public void testFindAreasDoResponsavelCoResponsavel(){
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Usuario usuarioColab1 = UsuarioFactory.getEntity();
+		usuarioDao.save(usuarioColab1);
+		
+		Usuario usuarioColab2 = UsuarioFactory.getEntity();
+		usuarioDao.save(usuarioColab2);
+		
+		Colaborador colab1 = ColaboradorFactory.getEntity();
+		colab1.setUsuario(usuarioColab1);
+		colaboradorDao.save(colab1);
+		
+		Colaborador colab2 = ColaboradorFactory.getEntity();
+		colab2.setUsuario(usuarioColab2);
+		colaboradorDao.save(colab2);
+
+		AreaOrganizacional areaAvo = AreaOrganizacionalFactory.getEntity(null, "Area Avó", true, empresa);
+		areaAvo.setResponsavel(colab1);
+		areaOrganizacionalDao.save(areaAvo);
+		
+		AreaOrganizacional areaMae = AreaOrganizacionalFactory.getEntity(null, "Area Mãe", true, empresa);
+		areaMae.setCoResponsavel(colab2);
+		areaMae.setAreaMae(areaAvo);
+		areaOrganizacionalDao.save(areaMae);
+
+		AreaOrganizacional areaFilha = AreaOrganizacionalFactory.getEntity(null, "Area Filha", true, empresa);
+		areaFilha.setResponsavel(colab1);
+		areaFilha.setAreaMae(areaMae);
+		areaOrganizacionalDao.save(areaFilha);
+	
+		areaOrganizacionalDao.getHibernateTemplateByGenericDao().flush();
+		
+		Collection<AreaOrganizacional> areas = areaOrganizacionalDao.findAreasDoResponsavelCoResponsavel(usuarioColab1.getId(), empresa.getId(), true, null, true);
+		
+		assertEquals(3, areas.size());
+		assertEquals("Area Avó", ((AreaOrganizacional)areas.toArray()[0]).getNome());
+		assertEquals("Area Avó > Area Mãe", ((AreaOrganizacional)areas.toArray()[1]).getNome());
+		assertEquals("Area Avó > Area Mãe > Area Filha", ((AreaOrganizacional)areas.toArray()[2]).getNome());
+		
+		areas = areaOrganizacionalDao.findAreasDoResponsavelCoResponsavel(usuarioColab2.getId(), empresa.getId(), true, null, true);
+		
+		assertEquals(2, areas.size());
+		assertEquals("Area Avó > Area Mãe", ((AreaOrganizacional)areas.toArray()[0]).getNome());
+		assertEquals("Area Avó > Area Mãe > Area Filha", ((AreaOrganizacional)areas.toArray()[1]).getNome());
+		
+		areas = areaOrganizacionalDao.findAreasDoResponsavelCoResponsavel(usuarioColab2.getId(), empresa.getId(), true, null, false);
+		
+		assertEquals(1, areas.size());
+		assertEquals("Area Avó > Area Mãe", ((AreaOrganizacional)areas.toArray()[0]).getNome());
 	}
 }

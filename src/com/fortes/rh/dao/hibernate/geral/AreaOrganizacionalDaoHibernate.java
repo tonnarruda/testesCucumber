@@ -460,17 +460,20 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 		return LongUtil.collectionStringToArrayLong(query.list());
 	}
 	
-	public Collection<AreaOrganizacional> findAreasDoResponsavelCoResponsavel(Long usuarioId, Long empresaId, Boolean ativo, Collection<Long> areaInativaIds) 
+	public Collection<AreaOrganizacional> findAreasDoResponsavelCoResponsavel(Long usuarioId, Long empresaId, Boolean ativo, Collection<Long> areaInativaIds, boolean buscarDecendentes) 
 	{
 		StringBuilder sql = new StringBuilder();
 		
-		sql.append("select distinct * from monta_familia_areas_filhas_by_usuario_and_empresa(:usuarioId, :empresaId)");
+		if(buscarDecendentes)
+			sql.append("select distinct * from monta_familia_areas_filhas_and_decendentes_by_usuario_and_empresa(:usuarioId, :empresaId) ");
+		else
+			sql.append("select distinct * from monta_familia_areas_filhas_by_usuario_and_empresa(:usuarioId, :empresaId) ");
 		
 		if(ativo != null){
 			if (areaInativaIds == null || areaInativaIds.isEmpty())
 				sql.append("where areaativo = :ativo ");
 			else
-				sql.append("where (areaativo = :ativo or areaid in (:areaInativaIds))");
+				sql.append("where (areaativo = :ativo or areaid in (:areaInativaIds)) ");
 		}
 		
 		sql.append("order by areanome");
@@ -498,8 +501,6 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 			area.setAtivo((Boolean)res[2]);
 			area.setEmpresaNome((String)res[3]);
 			area.setIdAreaMae(res[4] == null ? null : ((BigInteger)res[4]).longValue());
-//			area.setNomeAreaMae((String)res[5]);
-//			area.setEmpresaAreaMaeNome((String)res[3]);
 			areas.add(area);
 		}
 
