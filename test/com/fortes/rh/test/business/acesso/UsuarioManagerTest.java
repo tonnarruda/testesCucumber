@@ -307,7 +307,7 @@ public class UsuarioManagerTest
 	public void testPopulaCheckOrderNomeException()
     {
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
-    	when(usuarioEmpresaManager.findAllBySelectUsuarioEmpresa(eq(empresa.getId()))).thenReturn(null);
+    	when(usuarioEmpresaManager.findAllBySelectUsuarioEmpresa(eq(empresa.getId()))).thenReturn(new ArrayList<UsuarioEmpresa>());
     	assertEquals(0, usuarioManager.populaCheckOrderNome(empresa.getId()).size());
     }
 	

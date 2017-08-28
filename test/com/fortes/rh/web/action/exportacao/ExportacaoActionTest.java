@@ -15,6 +15,7 @@ import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
+import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
 
@@ -67,6 +68,7 @@ public class ExportacaoActionTest extends MockObjectTestCase
     
     public void testGerarArquivoExportacao() throws Exception
     {
+    	action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
     	Curso curso = CursoFactory.getEntity();
     	curso.setId(999999999L);
     	curso.setCodigoTru("123");
