@@ -225,6 +225,14 @@
 			</tr>
 			<tr>
 				<td>
+					<input id="visivel-candidatoExterno-indicado" class="check-visivel" name="camposVisivels" value="indicado" type="checkbox"/>
+    				<label for="visivel-candidatoExterno-indicado" class="label-visivel"></label>
+				</td>
+				<td class="campo">Indicado Por</td>
+				<td><input type="checkbox" value="indicado" name="camposObrigatorios" /></td>
+			</tr>
+			<tr>
+				<td>
 					<input id="visivel-candidatoExterno-estadoCivil" class="check-visivel" name="camposVisivels" value="estadoCivil" type="checkbox"/>
     				<label for="visivel-candidatoExterno-estadoCivil" class="label-visivel"></label>
 				</td>

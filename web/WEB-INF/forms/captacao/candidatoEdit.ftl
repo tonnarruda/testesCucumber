@@ -602,9 +602,7 @@
 			<@ww.textfield label="Contato" name="candidato.contato.nomeContato" id="nomeContato" cssStyle="width: 180px;" maxLength="30" liClass="liLeft , campo" onblur="${capitalizar}"/>
 
 			<@ww.textfield label="Parentes/Amigos na empresa" name="candidato.pessoal.parentesAmigos" id="parentes" cssStyle="width: 300px;" maxLength="100" liClass="liLeft , campo" onblur="${capitalizar}"/>
-			<#if !moduloExterno?exists || !moduloExterno>
-				<@ww.textfield label="Indicado Por" name="candidato.pessoal.indicadoPor" id="indicado" cssStyle="width: 300px;" maxLength="100" liClass="liLeft" />
-			</#if>
+			<@ww.textfield label="Indicado Por" name="candidato.pessoal.indicadoPor" id="indicado" cssStyle="width: 300px;" maxLength="100" liClass="liLeft , campo" onblur="${capitalizar}" />
 
 			<@ww.select label="Estado Civil" id="estadoCivil" name="candidato.pessoal.estadoCivil" list="estadosCivis" cssStyle="width: 210px;" liClass="liLeft , campo" />
 			<@ww.textfield label="Qtd. Filhos" id="qtdFilhos" onkeypress = "return(somenteNumeros(event,''));" maxLength="2" name="candidato.pessoal.qtdFilhos" cssStyle="width:72px; text-align:right;" liClass="liLeft , campo"/>
