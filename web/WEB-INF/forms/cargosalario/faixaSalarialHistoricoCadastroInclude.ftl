@@ -2,7 +2,7 @@
 	<@ww.textfield label="A partir de" value="${data}" id="data"  cssClass="mascaraData" disabled="true" liClass="liLeft"/>
 	<@ww.hidden name="faixaSalarialHistorico.data" />
 <#else>
-	<@ww.datepicker label="A partir de" name="faixaSalarialHistorico.data" id="data" cssClass="mascaraData" required="true" value="${data}" liClass="liLeft"/>
+	<@ww.datepicker label="A partir de" name="faixaSalarialHistorico.data" id="data" cssClass="mascaraData" required="true" value="${data}" liClass="liLeft" onchange="calculaValor();" onblur="calculaValor();"/>
 </#if>
 
 

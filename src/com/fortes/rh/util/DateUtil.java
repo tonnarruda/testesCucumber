@@ -629,7 +629,7 @@ public class DateUtil
 		return !matcher.matches();
 	}
 
-	private static boolean isDataInvalida(String dataStr) {
+	public static boolean isDataInvalida(String dataStr) {
 		if(dataStr == null 
 				|| "".trim().equals(dataStr)
 					|| DATA_VAZIA.equals(dataStr)) {

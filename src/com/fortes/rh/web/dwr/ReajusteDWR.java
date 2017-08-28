@@ -161,6 +161,9 @@ public class ReajusteDWR
 
 	public String calculaSalarioHistorico(String tipoSalario, String faixaSalarialId, String indiceId, String quantidade, String salario, String data) throws Exception
 	{
+		if(DateUtil.isDataInvalida(data))
+			data=DateUtil.formataDiaMesAno(new Date());
+		
 		DecimalFormat formatador = (DecimalFormat) DecimalFormat.getInstance(new Locale("pt", "BR"));
 		formatador.applyPattern("#,##0.00");
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");

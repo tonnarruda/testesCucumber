@@ -12,7 +12,7 @@ public class SalarioUtil
 		{
 			case TipoAplicacaoIndice.CARGO:
 			{
-				if(faixaSalarial.getFaixaSalarialHistoricoAtual() != null && faixaSalarial.getFaixaSalarialHistoricoAtual().getTipo() != null)
+ 				if(faixaSalarial.getFaixaSalarialHistoricoAtual() != null && faixaSalarial.getFaixaSalarialHistoricoAtual().getTipo() != null)
 				{
 					switch (faixaSalarial.getFaixaSalarialHistoricoAtual().getTipo())
 					{
@@ -20,10 +20,12 @@ public class SalarioUtil
 							return faixaSalarial.getFaixaSalarialHistoricoAtual().getValor();
 						case TipoAplicacaoIndice.INDICE:
 						{
-							if(faixaSalarial.getFaixaSalarialHistoricoAtual().getIndice().getIndiceHistoricoAtual().getValor() == null)
-								faixaSalarial.getFaixaSalarialHistoricoAtual().getIndice().getIndiceHistoricoAtual().setValor(0.0);
+							Indice indiceFaixaSalarialHistoricoAtual = faixaSalarial.getFaixaSalarialHistoricoAtual().getIndice();
 							
-							return faixaSalarial.getFaixaSalarialHistoricoAtual().getIndice().getIndiceHistoricoAtual().getValor() * faixaSalarial.getFaixaSalarialHistoricoAtual().getQuantidade();
+							if(indiceFaixaSalarialHistoricoAtual!=null && indiceFaixaSalarialHistoricoAtual.getIndiceHistoricoAtual().getValor() == null)
+								indiceFaixaSalarialHistoricoAtual.getIndiceHistoricoAtual().setValor(0.0);
+							
+							return indiceFaixaSalarialHistoricoAtual.getIndiceHistoricoAtual().getValor() * faixaSalarial.getFaixaSalarialHistoricoAtual().getQuantidade();
 						}
 					}					
 				}

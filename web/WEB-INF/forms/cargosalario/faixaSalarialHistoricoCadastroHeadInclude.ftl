@@ -17,7 +17,7 @@
 			IndiceId = document.getElementById("indice").value;
 			quantidade = document.getElementById("quantidade").value;
 
-			ReajusteDWR.calculaSalario(setSalarioCalculado, tipoSalarioProposto, "naoPodeSerVazia", IndiceId, quantidade, "");
+			ReajusteDWR.calculaSalarioHistorico(setSalarioCalculado, tipoSalarioProposto, "naoPodeSerVazia", IndiceId, quantidade, "",$('#data').val());
 		}
 		
 		function setSalarioCalculado(data)
