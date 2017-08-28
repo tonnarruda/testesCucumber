@@ -654,6 +654,7 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 							"				where crsub.pergunta.id = p.id " +
 							"				and crsub.resposta.id is not null " +
 							" 				and cqsub.avaliacaoDesempenho.id = :avaliacaoDesempenhoId " +
+							"				and cqsub.respondida = true " +
 							" 				and cqsub.colaborador.id = :avaliadoId " +
 							"				group by crsub.pergunta.id) " +
 							
