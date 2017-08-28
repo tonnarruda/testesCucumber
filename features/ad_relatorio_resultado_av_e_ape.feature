@@ -4,7 +4,7 @@ Funcionalidade: Resultado das Avaliações de Desempenho e Acompanhamento do Per
 
   Cenário: Resultado das Avaliações de Desempenho e Acompanhamento do Período de Experiência
     Dado que eu esteja logado com o usuário "SOS"
-    Dado que exista a área organizacional "geral"
+    Dado que exista a área organizacional "geral (Ativa)"
     Dado que exista um modelo avaliacao desempenho "avaliacao experiencia"
 
     Quando eu acesso o menu "Aval. Desempenho > Relatórios > Resultado das Avaliações de Desempenho e Acompanhamento do Período de Experiência"

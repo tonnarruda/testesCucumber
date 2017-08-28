@@ -94,7 +94,7 @@ public class AreaOrganizacionalDWR
 		Collection<CheckBox> checks = new ArrayList<CheckBox>();
 
 		Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.filtraPermitidasByEmpresasAndUsuario(request, empresaId, empresaIds);
-		checks = CheckListBoxUtil.populaCheckListBox(areaOrganizacionals, "getId", "getDescricaoSimples", new String[] { "getIdAreaMae" });
+		checks = CheckListBoxUtil.populaCheckListBox(areaOrganizacionals, "getId", "getDescricaoComEmpresaStatusAtivo", new String[] { "getIdAreaMae" });
 	
 		return checks;
 	}

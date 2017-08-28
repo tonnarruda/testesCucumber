@@ -16,6 +16,7 @@ import com.fortes.rh.model.geral.Empresa;
 public class AvaliacaoPratica extends AbstractModel implements Serializable
 {
 	//Usado para posicionar a Avaliação Prática na última posição.
+	@Transient
 	public final static String SUFIXO_ORDENACAO_ULTIMA_POSICAO = "zzzzzz"; 
 	
 	private String titulo;

@@ -23,11 +23,12 @@ public abstract class AcPessoalClientTest extends MockObjectTestCase
 	protected Empresa empresa;
 	protected GrupoAC grupoAC;
 	private Mock grupoACManager;
+	private static String IP = "10.1.18.214";
 	
 	public Connection getConexaoAC() throws ClassNotFoundException, SQLException 
 	{
 		Class.forName("org.firebirdsql.jdbc.FBDriver");
-		Connection conexao = DriverManager.getConnection("jdbc:firebirdsql:10.1.19.169/53052:C:\\Fortes\\AC\\AC.FDB?user=SYSDBA&password=masterkey");
+		Connection conexao = DriverManager.getConnection("jdbc:firebirdsql:" + IP + "/53052:C:\\Fortes\\AC\\AC.FDB?user=SYSDBA&password=masterkey");
 		conexao.setAutoCommit(true);
 		
 		return conexao;
@@ -38,7 +39,7 @@ public abstract class AcPessoalClientTest extends MockObjectTestCase
 	{
 		super.setUp();
 		
-		String baseAcUrl = "http://10.1.19.169:1024";
+		String baseAcUrl = "http://" + IP + ":1024";
 
 		acPessoalClientImpl = new AcPessoalClientImpl();
 		acPessoalClientImpl.setService(new Service());

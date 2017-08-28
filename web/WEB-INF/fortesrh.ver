@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.183.215" db="" data="xx/08/2017">
-		<Item visivel="S" motivo="P17080000197"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Clonar: Ajuste de inconsistência ao exibir áreas organizacionais que não são do responsável e/ou do coresponsável.]]></Item>
+	<Versao id="1.1.183.215" db="" data="30/08/2017">
+		<Item visivel="S" motivo="P17080000197"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Clonar: Ajuste de inconsistência ao exibir áreas organizacionais que não são do responsável e/ou do corresponsável.]]></Item>
 		<Item visivel="S" motivo="S17060000280"><![CDATA[C&S > Cadastros > Conhecimentos > Excluir: Melhoria na mensagem exibida após tentar realizar exclusão de registro que tem relacionamento com outras entidades.]]></Item>
 		<Item visivel="S" motivo="P17060000236"><![CDATA[C&S > Cadastros > Cargos e Faixas: O campo "Código CBO" foi removido do cargo e adicionado na Faixa Salarial.]]></Item>
 		<Item visivel="S" motivo="S17010000008"><![CDATA[C&S > Painel de Indicadores: Nova opção "Exibir valores no gráfico" que possibilita a visualização e impressão dos valores de cada mês no gráfico "Evolução Salarial - Faturamento".]]></Item>
@@ -10,7 +10,7 @@
 		<Item visivel="S" motivo="S17060000175"><![CDATA[T&D > Movimentações > Levantamento de Necessidade de Treinamento (LNT) > Gerar cursos e turmas > Criar turmas/relacionar participantes: Nova opção para detalhar os custos das turmas.]]></Item>
 		<Item visivel="S" motivo="S17060000158"><![CDATA[T&D > Relatórios > Colaboradores x Certificações: Nova forma de exibir os dados do relatórios, incluindo certificações aos colaboradores que não participam de nenhum curso dessa certificação.]]></Item>
 		<Item visivel="S" motivo="P17080000066"><![CDATA[Info.Funcionais > Colaboradores > Entrevista de Desligamento: Ajuste de inconsistência na exibição do ícone de entrevista de desligamento quando respondida.]]></Item>
-		<Item visivel="S" motivo="S17040000087"><![CDATA[Info Funcionais > Relatórios > Turnover (rotatividade): Novo campo "Agrupar Por", para a imprimir o relatório agrupado por área ou cargo]]></Item>
+		<Item visivel="S" motivo="S17040000087"><![CDATA[Info. Funcionais > Relatórios > Turnover (rotatividade): Novo campo "Agrupar Por", para a imprimir o relatório agrupado por área ou cargo]]></Item>
 		<Item visivel="S" motivo="S17010000136"><![CDATA[SESMT > Painel de Indicadores: Possibilidade de impressão dos gráficos do painel.]]></Item>
 		<Item visivel="S" motivo="S17070000200"><![CDATA[SESMT > Cadastros > CIPA > Comissões > Editar > Comissão: Auditoria para a inserção e atualização do "Período da Comissão" com seus membros.]]></Item>
 		<Item visivel="S" motivo="P17070000103"><![CDATA[SESMT > Cadastros > CIPA > Comissões > Editar > Reuniões > Frequência: Ajuste na inconsistência ao visualizar as frequências.]]></Item>

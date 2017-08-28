@@ -3,7 +3,7 @@
 --
 
 -- Dumped from database version 9.0.18
--- Dumped by pg_dump version 9.5.7
+-- Dumped by pg_dump version 9.5.8
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -175,6 +175,37 @@ $$;
 
 
 ALTER FUNCTION public.monta_familia_area(area_id bigint) OWNER TO postgres;
+
+--
+-- Name: monta_familia_areas_filhas_and_decendentes_by_usuario_and_empre(bigint, bigint); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION monta_familia_areas_filhas_and_decendentes_by_usuario_and_empre(usuarioid bigint, empresaid bigint) RETURNS TABLE(areaid bigint, areanome text, areaativo boolean, empresa_nome text, areamaeid bigint)
+    LANGUAGE plpgsql
+    AS $$     
+DECLARE   
+mviews RECORD;  
+BEGIN   
+     FOR mviews IN    
+		select area.id as area_id, e.nome as empresaNome from areaorganizacional as area     
+		left join colaborador c on c.id = area.responsavel_id   
+		left join colaborador co on co.id = area.coresponsavel_id   
+		left join usuario u on u.id = c.usuario_id or u.id = co.usuario_id   
+		left join empresa e on e.id = area.empresa_id  
+		where u.id = usuarioId and area.empresa_id = empresaId   
+		LOOP   
+		RETURN QUERY   
+		    (
+			select ao.id,  cast(monta_familia_area(ao.id) as text) as nome, ao.ativo, CAST(mviews.empresaNome as text) as empNome, ao.areamae_id 
+			from areaorganizacional ao inner join descendentes_areas_ids(mviews.area_id) on descendentes_areas_ids = ao.id
+		    );  
+      END LOOP; 
+    RETURN;  
+END;  
+$$;
+
+
+ALTER FUNCTION public.monta_familia_areas_filhas_and_decendentes_by_usuario_and_empre(usuarioid bigint, empresaid bigint) OWNER TO postgres;
 
 --
 -- Name: monta_familia_areas_filhas_by_usuario_and_empresa(bigint, bigint); Type: FUNCTION; Schema: public; Owner: postgres
@@ -3233,6 +3264,7 @@ CREATE TABLE empresa (
     termoderesponsabilidade text,
     criarusuarioautomaticamente boolean DEFAULT false NOT NULL,
     senhapadrao character varying(30),
+    campoextraatualizarmeusdados boolean DEFAULT false,
     CONSTRAINT no_blank_codigoac_empresa CHECK (((codigoac)::text <> ''::text)),
     CONSTRAINT no_blank_grupoac_empresa CHECK (((grupoac)::text <> ''::text))
 );
@@ -5385,7 +5417,8 @@ CREATE TABLE parametrosdosistema (
     camposcolaboradorobrigatorio text,
     camposcolaboradortabs text,
     autorizacaogestornasolicitacaopessoal boolean DEFAULT false,
-    smtpremetente boolean DEFAULT false
+    smtpremetente boolean DEFAULT false,
+    utilizarcaptchanologin boolean DEFAULT false
 );
 
 
@@ -27330,7 +27363,6 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('325005', 'Enólogo');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('516135', 'Massagista');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('223620', 'Terapeuta ocupacional');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('991405', 'Trabalhador da manutençao de edificaçoes');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('515302', 'Agente de açao social');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('848505', 'Abatedor');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('764305', 'Acabador de calçados');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('766305', 'Acabador de embalagens (flexíveis e cartotécnicas)');
@@ -27344,7 +27376,6 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('510110', 'Administrador de ed
 INSERT INTO codigocbo (codigo, descricao) VALUES ('252505', 'Administrador de fundos e carteiras de investimento');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('212310', 'Administrador de redes');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('212315', 'Administrador de sistemas operacionais');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('212320', 'Administrador em segurança da informação');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('241005', 'Advogado');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('241030', 'Advogado (áreas especiais)');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('241205', 'Advogado da uniao');
@@ -27365,13 +27396,10 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('352205', 'Agente de defesa am
 INSERT INTO codigocbo (codigo, descricao) VALUES ('352405', 'Agente de direitos autorais');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('342405', 'Agente de estaçao (ferrovia e metrô)');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('254310', 'Agente de higiene e segurança');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('351905', 'Agente de inteligência');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('215105', 'Agente de manobra e docagem');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('411050', 'Agente de Micro-Crédito');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('783105', 'Agente de pátio');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('517205', 'Agente de polícia federal');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('517305', 'Agente de proteçao de aeroporto');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('342550', 'Agente de proteção de aviação civil');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('351315', 'Agente de recrutamento e seleçao');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('352210', 'Agente de saúde pública');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('517310', 'Agente de segurança');
@@ -27383,12 +27411,8 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('352310', 'Agente fiscal de qu
 INSERT INTO codigocbo (codigo, descricao) VALUES ('352315', 'Agente fiscal metrológico');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('352320', 'Agente fiscal têxtil');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('516505', 'Agente funerário');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('515130', 'Agente indígena de saneamento');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('515125', 'Agente indígena de saúde');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('253115', 'Agente publicitário');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('351910', 'Agente técnico de inteligência');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('632615', 'Ajudante de carvoaria');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('763125', 'Ajudante de confecçao');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('342205', 'Ajudante de despachante aduaneiro');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('783225', 'Ajudante de motorista');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('741105', 'Ajustador de instrumentos de precisao');
@@ -27413,11 +27437,8 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('354305', 'Analista de exporta
 INSERT INTO codigocbo (codigo, descricao) VALUES ('413105', 'Analista de folha de pagamento');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('261215', 'Analista de informaçoes (pesquisador de informaçoes de rede)');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('252535', 'Analista de leasing');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('142330', 'Analista de negócios');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('253120', 'Analista de negócios');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('142335', 'Analista de pesquisa de mercado');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('253125', 'Analista de pesquisa de mercado');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('111502', 'Analista de planejamento e orçamento - apo');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('252540', 'Analista de produtos bancários');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('252405', 'Analista de recursos humanos');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('212410', 'Analista de redes e de comunicaçao de dados');
@@ -27463,7 +27484,6 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('415105', 'Arquivista de docum
 INSERT INTO codigocbo (codigo, descricao) VALUES ('261105', 'Arquivista pesquisador (jornalismo)');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('763305', 'Arrematadeira');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('752105', 'Artesao modelador (vidros)');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('226310', 'Arteterapeuta');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('768305', 'Artífice do couro');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('376210', 'Artista aéreo');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('262405', 'Artista (artes visuais)');
@@ -27496,7 +27516,6 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('377125', 'Atleta profissional
 INSERT INTO codigocbo (codigo, descricao) VALUES ('377105', 'Atleta profissional (outras modalidades)');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('262505', 'Ator');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('211105', 'Atuário');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('261430', 'Audiodescritor');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('252205', 'Auditor (contadores e afins)');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('254205', 'Auditor-fiscal da previdência social');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('254105', 'Auditor-fiscal da receita federal');
@@ -27509,7 +27528,6 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('413110', 'Auxiliar de contabi
 INSERT INTO codigocbo (codigo, descricao) VALUES ('763105', 'Auxiliar de corte (preparaçao da confecçao de roupas)');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('331110', 'Auxiliar de desenvolvimento infantil');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('322230', 'Auxiliar de enfermagem');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('322250', 'Auxiliar de enfermagem da estratégia de saúde da família');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('322235', 'Auxiliar de enfermagem do trabalho');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('411005', 'Auxiliar de escritório, em geral');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('411035', 'Auxiliar de estatística');
@@ -27520,7 +27538,6 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('515215', 'Auxiliar de laborat
 INSERT INTO codigocbo (codigo, descricao) VALUES ('818110', 'Auxiliar de laboratório de análises físico-químicas');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('515220', 'Auxiliar de laboratório de imunobiológicos');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('516345', 'Auxiliar de lavanderia');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('514310', 'Auxiliar de manutençao predial');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('782625', 'Auxiliar de maquinista de trem');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('411030', 'Auxiliar de pessoal');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('842120', 'Auxiliar de processamento de fumo');
@@ -27532,7 +27549,6 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('411040', 'Auxiliar de seguros
 INSERT INTO codigocbo (codigo, descricao) VALUES ('411045', 'Auxiliar de serviços de importaçao e exportaçao');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('351430', 'Auxiliar de serviços jurídicos');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('519305', 'Auxiliar de veterinário');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('322430', 'Auxiliar em saúde bucal da estratégia de saúde da família');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('992225', 'Auxiliar geral de conservaçao de vias permanentes (exceto trilhos)');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('513501', 'Auxiliar nos serviços de alimentaçao');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('325105', 'Auxiliar técnico em laboratório de farmácia');
@@ -27549,7 +27565,6 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('414115', 'Balanceiro');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('811705', 'Bamburista');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('519315', 'Banhista de animais domésticos');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('516105', 'Barbeiro');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('513440', 'Barista');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('513420', 'Barman');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('751105', 'Bate-folha a  máquina');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('261205', 'Bibliotecário');
@@ -27558,9 +27573,7 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('511220', 'Bilheteiro (estaço
 INSERT INTO codigocbo (codigo, descricao) VALUES ('421115', 'Bilheteiro no serviço de diversoes');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('201105', 'Bioengenheiro');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('221105', 'Biólogo');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('221201', 'Biomédico');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('201110', 'Biotecnologista');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('783230', 'Bloqueiro (trabalhador portuário)');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('731165', 'Bobinador eletricista, à mao');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('731170', 'Bobinador eletricista, à máquina');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('782815', 'Boiadeiro');
@@ -27646,7 +27659,6 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('523115', 'Chaveiro');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('510130', 'Chefe de bar');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('840120', 'Chefe de confeitaria');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('351110', 'Chefe de contabilidade (técnico)');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('271105', 'Chefe de cozinha');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('510125', 'Chefe de cozinha');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('342605', 'Chefe de estaçao portuária');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('510120', 'Chefe de portaria de hotel');
@@ -27660,18 +27672,14 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('813105', 'Cilindrista (petroq
 INSERT INTO codigocbo (codigo, descricao) VALUES ('316340', 'Cimentador (poços de petróleo)');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('223204', 'Cirurgiao dentista - auditor');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('223208', 'Cirurgiao dentista - clínico geral');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('223293', 'Cirurgião-dentista da estratégia de saúde da família');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('223280', 'Cirurgiao dentista - dentística');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('223272', 'Cirurgiao dentista de saúde coletiva');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('223284', 'Cirurgiao dentista - disfunçao temporomandibular e dor orofacial');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('223212', 'Cirurgiao dentista - endodontista');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('223216', 'Cirurgiao dentista - epidemiologista');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('223220', 'Cirurgiao dentista - estomatologista');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('223224', 'Cirurgiao dentista - implantodontista');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('223228', 'Cirurgiao dentista - odontogeriatra');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('223276', 'Cirurgiao dentista - odontologia do trabalho');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('223288', 'Cirurgiao dentista - odontologia para pacientes com necessidades especiais');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('223232', 'Cirurgiao dentista - odontologista legal');
+INSERT INTO codigocbo (codigo, descricao) VALUES ('841420', 'Cozinhador de frutas e legumes');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('223236', 'Cirurgiao dentista - odontopediatra');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('223240', 'Cirurgiao dentista - ortopedista e ortodontista');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('223244', 'Cirurgiao dentista - patologista bucal');
@@ -27685,7 +27693,6 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('842215', 'Classificador de ch
 INSERT INTO codigocbo (codigo, descricao) VALUES ('762210', 'Classificador de couros');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('761105', 'Classificador de fibras têxteis');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('842115', 'Classificador de fumo');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('848425', 'Classificador de graos');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('772105', 'Classificador de madeira');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('762105', 'Classificador de peles');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('632105', 'Classificador de toras');
@@ -27697,7 +27704,6 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('415115', 'Codificador de dado
 INSERT INTO codigocbo (codigo, descricao) VALUES ('765205', 'Colchoeiro (confecçao de colchoes)');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('371205', 'Colecionador de selos e moedas');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('514205', 'Coletor de lixo domiciliar');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('514230', 'Coletor de resíduos sólidos de serviços de saúde');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('311705', 'Colorista de papel');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('311710', 'Colorista têxtil');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('215115', 'Comandante da marinha mercante');
@@ -27738,9 +27744,7 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('848310', 'Confeiteiro');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('414215', 'Conferente de carga e descarga');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('413220', 'Conferente de serviços bancários');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('516335', 'Conferente-expedidor de roupas (lavanderias)');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('515304', 'Conselheiro tutelar');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('991105', 'Conservador de via permanente (trilhos)');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('262415', 'Conservador-restaurador de bens  culturais');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('351115', 'Consultor contábil (técnico)');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('241040', 'Consultor jurídico');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('252210', 'Contador');
@@ -27755,7 +27759,6 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('391115', 'Controlador de entr
 INSERT INTO codigocbo (codigo, descricao) VALUES ('519910', 'Controlador de pragas');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('342115', 'Controlador de serviços de máquinas e veículos');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('342505', 'Controlador de tráfego aéreo');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('375105', 'Designer de interiores');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('215120', 'Coordenador de operaçoes de combate à poluiçao no meio aquaviário');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('239405', 'Coordenador pedagógico');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('513425', 'Copeiro');
@@ -27788,7 +27791,6 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('763205', 'Costureiro de roupa
 INSERT INTO codigocbo (codigo, descricao) VALUES ('763210', 'Costureiro na confecçao em série');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('841408', 'Cozinhador (conservaçao de alimentos)');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('841416', 'Cozinhador de carnes');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('841420', 'Cozinhador de frutas e legumes');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('841730', 'Cozinhador de malte');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('841428', 'Cozinhador de pescado');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('513225', 'Cozinheiro de embarcaçoes');
@@ -27847,8 +27849,6 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('111110', 'Deputado federal');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('762110', 'Descarnador de couros e peles, à maquina');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('318010', 'Desenhista copista');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('318015', 'Desenhista detalhista');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('262425', 'Desenhista industrial de produto de moda (designer de moda)');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('262420', 'Desenhista industrial de produto (designer de produto)');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('262410', 'Desenhista industrial (designer)');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('318505', 'Desenhista projetista de arquitetura');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('318510', 'Desenhista projetista de construçao civil');
@@ -27873,12 +27873,11 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('318205', 'Desenhista técnico
 INSERT INTO codigocbo (codigo, descricao) VALUES ('318425', 'Desenhista técnico (mobiliário)');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('318215', 'Desenhista técnico naval');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('841432', 'Desidratador de alimentos');
+INSERT INTO codigocbo (codigo, descricao) VALUES ('375105', 'Designer de interiores');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('375110', 'Designer de vitrines');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('239435', 'Designer educacional');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('316335', 'Desincrustador (poços de petróleo)');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('848515', 'Desossador');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('342210', 'Despachante aduaneiro');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('423110', 'Despachante de trânsito');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('511210', 'Despachante de transportes coletivos (exceto trem)');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('423105', 'Despachante documentalista');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('342510', 'Despachante operacional de vôo');
@@ -27949,10 +27948,8 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('114405', 'Dirigente e adminis
 INSERT INTO codigocbo (codigo, descricao) VALUES ('114305', 'Dirigente e administrador de organizaçao religiosa');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('114205', 'Dirigentes de entidades de trabalhadores');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('114210', 'Dirigentes de entidades patronais');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('374145', 'Dj (disc jockey)');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('261210', 'Documentalista');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('376225', 'Domador de animais (circense)');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('322135', 'Doula');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('811810', 'Drageador (medicamentos)');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('262820', 'Dramaturgo de dança');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('251205', 'Economista');
@@ -27971,7 +27968,6 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('261620', 'Editor de revista')
 INSERT INTO codigocbo (codigo, descricao) VALUES ('261625', 'Editor de revista científica');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('766120', 'Editor de texto e imagem');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('374405', 'Editor de tv  e vídeo');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('515301', 'Educador social');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('341315', 'Eletricista de bordo');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('715615', 'Eletricista de instalaçoes');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('953105', 'Eletricista de instalaçoes (aeronaves)');
@@ -28008,7 +28004,6 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('910105', 'Encarregado de manu
 INSERT INTO codigocbo (codigo, descricao) VALUES ('992205', 'Encarregado geral de operaçoes de conservaçao de vias permanentes (exceto trilhos)');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('223505', 'Enfermeiro');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('223510', 'Enfermeiro auditor');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('223565', 'Enfermeiro da estratégia de saúde da família');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('223515', 'Enfermeiro de bordo');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('223520', 'Enfermeiro de centro cirúrgico');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('223525', 'Enfermeiro de terapia intensiva');
@@ -28025,8 +28020,6 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('214425', 'Engenheiro aeronáu
 INSERT INTO codigocbo (codigo, descricao) VALUES ('222105', 'Engenheiro agrícola');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('214805', 'Engenheiro agrimensor');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('222110', 'Engenheiro agrônomo');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('214275', 'Engenheiro ambiental');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('214005', 'Engenheiro ambiental');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('214810', 'Engenheiro cartógrafo');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('214205', 'Engenheiro civil');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('214210', 'Engenheiro civil (aeroportos)');
@@ -28042,11 +28035,9 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('214255', 'Engenheiro civil (r
 INSERT INTO codigocbo (codigo, descricao) VALUES ('214260', 'Engenheiro civil (saneamento)');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('214270', 'Engenheiro civil (transportes e trânsito)');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('214265', 'Engenheiro civil (túneis)');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('222205', 'Engenheiro de alimentos');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('212205', 'Engenheiro de aplicativos em computaçao');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('214910', 'Engenheiro de controle de qualidade');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('214355', 'Engenheiro de controle e automaçao');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('202110', 'Engenheiro de controle e automação');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('212210', 'Engenheiro de equipamentos em computaçao');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('214335', 'Engenheiro de manutençao de telecomunicaçoes');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('214605', 'Engenheiro de materiais');
@@ -28096,7 +28087,6 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('424115', 'Entrevistador de pe
 INSERT INTO codigocbo (codigo, descricao) VALUES ('424120', 'Entrevistador de preços');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('762215', 'Enxugador de couros');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('376230', 'Equilibrista');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('226315', 'Equoterapeuta');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('821410', 'Escarfador');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('391225', 'Escolhedor de papel');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('711125', 'Escorador de minas');
@@ -28109,9 +28099,7 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('351420', 'Escrivao de políci
 INSERT INTO codigocbo (codigo, descricao) VALUES ('351415', 'Escrivao extra - judicial');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('351410', 'Escrivao judicial');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('516805', 'Esotérico');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('111501', 'Especialista de políticas públicas e gestao governamental - eppgg');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('201210', 'Especialista em calibraçoes metrológicas');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('142610', 'Especialista em desenvolvimento de cigarros');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('201215', 'Especialista em ensaios metrológicos');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('201220', 'Especialista em instrumentaçao metrológica');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('201225', 'Especialista em materiais de referência metrológica');
@@ -28134,14 +28122,7 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('765235', 'Estofador de móvei
 INSERT INTO codigocbo (codigo, descricao) VALUES ('732115', 'Examinador de cabos, linhas elétricas e telefônicas');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('823210', 'Extrusor de fios ou fibras de vidro');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('223405', 'Farmacêutico');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('223415', 'Farmacêutico analista clínico');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('223410', 'Farmacêutico bioquímico');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('223420', 'Farmacêutico de alimentos');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('223430', 'Farmacêutico em saúde pública');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('223445', 'Farmacêutico hospitalar e clínico');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('223435', 'Farmacêutico industrial');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('223425', 'Farmacêutico práticas integrativas e complementares');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('223440', 'Farmacêutico toxicologista');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('514320', 'Faxineiro');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('524205', 'Feirante');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('841715', 'Fermentador');
@@ -28172,26 +28153,11 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('213160', 'Físico (óptica)')
 INSERT INTO codigocbo (codigo, descricao) VALUES ('213165', 'Físico (partículas e campos)');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('213170', 'Físico (plasma)');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('213175', 'Físico (térmica)');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('223650', 'Fisioterapeuta acupunturista');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('223660', 'Fisioterapeuta  do trabalho');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('223655', 'Fisioterapeuta esportivo');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('223605', 'Fisioterapeuta geral');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('223630', 'Fisioterapeuta neurofuncional');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('223640', 'Fisioterapeuta osteopata');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('223645', 'Fisioterapeuta quiropraxista');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('223625', 'Fisioterapeuta respiratória');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('223635', 'Fisioterapeuta traumato-ortopédica funcional');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('415120', 'Fitotecário');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('862105', 'Foguista (locomotivas a vapor)');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('775110', 'Folheador de móveis de madeira');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('223810', 'Fonoaudiólogo');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('223815', 'Fonoaudiólogo educacional');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('223820', 'Fonoaudiólogo em audiologia');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('223825', 'Fonoaudiólogo em disfagia');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('223830', 'Fonoaudiólogo em linguagem');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('223835', 'Fonoaudiólogo em motricidade orofacial');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('223840', 'Fonoaudiólogo em saúde coletiva');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('223845', 'Fonoaudiólogo em voz');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('722105', 'Forjador');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('722110', 'Forjador a martelo');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('722115', 'Forjador prensista');
@@ -28285,11 +28251,9 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('131320', 'Gerente de serviço
 INSERT INTO codigocbo (codigo, descricao) VALUES ('131120', 'Gerente de serviços sociais');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('142530', 'Gerente de suporte técnico de tecnologia da informaçao');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('142410', 'Gerente de suprimentos');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('141525', 'Gerente de turismo');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('142320', 'Gerente de vendas');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('142115', 'Gerente financeiro');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('716405', 'Gesseiro');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('252605', 'Gestor em segurança');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('111230', 'Governador de estado');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('111235', 'Governador do distrito federal');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('513115', 'Governanta de hotelaria');
@@ -28306,7 +28270,6 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('752225', 'Gravador de vidro a
 INSERT INTO codigocbo (codigo, descricao) VALUES ('751115', 'Gravador (joalheria e ourivesaria)');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('517215', 'Guarda-civil municipal');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('519925', 'Guardador de veículos');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('517335', 'Guarda portuário');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('513325', 'Guarda-roupeira de cinema');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('511405', 'Guia de turismo');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('632005', 'Guia florestal');
@@ -28370,7 +28333,6 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('333105', 'Instrutor de auto-e
 INSERT INTO codigocbo (codigo, descricao) VALUES ('333110', 'Instrutor de cursos livres');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('215315', 'Instrutor de vôo');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('261410', 'Intérprete');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('261425', 'Intérprete de língua de sinais');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('351810', 'Investigador de polícia');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('622010', 'Jardineiro');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('751010', 'Joalheiro');
@@ -28405,7 +28367,6 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('113010', 'Líder de comunidad
 INSERT INTO codigocbo (codigo, descricao) VALUES ('732135', 'Ligador de linhas telefônicas');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('516320', 'Limpador a seco, à máquina');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('514315', 'Limpador de fachadas');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('514330', 'Limpador de piscinas');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('516410', 'Limpador de roupas a seco, à mao');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('514305', 'Limpador de vidros');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('722210', 'Lingotador');
@@ -28450,11 +28411,9 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('821415', 'Marcador de produto
 INSERT INTO codigocbo (codigo, descricao) VALUES ('771105', 'Marceneiro');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('775120', 'Marcheteiro');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('782705', 'Marinheiro de convés (marítimo e fluviário)');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('782721', 'Marinheiro de esporte e recreio');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('782710', 'Marinheiro de máquinas');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('716525', 'Marmorista (construçao)');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('848315', 'Masseiro (massas alimentícias)');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('322116', 'Massoterapeuta');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('211115', 'Matemático');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('211120', 'Matemático aplicado');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('762320', 'Matizador de couros e peles');
@@ -28509,7 +28468,6 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('223112', 'Médico cirurgiao p
 INSERT INTO codigocbo (codigo, descricao) VALUES ('223113', 'Médico cirurgiao torácico');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('223114', 'Médico citopatologista');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('223115', 'Médico clínico');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('223162', 'Médico da estratégia de saúde da família');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('223117', 'Médico dermatologista');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('223116', 'Médico de saúde da família');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('223118', 'Médico do trabalho');
@@ -28627,7 +28585,6 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('841105', 'Moleiro de cereais 
 INSERT INTO codigocbo (codigo, descricao) VALUES ('841110', 'Moleiro de especiarias');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('712105', 'Moleiro de minérios');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('811105', 'Moleiro (tratamentos químicos e afins)');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('515303', 'Monitor de dependente químico');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('422215', 'Monitor de teleatendimento');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('768615', 'Monotipista');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('715545', 'Montador de andaimes (edificaçoes)');
@@ -28645,6 +28602,7 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('731160', 'Montador de equipam
 INSERT INTO codigocbo (codigo, descricao) VALUES ('731150', 'Montador de equipamentos eletrônicos');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('731105', 'Montador de equipamentos eletrônicos (aparelhos médicos)');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('731110', 'Montador de equipamentos eletrônicos (computadores e equipamentos auxiliares)');
+INSERT INTO codigocbo (codigo, descricao) VALUES ('517405', 'Porteiro (hotel)');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('731205', 'Montador de equipamentos eletrônicos (estaçao de rádio, tv e equipamentos de radar)');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('731140', 'Montador de equipamentos eletrônicos (instalaçoes de sinalizaçao)');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('731145', 'Montador de equipamentos eletrônicos (máquinas industriais)');
@@ -28687,17 +28645,13 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('262705', 'Músico intérprete
 INSERT INTO codigocbo (codigo, descricao) VALUES ('262710', 'Músico intérprete instrumentista');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('262620', 'Musicólogo');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('262615', 'Músico regente');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('223915', 'Musicoterapeuta');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('226305', 'Musicoterapeuta');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('261725', 'Narrador em programas de rádio e televisao');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('251545', 'Neuropsicólogo');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('723110', 'Normalizador de metais e de compósitos');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('516710', 'Numerólogo');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('223710', 'Nutricionista');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('213440', 'Oceanógrafo');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('010205', 'Oficial da aeronáutica');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('010215', 'Oficial da marinha');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('242905', 'Oficial de inteligência');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('351425', 'Oficial de justiça');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('215140', 'Oficial de quarto de navegaçao da marinha mercante');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('241305', 'Oficial de registro de contratos marítimos');
@@ -28711,7 +28665,6 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('010105', 'Oficial general da 
 INSERT INTO codigocbo (codigo, descricao) VALUES ('010115', 'Oficial general da marinha');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('010110', 'Oficial general do exército');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('215205', 'Oficial superior de máquinas da marinha mercante');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('242910', 'Oficial técnico de inteligência');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('828105', 'Oleiro (fabricaçao de telhas)');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('828110', 'Oleiro (fabricaçao de tijolos)');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('761205', 'Operador de abertura (fiaçao)');
@@ -28864,7 +28817,6 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('832115', 'Operador de máquin
 INSERT INTO codigocbo (codigo, descricao) VALUES ('722225', 'Operador de máquina de fundir sob pressao');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('761430', 'Operador de máquina de lavar fios e tecidos');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('722330', 'Operador de máquina de moldar automatizada');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('842135', 'Operador de máquina de preparaçao de matéria prima para produçao de cigarros');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('811805', 'Operador de máquina de produtos farmacêuticos');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('831125', 'Operador de máquina de secar celulose');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('821110', 'Operador de máquina de sinterizar');
@@ -28979,9 +28931,7 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('761005', 'Operador polivalent
 INSERT INTO codigocbo (codigo, descricao) VALUES ('354820', 'Organizador de evento');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('239410', 'Orientador educacional');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('223910', 'Ortoptista');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('226110', 'Osteopata');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('751125', 'Ourives');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('142340', 'Ouvidor');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('352415', 'Ouvidor (ombudsman) do meio de comunicaçao');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('724310', 'Oxicortador a mao e a  máquina');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('723240', 'Oxidador');
@@ -29078,7 +29028,6 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('721325', 'Polidor de metais')
 INSERT INTO codigocbo (codigo, descricao) VALUES ('712220', 'Polidor de pedras');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('517410', 'Porteiro de edifícios');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('517415', 'Porteiro de locais de diversao');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('517405', 'Porteiro (hotel)');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('010305', 'Praça da aeronáutica');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('010315', 'Praça da marinha');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('010310', 'Praça do exército');
@@ -29216,7 +29165,6 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('234676', 'Professor de filolo
 INSERT INTO codigocbo (codigo, descricao) VALUES ('234735', 'Professor de filosofia do ensino superior');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('232125', 'Professor de filosofia no ensino médio');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('234205', 'Professor de física (ensino superior)');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('724215', 'Rebitador a  martelo pneumático');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('232130', 'Professor de física no ensino médio');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('234425', 'Professor de fisioterapia');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('234430', 'Professor de fonoaudiologia');
@@ -29303,10 +29251,8 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('374120', 'Projetista de som')
 INSERT INTO codigocbo (codigo, descricao) VALUES ('242235', 'Promotor de justiça');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('521115', 'Promotor de vendas');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('354130', 'Promotor de vendas especializado');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('354150', 'Propagandista de produtos famacêuticos');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('322410', 'Protético dentário');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('251550', 'Psicanalista');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('251555', 'Psicólogo acupunturista');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('251510', 'Psicólogo clínico');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('251515', 'Psicólogo do esporte');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('251540', 'Psicólogo do trabalho');
@@ -29320,13 +29266,13 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('377145', 'Pugilista');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('848210', 'Queijeiro na fabricaçao de laticínio');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('213205', 'Químico');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('213210', 'Químico industrial');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('226105', 'Quiropraxista');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('762125', 'Rachador de couros e peles');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('372210', 'Radiotelegrafista');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('632010', 'Raizeiro');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('762220', 'Rebaixador de couros');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('821450', 'Rebarbador de metal');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('724230', 'Rebitador, a  mao');
+INSERT INTO codigocbo (codigo, descricao) VALUES ('724215', 'Rebitador a  martelo pneumático');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('421205', 'Recebedor de apostas (loteria)');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('421210', 'Recebedor de apostas (turfe)');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('422125', 'Recepcionista de banco');
@@ -29345,7 +29291,6 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('631420', 'Redeiro (pesca)');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('841472', 'Refinador de óleo e gordura');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('841210', 'Refinador de sal');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('253105', 'Relaçoes públicas');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('142325', 'Relações públicas');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('741120', 'Relojoeiro (fabricaçao)');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('741125', 'Relojoeiro (reparaçao)');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('761363', 'Remetedor de fios');
@@ -29400,7 +29345,6 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('724440', 'Serralheiro');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('717020', 'Servente de obras');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('623325', 'Sexador');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('782145', 'Sinaleiro (ponte-rolante)');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('515325', 'Sócioeducador');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('251120', 'Sociólogo');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('031210', 'Soldado bombeiro militar');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('021210', 'Soldado da polícia militar');
@@ -29532,7 +29476,6 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('351105', 'Técnico de contabi
 INSERT INTO codigocbo (codigo, descricao) VALUES ('311505', 'Técnico de controle de meio ambiente');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('224125', 'Técnico de desporto individual e coletivo (exceto futebol)');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('322205', 'Técnico de enfermagem');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('322245', 'Técnico de enfermagem da estratégia de saúde da família');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('322210', 'Técnico de enfermagem de terapia intensiva');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('322215', 'Técnico de enfermagem do trabalho');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('322220', 'Técnico de enfermagem psiquiátrica');
@@ -29599,7 +29542,6 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('311115', 'Técnico em curtime
 INSERT INTO codigocbo (codigo, descricao) VALUES ('352420', 'Técnico em direitos autorais');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('300305', 'Técnico em eletromecânica');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('314615', 'Técnico em estruturas metálicas');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('325115', 'Técnico em farmácia');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('313505', 'Técnico em fotônica');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('312310', 'Técnico em geodésia e cartografia');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('316105', 'Técnico em geofísica');
@@ -29631,7 +29573,6 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('324110', 'Técnico em método
 INSERT INTO codigocbo (codigo, descricao) VALUES ('321315', 'Técnico em mitilicultura');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('374130', 'Técnico em mixagem de áudio');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('371210', 'Técnico em museologia');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('325210', 'Técnico em nutriçao e dietética');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('373210', 'Técnico em operaçao de equipamento de exibiçao de televisao');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('373205', 'Técnico em operaçao de equipamentos de produçao para televisao  e produtoras de vídeo');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('373215', 'Técnico em operaçao de equipamentos de transmissao/recepçao de televisao');
@@ -29648,7 +29589,6 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('371305', 'Técnico em program
 INSERT INTO codigocbo (codigo, descricao) VALUES ('322115', 'Técnico em quiropraxia');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('324115', 'Técnico em radiologia e imagenologia');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('321320', 'Técnico em ranicultura');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('322425', 'Técnico em saúde bucal da estratégia de saúde da família');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('351505', 'Técnico em secretariado');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('351605', 'Técnico em segurança no trabalho');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('314620', 'Técnico em soldagem');
@@ -29673,29 +29613,8 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('311615', 'Técnico têxtil de
 INSERT INTO codigocbo (codigo, descricao) VALUES ('311620', 'Técnico têxtil de malharia');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('311625', 'Técnico têxtil de tecelagem');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('311610', 'Técnico têxtil (tratamentos químicos)');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('222215', 'Tecnólogo em alimentos');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('202120', 'Tecnólogo em automação industrial');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('214280', 'Tecnólogo em construção civil');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('214360', 'Tecnólogo em eletricidade');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('214365', 'Tecnólogo em eletrônica');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('214435', 'Tecnólogo em fabricação mecânica');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('271110', 'Tecnólogo em gastronomia');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('142120', 'Tecnólogo em gestão administrativo- financeira');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('142535', 'Tecnólogo em gestão da tecnologia da informação');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('342125', 'Tecnólogo em logistica de transporte');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('202115', 'Tecnólogo em mecatrônica');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('214010', 'Tecnólogo em meio ambiente');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('214615', 'Tecnólogo em metalurgia');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('214745', 'Tecnólogo em petróleo e gás');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('213215', 'Técnólogo em processos químicos');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('262135', 'Tecnólogo em produção audiovisual');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('262130', 'Tecnólogo em produção fonográfica');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('214930', 'Tecnólogo em produção industrial');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('214535', 'Tecnólogo em produção sulcroalcooleira');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('214750', 'Tecnólogo em rochas ornamentais');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('214935', 'Tecnólogo em segurança do trabalho');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('214370', 'Tecnólogo em telecomunicações');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('324125', 'Tecnólogo oftálmico');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('422205', 'Telefonista');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('422210', 'Teleoperador');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('716205', 'Telhador (telhas de argila e materias similares)');
@@ -29708,8 +29627,6 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('030115', 'Tenente-coronel bom
 INSERT INTO codigocbo (codigo, descricao) VALUES ('020110', 'Tenente-coronel da polícia militar');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('030305', 'Tenente do corpo de bombeiros militar');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('263115', 'Teólogo');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('322117', 'Terapeuta holístico');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('223905', 'Terapeuta ocupacional');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('353230', 'Tesoureiro de banco');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('311725', 'Tingidor de couros e peles');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('516330', 'Tingidor de roupas');
@@ -29771,7 +29688,6 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('632525', 'Trabalhador da extr
 INSERT INTO codigocbo (codigo, descricao) VALUES ('812110', 'Trabalhador da fabricaçao de muniçao e explosivos');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('823330', 'Trabalhador da fabricaçao de pedras artificiais');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('811125', 'Trabalhador da fabricaçao de resinas e vernizes');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('514325', 'Trabalhador da manutençao de edificaçoes');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('623210', 'Trabalhador da ovinocultura');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('623105', 'Trabalhador da pecuária (asininos e muares)');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('623110', 'Trabalhador da pecuária (bovinos corte)');
@@ -29837,8 +29753,6 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('751130', 'Trefilador (joalher
 INSERT INTO codigocbo (codigo, descricao) VALUES ('224135', 'Treinador profissional de futebol');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('768115', 'Tricoteiro, à mao');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('782810', 'Tropeiro');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('122520', 'Turismólogo');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('214130', 'Urbanista');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('762345', 'Vaqueador de couros e peles');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('514215', 'Varredor de rua');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('776430', 'Vassoureiro');
@@ -30484,7 +30398,7 @@ SELECT pg_catalog.setval('eleicao_sequence', 1, false);
 -- Data for Name: empresa; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO empresa (id, nome, cnpj, razaosocial, codigoac, emailremetente, emailrespsetorpessoal, emailresprh, cnae, grauderisco, representantelegal, nitrepresentantelegal, horariotrabalho, endereco, acintegra, maxcandidatacargo, logourl, exibirsalario, uf_id, cidade_id, atividade, mensagemmoduloexterno, logocertificadourl, grupoac, campoextracolaborador, campoextracandidato, mailnaoaptos, emailresplimitecontrato, turnoverporsolicitacao, obrigarambientefuncao, verificaparentesco, controlariscopor, solpessoalexibircolabsubstituido, codigotrucurso, exibirlogoempresappraltcat, solpessoalexibirsalario, solpessoalobrigardadoscomplementares, formulaturnover, solicitarconfirmacaodesligamento, cnae2, considerarsabadonoabsenteismo, solpessoalreabrirsolicitacao, considerardomingonoabsenteismo, processoexportacaoac, controlarvencimentocertificacaopor, telefone, ddd, mostrarperformanceavaldesempenho, notificarsomenteperiodosconfigurados, procedimentoemcasodeacidente, termoderesponsabilidade, criarusuarioautomaticamente, senhapadrao) VALUES (1, 'Empresa Padrão', '00000000', 'Empresa Padrão', NULL, 'rh@empresapadrao.com.br', 'sp@empresapadrao.com.br', NULL, NULL, NULL, NULL, NULL, NULL, NULL, false, 5, 'fortes.gif', true, NULL, NULL, NULL, 'Se você não é registrado, cadastre já seu currículo e tenha acesso às vagas disponíveis em nossa empresa.', NULL, '001', false, false, NULL, '', false, false, 'N', 'A', false, false, false, true, false, 1, false, NULL, false, false, false, false, 1, NULL, NULL, false, false, NULL, NULL, false, NULL);
+INSERT INTO empresa (id, nome, cnpj, razaosocial, codigoac, emailremetente, emailrespsetorpessoal, emailresprh, cnae, grauderisco, representantelegal, nitrepresentantelegal, horariotrabalho, endereco, acintegra, maxcandidatacargo, logourl, exibirsalario, uf_id, cidade_id, atividade, mensagemmoduloexterno, logocertificadourl, grupoac, campoextracolaborador, campoextracandidato, mailnaoaptos, emailresplimitecontrato, turnoverporsolicitacao, obrigarambientefuncao, verificaparentesco, controlariscopor, solpessoalexibircolabsubstituido, codigotrucurso, exibirlogoempresappraltcat, solpessoalexibirsalario, solpessoalobrigardadoscomplementares, formulaturnover, solicitarconfirmacaodesligamento, cnae2, considerarsabadonoabsenteismo, solpessoalreabrirsolicitacao, considerardomingonoabsenteismo, processoexportacaoac, controlarvencimentocertificacaopor, telefone, ddd, mostrarperformanceavaldesempenho, notificarsomenteperiodosconfigurados, procedimentoemcasodeacidente, termoderesponsabilidade, criarusuarioautomaticamente, senhapadrao, campoextraatualizarmeusdados) VALUES (1, 'Empresa Padrão', '00000000', 'Empresa Padrão', NULL, 'rh@empresapadrao.com.br', 'sp@empresapadrao.com.br', NULL, NULL, NULL, NULL, NULL, NULL, NULL, false, 5, 'fortes.gif', true, NULL, NULL, NULL, 'Se você não é registrado, cadastre já seu currículo e tenha acesso às vagas disponíveis em nossa empresa.', NULL, '001', false, false, NULL, '', false, false, 'N', 'A', false, false, false, true, false, 1, false, NULL, false, false, false, false, 1, NULL, NULL, false, false, NULL, NULL, false, NULL, false);
 
 
 --
@@ -31860,6 +31774,10 @@ INSERT INTO migrations (name) VALUES ('20170726151609');
 INSERT INTO migrations (name) VALUES ('20170727174813');
 INSERT INTO migrations (name) VALUES ('20170802151843');
 INSERT INTO migrations (name) VALUES ('20170811073220');
+INSERT INTO migrations (name) VALUES ('20170816085132');
+INSERT INTO migrations (name) VALUES ('20170822135135');
+INSERT INTO migrations (name) VALUES ('20170823165742');
+INSERT INTO migrations (name) VALUES ('20170827154958');
 
 
 --
@@ -32394,7 +32312,7 @@ SELECT pg_catalog.setval('papel_sequence', 706, false);
 -- Data for Name: parametrosdosistema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatoexternovisivel, camposcandidatoexternoobrigatorio, camposcandidatoexternotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima, quantidadeconstraints, tamanhomaximoupload, modulospermitidossomatorio, versaoacademica, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, camposcolaboradorvisivel, camposcolaboradorobrigatorio, camposcolaboradortabs, autorizacaogestornasolicitacaopessoal, smtpremetente) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.183.215', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.65.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', '2', false, 1, 426, NULL, 63, false, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,comoFicouSabendoVaga,comfirmaSenha,senha,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,carteiraHabilitacao,tituloEleitoral,certificadoMilitar,ctps,pis', 'nome,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais', 'nome,nomeComercial,nascimento,sexo,cpf,escolaridade,endereco,email,fone,celular,estadoCivil,qtdFilhos,nomeConjuge,nomePai,nomeMae,deficiencia,matricula,dt_admissao,vinculo,dt_encerramentoContrato,regimeRevezamento,formacao,idioma,desCursos,expProfissional,infoAdicionais,identidade,carteiraHabilitacao,tituloEleitoral,certificadoMilitar,ctps,pis,modelosAvaliacao', 'nome,nomeComercial,nascimento,cpf,escolaridade,ende,num,cidade,email,fone,dt_admissao', 'abaDocumentos,abaExperiencias,abaDadosFuncionais,abaFormacaoEscolar,abaDadosPessoais,abaModelosAvaliacao', false, false);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatoexternovisivel, camposcandidatoexternoobrigatorio, camposcandidatoexternotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima, quantidadeconstraints, tamanhomaximoupload, modulospermitidossomatorio, versaoacademica, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, camposcolaboradorvisivel, camposcolaboradorobrigatorio, camposcolaboradortabs, autorizacaogestornasolicitacaopessoal, smtpremetente, utilizarcaptchanologin) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.183.215', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.65.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', '2', false, 1, 417, NULL, 63, false, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,comoFicouSabendoVaga,comfirmaSenha,senha,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,carteiraHabilitacao,tituloEleitoral,certificadoMilitar,ctps,pis', 'nome,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais', 'nome,nomeComercial,nascimento,sexo,cpf,escolaridade,endereco,email,fone,celular,estadoCivil,qtdFilhos,nomeConjuge,nomePai,nomeMae,deficiencia,matricula,dt_admissao,vinculo,dt_encerramentoContrato,regimeRevezamento,formacao,idioma,desCursos,expProfissional,infoAdicionais,identidade,carteiraHabilitacao,tituloEleitoral,certificadoMilitar,ctps,pis,modelosAvaliacao', 'nome,nomeComercial,nascimento,cpf,escolaridade,ende,num,cidade,email,fone,dt_admissao', 'abaDocumentos,abaExperiencias,abaDadosFuncionais,abaFormacaoEscolar,abaDadosPessoais,abaModelosAvaliacao', false, false, false);
 
 
 --
