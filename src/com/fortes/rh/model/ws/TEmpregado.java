@@ -63,7 +63,7 @@ public class TEmpregado implements Serializable
 	private String retiraFoto;
 	private Integer vinculo;
 	private Integer categoria;
-	private String expAgenteNocivo; 
+	private String expAgenteNocivo;
 	
 	public TEmpregado() {
 		super();

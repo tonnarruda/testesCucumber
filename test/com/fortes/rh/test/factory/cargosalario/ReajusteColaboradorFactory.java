@@ -44,6 +44,16 @@ public class ReajusteColaboradorFactory
 			FaixaSalarial faixaSalarialAtual, FaixaSalarial faixaSalarialProposta, Funcao funcaoAtual, Funcao funcaoProposta, Integer tipoSalarioAtual, Integer tipoSalarioProposto,
 			Double salarioAtual, Double salarioProposto) 
 	{
+		ReajusteColaborador reajusteColaborador = getReajusteColaborador(colaborador, areaOrganizacionalAtual, areaOrganizacionalProposta, faixaSalarialAtual, faixaSalarialProposta, tipoSalarioAtual, tipoSalarioProposto, salarioAtual, salarioProposto);
+		reajusteColaborador.setFuncaoAtual(funcaoAtual);
+		reajusteColaborador.setFuncaoProposta(funcaoProposta);
+		return reajusteColaborador;
+	}
+	
+	public static ReajusteColaborador getReajusteColaborador(Colaborador colaborador,AreaOrganizacional areaOrganizacionalAtual,AreaOrganizacional areaOrganizacionalProposta,
+			FaixaSalarial faixaSalarialAtual, FaixaSalarial faixaSalarialProposta, Integer tipoSalarioAtual, Integer tipoSalarioProposto,
+			Double salarioAtual, Double salarioProposto) 
+	{
 		ReajusteColaborador reajusteColaborador = getReajusteColaborador();
 
 		reajusteColaborador.setColaborador(colaborador);
@@ -51,8 +61,6 @@ public class ReajusteColaboradorFactory
 		reajusteColaborador.setAreaOrganizacionalAtual(areaOrganizacionalAtual);
 		reajusteColaborador.setFaixaSalarialAtual(faixaSalarialAtual);
 		reajusteColaborador.setFaixaSalarialProposta(faixaSalarialProposta);
-		reajusteColaborador.setFuncaoAtual(funcaoAtual);
-		reajusteColaborador.setFuncaoProposta(funcaoProposta);
 		reajusteColaborador.setTipoSalarioAtual(tipoSalarioAtual);
 		reajusteColaborador.setSalarioAtual(salarioAtual);
 		reajusteColaborador.setTipoSalarioProposto(tipoSalarioProposto);

@@ -130,6 +130,12 @@
 	<#assign validarCampos="return validaFormulario('formBusca', null, null, true)"/>
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 
+	<#if empresaIntegradaEAderiuAoESocial>
+		<#assign empresaEstaIntegradaEAderiuAoESocial=true/>
+	<#else>
+		<#assign empresaEstaIntegradaEAderiuAoESocial=false/>
+	</#if>
+
 	<title>Colaboradores</title>
 </head>
 <body>
@@ -292,8 +298,15 @@
 
 			<@frt.link verifyRole="ROLE_COLAB_LIST_EDITAR" href="javascript:enviarPrepareUpDate('${colaborador.id}')" imgTitle="Editar" imgName="edit.gif"/>
 			
-			<@frt.link verifyRole="ROLE_COLAB_LIST_EXCLUIR" href="javascript:;" onclick="newConfirm('${avisoExclusao?js_string}', function(){window.location='delete.action?colaborador.id=${colaborador.id}'});" imgTitle="Excluir" imgName="delete.gif"/>
-			
+			<@authz.authorize ifAllGranted="ROLE_COLAB_LIST_EXCLUIR">
+				<#if !empresaEstaIntegradaEAderiuAoESocial || colaborador.naoIntegraAc || usuarioLogado.id == 1>
+					<@frt.link verifyRole="ROLE_COLAB_LIST_EXCLUIR" href="javascript:;" onclick="newConfirm('${avisoExclusao?js_string}', function(){window.location='delete.action?colaborador.id=${colaborador.id}'});" imgTitle="Excluir" imgName="delete.gif"/>
+				<#elseif empresaEstaIntegradaEAderiuAoESocial>
+					<img border="0" title="Devido as adequações ao eSocial, não é possível excluir colaborador no Fortes RH." src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>" style="opacity:0.5;filter:alpha(opacity=50);">
+				</#if>
+			</@authz.authorize>
+		
+		
 			<@frt.link verifyRole="ROLE_CAD_HISTORICOCOLABORADOR" href="javascript:enviarPrepareProgressaoColaborador('${colaborador.id}')" imgTitle="Visualizar Progressão" imgName="progressao.gif"/>
 
 			<@frt.link verifyRole="ROLE_COLAB_LIST_PERFORMANCE" href="preparePerformanceFuncional.action?colaborador.id=${colaborador.id}" imgTitle="Performance Profissional" imgName="medalha.gif"/>

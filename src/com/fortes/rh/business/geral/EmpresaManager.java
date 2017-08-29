@@ -62,4 +62,5 @@ public interface EmpresaManager extends GenericManager<Empresa>
 	@Audita(operacao="Remoção", auditor=EmpresaAuditorCallbackImpl.class)
 	void remove(Empresa empresa);
 	Collection<Empresa> findByLntId(Long lntId);
+    void notificarAdesaoAoESocial(String codigoAC, String grupoAC, boolean aderiuAoEsocial);
 }

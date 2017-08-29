@@ -28,6 +28,12 @@
 			$('#formBusca').submit();
 		}
 	</script>
+	
+	<#if empresaIntegradaEAderiuAoESocial>
+		<#assign empresaEstaIntegradaEAderiuAoESocial=true/>
+	<#else>
+		<#assign empresaEstaIntegradaEAderiuAoESocial=false/>
+	</#if>
 </head>
 <body>
 	<@ww.actionmessage />
@@ -63,7 +69,12 @@
 				<a href="prepareUpdate.action?cargo.id=${cargo.id}&page=${page}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
 			</@authz.authorize>
 			<@authz.authorize ifAllGranted="ROLE_CAD_CARGO_EXCLUIR">
-				<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?cargo.id=${cargo.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
+				<#if !empresaEstaIntegradaEAderiuAoESocial || !cargo.possuiFaixaSalarial>
+					<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?cargo.id=${cargo.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
+				<#elseif empresaEstaIntegradaEAderiuAoESocial && cargo.possuiFaixaSalarial>
+					<@ww.hidden name="cargo.possuiFaixaSalarial"/>
+					<img border="0" title="Devido as adequações ao eSocial, não é possível excluir cargo que possui faixa salarial." src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>" style="opacity:0.5;filter:alpha(opacity=50);">
+				</#if>
 			</@authz.authorize>
 			<@authz.authorize ifAllGranted="ROLE_CAD_CARGO_IMPRIMIR">
 				<a href="imprimir.action?cargo.id=${cargo.id}"><img border="0" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>

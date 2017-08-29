@@ -65,6 +65,10 @@ public class ParametrosDoSistemaManagerImpl extends GenericManagerImpl<Parametro
 		return acPessoalClientSistema.idACIntegrado(empresa);
 	}
 
+	public boolean isAderiuAoESocial(Empresa empresa)throws Exception{
+		return acPessoalClientSistema.isAderiuAoESocial(empresa);
+	}
+	
 	public String getUrlDaAplicacao() {
 		ParametrosDoSistema param = findById(1L);
 		return param.getAppUrl();

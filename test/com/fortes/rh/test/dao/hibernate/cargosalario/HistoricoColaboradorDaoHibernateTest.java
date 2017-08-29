@@ -1428,40 +1428,6 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		assertEquals(3, historicoColaboradors.size());
 	}
 	
-	public void testUpdateAmbienteEFuncao()
-	{
-		Empresa empresa = EmpresaFactory.getEmpresa();
-		empresaDao.save(empresa);
-		
-		Cargo cargo = CargoFactory.getEntity();
-		cargoDao.save(cargo);
-		
-		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
-		faixaSalarial.setCargo(cargo);
-		faixaSalarialDao.save(faixaSalarial);
-		
-		Colaborador colaborador = ColaboradorFactory.getEntity();
-		colaborador.setEmpresa(empresa);
-		colaboradorDao.save(colaborador);
-		
-		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
-		historicoColaborador.setColaborador(colaborador);
-		historicoColaborador.setData(new Date());
-		historicoColaborador.setFaixaSalarial(faixaSalarial);
-		historicoColaboradorDao.save(historicoColaborador);
-		
-		Ambiente ambiente = AmbienteFactory.getEntity();
-		ambienteDao.save(ambiente);
-		
-		Funcao funcao = FuncaoFactory.getEntity();
-		funcaoDao.save(funcao);
-		
-		historicoColaborador.setAmbiente(ambiente);
-		historicoColaborador.setFuncao(funcao);
-		
-		assertTrue(historicoColaboradorDao.updateAmbienteEFuncao(historicoColaborador));
-	}
-	
 	public void testFindHistoricoAdmitidos()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();

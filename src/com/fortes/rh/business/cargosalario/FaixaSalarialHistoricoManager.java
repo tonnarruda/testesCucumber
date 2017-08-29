@@ -47,4 +47,5 @@ public interface FaixaSalarialHistoricoManager extends GenericManager<FaixaSalar
 	boolean existeHistoricoPorIndice(Long empresaId);
 	boolean existeDependenciaComHistoricoIndice(Date dataHistoricoExcluir, Long indiceId);
 	void reenviaAguardandoConfirmacao(Empresa empresa) throws Exception;
+	boolean existeHistoricoConfirmadoByTabelaReajusteColaborador(Long tabelaReajusteColaboradorId);
 }

@@ -92,6 +92,10 @@ public class Cargo extends AbstractModel implements Serializable
 	
 	private boolean ativo = ATIVO;
 	private Boolean exibirModuloExterno = false;
+	
+	@Transient
+	private boolean possuiFaixaSalarial = true;
+	
 	public Cargo()
 	{
 	}
@@ -524,4 +528,12 @@ public class Cargo extends AbstractModel implements Serializable
 	public void setComplementoConhecimento(String complementoConhecimento) {
 		this.complementoConhecimento = complementoConhecimento;
 	}
+
+    public boolean isPossuiFaixaSalarial() {
+        return possuiFaixaSalarial;
+    }
+
+    public void setPossuiFaixaSalarial(boolean possuiFaixaSalarial) {
+        this.possuiFaixaSalarial = possuiFaixaSalarial;
+    }
 }

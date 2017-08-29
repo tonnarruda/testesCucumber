@@ -19,4 +19,5 @@ public interface TabelaReajusteColaboradorDao extends GenericDao<TabelaReajusteC
 	void updateSetAprovada(Long tabelaReajusteColaboradorId, boolean aprovada);
 	
 	public void update(TabelaReajusteColaborador tabelaReajusteColaborador);
+
 }

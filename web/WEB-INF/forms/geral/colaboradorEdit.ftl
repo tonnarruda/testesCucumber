@@ -67,6 +67,7 @@
 		#parentesDialog td { width: 50%; vertical-align: top; }
 		#wwgrp_dt_encerramentoContrato { margin-top: 5px; }
 		input[disabled], select[disabled] { background: #EFEFEF; }
+		input[readonly] { background: #EFEFEF; }
 		#divDecideAlteracaoOrRetificacao { display: none; }
 		#divInformeDataAlteracao { display: none; }
 		.calendar{ z-index: 1010 !important;}
@@ -180,7 +181,7 @@
 
 	<#assign validarCampos="validaFormularioDinamico();"/>
 	<#assign dadosIntegradosAtualizados = "${dadosIntegradosAtualizados?string}"/>
-
+	
 	<script type="text/javascript">
 		var colaboradorId = null;
 		<#if colaborador.id?exists>
@@ -188,7 +189,7 @@
 		</#if>	
 		
 		var camposColaboradorVisivel = "${parametrosDoSistema.camposColaboradorVisivel}";
-		var camposColaboradorObrigatorio = "${parametrosDoSistema.camposColaboradorObrigatorio}";
+		var camposColaboradorObrigatorio = "${camposColaboradorObrigatorio}";
 
 		var abasVisiveis = "${parametrosDoSistema.camposColaboradorTabs}";
 		var arrayAbasVisiveis  = abasVisiveis.split(',');
@@ -250,6 +251,7 @@
 			$('#vinculoSocioTooltipHelp').qtip({ content: 'Colaboradores com a colocação Sócio, não serão integrados com o Fortes Pessoal.' });
 			$('#dataAdmissaoTooltipHelp').qtip({ content: 'Não é possível alterar a data de admissão quando integrado com o Fortes Pessoal.' });
 			$('#vinculoTooltipHelp').qtip({ content: 'Não é possível alterar o vínculo quando integrado com o Fortes Pessoal.' });
+			$('#pisTooltipHelp').qtip({ content: 'O PIS é obrigatório para as seguintes colocações: Empregado, Aprendiz, Temporário e Sócio.<br>É opcional para a colocação de Estagiário.' });
 			
 			<#if colaborador.id?exists && integraAc && !colaborador.naoIntegraAc>
 				$('.naturalidadeAndNacionalidadeHelp').qtip({
@@ -312,6 +314,8 @@
 			
 			habilitaDtEncerramentoContrato();
 			checkNaoIntegraAC();
+			configurarObrigatoriedadeDoPis();
+			configuraEdicaoCamposIntegrados();
 		});
 		
 		function habilitaDtEncerramentoContrato()
@@ -329,12 +333,23 @@
 		}
 
 		function checkNaoIntegraAC(){
-			<#if edicao != "true">
+			if ($('#integradaEAderiuAoESocial').val() == "false" && $('#isEdicao').val() == "false"){
 				 var isVinculoSocio = $('#vinculo').val() == 'O';
 				 $("#naoIntegraACSocio").parent().parent().parent().toggle(isVinculoSocio);
 				 $("#naoIntegraAc").parent().parent().parent().toggle(!isVinculoSocio);
 				 $("#naoIntegraACSocio").attr('checked', 'checked');
-			</#if>
+			}
+			else
+				$("#naoIntegraACSocio").parent().parent().parent().hide();
+		}
+		
+		function configurarObrigatoriedadeDoPis()
+		{
+			var lblAntigo = $('label[for="pis"]');
+			lblAntigo.text(lblAntigo.text().replace('*', ''));
+			if($("#vinculo").val() != "S"){
+				lblAntigo.text(lblAntigo.text().replace(/\s$/, '') + "*");
+			}
 		}
 		
 		function populaAmbiente(estabelecimentoId, ambienteId)
@@ -494,7 +509,7 @@
 			arrayObrigatorios = $.grep(arrayObrigatorios, function(value) {
 				return value != 'formacao' && value != 'idioma' && value != 'expProfissional';
 			});
-	
+			
 			arrayValidacao = arrayObrigatorios;
 			
 			alteraArrayValidacao(document.getElementById("tipoSalario").value);
@@ -505,12 +520,27 @@
 				</#if>
 			</@authz.authorize>
 			
-			<#if colaborador.id?exists && colaborador.empresa.acIntegra && !colaborador.naoIntegraAc>
-				if(validaFormulario('form', arrayValidacao, new Array('email', 'nascimento', 'cpf', 'cep', 'dt_admissao','dt_encerramentoContrato', 'emissao', 'vencimento','rgDataExpedicao','ctpsDataExpedicao', 'pis' ${validaDataCamposExtras}), true))
-					dialogIntegraAc();
-			<#else>
-				validaFormulario('form', arrayValidacao, new Array('email', 'nascimento', 'cpf', 'cep', 'dt_admissao','dt_encerramentoContrato', 'emissao', 'vencimento','rgDataExpedicao','ctpsDataExpedicao', 'pis' ${validaDataCamposExtras}));
-			</#if>
+			if($("#vinculo").val() != "S")
+				arrayValidacao.push('pis');
+			
+			$('.campo-integrado-select').removeAttr('disabled');
+			
+			var validaCampos = false;
+			validaCampos = validaFormulario('form', arrayValidacao, new Array('email', 'nascimento', 'cpf', 'cep', 'dt_admissao','dt_encerramentoContrato', 'emissao', 'vencimento','rgDataExpedicao','ctpsDataExpedicao', 'pis' ${validaDataCamposExtras}), true);
+			
+			if(validaCampos){
+				<#if colaborador.id?exists && colaborador.empresa.acIntegra && !colaborador.naoIntegraAc>
+					<#if !desabilitarEdicaoCamposIntegrados && colaborador.codigoAC?exists &&  colaborador.codigoAC != "">
+						dialogIntegraAc();
+					<#else>
+						$('#form').submit();
+					</#if>
+				<#else>
+					$('#form').submit();
+				</#if>
+			}
+			else
+				configuraEdicaoCamposIntegrados();
 		}
 		
 		function prepareSubmit() {
@@ -594,11 +624,11 @@
 													    {
 													        text: "Gravar",
 												        	click: function() { 
-												        		if($('input[name="tipoAlteracao"]:checked').length > 0){
+												        		if($('#podeEfetuarRetificacao').val() == "false" || $('input[name="tipoAlteracao"]:checked').length > 0){
 													        		$('#dadosIntegradosAtualizados').val(true);
 													        		validaDataAlteracao();
 													        	}else{
-															    	jAlert("Marque pelo menos uma das opções.");    	
+														    		jAlert("Marque pelo menos uma das opções.");
 													        	}
 												        	}
 													    },
@@ -626,7 +656,7 @@
 			
 		function validaDataAlteracao(){
 			$('.dataValida').remove();
-			if($('input[name="tipoAlteracao"]:checked').val() == 'A'){
+			if($('input[name="tipoAlteracao"]:checked').val() == 'A' || $('#podeEfetuarRetificacao').val() == "false"){
 				if(validaDate($('#dataAlt')[0]) && $('#dataAlt').val() != "  /  /    " &&  $('#dataAlt').val() != ""){
 					$('#dataAlteracao').val($('#dataAlt').val());
 					$('#form').submit();
@@ -650,6 +680,13 @@
 			});
 			
 			return retorno;	
+		}
+		
+		function configuraEdicaoCamposIntegrados(){
+			<#if desabilitarEdicaoCamposIntegrados>
+				$('.campo-integrado').attr('readonly', 'readonly');
+				$('.campo-integrado-select').attr('disabled', 'disabled');
+			</#if>
 		}
 	</script>
 </head>
@@ -735,11 +772,15 @@
 				<@ww.file label="Foto" name="colaborador.foto" id="foto"/>
 	        </#if>
 
-			<@ww.textfield label="Nome" name="colaborador.nome" id="nome" liClass="liLeft campo campoAdd" cssStyle="width: 300px;" maxLength="60" onblur="${funcaoNome};"/>
-			<@ww.textfield label="Nome Comercial" name="colaborador.nomeComercial"  liClass="campo" id="nomeComercial" cssStyle="width: 300px;" maxLength="30" />
-			<@ww.datepicker label="Nascimento" name="colaborador.pessoal.dataNascimento" value="${dataNasc}" id="nascimento" liClass="liLeft campo campoAdd" cssClass="mascaraData"/>
-			<@ww.select label="Sexo" id="sexo" name="colaborador.pessoal.sexo" list="sexos" cssStyle="width: 85px;" liClass="liLeft campo campoAdd"/>
-			<@ww.textfield label="CPF" name="colaborador.pessoal.cpf" id="cpf" liClass="campo campoAdd" cssClass="mascaraCpf" onchange="verificaCpf(this.value);" onblur="verificaCpf(this.value);"/>
+			<@ww.textfield label="Nome" name="colaborador.nome" id="nome" liClass="liLeft campo campoAdd" cssClass="campo-integrado" cssStyle="width: 300px;" maxLength="60" onblur="${funcaoNome};"/>
+			<@ww.textfield label="Nome Comercial" name="colaborador.nomeComercial"  liClass="campo" id="nomeComercial" cssStyle="width: 300px;" maxLength="30" cssClass="campo-integrado"/>
+			<#if desabilitarEdicaoCamposIntegrados>
+				<@ww.textfield label="Nascimento" name="colaborador.pessoal.dataNascimento"  value="${dataNasc}" id="nascimento" liClass="liLeft campo campoAdd" cssClass="mascaraData campo-integrado"/>
+			<#else>
+				<@ww.datepicker label="Nascimento" name="colaborador.pessoal.dataNascimento" value="${dataNasc}" id="nascimento" liClass="liLeft campo campoAdd" cssClass="mascaraData"/>
+			</#if>
+			<@ww.select label="Sexo" id="sexo" name="colaborador.pessoal.sexo" list="sexos" cssStyle="width: 85px;" liClass="liLeft campo campoAdd" cssClass="campo-integrado-select"/>
+			<@ww.textfield label="CPF" name="colaborador.pessoal.cpf" id="cpf" liClass="campo campoAdd" cssClass="mascaraCpf campo-integrado" onchange="verificaCpf(this.value);" onblur="verificaCpf(this.value);"/>
 			<@ww.div id="msgCPFDuplicado" cssStyle="display:none;"></@ww.div>
 			
 			<#if colaborador.id?exists && integraAc && !colaborador.naoIntegraAc>
@@ -751,29 +792,29 @@
 			</#if>			
 			
 			<@ww.div id="wwgrp_endereco" cssClass="campo">
-				<@ww.textfield label="CEP" name="colaborador.endereco.cep" id="cep" cssClass="mascaraCep" liClass="liLeft campoAdd"/>
-				<@ww.textfield label="Logradouro" name="colaborador.endereco.logradouro" id="ende" cssStyle="width: 300px;" liClass="liLeft campoAdd" maxLength="40" />
-				<@ww.textfield label="Nº"  name="colaborador.endereco.numero" id="num" cssStyle="width:40px;" liClass="liLeft campoAdd" maxLength="10" />
-				<@ww.textfield label="Complemento" name="colaborador.endereco.complemento" id="complemento" licClass="campoAdd" cssStyle="width: 205px;" maxLength="20" />
-				<@ww.select label="Estado"     name="colaborador.endereco.uf.id" id="uf" list="estados" liClass="liLeft campoAdd" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue="" />
-				<@ww.select label="Cidade" name="colaborador.endereco.cidade.id" id="cidade" list="cidades" liClass="liLeft campoAdd" listKey="id" listValue="nome" cssStyle="width: 245px;" headerKey="" headerValue=""/>
-				<@ww.textfield label="Bairro" name="colaborador.endereco.bairro" id="bairroNome" liClass="campoAdd" cssStyle="width: 325px;" maxLength="85" />
+				<@ww.textfield label="CEP" name="colaborador.endereco.cep" id="cep" cssClass="mascaraCep campo-integrado" liClass="liLeft campoAdd"/>
+				<@ww.textfield label="Logradouro" name="colaborador.endereco.logradouro" id="ende" cssStyle="width: 300px;" liClass="liLeft campoAdd" cssClass="campo-integrado" maxLength="40"/>
+				<@ww.textfield label="Nº"  name="colaborador.endereco.numero" id="num" cssStyle="width:40px;" liClass="liLeft campoAdd" cssClass="campo-integrado" maxLength="10"/>
+				<@ww.textfield label="Complemento" name="colaborador.endereco.complemento" id="complemento" licClass="campoAdd" cssClass="campo-integrado" cssStyle="width: 205px;" maxLength="20"/>
+				<@ww.select label="Estado"     name="colaborador.endereco.uf.id" id="uf" list="estados" liClass="liLeft campoAdd" cssClass="campo-integrado-select" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue=""/>
+				<@ww.select label="Cidade" name="colaborador.endereco.cidade.id" id="cidade" list="cidades" liClass="liLeft campoAdd" cssClass="campo-integrado-select" listKey="id" listValue="nome" cssStyle="width: 245px;" headerKey="" headerValue=""/>
+				<@ww.textfield label="Bairro" name="colaborador.endereco.bairro" id="bairroNome" liClass="campoAdd" cssClass="campo-integrado" cssStyle="width: 325px;" maxLength="85"/>
 				<@ww.div id="bairroContainer"/>
 			</@ww.div>
 
-			<@ww.textfield label="E-mail" name="colaborador.contato.email" id="email" cssClass="mascaraEmail" maxLength="200" liClass="liLeft campo campoAdd" />
+			<@ww.textfield label="E-mail" name="colaborador.contato.email" id="email" cssClass="mascaraEmail campo-integrado" maxLength="200" liClass="liLeft campo campoAdd"/>
 			<@ww.div id="wwgrp_fone"  cssClass="campo">
-				<@ww.textfield label="DDD" name="colaborador.contato.ddd" id="ddd" onkeypress = "return(somenteNumeros(event,''));" liClass="liLeft campoAdd" maxLength="2" cssStyle="width:25px;" />
-				<@ww.textfield label="Telefone"  name="colaborador.contato.foneFixo" id="fone" onkeypress = "return(somenteNumeros(event,''));" maxLength="9" liClass="liLeft campoAdd" cssStyle="width:80px;"/>
+				<@ww.textfield label="DDD" name="colaborador.contato.ddd" id="ddd" onkeypress = "return(somenteNumeros(event,''));" liClass="liLeft campoAdd" cssClass="campo-integrado" maxLength="2" cssStyle="width:25px;"/>
+				<@ww.textfield label="Telefone"  name="colaborador.contato.foneFixo" id="fone" onkeypress = "return(somenteNumeros(event,''));" maxLength="9" liClass="liLeft campoAdd" cssClass="campo-integrado" cssStyle="width:80px;"/>
 			</@ww.div>
-			<@ww.textfield label="Celular"   name="colaborador.contato.foneCelular"  liClass="campo campoAdd" onkeypress = "return(somenteNumeros(event,''));" id="celular" maxLength="9" cssStyle="width:80px;"/>
-			<@ww.select label="Escolaridade" name="colaborador.pessoal.escolaridade" id="escolaridade" list="escolaridades" cssStyle="width: 303px;" liClass="liLeft campo campoAdd" headerKey="" headerValue="Selecione..."  />
-			<@ww.select label="Estado Civil" name="colaborador.pessoal.estadoCivil" id="estadoCivil" list="estadosCivis" cssStyle="width: 210px;" liClass="liLeft campo campoAdd"  />
-			<@ww.select label="Deficiência" name="colaborador.pessoal.deficiencia" id="deficiencia" list="deficiencias" cssStyle="width: 160px;"  liClass="campo campoAdd" />
+			<@ww.textfield label="Celular"   name="colaborador.contato.foneCelular"  liClass="campo campoAdd" cssClass="campo-integrado" onkeypress = "return(somenteNumeros(event,''));" id="celular" maxLength="9" cssStyle="width:80px;"/>
+			<@ww.select label="Escolaridade" name="colaborador.pessoal.escolaridade" id="escolaridade" list="escolaridades" cssStyle="width: 303px;" liClass="liLeft campo campoAdd" cssClass="campo-integrado-select" headerKey="" headerValue="Selecione..."/>
+			<@ww.select label="Estado Civil" name="colaborador.pessoal.estadoCivil" id="estadoCivil" list="estadosCivis" cssStyle="width: 210px;" liClass="liLeft campo campoAdd" cssClass="campo-integrado-select"/>
+			<@ww.select label="Deficiência" name="colaborador.pessoal.deficiencia" id="deficiencia" list="deficiencias" cssStyle="width: 160px;" liClass="campo campoAdd" cssClass="campo-integrado-select"/>
 
-			<@ww.textfield label="Nome do Pai" name="colaborador.pessoal.pai" id="nomePai" liClass="liLeft campo campoAdd" cssStyle="width: 300px;" maxLength="60" />
-			<@ww.textfield label="Nome da Mãe" name="colaborador.pessoal.mae" id="nomeMae" cssStyle="width: 300px;" maxLength="60"  liClass="campo campoAdd"  />
-			<@ww.textfield label="Nome do Cônjuge" name="colaborador.pessoal.conjuge" id="nomeConjuge" cssStyle="width: 300px;" maxLength="40" liClass="liLeft campo campoAdd" />
+			<@ww.textfield label="Nome do Pai" name="colaborador.pessoal.pai" id="nomePai" liClass="liLeft campo campoAdd" cssClass="campo-integrado" cssStyle="width: 300px;" maxLength="60"/>
+			<@ww.textfield label="Nome da Mãe" name="colaborador.pessoal.mae" id="nomeMae" cssStyle="width: 300px;" maxLength="60"  liClass="campo campoAdd" cssClass="campo-integrado"/>
+			<@ww.textfield label="Nome do Cônjuge" name="colaborador.pessoal.conjuge" id="nomeConjuge" cssStyle="width: 300px;" maxLength="40" liClass="liLeft campo campoAdd" cssClass="campo-integrado"/>
 			<@ww.textfield label="Qtd. Filhos" onkeypress = "return(somenteNumeros(event,''));" maxLength="2" name="colaborador.pessoal.qtdFilhos" id="qtdFilhos" liClass="campo campoAdd" cssStyle="width:25px; text-align:right;" maxLength="2" />
 			<div style="clear: both;"></div>
 		</div>
@@ -804,7 +845,7 @@
 			<#if somenteLeituraIntegraAC=="true" && edicao=="true" && !colaborador.naoIntegraAc>
 				<@ww.div id="wwgrp_vinculo"  cssClass="campo">
 					<label for="vinculo">Colocação:</label><br />
-					<@ww.select theme="simple" label="Colocação" disabled="true" name="colaborador.vinculo" cssClass="campo" list="vinculos" onchange="habilitaDtEncerramentoContrato();" id="vinculo" cssStyle="width: 150px;"/>
+					<@ww.select theme="simple" label="Colocação" disabled="true" name="colaborador.vinculo" cssClass="campo" list="vinculos" onchange="habilitaDtEncerramentoContrato();configurarObrigatoriedadeDoPis();" id="vinculo" cssStyle="width: 150px;"/>
 					<img id="vinculoTooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" />
 					<br clear="all"/>
 				</@ww.div> 
@@ -812,8 +853,8 @@
 			<#else>
 				<@ww.div id="wwgrp_vinculo"  cssClass="campo">
 					<label for="vinculo">Colocação:</label><br />
-					<@ww.select theme="simple" label="Colocação" name="colaborador.vinculo" list="vinculos" cssClass="campo campoAdd" cssStyle="width: 150px;" id="vinculo" onchange="habilitaDtEncerramentoContrato(),checkNaoIntegraAC();" />
-					<#if integraAc && !colaborador.naoIntegraAc>
+					<@ww.select theme="simple" label="Colocação" name="colaborador.vinculo" list="vinculos" cssClass="campo campoAdd" cssStyle="width: 150px;" id="vinculo" onchange="habilitaDtEncerramentoContrato(),checkNaoIntegraAC();configurarObrigatoriedadeDoPis();" />
+					<#if integraAc && !colaborador.naoIntegraAc && !empresaEstaIntegradaEAderiuAoESocial>
 						<img id="vinculoSocioTooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" />
 					</#if>
 				</@ww.div>	
@@ -899,7 +940,10 @@
 				<@ww.hidden name="historicoColaborador.estabelecimento.id" />
 				<@ww.hidden name="historicoColaborador.data" />
 				<@ww.hidden name="historicoColaborador.faixaSalarial.id" />
+				<@ww.hidden name="salarioPropostoPor" value="${historicoColaborador.tipoSalario}" />
+				<@ww.hidden name="obsACPessoal" value="${historicoColaborador.obsACPessoal}" />
 			</#if>
+			
 			<div style="clear: both;"></div>
 		</div>
 		<div id="content5" style="display: none;">
@@ -907,10 +951,15 @@
 				<@ww.div id="wwgrp_identidade" cssClass="campo">
 					<ul>
 						<b><@ww.label label="Identidade" /></b>
-				    	<@ww.textfield label="Número" name="colaborador.pessoal.rg" id="identidade" cssStyle="width: 106px;" maxLength="15" liClass="liLeft campoAdd" onkeypress = "return(somenteNumeros(event,'{,}'));" />
-				  	   	<@ww.textfield label="Órgão Emissor" id="rgOrgaoEmissor" name="colaborador.pessoal.rgOrgaoEmissor" cssStyle="width: 73px;" maxLength="10" liClass="liLeft campoAdd" />
-				       	<@ww.select label="Estado" name="colaborador.pessoal.rgUf.id" id="rgUf" list="estados" liClass="liLeft campoAdd" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue="" />
-				      	<@ww.datepicker label="Data de Expedição" name="colaborador.pessoal.rgDataExpedicao" id="rgDataExpedicao" liClass="campoAdd" cssClass="mascaraData" value="${rgDataExpedicao}" />
+				    	<@ww.textfield label="Número" name="colaborador.pessoal.rg" id="identidade" cssStyle="width: 106px;" maxLength="15" liClass="liLeft campoAdd" cssClass="campo-integrado" onkeypress = "return(somenteNumeros(event,'{,}'));"/>
+				  	   	<@ww.textfield label="Órgão Emissor" id="rgOrgaoEmissor" name="colaborador.pessoal.rgOrgaoEmissor" cssStyle="width: 73px;" maxLength="10" liClass="liLeft campoAdd" cssClass="campo-integrado"/>
+				       	<@ww.select label="Estado" name="colaborador.pessoal.rgUf.id" id="rgUf" list="estados" liClass="liLeft campoAdd" cssClass="campo-integrado-select" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue=""/>
+				      	<#if desabilitarEdicaoCamposIntegrados>
+							<@ww.textfield label="Data de Expedição" name="colaborador.pessoal.rgDataExpedicao" id="rgDataExpedicao" liClass="campoAdd" cssClass="mascaraData campo-integrado" value="${rgDataExpedicao}"/>
+						<#else>
+				      		<@ww.datepicker label="Data de Expedição" name="colaborador.pessoal.rgDataExpedicao" id="rgDataExpedicao" liClass="campoAdd" cssClass="mascaraData campo-integrado" value="${rgDataExpedicao}"/>
+						</#if>
+				      	
 				      	<li><hr style="border-top: 1px solid #CCCCCC; border-bottom:0;"/></li>
 			      	</ul>
 				</@ww.div>
@@ -919,11 +968,21 @@
 				<@ww.div id="wwgrp_carteiraHabilitacao" cssClass="campo">
 					<ul>
 				       	<b><@ww.label label="Carteira de Habilitação" /></b>
-						<@ww.textfield label="Nº de Registro" id="carteiraHabilitacao" name="colaborador.habilitacao.numeroHab" cssStyle="width: 100px;" maxLength="11" liClass="liLeft campoAdd" onkeypress = "return(somenteNumeros(event,'{,}'));" />
-				      	<@ww.textfield label="Prontuário" id="prontuario" name="colaborador.habilitacao.registro" cssStyle="" maxLength="15" liClass="liLeft campoAdd" />
-				      	<@ww.datepicker label="Emissão" name="colaborador.habilitacao.emissao" id="emissao" liClass="liLeft campoAdd" cssClass="mascaraData" value="${habEmissao}" />
-				      	<@ww.datepicker label="Vencimento" name="colaborador.habilitacao.vencimento" id="vencimento" liClass="liLeft campoAdd" cssClass="mascaraData" value="${dataVenc}" />
-				       	<@ww.textfield label="Categoria(s)" name="colaborador.habilitacao.categoria" id="chCategoria" liClass="campoAdd" cssStyle="width:25px" maxLength="3" />
+						<@ww.textfield label="Nº de Registro" id="carteiraHabilitacao" name="colaborador.habilitacao.numeroHab" cssStyle="width: 100px;" maxLength="11" liClass="liLeft campoAdd" cssClass="campo-integrado" onkeypress = "return(somenteNumeros(event,'{,}'));"/>
+				      	<@ww.textfield label="Prontuário" id="prontuario" name="colaborador.habilitacao.registro" cssStyle="" maxLength="15" liClass="liLeft campoAdd" cssClass="campo-integrado"/>
+				      	<#if desabilitarEdicaoCamposIntegrados>
+							<@ww.textfield label="Emissão" name="colaborador.habilitacao.emissao" id="emissao" liClass="liLeft campoAdd" cssClass="mascaraData campo-integrado" value="${habEmissao}"/>
+						<#else>
+					      	<@ww.datepicker label="Emissão" name="colaborador.habilitacao.emissao" id="emissao" liClass="liLeft campoAdd" cssClass="mascaraData campo-integrado" value="${habEmissao}"/>
+						</#if>
+						
+						<#if desabilitarEdicaoCamposIntegrados>
+							<@ww.textfield label="Vencimento" name="colaborador.habilitacao.vencimento" id="vencimento" liClass="liLeft campoAdd" cssClass="mascaraData campo-integrado" value="${dataVenc}"/>
+						<#else>
+					      	<@ww.datepicker label="Vencimento" name="colaborador.habilitacao.vencimento" id="vencimento" liClass="liLeft campoAdd" cssClass="mascaraData campo-integrado" value="${dataVenc}"/>
+						</#if>
+						
+				       	<@ww.textfield label="Categoria(s)" name="colaborador.habilitacao.categoria" id="chCategoria" liClass="campoAdd" cssClass="campo-integrado" cssStyle="width:25px" maxLength="3"/>
 				       	<li><hr style="border-top: 1px solid #CCCCCC; border-bottom:0;"/></li>
 		       		</ul>
 				</@ww.div>
@@ -932,9 +991,9 @@
 				<@ww.div id="wwgrp_tituloEleitoral" cssClass="campo">
 					<ul>
 						<b><@ww.label label="Título Eleitoral" /></b>
-				    	<@ww.textfield label="Número" name="colaborador.pessoal.tituloEleitoral.titEleitNumero" id="tituloEleitoral" cssStyle="width: 95px;" maxLength="13" liClass="liLeft campoAdd" />
-				    	<@ww.textfield label="Zona" name="colaborador.pessoal.tituloEleitoral.titEleitZona" id="titEleitZona" cssStyle="width: 95px;" maxLength="3" liClass="liLeft campoAdd" onkeypress = "return(somenteNumeros(event,'{,}'));" />
-				    	<@ww.textfield label="Seção" name="colaborador.pessoal.tituloEleitoral.titEleitSecao" id="titEleitSecao" cssStyle="width: 95px;" maxLength="4" liClass="campoAdd" onkeypress = "return(somenteNumeros(event,'{,}'));" />
+				    	<@ww.textfield label="Número" name="colaborador.pessoal.tituloEleitoral.titEleitNumero" id="tituloEleitoral" cssStyle="width: 95px;" maxLength="13" liClass="liLeft campoAdd" cssClass="campo-integrado"/>
+				    	<@ww.textfield label="Zona" name="colaborador.pessoal.tituloEleitoral.titEleitZona" id="titEleitZona" cssStyle="width: 95px;" maxLength="3" liClass="liLeft campoAdd" cssClass="campo-integrado" onkeypress = "return(somenteNumeros(event,'{,}'));"/>
+				    	<@ww.textfield label="Seção" name="colaborador.pessoal.tituloEleitoral.titEleitSecao" id="titEleitSecao" cssStyle="width: 95px;" maxLength="4" liClass="campoAdd" cssClass="campo-integrado" onkeypress = "return(somenteNumeros(event,'{,}'));"/>
 				    	<li><hr style="border-top: 1px solid #CCCCCC; border-bottom:0;"/></li>
 	       			</ul>
 				</@ww.div>
@@ -943,9 +1002,9 @@
 				<@ww.div id="wwgrp_certificadoMilitar" cssClass="campo">
 					<ul>
 						<b><@ww.label label="Certificado Militar" /></b>
-				    	<@ww.textfield label="Número" name="colaborador.pessoal.certificadoMilitar.certMilNumero" id="certificadoMilitar" cssStyle="width: 88px;" maxLength="12" liClass="liLeft campoAdd" onkeypress = "return(somenteNumeros(event,'{,}'));" />
-				    	<@ww.textfield label="Tipo" name="colaborador.pessoal.certificadoMilitar.certMilTipo" id="certMilTipo" cssStyle="width: 38px;" maxLength="5" liClass="liLeft campoAdd" />
-				    	<@ww.textfield label="Série" name="colaborador.pessoal.certificadoMilitar.certMilSerie" id="certMilSerie" cssStyle="width: 88px;" maxLength="12" liClass="campoAdd" />
+				    	<@ww.textfield label="Número" name="colaborador.pessoal.certificadoMilitar.certMilNumero" id="certificadoMilitar" cssStyle="width: 88px;" maxLength="12" liClass="liLeft campoAdd" cssClass="campo-integrado" onkeypress = "return(somenteNumeros(event,'{,}'));"/>
+				    	<@ww.textfield label="Tipo" name="colaborador.pessoal.certificadoMilitar.certMilTipo" id="certMilTipo" cssStyle="width: 38px;" maxLength="5" liClass="liLeft campoAdd" cssClass="campo-integrado"/>
+				    	<@ww.textfield label="Série" name="colaborador.pessoal.certificadoMilitar.certMilSerie" id="certMilSerie" cssStyle="width: 88px;" maxLength="12" liClass="campoAdd" cssClass="campo-integrado"/>
 				    	<li><hr style="border-top: 1px solid #CCCCCC; border-bottom:0;"/></li>
 	      			</ul>
 				</@ww.div>
@@ -954,11 +1013,16 @@
 				<@ww.div >
 					<ul>
 						<b><@ww.label label="CTPS - Carteira de Trabalho e Previdência Social" /></b>
-				    	<@ww.textfield label="Número" name="colaborador.pessoal.ctps.ctpsNumero" id="ctps" cssStyle="width: 58px;" maxLength="8" liClass="liLeft campoAdd" />
-				    	<@ww.textfield label="Série" name="colaborador.pessoal.ctps.ctpsSerie" id="ctpsSerie" cssStyle="width: 38px;" maxLength="6" liClass="liLeft campoAdd" />
-				    	<@ww.textfield label="DV" name="colaborador.pessoal.ctps.ctpsDv" id="ctpsDv" cssStyle="width: 11px;" maxLength="1" liClass="liLeft campoAdd" />
-				       	<@ww.select label="Estado" name="colaborador.pessoal.ctps.ctpsUf.id" id="ctpsUf" list="estados" liClass="liLeft campoAdd" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue="" />
-				      	<@ww.datepicker label="Data de Expedição" name="colaborador.pessoal.ctps.ctpsDataExpedicao" id="ctpsDataExpedicao" liClass="campoAdd" cssClass="mascaraData" value="${ctpsDataExpedicao}" />
+				    	<@ww.textfield label="Número" name="colaborador.pessoal.ctps.ctpsNumero" id="ctps" cssStyle="width: 58px;" maxLength="8" liClass="liLeft" cssClass="campo-integrado"/>
+				    	<@ww.textfield label="Série" name="colaborador.pessoal.ctps.ctpsSerie" id="ctpsSerie" cssStyle="width: 38px;" maxLength="6" liClass="liLeft" cssClass="campo-integrado"/>
+				    	<@ww.textfield label="DV" name="colaborador.pessoal.ctps.ctpsDv" id="ctpsDv" cssStyle="width: 11px;" maxLength="1" liClass="liLeft" cssClass="campo-integrado"/>
+				       	<@ww.select label="Estado" name="colaborador.pessoal.ctps.ctpsUf.id" id="ctpsUf" list="estados" liClass="liLeft campoAdd" cssClass="campo-integrado-select" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue=""/>
+				      	<#if desabilitarEdicaoCamposIntegrados>
+							<@ww.textfield label="Data de Expedição" name="colaborador.pessoal.ctps.ctpsDataExpedicao" id="ctpsDataExpedicao" liClass="campoAdd" cssClass="mascaraData campo-integrado" value="${ctpsDataExpedicao}"/>
+						<#else>
+					      	<@ww.datepicker label="Data de Expedição" name="colaborador.pessoal.ctps.ctpsDataExpedicao" id="ctpsDataExpedicao" liClass="campoAdd" cssClass="mascaraData campo-integrado" value="${ctpsDataExpedicao}"/>
+						</#if>
+				      	
 				      	<li><hr style="border-top: 1px solid #CCCCCC; border-bottom:0;"/></li>
 					</ul>
 				</@ww.div>
@@ -967,7 +1031,8 @@
 				<@ww.div >
 					<ul>
 						<b><@ww.label label="PIS - Programa de Integração Social"/></b>
-						<@ww.textfield label="Número" name="colaborador.pessoal.pis" id="pis" liClass="campoAdd" cssClass="mascaraPis" cssStyle="width: 79px;" onkeypress = "return(somenteNumeros(event,'{,}'));" maxLength="11" />
+						<@ww.textfield label="Número" name="colaborador.pessoal.pis" id="pis" liClass="campoAdd" cssClass="mascaraPis campo-integrado" cssStyle="width: 79px;" onkeypress = "return(somenteNumeros(event,'{,}'));" maxLength="11"/>
+				    	<img id="pisTooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="float: left; margin-left: 83px;margin-top: -18px;"/>
 				    	<div style="clear: both;"></div>
 				   	</ul>
 				</@ww.div>
@@ -1078,6 +1143,10 @@
 		<@ww.hidden name="dadosIntegradosAtualizados" id="dadosIntegradosAtualizados" value="${dadosIntegradosAtualizados}"/>
 		<@ww.hidden name="dataAlteracao" id="dataAlteracao"/>
 		
+		
+		<@ww.hidden id="integradaEAderiuAoESocial" value="${empresaEstaIntegradaEAderiuAoESocial?string}" />
+		<@ww.hidden id ="isEdicao" value="${edicao?string}"/>
+		
 		<@ww.hidden name="page" />
 		<#if candidato?exists>
 			<@ww.hidden name="idCandidato" value="${candidato.id}"/>
@@ -1126,20 +1195,56 @@
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.autocomplete.js"/>"></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/forms/geral/bairros.js?version=${versao}"/>'></script>
 	
-	<div id="parentesDialog"></div>
-	<div id="divDecideAlteracaoOrRetificacao">Para as informações modificadas, você deseja criar um novo histórico ou retificá-las?
-		</br></br>
-		<@ww.div id="divTipoAlteracao" cssClass="radio">
-			<input id="tipoAlteracao" name="tipoAlteracao" type="radio" value="A" onchange="exibeOuOcultaDataDeAlteracao();"/><label>Novo Histórico</label>
-			<input id="tipoAlteracao" name="tipoAlteracao" type="radio" value="R" onchange="exibeOuOcultaDataDeAlteracao();"/><label>Retificar</label>
-		</@ww.div>
-		</br>
-		<@ww.div id="divInformeDataAlteracao">
+	<@ww.hidden id ="podeEfetuarRetificacao" value="${podeRetificar?string}"/>
+	
+	<#if podeRetificar>
+		<div id="divDecideAlteracaoOrRetificacao">Para as informações modificadas, Você deseja que no Fortes Pessoal seja criado um novo histórico ou que sejam retificadas?
+			</br></br>
+			<@ww.div id="divTipoAlteracao" cssClass="radio">
+				<input id="tipoAlteracao" name="tipoAlteracao" type="radio" value="A" onchange="exibeOuOcultaDataDeAlteracao();"/><label>Novo Histórico</label>
+				<input id="tipoAlteracao" name="tipoAlteracao" type="radio" value="R" onchange="exibeOuOcultaDataDeAlteracao();"/><label>Retificar</label>
+			</@ww.div>
+			</br>
+			<@ww.div id="divInformeDataAlteracao">
+				<@ww.datepicker label="Informe a data a partir de quando ocorreu a atualização" value="${dataAlteracao?date}" id="dataAlt" liClass="liLeft" cssClass="mascaraData"/>
+				</br></br>
+				<h5>Essa informação é obrigatória em virtude de exigência do eSocial.</h5>
+			</@ww.div>
+		</div>
+	<#else>
+		<div id="divDecideAlteracaoOrRetificacao">Será criado no Fortes Pessoal um novo histórico cadastral para o colaborador.
+			</br></br>
 			<@ww.datepicker label="Informe a data a partir de quando ocorreu a atualização" value="${dataAlteracao?date}" id="dataAlt" liClass="liLeft" cssClass="mascaraData"/>
 			</br></br>
 			<h5>Essa informação é obrigatória em virtude de exigência do eSocial.</h5>
-		</@ww.div>
-	</div>
+		</div>
+	</#if>
+	
+	
+	<#if podeRetificar>
+		<@ww.hidden id ="podeEfetuarRetificacao" value="${podeRetificar?string}"/>
+		<div id="parentesDialog"></div>
+		<div id="divDecideAlteracaoOrRetificacao">Para as informações modificadas, Você deseja que no Fortes Pessoal seja criado um novo histórico ou que sejam retificadas?
+			</br></br>
+			<@ww.div id="divTipoAlteracao" cssClass="radio">
+				<input id="tipoAlteracao" name="tipoAlteracao" type="radio" value="A" onchange="exibeOuOcultaDataDeAlteracao();"/><label>Novo Histórico</label>
+				<input id="tipoAlteracao" name="tipoAlteracao" type="radio" value="R" onchange="exibeOuOcultaDataDeAlteracao();"/><label>Retificar</label>
+			</@ww.div>
+			</br>
+			<@ww.div id="divInformeDataAlteracao">
+				<@ww.datepicker label="Informe a data a partir de quando ocorreu a atualização" value="${dataAlteracao?date}" id="dataAlt" liClass="liLeft" cssClass="mascaraData"/>
+				</br></br>
+				<h5>Essa informação é obrigatória em virtude de exigência do eSocial.</h5>
+			</@ww.div>
+		</div>
+	<#else>
+		<div id="divDecideAlteracaoOrRetificacao">Será criado no Fortes Pessoal um novo histórico cadastral para o colaborador.
+			</br></br>
+			<@ww.datepicker label="Informe a data a partir de quando ocorreu a atualização" value="${dataAlteracao?date}" id="dataAlt" liClass="liLeft" cssClass="mascaraData"/>
+			</br></br>
+			<h5>Essa informação é obrigatória em virtude de exigência do eSocial.</h5>
+		</div>
+	</#if>
 </body>
 
 </html>

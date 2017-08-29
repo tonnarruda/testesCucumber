@@ -2,6 +2,10 @@ package com.fortes.rh.test.business.geral;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyMapOf;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -10,6 +14,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import mockit.Mockit;
 
@@ -132,14 +137,43 @@ public class EmpresaManagerTest_JUnit4
     	String[] cadastrosCheck = new String[]{TipoEntidade.AREAS,TipoEntidade.CONHECIMENTOS,TipoEntidade.HABILIDADES,TipoEntidade.ATITUDES, TipoEntidade.AREAS_INTERESSE, TipoEntidade.CARGOS,
     			TipoEntidade.TIPOS_OCORRENCIA, TipoEntidade.EPIS, TipoEntidade.CURSOSETURMAS, TipoEntidade.MOTIVOS_DESLIGAMENTO, TipoEntidade.RISCOS, TipoEntidade.AMBIENTE};
     	
+    	Empresa empresaDestino = EmpresaFactory.getEmpresa(); 
+    	Long empresaDestinoId =  2L;  
     	Exception ex = null;
     	try {
+    	    when(empresaDao.findByIdProjection(empresaDestinoId)).thenReturn(empresaDestino);
 			empresaManager.sincronizaEntidades(1L, 2L, cadastrosCheck, new String[]{});
 		} catch (Exception e) {
 			ex = e;
 		}
     	
     	assertNull(ex);
+    } 
+    
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testSincronizarCargosComEmpresaIntegradaETendoAderidoAoESocial(){
+        
+        String[] cadastrosCheck = new String[]{TipoEntidade.AREAS,TipoEntidade.CONHECIMENTOS,TipoEntidade.HABILIDADES,TipoEntidade.ATITUDES, TipoEntidade.AREAS_INTERESSE, TipoEntidade.CARGOS,
+                TipoEntidade.TIPOS_OCORRENCIA, TipoEntidade.EPIS, TipoEntidade.CURSOSETURMAS, TipoEntidade.MOTIVOS_DESLIGAMENTO, TipoEntidade.RISCOS, TipoEntidade.AMBIENTE};
+        
+        Empresa empresaDestino = EmpresaFactory.getEmpresa(); 
+        empresaDestino.setAcIntegra(true);
+        empresaDestino.setAderiuAoESocial(true);
+        
+        Long empresaDestinoId =  2L;  
+        Exception ex = null;
+        try {
+            when(empresaDao.findByIdProjection(empresaDestinoId)).thenReturn(empresaDestino);
+            empresaManager.sincronizaEntidades(1L, 2L, cadastrosCheck, new String[]{});
+        } catch (Exception e) {
+            ex = e;
+        }
+        
+        verify(cargoManager, never()).sincronizar(anyLong(), eq(empresaDestino), anyMapOf(Long.class, Long.class),anyMapOf(Long.class, Long.class), 
+                anyMapOf(Long.class, Long.class), anyMapOf(Long.class, Long.class), any(List.class));
+        
+        assertNull(ex);
     } 
     
     @Test
@@ -199,4 +233,13 @@ public class EmpresaManagerTest_JUnit4
     	verify(configuracaoCampoExtraVisivelObrigadotorioManager).saveOrUpdateConfCamposExtras(empresa.getId(), camposVisivesisColaborador, new String[]{TipoConfiguracaoCampoExtra.COLABORADOR.getTipo()});
     	verify(configuracaoCampoExtraVisivelObrigadotorioManager).saveOrUpdateConfCamposExtras(empresa.getId(), camposVisivesisCandidato, new String[]{TipoConfiguracaoCampoExtra.CANDIDATO_EXTERNO.getTipo(), TipoConfiguracaoCampoExtra.CANDIDATO.getTipo()});
 	}
+    
+    @Test
+    public void testUpdateAderiuAoESocial() {
+        String codigoAC = "0001";
+        String grupoAC = "002";
+        boolean aderiuAoEsocial = true;
+        empresaManager.notificarAdesaoAoESocial(codigoAC, grupoAC, aderiuAoEsocial);
+        verify(empresaDao).atualizarAdesaoAoESocial(eq(codigoAC), eq(grupoAC), eq(aderiuAoEsocial));
+    }
 }

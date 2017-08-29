@@ -53,6 +53,21 @@
 		});
 </script>
 
+<style type="text/css">
+		.info {
+			padding: 7px 12px;
+		    padding-left: 36px;
+		    margin-top: 5px;
+		    border-radius: 3px;
+		    color: #2b7bb5;
+		    width: 553px;
+		    background: #DCEBFC;
+		    background-repeat: no-repeat;
+		    background-size: 17px 17px;
+			background-position: 10px center;
+		}
+	</style>
+
 <div class="abas">
 	<div class="option-aba1 abaDadosPessoais" style="border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgb(246, 246, 246); background: rgb(246, 246, 246);"><a href="javascript: abas(1)">Dados Pessoais</a></div>
 	<div class="option-aba2 abaDadosFuncionais" style="border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgb(246, 246, 246); background: rgb(246, 246, 246);"><a href="javascript: abas(2)">Dados Funcionais</a></div>
@@ -294,6 +309,7 @@
 				<td class="campo">Matrícula</td>
 				<td><input type="checkbox" value="matricula" name="camposObrigatorios"/></td>
 			</tr>
+			
 			<tr class="desabilitado">
 				<td>
 					<input id="visivel-dt_admissao" class="check-visivel" name="camposVisivels" value="dt_admissao" checked disabled type="checkbox"/>
@@ -305,14 +321,20 @@
 				<input type="hidden"  id="dt_admissaoObr" value="dt_admissao" name="camposObrigatorios" />
 				<input type="hidden"  id="dt_admissaoVis_" value="dt_admissao" name="camposVisivels" />
 			</tr>
-			<tr>
+			
+			<tr class="desabilitado">
 				<td>
-					<input id="visivel-vinculo" class="check-visivel" name="camposVisivels" value="vinculo" type="checkbox"/>
+					<input id="visivel-vinculo" class="check-visivel" name="camposVisivels" value="vinculo" type="checkbox" checked disabled/>
     				<label for="visivel-vinculo" class="label-visivel"></label>
 				</td>
 				<td class="campo">Colocação</td>
-				<td><input type="checkbox" value="vinculo" name="camposObrigatorios" /></td>
+				<td><input type="checkbox" value="vinculo" name="camposObrigatorios" checked disabled class="desabilitado"/></td>
+				
+				<input type="hidden"  id="vinculo_obr" value="vinculo" name="camposObrigatorios" />
+				<input type="hidden"  id="vinculo_vis" value="vinculo" name="camposVisivels" />
 			</tr>
+			
+			
 			<tr>
 				<td>
 					<input id="visivel-dt_encerramentoContrato" class="check-visivel" name="camposVisivels" value="dt_encerramentoContrato" type="checkbox"/>
@@ -474,15 +496,20 @@
 					<input type="hidden" class="campo-hidden" value="ctpsUf" />
 				</td>
 			</tr>
-			<tr>
+			<tr class="desabilitado" id="tr_pis">
 				<td>
-					<input id="visivel-pis" class="check-visivel" name="camposVisivels" value="pis" type="checkbox"/>
+					<input id="visivel-pis" class="check-visivel" name="camposVisivels" value="pis" type="checkbox" checked disabled/>
     				<label for="visivel-pis" class="label-visivel"></label>
 				</td>
 				<td class="campo">PIS - Programa de Integração Social</td>
-				<td><input type="checkbox" value="pis" name="camposObrigatorios" /></td>
+				<td><input type="checkbox" disabled /></td>
+				<input type="hidden"  id="pis_vis" value="pis" name="camposVisivels" />		
 			</tr>
 		</table>
+		<div class="info">
+			<i class="fa fa-info-circle" aria-hidden="true" style="margin-left:-29px;margin-top: 3px;font-size: 27px;"></i>
+			<div style="margin-top: -30px;">O PIS é obrigatório para as seguintes colocações: Empregado, Aprendiz, Temporário e Sócio.<br>É opcional para a colocação de Estagiário.</div>
+		</div>
 	</div>
 	
 	<div class="content6">

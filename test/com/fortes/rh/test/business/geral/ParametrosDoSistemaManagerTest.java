@@ -74,6 +74,7 @@ public class ParametrosDoSistemaManagerTest extends MockObjectTestCase
 		acPessoalClientSistema.expects(once()).method("getVersaoWebServiceAC").with(eq(empresa)).will(returnValue("1.1.1.2"));
     	assertEquals("1.1.1.2", parametrosDoSistemaManager.getVersaoWebServiceAC(empresa));
     }
+    
     public void testIsACIntegrado() throws Exception
     {
     	acPessoalClientSistema.expects(once()).method("idACIntegrado").with(eq(empresa)).will(returnValue(true));

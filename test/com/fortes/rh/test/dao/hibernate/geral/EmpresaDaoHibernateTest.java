@@ -1,9 +1,18 @@
 package com.fortes.rh.test.dao.hibernate.geral;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.config.JDBCConnection;
@@ -31,7 +40,7 @@ import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Questionario;
-import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.dao.GenericDaoHibernateTest_JUnit4;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -43,20 +52,20 @@ import com.fortes.rh.test.factory.geral.UsuarioEmpresaFactory;
 import com.fortes.rh.test.factory.pesquisa.QuestionarioFactory;
 import com.fortes.rh.util.DateUtil;
 
-public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
+public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<Empresa>
 {
-	private EmpresaDao empresaDao;
-	private CidadeDao cidadeDao;
-	private EstadoDao estadoDao;
-	private QuestionarioDao questionarioDao;
-	private ColaboradorQuestionarioDao colaboradorQuestionarioDao;
-	private ColaboradorDao colaboradorDao;
-	private UsuarioDao usuarioDao;
-	private UsuarioEmpresaDao usuarioEmpresaDao;
-	private PerfilDao perfilDao;
-	private PapelDao papelDao;
-	private GrupoACDao grupoACDao;
-	private LntDao lntDao;
+	@Autowired private EmpresaDao empresaDao;
+	@Autowired private CidadeDao cidadeDao;
+	@Autowired private EstadoDao estadoDao;
+	@Autowired private QuestionarioDao questionarioDao;
+	@Autowired private ColaboradorQuestionarioDao colaboradorQuestionarioDao;
+	@Autowired private ColaboradorDao colaboradorDao;
+	@Autowired private UsuarioDao usuarioDao;
+	@Autowired private UsuarioEmpresaDao usuarioEmpresaDao;
+	@Autowired private PerfilDao perfilDao;
+	@Autowired private PapelDao papelDao;
+	@Autowired private GrupoACDao grupoACDao;
+	@Autowired private LntDao lntDao;
 
 	public Empresa getEntity()
 	{
@@ -80,6 +89,7 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 		this.empresaDao = empresaDao;
 	}
 
+	@Test
 	public void testFindByCodigo()
 	{	
 		GrupoAC grupoAC = new GrupoAC("XXX", "desc");
@@ -97,6 +107,7 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 		assertEquals(emp.getGrupoAC(), "XXX");
 	}
 	
+	@Test
 	public void testFindByCodigoSemGrupoAC()
 	{	
 		Empresa empresa2 = EmpresaFactory.getEmpresa();
@@ -110,6 +121,7 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 		assertEquals(emp.getCodigoAC(), "001122");
 	}
 	
+	@Test
 	public void testFindByCodigoSemGrupoACEmpresaDuplicada()
 	{	
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -128,6 +140,7 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 		assertEquals(emp.getCodigoAC(), "001122");
 	}
 
+	@Test
 	public void testFindByCodigoEmpresaNaoEncontrada()
 	{	
 		Empresa empresa2 = EmpresaFactory.getEmpresa();
@@ -140,6 +153,7 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 		assertNull(emp);
 	}
 	
+	@Test
 	public void testUpdateCampoExtra()
 	{	
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -157,6 +171,7 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 		assertEquals(false, emp.isCampoExtraCandidato());
 	}
 	
+	@Test
 	public void testVerifyExistsCnpj()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -166,6 +181,7 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 		assertEquals(1, empresaDao.verifyExistsCnpj(empresa.getCnpj()).size());
 	}
 	
+	@Test
 	public void testGetIntegracaoAC()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -176,6 +192,7 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 		assertEquals(true, empresaDao.getIntegracaoAC(empresa.getId()));
 	}
 	
+	@Test
 	public void testFindByUsuarioPermissao()
 	{
 		Usuario joao = UsuarioFactory.getEntity();
@@ -232,6 +249,7 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 		assertEquals(vega, empresas.toArray()[1]);
 	}
 	
+	@Test
 	public void testRemoveEmpresaPadrao()
 	{
 		String[] sqls = new String[]{"INSERT INTO empresa(ID,NOME,CNPJ,RAZAOSOCIAL,codigoAC,acintegra,emailRemetente,emailRespSetorPessoal,maxcandidatacargo,logourl,exibirsalario) VALUES (998855920,'EmpresaTesteDao','00000000','EmpresaTesteDao',null,false,'rh@empresapadrao.com.br','sp@empresapadrao.com.br', 5,'fortes.gif',true);", 
@@ -248,6 +266,7 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 		assertEquals("Se esse quebrar, provavelmente tem que inserir uma linha de delete em EmpresaDaoHibernate.removeEmpresaPadrao", "63", qtdTabelasComEmpresa);
 	}
 	
+	@Test
 	public void testFindCidade()
 	{
 		Estado estado = EstadoFactory.getEntity();
@@ -265,6 +284,7 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 		assertEquals("Palmacia", empresaDao.findCidade(empresa.getId()));
 	}
 	
+	@Test
 	public void testFindEmailsEmpresa()
 	{
 		Empresa fox = EmpresaFactory.getEmpresa();
@@ -278,6 +298,7 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 		assertEquals(ente.getEmailRespRH(), empresaDao.findEmailsEmpresa(ente.getId()).getEmailRespRH());
 	}
 	
+	@Test
 	public void testFindDistinctEmpresaByQuestionario()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -307,6 +328,7 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 		assertEquals(1,empresaDao.findDistinctEmpresaByQuestionario(questionario.getId()).size());
 	}
 	
+	@Test
 	public void testCheckEmpresaCodACGrupoAC()
 	{
 		GrupoAC grupo = new GrupoAC("017", "Teste");
@@ -324,6 +346,7 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 		assertEquals(true, empresaDao.checkEmpresaCodACGrupoAC(empresa2));
 	}
 	
+	@Test
 	public void testCheckEmpresaIntegradaAc()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa(3025L);
@@ -337,6 +360,7 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 		assertTrue(empresaDao.checkEmpresaIntegradaAc());
 	}
 	
+	@Test
 	public void testCheckEmpresaIntegradaAcComEmpresa()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa(3025L);
@@ -351,6 +375,7 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 		assertTrue(empresaDao.checkEmpresaIntegradaAc(empresa2.getId()));
 	}
 	
+	@Test
 	public void testFindComCodigoAC() 
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -363,6 +388,7 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 		assertTrue("A consulta também traz empresas já cadastrados no banco",empresaDao.findComCodigoAC().size() >= 1);
 	}
 	
+	@Test
 	public void testControlaRiscoPorAmbiente() 
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -372,6 +398,7 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 		assertTrue(empresaDao.isControlaRiscoPorAmbiente(empresa.getId()));
 	}
 	
+	@Test
 	public void testGetCnae() 
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -384,6 +411,7 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 		assertEquals("cnae2", retorno.getCnae2());
 	}
 	
+	@Test
 	public void testUpdateCodigoAC()
 	{
 		GrupoAC grupoAC = GrupoACFactory.getEntity();
@@ -405,6 +433,7 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 		assertEquals("Grupo AC", empresa.getGrupoAC(), retorno.getGrupoAC());
 	}
 	
+	@Test
 	public void testFindByGruposAC()
 	{
 		GrupoAC grupoAC1 = GrupoACFactory.getEntity();
@@ -438,6 +467,7 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 		assertEquals("333", ((Empresa) empresas.toArray()[1]).getGrupoAC());
 	}
 
+	@Test
 	public void testGetCodigoGrupoAC()
 	{
 		GrupoAC grupoAC = GrupoACFactory.getEntity();
@@ -452,6 +482,7 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 		assertEquals("777", empresaDao.getCodigoGrupoAC(empresa.getId()));
 	}
 	
+	@Test
 	public void testEmProcessoExportacaoAC()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -465,6 +496,7 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 		assertTrue(empresaDao.emProcessoExportacaoAC(empresa.getId()));
 	}
 	
+	@Test
 	public void testFindAreasIdsByLntId() 
 	{
 		Empresa empresa1 = EmpresaFactory.getEmpresa();
@@ -484,6 +516,7 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 		assertEquals(lnt.getEmpresas().size(), retorno.size());
 	}
 	
+	@Test
 	public void testFindAreasIdsByLntIdRetornaCollectionVazia() 
 	{
 		Empresa empresa1 = EmpresaFactory.getEmpresa();
@@ -505,54 +538,21 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 		
 		assertEquals(0, retorno.size());
 	}
+	
+    @Test
+    public void testAtualizarAdesaoAoESocial() {
+        GrupoAC grupo = new GrupoAC("017", "Teste");
+        grupoACDao.save(grupo);
 
-	public void setCidadeDao(CidadeDao cidadeDao)
-	{
-		this.cidadeDao = cidadeDao;
-	}
+        Empresa empresa = EmpresaFactory.getEmpresa(3025L);
+        empresa.setCodigoAC("0001");
+        empresa.setGrupoAC("017");
+        empresaDao.save(empresa);
 
-	public void setEstadoDao(EstadoDao estadoDao)
-	{
-		this.estadoDao = estadoDao;
-	}
+        assertFalse(empresaDao.findByIdProjection(empresa.getId()).isAderiuAoESocial());
 
-	public void setQuestionarioDao(QuestionarioDao questionarioDao) {
-		this.questionarioDao = questionarioDao;
-	}
+        empresaDao.atualizarAdesaoAoESocial(empresa.getCodigoAC(), empresa.getGrupoAC(), true);
 
-	public void setColaboradorQuestionarioDao(ColaboradorQuestionarioDao colaboradorQuestionarioDao) {
-		this.colaboradorQuestionarioDao = colaboradorQuestionarioDao;
-	}
-
-	public void setColaboradorDao(ColaboradorDao colaboradorDao) {
-		this.colaboradorDao = colaboradorDao;
-	}
-
-	public void setUsuarioDao(UsuarioDao usuarioDao)
-	{
-		this.usuarioDao = usuarioDao;
-	}
-
-	public void setUsuarioEmpresaDao(UsuarioEmpresaDao usuarioEmpresaDao)
-	{
-		this.usuarioEmpresaDao = usuarioEmpresaDao;
-	}
-
-	public void setPerfilDao(PerfilDao perfilDao)
-	{
-		this.perfilDao = perfilDao;
-	}
-
-	public void setPapelDao(PapelDao papelDao)
-	{
-		this.papelDao = papelDao;
-	}
-
-	public void setGrupoACDao(GrupoACDao grupoACDao) {
-		this.grupoACDao = grupoACDao;
-	}
-
-	public void setLntDao(LntDao lntDao) {
-		this.lntDao = lntDao;
-	}
+        assertTrue(empresaDao.findByIdProjection(empresa.getId()).isAderiuAoESocial());
+    }
 }

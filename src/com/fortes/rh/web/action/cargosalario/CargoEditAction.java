@@ -458,6 +458,12 @@ public class CargoEditAction extends MyActionSupportEdit
 			cargo.setGrupoOcupacional(null);
 
 		cargoManager.save(cargo);
+		
+		if(isEmpresaIntegradaEAderiuAoESocial()){
+		    addActionSuccess("Cargo cadastrado com sucesso.");
+		    return "successList";
+		}
+		
 		return Action.SUCCESS;
 	}
 

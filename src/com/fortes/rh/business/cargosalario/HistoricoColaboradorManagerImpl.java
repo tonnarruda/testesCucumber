@@ -749,7 +749,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 			acPessoalClientTabelaReajuste.saveHistoricoColaborador(historicoColaboradors, empresa, salarioAntigo, false);
 		}
 	}
-
+	
 	public boolean alterouDadosIntegradoAC(HistoricoColaborador historicoColaboradorTela, HistoricoColaborador historicoColaboradorBanco)
 	{
 		if(historicoColaboradorBanco.getStatus() == StatusRetornoAC.CANCELADO)
@@ -963,17 +963,25 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	public Collection<TSituacao> findHistoricosByTabelaReajuste(Long tabelaReajusteColaboradorId, Empresa empresa)
 	{
 		Collection<HistoricoColaborador> historicos = getDao().findHistoricosByTabelaReajuste(tabelaReajusteColaboradorId);
-		Collection<TSituacao> situacoes = new ArrayList<TSituacao>();
-
-		for (HistoricoColaborador hc : historicos)
-		{
-			TSituacao situacao = bindSituacao(hc, empresa.getCodigoAC());
-			situacoes.add(situacao);
-		}
-
-		return situacoes;
+		return converterHistoricoColaboradorEmTSituacao(historicos, empresa);
 	}
 
+	public Collection<HistoricoColaborador> findHistoricosByTabelaReajuste(Long tabelaReajusteColaboradorId){
+	    return getDao().findHistoricosByTabelaReajuste(tabelaReajusteColaboradorId);
+	}
+	
+	public Collection<TSituacao>  converterHistoricoColaboradorEmTSituacao(Collection<HistoricoColaborador> historicos, Empresa empresa) {
+	    Collection<TSituacao> situacoes = new ArrayList<TSituacao>();
+
+        for (HistoricoColaborador hc : historicos)
+        {
+            TSituacao situacao = bindSituacao(hc, empresa.getCodigoAC());
+            situacoes.add(situacao);
+        }
+
+        return situacoes;
+	}
+	        
 	@TesteAutomatico
 	public String findColaboradorCodigoAC(Long historicoColaboradorId)
 	{
@@ -1632,5 +1640,17 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 
 	public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager) {
 		this.solicitacaoManager = solicitacaoManager;
+	}
+
+    public boolean existeHistoricoConfirmadoByTabelaReajusteColaborador(Long tabelaReajusteColaboradorId) {
+        return getDao().existeHistoricoConfirmadoByTabelaReajusteColaborador(tabelaReajusteColaboradorId);
+    }
+
+	public Boolean existeHistoricoContratualComPendenciaNoESocial(Empresa empresa, String colaboradorCodigoAC) throws Exception {
+		return acPessoalClientTabelaReajuste.existeHistoricoContratualComPendenciaNoESocial(empresa, colaboradorCodigoAC);
+	}
+
+	public Boolean situacaoContratualEhInicioVinculo(Empresa empresa, String colaboradorCodigoAC, Date dataSituacao) throws Exception {
+		return acPessoalClientTabelaReajuste.situacaoContratualEhInicioVinculo(empresa, colaboradorCodigoAC, dataSituacao);
 	}
 }

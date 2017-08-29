@@ -514,4 +514,75 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 				throw new IntegraACException(e, "Não foi possível obter as naturalidades e as nacionalidades dos colaboradores.");
 		}
 	}
+	
+	public boolean isExisteHistoricoCadastralDoColaboradorComPendenciaNoESocial(Empresa empresa, String codigoAcColaborador) throws Exception{
+		try {
+			StringBuilder token = new StringBuilder();
+			GrupoAC grupoAC = new GrupoAC();
+			Call call = acPessoalClient.createCall(empresa, token, grupoAC,"ExisteHistoricoCadastralPendente");
+
+			QName xmlstring = new QName("xs:string");
+
+			call.addParameter("Token", xmlstring, ParameterMode.IN);
+			call.addParameter("Emp_Codigo", xmlstring, ParameterMode.IN);
+			call.addParameter("Epg_Codigo", xmlstring, ParameterMode.IN);
+
+			acPessoalClient.setReturnType(call, grupoAC.getAcUrlWsdl());
+
+			Object[] param = new Object[] { token.toString(), empresa.getCodigoAC(), codigoAcColaborador };
+
+			TFeedbackPessoalWebService result = (TFeedbackPessoalWebService) call .invoke(param);
+			return result.getSucesso("ExisteHistoricoCadastralPendente", param, this.getClass());
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+
+	public boolean isHistoricoCadastralDoColaboradorEInicioVinculo(Empresa empresa, String colaboradorCodigoAC) throws Exception{
+		try {
+			StringBuilder token = new StringBuilder();
+			GrupoAC grupoAC = new GrupoAC();
+			Call call = acPessoalClient.createCall(empresa, token, grupoAC, "SituacaoCadastralEhInicioVinculo");
+			QName xmlstring = new QName("xs:string");
+
+			call.addParameter("Token", xmlstring, ParameterMode.IN);
+			call.addParameter("Emp_Codigo", xmlstring, ParameterMode.IN);
+			call.addParameter("Epg_Codigo", xmlstring, ParameterMode.IN);
+
+			acPessoalClient.setReturnType(call, grupoAC.getAcUrlWsdl());
+			
+			Object[] param = new Object[] { token.toString(), empresa.getCodigoAC(), colaboradorCodigoAC };
+
+			TFeedbackPessoalWebService result = (TFeedbackPessoalWebService) call .invoke(param);
+			return result.getSucesso("SituacaoCadastralEhInicioVinculo", param, this.getClass());
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+	
+	public Integer statusAdmissaoNoFortesPessoal(Empresa empresa, Long colaboradorId) throws Exception{
+		try {
+			StringBuilder token = new StringBuilder();
+			GrupoAC grupoAC = new GrupoAC();
+			Call call = acPessoalClient.createCall(empresa, token, grupoAC, "SituacaoAdmissao");
+			
+			QName xmlstring = new QName("xs:string");
+			QName xmlint = new QName("xs:int");
+
+			call.addParameter("Token", xmlstring, ParameterMode.IN);
+			call.addParameter("Emp_Codigo", xmlstring, ParameterMode.IN);
+			call.addParameter("Id", xmlint, ParameterMode.IN);
+
+			call.setReturnType(xmlint);
+			
+			Object[] param = new Object[] { token.toString(), empresa.getCodigoAC(), new Integer(colaboradorId.toString()) };
+			int result =(int) call.invoke(param);
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
 }

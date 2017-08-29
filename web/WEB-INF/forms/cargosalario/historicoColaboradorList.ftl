@@ -21,6 +21,13 @@
 	</script>
 	
 	<title>Editar Situações do Colaborador - ${colaborador.nome}</title>
+	
+	<#if empresaIntegradaEAderiuAoESocial>
+		<#assign empresaEstaIntegradaEAderiuAoESocial=true/>
+	<#else>
+		<#assign empresaEstaIntegradaEAderiuAoESocial=false/>
+	</#if>
+	
 </head>
 <body>
 	<@ww.actionerror/>
@@ -29,15 +36,19 @@
 		<@display.column title="Ações" style="text-align:center;width:40px">
 			<#if historicoColaboradors?size == 1 && colaborador.codigoAC?exists && colaborador.codigoAC == "" && !colaborador.naoIntegraAc>
 				<img border="0" title="Edição da primeira situação pode ser realizada no cadastro de colaborador." src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">			
+				<img border="0" title="Devido as adequações ao eSocial, não é possível editar no Fortes RH, uma situação que está aguardando confirmação. Caso deseje modificar alguma informação entre em contato com o setor pessoal." src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>" style="opacity:0.5;filter:alpha(opacity=50);">
 			<#else>
 				<a href="prepareUpdate.action?historicoColaborador.id=${historicoColaborador.id}&colaborador.id=${colaborador.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 			</#if>
 			
-			<#if (historicoColaboradors?size > 1)>
+			<#if (historicoColaboradors?size == 1)>
+				<img border="0" title="Não é possível excluir a primeira situação." src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>" style="opacity:0.5;filter:alpha(opacity=50);">
+			<#elseif !empresaEstaIntegradaEAderiuAoESocial || colaborador.naoIntegraAc || historicoColaborador.status == 3 >
 				<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?historicoColaborador.id=${historicoColaborador.id}&colaborador.id=${colaborador.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 			<#else>
-				<img border="0" title="Não é possível excluir a primeira situação." src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
+				<img border="0" title="Devido as adequações ao eSocial, não é possível excluir a situação do colaborador no Fortes RH." src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>" style="opacity:0.5;filter:alpha(opacity=50);">
 			</#if>
+			
 		</@display.column>
 		<@display.column property="data" title="Data" format="{0,date,dd/MM/yyyy}" style="width:60px"/>
 		<@display.column title="Estabelecimento">

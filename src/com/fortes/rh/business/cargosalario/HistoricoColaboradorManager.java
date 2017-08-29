@@ -81,6 +81,10 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 	public boolean verificaHistoricoNaFolhaAC(Long historicoColaboradorId, String colaboradorCodigoAC, Empresa empresa);
 
 	public Collection<TSituacao> findHistoricosByTabelaReajuste(Long tabelaReajusteColaboradorId, Empresa empresa);
+	
+	public Collection<HistoricoColaborador> findHistoricosByTabelaReajuste(Long tabelaReajusteColaboradorId);
+	
+	public Collection<TSituacao>  converterHistoricoColaboradorEmTSituacao(Collection<HistoricoColaborador> historicos, Empresa empresa);
 
 	public String findColaboradorCodigoAC(Long historicoColaboradorId);
 
@@ -182,4 +186,10 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 	public HistoricoColaborador findHistoricoColaboradorByData(Long colaboradorId, Date data);
 
     public HistoricoColaborador atualizarHistoricoContratacao(TSituacao situacao) throws Exception;
+	
+	public boolean existeHistoricoConfirmadoByTabelaReajusteColaborador(Long tabelaReajusteColaboradorId);
+	
+	public Boolean existeHistoricoContratualComPendenciaNoESocial(Empresa empresa, String colaboradorCodigoAC) throws Exception;
+	
+	public Boolean situacaoContratualEhInicioVinculo(Empresa empresa, String colaboradorCodigoAC, Date dataSituacao) throws Exception;
 }

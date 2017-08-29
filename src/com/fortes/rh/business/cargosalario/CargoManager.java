@@ -20,7 +20,7 @@ public interface CargoManager extends GenericManager<Cargo>
 	public void remove(Long cargoId, Empresa empresa)throws Exception;
 
 	public Integer getCount(Long empresaId, Long areaId, String cargoNome, Boolean ativo);
-	public Collection<Cargo> findCargos(int page, int pagingSize, Long empresaId, Long areaId, String cargoNome, Boolean ativo);
+	public Collection<Cargo> findCargos(int page, int pagingSize, Long empresaId, Long areaId, String cargoNome, Boolean ativo, Boolean verificarSePossuiFaixaSalarial);
 	public Collection<Cargo> findByGrupoOcupacionalIdsProjection(Long[] idsLong, Long empresaId, Boolean cargoAtivo);
 	public Collection<Cargo> findByAreasOrganizacionalIdsProjection(Long[] idsLong, Long empresaId);
 	public Collection<Cargo> getCargosByIds(Long[] cargoDoubleList, Long empresaId) throws Exception;

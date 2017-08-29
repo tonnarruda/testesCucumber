@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Date;
@@ -282,5 +284,15 @@ public class HistoricoColaboradorManagerTest_Junit4
         situacao.setLotacaoCodigoAC("0001");
         situacao.setCargoCodigoAC("0003");
         return situacao;
+    }
+    
+	@Test
+	public void testExisteHistoricoConfirmadoByTabelaReajusteColaborador() {
+		Long tabelaReajusteColaboradorId = 2L;
+		when(historicoColaboradorDao.existeHistoricoConfirmadoByTabelaReajusteColaborador(tabelaReajusteColaboradorId)).thenReturn(false);
+		
+		boolean retorno = historicoColaboradorManagerImpl.existeHistoricoConfirmadoByTabelaReajusteColaborador(tabelaReajusteColaboradorId);
+		verify(historicoColaboradorDao, times(1)).existeHistoricoConfirmadoByTabelaReajusteColaborador(tabelaReajusteColaboradorId);
+		assertFalse(retorno);
     }
 }

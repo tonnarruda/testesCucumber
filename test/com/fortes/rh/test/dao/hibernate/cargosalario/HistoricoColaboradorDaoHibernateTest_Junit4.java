@@ -1,6 +1,9 @@
 package com.fortes.rh.test.dao.hibernate.cargosalario;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
 import java.util.List;
@@ -12,46 +15,56 @@ import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
+import com.fortes.rh.dao.cargosalario.ReajusteColaboradorDao;
+import com.fortes.rh.dao.cargosalario.TabelaReajusteColaboradorDao;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.geral.EstabelecimentoDao;
+import com.fortes.rh.dao.sesmt.AmbienteDao;
+import com.fortes.rh.dao.sesmt.FuncaoDao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.cargosalario.ReajusteColaborador;
+import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
 import com.fortes.rh.model.cargosalario.relatorio.RelatorioPromocoes;
 import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
+import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.model.sesmt.Ambiente;
+import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest_JUnit4;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.cargosalario.AmbienteFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
+import com.fortes.rh.test.factory.cargosalario.FuncaoFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
+import com.fortes.rh.test.factory.cargosalario.ReajusteColaboradorFactory;
+import com.fortes.rh.test.factory.cargosalario.TabelaReajusteColaboradorFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.util.DateUtil;
 
 public class HistoricoColaboradorDaoHibernateTest_Junit4 extends GenericDaoHibernateTest_JUnit4<HistoricoColaborador>
 {
-	@Autowired
-	private HistoricoColaboradorDao historicoColaboradorDao;
-	@Autowired
-	private ColaboradorDao colaboradorDao;
-	@Autowired
-	private EmpresaDao empresaDao;
-	@Autowired
-	private EstabelecimentoDao estabelecimentoDao;
-	@Autowired
-	private AreaOrganizacionalDao areaOrganizacionalDao;
-	@Autowired
-	private CargoDao cargoDao;
-	@Autowired
-	private FaixaSalarialDao faixaSalarialDao;
+	@Autowired private HistoricoColaboradorDao historicoColaboradorDao;
+	@Autowired private ColaboradorDao colaboradorDao;
+	@Autowired private EmpresaDao empresaDao;
+	@Autowired private EstabelecimentoDao estabelecimentoDao;
+	@Autowired private AreaOrganizacionalDao areaOrganizacionalDao;
+	@Autowired private CargoDao cargoDao;
+	@Autowired private FaixaSalarialDao faixaSalarialDao;
+	@Autowired private TabelaReajusteColaboradorDao tabelaReajusteColaboradorDao;
+	@Autowired private ReajusteColaboradorDao reajusteColaboradorDao;
+	@Autowired private FuncaoDao funcaoDao;
+	@Autowired private AmbienteDao ambienteDao;
 	
 	Empresa empresa;
 	Colaborador colaborador;
@@ -233,6 +246,81 @@ public class HistoricoColaboradorDaoHibernateTest_Junit4 extends GenericDaoHiber
 		assertEquals(1, relatorioPromocoes.get(0).getQtdVertical());
 		assertEquals(1, relatorioPromocoes.get(1).getQtdVertical());
 	}
+
+	@Test
+    public void testExisteHistoricoConfirmadoByTabelaReajusteColaborador() {
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Cargo cargo = saveCargo(empresa, "Cargo");
+				
+		AreaOrganizacional areaOrganizacionalAtual = saveAreaOrganizacional("Area Atual");
+		AreaOrganizacional areaOrganizacionalProposta = saveAreaOrganizacional("Area Proposta");
+		
+		FaixaSalarial faixaSalarialAtual = saveFaixaSalarial(cargo, "I");
+		FaixaSalarial faixaSalarialProposta = saveFaixaSalarial(cargo, "II"); 
+
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador);
+		
+		saveHistoricoColaborador(colaborador, areaOrganizacionalAtual, faixaSalarialAtual, DateUtil.incrementaDias(new Date(), -1), 1000.0, MotivoHistoricoColaborador.CONTRATADO, StatusRetornoAC.CONFIRMADO, null);
+		
+		TabelaReajusteColaborador tabelaReajusteColaborador = TabelaReajusteColaboradorFactory.getEntity();
+    	tabelaReajusteColaboradorDao.save(tabelaReajusteColaborador);
+		
+		ReajusteColaborador reajusteColaborador = ReajusteColaboradorFactory.getReajusteColaborador(colaborador, areaOrganizacionalAtual, areaOrganizacionalProposta, faixaSalarialAtual, faixaSalarialProposta,
+				TipoAplicacaoIndice.VALOR, TipoAplicacaoIndice.VALOR, 1000.0, 1200.0);
+		reajusteColaborador.setTabelaReajusteColaborador(tabelaReajusteColaborador);
+		reajusteColaboradorDao.save(reajusteColaborador);
+		HistoricoColaborador historicoColaborador = saveHistoricoColaborador(colaborador, areaOrganizacionalProposta, faixaSalarialProposta, new Date(), 1200.0, MotivoHistoricoColaborador.SEM_MOTIVO, StatusRetornoAC.AGUARDANDO, reajusteColaborador);
+		assertFalse(historicoColaboradorDao.existeHistoricoConfirmadoByTabelaReajusteColaborador(tabelaReajusteColaborador.getId()));
+		
+		historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.update(historicoColaborador);
+		
+		assertTrue(historicoColaboradorDao.existeHistoricoConfirmadoByTabelaReajusteColaborador(tabelaReajusteColaborador.getId()));
+    }
+	
+	@Test
+	public void testUpdateAmbienteEFuncao()
+	{
+		Ambiente ambiente = AmbienteFactory.getEntity();
+		ambienteDao.save(ambiente);
+		
+		Funcao funcao = FuncaoFactory.getEntity();
+		funcaoDao.save(funcao);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Cargo cargo = saveCargo(empresa, "Teste");
+		FaixaSalarial faixaSalarial = saveFaixaSalarial(cargo, "I");
+		Colaborador colaborador = saveColaborador(empresa);
+		
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(colaborador, faixaSalarial, new Date(), StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoColaborador);
+		
+		HistoricoColaborador retorno = historicoColaboradorDao.findById(historicoColaborador.getId());
+		assertNull(retorno.getAmbiente());
+		assertNull(retorno.getFuncao());
+		
+		historicoColaborador.setAmbiente(ambiente);
+		historicoColaborador.setFuncao(funcao);
+		
+		assertTrue(historicoColaboradorDao.updateAmbienteEFuncao(historicoColaborador));
+		retorno = historicoColaboradorDao.findById(historicoColaborador.getId());
+		assertEquals(ambiente.getId(), retorno.getAmbiente().getId());
+		assertEquals(funcao.getId(), retorno.getFuncao().getId());
+	}
+	
+	private HistoricoColaborador saveHistoricoColaborador(Colaborador joao, AreaOrganizacional garagem, FaixaSalarial faixaUmCobrador, Date data, Double valorSalario, String motivo, Integer status, ReajusteColaborador reajusteColaborador) {
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(joao, data, faixaUmCobrador, null, garagem, null, null, status);
+		historicoColaborador.setMotivo(motivo);
+		historicoColaborador.setSalario(valorSalario);
+		historicoColaborador.setReajusteColaborador(reajusteColaborador);
+		historicoColaboradorDao.save(historicoColaborador);
+		return historicoColaborador;
+	}
 	
 	private void saveHistoricoColaborador(Colaborador joao, Estabelecimento parajana, AreaOrganizacional garagem, FaixaSalarial faixaUmCobrador, Date data, Double valorSalario, String motivo) {
 		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(joao, data, faixaUmCobrador, parajana, garagem, null, null, StatusRetornoAC.CONFIRMADO);
@@ -248,10 +336,10 @@ public class HistoricoColaboradorDaoHibernateTest_Junit4 extends GenericDaoHiber
 		return colaborador;
 	}
 
-	private FaixaSalarial saveFaixaSalarial(Cargo cobrador, String nome) {
+	private FaixaSalarial saveFaixaSalarial(Cargo cargo, String nome) {
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
 		faixaSalarial.setNome(nome);
-		faixaSalarial.setCargo(cobrador);
+		faixaSalarial.setCargo(cargo);
 		faixaSalarialDao.save(faixaSalarial);
 		return faixaSalarial;
 	}

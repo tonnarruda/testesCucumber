@@ -36,6 +36,9 @@ public class AcPessoalClientHistoricoColaboradorTest extends AcPessoalClientTest
 	protected void tearDown() throws Exception
 	{
 		execute("delete from rhsep");
+		execute("delete from SEP where EPG_CODIGO = '991199'");
+		execute("delete from EPG where CODIGO = '991199'");
+		execute("delete from es_adesao where emp_codigo = '0006'");
 		super.tearDown();
 	}
 	
@@ -299,4 +302,43 @@ public class AcPessoalClientHistoricoColaboradorTest extends AcPessoalClientTest
 		else
 			fail("Consulta não retornou nada...");
 	}
-}
+	
+	public void testExisteHistoricoContratualComPendenciaNoESocialTrue() throws Exception
+	{
+    	montaMockGrupoAC();
+    	execute("insert into es_adesao(emp_codigo, tp_amb_esocial, data, faturamento, encerracompetencia, bdunico,ativo) values('0006', 3, '2011-02-01', 0, 0, 1, 1)");
+    	
+    	execute("INSERT INTO EPG (EMP_CODIGO,CODIGO,NOME) VALUES ('"+ empresa.getCodigoAC() +"','991199','TESTE do RH')");
+    	execute("INSERT INTO SEP (EMP_CODIGO,EPG_CODIGO,DATA,VALOR,INDQTDE,VALETRANSPORTEALIQ,HOR_CODIGO,LOT_CODIGO,"
+    			+ "EXPAGENOCIV,HORASMES,HORASSEMANA,TIPOPAGAMENTO,EST_CODIGO,CAR_CODIGO,SIN_CODIGO,SALCONTRATUAL,SALTIPO,STATUS) "
+    			+ "VALUES ('"+ empresa.getCodigoAC() +"','991199','2017-01-01',0.0,0,0,'000001','00101',0,240,40,'04','0001','220','001','S','V',3)");
+    			
+		assertTrue(acPessoalClientTabelaReajuste.existeHistoricoContratualComPendenciaNoESocial(empresa, "991199"));
+    }
+	
+	public void testExisteHistoricoContratualComPendenciaNoESocialFalse() throws Exception
+	{
+    	montaMockGrupoAC();
+    	execute("insert into es_adesao(emp_codigo, tp_amb_esocial, data, faturamento, encerracompetencia, bdunico,ativo) values('0006', 3, '2011-02-01', 0, 0, 1, 1)");
+    	
+    	execute("INSERT INTO EPG (EMP_CODIGO,CODIGO,NOME) VALUES ('"+ empresa.getCodigoAC() +"','991199','TESTE do RH')");
+    	execute("INSERT INTO SEP (EMP_CODIGO,EPG_CODIGO,DATA,VALOR,INDQTDE,VALETRANSPORTEALIQ,HOR_CODIGO,LOT_CODIGO,"
+    			+ "EXPAGENOCIV,HORASMES,HORASSEMANA,TIPOPAGAMENTO,EST_CODIGO,CAR_CODIGO,SIN_CODIGO,SALCONTRATUAL,SALTIPO,STATUS) "
+    			+ "VALUES ('"+ empresa.getCodigoAC() +"','991199','2017-01-01',0.0,0,0,'000001','001',0,240,40,'04','0001','001','001','S','V',7)");
+
+    	assertFalse(acPessoalClientTabelaReajuste.existeHistoricoContratualComPendenciaNoESocial(empresa, "991199"));
+    }
+    
+    public void testSituacaoContratualEhInicioVinculo() throws Exception
+    {
+    	montaMockGrupoAC();
+    	execute("insert into es_adesao(emp_codigo, tp_amb_esocial, data, faturamento, encerracompetencia, bdunico,ativo) values('0006', 3, '2011-02-01', 0, 0, 1, 1)");
+    	
+    	execute("INSERT INTO EPG (EMP_CODIGO,CODIGO,NOME) VALUES ('"+ empresa.getCodigoAC() +"','991199','TESTE do RH')");
+    	execute("INSERT INTO SEP (EMP_CODIGO,EPG_CODIGO,DATA,VALOR,INDQTDE,VALETRANSPORTEALIQ,HOR_CODIGO,LOT_CODIGO,"
+    			+ "EXPAGENOCIV,HORASMES,HORASSEMANA,TIPOPAGAMENTO,EST_CODIGO,CAR_CODIGO,SIN_CODIGO,SALCONTRATUAL,SALTIPO,STATUS,CODIGO_EVENTO) "
+    			+ "VALUES ('"+ empresa.getCodigoAC() +"','991199','2017-01-01',0.0,0,0,'000001','001',0,240,40,'04','0001','001','001','S','V',7,'S-2100')");
+
+    	assertTrue(acPessoalClientTabelaReajuste.situacaoContratualEhInicioVinculo(empresa, "991199", DateUtil.criarDataMesAno(1, 1, 2017)));
+    }   
+ }

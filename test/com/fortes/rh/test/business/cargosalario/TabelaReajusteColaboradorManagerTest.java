@@ -6,11 +6,9 @@ import java.util.Date;
 
 import mockit.Mockit;
 
-import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.jmock.core.Constraint;
-import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
 import com.fortes.rh.business.cargosalario.FaixaSalarialHistoricoManager;
@@ -36,13 +34,10 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.ws.TSituacao;
-import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
-import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialHistoricoFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.cargosalario.IndiceHistoricoFactory;
-import com.fortes.rh.test.factory.cargosalario.ReajusteColaboradorFactory;
 import com.fortes.rh.test.factory.cargosalario.TabelaReajusteColaboradorFactory;
 import com.fortes.rh.test.util.mockObjects.MockHibernateTemplate;
 import com.fortes.rh.test.util.mockObjects.MockHistoricoColaboradorUtil;
@@ -131,17 +126,6 @@ public class TabelaReajusteColaboradorManagerTest extends MockObjectTestCase
 		Collection<TabelaReajusteColaborador> retorno = tabelaReajusteColaboradorManager.findAllSelectByNaoAprovada(1L, TipoReajuste.COLABORADOR);
 
 		assertEquals(tabelaReajusteColaboradors.size(), retorno.size());
-	}
-
-	public void testMarcaUltima()
-	{
-		TabelaReajusteColaborador tabelaReajusteColaborador = TabelaReajusteColaboradorFactory.getEntity();
-		tabelaReajusteColaborador.setAprovada(true);
-
-		Collection<TabelaReajusteColaborador> tabelaReajusteColaboradors = new ArrayList<TabelaReajusteColaborador>();
-		tabelaReajusteColaboradors.add(tabelaReajusteColaborador);
-
-		tabelaReajusteColaboradorManager.marcaUltima(tabelaReajusteColaboradors);
 	}
 
 	public void testGetCount()
@@ -508,92 +492,5 @@ public class TabelaReajusteColaboradorManagerTest extends MockObjectTestCase
 		}
 		
 		assertNull(exception);
-	}
-
-	public void testCancelar() throws Exception
-	{
-		Empresa empresa = EmpresaFactory.getEmpresa(1L);
-		empresa.setAcIntegra(true);
-		
-		TabelaReajusteColaborador tabelaReajusteColaborador = TabelaReajusteColaboradorFactory.getEntity(1L);
-		tabelaReajusteColaborador.setEmpresa(empresa);
-		tabelaReajusteColaborador.setAprovada(false);
-
-		ReajusteColaborador reajusteColaborador = ReajusteColaboradorFactory.getReajusteColaborador(1L);
-		reajusteColaborador.setTabelaReajusteColaborador(tabelaReajusteColaborador);
-
-		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1L);
-		historicoColaborador.setReajusteColaborador(reajusteColaborador);
-
-		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
-		colaborador.setHistoricoColaborador(historicoColaborador);
-		colaborador.setNaoIntegraAc(false);
-
-		Collection<TSituacao> situacaoIntegrados = new ArrayList<TSituacao>();
-		TSituacao situacao = new TSituacao();
-		situacao.setId(1);
-		situacao.setEmpregadoCodigoAC("1");
-		situacaoIntegrados.add(situacao);
-
-		tabelaReajusteColaboradorDao.expects(once()).method("updateSetAprovada").with(ANYTHING, ANYTHING);
-		historicoColaboradorManager.expects(once()).method("findHistoricosByTabelaReajuste").with(new Constraint[]{eq(tabelaReajusteColaborador.getId()), eq(empresa)}).will(returnValue(situacaoIntegrados));
-		historicoColaboradorManager.expects(once()).method("remove").with(ANYTHING).isVoid();
-		tabelaReajusteColaboradorDao.expects(atLeastOnce()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
-		acPessoalClientTabelaReajuste.expects(once()).method("deleteHistoricoColaboradorAC").with(ANYTHING, ANYTHING);
-		
-		Exception exception = null;
-		try
-		{
-			tabelaReajusteColaboradorManager.cancelar(TipoReajuste.COLABORADOR, tabelaReajusteColaborador.getId(), empresa);
-		}
-		catch (Exception e)
-		{
-			exception = e;
-		}
-
-		assertNull(exception);
-	}
-
-	public void testCancelarComColaboradorNaoIntegadoAC() throws Exception
-	{
-		Empresa empresa = EmpresaFactory.getEmpresa(1L);
-		empresa.setAcIntegra(true);
-
-		Collection<TSituacao> situacaoIntegrados = new ArrayList<TSituacao>();
-		TSituacao situacao = new TSituacao();
-		situacao.setId(1);
-		situacao.setEmpregadoCodigoAC("1");
-		situacaoIntegrados.add(situacao);
-		
-		TabelaReajusteColaborador tabelaReajusteColaborador = TabelaReajusteColaboradorFactory.getEntity(1L);
-		tabelaReajusteColaborador.setEmpresa(empresa);
-		tabelaReajusteColaborador.setAprovada(false);
-
-		ReajusteColaborador reajusteColaborador = ReajusteColaboradorFactory.getReajusteColaborador(1L);
-		reajusteColaborador.setTabelaReajusteColaborador(tabelaReajusteColaborador);
-
-		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1L);
-		historicoColaborador.setReajusteColaborador(reajusteColaborador);
-
-		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
-		colaborador.setHistoricoColaborador(historicoColaborador);
-
-		tabelaReajusteColaboradorDao.expects(once()).method("updateSetAprovada").with(ANYTHING, ANYTHING);
-		historicoColaboradorManager.expects(once()).method("findHistoricosByTabelaReajuste").with(new Constraint[]{eq(tabelaReajusteColaborador.getId()), eq(empresa)}).will(returnValue(situacaoIntegrados));
-		historicoColaboradorManager.expects(once()).method("remove").with(ANYTHING).isVoid();
-		tabelaReajusteColaboradorDao.expects(atLeastOnce()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
-		acPessoalClientTabelaReajuste.expects(once()).method("deleteHistoricoColaboradorAC").with(ANYTHING, ANYTHING).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));;
-		
-		Exception exception = null;
-		try
-		{
-			tabelaReajusteColaboradorManager.cancelar(TipoReajuste.COLABORADOR, tabelaReajusteColaborador.getId(), empresa);
-		}
-		catch (Exception e)
-		{
-			exception = e;
-		}
-
-		assertNotNull(exception);
 	}
 }

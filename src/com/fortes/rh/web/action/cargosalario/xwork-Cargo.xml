@@ -35,8 +35,10 @@
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.cargosalario.CargoEditAction" method="insert">
 			<interceptor-ref name="tokenWebStack" />
+			<interceptor-ref name="defaultUpdateStack"/>
 		    <result name="invalid.token" type="redirect">list.action</result>
 			<result name="success" type="redirect">../faixaSalarial/prepareInsert.action?cargoAux.id=${cargo.id}</result>
+			<result name="successList" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/cargoEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.cargosalario.CargoEditAction" method="update">

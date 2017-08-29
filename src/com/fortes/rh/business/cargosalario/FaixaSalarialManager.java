@@ -23,7 +23,7 @@ public interface FaixaSalarialManager extends GenericManager<FaixaSalarial>
 	FaixaSalarial findCodigoACById(Long id);
 	@Audita(operacao="Inserção", auditor=FaixaSalarialAuditorCallbackImpl.class)
 	void saveFaixaSalarial(FaixaSalarial faixaSalarial, FaixaSalarialHistorico faixaSalarialHistorico, Empresa empresa, String[] certificacaosCheck) throws Exception;
-	void updateFaixaSalarial(FaixaSalarial faixaSalarial, Empresa empresa, String[] certificacaosCheck) throws Exception;
+	void updateFaixaSalarial(FaixaSalarial faixaSalarial, Long empresaId, String[] certificacaosCheck) throws Exception;
 	@Audita(operacao="Remoção", auditor=FaixaSalarialAuditorCallbackImpl.class)
 	void deleteFaixaSalarial(Long id, Empresa empresa) throws Exception;
 	Collection<FaixaSalarial> findAllSelectByCargo(Long empresaId);

@@ -463,4 +463,8 @@ public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaS
 		for (FaixaSalarialHistorico faixaSalarialHistorico : faixaSalarialHistoricos) 
 			acPessoalClientCargo.criarFaixaSalarialHistorico(faixaSalarialHistorico, empresa);
 	}
+
+	public boolean existeHistoricoConfirmadoByTabelaReajusteColaborador(Long tabelaReajusteColaboradorId) {
+		return getDao().existeHistoricoConfirmadoByTabelaReajusteColaborador(tabelaReajusteColaboradorId);
+	}
 }

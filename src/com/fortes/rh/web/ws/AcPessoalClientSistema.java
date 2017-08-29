@@ -10,4 +10,6 @@ public interface AcPessoalClientSistema
 	public void verificaWebService(Empresa empresa)throws IntegraACException;
 
 	public boolean idACIntegrado(Empresa empresa)throws Exception;
+	
+	public boolean isAderiuAoESocial(Empresa empresa) throws Exception;
 }

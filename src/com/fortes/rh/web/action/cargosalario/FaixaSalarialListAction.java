@@ -18,6 +18,7 @@ public class FaixaSalarialListAction extends MyActionSupportList
 	private Collection<FaixaSalarial> faixaSalarials = new ArrayList<FaixaSalarial>();
 	private FaixaSalarial faixaSalarial;
 	private Cargo cargo;
+	private boolean empresaEstaIntegradaEAderiuAoESocial = false;
 
 	public String execute() throws Exception
 	{
@@ -35,6 +36,11 @@ public class FaixaSalarialListAction extends MyActionSupportList
 		else
 		{
 			cargo = cargoManager.findByIdProjection(cargo.getId());
+		}
+		
+		if(isEmpresaIntegradaEAderiuAoESocial()){
+			empresaEstaIntegradaEAderiuAoESocial = true;
+		    addActionMessage("Devido as adequações ao eSocial a inserção e remoção de faixa só podem ser realizadas no Fortes Pessoal.");
 		}
 
 		return Action.SUCCESS;
@@ -95,4 +101,7 @@ public class FaixaSalarialListAction extends MyActionSupportList
 		this.cargoManager = cargoManager;
 	}
 
+	public boolean isEmpresaEstaIntegradaEAderiuAoESocial() {
+		return empresaEstaIntegradaEAderiuAoESocial;
+	}
 }

@@ -71,7 +71,7 @@ public class MedicaoRiscoEditAction extends MyActionSupportList
 		if (controlaRiscoPor == 'A')
 			estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
 		else  if (controlaRiscoPor == 'F')
-			cargos = cargoManager.findCargos(0, 0, getEmpresaSistema().getId(), null, null, null);
+			cargos = cargoManager.findCargos(0, 0, getEmpresaSistema().getId(), null, null, null, null);
 		
 		if (medicaoRisco.getId() != null)
 		{

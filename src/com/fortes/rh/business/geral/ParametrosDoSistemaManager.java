@@ -19,4 +19,5 @@ public interface ParametrosDoSistemaManager extends GenericManager<ParametrosDoS
 	public String getContexto();
 	public Integer getQuantidadeConstraintsDoBanco();
 	public boolean isUtilizarCaptchaNoLogin(Long id);
+	public boolean isAderiuAoESocial(Empresa empresa)throws Exception;
 }

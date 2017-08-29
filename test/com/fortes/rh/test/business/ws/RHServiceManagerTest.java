@@ -372,7 +372,6 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		historicoColaboradorManager.expects(once()).method("updateSituacao").with(eq(situacao)).will(returnValue(historicoColaborador));
 		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
 		transactionManager.expects(once()).method("commit").with(ANYTHING);
-		colaboradorManager.expects(once()).method("criarUsuarioParaColaborador").withAnyArguments();
 
 		assertEquals(true, rHServiceManager.atualizarEmpregadoAndSituacao("TOKEN", empregado, situacao).isSucesso());
 	}

@@ -8,18 +8,26 @@ import static org.mockito.Matchers.anyChar;
 import static org.mockito.Matchers.anyCollection;
 import static org.mockito.Matchers.anyDouble;
 import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyMap;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
-
-import mockit.Mockit;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.BDDMockito;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import com.fortes.rh.business.acesso.UsuarioManager;
@@ -87,6 +95,7 @@ import com.fortes.rh.model.sesmt.Cat;
 import com.fortes.rh.model.sesmt.ColaboradorAfastamento;
 import com.fortes.rh.model.ws.TNaturalidadeAndNacionalidade;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
@@ -106,15 +115,16 @@ import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.geral.EstadoFactory;
 import com.fortes.rh.test.factory.geral.OcorrenciaFactory;
 import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
-import com.fortes.rh.test.util.mockObjects.MockActionContext;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.web.action.geral.ColaboradorEditAction;
 import com.fortes.rh.web.ws.AcPessoalClientSistema;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionContext;
-import com.sun.net.httpserver.Authenticator.Success;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({SpringUtil.class, SecurityUtil.class, ActionContext.class})
 public class ColaboradorEditActionTest_JUnit4 
 {
 	private ColaboradorEditAction action = new ColaboradorEditAction();
@@ -239,8 +249,18 @@ public class ColaboradorEditActionTest_JUnit4
         action.setConfiguracaoCampoExtraVisivelObrigadotorioManager(configuracaoCampoExtraVisivelObrigadotorioManager);
         action.setHistoricoCandidatoManager(historicoCandidatoManager);
         
-		Mockit.redefineMethods(ActionContext.class, MockActionContext.class);
-		Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
+		PowerMockito.mockStatic(SpringUtil.class);
+		PowerMockito.mockStatic(ActionContext.class);
+		PowerMockito.mockStatic(SecurityUtil.class);
+		
+		BDDMockito.given(SpringUtil.getBean("parametrosDoSistemaManager")).willReturn(parametrosDoSistemaManager);
+	}
+	
+	@Before
+	public void prepareSession(){
+		Map<Object, Object> map = new HashMap<Object, Object>();
+		when(ActionContext.getContext()).thenReturn(mock(ActionContext.class));
+		when(ActionContext.getContext().getSession()).thenReturn(map);
 	}
 	
 	@Test
@@ -358,7 +378,7 @@ public class ColaboradorEditActionTest_JUnit4
 		
 		when(areaOrganizacionalManager.verificaMaternidade(eq(historicoColaborador.getAreaOrganizacional().getId()), eq(ativa))).thenReturn(false);
 		when(colaboradorManager.insert(any(Colaborador.class), anyDouble(), anyLong(), anyCollection(), anyCollection(), anyCollection(), any(Solicitacao.class), any(Empresa.class), anyLong())).thenReturn(false);
-		when(parametrosDoSistemaManager.findByIdProjection(eq(1L))).thenReturn(null);
+		when(parametrosDoSistemaManager.findByIdProjection(eq(1L))).thenReturn(ParametrosDoSistemaFactory.getEntity());
 
 		assertEquals(Action.ERROR, action.insert());
 	}
@@ -369,6 +389,8 @@ public class ColaboradorEditActionTest_JUnit4
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		empresa.setCampoExtraColaborador(true);
 		action.setEmpresaSistema(empresa);
+		
+		action.setUsuarioLogado(UsuarioFactory.getEntity());
 
 		Colaborador colaborador = ColaboradorFactory.getEntity(2L, empresa);
 		colaborador.setCandidato(CandidatoFactory.getCandidato(1L));
@@ -452,9 +474,11 @@ public class ColaboradorEditActionTest_JUnit4
 		colaborador.setEmpresa(empresa);
 		colaborador.getEndereco().setUf(EstadoFactory.getEntity(1L));
 		colaborador.setCamposExtras(camposExtras);
+		action.setColaborador(colaborador);
 		
 		when(parametrosDoSistemaManager.findByIdProjection(1L)).thenReturn(parametrosDoSistema);
 		when(colaboradorManager.findColaboradorById(colaborador.getId())).thenReturn(colaborador);
+		when(SecurityUtil.getColaboradorSession(anyMap())).thenReturn(colaborador);
 		
 		when(cidadeManager.find(new String[]{"uf.id"}, new Object[]{colaborador.getEndereco().getUf().getId()}, new String[]{"nome"})).thenReturn(new ArrayList<Cidade>());
 		when(estadoManager.findAll(new String[]{"sigla"})).thenReturn(new ArrayList<Estado>());
@@ -477,6 +501,7 @@ public class ColaboradorEditActionTest_JUnit4
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
 		colaborador.setEmpresa(empresaColab);
 		
+		when(SecurityUtil.getColaboradorSession(anyMap())).thenReturn(colaborador);
 		when(colaboradorManager.findColaboradorById(colaborador.getId())).thenReturn(colaborador);
 		when(parametrosDoSistemaManager.findByIdProjection(1L)).thenReturn(parametrosDoSistema);
 		
@@ -489,6 +514,7 @@ public class ColaboradorEditActionTest_JUnit4
 	{
 		ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity();
 		
+		when(SecurityUtil.getColaboradorSession(anyMap())).thenReturn(ColaboradorFactory.getEntity(1L));
 		when(colaboradorManager.findColaboradorById(null)).thenReturn(null);
 		when(parametrosDoSistemaManager.findByIdProjection(1L)).thenReturn(parametrosDoSistema);
 		
@@ -512,7 +538,7 @@ public class ColaboradorEditActionTest_JUnit4
 		action.setColaborador(colaborador);
 		
 		action.setHabilitaCampoExtra(true);
-		
+		when(SecurityUtil.getColaboradorSession(anyMap())).thenReturn(colaborador);
 		assertEquals(Action.SUCCESS, action.updateInfoPessoais());
 		assertEquals("Dados atualizado com sucesso.", action.getActionSuccess().toArray()[0]);
 	}
@@ -533,7 +559,7 @@ public class ColaboradorEditActionTest_JUnit4
 		action.setColaborador(colaborador);
 		
 		action.setHabilitaCampoExtra(true);
-		
+		when(SecurityUtil.getColaboradorSession(anyMap())).thenReturn(colaborador);
 		doThrow(new IntegraACException("IntegraACException")).when(colaboradorManager).updateInfoPessoais(action.getColaborador(), null, null, null, empresa, null, false);
 		
 		assertEquals(Action.SUCCESS, action.updateInfoPessoais());
@@ -557,6 +583,7 @@ public class ColaboradorEditActionTest_JUnit4
 		
 		action.setHabilitaCampoExtra(true);
 		
+		when(SecurityUtil.getColaboradorSession(anyMap())).thenReturn(colaborador);
 		doThrow(new Exception()).when(colaboradorManager).updateInfoPessoais(action.getColaborador(), null, null, null, empresa, null, false);
 		
 		assertEquals(Action.SUCCESS, action.updateInfoPessoais());

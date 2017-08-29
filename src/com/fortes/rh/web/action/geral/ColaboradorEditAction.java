@@ -77,6 +77,7 @@ import com.fortes.rh.model.dicionario.Escolaridade;
 import com.fortes.rh.model.dicionario.EstadoCivil;
 import com.fortes.rh.model.dicionario.OrigemAnexo;
 import com.fortes.rh.model.dicionario.SexoCadastro;
+import com.fortes.rh.model.dicionario.StatusAdmisaoColaboradorNoFortesPessoal;
 import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.dicionario.TipoConfiguracaoCampoExtra;
@@ -282,6 +283,11 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	private ConfiguracaoCampoExtraVisivelObrigadotorio campoExtraVisivelObrigadotorio;
 	private boolean dadosIntegradosAtualizados = false;
 	private Date dataAlteracao = null;
+	private boolean desabilitarEdicaoCamposIntegrados = false;
+	private String camposColaboradorObrigatorio = "";
+	private boolean empresaEstaIntegradaEAderiuAoESocial = false;
+	private boolean podeRetificar = true;
+	private boolean pisObrigatorio;
 	
 	private void prepare() throws Exception
 	{
@@ -299,6 +305,8 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		obrigarAmbienteFuncao = getEmpresaSistema().isObrigarAmbienteFuncao();
 		habilitaCampoExtra = getEmpresaSistema().isCampoExtraColaborador();
 		configuraCamposExtras(habilitaCampoExtra);
+
+		camposColaboradorObrigatorio = parametrosDoSistema.getCamposColaboradorObrigatorio();
 			
 		indices = indiceManager.findAll(getEmpresaSistema());
 		
@@ -443,6 +451,11 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			configuraCamposExtras(habilitaCampoExtra);
 			if(habilitaCampoExtra && colaborador.getCamposExtras() != null && colaborador.getCamposExtras().getId() != null)
 				camposExtras = camposExtrasManager.findById(colaborador.getCamposExtras().getId());
+			
+			pisObrigatorio = !colaborador.getVinculo().equals(Vinculo.ESTAGIO);
+			configurarEdicaoDeCamposIntegrados();
+			if(!desabilitarEdicaoCamposIntegrados)
+				camposColaboradorObrigatorio = parametrosDoSistema.getCamposColaboradorObrigatorio();
 		}
 		
 		return Action.SUCCESS;
@@ -451,6 +464,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	public String prepareUpdate() throws Exception
 	{
 		prepare();
+		configurarEdicaoDeCamposIntegrados();
 		
 		setNacionalidadeAndNaturalidade();
 		
@@ -477,6 +491,49 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		return Action.SUCCESS;
 	}
 
+	private void configurarEdicaoDeCamposIntegrados() {
+		setEmpresaEstaIntegradaEAderiuAoESocial();
+		if(getEmpresaSistema().isAcIntegra() && !colaborador.isNaoIntegraAc() && StringUtils.isBlank(colaborador.getCodigoAC())){
+			try {
+				desabilitarEdicaoCamposIntegrados = colaboradorManager.statusAdmissaoNoFortesPessoal(getEmpresaSistema(), colaborador.getId()) != StatusAdmisaoColaboradorNoFortesPessoal.NA_TABELA_TEMPORARIA.getOpcao();
+				if(desabilitarEdicaoCamposIntegrados)
+					addActionMessage("Não é possível editar as informações integradas, este colaborador está em processo de admissão no Fortes Pessoal.");
+			} catch (Exception e) {
+				e.printStackTrace();
+				desabilitarEdicaoCamposIntegrados = true;
+				addActionError("Não foi possível estabelecer conexão com o Fortes Pessoal, desta forma não é possível editar as informações integradas.");
+			}
+		}else if(empresaEstaIntegradaEAderiuAoESocial && !colaborador.isNaoIntegraAc()){
+			verificaPendenciaNoESocial();
+			if(!desabilitarEdicaoCamposIntegrados)
+				verificaRetificacao();
+		}
+		if(desabilitarEdicaoCamposIntegrados)
+			camposColaboradorObrigatorio = colaboradorManager.configuraCamposObrigatorios(parametrosDoSistema);
+		
+	}
+
+	private void verificaRetificacao() {
+		try {
+			podeRetificar = !colaboradorManager.isHistoricoCadastralDoColaboradorEInicioVinculo(getEmpresaSistema(), colaborador.getCodigoAC());
+		} catch (Exception e) {
+			e.printStackTrace();
+			podeRetificar = false;
+		}
+	}
+
+	private void verificaPendenciaNoESocial(){
+		try {
+			desabilitarEdicaoCamposIntegrados = colaboradorManager.isExisteHistoricoCadastralDoColaboradorComPendenciaNoESocial(getEmpresaSistema(), colaborador.getCodigoAC());
+			if(desabilitarEdicaoCamposIntegrados)
+				addActionMessage("Existem pendências no histórico cadastral do empregado junto ao eSocial. Não é possível editar as informações integradas no Fortes RH, só podem ser alteradas no Fortes Pessoal.");
+		} catch (Exception e) {
+			e.printStackTrace();
+			desabilitarEdicaoCamposIntegrados = true;
+			addActionSuccess("Não foi possível estabelecer conexão com o Fortes Pessoal, desta forma não é possível editar as informações integradas.");
+		}
+	}
+	
 	private void setNacionalidadeAndNaturalidade() {
 		if(getEmpresaSistema().isAcIntegra() && colaborador.getCodigoAC() != null && !colaborador.isNaoIntegraAc()){
 			try {
@@ -815,8 +872,8 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 				prepareUpdate();
 				return Action.INPUT;
 			}
-
-			if(historicoColaboradorManager.findByColaboradorProjection(colaborador.getId(), null).size() > 1 || (getEmpresaSistema().isAcIntegra() && !"".equals(colaborador.getCodigoAC())))
+			
+			if(historicoColaboradorManager.findByColaboradorProjection(colaborador.getId(), null).size() > 1 || (getEmpresaSistema().isAcIntegra() && !StringUtils.isBlank(colaborador.getCodigoAC())))
 				editarHistorico = false;
 
 			if(editarHistorico)
@@ -861,9 +918,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 				colaborador.setCamposExtras(null);
 				
 			setDadosHistoricoColaborador();
-			
-			if(colaborador.getVinculo().equals(Vinculo.SOCIO))
-				colaborador.setNaoIntegraAc(true);
 			
 			colaboradorManager.update(colaborador, formacaos, idiomas, experiencias, getEmpresaSistema(),editarHistorico, salarioColaborador, dataAlteracao, dadosIntegradosAtualizados);
 			
@@ -2081,5 +2135,45 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 	public void setDataAlteracao(Date dataAlteracao) {
 		this.dataAlteracao = dataAlteracao;
+	}
+
+	public boolean isDesabilitarEdicaoCamposIntegrados() {
+		return desabilitarEdicaoCamposIntegrados;
+	}
+
+	public void setDesabilitarEdicaoCamposIntegrados(boolean desabilitarEdicaoCamposIntegrados) {
+		this.desabilitarEdicaoCamposIntegrados = desabilitarEdicaoCamposIntegrados;
+	}
+
+	public String getCamposColaboradorObrigatorio() {
+		return camposColaboradorObrigatorio;
+	}
+
+	public void setCamposColaboradorObrigatorio(String camposColaboradorObrigatorio) {
+		this.camposColaboradorObrigatorio = camposColaboradorObrigatorio;
+	}
+
+	public boolean isEmpresaEstaIntegradaEAderiuAoESocial() {
+		return empresaEstaIntegradaEAderiuAoESocial;
+	}
+
+	public void setEmpresaEstaIntegradaEAderiuAoESocial() {
+		this.empresaEstaIntegradaEAderiuAoESocial = isEmpresaIntegradaEAderiuAoESocial();
+	}
+
+	public boolean isPodeRetificar() {
+		return podeRetificar;
+	}
+
+	public void setPodeRetificar(boolean podeRetificar) {
+		this.podeRetificar = podeRetificar;
+	}
+
+	public boolean isPisObrigatorio() {
+		return pisObrigatorio;
+	}
+
+	public void setPisObrigatorio(boolean pisObrigatorio) {
+		this.pisObrigatorio = pisObrigatorio;
 	}
 }

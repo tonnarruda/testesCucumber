@@ -23,7 +23,7 @@ public interface TabelaReajusteColaboradorManager extends GenericManager<TabelaR
 	public void aplicarPorColaborador(TabelaReajusteColaborador tabelaReajusteColaborador, Empresa empresa, Collection<ReajusteColaborador> reajustes) throws Exception;
 	
 	@Audita(operacao="Cancelar Reajuste", auditor=TabelaReajusteColaboradorAuditorCallbackImpl.class)
-	public void cancelar(Character tipoReajuste, Long tabelaReajusteColaboradorId, Empresa empresa) throws Exception;
+	public void cancelar(Character tipoReajuste, Long tabelaReajusteColaboradorId, Empresa empresa, boolean empresaIntegradaEAderiuAoESocial) throws Exception;
 
 	@Audita(operacao="Atualização", auditor=TabelaReajusteColaboradorAuditorCallbackImpl.class)
 	public void update(TabelaReajusteColaborador tabelaReajusteColaborador);
@@ -31,7 +31,7 @@ public interface TabelaReajusteColaboradorManager extends GenericManager<TabelaR
 	//TODO: Auditar
 	public void aplicarPorFaixaSalarial(Long tabelaReajusteColaboradorId, Empresa empresa) throws ColecaoVaziaException, Exception;
 
-	public void marcaUltima(Collection<TabelaReajusteColaborador> tabelaReajusteColaboradors);
+	public void marcaUltima(Collection<TabelaReajusteColaborador> tabelaReajusteColaboradors, boolean empresaIntegradaEAderiuAoESocial);
 
 	public Collection<TabelaReajusteColaborador> findAllSelect(Long empresaId, Date dataIni, Date dataFim);
 

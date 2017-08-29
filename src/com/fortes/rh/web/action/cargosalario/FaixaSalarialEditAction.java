@@ -10,6 +10,7 @@ import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.cargosalario.IndiceManager;
 import com.fortes.rh.business.desenvolvimento.CertificacaoManager;
 import com.fortes.rh.business.geral.CodigoCBOManager;
+import com.fortes.rh.exception.ESocialException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
@@ -53,6 +54,7 @@ public class FaixaSalarialEditAction extends MyActionSupportEdit implements Mode
 	private Double salario;
 	private boolean integradoAC;
 	private String descricaoCBO;
+	private boolean empresaEstaIntegradaEAderiuAoESocial = false;
 	
 	public String execute() throws Exception
 	{
@@ -61,6 +63,8 @@ public class FaixaSalarialEditAction extends MyActionSupportEdit implements Mode
 
 	private void prepare() throws Exception
 	{
+		empresaEstaIntegradaEAderiuAoESocial = isEmpresaIntegradaEAderiuAoESocial();
+		
 		if(faixaSalarialAux != null && faixaSalarialAux.getId() != null)
 		{
 			faixaSalarialAux = faixaSalarialManager.findByFaixaSalarialId(faixaSalarialAux.getId());
@@ -100,6 +104,11 @@ public class FaixaSalarialEditAction extends MyActionSupportEdit implements Mode
 
 	public String insert() throws Exception
 	{
+	    if(isEmpresaIntegradaEAderiuAoESocial()){
+	    	empresaEstaIntegradaEAderiuAoESocial = true;
+            throw new ESocialException();
+        }
+	    
 		if(faixaSalarialManager.verifyExistsNomeByCargo(faixaSalarialAux.getCargo().getId(), faixaSalarialAux.getNome()))
 		{
 			addActionError("Já existe uma Faixa Salarial com esse nome.");
@@ -163,7 +172,12 @@ public class FaixaSalarialEditAction extends MyActionSupportEdit implements Mode
 
 		try
 		{
-			faixaSalarialManager.updateFaixaSalarial(faixaSalarialAux, getEmpresaSistema(), certificacaosCheck);
+		    if(isEmpresaIntegradaEAderiuAoESocial()){
+		        faixaSalarialAux.setNomeACPessoal(faixaSalarialVerifica.getNomeACPessoal());
+		        faixaSalarialAux.setCodigoCbo(faixaSalarialVerifica.getCodigoCbo());
+		    }
+		    
+			faixaSalarialManager.updateFaixaSalarial(faixaSalarialAux, getEmpresaSistema().getId(), certificacaosCheck);
 			return Action.SUCCESS;
 		}
 		catch(IntegraACException e)
@@ -311,5 +325,8 @@ public class FaixaSalarialEditAction extends MyActionSupportEdit implements Mode
     public void setCodigoCBOManager(CodigoCBOManager codigoCBOManager) {
         this.codigoCBOManager = codigoCBOManager;
     }
-
+    
+    public boolean isEmpresaEstaIntegradaEAderiuAoESocial() {
+		return this.empresaEstaIntegradaEAderiuAoESocial;
+	}
 }

@@ -727,6 +727,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("hc.id"), "id");
 		p.add(Projections.property("hc.data"), "data");
+		p.add(Projections.property("hc.status"), "status");
 		p.add(Projections.property("c.codigoAC"), "colaboradorCodigoAC");
 
 		criteria.setProjection(p);
@@ -1591,6 +1592,8 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		p.add(Projections.property("hc.funcao.id"), "funcaoId");
 		p.add(Projections.property("hc.ambiente.id"), "ambienteId");
 		p.add(Projections.property("c.id"), "colaboradorId");
+		p.add(Projections.property("hc.motivo"), "motivo");
+		
 		criteria.setProjection(p);
         
         criteria.add(Expression.eq("hc.motivo", MotivoHistoricoColaborador.CONTRATADO));
@@ -1604,5 +1607,18 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
         	return null;
         
         return (HistoricoColaborador) criteria.uniqueResult();
+    }
+    
+    public boolean existeHistoricoConfirmadoByTabelaReajusteColaborador(Long tabelaReajusteColaboradorId) {
+        Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
+        criteria.createCriteria("hc.reajusteColaborador", "rc");
+        criteria.createCriteria("hc.colaborador", "c");
+        criteria.setProjection(Projections.count("id"));
+        
+        criteria.add(Expression.eq("hc.status",StatusRetornoAC.CONFIRMADO));
+        criteria.add(Expression.eq("c.naoIntegraAc",false));
+        criteria.add(Expression.eq("rc.tabelaReajusteColaborador.id", tabelaReajusteColaboradorId));
+
+        return ((Integer) criteria.uniqueResult()) > 0;
     }
 }

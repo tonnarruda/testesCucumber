@@ -484,6 +484,21 @@
 		</li>
 		
 		<li>&nbsp;</li>
+		
+		<li>
+			<@ww.div cssClass="divInfo">
+				<h2>eSocial</h2>
+				<ul>
+					<#if empresaIntegradaEAderiuAoESocial>
+						Esta empresa aderiu ao eSocial.
+					<#else>
+						Esta empresa não aderiu ao eSocial.
+					</#if>
+				</ul>
+			</@ww.div>
+		</li>
+		
+		<li>&nbsp;</li>
 				
 		<@authz.authorize ifAllGranted="ROLE_INTEGRA_FORTES_PESSOAL">
 			<li>
@@ -518,6 +533,7 @@
 		<@ww.hidden name="empresa.campoExtraColaborador"/>
 		<@ww.hidden name="empresa.campoExtraCandidato"/>
 		<@ww.hidden name="empresa.campoExtraAtualizarMeusDados"/>
+		<@ww.hidden name="empresa.aderiuAoESocial" />
 		
 		<@ww.hidden name="cartaoAniversario.empresa.id" />
 		<@ww.hidden name="cartaoAniversario.tipoCartao" value="A" />

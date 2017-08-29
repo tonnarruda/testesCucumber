@@ -22,6 +22,7 @@ import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.QuantidadeLimiteColaboradoresPorCargoManager;
 import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
+import com.fortes.rh.exception.ESocialException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.exception.LimiteColaboradorExceditoException;
 import com.fortes.rh.model.captacao.Solicitacao;
@@ -92,6 +93,10 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 	private String encerrarSolicitacao;
 
 	private Solicitacao solicitacao;
+
+	private boolean empresaEstaIntegradaEAderiuAoESocial;
+
+	private boolean disabledCamposIntegrados;
 
 	public void prepare() throws Exception
 	{
@@ -290,6 +295,7 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 		Collection<HistoricoColaborador> historicosColaboradores = historicoColaboradorManager.findByColaboradorProjection(colaborador.getId(), StatusRetornoAC.AGUARDANDO);
 		historicoColaborador = historicoColaboradorManager.findByIdHQL(historicoColaborador.getId());
 		
+		
 		if(historicosColaboradores.size() > 0  && !historicosColaboradores.contains(historicoColaborador)){
 			setActionMsg("Não é possível editar esta situação, enquanto existir outra situação aguardando confirmação no Fortes Pessoal.");
 			return Action.INPUT;
@@ -302,19 +308,55 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 				folhaProcessada = true;
 				setActionMsg("<div>Uma Folha de Pagamento foi processada no Fortes Pessoal com este Histórico.<br>Só é permitido editar Função e Ambiente.</div>");
 			}
+				configuraEdicaoCamposIntegrados();	
 		}		
 
 		prepare();
 		return Action.SUCCESS;
 	}
 
+	private void configuraEdicaoCamposIntegrados() {
+		if(!folhaProcessada && isEmpresaIntegradaEAderiuAoESocial()){
+			try {
+				verificaPendenciaNoESocial();
+				if(!disabledCamposIntegrados)
+					verificaInicioDoVinculo();
+			} catch (Exception e) {
+				e.printStackTrace();
+				disabledCamposIntegrados = true;
+				addActionWarning("Não foi possível estabelecer conexão com o Fortes Pessoal, desta forma não é possível editar as informações integradas.");
+			}
+		}
+	}
+
+	private void verificaPendenciaNoESocial() throws Exception{
+		disabledCamposIntegrados = historicoColaboradorManager.existeHistoricoContratualComPendenciaNoESocial(getEmpresaSistema(), historicoColaborador.getColaborador().getCodigoAC());
+		if(disabledCamposIntegrados){
+			addActionMessage("Existem pendências no histórico contratual do empregado junto ao eSocial. Não é possível editar as informações integradas no Fortes RH, só podem ser alteradas no Fortes Pessoal.");
+		} 
+	}
+	
+	private void verificaInicioDoVinculo() throws Exception{
+		disabledCamposIntegrados = historicoColaboradorManager.situacaoContratualEhInicioVinculo(getEmpresaSistema(), historicoColaborador.getColaborador().getCodigoAC(), historicoColaborador.getData());
+		if(disabledCamposIntegrados){
+			addActionMessage("Histórico contratual associado ao início do vínculo do empregado junto ao eSocial. Não é possível editar as informações integradas no Fortes RH, só podem ser alteradas no Fortes Pessoal.");
+		}
+	}
+	
 	public String update() throws Exception
 	{
 		try {
-			quantidadeLimiteColaboradoresPorCargoManager.validaLimite(historicoColaborador.getAreaOrganizacional().getId(), historicoColaborador.getFaixaSalarial().getId(), getEmpresaSistema().getId(), historicoColaborador.getColaborador().getId());
-
-			historicoColaborador = historicoColaboradorManager.ajustaAmbienteFuncao(historicoColaborador);
-			historicoColaboradorManager.updateHistorico(historicoColaborador, getEmpresaSistema());
+		    if(isEmpresaIntegradaEAderiuAoESocial() && historicoColaborador.getStatus() == StatusRetornoAC.AGUARDANDO){
+		       throw new ESocialException();
+		    }
+		    if(disabledCamposIntegrados){
+		    	historicoColaboradorManager.updateAmbienteEFuncao(historicoColaborador);
+		    }
+		    else{
+		    	quantidadeLimiteColaboradoresPorCargoManager.validaLimite(historicoColaborador.getAreaOrganizacional().getId(), historicoColaborador.getFaixaSalarial().getId(), getEmpresaSistema().getId(), historicoColaborador.getColaborador().getId());
+				historicoColaborador = historicoColaboradorManager.ajustaAmbienteFuncao(historicoColaborador);
+				historicoColaboradorManager.updateHistorico(historicoColaborador, getEmpresaSistema());
+		    }
 
 			return Action.SUCCESS;
 			
@@ -329,7 +371,12 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 			
 			return Action.INPUT;
 			
-		} catch (LimiteColaboradorExceditoException e) {
+		}catch (ESocialException e) {
+            addActionWarning(e.getMessage());
+            setActionMsg(e.getMessage());
+            return "eSocial";
+        }
+		catch (LimiteColaboradorExceditoException e) {
 			e.printStackTrace();
 			addActionWarning(e.getMessage());
 			prepareUpdate();
@@ -622,5 +669,17 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 
 	public void setSituacao(String situacao) {
 		this.situacao = situacao;
+	}
+	
+	public boolean isEmpresaEstaIntegradaEAderiuAoESocial() {
+		return empresaEstaIntegradaEAderiuAoESocial;
+	}
+
+	public boolean isDisabledCamposIntegrados() {
+		return disabledCamposIntegrados;
+	}
+
+	public void setDisabledCamposIntegrados(boolean disabledCamposIntegrados) {
+		this.disabledCamposIntegrados = disabledCamposIntegrados;
 	}
 }

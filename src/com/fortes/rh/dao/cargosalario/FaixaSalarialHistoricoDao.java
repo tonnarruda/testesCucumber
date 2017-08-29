@@ -30,4 +30,5 @@ public interface FaixaSalarialHistoricoDao extends GenericDao<FaixaSalarialHisto
 	boolean existeHistoricoPorIndice(Long empresaId);
 	boolean existeDependenciaComHistoricoIndice(Date dataHistoricoExcluir, Date dataSegundoHistoricoIndice, Long indiceId);
 	Collection<FaixaSalarialHistorico> findByEmpresaIdAndStatus(Long empresaId, Integer status);
+	boolean existeHistoricoConfirmadoByTabelaReajusteColaborador(Long tabelaReajusteColaboradorId);
 }

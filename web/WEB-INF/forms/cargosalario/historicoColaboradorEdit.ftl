@@ -10,6 +10,8 @@
 		<#assign formAction="insert.action"/>
 		<#assign data = historicoColaborador.data?date/>
 	</#if>
+	
+<style> :disabled { background: #EFEFEF; } </style>	
 
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/interface/FuncaoDWR.js?version=${versao}"/>"></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/interface/AmbienteDWR.js?version=${versao}"/>"></script>
@@ -180,7 +182,7 @@
 		</#if>			
 	</script>
 
-	<#if folhaProcessada>
+	<#if folhaProcessada || disabledCamposIntegrados>
 		<#assign somenteLeitura="true"/>
 	<#else>
 		<#assign somenteLeitura="false"/>
@@ -208,8 +210,8 @@
 		<@ww.select label="Área Organizacional" name="historicoColaborador.areaOrganizacional.id" id="areaOrganizacional" list="areaOrganizacionals" required="true" listKey="id" listValue="descricaoComCodigoAC" headerKey="" headerValue="Selecione..." cssStyle="width: 355px;" onchange="verificaMaternidade(this.value, 'areaOrganizacional');" disabled="${somenteLeitura}"/>
 
 		<@authz.authorize ifAllGranted="ROLE_COMPROU_SESMT">
-			<@ww.select label="Ambiente" name="historicoColaborador.ambiente.id" id="ambiente" required="${obrigarAmbienteFuncao?string}" list="ambientes" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." cssStyle="width: 355px;"/>
 			<@ww.select label="Cargo/Faixa" name="historicoColaborador.faixaSalarial.id" id="faixa" list="faixaSalarials" listKey="id" listValue="descricao" required="true" headerKey="" headerValue="Selecione..." onchange="populaFuncao(this.value);calculaSalario();" cssStyle="width: 355px;" disabled="${somenteLeitura}"/>
+			<@ww.select label="Ambiente" name="historicoColaborador.ambiente.id" id="ambiente" required="${obrigarAmbienteFuncao?string}" list="ambientes" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." cssStyle="width: 355px;"/>
 			<@ww.select label="Função" name="historicoColaborador.funcao.id" id="funcao" required="${obrigarAmbienteFuncao?string}" list="funcaos" listKey="id" listValue="nome" headerValue="Selecione..." headerKey="-1" cssStyle="width: 355px;"/>
 		</@authz.authorize>
 		<@authz.authorize ifNotGranted="ROLE_COMPROU_SESMT">
@@ -253,7 +255,7 @@
 		</#if>	
 		
 		<#if integraAc && !historicoColaborador.colaborador.naoIntegraAc>
-			<@ww.textfield label="Observação para o Setor Pessoal" name="historicoColaborador.obsACPessoal" id="obsACPessoal" cssStyle="width:355px;" maxLength="100"/>
+			<@ww.textfield label="Observação para o Setor Pessoal" name="historicoColaborador.obsACPessoal" id="obsACPessoal" cssStyle="width:355px;" maxLength="100" disabled="${somenteLeitura}"/>
 		</#if>
 
 		<@ww.hidden name="historicoColaborador.id" />
@@ -263,6 +265,12 @@
 		<@ww.hidden name="candidatoSolicitacaoId" />
 		<@ww.hidden name="solicitacao.id" />
 		<@ww.hidden name="encerrarSolicitacao" />
+		<@ww.hidden name="historicoColaborador.status" />
+		
+		<#if somenteLeitura?string == "true">
+			<@ww.hidden name="desabilitarEdicaoCamposIntegrados" />
+		</#if>
+		
 	<@ww.token/>
 	</@ww.form>
 

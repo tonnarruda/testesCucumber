@@ -396,11 +396,11 @@ function limpaMascaras(campos)
 					campo.value = limpaCamposMascaraDataMesAno(campo.value);
 				else if(campoClass.substring(0, 11) == "mascaraData" && campo.value == valueData)
 					campo.value = limpaCamposMascaraData(campo.value);
-				if(campoClass == "mascaraCnpj")
+				if(campoClass.substring(0, 10) == "mascaraCnpj")
 					campo.value = limpaCamposMascaraCnpj(campo.value);
-				else if(campoClass == "mascaraCpf")
+				else if(campoClass.substring(0, 10) == "mascaraCpf")
 					campo.value = limpaCamposMascaraCpf(campo.value);
-				else if(campoClass == "mascaraCep")
+				else if(campoClass.substring(0, 10) == "mascaraCep")
 					campo.value = limpaCamposMascaraCep(campo.value);
 			}
 		}

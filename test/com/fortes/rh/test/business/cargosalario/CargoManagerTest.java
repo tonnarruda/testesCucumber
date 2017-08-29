@@ -251,17 +251,6 @@ public class CargoManagerTest extends MockObjectTestCase
 		assertTrue(cargoManager.findAllSelectDistinctNome(null).isEmpty());
 	}
 
-	public void testFindCargos()
-	{
-
-		Collection<Cargo> cargos = new ArrayList<Cargo>();
-		Long empresaId = 1L;
-
-		cargoDao.expects(once()).method("findCargos").with(new Constraint[] { eq(1), eq(15), eq(empresaId), ANYTHING, ANYTHING, ANYTHING}).will(returnValue(cargos));
-
-		assertEquals(cargos, cargoManager.findCargos(1, 15, empresaId, null, null, null));
-	}
-
 	public void testUpdateCargoAC() throws Exception
 	{
 		Cargo cargo = CargoFactory.getEntity();

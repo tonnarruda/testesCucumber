@@ -24,6 +24,7 @@
 		<action name="update" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorEditAction" method="update">
 			<result name="success" type="redirect">historicoColaboradorList.action?colaborador.id=${colaborador.id}</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/historicoColaboradorEdit.ftl</result>
+			<result name="eSocial" type="redirect"><![CDATA[/cargosalario/historicoColaborador/historicoColaboradorList.action?colaborador.id=${colaborador.id}&actionMsg=${actionMsg}]]></result>
 		</action>
 		<action name="delete" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorListAction" method="delete">
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/historicoColaboradorList.ftl</result>

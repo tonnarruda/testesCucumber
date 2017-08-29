@@ -233,8 +233,13 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		}
 		
 		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.CARGOS)){
-			cargoManager = (CargoManager) SpringUtil.getBean("cargoManager");
-			cargoManager.sincronizar(empresaOrigemId, empresaDestino, areaIds, conhecimentoIds, habilidadeIds, atitudeIds, mensagens);
+		    if((empresaDestino.isAcIntegra() && !empresaDestino.isAderiuAoESocial()) || !empresaDestino.isAcIntegra()){
+		        cargoManager = (CargoManager) SpringUtil.getBean("cargoManager");
+		        cargoManager.sincronizar(empresaOrigemId, empresaDestino, areaIds, conhecimentoIds, habilidadeIds, atitudeIds, mensagens);
+		    }
+		    else{
+		        mensagens.add("<strong>A empresa destino está integrada com o Fortes Pessoal e aderiu ao eSocial, por isso não é possível importar cargos.</strong>");
+		    }
 		}
 		
 		if (ArrayUtils.contains(cadastrosCheck, TipoEntidade.TIPOS_OCORRENCIA)){
@@ -650,4 +655,8 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 	public void setConfiguracaoCampoExtraVisivelObrigadotorioManager(ConfiguracaoCampoExtraVisivelObrigadotorioManager configuracaoCampoExtraVisivelObrigadotorioManager) {
 		this.configuracaoCampoExtraVisivelObrigadotorioManager = configuracaoCampoExtraVisivelObrigadotorioManager;
 	}
+
+    public void notificarAdesaoAoESocial(String codigoAC, String grupoAC, boolean aderiuAoEsocial) {
+       getDao().atualizarAdesaoAoESocial(codigoAC, grupoAC, aderiuAoEsocial);
+    }
 }

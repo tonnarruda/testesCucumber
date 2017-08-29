@@ -65,9 +65,9 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 		return getDao().getCount(empresaId, areaId, cargoNome, ativo);
 	}
 
-	public Collection<Cargo> findCargos(int page, int pagingSize, Long empresaId, Long areaId, String cargoNome, Boolean ativo)
+	public Collection<Cargo> findCargos(int page, int pagingSize, Long empresaId, Long areaId, String cargoNome, Boolean ativo, Boolean verificarSePossuiFaixaSalarial)
 	{
-		return getDao().findCargos(page, pagingSize, empresaId, areaId, cargoNome, ativo);
+		return getDao().findCargos(page, pagingSize, empresaId, areaId, cargoNome, ativo, verificarSePossuiFaixaSalarial);
 	}
 
 	public Collection<Cargo> findByGrupoOcupacionalIdsProjection(Long[] idsLong, Long empresaId, Boolean cargoAtivo)

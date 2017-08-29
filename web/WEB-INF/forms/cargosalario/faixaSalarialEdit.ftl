@@ -27,12 +27,16 @@
 			width: 420px;
 			padding-left: 4px;
 		}
+		
+		
     </style>
     
 	<script type="text/javascript">
 		function validaForm(indice, edicao)
 		{
-			<#if edicao>
+			<#if empresaEstaIntegradaEAderiuAoESocial>
+				return validaFormulario('form', new Array('nome'), null);
+			<#elseif edicao>
 				return validaFormulario('form', new Array('nome', 'codigoCBO'), null);
 			<#else>
 				if(document.getElementById('tipo').value == indice)
@@ -55,19 +59,21 @@
 		});
 		
 		$(document).ready(function() {
-			var urlFind = "<@ww.url includeParams="none" value="/geral/codigoCBO/find.action"/>";
-			
-			$("#descricaoCBO").autocomplete({
-				source: ajaxData(urlFind),				 
-				minLength: 2,
-				select: function( event, ui ) { 
-					$("#codigoCBO").val(ui.item.id);
-				}
-			}).data( "autocomplete" )._renderItem = renderData;
-
-			$('#descricaoCBO').focus(function() {
-			    $(this).select();
-			});
+			<#if !empresaEstaIntegradaEAderiuAoESocial>
+				var urlFind = "<@ww.url includeParams="none" value="/geral/codigoCBO/find.action"/>";
+				
+				$("#descricaoCBO").autocomplete({
+					source: ajaxData(urlFind),				 
+					minLength: 2,
+					select: function( event, ui ) { 
+						$("#codigoCBO").val(ui.item.id);
+					}
+				}).data( "autocomplete" )._renderItem = renderData;
+	
+				$('#descricaoCBO').focus(function() {
+				    $(this).select();
+				});
+			</#if>
 		});
 			
 	</script>
@@ -84,15 +90,23 @@
 
 		<@ww.textfield label="Faixa" name="faixaSalarialAux.nome" id="nome" cssStyle="width: 220px;"  maxLength="30" required="true"/>
 		<#if integradoAC>
-			<@ww.textfield label="Descrição no Fortes Pessoal" name="faixaSalarialAux.nomeACPessoal" id="nomeACPessoal" cssStyle="width: 220px;"  maxLength="30" required="true"/>
+			<@ww.textfield label="Descrição no Fortes Pessoal" name="faixaSalarialAux.nomeACPessoal" id="nomeACPessoal" cssStyle="width: 220px; margin-top: 1px"  maxLength="30" required="true" disabled="${empresaEstaIntegradaEAderiuAoESocial?string}"/>
+			<#if empresaEstaIntegradaEAderiuAoESocial>
+				<img border="0" title="Em virtude de adequações ao eSocial, não é possível editar no Fortes RH." src="<@ww.url value="/imgs/esocial.png"/>" style="margin-top: -47px; float: left; margin-left: 177px; width: 27px; height: 27px;">
+			</#if>
 		<#else>
 			<@ww.hidden	name="faixaSalarialAux.nomeACPessoal" />
 		</#if>
 		
-		<@ww.textfield label="Cód. CBO" name="faixaSalarialAux.codigoCbo" id="codigoCBO" onkeypress="return(somenteNumeros(event,''));" size="6"  maxLength="6" liClass="liLeft" required="true"/>
-		<@ww.textfield label="Busca CBO (Código ou Descrição)" name="descricaoCBO" id="descricaoCBO" cssStyle="width: 414px;"/>
-		<div style="clear:both"></div>
+		<@ww.textfield label="Cód. CBO" name="faixaSalarialAux.codigoCbo" id="codigoCBO" onkeypress="return(somenteNumeros(event,''));" cssStyle="margin-top: 1px" size="6"  maxLength="6" liClass="liLeft" required="true" disabled="${empresaEstaIntegradaEAderiuAoESocial?string}"/>
+		<#if empresaEstaIntegradaEAderiuAoESocial>
+			<img border="0" title="Em virtude de adequações ao eSocial, não é possível editar no Fortes RH." src="<@ww.url value="/imgs/esocial.png"/>" style="margin-top: -8px; float: left; margin-left: -4px; width: 27px; height: 27px;">
+		</#if>
 		
+		<#if !empresaEstaIntegradaEAderiuAoESocial>
+			<@ww.textfield label="Busca CBO (Código ou Descrição)" name="descricaoCBO" id="descricaoCBO" cssStyle="width: 414px;"/>
+		</#if>
+		<div style="clear:both"></div>
         <@frt.checkListBox label="Certificações" name="certificacaosCheck" list="certificacaosCheckList" filtro="true"/>
 
 		<#if !edicao>
@@ -115,7 +129,12 @@
 			<@display.column title="Ações" class="acao">
 				<#if (faixaSalarialHistoricoVO.editavel)>
 					<a href="../faixaSalarialHistorico/prepareUpdate.action?faixaSalarialHistorico.id=${faixaSalarialHistoricoVO.id}&faixaSalarialAux.id=${faixaSalarialAux.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
-					<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='../faixaSalarialHistorico/delete.action?faixaSalarialHistorico.id=${faixaSalarialHistoricoVO.id}&faixaSalarialAux.id=${faixaSalarialAux.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+					<#if empresaEstaIntegradaEAderiuAoESocial && faixaSalarialHistoricoVO.status != 3>
+						<img border="0" title="Devido as adequações ao eSocial, não é possível excluir no Fortes RH o histórico de uma faixa salarial." src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>" style="opacity:0.5;filter:alpha(opacity=50);">
+					<#else>
+						<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='../faixaSalarialHistorico/delete.action?faixaSalarialHistorico.id=${faixaSalarialHistoricoVO.id}&faixaSalarialAux.id=${faixaSalarialAux.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+					</#if>	
+					
 				<#else>
 					<span title="Essa evolução do histórico da faixa foi devido ao reajuste do índice">(Índice)</span>
 				</#if>

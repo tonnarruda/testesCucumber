@@ -1,8 +1,12 @@
 package com.fortes.rh.test.business.cargosalario;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -11,8 +15,6 @@ import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import sun.misc.FpUtils;
 
 import com.fortes.rh.business.cargosalario.FaixaSalarialHistoricoManagerImpl;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
@@ -29,7 +31,6 @@ import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialHistoricoFactory;
 import com.fortes.rh.test.factory.cargosalario.IndiceFactory;
-import com.mchange.util.AssertException;
 
 //@RunWith(PowerMockRunner.class)
 //@PrepareForTest(SpringUtil.class)
@@ -149,5 +150,15 @@ public class FaixaSalarialHistoricoManagerTest_JUnit4
 		assertNull(faiSalarialHistorico);
 		
 		verify(faixaSalarialHistoricoDao,  never()).save(null);
+	}
+	
+	@Test
+	public void testExisteHistoricoConfirmadoByTabelaReajusteColaborador() {
+		Long tabelaReajusteColaboradorId = 1L;
+		when(faixaSalarialHistoricoDao.existeHistoricoConfirmadoByTabelaReajusteColaborador(tabelaReajusteColaboradorId)).thenReturn(true);
+		boolean retorno = faixaSalarialHistoricoManager.existeHistoricoConfirmadoByTabelaReajusteColaborador(tabelaReajusteColaboradorId);
+		
+		verify(faixaSalarialHistoricoDao, times(1)).existeHistoricoConfirmadoByTabelaReajusteColaborador(tabelaReajusteColaboradorId);
+		assertTrue(retorno);;
 	}
 }

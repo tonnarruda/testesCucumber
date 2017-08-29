@@ -626,7 +626,7 @@ public class RHServiceImpl implements RHService
 	}
 	
 	public FeedbackWebService cancelarContratacao(String token, TEmpregado empregado, TSituacao situacao,  String mensagem){
-		String parametros = "empregado: " + empregado.getCodigoAC() + "\nempresa: " + empregado.getEmpresaCodigoAC() + "\ngrupo AC: " + empregado.getGrupoAC();
+		String parametros = "código AC do empregado: " + empregado.getCodigoAC() +  "\nid_externo do empregado: " + empregado.getId() + "\nempresa: " + empregado.getEmpresaCodigoAC() + "\ngrupo AC: " + empregado.getGrupoAC();
 		try{
 			verifyToken(token, true);
 			Colaborador colaborador = colaboradorManager.findByIdComHistorico(new Long (empregado.getId()));
@@ -1552,6 +1552,20 @@ public class RHServiceImpl implements RHService
 	{
 		return parametrosDoSistemaManager.findById(1L).getAppVersao();
 	}
+	
+    public FeedbackWebService notificarAdesaoAoESocial(String token, String codigoAC, String grupoAC, boolean aderiuAoEsocial) {
+        try {
+            verifyToken(token, true);
+            empresaManager.notificarAdesaoAoESocial(codigoAC, grupoAC, aderiuAoEsocial);
+            return new FeedbackWebService(true);
+        } catch (TokenException e) {
+            e.printStackTrace();
+            return new FeedbackWebService(false, "Token incorreto.", "");
+        }catch (Exception e){
+            e.printStackTrace();
+            return new FeedbackWebService(false, "Erro ao atualizar a empresa.", formataException("Empresa", e));
+        }
+    }
 	
 	public void setCidadeManager(CidadeManager cidadeManager)
 	{

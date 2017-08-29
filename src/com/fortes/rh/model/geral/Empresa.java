@@ -136,6 +136,8 @@ public class Empresa extends AbstractModel implements Serializable
 	
 	@OneToMany(mappedBy="empresa")
 	private Collection<ConfiguracaoCampoExtraVisivelObrigadotorio> configuracaoCamposExtrasVisiveisObrigadotorios;
+	
+	private boolean aderiuAoESocial;
     
 	//projection
 	public void setProjectionCidadeNome(String cidadeNome)
@@ -737,4 +739,11 @@ public class Empresa extends AbstractModel implements Serializable
 	public void setCampoExtraAtualizarMeusDados(boolean campoExtraAtualizarMeusDados) {
 		this.campoExtraAtualizarMeusDados = campoExtraAtualizarMeusDados;
 	}
+    public boolean isAderiuAoESocial() {
+        return aderiuAoESocial;
+    }
+
+    public void setAderiuAoESocial(boolean aderiuAoESocial) {
+        this.aderiuAoESocial = aderiuAoESocial;
+    }
 }

@@ -48,4 +48,22 @@ public class AcPessoalClientSistemaTest extends AcPessoalClientTest
 			fail(e.getMessage());
 		}
 	}
+	
+	public void testAderiuAoESocialTrue() throws Exception
+	{
+		montaMockGrupoAC();
+		
+		execute("insert into es_adesao(emp_codigo, tp_amb_esocial, data, faturamento, encerracompetencia, bdunico,ativo) values('0006', 3, '2011-02-01', 0, 0, 1, 1)");
+		
+		assertTrue(acPessoalClientsistemaImpl.isAderiuAoESocial(empresa));
+		
+		execute("delete from es_adesao where emp_codigo = '0006'");
+	}
+	
+	public void testAderiuAoESocialFalse() throws Exception
+	{
+		montaMockGrupoAC();
+		
+		assertFalse(acPessoalClientsistemaImpl.isAderiuAoESocial(empresa));
+	}
 }

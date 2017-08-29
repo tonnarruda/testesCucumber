@@ -6,6 +6,7 @@ import java.util.Collection;
 
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.dicionario.StatusAdmisaoColaboradorNoFortesPessoal;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
@@ -401,4 +402,103 @@ public class AcPessoalClientColaboradorTest extends AcPessoalClientTest
 		}
 		 assertNull(exception);
 	}
+	
+	public void testExisteHistoricoCadastralDoColaboradorComPendenciaNoESocial() throws Exception
+	{
+		montaMockGrupoAC();
+		execute("INSERT INTO EPG (EMP_CODIGO,CODIGO,NOME) VALUES ('"+ empCodigo +"','991199','TESTE do RH')");
+		ResultSet result = query("select nome from epg where codigo = '991199' and emp_codigo = '" + empCodigo + "'");
+		if (!result.next())
+			fail("Consulta RETORNOU algo...");
+
+		Colaborador colaborador = new Colaborador();
+		colaborador.setCodigoAC("991199");
+		colaborador.setId(0L);
+		
+		assertFalse(acPessoalClientColaboradorImpl.isExisteHistoricoCadastralDoColaboradorComPendenciaNoESocial(empresa, colaborador.getCodigoAC()));
+	}
+	
+	public void testExisteHistoricoCadastralDoColaboradorComPendenciaNoESocialTrue() throws Exception
+	{
+		montaMockGrupoAC();
+		execute("insert into es_adesao(emp_codigo, tp_amb_esocial, data, faturamento, encerracompetencia, bdunico,ativo) values('0006', 3, '2011-02-01', 0, 0, 1, 1)");
+		execute("INSERT INTO EPG(EMP_CODIGO,CODIGO,NOME,ADMISSAODATA,STATUS,CODIGO_EVENTO) VALUES ('"+ empCodigo +"','991199','TESTE do RH','2017-01-01',3,'S-2100')");
+		execute("INSERT INTO HEPG(EMP_CODIGO,EPG_CODIGO,DATA,NOME,STATUS,CODIGO_EVENTO) VALUES ('"+ empCodigo +"','991199','2017-01-01','TESTE do RH',3,'S-2100')");
+
+		Colaborador colaborador = new Colaborador();
+		colaborador.setCodigoAC("991199");
+		colaborador.setId(0L);
+		
+		assertTrue(acPessoalClientColaboradorImpl.isExisteHistoricoCadastralDoColaboradorComPendenciaNoESocial(empresa, colaborador.getCodigoAC()));
+		execute("delete from es_adesao where emp_codigo = '0006'");
+		execute("delete from HEPG where emp_codigo = '0006'");
+		execute("delete from EPG where emp_codigo = '0006'");
+	}
+	
+	public void testHistoricoCadastralDoColaboradorEInicioVinculo() throws Exception{
+		montaMockGrupoAC();
+		execute("insert into es_adesao(emp_codigo, tp_amb_esocial, data, faturamento, encerracompetencia, bdunico,ativo) values('0006', 3, '2011-02-01', 0, 0, 1, 1)");
+		execute("INSERT INTO EPG (EMP_CODIGO,CODIGO,NOME,ADMISSAODATA) VALUES ('"+ empCodigo +"','991199','TESTE do RH','2017-01-01' )");
+		execute("INSERT INTO HEPG (EMP_CODIGO,EPG_CODIGO,DATA,NOME,STATUS,CODIGO_EVENTO) VALUES ('"+ empCodigo +"','991199','2017-01-01','TESTE do RH',7,'S-2200')");
+		
+		Colaborador colaborador = new Colaborador();
+		colaborador.setCodigoAC("991199");
+		colaborador.setId(0L);
+		
+		assertTrue(acPessoalClientColaboradorImpl.isHistoricoCadastralDoColaboradorEInicioVinculo(empresa, colaborador.getCodigoAC()));
+		execute("delete from es_adesao where emp_codigo = '0006'");
+		execute("delete from HEPG where emp_codigo = '0006'");
+		execute("delete from EPG where emp_codigo = '0006'");
+	}
+	
+	public void testHistoricoCadastralDoColaboradorEInicioVinculoFalse() throws Exception{
+		montaMockGrupoAC();
+		execute("INSERT INTO EPG (EMP_CODIGO,CODIGO,NOME) VALUES ('"+ empCodigo +"','991199','TESTE do RH')");
+		ResultSet result = query("select nome from epg where codigo = '991199' and emp_codigo = '" + empCodigo + "'");
+		if (!result.next())
+			fail("Consulta RETORNOU algo...");
+
+		Colaborador colaborador = new Colaborador();
+		colaborador.setCodigoAC("991199");
+		colaborador.setId(0L);
+		
+		assertFalse(acPessoalClientColaboradorImpl.isHistoricoCadastralDoColaboradorEInicioVinculo(empresa, colaborador.getCodigoAC()));
+	}
+	
+	public void testStatusAdmissaoNoFortesPessoalNaTabelaTemporaria() throws Exception{
+		montaMockGrupoAC();
+		
+		tSituacao.setValor(6.7);
+		tSituacao.setIndiceQtd(0.0);
+		tSituacao.setValorAnterior(0.0);
+		tSituacao.setTipoSalario(TipoAplicacaoIndice.CARGO + "");
+		tSituacao.setCargoCodigoAC("220");
+		
+		acPessoalClientColaboradorImpl.contratar(tEmpregado, tSituacao, empresa);
+		
+		assertEquals(StatusAdmisaoColaboradorNoFortesPessoal.NA_TABELA_TEMPORARIA.getOpcao(), acPessoalClientColaboradorImpl.statusAdmissaoNoFortesPessoal(empresa, tEmpregado.getId().longValue()));
+	}
+	
+	public void testStatusAdmissaoNoFortesPessoalEmAdmissao() throws Exception{
+		montaMockGrupoAC();
+		
+		execute("INSERT INTO CEPG (EMP_CODIGO, ID, ID_EXTERNO, CPF, NOME) VALUES ('"+ empCodigo +"','9999','9999','01234567891','TESTE do RH')");
+				
+		assertEquals(StatusAdmisaoColaboradorNoFortesPessoal.EM_ADMISSAO.getOpcao(), acPessoalClientColaboradorImpl.statusAdmissaoNoFortesPessoal(empresa,9999L));
+	}	
+
+	public void testStatusAdmissaoNoFortesPessoalEmpregado() throws Exception{
+		montaMockGrupoAC();
+		
+		execute("INSERT INTO EPG (EMP_CODIGO,CODIGO,NOME,ID_EXTERNO) VALUES ('"+ empCodigo +"','991199','TESTE do RH', '1')");
+		ResultSet result = query("select nome from epg where codigo = '991199' and emp_codigo = '" + empCodigo + "'");
+		if (!result.next())
+			fail("Consulta RETORNOU algo...");
+
+		Colaborador colaborador = new Colaborador();
+		colaborador.setCodigoAC("991199");
+		colaborador.setId(1L);
+		
+		assertEquals(StatusAdmisaoColaboradorNoFortesPessoal.EMPREGADO.getOpcao(), acPessoalClientColaboradorImpl.statusAdmissaoNoFortesPessoal(empresa, colaborador.getId()));
+	}	
 }

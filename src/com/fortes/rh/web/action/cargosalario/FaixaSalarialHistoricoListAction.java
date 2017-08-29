@@ -3,10 +3,12 @@ package com.fortes.rh.web.action.cargosalario;
 import java.lang.reflect.InvocationTargetException;
 
 import com.fortes.rh.business.cargosalario.FaixaSalarialHistoricoManager;
+import com.fortes.rh.exception.ESocialException;
 import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
 
@@ -27,7 +29,10 @@ public class FaixaSalarialHistoricoListAction extends MyActionSupportList
 	{
 		try
 		{
-			faixaSalarialHistoricoManager.remove(faixaSalarialHistorico.getId(), getEmpresaSistema(), true);
+			if(isEmpresaIntegradaEAderiuAoESocial() && faixaSalarialHistorico.getStatus() != StatusRetornoAC.CANCELADO)
+				throw new ESocialException();
+			else
+				faixaSalarialHistoricoManager.remove(faixaSalarialHistorico.getId(), getEmpresaSistema(), true);
 		}
 
 		catch(InvocationTargetException e)
@@ -40,13 +45,14 @@ public class FaixaSalarialHistoricoListAction extends MyActionSupportList
 			if(e.getTargetException() instanceof IntegraACException)
 				setActionMsg("Não foi possível excluir o histórico da faixa salarial no Fortes Pessoal.");
 		}
-		
+		catch (ESocialException e) {
+			setActionMsg(e.getMessage());
+		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
 			setActionMsg("Não foi possível excluir o histórico faixa salarial. Pois possui dependências.");
 		}
-		
 		return Action.SUCCESS;
 	}
 

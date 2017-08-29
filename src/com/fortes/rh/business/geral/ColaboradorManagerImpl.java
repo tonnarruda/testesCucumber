@@ -21,6 +21,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -3281,6 +3282,28 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
         this.criarUsuarioParaColaborador(colaborador, colaborador.getEmpresa());
         gerenciadorComunicacaoManager.enviaEmailBoasVindasColaborador(colaborador);
     }
+
+	public boolean isExisteHistoricoCadastralDoColaboradorComPendenciaNoESocial(Empresa empresa, String codigoAcColaborador) throws Exception {
+		return acPessoalClientColaborador.isExisteHistoricoCadastralDoColaboradorComPendenciaNoESocial(empresa, codigoAcColaborador);
+	}
+
+	public boolean isHistoricoCadastralDoColaboradorEInicioVinculo(Empresa empresa, String codigoAcColaborador) throws Exception {
+		return acPessoalClientColaborador.isHistoricoCadastralDoColaboradorEInicioVinculo(empresa, codigoAcColaborador);
+	}
+
+	public Integer statusAdmissaoNoFortesPessoal(Empresa empresa, Long colaboradorId) throws Exception {
+		return acPessoalClientColaborador.statusAdmissaoNoFortesPessoal(empresa, colaboradorId);
+	}
+	
+	public String configuraCamposObrigatorios(ParametrosDoSistema parametrosDoSistema){
+		String[] camposIntegradosEQuePodemSerConfiguradosComoObrigatorios = new String[]{"nome","nomeComercial","nascimento","sexo","cpf","escolaridade","cep","ende","num","complemento","bairroNome",
+				"cidade","email","fone","celular","estadoCivil","nomeConjuge","nomePai","nomeMae","deficiencia","identidade","carteiraHabilitacao","tituloEleitoral","certificadoMilitar","ctps"};
+		
+		Collection<String> collectCamposIntegradosEQuePodemSerConfiguradosComoObrigatorios = new CollectionUtil<String>().convertArrayToCollection(camposIntegradosEQuePodemSerConfiguradosComoObrigatorios);
+		Collection<String> camposObrigatoriosParametrosDoSistema = new CollectionUtil<String>().convertArrayToCollection(parametrosDoSistema.getCamposColaboradorObrigatorio().split(","));
+		
+		return StringUtil.converteCollectionToString(CollectionUtils.disjunction(camposObrigatoriosParametrosDoSistema, collectCamposIntegradosEQuePodemSerConfiguradosComoObrigatorios));
+	} 
 	
 	public void setColaboradorPeriodoExperienciaAvaliacaoManager(ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager) 
 	{

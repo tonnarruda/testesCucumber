@@ -34,7 +34,7 @@ public class CargoListAction extends MyActionSupportList
 	{
 		try {
 			setTotalSize(cargoManager.getCount(getEmpresaSistema().getId(), areaOrganizacional.getId(), cargo.getNomeMercado(), cargo.isAtivo()));
-			cargos = cargoManager.findCargos(getPage(), getPagingSize(), getEmpresaSistema().getId(), areaOrganizacional.getId(), cargo.getNomeMercado(), cargo.isAtivo());
+			cargos = cargoManager.findCargos(getPage(), getPagingSize(), getEmpresaSistema().getId(), areaOrganizacional.getId(), cargo.getNomeMercado(), cargo.isAtivo(), true);
 			
 			areas = areaOrganizacionalManager.montaAllSelect(getEmpresaSistema().getId());
 			
@@ -54,7 +54,7 @@ public class CargoListAction extends MyActionSupportList
 	{
 		Long areaId = areaOrganizacional != null ? areaOrganizacional.getId() : null;
 		
-		cargos = cargoManager.findCargos(0, 0, getEmpresaSistema().getId(), areaId, cargo.getNomeMercado(), cargo.isAtivo());
+		cargos = cargoManager.findCargos(0, 0, getEmpresaSistema().getId(), areaId, cargo.getNomeMercado(), cargo.isAtivo(), false);
 		
 		areaOrganizacional = areaOrganizacionalManager.findByIdProjection(areaId);
 		
@@ -73,8 +73,12 @@ public class CargoListAction extends MyActionSupportList
 	public String delete() throws Exception
 	{
 		try {
-			cargoManager.remove(cargo.getId(), getEmpresaSistema());
-			addActionSuccess("Cargo excluído com sucesso.");
+			if(isEmpresaIntegradaEAderiuAoESocial() && cargo.isPossuiFaixaSalarial())
+				addActionWarning("Devido as adequações ao eSocial, não é possível excluir cargo que possui faixa salarial.");
+			else{
+				cargoManager.remove(cargo.getId(), getEmpresaSistema());
+				addActionSuccess("Cargo excluído com sucesso.");
+			}
 		} catch (Exception e) {
 			ExceptionUtil.traduzirMensagem(this, e, "Não foi possível excluir este cargo.");
 		}

@@ -68,7 +68,7 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 		return getDao().findAllSelect(empresaId, tipoReajuste, NAO_APROVADA, null, null);
 	}
 
-	public void marcaUltima(Collection<TabelaReajusteColaborador> tabelaReajusteColaboradors)
+	public void marcaUltima(Collection<TabelaReajusteColaborador> tabelaReajusteColaboradors, boolean empresaIntegradaEAderiuAoESocial)
 	{
 		CollectionUtil<TabelaReajusteColaborador> cu = new CollectionUtil<TabelaReajusteColaborador>();
 		tabelaReajusteColaboradors = cu.sortCollectionDate(tabelaReajusteColaboradors, "data");
@@ -85,11 +85,16 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 				{
 					tabelaReajusteColaborador.setEhUltimo(true);
 					ultimoColaborador = false;
+					
+					if(empresaIntegradaEAderiuAoESocial)
+						tabelaReajusteColaborador.setExisteHistoricoConfirmado(historicoColaboradorManager.existeHistoricoConfirmadoByTabelaReajusteColaborador(tabelaReajusteColaborador.getId()));
 				}
 				if(ultimaFaixaSalarial && tabelaReajusteColaborador.getTipoReajuste().equals(TipoReajuste.FAIXA_SALARIAL))
 				{
 					tabelaReajusteColaborador.setEhUltimo(true);
 					ultimaFaixaSalarial = false;
+					if(empresaIntegradaEAderiuAoESocial)
+						tabelaReajusteColaborador.setExisteHistoricoConfirmado(faixaSalarialHistoricoManager.existeHistoricoConfirmadoByTabelaReajusteColaborador(tabelaReajusteColaborador.getId()));
 				}
 				if(ultimoIndice && tabelaReajusteColaborador.getTipoReajuste().equals(TipoReajuste.INDICE))
 				{
@@ -223,23 +228,29 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 		getDao().updateSetAprovada(tabelaReajusteColaborador.getId(), true);
 	}
 	
-	public void cancelar(Character tipoReajuste, Long tabelaReajusteColaboradorId, Empresa empresa) throws Exception
+	public void cancelar(Character tipoReajuste, Long tabelaReajusteColaboradorId, Empresa empresa, boolean empresaIntegradaEAderiuAoESocial) throws Exception
 	{
 		if (tipoReajuste.equals(TipoReajuste.COLABORADOR))
-			cancelarColaborador(tabelaReajusteColaboradorId, empresa);
+			cancelarColaborador(tabelaReajusteColaboradorId, empresa, empresaIntegradaEAderiuAoESocial);
 		
 		else if (tipoReajuste.equals(TipoReajuste.FAIXA_SALARIAL))
-			cancelarPorFaixaSalarial(tabelaReajusteColaboradorId, empresa);
+			cancelarPorFaixaSalarial(tabelaReajusteColaboradorId, empresa, empresaIntegradaEAderiuAoESocial);
 
 		else if (tipoReajuste.equals(TipoReajuste.INDICE))
 			cancelarPorIndice(tabelaReajusteColaboradorId, empresa);
 	}
 	
-	private void cancelarColaborador(Long tabelaReajusteColaboradorId, Empresa empresa) throws Exception
+	private void cancelarColaborador(Long tabelaReajusteColaboradorId, Empresa empresa, boolean empresaIntegradaEAderiuAoESocial) throws Exception
 	{
+	    
+		if(empresaIntegradaEAderiuAoESocial && historicoColaboradorManager.existeHistoricoConfirmadoByTabelaReajusteColaborador(tabelaReajusteColaboradorId)){
+			throw new FortesException("Devido as adequações ao eSocial, não é possível cancelar um reajuste que possui situações confirmadas no Fortes Pessoal.");
+		}
+		
+		Collection<TSituacao> situacaoIntegrados = historicoColaboradorManager.findHistoricosByTabelaReajuste(tabelaReajusteColaboradorId, empresa);
+	    
 		getDao().updateSetAprovada(tabelaReajusteColaboradorId, false);
 
-		Collection<TSituacao> situacaoIntegrados = historicoColaboradorManager.findHistoricosByTabelaReajuste(tabelaReajusteColaboradorId, empresa);
 		Collection<TSituacao> situacaosTmp = new ArrayList<TSituacao>(); 
 		
 		if(!situacaoIntegrados.isEmpty())
@@ -267,14 +278,16 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 			}
 		}
 	}
-	
-	private void cancelarPorFaixaSalarial(Long tabelaReajusteColaboradorId, Empresa empresa) throws Exception
-	{
+
+	private void cancelarPorFaixaSalarial(Long tabelaReajusteColaboradorId, Empresa empresa, boolean empresaIntegradaEAderiuAoESocial) throws Exception {
+		if (empresaIntegradaEAderiuAoESocial && faixaSalarialHistoricoManager.existeHistoricoConfirmadoByTabelaReajusteColaborador(tabelaReajusteColaboradorId))
+			throw new FortesException("Devido as adequações ao eSocial, não é possível cancelar um reajuste que possui situações confirmadas no Fortes Pessoal.");
+
 		Collection<FaixaSalarialHistorico> historicos = faixaSalarialHistoricoManager.findByTabelaReajusteId(tabelaReajusteColaboradorId);
-		
-		for (FaixaSalarialHistorico faixaSalarialHistorico : historicos) 
+
+		for (FaixaSalarialHistorico faixaSalarialHistorico : historicos)
 			faixaSalarialHistoricoManager.remove(faixaSalarialHistorico.getId(), empresa, true);
-		
+
 		getDao().updateSetAprovada(tabelaReajusteColaboradorId, false);
 	}
 
@@ -367,7 +380,7 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 	{
 		return getDao().findByIdProjection(tabelaReajusteColaboradorId);
 	}
-
+	
 	public void setAcPessoalClientTabelaReajuste(AcPessoalClientTabelaReajusteInterface acPessoalClientTabelaReajuste)
 	{
 		this.acPessoalClientTabelaReajuste = acPessoalClientTabelaReajuste;

@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.Map;
 
 import com.fortes.rh.business.geral.NoticiaManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -208,5 +209,18 @@ public abstract class MyActionSupport extends ActionSupport
 			return colaboradorSistema.getId();
 		
 		return null;
+	}
+	
+	public boolean isEmpresaIntegradaEAderiuAoESocial(){
+	    ParametrosDoSistemaManager parametrosDoSistemaManager = (ParametrosDoSistemaManager) SpringUtil.getBean("parametrosDoSistemaManager");
+	    boolean aderiuAoESocial = true;
+	    try {
+			aderiuAoESocial = parametrosDoSistemaManager.isAderiuAoESocial(getEmpresaSistema());
+		} catch (Exception e) {
+			e.printStackTrace();
+			if(empresaSistema.isAcIntegra())
+				addActionWarning("Não foi possível verificar se a empresa aderiu ao eSocial. Por motivo de segurança consideramos que tenha aderido.");
+		}
+	    return aderiuAoESocial && empresaSistema.isAcIntegra();
 	}
 }

@@ -31,6 +31,7 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorJsonVO;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Ocorrencia;
+import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.geral.PendenciaAC;
 import com.fortes.rh.model.geral.relatorio.CartaoAcompanhamentoExperienciaVO;
 import com.fortes.rh.model.geral.relatorio.MotivoDemissaoQuantidade;
@@ -258,4 +259,8 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public boolean excedeuContratacao(Long empresaId);
 	public Collection<Colaborador> findDadosBasicosNotIds(Set<Long> notColabIds, Long[] colabIds, Long[] areasIds, Long[] estabelecimentosIds, String situacaoColaborador, Long empresaId);
 	public void confirmarContratacao(TEmpregado empregado, TSituacao situacao) throws Exception;
+	public boolean isExisteHistoricoCadastralDoColaboradorComPendenciaNoESocial(Empresa empresa, String codigoAcColaborador) throws Exception;
+	public boolean isHistoricoCadastralDoColaboradorEInicioVinculo(Empresa empresa, String codigoAcColaborador) throws Exception;
+	public Integer statusAdmissaoNoFortesPessoal(Empresa empresa, Long colaboradorId) throws Exception;
+	public String configuraCamposObrigatorios(ParametrosDoSistema parametrosDoSistema);
 }

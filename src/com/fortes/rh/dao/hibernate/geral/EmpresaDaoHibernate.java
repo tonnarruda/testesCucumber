@@ -113,6 +113,7 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		p.add(Projections.property("e.razaoSocial"), "razaoSocial");
 		p.add(Projections.property("e.cnpj"), "cnpj");
 		p.add(Projections.property("e.cnae"), "cnae");
+		p.add(Projections.property("e.aderiuAoESocial"), "aderiuAoESocial");
 		p.add(Projections.property("e.acIntegra"), "acIntegra");
 		p.add(Projections.property("e.controlarVencimentoCertificacaoPor"), "controlarVencimentoCertificacaoPor");
 		p.add(Projections.property("e.grupoAC"), "grupoAC");
@@ -621,4 +622,13 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		
 		return criteria.list();
 	}
+
+    public void atualizarAdesaoAoESocial(String codigoAC, String grupoAC, boolean aderiuAoEsocial) {
+        String hql = "update Empresa e set aderiuAoESocial = :aderiuAoEsocial where e.codigoAC = :codigoAC and e.grupoAC = :grupoAC";
+        Query query = getSession().createQuery(hql);
+        query.setBoolean("aderiuAoEsocial", aderiuAoEsocial);
+        query.setString("codigoAC", codigoAC);
+        query.setString("grupoAC", grupoAC);
+        query.executeUpdate();
+    }
 }

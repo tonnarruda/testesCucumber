@@ -17,6 +17,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.Type;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.config.JDBCConnection;
@@ -50,7 +51,7 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 			return cargos.size();
 	}
 
-	public Collection<Cargo> findCargos(int page, int pagingSize, Long empresaId, Long areaId, String cargoNome, Boolean ativo)
+	public Collection<Cargo> findCargos(int page, int pagingSize, Long empresaId, Long areaId, String cargoNome, Boolean ativo, boolean verificarSePossuiFaixaSalarial)
 	{
 		Criteria criteria = getSession().createCriteria(Cargo.class, "c");
 
@@ -61,6 +62,10 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 		p.add(Projections.property("c.nome"), "nome");
 		p.add(Projections.property("c.nomeMercado"), "nomeMercado");
 		p.add(Projections.property("go.nome"), "grupoNome");
+		
+		if(verificarSePossuiFaixaSalarial)
+		    p.add(Projections.sqlProjection("(select count(fs.id) from faixaSalarial fs where fs.cargo_id = this_.id) > 0 as possuiFaixaSalarial", new String[] {"possuiFaixaSalarial"}, new Type[] {Hibernate.BOOLEAN}), "possuiFaixaSalarial");
+		
 		criteria.setProjection(p);
 
 		criteria.addOrder(Order.asc("c.nome"));

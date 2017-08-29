@@ -554,4 +554,13 @@ public class FaixaSalarialHistoricoDaoHibernate extends GenericDaoHibernate<Faix
 
 		return ((Integer) criteria.uniqueResult()) > 0;	
 	}
+
+	public boolean existeHistoricoConfirmadoByTabelaReajusteColaborador(Long tabelaReajusteColaboradorId) {
+		Criteria criteria = getSession().createCriteria(FaixaSalarialHistorico.class, "fsh");
+        criteria.createCriteria("fsh.reajusteFaixaSalarial", "rfs");
+        criteria.setProjection(Projections.count("id"));
+        criteria.add(Expression.eq("fsh.status",StatusRetornoAC.CONFIRMADO));
+        criteria.add(Expression.eq("rfs.tabelaReajusteColaborador.id", tabelaReajusteColaboradorId));
+        return ((Integer) criteria.uniqueResult()) > 0;
+	}
 }

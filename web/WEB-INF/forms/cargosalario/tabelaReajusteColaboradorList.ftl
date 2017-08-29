@@ -15,7 +15,11 @@
 		<@display.column title="Ações" media="html" style="width:95px;">
 			<@frt.link verifyRole="ROLE_REL_SIMULACAOREAJUSTE" href="../reajusteRelatorio/formFiltro.action?tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}" imgTitle="Imprimir" imgName="printer.gif"/>
 			<#if tabelaReajusteColaborador.ehUltimo>
-				<a href="javascript:newConfirm('Tem certeza que deseja desfazer os realinhamentos?', function(){window.location='cancelarReajuste.action?tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}&tabelaReajusteColaborador.tipoReajuste=${tabelaReajusteColaborador.tipoReajuste}'});"><img title="Cancelar Reajuste" border="0" src="<@ww.url includeParams="none" value="/imgs/undo.gif"/>"></a>
+				<#if !tabelaReajusteColaborador.existeHistoricoConfirmado>
+					<a href="javascript:newConfirm('Tem certeza que deseja desfazer os realinhamentos?', function(){window.location='cancelarReajuste.action?tabelaReajusteColaborador.id=${tabelaReajusteColaborador.id}&tabelaReajusteColaborador.tipoReajuste=${tabelaReajusteColaborador.tipoReajuste}'});"><img title="Cancelar Reajuste" border="0" src="<@ww.url includeParams="none" value="/imgs/undo.gif"/>"></a>
+				<#else>
+					<img border="0" title="Devido as adequações ao eSocial, não é possível cancelar um reajuste que possui situações confirmadas no Fortes Pessoal." src="<@ww.url includeParams="none" value="/imgs/undo.gif"/>" style="opacity:0.5;filter:alpha(opacity=50);">
+				</#if>
 				<img border="0" src="<@ww.url includeParams="none" value="/imgs/agrupar.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 				<img border="0" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 				<img border="0" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">

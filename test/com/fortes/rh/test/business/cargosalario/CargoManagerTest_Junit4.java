@@ -2,6 +2,10 @@ package com.fortes.rh.test.business.cargosalario;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.verify;
@@ -122,4 +126,16 @@ public class CargoManagerTest_Junit4
 		
 		assertEquals(cargos.size(), cargoCollections.size());
 	}
+	
+    @Test
+    public void testFindCargos()
+    {
+
+        Collection<Cargo> cargos = new ArrayList<Cargo>();
+        Long empresaId = 1L;
+
+        when(cargoDao.findCargos(eq(1), eq(15), eq(empresaId), anyLong(), anyString(), anyBoolean(), anyBoolean())).thenReturn(cargos); 
+
+        assertEquals(cargos, cargoManager.findCargos(1, 15, empresaId, null, null, null, false));
+    }
 }

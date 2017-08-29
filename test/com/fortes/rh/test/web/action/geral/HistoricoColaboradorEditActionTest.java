@@ -1,17 +1,35 @@
 package com.fortes.rh.test.web.action.geral;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 
-import mockit.Mockit;
-
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
-import org.jmock.core.Constraint;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.BDDMockito;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
 
 import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
@@ -20,6 +38,7 @@ import com.fortes.rh.business.cargosalario.IndiceManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.geral.QuantidadeLimiteColaboradoresPorCargoManager;
 import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
@@ -45,113 +64,74 @@ import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
-import com.fortes.rh.test.util.mockObjects.MockActionContext;
+import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.web.action.cargosalario.HistoricoColaboradorEditAction;
-import com.opensymphony.xwork.ActionContext;
 
-public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(SpringUtil.class)
+public class HistoricoColaboradorEditActionTest
 {
 	private HistoricoColaboradorEditAction action;
 	
-	private Mock historicoColaboradorManager;
-	private Mock indiceManager;
-	private Mock funcaoManager;
-	private Mock ambienteManager;
-	private Mock estabelecimentoManager;
-	private Mock faixaSalarialManager;
-	private Mock areaOrganizacionalManager;
-	private Mock colaboradorManager;
-	private Mock solicitacaoManager;
-	private Mock quantidadeLimiteColaboradoresPorCargoManager;
-	private Mock transactionManager = null;
-	
+	private FuncaoManager funcaoManager;
+	private IndiceManager indiceManager;
+	private AmbienteManager ambienteManager;
+	private ColaboradorManager colaboradorManager;
+	private SolicitacaoManager solicitacaoManager;
+	private FaixaSalarialManager faixaSalarialManager;
+	private EstabelecimentoManager estabelecimentoManager;
+	private PlatformTransactionManager transactionManager;
+	private AreaOrganizacionalManager areaOrganizacionalManager;
+	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	private HistoricoColaboradorManager historicoColaboradorManager;
+	private QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager;
 	private Empresa empresaDoSistema;
 	private HistoricoColaborador historicoColaborador;
 
-	protected void setUp() throws Exception
+	@Before
+	public void setUp() throws Exception
 	{
 		action = new HistoricoColaboradorEditAction();
-		quantidadeLimiteColaboradoresPorCargoManager = new Mock(QuantidadeLimiteColaboradoresPorCargoManager.class);
-		action.setQuantidadeLimiteColaboradoresPorCargoManager((QuantidadeLimiteColaboradoresPorCargoManager) quantidadeLimiteColaboradoresPorCargoManager.proxy());
-		transactionManager = new Mock(PlatformTransactionManager.class);
+		funcaoManager = mock(FuncaoManager.class);
+		indiceManager = mock(IndiceManager.class);
+		ambienteManager = mock(AmbienteManager.class);
+		colaboradorManager = mock(ColaboradorManager.class);
+		solicitacaoManager = mock(SolicitacaoManager.class);
+		faixaSalarialManager = mock(FaixaSalarialManager.class);
+		estabelecimentoManager = mock(EstabelecimentoManager.class);
+		transactionManager = mock(PlatformTransactionManager.class);
+		areaOrganizacionalManager = mock(AreaOrganizacionalManager.class);
+		parametrosDoSistemaManager = mock(ParametrosDoSistemaManager.class);
+		historicoColaboradorManager = mock(HistoricoColaboradorManager.class);
+		quantidadeLimiteColaboradoresPorCargoManager = mock(QuantidadeLimiteColaboradoresPorCargoManager.class);
 		
-		action.setHistoricoColaboradorManager(mockaHistoricoColaboradorManager());
-		action.setIndiceManager(mockaIndiceManager());
-		action.setFuncaoManager(mockaFuncaoManager());
-		action.setAmbienteManager(mockaAmbienteManager());
-		action.setEstabelecimentoManager(mockaEstabelecimentoManager());
-		action.setFaixaSalarialManager(mockaFaixaSalarialManager());
-		action.setAreaOrganizacionalManager(mockaAreaOrganizacionalManager());
-		action.setColaboradorManager(mockaColaboradorManager());
-		action.setSolicitacaoManager(mockaSolicitacaoManager());
-		action.setTransactionManager((PlatformTransactionManager) transactionManager.proxy());
-		
+		action.setIndiceManager(indiceManager);
+		action.setFuncaoManager(funcaoManager);
+		action.setAmbienteManager(ambienteManager);
+		action.setColaboradorManager(colaboradorManager);
+		action.setSolicitacaoManager(solicitacaoManager);
+		action.setTransactionManager(transactionManager);
+		action.setFaixaSalarialManager(faixaSalarialManager);
+		action.setEstabelecimentoManager(estabelecimentoManager);
+		action.setAreaOrganizacionalManager(areaOrganizacionalManager);
+		action.setHistoricoColaboradorManager(historicoColaboradorManager);
+		action.setQuantidadeLimiteColaboradoresPorCargoManager(quantidadeLimiteColaboradoresPorCargoManager);
 		
 		empresaDoSistema = EmpresaFactory.getEmpresa(1L);
 		action.setEmpresaSistema(empresaDoSistema);
 		
 		historicoColaborador = HistoricoColaboradorFactory.getEntity();
 		
-		Mockit.redefineMethods(ActionContext.class, MockActionContext.class);
+		PowerMockito.mockStatic(SpringUtil.class);
+    	BDDMockito.given(SpringUtil.getBean("parametrosDoSistemaManager")).willReturn(parametrosDoSistemaManager);
 	}
 	
-	protected void tearDown() throws Exception
-    {
-        historicoColaboradorManager = null;
-        action = null;
-        Mockit.restoreAllOriginalDefinitions();
-        super.tearDown();
-    }
-
-	private ColaboradorManager mockaColaboradorManager() {
-		colaboradorManager = new Mock(ColaboradorManager.class);
-		return (ColaboradorManager) colaboradorManager.proxy();
-	}
-	
-	private SolicitacaoManager mockaSolicitacaoManager() {
-		solicitacaoManager = new Mock(SolicitacaoManager.class);
-		return (SolicitacaoManager) solicitacaoManager.proxy();
-	}
-
-	private AreaOrganizacionalManager mockaAreaOrganizacionalManager() {
-		areaOrganizacionalManager = new Mock(AreaOrganizacionalManager.class);
-		return (AreaOrganizacionalManager) areaOrganizacionalManager.proxy();
-	}
-
-	private FaixaSalarialManager mockaFaixaSalarialManager() {
-		faixaSalarialManager = new Mock(FaixaSalarialManager.class);
-		return (FaixaSalarialManager) faixaSalarialManager.proxy();
-	}
-
-	private EstabelecimentoManager mockaEstabelecimentoManager() {
-		estabelecimentoManager = new Mock(EstabelecimentoManager.class);
-		return (EstabelecimentoManager) estabelecimentoManager.proxy();
-	}
-
-	private AmbienteManager mockaAmbienteManager() {
-		ambienteManager = new Mock(AmbienteManager.class);
-		return (AmbienteManager) ambienteManager.proxy();
-	}
-
-	private FuncaoManager mockaFuncaoManager() {
-		funcaoManager = new Mock(FuncaoManager.class);
-		return (FuncaoManager) funcaoManager.proxy();
-	}
-
-	private IndiceManager mockaIndiceManager() {
-		indiceManager = new Mock(IndiceManager.class);
-		return (IndiceManager) indiceManager.proxy();
-	}
-
-	private HistoricoColaboradorManager mockaHistoricoColaboradorManager() {
-		historicoColaboradorManager = new Mock(HistoricoColaboradorManager.class);
-		return (HistoricoColaboradorManager) historicoColaboradorManager.proxy();
-	}
-	
+	@Test
 	public void testList() throws Exception {
 		assertEquals("success", action.list()); 
 	}
-	
+
+	@Test
 	public void testPrepare() throws Exception {
 		// dado que
 		dadoQueExistemEstabelecimentosParaEmpresaDoSistema();
@@ -168,14 +148,15 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 		// quando
 		action.prepare();
 		// entao
-		estabelecimentoManager.verify();
-		indiceManager.verify();
-		faixaSalarialManager.verify();
-		areaOrganizacionalManager.verify();
-		funcaoManager.verify();
-		ambienteManager.verify();
+		verify(estabelecimentoManager).findAllSelect(eq(empresaDoSistema.getId()));
+		verify(indiceManager).findAll(empresaDoSistema);
+		verify(faixaSalarialManager).findFaixas(eq(empresaDoSistema), eq(Cargo.ATIVO), anyLong());
+		verify(areaOrganizacionalManager).findAllSelectOrderDescricao(eq(empresaDoSistema.getId()), eq(AreaOrganizacional.ATIVA), anyLong(), anyBoolean());
+		verify(funcaoManager).findByCargo(eq(historicoColaborador.getFaixaSalarial().getCargo().getId()));
+		verify(ambienteManager).findByEstabelecimento(historicoColaborador.getEstabelecimento().getId());
 	}
 	
+	@Test
 	public void testPrepareInsert() throws Exception {
 		
 		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(1L);
@@ -184,9 +165,10 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 		faixaSalarial.setCargo(cargo);
 		historicoColaborador.setEstabelecimento(estabelecimento);
 		historicoColaborador.setFaixaSalarial(faixaSalarial);
-		funcaoManager.expects(once()).method("findByCargo").with(ANYTHING).will(returnValue(new ArrayList<FaixaSalarial>()));
-		ambienteManager.expects(once()).method("findByEstabelecimento").with(ANYTHING).will(returnValue(new ArrayList<Ambiente>()));
-		historicoColaboradorManager.expects(once()).method("findByColaboradorProjection").with(ANYTHING, eq(StatusRetornoAC.AGUARDANDO)).will(returnValue(new ArrayList<HistoricoColaborador>()));
+		when(funcaoManager.findByCargo(anyLong())).thenReturn(new ArrayList<Funcao>());
+		when(ambienteManager.findByEstabelecimento(any(Long[].class))).thenReturn(new ArrayList<Ambiente>());
+		when(historicoColaboradorManager.findByColaboradorProjection(anyLong(), eq(StatusRetornoAC.AGUARDANDO))).thenReturn(new ArrayList<HistoricoColaborador>());
+		when(faixaSalarialManager.findById(anyLong())).thenReturn(faixaSalarial);
 		
 		// comportamente do prepareInsert()
 		dadoQueExisteHistoricoAtualParaColaborador();
@@ -201,6 +183,7 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 		assertQueMetodoPrepareFoiChamado();
 	}
 	
+	@Test
 	public void testPrepareInsertComHistoricoAguardandoConfirmacaoNoFortesPessoal() throws Exception {
 		
 		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(1L);
@@ -219,17 +202,24 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 		Collection<HistoricoColaborador> historicosColaborador = Arrays.asList(historicoColaborador);
 		action.setColaborador(colaborador);
 		
-		historicoColaboradorManager.expects(once()).method("findByColaboradorProjection").with(new Constraint[] {eq(colaborador.getId()), eq(StatusRetornoAC.AGUARDANDO)}).will(returnValue(historicosColaborador));
+		when(historicoColaboradorManager.findByColaboradorProjection(eq(colaborador.getId()), eq(StatusRetornoAC.AGUARDANDO))).thenReturn(historicosColaborador);
 
 		assertEquals("input", action.prepareInsert());
 	}
 	
+	@Test
 	public void testPrepareInsertQuandoHouverSolicitacao() throws Exception {
 		// comportamente do prepareInsert()
 		dadoQueExisteHistoricoAtualParaColaborador();
 		dadoQueExisteUmaSolicitacao();
 		// comportamento do prepare()
-		historicoColaboradorManager.expects(once()).method("findByColaboradorProjection").with(ANYTHING, eq(StatusRetornoAC.AGUARDANDO)).will(returnValue(new ArrayList<HistoricoColaborador>()));
+		
+		Cargo cargo = CargoFactory.getEntity(1L);
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
+		faixaSalarial.setCargo(cargo);
+		when(faixaSalarialManager.findById(anyLong())).thenReturn(faixaSalarial);
+		
+		when(historicoColaboradorManager.findByColaboradorProjection(anyLong(), eq(StatusRetornoAC.AGUARDANDO))).thenReturn(new ArrayList<HistoricoColaborador>());
 		simulaComportamentoDoPrepareQuandoHouverSolicitacao();
 		
 		String outcome = action.prepareInsert();
@@ -240,8 +230,8 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 		assertQueMetodoPrepareFoiChamadoQuandoHouverSolicitacao();
 	}
 	
+	@Test
 	public void testInsertQuandoNaoExisteHistoricoNaData() throws Exception {
-		
 		historicoColaborador.setMotivo(MotivoHistoricoColaborador.PROMOCAO);
 		dadoQueNaoExisteHistoricoNaData();
 		
@@ -250,20 +240,18 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 		historicoColaborador.setColaborador(ColaboradorFactory.getEntity(1L));
 		action.setHistoricoColaborador(historicoColaborador);
 		
-		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
-		quantidadeLimiteColaboradoresPorCargoManager.expects(atLeastOnce()).method("validaLimite").withAnyArguments();
-		transactionManager.expects(once()).method("commit").with(ANYTHING);
-		colaboradorManager.expects(once()).method("findColaboradorById").with(ANYTHING).will(returnValue(historicoColaborador.getColaborador()));
-		historicoColaboradorManager.expects(once()).method("verificaPrimeiroHistoricoAdmissao").with(eq(true), eq(historicoColaborador), eq(historicoColaborador.getColaborador())).will(returnValue(false));;
+		when(transactionManager.getTransaction(any(TransactionDefinition.class))).thenReturn(null);
+		when(colaboradorManager.findColaboradorById(anyLong())).thenReturn(historicoColaborador.getColaborador());
+		when(historicoColaboradorManager.verificaPrimeiroHistoricoAdmissao(eq(true), eq(historicoColaborador), eq(historicoColaborador.getColaborador()))).thenReturn(false);
 		
 		dadoQueNaoOcorreErroAoAjustarFuncaoDoColaborador();
-		dadoQueNaoOcorreErroAoInserirHistoricoDeColaborador();
 		
 		String outcome = action.insert();
 		
 		assertEquals("success", outcome);
 	}
 	
+	@Test
 	public void testPrepareUpdateHistoricoAguardandoConfirmacao() throws Exception {
 		
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
@@ -290,22 +278,23 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 		Collection<HistoricoColaborador> historicosAguardandoConfirmacao = Arrays.asList(historicoColaboradorAguagandoConfirmacao);
 		action.setColaborador(colaborador);
 		
-		historicoColaboradorManager.expects(once()).method("findByColaboradorProjection").with(new Constraint[] {eq(colaborador.getId()), eq(StatusRetornoAC.AGUARDANDO)}).will(returnValue(historicosAguardandoConfirmacao));
-		historicoColaboradorManager.expects(once()).method("findByIdHQL").with(eq(historicoColaboradorAguagandoConfirmacao.getId())).will(returnValue(historicoColaboradorAguagandoConfirmacao));
+		when(historicoColaboradorManager.findByColaboradorProjection(eq(colaborador.getId()), eq(StatusRetornoAC.AGUARDANDO))).thenReturn(historicosAguardandoConfirmacao);
+		when(historicoColaboradorManager.findByIdHQL(eq(historicoColaboradorAguagandoConfirmacao.getId()))).thenReturn(historicoColaboradorAguagandoConfirmacao);
 		
-		estabelecimentoManager.expects(once()).method("findAllSelect").with(eq(empresa.getId())).will(returnValue(new ArrayList<Estabelecimento>()));
-		indiceManager.expects(once()).method("findAll").with(eq(empresa)).will(returnValue(new ArrayList<Indice>()));
+		when(estabelecimentoManager.findAllSelect(eq(empresa.getId()))).thenReturn(new ArrayList<Estabelecimento>());
+		when(indiceManager.findAll(eq(empresa))).thenReturn(new ArrayList<Indice>());
 		
-		funcaoManager.expects(once()).method("findByCargo").with(eq(historicoColaboradorAguagandoConfirmacao.getFaixaSalarial().getCargo().getId())).will(returnValue(new ArrayList<Funcao>()));
-		ambienteManager.expects(once()).method("findByEstabelecimento").with(eq(new Long[]{historicoColaboradorAguagandoConfirmacao.getEstabelecimento().getId()})).will(returnValue(new ArrayList<Ambiente>()));
+		when(funcaoManager.findByCargo(eq(historicoColaboradorAguagandoConfirmacao.getFaixaSalarial().getCargo().getId()))).thenReturn(new ArrayList<Funcao>());
+		when(ambienteManager.findByEstabelecimento(eq(new Long[]{historicoColaboradorAguagandoConfirmacao.getEstabelecimento().getId()}))).thenReturn(new ArrayList<Ambiente>());
 		
-		faixaSalarialManager.expects(once()).method("findFaixas").with(eq(empresa), eq(true), ANYTHING).will(returnValue(new ArrayList<FaixaSalarial>()));
+		when(faixaSalarialManager.findFaixas(eq(empresa), eq(true), anyLong())).thenReturn(new ArrayList<FaixaSalarial>());
 
-		areaOrganizacionalManager.expects(once()).method("findAllSelectOrderDescricao").with(eq(empresa.getId()), eq(true), ANYTHING, ANYTHING).will(returnValue(new ArrayList<FaixaSalarial>()));
+		when(areaOrganizacionalManager.findAllSelectOrderDescricao(eq(empresa.getId()), eq(true), anyLong(), anyBoolean())).thenReturn(new ArrayList<AreaOrganizacional>());
 
 		assertEquals("success", action.prepareUpdate());
 	}
-	
+
+	@Test
 	public void testPrepareUpdateHistoricoComOutroHistoricoAguardandoConfirmacao() throws Exception {
 		
 		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(1L);
@@ -331,42 +320,37 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 		Collection<HistoricoColaborador> historicosAguardandoConfirmacao = Arrays.asList(historicoColaboradorAguardandoConfirmacao);
 		action.setColaborador(colaborador);
 		
-		historicoColaboradorManager.expects(once()).method("findByColaboradorProjection").with(new Constraint[] {eq(colaborador.getId()), eq(StatusRetornoAC.AGUARDANDO)}).will(returnValue(historicosAguardandoConfirmacao));
-		historicoColaboradorManager.expects(once()).method("findByIdHQL").with(eq(historicoColaboradorConfirmado.getId())).will(returnValue(historicoColaboradorConfirmado));
+		when(historicoColaboradorManager.findByColaboradorProjection(eq(colaborador.getId()), eq(StatusRetornoAC.AGUARDANDO))).thenReturn(historicosAguardandoConfirmacao);
+		when(historicoColaboradorManager.findByIdHQL(eq(historicoColaboradorConfirmado.getId()))).thenReturn(historicoColaboradorConfirmado);
 		
 		assertEquals("input", action.prepareUpdate());
 	}
 	
 	private void dadoQueNaoOcorreErroAoAjustarFuncaoDoColaborador() {
-		historicoColaboradorManager.expects(once()).method("ajustaAmbienteFuncao")
-			.with(eq(historicoColaborador)).will(returnValue(historicoColaborador));
-	}
-
-	private void dadoQueNaoOcorreErroAoInserirHistoricoDeColaborador() {
-		historicoColaboradorManager.expects(once()).method("insertHistorico")
-			.with(eq(historicoColaborador), eq(empresaDoSistema));
+		when(historicoColaboradorManager.ajustaAmbienteFuncao(eq(historicoColaborador))).thenReturn(historicoColaborador);
 	}
 
 	private void dadoQueNaoExisteHistoricoNaData() {
 		action.setHistoricoColaborador(historicoColaborador);
-		historicoColaboradorManager.expects(once()).method("existeHistoricoData")
-			.with(eq(historicoColaborador)).will(returnValue(false));
+		when(historicoColaboradorManager.existeHistoricoData(eq(historicoColaborador))).thenReturn(false);
 	}
 
+	@Test
 	public void testInsertQuandoJaExisteHistoricoNaData() throws Exception {
 		// comportamento do insert()
 		dadoQueJaExisteHistoricoNaData();
 		// comportamento do prepareInsert()
-		historicoColaboradorManager.expects(once()).method("findByColaboradorProjection").with(ANYTHING, eq(StatusRetornoAC.AGUARDANDO)).will(returnValue(new ArrayList<HistoricoColaborador>()));
+		when(historicoColaboradorManager.findByColaboradorProjection(anyLong(), eq(StatusRetornoAC.AGUARDANDO))).thenReturn(new ArrayList<HistoricoColaborador>());
 		simulaComportamentoDoPrepareInsert();
 		
-		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
+		when(transactionManager.getTransaction(any(TransactionDefinition.class))).thenReturn(null);
 		String outcome = action.insert();
 		
 		assertEquals("input", outcome);
 		assertQueMetodoPrepareInsertFoiChamado();
 	}
 	
+	@Test
 	public void testInsertQuandoOcorrerErroInternoQualquer() throws Exception {
 		historicoColaborador.setMotivo(MotivoHistoricoColaborador.PROMOCAO);
 		historicoColaborador.setData(new Date());
@@ -377,12 +361,10 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 		historicoColaborador.setColaborador(ColaboradorFactory.getEntity(1L));
 		action.setHistoricoColaborador(historicoColaborador);
 		
-		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
-		quantidadeLimiteColaboradoresPorCargoManager.expects(atLeastOnce()).method("validaLimite").withAnyArguments();
-		transactionManager.expects(once()).method("rollback").with(ANYTHING);
-		colaboradorManager.expects(once()).method("findColaboradorById").with(ANYTHING).will(returnValue(historicoColaborador.getColaborador()));
-		historicoColaboradorManager.expects(once()).method("findByColaboradorProjection").with(ANYTHING, eq(StatusRetornoAC.AGUARDANDO)).will(returnValue(new ArrayList<HistoricoColaborador>()));
-		historicoColaboradorManager.expects(once()).method("verificaPrimeiroHistoricoAdmissao").with(eq(true), eq(historicoColaborador), eq(historicoColaborador.getColaborador())).will(returnValue(false));;
+		when(transactionManager.getTransaction(any(TransactionDefinition.class))).thenReturn(null);
+		when(colaboradorManager.findColaboradorById(anyLong())).thenReturn(historicoColaborador.getColaborador());
+		when(historicoColaboradorManager.findByColaboradorProjection(anyLong(), eq(StatusRetornoAC.AGUARDANDO))).thenReturn(new ArrayList<HistoricoColaborador>());
+		when(historicoColaboradorManager.verificaPrimeiroHistoricoAdmissao(eq(true), eq(historicoColaborador), eq(historicoColaborador.getColaborador()))).thenReturn(false);
 		
 		dadoQueNaoOcorreErroAoAjustarFuncaoDoColaborador();
 		dadoQueOcorreErroGenericoAoInserirHistoricoDeColaborador();
@@ -394,11 +376,11 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 		assertQueMetodoPrepareInsertFoiChamado();
 	}
 	
-	private void dadoQueOcorreErroGenericoAoInserirHistoricoDeColaborador() {
-		historicoColaboradorManager.expects(once()).method("insertHistorico")
-			.with(eq(historicoColaborador), eq(empresaDoSistema)).will(throwException(new RuntimeException("Erro interno.")));
+	private void dadoQueOcorreErroGenericoAoInserirHistoricoDeColaborador() throws Exception {
+		doThrow(new RuntimeException("Erro interno.")).when(historicoColaboradorManager).insertHistorico(historicoColaborador, empresaDoSistema);
 	}
 
+	@Test
 	public void testInsertQuandoOcorrerErroDeIntegraACException() throws Exception {
 		historicoColaborador.setMotivo(MotivoHistoricoColaborador.PROMOCAO);
 		historicoColaborador.setData(new Date());
@@ -409,12 +391,10 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 		historicoColaborador.setColaborador(ColaboradorFactory.getEntity(1L));
 		action.setHistoricoColaborador(historicoColaborador);
 		
-		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
-		quantidadeLimiteColaboradoresPorCargoManager.expects(atLeastOnce()).method("validaLimite").withAnyArguments();
-		transactionManager.expects(once()).method("rollback").with(ANYTHING);
-		colaboradorManager.expects(once()).method("findColaboradorById").with(ANYTHING).will(returnValue(historicoColaborador.getColaborador()));
-		historicoColaboradorManager.expects(once()).method("findByColaboradorProjection").with(ANYTHING, eq(StatusRetornoAC.AGUARDANDO)).will(returnValue(new ArrayList<HistoricoColaborador>()));
-		historicoColaboradorManager.expects(once()).method("verificaPrimeiroHistoricoAdmissao").with(eq(true), eq(historicoColaborador), eq(historicoColaborador.getColaborador())).will(returnValue(false));;
+		when(transactionManager.getTransaction(any(TransactionDefinition.class))).thenReturn(null);
+		when(colaboradorManager.findColaboradorById(anyLong())).thenReturn(historicoColaborador.getColaborador());
+		when(historicoColaboradorManager.findByColaboradorProjection(anyLong(),eq(StatusRetornoAC.AGUARDANDO))).thenReturn(new ArrayList<HistoricoColaborador>());
+		when(historicoColaboradorManager.verificaPrimeiroHistoricoAdmissao(eq(true), eq(historicoColaborador), eq(historicoColaborador.getColaborador()))).thenReturn(false);
 		
 		
 		dadoQueNaoOcorreErroAoAjustarFuncaoDoColaborador();
@@ -427,13 +407,163 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 		assertQueMetodoPrepareInsertFoiChamado();
 	}
 
+
+	@Test
+	public void testPrepareUpdateComFolhaNaoProcessadaEEmpresaIntegradaEAderidaAoESocial() throws Exception
+	{
+		empresaDoSistema.setAcIntegra(true);
+		action.setEmpresaSistema(empresaDoSistema);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		action.setColaborador(colaborador);
+		
+		historicoColaborador.setFaixaSalarial(FaixaSalarialFactory.getEntity(1L));
+		historicoColaborador.setAreaOrganizacional(AreaOrganizacionalFactory.getEntity(1L));
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaborador.setMotivo(MotivoHistoricoColaborador.PROMOCAO);
+		historicoColaborador.setData(new Date());
+		action.setHistoricoColaborador(historicoColaborador);
+		
+		when(historicoColaboradorManager.findByColaboradorProjection(colaborador.getId(), StatusRetornoAC.AGUARDANDO)).thenReturn(new ArrayList<HistoricoColaborador>());
+		when(historicoColaboradorManager.findByIdHQL(historicoColaborador.getId())).thenReturn(historicoColaborador);
+		when(historicoColaboradorManager.verificaHistoricoNaFolhaAC(historicoColaborador.getId(), historicoColaborador.getColaborador().getCodigoAC(), action.getEmpresaSistema())).thenReturn(false);
+		when(parametrosDoSistemaManager.isAderiuAoESocial(action.getEmpresaSistema())).thenReturn(true);
+		when(historicoColaboradorManager.existeHistoricoContratualComPendenciaNoESocial(action.getEmpresaSistema(), historicoColaborador.getColaborador().getCodigoAC())).thenReturn(false);
+		when(historicoColaboradorManager.situacaoContratualEhInicioVinculo(action.getEmpresaSistema(), historicoColaborador.getColaborador().getCodigoAC(), historicoColaborador.getData())).thenReturn(false);
+		when(areaOrganizacionalManager.getMascaraLotacoesAC(action.getEmpresaSistema())).thenReturn("001");
+		action.prepareUpdate();
+		
+		assertFalse(action.isDisabledCamposIntegrados());
+	}
 	
-	private void dadoQueOcorreErroDeIntegracaoACAoInserirHistoricoDeColaborador() {
-		historicoColaboradorManager.expects(once()).method("insertHistorico")
-			.with(eq(historicoColaborador), eq(empresaDoSistema)).will(throwException(new IntegraACException("Erro de Integração.")));
+	@Test
+	public void testPrepareUpdateComFolhaNaoProcessadaEEmpresaIntegradaEAderidaAoESocialHistóricoEInicioDoVinculo() throws Exception
+	{
+		empresaDoSistema.setAcIntegra(true);
+		action.setEmpresaSistema(empresaDoSistema);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		action.setColaborador(colaborador);
+		
+		historicoColaborador.setFaixaSalarial(FaixaSalarialFactory.getEntity(1L));
+		historicoColaborador.setAreaOrganizacional(AreaOrganizacionalFactory.getEntity(1L));
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaborador.setMotivo(MotivoHistoricoColaborador.PROMOCAO);
+		historicoColaborador.setData(new Date());
+		action.setHistoricoColaborador(historicoColaborador);
+		
+		when(historicoColaboradorManager.findByColaboradorProjection(colaborador.getId(), StatusRetornoAC.AGUARDANDO)).thenReturn(new ArrayList<HistoricoColaborador>());
+		when(historicoColaboradorManager.findByIdHQL(historicoColaborador.getId())).thenReturn(historicoColaborador);
+		when(historicoColaboradorManager.verificaHistoricoNaFolhaAC(historicoColaborador.getId(), historicoColaborador.getColaborador().getCodigoAC(), action.getEmpresaSistema())).thenReturn(false);
+		when(parametrosDoSistemaManager.isAderiuAoESocial(action.getEmpresaSistema())).thenReturn(true);
+		when(historicoColaboradorManager.existeHistoricoContratualComPendenciaNoESocial(action.getEmpresaSistema(), historicoColaborador.getColaborador().getCodigoAC())).thenReturn(false);
+		when(historicoColaboradorManager.situacaoContratualEhInicioVinculo(action.getEmpresaSistema(), historicoColaborador.getColaborador().getCodigoAC(), historicoColaborador.getData())).thenReturn(true);
+		when(areaOrganizacionalManager.getMascaraLotacoesAC(action.getEmpresaSistema())).thenReturn("001");
+		action.prepareUpdate();
+		
+		assertTrue(action.isDisabledCamposIntegrados());
+	}
+	
+	@Test
+	public void testPrepareUpdateComFolhaNaoProcessadaEEmpresaIntegradaEAderidaAoESocialExistePendenciasNasSituacoesComOESocal() throws Exception
+	{
+		empresaDoSistema.setAcIntegra(true);
+		action.setEmpresaSistema(empresaDoSistema);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		action.setColaborador(colaborador);
+		
+		historicoColaborador.setFaixaSalarial(FaixaSalarialFactory.getEntity(1L));
+		historicoColaborador.setAreaOrganizacional(AreaOrganizacionalFactory.getEntity(1L));
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaborador.setMotivo(MotivoHistoricoColaborador.PROMOCAO);
+		historicoColaborador.setData(new Date());
+		action.setHistoricoColaborador(historicoColaborador);
+		
+		when(historicoColaboradorManager.findByColaboradorProjection(colaborador.getId(), StatusRetornoAC.AGUARDANDO)).thenReturn(new ArrayList<HistoricoColaborador>());
+		when(historicoColaboradorManager.findByIdHQL(historicoColaborador.getId())).thenReturn(historicoColaborador);
+		when(historicoColaboradorManager.verificaHistoricoNaFolhaAC(historicoColaborador.getId(), historicoColaborador.getColaborador().getCodigoAC(), action.getEmpresaSistema())).thenReturn(false);
+		when(parametrosDoSistemaManager.isAderiuAoESocial(action.getEmpresaSistema())).thenReturn(true);
+		when(historicoColaboradorManager.existeHistoricoContratualComPendenciaNoESocial(action.getEmpresaSistema(), historicoColaborador.getColaborador().getCodigoAC())).thenReturn(true);
+		when(areaOrganizacionalManager.getMascaraLotacoesAC(action.getEmpresaSistema())).thenReturn("001");
+		action.prepareUpdate();
+		
+		assertTrue(action.isDisabledCamposIntegrados());
+	}
+	
+	@Test
+	public void testUpdateExceptionESocial() throws Exception
+	{
+		empresaDoSistema.setAcIntegra(true);
+		action.setEmpresaSistema(empresaDoSistema);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		action.setColaborador(colaborador);
+		
+		historicoColaborador.setFaixaSalarial(FaixaSalarialFactory.getEntity(1L));
+		historicoColaborador.setAreaOrganizacional(AreaOrganizacionalFactory.getEntity(1L));
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaborador.setMotivo(MotivoHistoricoColaborador.PROMOCAO);
+		historicoColaborador.setStatus(StatusRetornoAC.AGUARDANDO);
+		historicoColaborador.setData(new Date());
+		action.setHistoricoColaborador(historicoColaborador);
+		
+		when(parametrosDoSistemaManager.isAderiuAoESocial(action.getEmpresaSistema())).thenReturn(true);
+		
+		assertEquals("eSocial",action.update()); 
+	}
+	
+	@Test
+	public void testUpdateUpdateSomenteAmbienteEFuncao() throws Exception
+	{
+		empresaDoSistema.setAcIntegra(true);
+		action.setEmpresaSistema(empresaDoSistema);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		action.setColaborador(colaborador);
+		
+		historicoColaborador.setFaixaSalarial(FaixaSalarialFactory.getEntity(1L));
+		historicoColaborador.setAreaOrganizacional(AreaOrganizacionalFactory.getEntity(1L));
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaborador.setMotivo(MotivoHistoricoColaborador.PROMOCAO);
+		historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaborador.setData(new Date());
+		action.setHistoricoColaborador(historicoColaborador);
+		action.setDisabledCamposIntegrados(true);
+		
+		assertEquals("success",action.update()); 
+		verify(historicoColaboradorManager).updateAmbienteEFuncao(historicoColaborador);
+	}
+	
+	@Test
+	public void testUpdate() throws Exception
+	{
+		empresaDoSistema.setAcIntegra(true);
+		action.setEmpresaSistema(empresaDoSistema);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		action.setColaborador(colaborador);
+		
+		historicoColaborador.setFaixaSalarial(FaixaSalarialFactory.getEntity(1L));
+		historicoColaborador.setAreaOrganizacional(AreaOrganizacionalFactory.getEntity(1L));
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaborador.setMotivo(MotivoHistoricoColaborador.PROMOCAO);
+		historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaborador.setData(new Date());
+		action.setHistoricoColaborador(historicoColaborador);
+		
+		when(parametrosDoSistemaManager.isAderiuAoESocial(action.getEmpresaSistema())).thenReturn(false);
+		
+		assertEquals("success",action.update());
+		verify(historicoColaboradorManager, times(0)).updateAmbienteEFuncao(historicoColaborador);
+		verify(historicoColaboradorManager, times(1)).updateHistorico(any(HistoricoColaborador.class), any(Empresa.class));
+	}
+	
+	private void dadoQueOcorreErroDeIntegracaoACAoInserirHistoricoDeColaborador() throws Exception {
+		doThrow(new IntegraACException("Erro de Integração.")).when(historicoColaboradorManager).insertHistorico(historicoColaborador, empresaDoSistema);
 	}
 
-	private void assertQueMetodoPrepareInsertFoiChamado() {
+	private void assertQueMetodoPrepareInsertFoiChamado() throws Exception {
 		assertNull("id do colaborador", historicoColaborador.getId());
 		assertNotNull("data do colaborador", historicoColaborador.getData());
 		assertQueMetodoPrepareFoiChamado();		
@@ -446,32 +576,31 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 		simulaComportamentoDoPrepareComHistorico();
 	}
 
-	private void dadoQueJaExisteHistoricoNaData() {
+	private void dadoQueJaExisteHistoricoNaData() throws Exception {
 		historicoColaborador.setData(new Date());
 		historicoColaborador.setColaborador(ColaboradorFactory.getEntity(1L));
 		action.setHistoricoColaborador(historicoColaborador);
-		historicoColaboradorManager.expects(once()).method("existeHistoricoData")
-			.with(eq(historicoColaborador)).will(returnValue(true));
-		colaboradorManager.expects(once()).method("findColaboradorById").with(ANYTHING).will(returnValue(historicoColaborador.getColaborador()));
+		when(historicoColaboradorManager.existeHistoricoData(eq(historicoColaborador))).thenReturn(true);
+		when(colaboradorManager.findColaboradorById(anyLong())).thenReturn(historicoColaborador.getColaborador());
 	}
 	
-	private void assertQueMetodoPrepareFoiChamado() {
-		estabelecimentoManager.verify();
-		indiceManager.verify();
-		faixaSalarialManager.verify();
-		areaOrganizacionalManager.verify();
-		funcaoManager.verify();
-		ambienteManager.verify();
+	private void assertQueMetodoPrepareFoiChamado() throws Exception {
+		verify(estabelecimentoManager).findAllSelect(eq(empresaDoSistema.getId()));
+		verify(indiceManager).findAll(empresaDoSistema);
+		verify(faixaSalarialManager).findFaixas(eq(empresaDoSistema), eq(Cargo.ATIVO), anyLong());
+		verify(areaOrganizacionalManager).findAllSelectOrderDescricao(eq(empresaDoSistema.getId()), eq(AreaOrganizacional.ATIVA), anyLong(), anyBoolean());
+		verify(funcaoManager).findByCargo(eq(historicoColaborador.getFaixaSalarial().getCargo().getId()));
+		verify(ambienteManager).findByEstabelecimento(historicoColaborador.getEstabelecimento().getId());
 	}
 	
-	private void assertQueMetodoPrepareFoiChamadoQuandoHouverSolicitacao() {
-		estabelecimentoManager.verify();
-		indiceManager.verify();
-		faixaSalarialManager.verify();
-		areaOrganizacionalManager.verify();
-		funcaoManager.verify();
+	private void assertQueMetodoPrepareFoiChamadoQuandoHouverSolicitacao() throws Exception {
+		verify(estabelecimentoManager).findAllSelect(eq(empresaDoSistema.getId()));
+		verify(indiceManager).findAll(empresaDoSistema);
+		verify(faixaSalarialManager).findFaixas(eq(empresaDoSistema), eq(Cargo.ATIVO), anyLong());
+		verify(areaOrganizacionalManager).findAllSelectOrderDescricao(eq(empresaDoSistema.getId()), eq(AreaOrganizacional.ATIVA), anyLong(), anyBoolean());
+		verify(funcaoManager).findByCargo(eq(historicoColaborador.getFaixaSalarial().getCargo().getId()));
 	}
-
+	
 	private void simulaComportamentoDoPrepare() {
 		dadoQueExistemEstabelecimentosParaEmpresaDoSistema();
 		dadoQueExistemIndicesCadastrados();
@@ -482,7 +611,7 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 	private void simulaComportamentoDoPrepareSemHistorico() {
 		simulaComportamentoDoPrepare();
 		
-		historicoColaboradorManager.expects(once()).method("getHistoricoAtualOuFuturo").with(eq(1L)).will(returnValue(historicoColaborador));
+		when(historicoColaboradorManager.getHistoricoAtualOuFuturo(eq(1L))).thenReturn(historicoColaborador);
 	}
 	
 	private void simulaComportamentoDoPrepareComHistorico() {
@@ -502,8 +631,8 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 
 	private void dadoQueExisteHistoricoAtualParaColaborador() {
 		action.setColaborador(ColaboradorFactory.getEntity(1L));
-		historicoColaboradorManager.expects(once()).method("getPrimeiroHistorico").with(eq(1L)).will(returnValue(historicoColaborador));
-		historicoColaboradorManager.expects(once()).method("getHistoricoAtual").with(eq(1L)).will(returnValue(historicoColaborador));
+		when(historicoColaboradorManager.getPrimeiroHistorico(eq(1L))).thenReturn(historicoColaborador);
+		when(historicoColaboradorManager.getHistoricoAtual(eq(1L))).thenReturn(historicoColaborador);
 	}
 	
 	private void dadoQueExisteUmaSolicitacao() {
@@ -517,14 +646,12 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 		action.setSolicitacao(solicitacao);
 		action.setHistoricoColaborador(null);
 		
-		solicitacaoManager.expects(once()).method("findById").with(eq(1L)).will(returnValue(solicitacao));
-		faixaSalarialManager.expects(once()).method("findById").with(eq(1L)).will(returnValue(faixaSalarial));
+		when(solicitacaoManager.findById(eq(1L))).thenReturn(solicitacao);
+		when(faixaSalarialManager.findById(eq(1L))).thenReturn(faixaSalarial);
 	}
 
 	private void dadoQueExistemAmbientesCadastrados() {
-		ambienteManager.expects(once()).method("findByEstabelecimento")
-			.with(eq(new Long[]{historicoColaborador.getEstabelecimento().getId()}))
-				.will(returnValue(Collections.EMPTY_LIST));
+		when(ambienteManager.findByEstabelecimento(eq(new Long[]{historicoColaborador.getEstabelecimento().getId()}))).thenReturn(Collections.EMPTY_LIST);
 	}
 
 	private void dadoQueHistoricoDoColaboradorPossuiUmEstabelecimento() {
@@ -532,9 +659,7 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 	}
 	
 	private void dadoQueExistemFuncoesCadastradas() {
-		funcaoManager.expects(once()).method("findByCargo")
-			.with(eq(historicoColaborador.getFaixaSalarial().getCargo().getId()))
-				.will(returnValue(Collections.EMPTY_LIST));
+		when(funcaoManager.findByCargo(eq(historicoColaborador.getFaixaSalarial().getCargo().getId()))).thenReturn(Collections.EMPTY_LIST);
 	}
 
 	private void dadoQueHistoricoDoColaboradorPossuiUmCargoArea() {
@@ -546,20 +671,23 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 		historicoColaborador.setAreaOrganizacional(areaOrganizacional);
 	}
 
-	private void dadoQueExistemAreasOrganizacionaisParaEmpresaDoSistema() {
-		areaOrganizacionalManager.expects(once()).method("findAllSelectOrderDescricao").with(eq(empresaDoSistema.getId()), eq(AreaOrganizacional.ATIVA), ANYTHING, ANYTHING).will(returnValue(Collections.EMPTY_LIST));
+	private void dadoQueExistemAreasOrganizacionaisParaEmpresaDoSistema(){
+		try {
+			when(areaOrganizacionalManager.findAllSelectOrderDescricao(eq(empresaDoSistema.getId()), eq(AreaOrganizacional.ATIVA), anyLong(), anyBoolean())).thenReturn(Collections.EMPTY_LIST);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void dadoQueExistemFaixasSalariaisAtivasParaEmpresaDoSistema() {
-		faixaSalarialManager.expects(once()).method("findFaixas").with(eq(empresaDoSistema), eq(Cargo.ATIVO), ANYTHING).will(returnValue(Collections.EMPTY_LIST));
+		when(faixaSalarialManager.findFaixas(eq(empresaDoSistema), eq(Cargo.ATIVO), anyLong())).thenReturn(Collections.EMPTY_LIST);
 	}
 	
 	private void dadoQueExistemIndicesCadastrados() {
-		indiceManager.expects(once()).method("findAll").with(ANYTHING).will(returnValue(Collections.EMPTY_LIST));
+		when(indiceManager.findAll(empresaDoSistema)).thenReturn(Collections.EMPTY_LIST);
 	}
 
 	private void dadoQueExistemEstabelecimentosParaEmpresaDoSistema() {
-		estabelecimentoManager.expects(once()).method("findAllSelect").with(eq(empresaDoSistema.getId())).will(returnValue(Collections.EMPTY_LIST));
+		when(estabelecimentoManager.findAllSelect(eq(empresaDoSistema.getId()))).thenReturn(Collections.EMPTY_LIST);
 	}
-
 }

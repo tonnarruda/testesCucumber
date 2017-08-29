@@ -1,6 +1,7 @@
 package com.fortes.rh.web.ws;
 
 import java.util.Collection;
+import java.util.Date;
 
 import javax.xml.namespace.QName;
 import javax.xml.rpc.ParameterMode;
@@ -16,6 +17,7 @@ import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.ws.TFeedbackPessoalWebService;
 import com.fortes.rh.model.ws.TItemTabelaEmpregados;
 import com.fortes.rh.model.ws.TSituacao;
+import com.fortes.rh.util.DateUtil;
 
 public class AcPessoalClientTabelaReajuste implements AcPessoalClientTabelaReajusteInterface
 {
@@ -93,6 +95,52 @@ public class AcPessoalClientTabelaReajuste implements AcPessoalClientTabelaReaju
 		{
 			e.printStackTrace();
 			throw new IntegraACException(e, "Erro ao excluir Situação no Fortes Pessoal.");
+		}
+	}
+	
+	public Boolean existeHistoricoContratualComPendenciaNoESocial(Empresa empresa, String colaboradorCodigoAC) throws Exception{
+		try {
+			StringBuilder token = new StringBuilder();
+			GrupoAC grupoAC = new GrupoAC();
+			Call call = acPessoalClient.createCall(empresa, token, grupoAC, "ExisteHistoricoContratualPendente");
+			QName xmlstring = new QName("xs:string");
+
+			call.addParameter("Token", xmlstring, ParameterMode.IN);
+			call.addParameter("Emp_Codigo", xmlstring, ParameterMode.IN);
+			call.addParameter("Epg_Codigo", xmlstring, ParameterMode.IN);
+
+			acPessoalClient.setReturnType(call, grupoAC.getAcUrlWsdl());
+			
+			Object[] param = new Object[] { token.toString(), empresa.getCodigoAC(), colaboradorCodigoAC };
+
+			TFeedbackPessoalWebService result = (TFeedbackPessoalWebService) call .invoke(param);
+			return result.getSucesso("ExisteHistoricoContratualPendente", param, this.getClass());
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+	
+	public Boolean situacaoContratualEhInicioVinculo(Empresa empresa, String colaboradorCodigoAC, Date dataSituacao) throws Exception{
+		try {
+			StringBuilder token = new StringBuilder();
+			GrupoAC grupoAC = new GrupoAC();
+			Call call = acPessoalClient.createCall(empresa, token, grupoAC, "SituacaoContratualEhInicioVinculo");
+			QName xmlstring = new QName("xs:string");
+
+			call.addParameter("Token", xmlstring, ParameterMode.IN);
+			call.addParameter("Emp_Codigo", xmlstring, ParameterMode.IN);
+			call.addParameter("Epg_Codigo", xmlstring, ParameterMode.IN);
+			call.addParameter("Data", xmlstring, ParameterMode.IN);
+
+			acPessoalClient.setReturnType(call, grupoAC.getAcUrlWsdl());
+			
+			Object[] param = new Object[] { token.toString(), empresa.getCodigoAC(), colaboradorCodigoAC, DateUtil.formataDiaMesAno(dataSituacao) };
+			TFeedbackPessoalWebService result = (TFeedbackPessoalWebService) call .invoke(param);
+			return result.getSucesso("SituacaoContratualEhInicioVinculo", param, this.getClass());
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
 		}
 	}
 

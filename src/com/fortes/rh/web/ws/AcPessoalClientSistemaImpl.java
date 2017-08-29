@@ -92,8 +92,26 @@ public class AcPessoalClientSistemaImpl implements AcPessoalClientSistema
         }
 	}
 
+	public boolean isAderiuAoESocial(Empresa empresa) throws Exception{
+		try {
+			StringBuilder token = new StringBuilder();
+			Call call = acPessoalClient.createCall(empresa, token, null, "AderiuESocial");
+
+			call.setReturnType(org.apache.axis.encoding.XMLType.SOAP_BOOLEAN);
+			QName xmlstring = new QName("xs:string");
+
+			call.addParameter("aCodigoEmpresa", xmlstring, ParameterMode.IN);
+
+			Object[] param = new Object[] { empresa.getCodigoAC() };
+
+			return (Boolean) call.invoke(param);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+	
 	public void setGrupoACManager(GrupoACManager grupoACManager) {
 		this.grupoACManager = grupoACManager;
 	}
-
 }

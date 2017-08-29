@@ -50,4 +50,10 @@ public interface AcPessoalClientColaborador
 	public TPeriodoGozo[] getFerias(Empresa empresa, String[] colaboradoresCodigosACs, String dataInicioGozo, String dataFimGozo) throws Exception;
 
 	public TNaturalidadeAndNacionalidade[] getNaturalidadesAndNacionalidades(Empresa empresa, String[] colaboradoresIds) throws IntegraACException;
+	
+	public boolean isExisteHistoricoCadastralDoColaboradorComPendenciaNoESocial(Empresa empresa, String codigoAcColaborador) throws Exception;
+	
+	public boolean isHistoricoCadastralDoColaboradorEInicioVinculo(Empresa empresa, String colaboradorCodigoAC) throws Exception;
+	
+	public Integer statusAdmissaoNoFortesPessoal(Empresa empresa, Long colaboradorId) throws Exception;
 }

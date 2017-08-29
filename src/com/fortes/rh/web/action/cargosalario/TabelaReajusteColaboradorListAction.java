@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import com.fortes.rh.business.cargosalario.ReajusteColaboradorManager;
 import com.fortes.rh.business.cargosalario.TabelaReajusteColaboradorManager;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -26,7 +27,7 @@ public class TabelaReajusteColaboradorListAction extends MyActionSupportList
 		setTotalSize(tabelaReajusteColaboradorManager.getCount(getEmpresaSistema().getId()));
 		tabelaReajusteColaboradors = tabelaReajusteColaboradorManager.findAllList(getPage(), getPagingSize(), getEmpresaSistema().getId());
 
-		tabelaReajusteColaboradorManager.marcaUltima(tabelaReajusteColaboradors);
+		tabelaReajusteColaboradorManager.marcaUltima(tabelaReajusteColaboradors, isEmpresaIntegradaEAderiuAoESocial());
 
 		return Action.SUCCESS;
 	}
@@ -51,13 +52,17 @@ public class TabelaReajusteColaboradorListAction extends MyActionSupportList
 	{
 		try
 		{
-			tabelaReajusteColaboradorManager.cancelar(tabelaReajusteColaborador.getTipoReajuste(), tabelaReajusteColaborador.getId(), getEmpresaSistema());
+			tabelaReajusteColaboradorManager.cancelar(tabelaReajusteColaborador.getTipoReajuste(), tabelaReajusteColaborador.getId(), getEmpresaSistema(), isEmpresaIntegradaEAderiuAoESocial());
 			addActionSuccess("Cancelamento efetuado com sucesso.");
 		}
 		catch (IntegraACException e)
 		{
 			e.printStackTrace();
 			addActionError(e.getMensagemDetalhada());
+		}
+		catch (FortesException e)
+		{
+		    addActionWarning(e.getMessage());
 		}
 		catch (Exception e)
 		{

@@ -532,7 +532,13 @@
 	</property>
   </bean>
 
-   <bean id="FaturamentoMensalDao" class="com.fortes.rh.dao.hibernate.cargosalario.FaturamentoMensalDaoHibernate">
+  <bean id="FaturamentoMensalDao" class="com.fortes.rh.dao.hibernate.cargosalario.FaturamentoMensalDaoHibernate">
+	<property name="sessionFactory">
+		<ref bean="sessionFactory" />
+	</property>
+  </bean>
+
+  <bean id="reajusteFaixaSalarialDao" class="com.fortes.rh.dao.hibernate.cargosalario.ReajusteFaixaSalarialDaoHibernate">
 	<property name="sessionFactory">
 		<ref bean="sessionFactory" />
 	</property>

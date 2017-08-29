@@ -9,6 +9,10 @@ import java.util.Collection;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
@@ -16,9 +20,12 @@ import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.web.dwr.AreaOrganizacionalDWR;
 import com.fortes.web.tags.CheckBox;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(CheckListBoxUtil.class)
 public class AreaOrganizacionalDWRTest_JUnit4
 {
 	private AreaOrganizacionalDWR areaOrganizacionalDWR;
@@ -31,6 +38,7 @@ public class AreaOrganizacionalDWRTest_JUnit4
 		areaOrganizacionalDWR = new AreaOrganizacionalDWR();
 		areaOrganizacionalManager = mock(AreaOrganizacionalManager.class);
 		areaOrganizacionalDWR.setAreaOrganizacionalManager(areaOrganizacionalManager);
+		PowerMockito.mockStatic(CheckListBoxUtil.class);
 	}
 	
 	@Test
@@ -51,8 +59,10 @@ public class AreaOrganizacionalDWRTest_JUnit4
 		areaOrganizacional.setEmpresa(empresa);
 		
 		Collection<AreaOrganizacional> areaOrganizacionals = Arrays.asList(areaOrganizacional);
+		Collection<CheckBox> checks = Arrays.asList(new CheckBox());
 
 		when(areaOrganizacionalManager.filtraPermitidasByEmpresasAndUsuario(request, null, new Long[]{empresa.getId()})).thenReturn(areaOrganizacionals);
+		when(CheckListBoxUtil.populaCheckListBox(areaOrganizacionals, "getId", "getDescricaoComEmpresaStatusAtivo", new String[] { "getIdAreaMae" })).thenReturn(checks);
 		
 		assertEquals(1, areaOrganizacionalDWR.getPermitidasCheckboxByEmpresas("", request, null, new Long[]{empresa.getId()}).size());
 	}

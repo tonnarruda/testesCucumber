@@ -48,6 +48,9 @@ public class TabelaReajusteColaborador extends AbstractModel implements Serializ
     
     @Transient
     private boolean ehUltimo;
+    
+    @Transient
+    private boolean existeHistoricoConfirmado = false;
 
     public String getObservacao()
 	{
@@ -142,4 +145,10 @@ public class TabelaReajusteColaborador extends AbstractModel implements Serializ
 	{
 		this.tipoReajuste = tipoReajuste;
 	}
+    public boolean isExisteHistoricoConfirmado() {
+        return existeHistoricoConfirmado;
+    }
+    public void setExisteHistoricoConfirmado(boolean existeHistoricoConfirmado) {
+        this.existeHistoricoConfirmado = existeHistoricoConfirmado;
+    }
 }

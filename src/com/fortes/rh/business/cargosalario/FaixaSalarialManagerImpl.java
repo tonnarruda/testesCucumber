@@ -17,6 +17,7 @@ import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaColaboradorMa
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.desenvolvimento.CertificacaoManager;
+import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
 import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.exception.IntegraACException;
@@ -95,7 +96,7 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 		}
 	}
 
-	public void updateFaixaSalarial(FaixaSalarial faixaSalarial, Empresa empresa, String[] certificacaosCheck) throws Exception
+	public void updateFaixaSalarial(FaixaSalarial faixaSalarial, Long empresaId, String[] certificacaosCheck) throws Exception
 	{
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
@@ -105,7 +106,9 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 		faixaSalarial.setCertificacaos(util.convertArrayStringToCollection(Certificacao.class, certificacaosCheck));
 		update(faixaSalarial);
 
-		if (empresa.isAcIntegra())
+		EmpresaManager empresaManager = (EmpresaManager) SpringUtil.getBean("empresaManager");
+		Empresa empresa = empresaManager.findEntidadeComAtributosSimplesById(empresaId);
+		if (empresa.isAcIntegra() && !empresa.isAderiuAoESocial())
 		{
 			try
 			{
