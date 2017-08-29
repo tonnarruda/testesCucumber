@@ -29,6 +29,7 @@ public class EmpresaFactory
 	public static Empresa getEmpresa(Long id, String nome, String codigoAC, String grupoAC)
 	{
 		Empresa empresa = getEmpresa(id);
+		empresa.setNome(nome);
 		empresa.setCodigoAC(codigoAC);
 		empresa.setGrupoAC(grupoAC);
 

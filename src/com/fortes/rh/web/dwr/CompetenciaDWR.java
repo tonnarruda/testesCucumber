@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.fortes.rh.business.captacao.CompetenciaManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Competencia;
@@ -15,6 +16,7 @@ import com.fortes.rh.util.DateUtil;
 public class CompetenciaDWR
 {
 	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
+	private CompetenciaManager competenciaManager;
 
 	@SuppressWarnings("rawtypes")
 	public Map getCompetenciasColaboradorByFaixaSalarialAndData(Long faixaId, String data)
@@ -109,7 +111,19 @@ public class CompetenciaDWR
 		return msg;
 	}
 
+	@SuppressWarnings("unchecked")
+	public Map<Object, Object> getByAvaliacoes(Long empresaId, Long[] avaliacoesIds, String competenciasConsideradas)
+	{
+		Collection<Competencia> competencias = competenciaManager.findByAvaliacoesDesempenho(empresaId, avaliacoesIds, competenciasConsideradas);
+			
+		return new CollectionUtil<Competencia>().convertCollectionToMap(competencias, "getId", "getNome");
+	}
+
 	public void setConfiguracaoNivelCompetenciaManager(ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
 		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
+	}
+
+	public void setCompetenciaManager(CompetenciaManager competenciaManager) {
+		this.competenciaManager = competenciaManager;
 	}
 }

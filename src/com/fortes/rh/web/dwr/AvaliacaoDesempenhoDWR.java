@@ -12,8 +12,11 @@ import com.fortes.rh.business.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempen
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
+import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.web.tags.Option;
@@ -145,6 +148,27 @@ public class AvaliacaoDesempenhoDWR
 	
 	public boolean existeNovoHistoricoDeCompetenciaParaFaixaSalarialDeAlgumAvaliado(Long avaliacaoDesempenhoId) {
 		return configuracaoCompetenciaAvaliacaoDesempenhoManager.existeNovoHistoricoDeCompetenciaParaFaixaSalarialDeAlgumAvaliado(avaliacaoDesempenhoId);
+	}
+	
+	public Map<Long, String> getEstabelecimentosDosParticipantes(Long[] avaliacoesDesempenhoIds)
+	{
+		Collection<Estabelecimento> estabelecimentos = avaliacaoDesempenhoManager.findEstabelecimentosDosParticipantes(avaliacoesDesempenhoIds);
+		
+		return new CollectionUtil<Estabelecimento>().convertCollectionToMap(estabelecimentos, "getId", "getNome");
+	}
+	
+	public Map<Long, String> getAreasOrganizacionaisDosParticipantes(Long[] avaliacoesDesempenhoIds)
+	{
+		Collection<AreaOrganizacional> areaOrganizacionais = avaliacaoDesempenhoManager.findAreasOrganizacionaisDosParticipantes(avaliacoesDesempenhoIds);
+		
+		return new CollectionUtil<AreaOrganizacional>().convertCollectionToMap(areaOrganizacionais, "getId", "getDescricaoStatusAtivo");
+	}
+	
+	public Map<Long, String> getCargosDosParticipantes(Long[] avaliacoesDesempenhoIds)
+	{
+		Collection<Cargo> cargo = avaliacaoDesempenhoManager.findCargosDosParticipantes(avaliacoesDesempenhoIds);
+		
+		return new CollectionUtil<Cargo>().convertCollectionToMap(cargo, "getId", "getNomeMercadoComStatus");
 	}
 	
 	public void setAvaliacaoDesempenhoManager(AvaliacaoDesempenhoManager avaliacaoDesempenhoManager) {

@@ -518,6 +518,7 @@
 				<div>Resumido</div>
 			</div>
 		</div>
+		
 		<@ww.select label="Avaliação de desempenho que avaliam competência" required="true" name="avaliacaoDesempenho.id" id="avaliacao" list="avaliacaoDesempenhos" listKey="id" listValue="titulo" cssStyle="width: 600px;" headerKey="" headerValue="Selecione..." onchange="populaAvaliados();"/>
 		<@ww.select label="Empresa" name="empresa.id" id="empresa" list="empresas" listKey="id" listValue="nome" headerValue="Selecione uma avaliação de desempenho" headerKey="" cssStyle="width: 600px;" onchange="populaChecks();"/>
 		<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList" width="600" onClick="populaCargosByAreaVinculados();" filtro="true" selectAtivoInativo="true"/>

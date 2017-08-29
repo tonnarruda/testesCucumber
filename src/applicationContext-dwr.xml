@@ -30,6 +30,7 @@
 	
 	<bean id="competenciaDWR" class="com.fortes.rh.web.dwr.CompetenciaDWR">
 		<property name="configuracaoNivelCompetenciaManager" ref="configuracaoNivelCompetenciaManager"/>
+		<property name="competenciaManager" ref="competenciaManager"/>
 	</bean>
 	<bean id="grupoOcupacionalDWR" class="com.fortes.rh.web.dwr.GrupoOcupacionalDWR">
 		<property name="grupoOcupacionalManager" ref="grupoOcupacionalManager"/>

@@ -5,6 +5,10 @@ import java.util.Date;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
+import com.fortes.rh.model.avaliacao.AnaliseDesempenhoOrganizacao;
+import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.Estabelecimento;
 
 public interface AvaliacaoDesempenhoDao extends GenericDao<AvaliacaoDesempenho> 
 {
@@ -19,4 +23,8 @@ public interface AvaliacaoDesempenhoDao extends GenericDao<AvaliacaoDesempenho>
 	boolean isExibiNivelCompetenciaExigido(Long avaliacaoDesempenhoId);
 	Collection<AvaliacaoDesempenho> findByCncfId(Long configuracaoNivelCompetenciaFaixaSalarialId);
 	Collection<AvaliacaoDesempenho> findByModelo(Long modeloId);
+	Collection<Estabelecimento> findEstabelecimentosDosParticipantes(Long[] avaliacoesDesempenhoIds);
+	Collection<AreaOrganizacional> findAreasOrganizacionaisDosParticipantes(Long[] avaliacoesDesempenhoIds);
+	Collection<Cargo> findCargosDosParticipantes(Long[] avaliacoesDesempenhoIds);
+	Collection<AnaliseDesempenhoOrganizacao> findAnaliseDesempenhoOrganizacao(Long[] avaliacoesDesempenhoIds, Long[] estabelecimentosIds, Long[] cargosIds, Long[] areasIds, Long[] competenciasIds, String agrupamentoDasCompetencias, Long empresaId);
 }
