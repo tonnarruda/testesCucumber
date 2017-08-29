@@ -1,12 +1,11 @@
 package com.fortes.rh.web.action.avaliacao;
 
 
-import static com.fortes.rh.util.CheckListBoxUtil.populaCheckListBox;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -24,6 +23,7 @@ import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.exception.AvaliacaoRespondidaException;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.FortesException;
+import com.fortes.rh.model.avaliacao.AnaliseDesempenhoOrganizacao;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenho;
@@ -32,6 +32,7 @@ import com.fortes.rh.model.avaliacao.RelatorioAnaliseDesempenhoColaborador;
 import com.fortes.rh.model.avaliacao.ResultadoAvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ResultadoCompetenciaColaborador;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.dicionario.CompetenciasConsideradas;
 import com.fortes.rh.model.dicionario.FiltroSituacaoAvaliacao;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.dicionario.TipoParticipanteAvaliacao;
@@ -100,10 +101,21 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	private String[] avaliados;
 	private String[] avaliadores;
 	private String[] avaliacoesCheck;
+	private Long[] estabelecimentosCheck;
+	private Long[] cargosCheck;
+	private Long[] areasCheck;
+	private Long[] competenciasCheck;
 	private Long[] colaboradorQuestionariosRemovidos;
 	private Long[] participantesAvaliadosRemovidos;
 	private Long[] participantesAvaliadoresRemovidos;
 	
+	// Variáveis utilizadas para receber os ids dos registros não selecionados na tela.(CheckListBox sem opção selecionada.)
+	private Long[] estabelecimentosCheckAux;
+	private Long[] cargosCheckAux;
+	private Long[] areasCheckAux;
+	private Long[] competenciasCheckAux;
+	
+	private String agrupamentoDasCompetencias;
 	private Collection<ResultadoCompetenciaColaborador> resultadosCompetenciaColaborador = new ArrayList<ResultadoCompetenciaColaborador>();
 	private Integer notaMinimaMediaGeralCompetencia;
 	private boolean agruparPorCargo;
@@ -135,9 +147,12 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	
 	private Collection<ColaboradorQuestionario> colaboradorQuestionarios = new ArrayList<ColaboradorQuestionario>();
 	private Collection<ResultadoAvaliacaoDesempenho> resultados = new ArrayList<ResultadoAvaliacaoDesempenho>();
+	private Collection<AnaliseDesempenhoOrganizacao> analiseDesempenhoOrganizacaos = new ArrayList<AnaliseDesempenhoOrganizacao>();
 	private Boolean compartilharColaboradores;
 	private String msgResultadoAvaliacao;
 	private Long avaliacaoId;
+	private String reportTitle;
+	private CompetenciasConsideradas competenciasConsideradas = new CompetenciasConsideradas();
 	
 	private void prepare() throws Exception
 	{
@@ -236,7 +251,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 			avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
 			participantes = colaboradorManager.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), true, null, null, false, null);
 			
-			colaboradorsCheckList = populaCheckListBox(participantes, "getId", "getNome", null);
+			colaboradorsCheckList = CheckListBoxUtil.populaCheckListBox(participantes, "getId", "getNome", null);
 			colaboradorsCheckList = CheckListBoxUtil.marcaCheckListBox(colaboradorsCheckList, colaboradorsCheck);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -397,6 +412,69 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		}
 
 		return "successDetalhado";
+	}
+	
+	public String prepareAnaliseDesempenhoCompetenciaOrganizacao()
+	{
+		try {
+			avaliacaoDesempenhos = avaliacaoDesempenhoManager.findComCompetencia(getEmpresaSistema().getId());
+			if(avaliacaoDesempenhos.isEmpty()){
+				addActionWarning("Não existe avaliação de desempenho que tenha competência avaliada.");
+				return Action.INPUT;
+			}
+			avaliacoesCheckList = CheckListBoxUtil.populaCheckListBox(avaliacaoDesempenhos, "getId", "getTitulo", null);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Action.INPUT;
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String imprimeAnaliseDesempenhoCompetenciaOrganizacao()
+	{
+		try {
+			analiseDesempenhoOrganizacaos = avaliacaoDesempenhoManager.findAnaliseDesempenhoOrganizacao(
+					StringUtil.stringToLong(avaliacoesCheck),
+					(estabelecimentosCheck == null ? estabelecimentosCheckAux : estabelecimentosCheck),
+					(cargosCheck == null ? cargosCheckAux : cargosCheck), 
+					(areasCheck == null ? areasCheckAux : areasCheck),
+					(competenciasCheck == null ? competenciasCheckAux : competenciasCheck), 
+					agrupamentoDasCompetencias, 
+					getEmpresaSistema().getId());
+
+			if(analiseDesempenhoOrganizacaos.isEmpty()){
+				addActionMessage("Não existem respostas para o filtro informado.");
+				prepareAnaliseDesempenhoCompetenciaOrganizacao();
+				return INPUT;
+			}
+			
+			reportTitle = "Análise de Desempenho das Competências da Organização";
+			
+			parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), "");
+
+		} catch (Exception e) {
+			addActionError("Não foi possível gerar o relatório.");
+			e.printStackTrace();
+			prepareAnaliseDesempenhoCompetenciaOrganizacao();
+			return Action.INPUT;
+		}
+
+		return Action.SUCCESS;
+	}
+	
+	public String imprimeAnaliseDesempenhoCompetenciaOrganizacaoXls()
+	{
+		String result = imprimeAnaliseDesempenhoCompetenciaOrganizacao();
+		if(Action.INPUT.equals(result))
+			return Action.INPUT;
+		
+		if(agrupamentoDasCompetencias.equals(AnaliseDesempenhoOrganizacao.POR_AREA))
+			return "successArea";
+		else if(agrupamentoDasCompetencias.equals(AnaliseDesempenhoOrganizacao.POR_CARGO))
+			return "successCargo";
+		
+		return "successEmpresa";
 	}
 	
 	public String prepareInsert() throws Exception
@@ -937,7 +1015,6 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	public Collection<CheckBox> getAvaliacoesCheckList() {
 		return avaliacoesCheckList;
 	}
-
 	
 	public void setDesconsiderarAutoAvaliacao(boolean desconsiderarAutoAvaliacao)
 	{
@@ -1072,8 +1149,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		return colaboradorQuestionariosRemovidos;
 	}
 
-	public void setColaboradorQuestionariosRemovidos(
-			Long[] colaboradorQuestionariosRemovidos) {
+	public void setColaboradorQuestionariosRemovidos(Long[] colaboradorQuestionariosRemovidos) {
 		this.colaboradorQuestionariosRemovidos = colaboradorQuestionariosRemovidos;
 	}
 
@@ -1081,8 +1157,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		return participantesAvaliadosRemovidos;
 	}
 
-	public void setParticipantesAvaliadosRemovidos(
-			Long[] participantesAvaliadosRemovidos) {
+	public void setParticipantesAvaliadosRemovidos(Long[] participantesAvaliadosRemovidos) {
 		this.participantesAvaliadosRemovidos = participantesAvaliadosRemovidos;
 	}
 
@@ -1100,5 +1175,73 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 
 	public void setEmpresasPermitidasIds(Long[] empresasPermitidasIds) {
 		this.empresasPermitidasIds = empresasPermitidasIds;
+	}
+
+	public void setEstabelecimentosCheck(Long[] estabelecimentosCheck) {
+		this.estabelecimentosCheck = estabelecimentosCheck;
+	}
+
+	public void setEstabelecimentosCheckAux(Long[] estabelecimentosCheckAux) {
+		this.estabelecimentosCheckAux = estabelecimentosCheckAux;
+	}
+
+	public void setCompetenciasCheck(Long[] competenciasCheck) {
+		this.competenciasCheck = competenciasCheck;
+	}
+	
+	public void setCompetenciasCheckAux(Long[] competenciasCheckAux) {
+		this.competenciasCheckAux = competenciasCheckAux;
+	}
+
+	public void setCargosCheck(Long[] cargosCheck) {
+		this.cargosCheck = cargosCheck;
+	}
+
+	public Long[] getCargosCheckAux() {
+		return cargosCheckAux;
+	}
+
+	public void setCargosCheckAux(Long[] cargosCheckAux) {
+		this.cargosCheckAux = cargosCheckAux;
+	}
+
+	public void setAreasCheck(Long[] areasCheck) {
+		this.areasCheck = areasCheck;
+	}
+
+	public void setAreasCheckAux(Long[] areasCheckAux) {
+		this.areasCheckAux = areasCheckAux;
+	}
+	
+	public void setAgrupamentoDasCompetencias(String agrupamentoDasCompetencias) {
+		this.agrupamentoDasCompetencias = agrupamentoDasCompetencias;
+	}
+
+	public Collection<AnaliseDesempenhoOrganizacao> getAnaliseDesempenhoOrganizacaos() {
+		return analiseDesempenhoOrganizacaos;
+	}
+
+	public String getReportTitle() {
+		return reportTitle;
+	}
+	
+	public String getAnaliseDesempenhoOrganizacaoPorEmpresa() {
+		return AnaliseDesempenhoOrganizacao.POR_EMPRESA;
+	}
+	
+	public String getAnaliseDesempenhoOrganizacaoPorArea() {
+		return AnaliseDesempenhoOrganizacao.POR_AREA;
+	}
+	
+	public String getAnaliseDesempenhoOrganizacaoPorCargo() {
+		return AnaliseDesempenhoOrganizacao.POR_CARGO;
+	}
+	
+	public LinkedHashMap<String, String> getlistaAgrupamentoDasCompetencias() {
+		return new AnaliseDesempenhoOrganizacao().getListaAgrupamentoDasCompetencias();
+	}
+
+	public CompetenciasConsideradas getCompetenciasConsideradas() {
+		return competenciasConsideradas;
 	}
 }

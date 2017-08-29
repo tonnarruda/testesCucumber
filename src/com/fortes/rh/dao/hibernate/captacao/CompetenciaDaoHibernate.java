@@ -1,8 +1,11 @@
 package com.fortes.rh.dao.hibernate.captacao;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
@@ -11,6 +14,8 @@ import org.springframework.dao.DataAccessException;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.captacao.CompetenciaDao;
 import com.fortes.rh.model.captacao.Competencia;
+import com.fortes.rh.model.dicionario.CompetenciasConsideradas;
+import com.fortes.rh.util.LongUtil;
 
 public class CompetenciaDaoHibernate extends GenericDaoHibernate<Competencia> implements CompetenciaDao
 {
@@ -34,6 +39,62 @@ public class CompetenciaDaoHibernate extends GenericDaoHibernate<Competencia> im
 			criteria.add(Expression.not(Expression.and(Expression.eq("c.id", competenciaId), Expression.eq("c.tipo", tipo))));
 
 		return criteria.list().size() > 0;
+	}
+
+	@SuppressWarnings("unchecked")
+	public Collection<Competencia> findByAvaliacoesDesempenho(Long empresaId, Long[] avaliacoesDesempenhoIds, String competenciasConsideradas) {
+		if(avaliacoesDesempenhoIds.length == 0)
+			return new ArrayList<Competencia>();
+		
+		StringBuilder sqlBase = new StringBuilder();
+		sqlBase.append("select distinct comp.id, comp.nome ");
+		sqlBase.append("from ConfiguracaoNivelCompetencia cnc ");
+		sqlBase.append("  inner join Competencia comp on comp.id = cnc.competencia_id ");
+		sqlBase.append("  inner join ConfiguracaoNivelCompetenciaColaborador cncc on cncc.id = cnc.configuracaonivelcompetenciacolaborador_id ");
+		sqlBase.append("  inner join ColaboradorQuestionario cq on cq.id = cncc.colaboradorquestionario_id ");
+
+		StringBuilder sqlFinal = new StringBuilder();
+		if(competenciasConsideradas.equals(CompetenciasConsideradas.TODAS)){
+			sqlFinal.append(sqlBase);
+			sqlFinal.append("where cq.avaliacaodesempenho_id in (:avaliacoesIds) ");
+			sqlFinal.append("  and cq.respondidaparcialmente = false ");
+			sqlFinal.append("  and comp.empresa_id = :empresaId ");
+			sqlFinal.append("order by comp.nome ");
+		} else {
+			for (int i = 0; i < avaliacoesDesempenhoIds.length; i++){ 
+				sqlFinal.append(sqlBase);
+				sqlFinal.append("where cq.avaliacaodesempenho_id = " + avaliacoesDesempenhoIds[i]);
+				sqlFinal.append("  and cq.respondidaparcialmente = false ");
+				sqlFinal.append("  and comp.empresa_id = :empresaId ");
+				
+				if(i < avaliacoesDesempenhoIds.length - 1){
+					sqlFinal.append("intersect ");
+				}
+			}
+		}
+
+		Query query = getSession().createSQLQuery(sqlFinal.toString());
+
+		query.setLong("empresaId", empresaId);
+		
+		if(competenciasConsideradas.equals(CompetenciasConsideradas.TODAS))
+			query.setParameterList("avaliacoesIds", avaliacoesDesempenhoIds);
+
+		Collection<Object[]> lista = query.list();
+
+		Collection<Competencia> competencias = new ArrayList<Competencia>();
+		
+		for (Iterator<Object[]> it = lista.iterator(); it.hasNext();){
+			Object[] obj = it.next();
+			
+			Competencia competencia = new Competencia();
+			competencia.setId(LongUtil.bigIntegerToLong(obj[0], null));
+			competencia.setNome((String) obj[1]);
+			
+			competencias.add(competencia);
+		}
+		
+		return competencias;
 	}
 
 	@Override
@@ -65,4 +126,5 @@ public class CompetenciaDaoHibernate extends GenericDaoHibernate<Competencia> im
 	public void update(Competencia entity) {
 		throw new RuntimeException("Impossível alterar elementos em uma view");
 	}
+
 }

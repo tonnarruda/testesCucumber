@@ -439,9 +439,9 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 			}
 		}
 	}
-	
-	//PELO AMOR DE DEUS SE BULIR NESTE MÉTODO VERIFICAR CÁCULO DO MÉTODO calcularPerformance DE prepareResponderAvaliacaoDesempenho.ftl
-	public void calculaPerformance(ColaboradorQuestionario colaboradorQuestionario, Long empresaId, Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaMarcados)
+
+	//PELO AMOR DE DEUS SE BULIR NESTE MÉTODO VERIFICAR CÁCULO DO MÉTODO calculaPerformance DE prepareResponderAvaliacaoDesempenho.ftl
+	public void calculaPerformance(ColaboradorQuestionario colaboradorQuestionario, Long empresaId, Collection<ConfiguracaoNivelCompetencia> configNiveisCompetenciasMarcados)
 	{
 		Long colaboradorQuestionarioId = colaboradorQuestionario.getId();
 		
@@ -451,15 +451,15 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 		
 		Double pontuacaoNivelCompetenciaObtida = 0.0;
 		int pontuacaoMaximaNivelcompetencia = 0;
-		if(niveisCompetenciaMarcados != null && !niveisCompetenciaMarcados.isEmpty())
+		if(configNiveisCompetenciasMarcados != null && !configNiveisCompetenciasMarcados.isEmpty())
 		{
 			Colaborador colaborador = colaboradorManager.findColaboradorByDataHistorico(colaboradorQuestionario.getColaborador().getId(), new Date());
 			ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial =  configuracaoNivelCompetenciaFaixaSalarialManager.findByFaixaSalarialIdAndData(colaborador.getFaixaSalarial().getId(), colaboradorQuestionario.getRespondidaEm());
 			
-			pontuacaoNivelCompetenciaObtida = nivelCompetenciaManager.getPontuacaoObtidaByConfiguracoesNiveisCompetencia(niveisCompetenciaMarcados);
+			pontuacaoNivelCompetenciaObtida = nivelCompetenciaManager.getPontuacaoObtidaByConfiguracoesNiveisCompetencia(configNiveisCompetenciasMarcados);
 			
 			int pontuacaoMaximaNivelCompetencia = nivelCompetenciaManager.getOrdemMaxima(empresaId, configuracaoNivelCompetenciaFaixaSalarial.getNivelCompetenciaHistorico().getId());
-			for (ConfiguracaoNivelCompetencia configuracaoNivelCompetenciaMarcado : niveisCompetenciaMarcados) 
+			for (ConfiguracaoNivelCompetencia configuracaoNivelCompetenciaMarcado : configNiveisCompetenciasMarcados) 
 				if(configuracaoNivelCompetenciaMarcado.getNivelCompetencia() != null && configuracaoNivelCompetenciaMarcado.getNivelCompetencia().getId() != null)
 					pontuacaoMaximaNivelcompetencia += configuracaoNivelCompetenciaMarcado.getPesoCompetencia() * pontuacaoMaximaNivelCompetencia;
 		}

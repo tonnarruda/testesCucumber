@@ -77,4 +77,12 @@ public class ColaboradorQuestionarioFactory
 		colaboradorQuestionario.setRespondida(respondida);
 		return colaboradorQuestionario;
 	}
+
+	public static ColaboradorQuestionario getEntity(AvaliacaoDesempenho avaliacaoDesempenho, boolean respondidaParcialmente) {
+		ColaboradorQuestionario colaboradorQuestionario = getEntity();
+		colaboradorQuestionario.setAvaliacaoDesempenho(avaliacaoDesempenho);
+		colaboradorQuestionario.setRespondidaParcialmente(respondidaParcialmente);
+		
+		return colaboradorQuestionario;
+	}
 }

@@ -436,6 +436,12 @@
 	</property>
   </bean>
   
+  <bean id="configHistoricoNivelDao" class="com.fortes.rh.dao.hibernate.captacao.ConfigHistoricoNivelDaoHibernate">
+	<property name="sessionFactory">
+		<ref bean="sessionFactory" />
+	</property>
+  </bean>
+  
   <bean id="configuracaoNivelCompetenciaCandidatoDao" class="com.fortes.rh.dao.hibernate.captacao.ConfiguracaoNivelCompetenciaCandidatoDaoHibernate">
 	<property name="sessionFactory">
 		<ref bean="sessionFactory" />

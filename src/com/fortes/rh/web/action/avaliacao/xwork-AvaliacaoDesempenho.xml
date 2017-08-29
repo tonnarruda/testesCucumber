@@ -176,5 +176,51 @@
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/avaliacao/prepareAnaliseDesempenhoCompetenciaColaborador.ftl</result>
 		</action>
+		<action name="prepareAnaliseDesempenhoCompetenciaOrganizacao" class="com.fortes.rh.web.action.avaliacao.AvaliacaoDesempenhoEditAction" method="prepareAnaliseDesempenhoCompetenciaOrganizacao">
+      		<interceptor-ref name="defaultListStack"/>
+			<result name="success" type="freemarker">/WEB-INF/forms/avaliacao/prepareAnaliseDesempenhoCompetenciaOrganizacao.ftl</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/avaliacao/prepareAnaliseDesempenhoCompetenciaOrganizacao.ftl</result>
+		</action>
+		<action name="imprimeAnaliseDesempenhoCompetenciaOrganizacao" class="com.fortes.rh.web.action.avaliacao.AvaliacaoDesempenhoEditAction" method="imprimeAnaliseDesempenhoCompetenciaOrganizacao">
+			<interceptor-ref name="defaultListStack"/>
+			<result name="success" type="jasper">
+				<param name="location">WEB-INF/report/analiseDesempenhoCompetenciaOrganizacao.jasper</param>
+				<param name="dataSource">analiseDesempenhoOrganizacaos</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">analiseDesempenhoCompetenciaOrganizacao.pdf</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/avaliacao/prepareAnaliseDesempenhoCompetenciaOrganizacao.ftl</result>
+		</action>
+		<action name="imprimeAnaliseDesempenhoCompetenciaOrganizacaoXls" class="com.fortes.rh.web.action.avaliacao.AvaliacaoDesempenhoEditAction" method="imprimeAnaliseDesempenhoCompetenciaOrganizacaoXls">
+			<interceptor-ref name="defaultListStack"/>
+			<result name="successCargo" type="xls">
+				<param name="dataSource">analiseDesempenhoOrganizacaos</param>
+				<param name="documentName">analiseDesempenhoCompetenciaOrganizacao.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Competência,Cargo,Performance</param>
+				<param name="propertiesGroup">competenciaNome</param>
+				<param name="properties">competenciaNome,agrupador,performance</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>	
+			<result name="successArea" type="xls">
+				<param name="dataSource">analiseDesempenhoOrganizacaos</param>
+				<param name="documentName">analiseDesempenhoCompetenciaOrganizacao.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Competência,Área Organizacional,Performance</param>
+				<param name="propertiesGroup">competenciaNome</param>
+				<param name="properties">competenciaNome,agrupador,performance</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>	
+			<result name="successEmpresa" type="xls">
+				<param name="dataSource">analiseDesempenhoOrganizacaos</param>
+				<param name="documentName">analiseDesempenhoCompetenciaOrganizacao.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Competência,Empresa,Performance</param>
+				<param name="propertiesGroup">competenciaNome</param>
+				<param name="properties">competenciaNome,agrupador,performance</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>	
+			<result name="input" type="freemarker">/WEB-INF/forms/avaliacao/prepareAnaliseDesempenhoCompetenciaOrganizacao.ftl</result>
+		</action>
 	</package>
 </xwork>

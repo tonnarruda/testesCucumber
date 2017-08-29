@@ -27,6 +27,7 @@ import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
+import com.fortes.rh.model.avaliacao.AnaliseDesempenhoOrganizacao;
 import com.fortes.rh.model.avaliacao.ResultadoAvaliacaoDesempenho;
 import com.fortes.rh.model.captacao.Competencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
@@ -34,9 +35,12 @@ import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaCriterio;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
 import com.fortes.rh.model.captacao.NivelCompetencia;
+import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.dicionario.TipoParticipanteAvaliacao;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.ColaboradorResposta;
 import com.fortes.rh.model.pesquisa.Pergunta;
@@ -393,6 +397,31 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 		return getDao().isExibiNivelCompetenciaExigido(avaliacaoDesempenhoId)   ;
 	}
 	
+	@Override
+	public Collection<AvaliacaoDesempenho> findByCncfId(Long configuracaoNivelCompetenciaFaixaSalarialId) {
+		return getDao().findByCncfId(configuracaoNivelCompetenciaFaixaSalarialId);
+	}
+
+	public Collection<AvaliacaoDesempenho> findByModelo(Long modeloId) {
+		return getDao().findByModelo(modeloId);
+	}
+
+	public Collection<Estabelecimento> findEstabelecimentosDosParticipantes(Long[] avaliacoesDesempenhoIds) {
+		return getDao().findEstabelecimentosDosParticipantes(avaliacoesDesempenhoIds);
+	}
+
+	public Collection<AreaOrganizacional> findAreasOrganizacionaisDosParticipantes(Long[] avaliacoesDesempenhoIds) {
+		return getDao().findAreasOrganizacionaisDosParticipantes(avaliacoesDesempenhoIds);
+	}
+
+	public Collection<Cargo> findCargosDosParticipantes(Long[] avaliacoesDesempenhoIds) {
+		return getDao().findCargosDosParticipantes(avaliacoesDesempenhoIds);
+	}
+
+	public Collection<AnaliseDesempenhoOrganizacao> findAnaliseDesempenhoOrganizacao(Long[] avaliacoesIds, Long[] estabelecimentosIds, Long[] cargosIds, Long[] areasIds, Long[] competenciasIds, String agrupamentoDasCompetencias, Long empresaId) {
+		return getDao().findAnaliseDesempenhoOrganizacao(avaliacoesIds, estabelecimentosIds, cargosIds, areasIds, competenciasIds, agrupamentoDasCompetencias, empresaId);
+	}
+
 	public void setAvaliacaoManager(AvaliacaoManager avaliacaoManager) {
 		this.avaliacaoManager = avaliacaoManager;
 	}
@@ -451,14 +480,5 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 
 	public void setConfiguracaoNivelCompetenciaFaixaSalarialManager(ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager) {
 		this.configuracaoNivelCompetenciaFaixaSalarialManager = configuracaoNivelCompetenciaFaixaSalarialManager;
-	}
-
-	@Override
-	public Collection<AvaliacaoDesempenho> findByCncfId(Long configuracaoNivelCompetenciaFaixaSalarialId) {
-		return getDao().findByCncfId(configuracaoNivelCompetenciaFaixaSalarialId);
-	}
-
-	public Collection<AvaliacaoDesempenho> findByModelo(Long modeloId) {
-		return getDao().findByModelo(modeloId);
 	}
 }
