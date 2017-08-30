@@ -233,13 +233,4 @@ public class EmpresaManagerTest_JUnit4
     	verify(configuracaoCampoExtraVisivelObrigadotorioManager).saveOrUpdateConfCamposExtras(empresa.getId(), camposVisivesisColaborador, new String[]{TipoConfiguracaoCampoExtra.COLABORADOR.getTipo()});
     	verify(configuracaoCampoExtraVisivelObrigadotorioManager).saveOrUpdateConfCamposExtras(empresa.getId(), camposVisivesisCandidato, new String[]{TipoConfiguracaoCampoExtra.CANDIDATO_EXTERNO.getTipo(), TipoConfiguracaoCampoExtra.CANDIDATO.getTipo()});
 	}
-    
-    @Test
-    public void testUpdateAderiuAoESocial() {
-        String codigoAC = "0001";
-        String grupoAC = "002";
-        boolean aderiuAoEsocial = true;
-        empresaManager.notificarAdesaoAoESocial(codigoAC, grupoAC, aderiuAoEsocial);
-        verify(empresaDao).atualizarAdesaoAoESocial(eq(codigoAC), eq(grupoAC), eq(aderiuAoEsocial));
-    }
 }

@@ -622,13 +622,4 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		
 		return criteria.list();
 	}
-
-    public void atualizarAdesaoAoESocial(String codigoAC, String grupoAC, boolean aderiuAoEsocial) {
-        String hql = "update Empresa e set aderiuAoESocial = :aderiuAoEsocial where e.codigoAC = :codigoAC and e.grupoAC = :grupoAC";
-        Query query = getSession().createQuery(hql);
-        query.setBoolean("aderiuAoEsocial", aderiuAoEsocial);
-        query.setString("codigoAC", codigoAC);
-        query.setString("grupoAC", grupoAC);
-        query.executeUpdate();
-    }
 }

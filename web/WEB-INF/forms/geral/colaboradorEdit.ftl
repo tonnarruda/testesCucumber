@@ -617,8 +617,8 @@
 				$('#divDecideAlteracaoOrRetificacao').dialog({ 	
 													modal: true, 
 													title: 'Informações Pessoais',
-													height: 200,
-													width: 450,
+													height: 230,
+													width: 480,
 													buttons: 
 													[
 													    {
@@ -649,7 +649,7 @@
 				$('#divInformeDataAlteracao').show();
 			}
 			else if($('input[name="tipoAlteracao"]:checked').val() == 'R'){
-				$("#divDecideAlteracaoOrRetificacao").dialog("option", "height",200);
+				$("#divDecideAlteracaoOrRetificacao").dialog("option", "height",230);
 				$('#divInformeDataAlteracao').hide();
 			}
 		}
@@ -1198,32 +1198,6 @@
 	<@ww.hidden id ="podeEfetuarRetificacao" value="${podeRetificar?string}"/>
 	
 	<#if podeRetificar>
-		<div id="divDecideAlteracaoOrRetificacao">Para as informações modificadas, Você deseja que no Fortes Pessoal seja criado um novo histórico ou que sejam retificadas?
-			</br></br>
-			<@ww.div id="divTipoAlteracao" cssClass="radio">
-				<input id="tipoAlteracao" name="tipoAlteracao" type="radio" value="A" onchange="exibeOuOcultaDataDeAlteracao();"/><label>Novo Histórico</label>
-				<input id="tipoAlteracao" name="tipoAlteracao" type="radio" value="R" onchange="exibeOuOcultaDataDeAlteracao();"/><label>Retificar</label>
-			</@ww.div>
-			</br>
-			<@ww.div id="divInformeDataAlteracao">
-				<@ww.datepicker label="Informe a data a partir de quando ocorreu a atualização" value="${dataAlteracao?date}" id="dataAlt" liClass="liLeft" cssClass="mascaraData"/>
-				</br></br>
-				<h5>Essa informação é obrigatória em virtude de exigência do eSocial.</h5>
-			</@ww.div>
-		</div>
-	<#else>
-		<div id="divDecideAlteracaoOrRetificacao">Será criado no Fortes Pessoal um novo histórico cadastral para o colaborador.
-			</br></br>
-			<@ww.datepicker label="Informe a data a partir de quando ocorreu a atualização" value="${dataAlteracao?date}" id="dataAlt" liClass="liLeft" cssClass="mascaraData"/>
-			</br></br>
-			<h5>Essa informação é obrigatória em virtude de exigência do eSocial.</h5>
-		</div>
-	</#if>
-	
-	
-	<#if podeRetificar>
-		<@ww.hidden id ="podeEfetuarRetificacao" value="${podeRetificar?string}"/>
-		<div id="parentesDialog"></div>
 		<div id="divDecideAlteracaoOrRetificacao">Para as informações modificadas, Você deseja que no Fortes Pessoal seja criado um novo histórico ou que sejam retificadas?
 			</br></br>
 			<@ww.div id="divTipoAlteracao" cssClass="radio">

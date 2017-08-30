@@ -247,7 +247,7 @@
 				$('#divDecideAlteracaoOrRetificacao').dialog({ 	
 													modal: true, 
 													title: 'Informações Pessoais',
-													height: 200,
+													height: 230,
 													width: 450,
 													buttons: 
 													[
@@ -279,7 +279,7 @@
 				$('#divInformeDataAlteracao').show();
 			}
 			else if($('input[name="tipoAlteracao"]:checked').val() == 'R'){
-				$("#divDecideAlteracaoOrRetificacao").dialog("option", "height",200);
+				$("#divDecideAlteracaoOrRetificacao").dialog("option", "height",230);
 				$('#divInformeDataAlteracao').hide();
 			}
 		}

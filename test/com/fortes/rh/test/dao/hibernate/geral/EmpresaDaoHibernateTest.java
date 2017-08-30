@@ -538,21 +538,4 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<Empr
 		
 		assertEquals(0, retorno.size());
 	}
-	
-    @Test
-    public void testAtualizarAdesaoAoESocial() {
-        GrupoAC grupo = new GrupoAC("017", "Teste");
-        grupoACDao.save(grupo);
-
-        Empresa empresa = EmpresaFactory.getEmpresa(3025L);
-        empresa.setCodigoAC("0001");
-        empresa.setGrupoAC("017");
-        empresaDao.save(empresa);
-
-        assertFalse(empresaDao.findByIdProjection(empresa.getId()).isAderiuAoESocial());
-
-        empresaDao.atualizarAdesaoAoESocial(empresa.getCodigoAC(), empresa.getGrupoAC(), true);
-
-        assertTrue(empresaDao.findByIdProjection(empresa.getId()).isAderiuAoESocial());
-    }
 }

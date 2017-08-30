@@ -655,8 +655,4 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 	public void setConfiguracaoCampoExtraVisivelObrigadotorioManager(ConfiguracaoCampoExtraVisivelObrigadotorioManager configuracaoCampoExtraVisivelObrigadotorioManager) {
 		this.configuracaoCampoExtraVisivelObrigadotorioManager = configuracaoCampoExtraVisivelObrigadotorioManager;
 	}
-
-    public void notificarAdesaoAoESocial(String codigoAC, String grupoAC, boolean aderiuAoEsocial) {
-       getDao().atualizarAdesaoAoESocial(codigoAC, grupoAC, aderiuAoEsocial);
-    }
 }
