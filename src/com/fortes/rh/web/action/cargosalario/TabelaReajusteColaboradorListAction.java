@@ -22,6 +22,7 @@ public class TabelaReajusteColaboradorListAction extends MyActionSupportList
 
 	public String list() throws Exception 
 	{
+		setVideoAjuda(1265l);
 		setTotalSize(tabelaReajusteColaboradorManager.getCount(getEmpresaSistema().getId()));
 		tabelaReajusteColaboradors = tabelaReajusteColaboradorManager.findAllList(getPage(), getPagingSize(), getEmpresaSistema().getId());
 

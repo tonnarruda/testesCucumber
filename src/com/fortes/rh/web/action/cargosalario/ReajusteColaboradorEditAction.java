@@ -295,6 +295,7 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 
 	public String prepareSolicitacaoReajuste() throws Exception
 	{
+		setVideoAjuda(1265l);
 		exibeSalario = getEmpresaSistema().isExibirSalario();
 		obrigarAmbienteFuncao = getEmpresaSistema().isObrigarAmbienteFuncao();
 		
