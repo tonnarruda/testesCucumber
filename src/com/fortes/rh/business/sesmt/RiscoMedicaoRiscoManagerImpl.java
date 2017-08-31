@@ -33,9 +33,9 @@ public class RiscoMedicaoRiscoManagerImpl extends GenericManagerImpl<RiscoMedica
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<RiscoMedicaoRisco> getByRiscoPeriodo(Long riscoId, Long ambienteId, Date dataAmbienteIni, Date dataAmbienteFim) 
+	public List<RiscoMedicaoRisco> getByRiscoPeriodo(Long riscoId, Long ambienteId, Date dataAmbienteOuFuncaoIni, Date dataAmbienteOuFuncaoFim, boolean controlaRiscoPorAmbiente) 
 	{
-		Collection<RiscoMedicaoRisco> riscoMedicaoRiscos = getDao().findByRiscoAteData(riscoId, ambienteId, dataAmbienteFim);
+		Collection<RiscoMedicaoRisco> riscoMedicaoRiscos = getDao().findByRiscoAteData(riscoId, ambienteId, dataAmbienteOuFuncaoFim, controlaRiscoPorAmbiente);
 		
 		Collection<RiscoMedicaoRisco> riscoMedicaoRiscosResultado = new ArrayList<RiscoMedicaoRisco>(); 
 		
@@ -43,7 +43,7 @@ public class RiscoMedicaoRiscoManagerImpl extends GenericManagerImpl<RiscoMedica
 		{
 			riscoMedicaoRiscosResultado.add(riscoMedicaoRisco);
 			
-			if (riscoMedicaoRisco.getMedicaoRisco().getData().compareTo(dataAmbienteIni) <= 0)
+			if (riscoMedicaoRisco.getMedicaoRisco().getData().compareTo(dataAmbienteOuFuncaoIni) <= 0)
 				break;
 		}
 		
@@ -54,8 +54,8 @@ public class RiscoMedicaoRiscoManagerImpl extends GenericManagerImpl<RiscoMedica
 		return collectionUtil.convertCollectionToList(riscoMedicaoRiscosResultado);
 	}
 
-	public MedicaoRisco findUltimaAteData(Long ambienteId, Date historicoAmbienteData)
+	public MedicaoRisco findUltimaAteData(Long ambienteOuFuncaoId, Date historicoAmbienteOuFuncaoData, boolean controlaRiscoPorAmbiente)
 	{
-		return getDao().findUltimaAteData(ambienteId, historicoAmbienteData);
+		return getDao().findUltimaAteData(ambienteOuFuncaoId, historicoAmbienteOuFuncaoData, controlaRiscoPorAmbiente);
 	}
 }

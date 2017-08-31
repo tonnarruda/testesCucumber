@@ -1,9 +1,14 @@
 package com.fortes.rh.test.dao.hibernate.sesmt;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
@@ -17,8 +22,7 @@ import com.fortes.rh.dao.sesmt.HistoricoAmbienteDao;
 import com.fortes.rh.dao.sesmt.HistoricoFuncaoDao;
 import com.fortes.rh.dao.sesmt.RiscoAmbienteDao;
 import com.fortes.rh.dao.sesmt.RiscoDao;
-import com.fortes.rh.dao.sesmt.SolicitacaoEpiDao;
-import com.fortes.rh.dao.sesmt.SolicitacaoEpiItemDao;
+import com.fortes.rh.dao.sesmt.RiscoFuncaoDao;
 import com.fortes.rh.dao.sesmt.TipoEPIDao;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.geral.Colaborador;
@@ -31,8 +35,9 @@ import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
 import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.model.sesmt.RiscoAmbiente;
+import com.fortes.rh.model.sesmt.RiscoFuncao;
 import com.fortes.rh.model.sesmt.TipoEPI;
-import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.dao.GenericDaoHibernateTest_JUnit4;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.AmbienteFactory;
@@ -41,24 +46,24 @@ import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.sesmt.EpiFactory;
 import com.fortes.rh.test.factory.sesmt.RiscoAmbienteFactory;
 import com.fortes.rh.test.factory.sesmt.RiscoFactory;
+import com.fortes.rh.test.factory.sesmt.RiscoFuncaoFactory;
 import com.fortes.rh.util.DateUtil;
 
-public class EpiDaoHibernateTest extends GenericDaoHibernateTest<Epi>
+public class EpiDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<Epi>
 {
-	private EpiDao epiDao;
-	SolicitacaoEpiDao solicitacaoEpiDao;
-	SolicitacaoEpiItemDao solicitacaoEpiItemDao;
-	EpiHistoricoDao epiHistoricoDao;
-	private EmpresaDao empresaDao;
-	private AmbienteDao ambienteDao;
-	private HistoricoAmbienteDao historicoAmbienteDao;
-	private RiscoDao riscoDao;
-	private RiscoAmbienteDao riscoAmbienteDao;
-	private HistoricoFuncaoDao historicoFuncaoDao;
-	private TipoEPIDao tipoEPIDao;
-	private ColaboradorDao colaboradorDao;
-	private HistoricoColaboradorDao historicoColaboradorDao;
-	private FuncaoDao funcaoDao;
+	@Autowired private EpiDao epiDao;
+	@Autowired private EpiHistoricoDao epiHistoricoDao;
+	@Autowired private EmpresaDao empresaDao;
+	@Autowired private AmbienteDao ambienteDao;
+	@Autowired private HistoricoAmbienteDao historicoAmbienteDao;
+	@Autowired private RiscoDao riscoDao;
+	@Autowired private RiscoAmbienteDao riscoAmbienteDao;
+	@Autowired private HistoricoFuncaoDao historicoFuncaoDao;
+	@Autowired private TipoEPIDao tipoEPIDao;
+	@Autowired private ColaboradorDao colaboradorDao;
+	@Autowired private HistoricoColaboradorDao historicoColaboradorDao;
+	@Autowired private FuncaoDao funcaoDao;
+	@Autowired private RiscoFuncaoDao riscoFuncaoDao;
 
 	private Empresa empresa;
 
@@ -77,6 +82,11 @@ public class EpiDaoHibernateTest extends GenericDaoHibernateTest<Epi>
 		return epi;
 	}
 	
+	public GenericDao<Epi> getGenericDao() {
+		return epiDao;
+	}
+	
+	@Test
 	public void testFindEpisGetCount() 
 	{
 		Empresa empresa1 = EmpresaFactory.getEmpresa();
@@ -116,6 +126,7 @@ public class EpiDaoHibernateTest extends GenericDaoHibernateTest<Epi>
 		assertEquals(1, epiDao.findEpis(3, 2, empresa1.getId(), null, null).size());
 	}
 
+	@Test
 	public void testFindByIdProjection()
 	{
 		setEmpresa();
@@ -129,6 +140,7 @@ public class EpiDaoHibernateTest extends GenericDaoHibernateTest<Epi>
 		assertEquals(epi.getId(), epiRetorno.getId());
 	}
 
+	@Test
 	public void testFindByVencimentoCa()
 	{
 		Date data = new Date();
@@ -154,6 +166,7 @@ public class EpiDaoHibernateTest extends GenericDaoHibernateTest<Epi>
 		assertEquals(1, colecao.size());
 	}
 	
+	@Test
 	public void testFindEpisDoAmbiente()
 	{
 		Epi epi1 = new Epi();
@@ -190,6 +203,7 @@ public class EpiDaoHibernateTest extends GenericDaoHibernateTest<Epi>
 		assertEquals(1, epiDao.findEpisDoAmbiente(ambiente.getId(), new Date()).size());
 	}
 
+	@Test
 	public void testFindByRiscoAmbiente()
 	{
 		Epi epi1 = new Epi();
@@ -220,9 +234,44 @@ public class EpiDaoHibernateTest extends GenericDaoHibernateTest<Epi>
 		riscoAmbiente.setHistoricoAmbiente(historicoAmbiente);
 		riscoAmbienteDao.save(riscoAmbiente);
 		
-		assertEquals(epis, epiDao.findByRiscoAmbiente(risco.getId(), ambiente.getId(), new Date()));
+		assertEquals(epis, epiDao.findByRiscoAmbienteOuFuncao(risco.getId(), ambiente.getId(), new Date(), true));
+	}
+	
+	@Test
+	public void testFindByRiscoFuncao()
+	{
+		Epi epi1 = new Epi();
+		epiDao.save(epi1);
+
+		EpiHistorico epiHistorico1 = new EpiHistorico();
+		epiHistorico1.setData(new Date());
+		epiHistorico1.setEpi(epi1);
+		epiHistoricoDao.save(epiHistorico1);
+		
+		Funcao funcao = FuncaoFactory.getEntity();
+		funcaoDao.save(funcao);
+		
+		Collection<Epi> epis = new ArrayList<Epi>();
+		epis.add(epi1);
+		
+		Risco risco = RiscoFactory.getEntity();
+		risco.setEpis(epis);
+		riscoDao.save(risco);
+		
+		HistoricoFuncao historicoFuncao = new HistoricoFuncao();
+		historicoFuncao.setData(new Date());
+		historicoFuncao.setFuncao(funcao);
+		historicoFuncaoDao.save(historicoFuncao);
+		
+		RiscoFuncao riscoFuncao = RiscoFuncaoFactory.getEntity();
+		riscoFuncao.setRisco(risco);
+		riscoFuncao.setHistoricoFuncao(historicoFuncao);
+		riscoFuncaoDao.save(riscoFuncao);
+		
+		assertEquals(epis, epiDao.findByRiscoAmbienteOuFuncao(risco.getId(), funcao.getId(), new Date(), false));
 	}
 
+	@Test
 	public void testFindByRisco()
 	{
 		Epi epi1 = new Epi();
@@ -250,7 +299,7 @@ public class EpiDaoHibernateTest extends GenericDaoHibernateTest<Epi>
 		assertEquals(epis, epiDao.findByRisco(risco.getId()));
 	}
 
-
+	@Test
 	public void testFindByIdHistoricoFuncao()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -277,6 +326,7 @@ public class EpiDaoHibernateTest extends GenericDaoHibernateTest<Epi>
 		assertEquals(2, episRetorno.size());
 	}	
 	
+	@Test
 	public void testFindSincronizarEpiInteresse() 
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
@@ -291,6 +341,7 @@ public class EpiDaoHibernateTest extends GenericDaoHibernateTest<Epi>
 		assertEquals(1, episRetorno.size());
 	}
 	
+	@Test
 	public void testFindFabricantesDistinctByEmpresa()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -318,6 +369,7 @@ public class EpiDaoHibernateTest extends GenericDaoHibernateTest<Epi>
 		assertEquals(epi1.getFabricante(), fabricantes.toArray()[1]);
 	}
 	
+	@Test
 	public void testFindAllSelect()
 	{
 		Date data1 = DateUtil.criarDataMesAno(01, 01, 2011);
@@ -361,6 +413,7 @@ public class EpiDaoHibernateTest extends GenericDaoHibernateTest<Epi>
 		assertEquals(2, colecao.size());
 	}
 	
+	@Test
 	public void testFindPriorizandoEpiRelacionado()
 	{
 		Date data1 = DateUtil.criarDataMesAno(01, 01, 2011);
@@ -437,72 +490,5 @@ public class EpiDaoHibernateTest extends GenericDaoHibernateTest<Epi>
 	{
 		empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
-	}
-
-	public GenericDao<Epi> getGenericDao()
-	{
-		return epiDao;
-	}
-
-	public void setEpiDao(EpiDao epiDao)
-	{
-		this.epiDao = epiDao;
-	}
-
-	public void setEmpresaDao(EmpresaDao empresaDao)
-	{
-		this.empresaDao = empresaDao;
-	}
-
-	public void setSolicitacaoEpiDao(SolicitacaoEpiDao solicitacaoEpiDao)
-	{
-		this.solicitacaoEpiDao = solicitacaoEpiDao;
-	}
-
-	public void setSolicitacaoEpiItemDao(SolicitacaoEpiItemDao solicitacaoEpiItemDao)
-	{
-		this.solicitacaoEpiItemDao = solicitacaoEpiItemDao;
-	}
-
-	public void setEpiHistoricoDao(EpiHistoricoDao epiHistoricoDao)
-	{
-		this.epiHistoricoDao = epiHistoricoDao;
-	}
-
-	public void setAmbienteDao(AmbienteDao ambienteDao) {
-		this.ambienteDao = ambienteDao;
-	}
-
-	public void setHistoricoAmbienteDao(HistoricoAmbienteDao historicoAmbienteDao) {
-		this.historicoAmbienteDao = historicoAmbienteDao;
-	}
-
-	public void setRiscoDao(RiscoDao riscoDao) {
-		this.riscoDao = riscoDao;
-	}
-
-	public void setRiscoAmbienteDao(RiscoAmbienteDao riscoAmbienteDao) {
-		this.riscoAmbienteDao = riscoAmbienteDao;
-	}
-
-	public void setHistoricoFuncaoDao(HistoricoFuncaoDao historicoFuncaoDao)
-	{
-		this.historicoFuncaoDao = historicoFuncaoDao;
-	}
-
-	public void setTipoEPIDao(TipoEPIDao tipoEPIDao) {
-		this.tipoEPIDao = tipoEPIDao;
-	}
-
-	public void setColaboradorDao(ColaboradorDao colaboradorDao) {
-		this.colaboradorDao = colaboradorDao;
-	}
-
-	public void setHistoricoColaboradorDao(HistoricoColaboradorDao historicoColaboradorDao) {
-		this.historicoColaboradorDao = historicoColaboradorDao;
-	}
-
-	public void setFuncaoDao(FuncaoDao funcaoDao) {
-		this.funcaoDao = funcaoDao;
 	}
 }

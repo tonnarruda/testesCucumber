@@ -247,9 +247,9 @@ public class EpiManagerImpl extends GenericManagerImpl<Epi, EpiDao> implements E
 		return getDao().findEpisDoAmbiente(ambienteId, data);
 	}
 
-	public Collection<Epi> findByRiscoAmbiente(Long riscoId, Long ambienteId, Date data) 
+	public Collection<Epi> findByRiscoAmbienteOuFuncao(Long riscoId, Long ambienteId, Date data, boolean controlaRiscoPorAmbiente) 
 	{
-		return getDao().findByRiscoAmbiente(riscoId, ambienteId, data);
+		return getDao().findByRiscoAmbienteOuFuncao(riscoId, ambienteId, data, controlaRiscoPorAmbiente);
 	}
 
 	public Collection<Epi> findByRisco(Long riscoId) 

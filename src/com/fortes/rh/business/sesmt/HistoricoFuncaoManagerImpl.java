@@ -21,6 +21,7 @@ import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
 import com.fortes.rh.model.sesmt.RiscoFuncao;
+import com.fortes.rh.model.sesmt.relatorio.DadosAmbienteOuFuncaoRisco;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
@@ -291,6 +292,11 @@ public class HistoricoFuncaoManagerImpl extends GenericManagerImpl<HistoricoFunc
 	public Collection<HistoricoFuncao> findByFuncao(Long funcaoId) 
 	{
 		return getDao().findByFuncao(funcaoId);
+	}
+	
+	public List<DadosAmbienteOuFuncaoRisco> findDadosNoPeriodo(Long funcaoId, Date dataIni, Date dataFim) 
+	{
+		return getDao().findDadosNoPeriodo(funcaoId, dataIni, dataFim);
 	}
 	
 	public void setExameManager(ExameManager exameManager)

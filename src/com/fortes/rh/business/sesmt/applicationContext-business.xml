@@ -6,27 +6,6 @@
     <property name="dao">
       <ref bean="funcaoDao" />
     </property>
-    <property name="colaboradorManager">
-      <ref bean="colaboradorManager" />
-    </property>
-    <property name="catManager">
-      <ref bean="catManager" />
-    </property>
-    <property name="historicoAmbienteManager">
-      <ref bean="historicoAmbienteManager" />
-    </property>
-    <property name="riscoMedicaoRiscoManager">
-      <ref bean="riscoMedicaoRiscoManager" />
-    </property>
-    <property name="epiManager">
-      <ref bean="epiManager" />
-    </property>
-    <property name="engenheiroResponsavelManager">
-      <ref bean="engenheiroResponsavelManager" />
-    </property>
-    <property name="medicoCoordenadorManager">
-      <ref bean="medicoCoordenadorManager" />
-    </property>
   </bean>
   <bean id="funcaoManager" parent="parentManager">
     <property name="proxyInterfaces">
@@ -1180,6 +1159,46 @@
     </property>
     <property name="target">
       <ref bean="ordemDeServicoManagerTarget" />
+    </property>
+  </bean>
+  <bean id="pppRelatorioManagerTarget" class="com.fortes.rh.business.sesmt.PppRelatorioManagerImpl">
+    <property name="colaboradorManager">
+      <ref bean="colaboradorManager" />
+    </property>
+    <property name="catManager">
+      <ref bean="catManager" />
+    </property>
+    <property name="historicoAmbienteManager">
+      <ref bean="historicoAmbienteManager" />
+    </property>
+    <property name="riscoMedicaoRiscoManager">
+      <ref bean="riscoMedicaoRiscoManager" />
+    </property>
+    <property name="epiManager">
+      <ref bean="epiManager" />
+    </property>
+    <property name="engenheiroResponsavelManager">
+      <ref bean="engenheiroResponsavelManager" />
+    </property>
+    <property name="medicoCoordenadorManager">
+      <ref bean="medicoCoordenadorManager" />
+    </property>
+    <property name="historicoFuncaoManager">
+      <ref bean="historicoFuncaoManager" />
+    </property>
+    <property name="historicoColaboradorManager">
+      <ref bean="historicoColaboradorManager" />
+    </property>
+    <property name="empresaManager">
+      <ref bean="empresaManager" />
+    </property>
+  </bean>
+  <bean id="pppRelatorioManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.sesmt.PppRelatorioManager</value>
+    </property>
+    <property name="target">
+      <ref bean="pppRelatorioManagerTarget" />
     </property>
   </bean>
 </beans>

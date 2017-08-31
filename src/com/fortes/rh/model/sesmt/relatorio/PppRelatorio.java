@@ -48,6 +48,24 @@ public class PppRelatorio
 		this.data = data;
 	}
 	
+	public PppRelatorio(Colaborador colaborador, Estabelecimento estabelecimento, Date data, String[] respostas, Collection<Cat> cats, Collection<HistoricoColaborador> historicosDoColaboradors,
+			Collection<HistoricoFuncao> historicoFuncaos, Collection<PppFatorRisco> pppFatorRiscos, String nit, String responsavel, String observacoes, 
+			Collection<EngenheiroResponsavel> engenheirosResponsaveis, Collection<MedicoCoordenador> medicosCoordenadores) {
+		this.colaborador = colaborador;
+		this.estabelecimento = estabelecimento;
+		this.data = data;
+		this.setRespostas(respostas);
+		this.setCats(cats);
+		this.setHistoricos(historicosDoColaboradors);
+		this.setHistoricoFuncaos(historicoFuncaos);
+		this.setFatoresRiscosDistinct(pppFatorRiscos);
+		this.setNit(nit);
+		this.setResponsavel(responsavel);
+		this.setObservacoes(observacoes);
+		this.setEngenheirosResponsaveis(engenheirosResponsaveis);
+		this.setMedicosCoordenadores(medicosCoordenadores);
+	}
+
 	public void setRespostas(String[] respostas)
 	{
 		if (respostas != null && respostas.length>=5)

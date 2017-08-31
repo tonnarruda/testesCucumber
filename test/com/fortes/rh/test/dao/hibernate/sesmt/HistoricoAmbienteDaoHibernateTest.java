@@ -1,10 +1,16 @@
 package com.fortes.rh.test.dao.hibernate.sesmt;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
@@ -19,7 +25,7 @@ import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.model.sesmt.RiscoAmbiente;
-import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.dao.GenericDaoHibernateTest_JUnit4;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.AmbienteFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoAmbienteFactory;
@@ -28,14 +34,14 @@ import com.fortes.rh.test.factory.sesmt.RiscoAmbienteFactory;
 import com.fortes.rh.test.factory.sesmt.RiscoFactory;
 import com.fortes.rh.util.DateUtil;
 
-public class HistoricoAmbienteDaoHibernateTest extends GenericDaoHibernateTest<HistoricoAmbiente>
+public class HistoricoAmbienteDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<HistoricoAmbiente>
 {
-	private HistoricoAmbienteDao historicoAmbienteDao;
-	private AmbienteDao ambienteDao;
-	private RiscoAmbienteDao riscoAmbienteDao;
-	private RiscoDao riscoDao;
-	private EmpresaDao empresaDao;
-	private EstabelecimentoDao estabelecimentoDao;
+	@Autowired private HistoricoAmbienteDao historicoAmbienteDao;
+	@Autowired private AmbienteDao ambienteDao;
+	@Autowired private RiscoAmbienteDao riscoAmbienteDao;
+	@Autowired private RiscoDao riscoDao;
+	@Autowired private EmpresaDao empresaDao;
+	@Autowired private EstabelecimentoDao estabelecimentoDao;
 
 	public HistoricoAmbiente getEntity()
 	{
@@ -54,11 +60,7 @@ public class HistoricoAmbienteDaoHibernateTest extends GenericDaoHibernateTest<H
 		return historicoAmbienteDao;
 	}
 
-	public void setHistoricoAmbienteDao(HistoricoAmbienteDao historicoAmbienteDao)
-	{
-		this.historicoAmbienteDao = historicoAmbienteDao;
-	}
-	
+	@Test
 	public void testRemoveByAmbiente()
 	{
 		HistoricoAmbiente historicoAmbiente = new HistoricoAmbiente();
@@ -74,6 +76,7 @@ public class HistoricoAmbienteDaoHibernateTest extends GenericDaoHibernateTest<H
 		historicoAmbienteDao.removeByAmbiente(ambiente.getId());
 	}
 	
+	@Test
 	public void testFindbyAmbiente()
 	{
 		Ambiente ambiente = new Ambiente();
@@ -86,6 +89,7 @@ public class HistoricoAmbienteDaoHibernateTest extends GenericDaoHibernateTest<H
 		assertEquals(1,historicoAmbienteDao.findByAmbiente(ambiente.getId()).size());
 	}
 	
+	@Test
 	public void testFindUltimoHistorico()
 	{
 		Ambiente ambiente = new Ambiente();
@@ -110,10 +114,10 @@ public class HistoricoAmbienteDaoHibernateTest extends GenericDaoHibernateTest<H
 		assertEquals(hoje, resultado.getData());
 	}
 	
-	@SuppressWarnings("deprecation")
+	@Test
 	public void testFindUltimoHistoricoAteData()
 	{
-		Date data1 = DateUtil.criarAnoMesDia(2009, 01, 10);
+		Date data1 = DateUtil.criarDataMesAno(01, 10, 2009);
 		
 		Ambiente ambiente = new Ambiente();
 		ambienteDao.save(ambiente);
@@ -123,14 +127,14 @@ public class HistoricoAmbienteDaoHibernateTest extends GenericDaoHibernateTest<H
 		historicoAmbiente.setData(data1);
 		historicoAmbienteDao.save(historicoAmbiente);
 		
-		assertEquals(historicoAmbiente, historicoAmbienteDao.findUltimoHistoricoAteData(ambiente.getId(), new Date()));
+		assertEquals(ambiente.getId(), historicoAmbienteDao.findUltimoHistoricoAteData(ambiente.getId(), new Date()).getAmbiente().getId());
 	}
 	
-	@SuppressWarnings("deprecation")
+	@Test
 	public void testFindDadosNoPeriodo()
 	{
-		Date dataIni = DateUtil.criarAnoMesDia(2009, 01, 10);
-		Date dataFim = DateUtil.criarAnoMesDia(2009, 03, 20);
+		Date dataIni = DateUtil.criarDataMesAno(01, 10, 2009);
+		Date dataFim = DateUtil.criarDataMesAno(03, 20, 2009);
 		
 		Risco risco = RiscoFactory.getEntity();
 		riscoDao.save(risco);
@@ -148,6 +152,7 @@ public class HistoricoAmbienteDaoHibernateTest extends GenericDaoHibernateTest<H
 		historicoAmbienteDao.findDadosNoPeriodo(ambiente.getId(), dataIni, dataFim);
 	}
 
+	@Test
 	public void testFindRiscosAmbientes() throws Exception
 	{
 		Ambiente a1 = AmbienteFactory.getEntity("A1", null, null);
@@ -189,6 +194,7 @@ public class HistoricoAmbienteDaoHibernateTest extends GenericDaoHibernateTest<H
 		assertNull("Test 2", historicosVazios);
 	}
 	
+	@Test
 	public void testFindByData() throws Exception
 	{
 		Date hoje = DateUtil.criarDataMesAno(1, 1, 2000);
@@ -211,29 +217,5 @@ public class HistoricoAmbienteDaoHibernateTest extends GenericDaoHibernateTest<H
 		assertEquals("Inserção", historicoAmbiente1.getId(), historicoAmbienteDao.findByData(hoje, null, ambiente.getId()).getId());
 		assertEquals("Atualização própria", null, historicoAmbienteDao.findByData(hoje, historicoAmbiente1.getId(), historicoAmbiente1.getAmbiente().getId()));
 		assertEquals("Atualização outra", historicoAmbiente1.getId(), historicoAmbienteDao.findByData(hoje, 0L, historicoAmbiente1.getAmbiente().getId()).getId());
-	}
-
-	public void setAmbienteDao(AmbienteDao ambienteDao) {
-		this.ambienteDao = ambienteDao;
-	}
-
-	public void setRiscoDao(RiscoDao riscoDao) {
-		this.riscoDao = riscoDao;
-	}
-
-	public void setRiscoAmbienteDao(RiscoAmbienteDao riscoAmbienteDao) {
-		this.riscoAmbienteDao = riscoAmbienteDao;
-	}
-
-	
-	public void setEmpresaDao(EmpresaDao empresaDao)
-	{
-		this.empresaDao = empresaDao;
-	}
-
-	
-	public void setEstabelecimentoDao(EstabelecimentoDao estabelecimentoDao)
-	{
-		this.estabelecimentoDao = estabelecimentoDao;
 	}
 }

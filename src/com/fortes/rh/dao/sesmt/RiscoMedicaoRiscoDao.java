@@ -12,6 +12,6 @@ public interface RiscoMedicaoRiscoDao extends GenericDao<RiscoMedicaoRisco>
 	boolean removeByMedicaoRisco(Long medicaoRiscoId);
 	Collection<RiscoMedicaoRisco> findMedicoesDeRiscosDoAmbiente(Long ambienteId, Date data);
 	Collection<RiscoMedicaoRisco> findMedicoesDeRiscosDaFuncao(Long funcaoId, Date data);
-	Collection<RiscoMedicaoRisco> findByRiscoAteData(Long riscoId, Long ambienteId, Date dataAmbienteFim);
-	MedicaoRisco findUltimaAteData(Long ambienteId, Date historicoAmbienteData);
+	Collection<RiscoMedicaoRisco> findByRiscoAteData(Long riscoId, Long ambienteOuFuncaoId, Date dataFim, boolean controlaRiscoPorAmbiente);
+	MedicaoRisco findUltimaAteData(Long ambienteOuFuncaoId, Date historicoAmbienteOuFuncaoData, boolean controlaRiscoPorAmbiente);
 }

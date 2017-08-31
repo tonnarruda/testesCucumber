@@ -14,7 +14,7 @@ public interface EpiDao extends GenericDao<Epi>
 	Collection<Epi> findAllSelect(Long empresaId);
 	Collection<Epi> findByVencimentoCa(Date data, Long empresaId, Long[] tipoEPIIds);
 	Collection<Epi> findEpisDoAmbiente(Long ambienteId, Date data);
-	Collection<Epi> findByRiscoAmbiente(Long riscoId, Long ambienteId, Date data);
+	Collection<Epi> findByRiscoAmbienteOuFuncao(Long riscoId, Long ambienteOuFuncaoId, Date data, boolean controlaRiscoPorAmbiente);
 	Collection<Epi> findByRisco(Long riscoId);
 	Collection<Epi> findByHistoricoFuncao(Long historicoFuncaoId);
 	Collection<Epi> findSincronizarEpiInteresse(Long empresaOrigemId);

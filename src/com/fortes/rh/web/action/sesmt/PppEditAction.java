@@ -11,7 +11,7 @@ import org.apache.commons.lang.StringUtils;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
-import com.fortes.rh.business.sesmt.FuncaoManager;
+import com.fortes.rh.business.sesmt.PppRelatorioManager;
 import com.fortes.rh.exception.PppRelatorioException;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -28,9 +28,9 @@ public class PppEditAction extends MyActionSupportList
 	private static final long serialVersionUID = 1L;
 	
 	private ColaboradorManager colaboradorManager;
-	private FuncaoManager funcaoManager;
 	private HistoricoColaboradorManager historicoColaboradorManager;
 	private EmpresaManager empresaManager;
+	private PppRelatorioManager pppRelatorioManager;
 
 	private Colaborador colaborador;
 	private String nit;
@@ -49,7 +49,6 @@ public class PppEditAction extends MyActionSupportList
 	private String cpfBusca;
 	private boolean imprimirRecibo = false;
 
-	@SuppressWarnings("unchecked")
 	public String list() throws Exception
 	{
 		Map<String, Object> parametros = new HashMap<String, Object>();
@@ -89,14 +88,12 @@ public class PppEditAction extends MyActionSupportList
 	
 	public String gerarRelatorio() throws Exception
 	{
-		if(Autenticador.isDemo())
-		{
+		if(Autenticador.isDemo()){
 			prepareRelatorio();
 			return Action.INPUT;
 		}
 		
-		try
-		{
+		try{
 			String imgDir = ServletActionContext.getServletContext().getRealPath("/imgs/") + java.io.File.separatorChar;
 			
 			parametros = RelatorioUtil.getParametrosRelatorio("PPP", getEmpresaSistema(), "");
@@ -104,18 +101,14 @@ public class PppEditAction extends MyActionSupportList
 			parametros.put("IMG_DIR", imgDir);
 			parametros.put("IMPRIMIR_RECIBO", imprimirRecibo);
 			
-			dataSource = funcaoManager.populaRelatorioPpp(colaborador, getEmpresaSistema(), data, nit, cnae, responsavel, observacoes, respostas);
+			dataSource = pppRelatorioManager.populaRelatorioPpp(colaborador, getEmpresaSistema(), data, nit, cnae, responsavel, observacoes, respostas, getEmpresaSistema().getId());
 			
 			return SUCCESS;
-		}
-		catch (PppRelatorioException pppRelatorioException)
-		{
+		}catch (PppRelatorioException pppRelatorioException){
 			addActionWarning(pppRelatorioException.getMensagemDeInformacao());
 			prepareRelatorio();
 			return INPUT;
-		}
-		catch (Exception e) 
-		{
+		}catch (Exception e){
 			e.printStackTrace();
 			addActionError("Erro ao gerar relatório.");
 			prepareRelatorio();
@@ -168,9 +161,7 @@ public class PppEditAction extends MyActionSupportList
 	{
 		this.observacoes = observacoes;
 	}
-	public void setFuncaoManager(FuncaoManager funcaoManager) {
-		this.funcaoManager = funcaoManager;
-	}
+
 	public Collection<Colaborador> getColaboradors() {
 		return colaboradors;
 	}
@@ -233,5 +224,9 @@ public class PppEditAction extends MyActionSupportList
 
 	public String getCnae() {
 		return cnae;
+	}
+
+	public void setPppRelatorioManager(PppRelatorioManager pppRelatorioManager) {
+		this.pppRelatorioManager = pppRelatorioManager;
 	}
 }

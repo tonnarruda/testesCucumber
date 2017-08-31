@@ -24,7 +24,7 @@ public interface EpiManager extends GenericManager<Epi>
 	FichaEpiRelatorio findImprimirFicha(Empresa empresaSistema, Colaborador colaborador);
 	Collection<Epi> findByVencimentoCa(Date data, Long empresaId, String[] tipoEPICheck);
 	Collection<Epi> findEpisDoAmbiente(Long ambienteId, Date data);
-	Collection<Epi> findByRiscoAmbiente(Long riscoId, Long ambienteId, Date data);
+	Collection<Epi> findByRiscoAmbienteOuFuncao(Long riscoId, Long ambienteId, Date data, boolean controlaRiscoPorAmbiente);
 	Collection<Epi> findByRisco(Long riscoId);
 	Collection<Epi> findByHistoricoFuncao(Long historicoFuncaoId);
 	void removeEpi(Epi epi) throws Exception;

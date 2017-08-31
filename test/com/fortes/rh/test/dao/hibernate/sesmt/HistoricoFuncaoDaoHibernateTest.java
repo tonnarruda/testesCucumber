@@ -1,9 +1,16 @@
 package com.fortes.rh.test.dao.hibernate.sesmt;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
@@ -12,27 +19,36 @@ import com.fortes.rh.dao.sesmt.EpiDao;
 import com.fortes.rh.dao.sesmt.ExameDao;
 import com.fortes.rh.dao.sesmt.FuncaoDao;
 import com.fortes.rh.dao.sesmt.HistoricoFuncaoDao;
+import com.fortes.rh.dao.sesmt.RiscoDao;
+import com.fortes.rh.dao.sesmt.RiscoFuncaoDao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
-import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.model.sesmt.Risco;
+import com.fortes.rh.model.sesmt.RiscoFuncao;
+import com.fortes.rh.model.sesmt.relatorio.DadosAmbienteOuFuncaoRisco;
+import com.fortes.rh.test.dao.GenericDaoHibernateTest_JUnit4;
 import com.fortes.rh.test.factory.cargosalario.FuncaoFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoFuncaoFactory;
 import com.fortes.rh.test.factory.sesmt.EpiFactory;
 import com.fortes.rh.test.factory.sesmt.ExameFactory;
+import com.fortes.rh.test.factory.sesmt.RiscoFactory;
+import com.fortes.rh.test.factory.sesmt.RiscoFuncaoFactory;
 import com.fortes.rh.util.DateUtil;
 @SuppressWarnings("deprecation")
-public class HistoricoFuncaoDaoHibernateTest extends GenericDaoHibernateTest<HistoricoFuncao>
+public class HistoricoFuncaoDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<HistoricoFuncao>
 {
-	private HistoricoFuncaoDao historicoFuncaoDao;
-	private FuncaoDao funcaoDao;
-	private EmpresaDao empresaDao;
-	private CargoDao cargoDao;
-	private EpiDao epiDao;
-	private ExameDao exameDao;
+	@Autowired private HistoricoFuncaoDao historicoFuncaoDao;
+	@Autowired private FuncaoDao funcaoDao;
+	@Autowired private EmpresaDao empresaDao;
+	@Autowired private CargoDao cargoDao;
+	@Autowired private EpiDao epiDao;
+	@Autowired private ExameDao exameDao;
+	@Autowired private RiscoDao riscoDao;
+	@Autowired private RiscoFuncaoDao riscoFuncaoDao;
 
 	public HistoricoFuncao getEntity()
 	{
@@ -46,6 +62,11 @@ public class HistoricoFuncaoDaoHibernateTest extends GenericDaoHibernateTest<His
 		return historicoFuncao;
 	}
 
+	public GenericDao<HistoricoFuncao> getGenericDao() {
+		return historicoFuncaoDao;
+	}
+
+	@Test
 	public void testGetHistoricosByDateFuncaos() throws Exception
 	{
 		Funcao f1 = new Funcao();
@@ -115,6 +136,7 @@ public class HistoricoFuncaoDaoHibernateTest extends GenericDaoHibernateTest<His
 		assertEquals("Test 13", 1, historicoFuncaos.size());
 	}
 
+	@Test
 	public void testFindEpisByData() throws Exception
 	{
 		Funcao f1 = FuncaoFactory.getEntity(null, "FA");
@@ -152,6 +174,7 @@ public class HistoricoFuncaoDaoHibernateTest extends GenericDaoHibernateTest<His
 		assertNull("Test 2", historicosVazios);
 	}
 	
+	@Test
 	public void testFindByData() throws Exception
 	{
 		Date hoje = DateUtil.criarDataMesAno(17, 4, 2012);
@@ -170,6 +193,7 @@ public class HistoricoFuncaoDaoHibernateTest extends GenericDaoHibernateTest<His
 		assertEquals("Atualização outra", historicoFuncao1.getId(), historicoFuncaoDao.findByData(hoje, 0L, funcao.getId()).getId());
 	}
 
+	@Test
 	public void testFindHistoricoByFuncoesId()
 	{
 		Empresa empresa = new Empresa();
@@ -234,6 +258,7 @@ public class HistoricoFuncaoDaoHibernateTest extends GenericDaoHibernateTest<His
 		assertEquals(3, examesRelatorios.size());
 	}
 	
+	@Test
 	public void testRemoveByFuncoes()
 	{		
 		Funcao funcao1 = new Funcao();
@@ -258,6 +283,7 @@ public class HistoricoFuncaoDaoHibernateTest extends GenericDaoHibernateTest<His
 		assertNull(historicoFuncaoDao.findById(historicoFuncao2.getId(), null));		
 	}
 	
+	@Test
 	public void testFindByIdProjection()
 	{		
 		Funcao funcao = new Funcao();
@@ -270,6 +296,7 @@ public class HistoricoFuncaoDaoHibernateTest extends GenericDaoHibernateTest<His
 		assertEquals(historicoFuncao, historicoFuncaoDao.findByIdProjection(historicoFuncao.getId()));
 	}
 
+	@Test
 	public void testFindByFuncoes()
 	{
 		Date data = DateUtil.criarDataMesAno(01, 01, 2012);
@@ -317,6 +344,7 @@ public class HistoricoFuncaoDaoHibernateTest extends GenericDaoHibernateTest<His
 		assertEquals(3, funcoes.size());
 	}
 	
+	@Test
 	public void testFindByFuncao()
 	{
 		Date data1 = DateUtil.criarDataMesAno(01, 01, 2012);
@@ -348,6 +376,7 @@ public class HistoricoFuncaoDaoHibernateTest extends GenericDaoHibernateTest<His
 		assertEquals(2, funcoes.size());
 	}
 	
+	@Test
 	public void testFindByFuncaoAndData()
 	{
 		Date data1 = DateUtil.criarDataMesAno(01, 01, 2012);
@@ -372,42 +401,46 @@ public class HistoricoFuncaoDaoHibernateTest extends GenericDaoHibernateTest<His
 		assertEquals(historicoFuncao2.getId(), historicoFuncaoRetornoDoBanco.getId());
 	}
 	
-	public void testGetHistoricosFuncoesByHistoricoColaborador()
+	@Test
+	public void testFindDadosNoPeriodo()
 	{
-		//TODO:construir teste
-	}
+		Date dataIni = DateUtil.criarAnoMesDia(2009, 01, 10);
+		Date dataFim = DateUtil.criarAnoMesDia(2009, 03, 20);
+		
+		Risco risco = RiscoFactory.getEntity();
+		riscoDao.save(risco);
+		
+		Funcao funcao = FuncaoFactory.getEntity();
+		funcaoDao.save(funcao);
+				
+		HistoricoFuncao historicoFuncao = new HistoricoFuncao();
+		historicoFuncao.setData(dataIni);
+		historicoFuncao.setFuncao(funcao);
+		historicoFuncaoDao.save(historicoFuncao);
 
-	public void setFuncaoDao(FuncaoDao funcaoDao)
+		RiscoFuncao riscoFuncao = RiscoFuncaoFactory.getEntity();
+		riscoFuncao.setRisco(risco);
+		riscoFuncao.setHistoricoFuncao(historicoFuncao);
+		riscoFuncaoDao.save(riscoFuncao);
+		
+		List<DadosAmbienteOuFuncaoRisco> retorno = historicoFuncaoDao.findDadosNoPeriodo(funcao.getId(), dataIni, dataFim);
+		
+		assertEquals(1, retorno.size());
+	}
+	
+	@Test
+	public void testFindUltimoHistoricoAteData()
 	{
-		this.funcaoDao = funcaoDao;
-	}
-
-	public GenericDao<HistoricoFuncao> getGenericDao()
-	{
-		return historicoFuncaoDao;
-	}
-
-	public void setHistoricoFuncaoDao(HistoricoFuncaoDao historicoFuncaoDao)
-	{
-		this.historicoFuncaoDao = historicoFuncaoDao;
-	}
-
-	public void setEmpresaDao(EmpresaDao empresaDao)
-	{
-		this.empresaDao = empresaDao;
-	}
-
-	public void setCargoDao(CargoDao cargoDao)
-	{
-		this.cargoDao = cargoDao;
-	}
-
-	public void setEpiDao(EpiDao epiDao)
-	{
-		this.epiDao = epiDao;
-	}
-
-	public void setExameDao(ExameDao exameDao) {
-		this.exameDao = exameDao;
+		Date data = DateUtil.criarDataMesAno(01, 07, 2017);
+		
+		Funcao funcao = FuncaoFactory.getEntity();
+		funcaoDao.save(funcao);
+		
+		HistoricoFuncao historicoFuncao = HistoricoFuncaoFactory.getEntity();
+		historicoFuncao.setFuncao(funcao);
+		historicoFuncao.setData(data);
+		historicoFuncaoDao.save(historicoFuncao);
+		
+		assertEquals(funcao.getId(), historicoFuncaoDao.findUltimoHistoricoAteData(funcao.getId(), new Date()).getFuncao().getId());
 	}
 }

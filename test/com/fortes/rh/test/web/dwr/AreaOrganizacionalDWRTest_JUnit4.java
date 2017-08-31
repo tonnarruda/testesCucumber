@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -48,12 +47,10 @@ public class AreaOrganizacionalDWRTest_JUnit4
 	public void testGetPemitidasCheckboxByEmpresas() throws Exception
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacional.setEmpresa(empresa);
 		
-		AreaOrganizacional area = AreaOrganizacionalFactory.getEntity();
-		area.setEmpresa(empresa);
-		
-		Collection<AreaOrganizacional> areaOrganizacionals = new ArrayList<AreaOrganizacional>();
-		areaOrganizacionals.add(area);
+		Collection<AreaOrganizacional> areaOrganizacionals = Arrays.asList(areaOrganizacional);
 
 		when(areaOrganizacionalManager.filtraPermitidasByEmpresasAndUsuario(request, null, new Long[]{empresa.getId()})).thenReturn(areaOrganizacionals);
 		

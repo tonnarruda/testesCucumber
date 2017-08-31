@@ -17,6 +17,7 @@ import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
@@ -24,6 +25,7 @@ import com.fortes.rh.dao.sesmt.HistoricoFuncaoDao;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
+import com.fortes.rh.model.sesmt.relatorio.DadosAmbienteOuFuncaoRisco;
 import com.fortes.rh.util.LongUtil;
 
 @SuppressWarnings("unchecked")
@@ -104,15 +106,28 @@ public class HistoricoFuncaoDaoHibernate extends GenericDaoHibernate<HistoricoFu
 
 	public HistoricoFuncao findUltimoHistoricoAteData(Long funcaoId, Date data)
 	{
-		Criteria criteria = getSession().createCriteria(getEntityClass(), "historico");
+		DetachedCriteria subQuery = DetachedCriteria.forClass(HistoricoFuncao.class, "hf2")
+				.setProjection(Projections.max("hf2.data"))
+				.add(Restrictions.le("hf2.data", data))
+				.add(Restrictions.eqProperty("hf2.funcao.id", "f.id"));
 		
-		criteria.add(Expression.eq("historico.funcao.id", funcaoId));
-		criteria.add(Expression.le("historico.data", data));
-		criteria.addOrder(Order.desc("historico.data"));
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "hf");
+		criteria.createCriteria("hf.funcao", "f", Criteria.INNER_JOIN);
+		criteria.createCriteria("hf.riscoFuncaos", "rf", Criteria.LEFT_JOIN);
 		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("f.id"), "funcaoId");
+		p.add(Projections.property("rf.id"), "ricoFuncaoId");
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("f.id", funcaoId));
+		criteria.add(Subqueries.propertyGe("hf.data", subQuery));
+		
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 		criteria.setMaxResults(1);
 		
-		return (HistoricoFuncao)criteria.uniqueResult();
+		return (HistoricoFuncao) criteria.uniqueResult();
 	}
 
 	public Collection<HistoricoFuncao> findEpis(Collection<Long> funcaoIds, Date data)
@@ -258,4 +273,25 @@ public class HistoricoFuncaoDaoHibernate extends GenericDaoHibernate<HistoricoFu
 		return (HistoricoFuncao)criteria.uniqueResult();
 	}
 
+	public List<DadosAmbienteOuFuncaoRisco> findDadosNoPeriodo(Long funcaoId, Date dataIni, Date dataFim) 
+	{
+		StringBuilder hql = new StringBuilder("select new com.fortes.rh.model.sesmt.relatorio.DadosAmbienteOuFuncaoRisco(hf.funcao.id, r.id, r.descricao, r.grupoRisco, rf.epcEficaz, hf.data) ");
+		hql.append("from HistoricoFuncao hf ");
+		hql.append("join hf.riscoFuncaos rf ");
+		hql.append("join rf.risco r ");
+		hql.append("where hf.funcao.id = :funcaoId ");
+		hql.append("and hf.data < :dataFim ");
+		hql.append("and hf.data >= (select max(hf2.data) from HistoricoFuncao hf2 ");
+		hql.append("				where hf2.funcao.id = :funcaoId ");
+		hql.append("				and hf2.data <= :dataIni) ");
+		hql.append("order by hf.data ");
+		
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("funcaoId", funcaoId);
+		query.setDate("dataIni", dataIni);
+		query.setDate("dataFim", dataFim);
+		
+		return query.list();
+	}
+	
 }

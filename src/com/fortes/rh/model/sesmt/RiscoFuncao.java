@@ -48,6 +48,10 @@ public class RiscoFuncao extends AbstractModel implements Serializable
 		this.historicoFuncao.setFuncao(funcao);
 	}
 
+	public RiscoFuncao(Long id) {
+		this.setId(id);
+	}
+
 	public boolean isEpiEficaz() {
 		return epiEficaz;
 	}

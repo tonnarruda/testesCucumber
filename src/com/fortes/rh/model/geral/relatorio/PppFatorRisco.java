@@ -23,13 +23,9 @@ public class PppFatorRisco implements Serializable, Cloneable
 	private Boolean epcEficaz;
 	private String caEpi="";
 	private Long medicaoId;
-	
 	private boolean flagRemover=false;
-	
 	private boolean dataFinalJaSetada=false;
-	
-	
-	private Date dataHistoricoAmbiente;
+	private Date dataHistoricoAmbienteOuFuncao;
 	
 	public PppFatorRisco() {
 	}
@@ -42,9 +38,9 @@ public class PppFatorRisco implements Serializable, Cloneable
 		this.medicaoId = medicaoId;
 		this.intensidade = intensidade;
 	}
-
-
-	public PppFatorRisco(Date dataInicio, Date dataFim, Long riscoId, String riscoTipo, String riscoDescricao, Long medicaoId, String intensidade, String tecnicaUtilizada, Boolean epcEficaz, Collection<Epi> epis) {
+	
+	public PppFatorRisco(Date dataInicio, Date dataFim, Long riscoId, String riscoTipo, String riscoDescricao, Long medicaoId, String intensidade, String tecnicaUtilizada, Boolean epcEficaz, 
+			Collection<Epi> epis, Date dataHistoricoAmbienteOuFuncao, Date dataDesligamento) {
 		this.dataInicio = dataInicio;
 		this.dataFim = dataFim;
 		this.risco = new Risco();
@@ -55,10 +51,12 @@ public class PppFatorRisco implements Serializable, Cloneable
 		this.intensidade = intensidade;
 		this.tecnicaUtilizada = tecnicaUtilizada;
 		this.epcEficaz = epcEficaz;
+		this.dataHistoricoAmbienteOuFuncao = dataHistoricoAmbienteOuFuncao;
+		this.dataDesligamento = dataDesligamento;
 		
 		formataCaEpis(epis);
 	}
-	
+
 	private void formataCaEpis(Collection<Epi> epis) 
 	{
 		for (Epi epi : epis) 
@@ -80,7 +78,7 @@ public class PppFatorRisco implements Serializable, Cloneable
 	
 	public boolean equalsMedicao(PppFatorRisco pppFatorRisco) 
 	{
-		return this.medicaoId.equals(pppFatorRisco.getMedicaoId()) || 	(this.intensidade.equals(pppFatorRisco.getIntensidade()) && this.tecnicaUtilizada.equals(pppFatorRisco.getTecnicaUtilizada()));
+		return this.medicaoId.equals(pppFatorRisco.getMedicaoId()) || (this.intensidade.equals(pppFatorRisco.getIntensidade()) && this.tecnicaUtilizada.equals(pppFatorRisco.getTecnicaUtilizada()));
 	}
 
 	public String getCaEpi()
@@ -188,12 +186,12 @@ public class PppFatorRisco implements Serializable, Cloneable
 		return this.dataInicio.compareTo(pppFatorRisco.getDataInicio()) == 0 && this.risco.equals(pppFatorRisco.getRisco()) && this.medicaoId.equals(pppFatorRisco.getMedicaoId());
 	}
 
-	public Date getDataHistoricoAmbiente() {
-		return dataHistoricoAmbiente;
+	public Date getDataHistoricoAmbienteOuFuncao() {
+		return dataHistoricoAmbienteOuFuncao;
 	}
 
-	public void setDataHistoricoAmbiente(Date dataHistoricoAmbiente) {
-		this.dataHistoricoAmbiente = dataHistoricoAmbiente;
+	public void setDataHistoricoAmbienteOuFuncao(Date dataHistoricoAmbienteOuFuncao) {
+		this.dataHistoricoAmbienteOuFuncao = dataHistoricoAmbienteOuFuncao;
 	}
 
 	public boolean isFlagRemover() {

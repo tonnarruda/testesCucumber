@@ -11,7 +11,7 @@ import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.sesmt.Epc;
 import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 import com.fortes.rh.model.sesmt.RiscoAmbiente;
-import com.fortes.rh.model.sesmt.relatorio.DadosAmbienteRisco;
+import com.fortes.rh.model.sesmt.relatorio.DadosAmbienteOuFuncaoRisco;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
 
@@ -94,7 +94,7 @@ public class HistoricoAmbienteManagerImpl extends GenericManagerImpl<HistoricoAm
 		return getDao().findUltimoHistorico(ambienteId);
 	}
 
-	public List<DadosAmbienteRisco> findDadosNoPeriodo(Long ambienteId, Date dataIni, Date dataFim) 
+	public List<DadosAmbienteOuFuncaoRisco> findDadosNoPeriodo(Long ambienteId, Date dataIni, Date dataFim) 
 	{
 		return getDao().findDadosNoPeriodo(ambienteId, dataIni, dataFim);
 	}

@@ -1,6 +1,7 @@
 package com.fortes.rh.model.sesmt;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -218,5 +219,19 @@ public class HistoricoFuncao extends AbstractModel implements Serializable
 
 	public void setNormasInternas(String normasInternas) {
 		this.normasInternas = normasInternas;
+	}
+	
+	public void setFuncaoId(Long funcaoId){
+		if(this.funcao == null)
+			this.funcao = new Funcao();
+		
+		this.funcao.setId(funcaoId);
+	}
+	
+	public void setRicoFuncaoId(Long riscoFuncaoId){
+		if(this.riscoFuncaos == null)
+			this.riscoFuncaos = new ArrayList<RiscoFuncao>();
+		
+		this.riscoFuncaos.add(new RiscoFuncao(riscoFuncaoId));
 	}
 }

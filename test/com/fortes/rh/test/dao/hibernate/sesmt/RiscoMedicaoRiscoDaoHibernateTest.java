@@ -1,6 +1,14 @@
 package com.fortes.rh.test.dao.hibernate.sesmt;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.Date;
+
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.sesmt.AmbienteDao;
@@ -8,7 +16,6 @@ import com.fortes.rh.dao.sesmt.FuncaoDao;
 import com.fortes.rh.dao.sesmt.HistoricoAmbienteDao;
 import com.fortes.rh.dao.sesmt.HistoricoFuncaoDao;
 import com.fortes.rh.dao.sesmt.MedicaoRiscoDao;
-import com.fortes.rh.dao.sesmt.RiscoAmbienteDao;
 import com.fortes.rh.dao.sesmt.RiscoDao;
 import com.fortes.rh.dao.sesmt.RiscoMedicaoRiscoDao;
 import com.fortes.rh.model.sesmt.Ambiente;
@@ -18,23 +25,23 @@ import com.fortes.rh.model.sesmt.HistoricoFuncao;
 import com.fortes.rh.model.sesmt.MedicaoRisco;
 import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.model.sesmt.RiscoMedicaoRisco;
-import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.dao.GenericDaoHibernateTest_JUnit4;
 import com.fortes.rh.test.factory.cargosalario.AmbienteFactory;
+import com.fortes.rh.test.factory.cargosalario.FuncaoFactory;
 import com.fortes.rh.test.factory.sesmt.MedicaoRiscoFactory;
 import com.fortes.rh.test.factory.sesmt.RiscoFactory;
 import com.fortes.rh.test.factory.sesmt.RiscoMedicaoRiscoFactory;
 import com.ibm.icu.util.Calendar;
 
-public class RiscoMedicaoRiscoDaoHibernateTest extends GenericDaoHibernateTest<RiscoMedicaoRisco>
+public class RiscoMedicaoRiscoDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<RiscoMedicaoRisco>
 {
-	private RiscoDao riscoDao;
-	private RiscoMedicaoRiscoDao riscoMedicaoRiscoDao;
-	private MedicaoRiscoDao medicaoRiscoDao;
-	private AmbienteDao ambienteDao;
-	private FuncaoDao funcaoDao;
-	private RiscoAmbienteDao riscoAmbienteDao;
-	private HistoricoFuncaoDao historicoFuncaoDao;
-	private HistoricoAmbienteDao historicoAmbienteDao;
+	@Autowired private RiscoDao riscoDao;
+	@Autowired private RiscoMedicaoRiscoDao riscoMedicaoRiscoDao;
+	@Autowired private MedicaoRiscoDao medicaoRiscoDao;
+	@Autowired private AmbienteDao ambienteDao;
+	@Autowired private FuncaoDao funcaoDao;
+	@Autowired private HistoricoFuncaoDao historicoFuncaoDao;
+	@Autowired private HistoricoAmbienteDao historicoAmbienteDao;
 
 	@Override
 	public RiscoMedicaoRisco getEntity()
@@ -47,12 +54,8 @@ public class RiscoMedicaoRiscoDaoHibernateTest extends GenericDaoHibernateTest<R
 	{
 		return riscoMedicaoRiscoDao;
 	}
-
-	public void setRiscoMedicaoRiscoDao(RiscoMedicaoRiscoDao riscoMedicaoRiscoDao)
-	{
-		this.riscoMedicaoRiscoDao = riscoMedicaoRiscoDao;
-	}
 	
+	@Test
 	public void testRemoveByMedicaoRisco()
 	{
 		MedicaoRisco medicaoRisco = MedicaoRiscoFactory.getEntity();
@@ -65,6 +68,7 @@ public class RiscoMedicaoRiscoDaoHibernateTest extends GenericDaoHibernateTest<R
 		assertTrue(riscoMedicaoRiscoDao.removeByMedicaoRisco(medicaoRisco.getId()));
 	}
 	
+	@Test
 	public void testFindByRiscoAteData()
 	{
 		Calendar hoje = Calendar.getInstance();
@@ -74,26 +78,41 @@ public class RiscoMedicaoRiscoDaoHibernateTest extends GenericDaoHibernateTest<R
 		Ambiente ambiente = AmbienteFactory.getEntity();
 		ambienteDao.save(ambiente);
 		
+		Funcao funcao = FuncaoFactory.getEntity();
+		funcaoDao.save(funcao);
+		
 		Risco risco = RiscoFactory.getEntity();
 		riscoDao.save(risco);
 		
-		MedicaoRisco medicaoRisco = MedicaoRiscoFactory.getEntity();
-		medicaoRisco.setData(antes.getTime());
-		medicaoRisco.setAmbiente(ambiente);
-		medicaoRiscoDao.save(medicaoRisco);
+		MedicaoRisco medicaoRiscoAmbiente = MedicaoRiscoFactory.getEntity();
+		medicaoRiscoAmbiente.setData(antes.getTime());
+		medicaoRiscoAmbiente.setAmbiente(ambiente);
+		medicaoRiscoDao.save(medicaoRiscoAmbiente);
+
+		MedicaoRisco medicaoRiscoFuncao = MedicaoRiscoFactory.getEntity();
+		medicaoRiscoFuncao.setData(antes.getTime());
+		medicaoRiscoFuncao.setFuncao(funcao);
+		medicaoRiscoDao.save(medicaoRiscoFuncao);
 		
-		RiscoMedicaoRisco riscoMedicaoRisco = new RiscoMedicaoRisco();
-		riscoMedicaoRisco.setRisco(risco);
-		riscoMedicaoRisco.setMedicaoRisco(medicaoRisco);
-		riscoMedicaoRisco.setTecnicaUtilizada("Técnica 1");
-		riscoMedicaoRiscoDao.save(riscoMedicaoRisco);
+		RiscoMedicaoRisco riscoMedicaoRiscoAmbiente = new RiscoMedicaoRisco();
+		riscoMedicaoRiscoAmbiente.setRisco(risco);
+		riscoMedicaoRiscoAmbiente.setMedicaoRisco(medicaoRiscoAmbiente);
+		riscoMedicaoRiscoAmbiente.setTecnicaUtilizada("Técnica 1 Ambiente");
+		riscoMedicaoRiscoDao.save(riscoMedicaoRiscoAmbiente);
+		
+		RiscoMedicaoRisco riscoMedicaoRiscoFuncao = new RiscoMedicaoRisco();
+		riscoMedicaoRiscoFuncao.setRisco(risco);
+		riscoMedicaoRiscoFuncao.setMedicaoRisco(medicaoRiscoFuncao);
+		riscoMedicaoRiscoFuncao.setTecnicaUtilizada("Técnica 1 Função");
+		riscoMedicaoRiscoDao.save(riscoMedicaoRiscoFuncao);
 		
 		saveDadosMedicao();
 		
-		assertEquals("Teste: Buscando Riscos medições até hoje" ,1, riscoMedicaoRiscoDao.findByRiscoAteData(risco.getId(), ambiente.getId(), hoje.getTime()).size());
+		assertEquals("Teste: Buscando Riscos medições do Ambiente até hoje" ,1, riscoMedicaoRiscoDao.findByRiscoAteData(risco.getId(), ambiente.getId(), hoje.getTime(), true).size());
+		assertEquals("Teste: Buscando Riscos medições da Função até hoje" ,1, riscoMedicaoRiscoDao.findByRiscoAteData(risco.getId(), funcao.getId(), hoje.getTime(), false).size());
 	}
 	
-	
+	@Test
 	public void testFindMedicoesDeRiscosDoAmbiente()
 	{
 		Ambiente ambiente = AmbienteFactory.getEntity(1L);
@@ -125,6 +144,7 @@ public class RiscoMedicaoRiscoDaoHibernateTest extends GenericDaoHibernateTest<R
 		assertEquals(2, riscoMedicaoRiscoDao.findMedicoesDeRiscosDoAmbiente(ambiente.getId(), new Date()).size());
 	}
 	
+	@Test
 	public void testFindMedicoesDeRiscosDaFuncao()
 	{
 		Funcao funcao = new Funcao();
@@ -164,10 +184,6 @@ public class RiscoMedicaoRiscoDaoHibernateTest extends GenericDaoHibernateTest<R
 		Risco risco = RiscoFactory.getEntity();
 		riscoDao.save(risco);
 		
-//		RiscoAmbiente riscoAmbiente = RiscoAmbienteFactory.getEntity();
-//		riscoAmbiente.setRisco(risco);
-//		riscoAmbienteDao.save(riscoAmbiente);
-		
 		MedicaoRisco medicaoRisco = MedicaoRiscoFactory.getEntity();
 		medicaoRisco.setAmbiente(ambiente);
 		medicaoRiscoDao.save(medicaoRisco);
@@ -179,7 +195,8 @@ public class RiscoMedicaoRiscoDaoHibernateTest extends GenericDaoHibernateTest<R
 		riscoMedicaoRiscoDao.save(riscoMedicaoRisco);
 	}
 	
-	public void testFindUltimaAteData()
+	@Test
+	public void testFindUltimaAteDataAmbiente()
 	{
 		Calendar hoje = Calendar.getInstance();
 		Calendar antes = Calendar.getInstance();
@@ -193,11 +210,32 @@ public class RiscoMedicaoRiscoDaoHibernateTest extends GenericDaoHibernateTest<R
 		medicaoRisco.setAmbiente(ambiente);
 		medicaoRiscoDao.save(medicaoRisco);
 		
-		MedicaoRisco resultado = riscoMedicaoRiscoDao.findUltimaAteData(ambiente.getId(), hoje.getTime());
+		MedicaoRisco resultado = riscoMedicaoRiscoDao.findUltimaAteData(ambiente.getId(), hoje.getTime(), true);
 		assertNotNull(resultado);
 		assertEquals(resultado.getId(), medicaoRisco.getId());
 	}
 	
+	@Test
+	public void testFindUltimaAteDataFuncao()
+	{
+		Calendar hoje = Calendar.getInstance();
+		Calendar antes = Calendar.getInstance();
+		antes.add(Calendar.MONTH, -2);
+		
+		Funcao funcao = FuncaoFactory.getEntity();
+		funcaoDao.save(funcao);
+		
+		MedicaoRisco medicaoRisco = MedicaoRiscoFactory.getEntity();
+		medicaoRisco.setData(antes.getTime());
+		medicaoRisco.setFuncao(funcao);
+		medicaoRiscoDao.save(medicaoRisco);
+		
+		MedicaoRisco resultado = riscoMedicaoRiscoDao.findUltimaAteData(funcao.getId(), hoje.getTime(), false);
+		assertNotNull(resultado);
+		assertEquals(resultado.getId(), medicaoRisco.getId());
+	}
+	
+	@Test
 	public void testFindUltimaAteDataSemResultado()
 	{
 		Calendar hoje = Calendar.getInstance();
@@ -212,39 +250,7 @@ public class RiscoMedicaoRiscoDaoHibernateTest extends GenericDaoHibernateTest<R
 		medicaoRisco.setAmbiente(ambiente);
 		medicaoRiscoDao.save(medicaoRisco);
 		
-		MedicaoRisco resultado = riscoMedicaoRiscoDao.findUltimaAteData(ambiente.getId(), antes.getTime());
+		MedicaoRisco resultado = riscoMedicaoRiscoDao.findUltimaAteData(ambiente.getId(), antes.getTime(), true);
 		assertNull(resultado);
-	}
-	
-	public void setMedicaoRiscoDao(MedicaoRiscoDao medicaoRiscoDao) {
-		this.medicaoRiscoDao = medicaoRiscoDao;
-	}
-
-	public void setRiscoDao(RiscoDao riscoDao) {
-		this.riscoDao = riscoDao;
-	}
-
-	public void setAmbienteDao(AmbienteDao ambienteDao) {
-		this.ambienteDao = ambienteDao;
-	}
-
-	public void setRiscoAmbienteDao(RiscoAmbienteDao riscoAmbienteDao) {
-		this.riscoAmbienteDao = riscoAmbienteDao;
-	}
-
-	public void setFuncaoDao(FuncaoDao funcaoDao) {
-		this.funcaoDao = funcaoDao;
-	}
-
-	
-	public void setHistoricoFuncaoDao(HistoricoFuncaoDao historicoFuncaoDao)
-	{
-		this.historicoFuncaoDao = historicoFuncaoDao;
-	}
-
-	
-	public void setHistoricoAmbienteDao(HistoricoAmbienteDao historicoAmbienteDao)
-	{
-		this.historicoAmbienteDao = historicoAmbienteDao;
 	}
 }

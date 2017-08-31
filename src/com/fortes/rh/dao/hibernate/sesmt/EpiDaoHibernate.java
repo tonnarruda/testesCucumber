@@ -160,29 +160,37 @@ public class EpiDaoHibernate extends GenericDaoHibernate<Epi> implements EpiDao
 		return query.list();
 	}
 
-	public Collection<Epi> findByRiscoAmbiente(Long riscoId, Long ambienteId, Date data)
+	public Collection<Epi> findByRiscoAmbienteOuFuncao(Long riscoId, Long ambienteOuFuncaoId, Date data, boolean controlaRiscoPorAmbiente)
 	{
-		StringBuilder hql = new StringBuilder();
+		StringBuilder hql = new StringBuilder("select new Epi(e.id, e.nome, e.ativo, e.fabricante, eh.CA, eh.vencimentoCA) ");
 
-		hql.append("select new Epi(e.id, e.nome, e.ativo, e.fabricante, eh.CA, eh.vencimentoCA) ");
-		hql.append("  from RiscoAmbiente ra");
-		hql.append("  join ra.risco r");
-		hql.append("  join ra.historicoAmbiente ha");
-		hql.append("  join r.epis e");
-		hql.append("  left join e.epiHistoricos eh");
-		hql.append("  where eh.data = (select max(eh2.data)");
-		hql.append("                    from EpiHistorico eh2");
-		hql.append("                    where eh2.epi.id = e.id");
-		hql.append("                    and eh2.data <= :hoje)");
+		if(controlaRiscoPorAmbiente){
+			hql.append("  from RiscoAmbiente ra ");
+			hql.append("  join ra.historicoAmbiente ha ");
+		}else{
+			hql.append("  from RiscoFuncao ra ");
+			hql.append("  join ra.historicoFuncao ha ");
+		}
+		
+		hql.append("  join ra.risco r ");
+		hql.append("  join r.epis e ");
+		hql.append("  left join e.epiHistoricos eh ");
+		hql.append("  where eh.data = (select max(eh2.data) ");
+		hql.append("                    from EpiHistorico eh2 ");
+		hql.append("                    where eh2.epi.id = e.id ");
+		hql.append("                    and eh2.data <= :hoje) ");
 		
 		if (data != null)
-			hql.append("  and ha.data = :data");
+			hql.append("  and ha.data = :data ");
 		
-		if (ambienteId != null)
-				hql.append("  and ha.ambiente.id = :ambienteId");
+		if (ambienteOuFuncaoId != null){
+			if(controlaRiscoPorAmbiente)
+				hql.append("  and ha.ambiente.id = :ambienteOuFuncaoId ");
+			else
+				hql.append("  and ha.funcao.id = :ambienteOuFuncaoId ");
+		}
 		
 		hql.append("  and ra.risco.id = :riscoId");
-		
 		hql.append("  order by eh.CA");
 
 		Query query = getSession().createQuery(hql.toString());
@@ -191,8 +199,8 @@ public class EpiDaoHibernate extends GenericDaoHibernate<Epi> implements EpiDao
 		if (data != null)
 			query.setDate("data", data);
 		
-		if (ambienteId != null)
-			query.setLong("ambienteId", ambienteId);
+		if (ambienteOuFuncaoId != null)
+			query.setLong("ambienteOuFuncaoId", ambienteOuFuncaoId);
 		
 		query.setLong("riscoId", riscoId);
 		

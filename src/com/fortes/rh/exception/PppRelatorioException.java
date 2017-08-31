@@ -2,8 +2,8 @@ package com.fortes.rh.exception;
 
 import java.util.Date;
 
-import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.Ambiente;
+import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.DateUtil;
 import com.opensymphony.xwork.ActionContext;
@@ -17,6 +17,7 @@ public class PppRelatorioException extends Exception
 	private StringBuilder historicoSemHistoricoAmbiente = new StringBuilder();
 	private StringBuilder historicoSemHistoricoFuncao = new StringBuilder();
 	private StringBuilder historicoAmbienteSemMedicao = new StringBuilder();
+	private StringBuilder historicoFuncaoSemMedicao = new StringBuilder();
 	
 	private boolean ativo=false;
 	
@@ -97,6 +98,7 @@ public class PppRelatorioException extends Exception
 		messageFmt.append(historicoSemHistoricoAmbiente);
 		messageFmt.append(historicoSemHistoricoFuncao);
 		messageFmt.append(historicoAmbienteSemMedicao);
+		messageFmt.append(historicoFuncaoSemMedicao);
 		
 		return messageFmt.toString().trim();
 	}
@@ -105,19 +107,33 @@ public class PppRelatorioException extends Exception
 		return ativo;
 	}
 
-	public void addAmbienteSemMedicao(Ambiente ambiente, Date historicoAmbienteData, Empresa empresa)
+	public void addAmbienteSemMedicao(Ambiente ambiente, Date historicoAmbienteData)
 	{
 		ativar();
-		
 		String dataFmt = DateUtil.formataDiaMesAno(historicoAmbienteData);
 		
 		// adiciona a mensagem apenas se ainda não houver para esta data
 		if (historicoAmbienteSemMedicao.indexOf(dataFmt) == -1)
 		{
-			if (empresa.getControlaRiscoPor() == 'A' && SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_CAD_MEDICAORISCO"}))
-				historicoAmbienteSemMedicao.append("<a href='../medicaoRisco/list.action?showFilter=true&ambiente.id=" + ambiente.getId() + "'>" + dataFmt + " - Ambiente <strong>" + ambiente.getNome()  + "</strong> possui riscos mas não possui medição nesta data.</a><br />");
+			if (SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_CAD_MEDICAORISCO"}))
+				historicoAmbienteSemMedicao.append("<a href='../medicaoRisco/list.action?controlaRiscoPor=A&showFilter=true&ambiente.id=" + ambiente.getId() + "'>" + dataFmt + " - Ambiente <strong>" + ambiente.getNome()  + "</strong> possui riscos mas não possui medição nesta data.</a><br />");
 			else
 				historicoAmbienteSemMedicao.append(dataFmt + " - Ambiente <strong>" + ambiente.getNome()  + "</strong> possui riscos mas não possui medição nesta data.<br>");
+		}
+	}
+	
+	public void addFuncaoSemMedicao(Funcao funcao, Date historicoFuncaoData)
+	{
+		ativar();
+		String dataFmt = DateUtil.formataDiaMesAno(historicoFuncaoData);
+		
+		// adiciona a mensagem apenas se ainda não houver para esta data
+		if (historicoFuncaoSemMedicao.indexOf(dataFmt) == -1)
+		{
+			if (SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_CAD_MEDICAORISCO"}))
+				historicoFuncaoSemMedicao.append("<a href='../medicaoRisco/list.action?controlaRiscoPor=F&showFilter=true&funcao.id=" + funcao.getId() + "'>" + dataFmt + " - Função <strong>" + funcao.getNome()  + "</strong> possui riscos mas não possui medição nesta data.</a><br />");
+			else
+				historicoFuncaoSemMedicao.append(dataFmt + " - Função <strong>" + funcao.getNome()  + "</strong> possui riscos mas não possui medição nesta data.<br>");
 		}
 	}
 }

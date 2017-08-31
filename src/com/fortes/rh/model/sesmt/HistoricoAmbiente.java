@@ -1,6 +1,7 @@
 package com.fortes.rh.model.sesmt;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -187,5 +188,19 @@ public class HistoricoAmbiente extends AbstractModel implements Serializable
 		}
 		
 		return descricao.toString();
+	}
+	
+	public void setAmbienteId(Long ambienteId){
+		if(this.ambiente == null)
+			this.ambiente = new Ambiente();
+		
+		this.ambiente.setId(ambienteId);
+	}
+	
+	public void setRicoAmbienteId(Long riscoAmbienteId){
+		if(this.riscoAmbientes == null)
+			this.riscoAmbientes = new ArrayList<RiscoAmbiente>();
+		
+		this.riscoAmbientes.add(new RiscoAmbiente(riscoAmbienteId));
 	}
 }

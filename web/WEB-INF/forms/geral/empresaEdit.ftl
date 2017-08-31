@@ -399,7 +399,7 @@
 			<@ww.div cssClass="divInfo">
 				<h2>SESMT</h2>
 				<ul>
-					<@ww.select label="Controlar risco da Medição dos Riscos e do PPRA e LTCAT por" name="empresa.controlaRiscoPor" id="controlaRiscoPor" list=r"#{'A':'Ambiente','F':'Função'}" cssStyle="width: 410px;"/>
+					<@ww.select label="Controlar, nos relatórios de PPP, PPRA e LTCAT, a medição de riscos por" name="empresa.controlaRiscoPor" id="controlaRiscoPor" list=r"#{'A':'Ambiente','F':'Função'}" cssStyle="width: 480px;"/>
 					<br>
 					<@ww.checkbox label="Tornar obrigatório o preenchimento dos campos de Ambiente e Função para o histórico do colaborador e solicitação de pessoal" name="empresa.obrigarAmbienteFuncao" id="obrigarAmbienteFuncao" labelPosition="right" /><br>
 					<@ww.checkbox label="Exibir logo da empresa ao emitir PPRA e LTCAT" name="empresa.exibirLogoEmpresaPpraLtcat" id="exibirLogoEmpresaPpraLtcat" labelPosition="right" />

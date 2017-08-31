@@ -58,6 +58,10 @@ public class RiscoAmbiente extends AbstractModel implements Serializable
 		this.risco.setGrupoRisco(riscoGrupoRisco);
 	}
 
+	public RiscoAmbiente(Long id) {
+		setId(id);
+	}
+
 	public boolean isEpiEficaz() {
 		return epiEficaz;
 	}

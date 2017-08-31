@@ -526,4 +526,46 @@
 	</property>
   </bean>  
   
+  <bean id="riscoDao" class="com.fortes.rh.dao.hibernate.sesmt.RiscoDaoHibernate">
+	<property name="sessionFactory">
+		<ref bean="sessionFactory" />
+	</property>
+  </bean>
+  
+  <bean id="riscoFuncaoDao" class="com.fortes.rh.dao.hibernate.sesmt.RiscoFuncaoDaoHibernate">
+	<property name="sessionFactory">
+		<ref bean="sessionFactory" />
+	</property>
+  </bean>
+  
+  <bean id="historicoAmbienteDao" class="com.fortes.rh.dao.hibernate.sesmt.HistoricoAmbienteDaoHibernate">
+	<property name="sessionFactory">
+		<ref bean="sessionFactory" />
+	</property>
+  </bean>
+  
+  <bean id="riscoAmbienteDao" class="com.fortes.rh.dao.hibernate.sesmt.RiscoAmbienteDaoHibernate">
+	<property name="sessionFactory">
+		<ref bean="sessionFactory" />
+	</property>
+  </bean>
+  
+  <bean id="tipoEPIDao" class="com.fortes.rh.dao.hibernate.sesmt.TipoEPIDaoHibernate">
+	<property name="sessionFactory">
+		<ref bean="sessionFactory" />
+	</property>
+  </bean>
+
+  <bean id="riscoMedicaoRiscoDao" class="com.fortes.rh.dao.hibernate.sesmt.RiscoMedicaoRiscoDaoHibernate">
+	<property name="sessionFactory">
+		<ref bean="sessionFactory" />
+	</property>
+  </bean>
+  
+  <bean id="medicaoRiscoDao" class="com.fortes.rh.dao.hibernate.sesmt.MedicaoRiscoDaoHibernate">
+	<property name="sessionFactory">
+		<ref bean="sessionFactory" />
+	</property>
+  </bean>    
+  
 </beans>

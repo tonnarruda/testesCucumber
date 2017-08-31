@@ -48,30 +48,39 @@ public class RiscoMedicaoRiscoDaoHibernate extends GenericDaoHibernate<RiscoMedi
 		return query.list();
 	}
 	
-	public Collection<RiscoMedicaoRisco> findByRiscoAteData(Long riscoId, Long ambienteId, Date dataAmbienteFim)
+	public Collection<RiscoMedicaoRisco> findByRiscoAteData(Long riscoId, Long ambienteOuFuncaoId, Date dataFim, boolean controlaRiscoPorAmbiente)
 	{
 		StringBuilder hql = new StringBuilder("select new RiscoMedicaoRisco(rm.tecnicaUtilizada, rm.intensidadeMedida, m.id, m.data) ");
 		hql.append("from RiscoMedicaoRisco rm ");
 		hql.append("join rm.medicaoRisco m ");
 		hql.append("where rm.risco.id = :riscoId ");
-		hql.append("and m.ambiente.id = :ambienteId ");
+		
+		if(controlaRiscoPorAmbiente)
+			hql.append("and m.ambiente.id = :ambienteOuFuncaoId ");
+		else
+			hql.append("and m.funcao.id = :ambienteOuFuncaoId ");
+		
 		hql.append("and m.data < :dataFim ");
 		hql.append("order by m.data desc ");
 		
 		Query query = getSession().createQuery(hql.toString());
 		query.setLong("riscoId", riscoId);
-		query.setLong("ambienteId", ambienteId);
-		query.setDate("dataFim", dataAmbienteFim);
+		query.setLong("ambienteOuFuncaoId", ambienteOuFuncaoId);
+		query.setDate("dataFim", dataFim);
 		
 		return query.list();
 	}
 
-	public MedicaoRisco findUltimaAteData(Long ambienteId, Date historicoAmbienteData)
+	public MedicaoRisco findUltimaAteData(Long ambienteOuFuncaoId, Date historicoAmbienteOuFuncaoData, boolean controlaRiscoPorAmbiente)
 	{
 		Criteria criteria = getSession().createCriteria(MedicaoRisco.class, "m");
 		
-		criteria.add(Expression.eq("m.ambiente.id", ambienteId));
-		criteria.add(Expression.le("m.data", historicoAmbienteData));
+		if(controlaRiscoPorAmbiente)
+			criteria.add(Expression.eq("m.ambiente.id", ambienteOuFuncaoId));
+		else
+			criteria.add(Expression.eq("m.funcao.id", ambienteOuFuncaoId));
+		
+		criteria.add(Expression.le("m.data", historicoAmbienteOuFuncaoData));
 		criteria.addOrder(Order.desc("m.data"));
 		
 		criteria.setMaxResults(1);

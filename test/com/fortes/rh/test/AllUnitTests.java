@@ -202,6 +202,7 @@ import com.fortes.rh.test.business.sesmt.ObraManagerTest;
 import com.fortes.rh.test.business.sesmt.OrdemDeServicoManagerTest;
 import com.fortes.rh.test.business.sesmt.PcmatManagerTest;
 import com.fortes.rh.test.business.sesmt.PcmsoManagerTest;
+import com.fortes.rh.test.business.sesmt.PppRelatorioManagerTest;
 import com.fortes.rh.test.business.sesmt.ProntuarioManagerTest;
 import com.fortes.rh.test.business.sesmt.RealizacaoExameManagerTest;
 import com.fortes.rh.test.business.sesmt.RiscoAmbienteManagerTest;
@@ -1475,6 +1476,8 @@ import com.fortes.test.web.tags.LinkTagTest;
 	OrdemDeServicoManagerTest.class,
 	OrdemDeServicoEditActionTest.class,
 	OrdemDeServicoDWRTest.class,
+	
+	PppRelatorioManagerTest.class,
 	        
     // UTILITARIOS
 	AutenticadorTest.class,

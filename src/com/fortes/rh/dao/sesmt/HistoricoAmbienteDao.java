@@ -6,14 +6,14 @@ import java.util.List;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.model.sesmt.HistoricoAmbiente;
-import com.fortes.rh.model.sesmt.relatorio.DadosAmbienteRisco;
+import com.fortes.rh.model.sesmt.relatorio.DadosAmbienteOuFuncaoRisco;
 
 public interface HistoricoAmbienteDao extends GenericDao<HistoricoAmbiente>
 {
 	boolean removeByAmbiente(Long ambienteId);
 	Collection<HistoricoAmbiente> findByAmbiente(Long ambienteId);
 	HistoricoAmbiente findUltimoHistorico(Long id);
-	List<DadosAmbienteRisco> findDadosNoPeriodo(Long ambienteId, Date dataIni, Date dataFim);
+	List<DadosAmbienteOuFuncaoRisco> findDadosNoPeriodo(Long ambienteId, Date dataIni, Date dataFim);
 	HistoricoAmbiente findUltimoHistoricoAteData(Long ambienteId, Date dataMaxima);
 	Collection<HistoricoAmbiente> findRiscosAmbientes(Collection<Long> ambienteIds, Date data);
 	HistoricoAmbiente findByData(Date data, Long historicoAmbienteId, Long ambienteId);
