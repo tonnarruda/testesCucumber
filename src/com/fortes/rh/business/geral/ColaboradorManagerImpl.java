@@ -76,6 +76,7 @@ import com.fortes.rh.model.captacao.TituloEleitoral;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
+import com.fortes.rh.model.dicionario.CategoriaESocial;
 import com.fortes.rh.model.dicionario.Entidade;
 import com.fortes.rh.model.dicionario.Escolaridade;
 import com.fortes.rh.model.dicionario.EscolaridadeACPessoal;
@@ -88,7 +89,6 @@ import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.dicionario.TipoBuscaHistoricoColaborador;
 import com.fortes.rh.model.dicionario.TipoCartao;
 import com.fortes.rh.model.dicionario.TipoMensagem;
-import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.AutoCompleteVO;
 import com.fortes.rh.model.geral.Bairro;
@@ -364,7 +364,6 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		bindCertificadoMilitarEmpregado(colaborador, empregado);
 		bindHabilitacaoEmpregado(colaborador, empregado);
 		bindCtpsEmpregado(colaborador, empregado);
-		bindVinculoEmpregado(colaborador, empregado);
 
 		return empregado;
 	}
@@ -480,47 +479,17 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			}
 		}
 	}
-	
-	private void bindVinculoEmpregado(Colaborador colaborador, TEmpregado empregado) 
-	{
-		if (colaborador.getVinculo().equals(Vinculo.ESTAGIO))
-			empregado.setTipoAdmissao("00");
-		else 
-		{
-			if (colaborador.getVinculo().equals(Vinculo.TEMPORARIO))
-				empregado.setVinculo(50);
-			else
-			{
-				if (colaborador.getVinculo().equals(Vinculo.APRENDIZ)){
-					empregado.setVinculo(55);
-					empregado.setCategoria(07);
-				}
-				else {
-					empregado.setTipoAdmissao("20");
-					empregado.setVinculo(10);
-				}
-			}
+
+	public String updateVinculo(String vinculoAtual, TSituacao situacao, String colaboradorCodigoAC, String empresaCodigoAc, String grupoAC){
+		boolean isUltimoHistorico = historicoColaboradorManager .isUltimoHistoricoByDadosAC(DateUtil.criarDataDiaMesAno(situacao.getData()), colaboradorCodigoAC, empresaCodigoAc, grupoAC);
+
+		if (isUltimoHistorico){
+			vinculoAtual = CategoriaESocial.getCategoriaESocial(situacao.getCategoriaESocial());
+			getDao().updateVinculo(CategoriaESocial.getCategoriaESocial(situacao.getCategoriaESocial()), colaboradorCodigoAC, empresaCodigoAc, grupoAC);
 		}
+		return vinculoAtual;
 	}
-
-	public String getVinculo(String admissaoTipo, Integer admissaoVinculo, Integer admissaoCategoria) {
-		String colocacao;
-		List<Integer> vinculosTemporarios = Arrays.asList(50,60,65,70,75,90);
-		if ("00".equals(admissaoTipo))
-			colocacao = Vinculo.ESTAGIO;
-		else if (vinculosTemporarios.contains(admissaoVinculo))
-			colocacao = Vinculo.TEMPORARIO;
-		else {
-				if (new Integer(7).equals(admissaoCategoria)) {
-					colocacao = Vinculo.APRENDIZ;
-				} else {
-					colocacao = Vinculo.EMPREGO;
-				}
-			}
-		
-		return colocacao;
-	}
-
+	
 	// TODO: SEM TESTE
 	public void contratarColaboradorNoAC(Colaborador colaborador, HistoricoColaborador historico, Empresa empresa, boolean enviarEmailContratacao) throws AddressException, MessagingException,Exception
 	{
@@ -1489,8 +1458,6 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		colaborador.getHabilitacao().setVencimento(empregado.getHabilitacaoVencimentoFormatada());
 		colaborador.getHabilitacao().setCategoria(empregado.getHabilitacaoCategoria());
 
-		String vinculo = getVinculo(empregado.getTipoAdmissao(), empregado.getVinculo(), empregado.getCategoria());
-		colaborador.setVinculo(vinculo);
 		bindFoto(colaborador, empregado);
 
 		return colaborador;
@@ -3278,11 +3245,12 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
         if (colaborador == null)
             throw new Exception("Empregado não encontrado.");
 
+        updateVinculo(colaborador.getVinculo(), situacao, empregado.getCodigoAC(), empregado.getEmpresaCodigoAC(), empregado.getGrupoAC());
         historicoColaboradorManager.atualizarHistoricoContratacao(situacao);
         this.criarUsuarioParaColaborador(colaborador, colaborador.getEmpresa());
         gerenciadorComunicacaoManager.enviaEmailBoasVindasColaborador(colaborador);
     }
-
+	
 	public boolean isExisteHistoricoCadastralDoColaboradorComPendenciaNoESocial(Empresa empresa, String codigoAcColaborador) throws Exception {
 		return acPessoalClientColaborador.isExisteHistoricoCadastralDoColaboradorComPendenciaNoESocial(empresa, codigoAcColaborador);
 	}

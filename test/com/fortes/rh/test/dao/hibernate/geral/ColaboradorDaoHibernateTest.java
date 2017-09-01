@@ -7590,4 +7590,21 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<
 		assertEquals(1, retorno.size());
 		assertEquals(colaborador4.getNome(), ((Colaborador)retorno.toArray()[0]).getNome());
 	}
+	
+	@Test
+	public void testUpdateVinculo() {
+		Empresa empresa = EmpresaFactory.getEmpresa(1L, "Empresa", "9999", "001");
+		empresaDao.save(empresa);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity("999999", 2L);
+		colaborador.setVinculo(Vinculo.TEMPORARIO);
+		colaborador.setEmpresa(empresa);
+		colaboradorDao.save(colaborador);
+		
+		assertEquals(Vinculo.TEMPORARIO, colaboradorDao.findColaboradorById(colaborador.getId()).getVinculo());
+		
+		colaboradorDao.updateVinculo(Vinculo.EMPREGO, colaborador.getCodigoAC(), empresa.getCodigoAC(), empresa.getGrupoAC());
+		
+		assertEquals(Vinculo.EMPREGO, colaboradorDao.findColaboradorById(colaborador.getId()).getVinculo());
+	}
 }

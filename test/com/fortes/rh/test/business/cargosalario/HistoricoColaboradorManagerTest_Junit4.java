@@ -295,4 +295,15 @@ public class HistoricoColaboradorManagerTest_Junit4
 		verify(historicoColaboradorDao, times(1)).existeHistoricoConfirmadoByTabelaReajusteColaborador(tabelaReajusteColaboradorId);
 		assertFalse(retorno);
     }
+	
+	@Test
+	public void testIsUltimoHistoricoByDadosAC() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L, "Empresa", "000001", "001");
+		String empregadoCodigoAC = "000001";
+		Date data = new Date(); 
+		
+		when(historicoColaboradorDao.isUltimoHistoricoByDadosAC(data, empregadoCodigoAC, empresa.getCodigoAC(), empresa.getGrupoAC())).thenReturn(true);
+		assertTrue(historicoColaboradorManagerImpl.isUltimoHistoricoByDadosAC(data, empregadoCodigoAC, empresa.getCodigoAC(), empresa.getGrupoAC()));
+	}
 }

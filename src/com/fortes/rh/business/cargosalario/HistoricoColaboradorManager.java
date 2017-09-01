@@ -192,4 +192,7 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 	public Boolean existeHistoricoContratualComPendenciaNoESocial(Empresa empresa, String colaboradorCodigoAC) throws Exception;
 	
 	public Boolean situacaoContratualEhInicioVinculo(Empresa empresa, String colaboradorCodigoAC, Date dataSituacao) throws Exception;
+
+	public boolean isUltimoHistoricoByDadosAC(Date data, String empregadoCodigoAC, String empresaCodigoAC, String grupoAC);
+
 }

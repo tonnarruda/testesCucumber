@@ -203,7 +203,6 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Object> montaParentesByNome(Collection<Colaborador> colaboradores);
 	public String avisoQtdCadastros() throws Exception;
 	public Collection<PendenciaAC> findPendenciasSolicitacaoDesligamento(Long empresaId);
-	public String getVinculo(String admissaoTipo, Integer admissaoVinculo, Integer admissaoCategoria);
 	public Collection<Colaborador> findAdmitidosHaDiasSemEpi(Collection<Integer> dias, Long empresaId);
 	public Collection<Colaborador> findAguardandoEntregaEpi(Collection<Integer> diasLembrete, Long empresaId);
 	public boolean pertenceEmpresa(Long colaboradorId, Long empresaId);
@@ -263,4 +262,5 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public boolean isHistoricoCadastralDoColaboradorEInicioVinculo(Empresa empresa, String codigoAcColaborador) throws Exception;
 	public Integer statusAdmissaoNoFortesPessoal(Empresa empresa, Long colaboradorId) throws Exception;
 	public String configuraCamposObrigatorios(ParametrosDoSistema parametrosDoSistema);
+	public String updateVinculo(String vinculoAtual, TSituacao situacao, String colaboradorCodigoAC, String empresaCodigoAc, String grupoAC);
 }

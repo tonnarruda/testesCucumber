@@ -1052,9 +1052,8 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		historicoColaborador = bindSituacao(situacao, historicoColaborador);
 		historicoColaborador.setStatusAnterior(historicoColaborador.getStatus());
 		historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
-
-		getDao().update(historicoColaborador);
 		
+		getDao().update(historicoColaborador);
 		return historicoColaborador;
 	}
 	
@@ -1652,5 +1651,9 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 
 	public Boolean situacaoContratualEhInicioVinculo(Empresa empresa, String colaboradorCodigoAC, Date dataSituacao) throws Exception {
 		return acPessoalClientTabelaReajuste.situacaoContratualEhInicioVinculo(empresa, colaboradorCodigoAC, dataSituacao);
+	}
+
+	public boolean isUltimoHistoricoByDadosAC(Date data, String empregadoCodigoAC, String empresaCodigoAC, String grupoAC) {
+		return getDao().isUltimoHistoricoByDadosAC(data, empregadoCodigoAC, empresaCodigoAC, grupoAC);
 	}
 }

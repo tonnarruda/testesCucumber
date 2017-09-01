@@ -313,6 +313,51 @@ public class HistoricoColaboradorDaoHibernateTest_Junit4 extends GenericDaoHiber
 		assertEquals(funcao.getId(), retorno.getFuncao().getId());
 	}
 	
+	@Test
+	public void testIsUltimoHistoricoByDadosACTrue()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L, "Empresa", "9999", "001");
+		empresaDao.save(empresa);
+		
+		Cargo cargo = saveCargo(empresa, "Teste");
+		FaixaSalarial faixaSalarial = saveFaixaSalarial(cargo, "I");
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity("999999", 2L);
+		colaborador.setEmpresa(empresa);
+		colaboradorDao.save(colaborador);
+		
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(colaborador, faixaSalarial, DateUtil.criarDataMesAno(1, 2, 2017), StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoColaborador);
+		
+		historicoColaboradorDao.getHibernateTemplateByGenericDao().flush();
+		
+		assertTrue(historicoColaboradorDao.isUltimoHistoricoByDadosAC(historicoColaborador.getData(), colaborador.getCodigoAC(), empresa.getCodigoAC(), empresa.getGrupoAC()));
+	}
+	
+	@Test
+	public void testIsUltimoHistoricoByDadosACFalse()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L, "Empresa", "9999", "001");
+		empresaDao.save(empresa);
+		
+		Cargo cargo = saveCargo(empresa, "Teste");
+		FaixaSalarial faixaSalarial = saveFaixaSalarial(cargo, "I");
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity("999999", 2L);
+		colaborador.setEmpresa(empresa);
+		colaboradorDao.save(colaborador);
+		
+		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity(colaborador, faixaSalarial, DateUtil.criarDataMesAno(1, 2, 2017), StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoColaborador1);
+		
+		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity(colaborador, faixaSalarial, DateUtil.criarDataMesAno(1, 3, 2017), StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoColaborador2);
+		
+		historicoColaboradorDao.getHibernateTemplateByGenericDao().flush();
+		
+		assertFalse(historicoColaboradorDao.isUltimoHistoricoByDadosAC(historicoColaborador1.getData(), colaborador.getCodigoAC(), empresa.getCodigoAC(), empresa.getGrupoAC()));
+	}
+	
 	private HistoricoColaborador saveHistoricoColaborador(Colaborador joao, AreaOrganizacional garagem, FaixaSalarial faixaUmCobrador, Date data, Double valorSalario, String motivo, Integer status, ReajusteColaborador reajusteColaborador) {
 		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(joao, data, faixaUmCobrador, null, garagem, null, null, status);
 		historicoColaborador.setMotivo(motivo);

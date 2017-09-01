@@ -876,7 +876,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 
 		return (HistoricoColaborador)criteria.uniqueResult();
 	}
-
+	
 	public HistoricoColaborador getPrimeiroHistorico(Long colaboradorId)
 	{
 		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
@@ -1621,4 +1621,32 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 
         return ((Integer) criteria.uniqueResult()) > 0;
     }
+ 
+	public boolean isUltimoHistoricoByDadosAC(Date data, String empregadoCodigoAC, String empresaCodigoAC, String grupoAC)
+	{
+		DetachedCriteria subQueryHc = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2")
+				.setProjection(Projections.max("hc2.data"))
+				.add(Restrictions.eqProperty("hc2.colaborador.id", "c.id"))
+				.add(Restrictions.ne("hc2.status", StatusRetornoAC.CANCELADO));
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("hc.id"), "id");
+		p.add(Projections.property("hc.id"), "id");
+
+		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
+		criteria.createCriteria("hc.colaborador", "c");
+		criteria.createCriteria("c.empresa", "e");
+		
+		criteria.add(Subqueries.ge(data, subQueryHc));
+	
+		criteria.add(Expression.eq("c.codigoAC", empregadoCodigoAC));
+		criteria.add(Expression.eq("e.codigoAC", empresaCodigoAC));
+		criteria.add(Expression.eq("e.grupoAC", grupoAC));
+		criteria.add(Restrictions.ne("hc.status", StatusRetornoAC.CANCELADO));
+		
+		criteria.setProjection(p);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(HistoricoColaborador.class));
+		
+		return criteria.list().size() > 0;
+	}
 }

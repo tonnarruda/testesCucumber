@@ -453,7 +453,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 				camposExtras = camposExtrasManager.findById(colaborador.getCamposExtras().getId());
 			
 			pisObrigatorio = !colaborador.getVinculo().equals(Vinculo.ESTAGIO);
-			configurarEdicaoDeCamposIntegrados();
+			validaEdicaoDeCamposIntegrados();
 			if(!desabilitarEdicaoCamposIntegrados)
 				camposColaboradorObrigatorio = parametrosDoSistema.getCamposColaboradorObrigatorio();
 		}
@@ -464,7 +464,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	public String prepareUpdate() throws Exception
 	{
 		prepare();
-		configurarEdicaoDeCamposIntegrados();
+		validaEdicaoDeCamposIntegrados();
 		
 		setNacionalidadeAndNaturalidade();
 		
@@ -491,7 +491,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		return Action.SUCCESS;
 	}
 
-	private void configurarEdicaoDeCamposIntegrados() {
+	private void validaEdicaoDeCamposIntegrados() {
 		setEmpresaEstaIntegradaEAderiuAoESocial();
 		if(getEmpresaSistema().isAcIntegra() && !colaborador.isNaoIntegraAc() && StringUtils.isBlank(colaborador.getCodigoAC())){
 			try {
@@ -659,7 +659,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	}
 
 	public String insert() throws Exception{
-		
 		if(verifyQtdCadastros())
 			return Action.INPUT;
 		
@@ -866,6 +865,8 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	{
 		try
 		{
+			validaEdicaoDeCamposIntegrados();
+			
 			if(areaOrganizacionalManager.verificaMaternidade(historicoColaborador.getAreaOrganizacional().getId(), null))
 			{
 				addActionError("Colaborador não pode ser inserido em áreas que possuem sub-áreas.");

@@ -5763,4 +5763,14 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 				criteria.add(Expression.le(aliasColaborador + ".dataDesligamento",new Date()));
 		}
 	}
+
+	public void updateVinculo(String vinculo, String colaboradorCodigoAC, String empresaCodigoAC, String grupoAC) {
+		String hql = "update Colaborador set vinculo = :vinculo where codigoAC = :colaboradorCodigoAC and empresa.id = (select e.id from Empresa e where e.codigoAC = :empresaCodigoAC and e.grupoAC = :grupoAC ) ";
+		Query query = getSession().createQuery(hql);
+		query.setString("vinculo", vinculo);
+		query.setString("colaboradorCodigoAC", colaboradorCodigoAC);
+		query.setString("empresaCodigoAC", empresaCodigoAC);
+		query.setString("grupoAC", grupoAC);
+		query.executeUpdate();		
+	}
 }

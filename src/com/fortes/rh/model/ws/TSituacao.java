@@ -25,6 +25,7 @@ public class TSituacao implements Serializable
 	private Integer movimentoSalarialId;//usado pelo reajuste salarial em lote
 	private String grupoAC;
 	private String obs;
+	private String categoriaESocial;
 
 	public String getGrupoAC() {
 		return grupoAC;
@@ -167,5 +168,13 @@ public class TSituacao implements Serializable
 
 	public void setObs(String obs) {
 		this.obs = obs;
+	}
+
+	public String getCategoriaESocial() {
+		return categoriaESocial;
+	}
+
+	public void setCategoriaESocial(String categoriaESocial) {
+		this.categoriaESocial = categoriaESocial;
 	}
 }

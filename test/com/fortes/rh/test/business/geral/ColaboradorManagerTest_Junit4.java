@@ -1,10 +1,11 @@
 package com.fortes.rh.test.business.geral;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
@@ -50,6 +51,7 @@ import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.avaliacao.relatorio.AcompanhamentoExperienciaColaborador;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.dicionario.CategoriaESocial;
 import com.fortes.rh.model.dicionario.Escolaridade;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
@@ -634,25 +636,7 @@ public class ColaboradorManagerTest_Junit4
     	assertEquals(tNaturalidadeAndNacionalidade1.getNacionalidade(), retorno.getNacionalidade());
     	assertEquals(tNaturalidadeAndNacionalidade1.getNaturalidade(), retorno.getNaturalidade());
 	}
-    
-    @Test
-    public void testGetVinculo() {
-    	assertEquals(Vinculo.ESTAGIO, colaboradorManager.getVinculo("00", null, null));
-    	assertEquals(Vinculo.TEMPORARIO, colaboradorManager.getVinculo(null, 50, null));
-    	assertEquals(Vinculo.TEMPORARIO, colaboradorManager.getVinculo(null, 60, null));
-    	assertEquals(Vinculo.TEMPORARIO, colaboradorManager.getVinculo(null, 65, null));
-    	assertEquals(Vinculo.TEMPORARIO, colaboradorManager.getVinculo(null, 70, null));
-    	assertEquals(Vinculo.TEMPORARIO, colaboradorManager.getVinculo(null, 75, null));
-    	assertEquals(Vinculo.TEMPORARIO, colaboradorManager.getVinculo(null, 90, null));
-    	assertNotEquals(Vinculo.TEMPORARIO, colaboradorManager.getVinculo(null, 95, null));
-    	assertEquals(Vinculo.APRENDIZ, colaboradorManager.getVinculo(null, null, 7));
-    	assertEquals(Vinculo.EMPREGO, colaboradorManager.getVinculo(null, null, 6));
-    	assertEquals(Vinculo.EMPREGO, colaboradorManager.getVinculo(null, null, 8));
-    	assertEquals(Vinculo.EMPREGO, colaboradorManager.getVinculo(null, 100, null));
-    	assertEquals(Vinculo.EMPREGO, colaboradorManager.getVinculo(null, null, null));
-    	assertEquals(Vinculo.EMPREGO, colaboradorManager.getVinculo("01", 55, 8));
-    }
-    
+        
     @Test
     public void testExcedeuContratacoes() throws Exception {
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
@@ -957,4 +941,34 @@ public class ColaboradorManagerTest_Junit4
 
         assertNull(exception);
     }
+    
+    @Test
+    public void testUpdateVinculoComVinculoaAtualizadoNoUltimoHistorico(){
+    	String vinculoAtual = Vinculo.TEMPORARIO;
+    	TSituacao situacao = new TSituacao();
+    	situacao.setData(DateUtil.formataDiaMesAno(new Date()));
+    	situacao.setCategoriaESocial(CategoriaESocial.CATEGORIA_101.getCodigo());
+    	
+    	String colaboradorCodigoAC = "000001";
+    	String empresaCodigoAc = "0002";
+    	String grupoAC = "001";
+    	
+		when(historicoColaboradorManager.isUltimoHistoricoByDadosAC(any(Date.class), eq(colaboradorCodigoAC), eq(empresaCodigoAc), eq(grupoAC))).thenReturn(true);
+		assertEquals(Vinculo.EMPREGO, colaboradorManager.updateVinculo(vinculoAtual, situacao, colaboradorCodigoAC, empresaCodigoAc, grupoAC));	
+	}
+    
+    @Test
+    public void testUpdateVinculoNaoEUltimoHistorico(){
+    	String vinculoAtual = Vinculo.TEMPORARIO;
+    	TSituacao situacao = new TSituacao();
+    	situacao.setData(DateUtil.formataDiaMesAno(new Date()));
+    	situacao.setCategoriaESocial(CategoriaESocial.CATEGORIA_101.getCodigo());
+    	
+    	String colaboradorCodigoAC = "000001";
+    	String empresaCodigoAc = "0002";
+    	String grupoAC = "001";
+    	
+		when(historicoColaboradorManager.isUltimoHistoricoByDadosAC(any(Date.class), eq(colaboradorCodigoAC), eq(empresaCodigoAc), eq(grupoAC))).thenReturn(false);
+		assertEquals(Vinculo.TEMPORARIO, colaboradorManager.updateVinculo(vinculoAtual, situacao, colaboradorCodigoAC, empresaCodigoAc, grupoAC));	
+	}
 }

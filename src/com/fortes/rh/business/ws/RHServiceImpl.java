@@ -715,6 +715,7 @@ public class RHServiceImpl implements RHService
 		try{
 			verifyToken(token, true);
 			HistoricoColaborador historicoColaborador = montaSituacao(empregado, situacao);
+
 			historicoColaboradorManager.save(historicoColaborador);
 			
 			gerenciadorComunicacaoManager.enviaMensagemCadastroSituacaoAC(empregado.getNome(), situacao);
@@ -737,8 +738,7 @@ public class RHServiceImpl implements RHService
 		if(colaborador == null)
 			throw new Exception("Colaborador não encontrado no Fortes RH.");
 		
-		if(empregado != null)
-			colaborador.setVinculo(colaboradorManager.getVinculo(empregado.getTipoAdmissao(), empregado.getVinculo(), empregado.getCategoria()));
+		colaborador.setVinculo(colaboradorManager.updateVinculo(colaborador.getVinculo(), situacao, situacao.getEmpregadoCodigoAC(), situacao.getEmpresaCodigoAC(), situacao.getGrupoAC()));
 		
 		historicoColaborador.setColaborador(colaborador);
 		return historicoColaborador;
@@ -755,6 +755,7 @@ public class RHServiceImpl implements RHService
 			if (!realizandoOperacaoEmLote)
 				verifyToken(token, true);
 			historicoColaboradorManager.updateSituacao(situacao);
+			colaboradorManager.updateVinculo(null, situacao, situacao.getEmpregadoCodigoAC(), situacao.getEmpresaCodigoAC(), situacao.getGrupoAC());
 			return new FeedbackWebService(true);
 		}catch (TokenException e) {
 			return new FeedbackWebService(false, "Token incorreto.", "");

@@ -68,4 +68,5 @@ public interface HistoricoColaboradorDao extends GenericDao<HistoricoColaborador
 	public HistoricoColaborador findHistoricoColaboradorByData(Long colaboradorId, Date data);
 	public HistoricoColaborador findHistoricoMotivoContratacao(String empregadoCodigoAC, String empresaCodigoAC, String grupoAC);
     public boolean existeHistoricoConfirmadoByTabelaReajusteColaborador(Long tabelaReajusteColaboradorId);
+    public boolean isUltimoHistoricoByDadosAC(Date data, String empregadoCodigoAC, String empresaCodigoAC, String grupoAC);
 }
