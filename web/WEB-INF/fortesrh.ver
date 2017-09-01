@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
 	<Versao id="1.1.18x.21x" db="" data="xx/xx/2017">
+		<Item visivel="N" motivo="P17080000225"><![CDATA[R&S > Cadastros > Candidatos: Script para remover candidatos com nome contendo somente o caractere '.'.]]></Item>
 		<Item visivel="S" motivo="S16110000170"><![CDATA[C&S > Cadastros > Níveis de Competência > Cadastros: Novo video de ajuda de como gerar a avaliação de desempenho.]]></Item>
 		<Item visivel="S" motivo="S16110000170"><![CDATA[C&S > Cadastros > Níveis de Competência > Históricos > Níveis de Competência: Novo video de ajuda de como gerar a avaliação de desempenho.]]></Item>
 		<Item visivel="S" motivo="S16110000170"><![CDATA[C&S > Cadastros > Cargos e Faixas > Faixas Salariais > Níveis de Competência: Novo video de ajuda de como gerar a avaliação de desempenho.]]></Item>
