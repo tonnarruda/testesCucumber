@@ -288,6 +288,9 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	}
 	
 	public String prepareResponderAvaliacaoDesempenho(){
+		
+		setVideoAjuda(1264L);
+		
 		colaboradorQuestionario = colaboradorQuestionarioManager.findByIdProjection(colaboradorQuestionario.getId());
 		
 		if(colaboradorQuestionario.getAvaliador() != null)

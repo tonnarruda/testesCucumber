@@ -156,7 +156,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 
 	public String list() throws Exception
 	{
-		setVideoAjuda(1292L);
+		setVideoAjuda(1264L);
 		
 		nivelCompetencias = nivelCompetenciaManager.findAllSelect(getEmpresaSistema().getId());
 		return Action.SUCCESS;
@@ -336,6 +336,8 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	
 	public String listCompetenciasFaixaSalarial()
 	{
+		setVideoAjuda(1264L);
+		
 		faixaSalarial = faixaSalarialManager.findByFaixaSalarialId(faixaSalarial.getId());
 		configuracaoNivelCompetenciaFaixasSalariais = configuracaoNivelCompetenciaFaixaSalarialManager.findToList(new String[]{"id", "data"}, new String[]{"id", "data"}, new String[]{"faixaSalarial.id"}, new Long[]{faixaSalarial.getId()});
 		
@@ -365,6 +367,8 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	
 	public String prepareInsertCompetenciasFaixaSalarial()
 	{
+		setVideoAjuda(1264L);
+		
 		configuracaoNivelCompetenciaFaixaSalarial = new ConfiguracaoNivelCompetenciaFaixaSalarial();
 		configuracaoNivelCompetenciaFaixaSalarial.setData(new Date());
 		

@@ -19,6 +19,8 @@ public class NivelCompetenciaHistoricoEditAction extends MyActionSupportList
 
 	public String list() throws Exception
 	{
+		setVideoAjuda(1264L);
+			
 		nivelCompetenciaHistoricos = nivelCompetenciaHistoricoManager.find(new String[]{"empresa.id"}, new Object[]{getEmpresaSistema().getId()});
 		return Action.SUCCESS;
 	}

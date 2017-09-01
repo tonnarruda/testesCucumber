@@ -260,7 +260,7 @@ public class AvaliacaoEditAction extends MyActionSupportList
 	
 	public String list() throws Exception
 	{
-		setVideoAjuda(778L);
+		setVideoAjuda(1264L);
 		
 		setTotalSize(avaliacaoManager.getCount(getEmpresaSistema().getId(), BooleanUtil.getValueCombo(ativos), modeloAvaliacao, titulo));
 		avaliacaos = avaliacaoManager.findAllSelect(getPage(), getPagingSize(), getEmpresaSistema().getId(), BooleanUtil.getValueCombo(ativos), modeloAvaliacao, titulo);

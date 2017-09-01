@@ -163,6 +163,8 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	
 	public String prepareParticipantes() throws Exception
 	{
+		setVideoAjuda(1264L);
+		
 		empresaId = getEmpresaSistema().getId();
 		compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
 		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores, empresaId, SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()));
@@ -185,6 +187,8 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	
 	public String prepareCompetencias() throws Exception
 	{
+		setVideoAjuda(1264L);
+		
 		empresaId = getEmpresaSistema().getId();
 		avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
 
@@ -314,6 +318,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	public String prepareAnaliseDesempenhoCompetenciaColaborador()
 	{
 		try {
+			setVideoAjuda(1264L);
 			compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
 			empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores, empresaId, SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()));
 			avaliacaoDesempenhos = avaliacaoDesempenhoManager.findComCompetencia(getEmpresaSistema().getId());
@@ -461,6 +466,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 
 	public String list() throws Exception
 	{
+		setVideoAjuda(1264L);
 		avaliacaos = avaliacaoManager.findAllSelect(null, null, getEmpresaSistema().getId(), true, TipoModeloAvaliacao.DESEMPENHO, null);
 		
 		setTotalSize(avaliacaoDesempenhoManager.findCountTituloModeloAvaliacao(null, null, periodoInicial, periodoFinal, getEmpresaSistema().getId(), nomeBusca, avaliacaoId, null));
@@ -634,6 +640,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	
 	public String avaliacaoDesempenhoQuestionarioList()
 	{
+		setVideoAjuda(1264L);
 		prepareList();
 		
 		return Action.SUCCESS;
