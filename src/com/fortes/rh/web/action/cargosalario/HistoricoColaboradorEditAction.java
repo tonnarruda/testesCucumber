@@ -148,6 +148,7 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 
 	public String prepareInsert() throws Exception
 	{
+		
 		if((historicoColaboradorManager.findByColaboradorProjection(colaborador.getId(), StatusRetornoAC.AGUARDANDO).size() > 0 )){
 			setActionMsg("Não é possível inserir uma nova situação, pois existe situação aguardando confirmação no Fortes Pessoal.");
 			return Action.INPUT;
@@ -156,6 +157,11 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 		dataPrimeiroHist = historicoColaboradorManager.getPrimeiroHistorico(colaborador.getId()).getData();
 
 		HistoricoColaborador historicoColaboradorAtual = historicoColaboradorManager.getHistoricoAtual(colaborador.getId());
+		
+		if(isEmpresaIntegradaEAderiuAoESocial() && historicoColaboradorManager.existeHistoricoContratualComPendenciaNoESocial(getEmpresaSistema(), historicoColaboradorAtual.getColaborador().getCodigoAC())){
+			setActionMsg("No Fortes Pessoal existem pendências no histórico contratual do colaborador. Não é possível inserir uma nova situação enquando essas pendências não forem resolvidas no Fortes Pessoal.");
+			return Action.INPUT;
+		}
 						
 		if (solicitacao != null && solicitacao.getId() != null && solicitacao.getId() > 0) {
 			historicoColaborador = new HistoricoColaborador();
@@ -308,7 +314,8 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 				folhaProcessada = true;
 				setActionMsg("<div>Uma Folha de Pagamento foi processada no Fortes Pessoal com este Histórico.<br>Só é permitido editar Função e Ambiente.</div>");
 			}
-				configuraEdicaoCamposIntegrados();	
+				if(!folhaProcessada)
+					configuraEdicaoCamposIntegrados();	
 		}		
 
 		prepare();
@@ -316,7 +323,7 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 	}
 
 	private void configuraEdicaoCamposIntegrados() {
-		if(!folhaProcessada && isEmpresaIntegradaEAderiuAoESocial()){
+		if(isEmpresaIntegradaEAderiuAoESocial()){
 			try {
 				verificaPendenciaNoESocial();
 				if(!disabledCamposIntegrados)
@@ -332,14 +339,14 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 	private void verificaPendenciaNoESocial() throws Exception{
 		disabledCamposIntegrados = historicoColaboradorManager.existeHistoricoContratualComPendenciaNoESocial(getEmpresaSistema(), historicoColaborador.getColaborador().getCodigoAC());
 		if(disabledCamposIntegrados){
-			addActionMessage("Existem pendências no histórico contratual do empregado junto ao eSocial. Não é possível editar as informações integradas no Fortes RH, só podem ser alteradas no Fortes Pessoal.");
+			addActionMessage("Existem pendências no histórico contratual do colaborador junto ao eSocial. Não é possível editar as informações integradas no Fortes RH, só podem ser alteradas no Fortes Pessoal.");
 		} 
 	}
 	
 	private void verificaInicioDoVinculo() throws Exception{
 		disabledCamposIntegrados = historicoColaboradorManager.situacaoContratualEhInicioVinculo(getEmpresaSistema(), historicoColaborador.getColaborador().getCodigoAC(), historicoColaborador.getData());
 		if(disabledCamposIntegrados){
-			addActionMessage("Histórico contratual associado ao início do vínculo do empregado junto ao eSocial. Não é possível editar as informações integradas no Fortes RH, só podem ser alteradas no Fortes Pessoal.");
+			addActionMessage("Histórico contratual associado ao início do vínculo do colaborador junto ao eSocial. Não é possível editar as informações integradas no Fortes RH, só podem ser alteradas no Fortes Pessoal.");
 		}
 	}
 	
