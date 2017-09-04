@@ -88,7 +88,6 @@ public class TurmaDWR
 		Collection<Turma> turmas = turmaManager.getTurmasByCursoNotTurmaId(cursoId, notTurmaId);
 		return new CollectionUtil<Turma>().convertCollectionToMap(turmas,"getId","getDescricao");
 	}
-
 	
 	public Map getTurmasByCursos(Long[] cursoIds)throws Exception
 	{

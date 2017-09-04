@@ -629,10 +629,17 @@ public class DateUtil
 		return !matcher.matches();
 	}
 
-	public static boolean isDataInvalida(String dataStr) {
+	private static boolean isDataInvalida(String dataStr) {
 		if(dataStr == null 
 				|| "".trim().equals(dataStr)
-					|| DATA_VAZIA.equals(dataStr)) {
+					|| DATA_VAZIA.equals(dataStr)){
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean isDataInvalidaAll(String dataStr) {
+		if(isDataInvalida(dataStr) || dataStr.replace("/", "").trim().length() < 8) {
 			return true;
 		}
 		return false;
