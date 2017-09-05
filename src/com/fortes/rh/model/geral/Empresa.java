@@ -355,7 +355,7 @@ public class Empresa extends AbstractModel implements Serializable
 
 	public String[] getArrayEmailRespRH()
 	{
-		return emailRespRH.split(";");
+		return StringUtils.defaultString(emailRespRH,"").split(";"); 
 	}
 
 	public void setEmailRespRH(String emailRespRH)
