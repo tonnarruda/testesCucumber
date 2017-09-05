@@ -1,8 +1,3 @@
-/* Autor: Igo Coelho
- * Data: 29/05/2006
- * Requisito: RFA32
- */
-
 package com.fortes.rh.business.acesso;
 
 import java.util.ArrayList;
@@ -231,6 +226,9 @@ public class UsuarioManagerImpl extends GenericManagerImpl<Usuario, UsuarioDao> 
 			throw new ColecaoVaziaException("Não existe colaborador sem usuário.");
 
 		for (Colaborador colaborador : colaboradores){
+			if(colaborador.getPessoal().getCpf() == null || "".equals(colaborador.getPessoal().getCpf()))
+				continue;
+			
 			Usuario usuario = findByLogin(colaborador.getPessoal().getCpf());
 			if (usuario == null){
 				usuario = new Usuario();

@@ -43,24 +43,27 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider
 		
 		try {
 			String credentials = "";
-			Boolean captchaValido; 
+			Boolean captchaValido;
+			Boolean acessoAoSistema;
 			UsernamePasswordEmpresaAuthenticationToken usernameAuthentication = (UsernamePasswordEmpresaAuthenticationToken)authentication;
+			UserDetailsImpl userDetailsImpl =  (UserDetailsImpl) userDetails;
 			
 			if(authentication.getPrincipal().toString().toUpperCase().equals("SOS")){
 				credentials = Access.check(authentication.getCredentials().toString(), usernameAuthentication.getSOSSeed());
 				if(credentials != null && !"".equals(credentials) && credentials.equals("Bad credentials"))
 					throw new BadCredentialsException(messages.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentialsSOS", "Bad credentials"), userDetails);
-				captchaValido = true;
+				acessoAoSistema = captchaValido = true;
 			}else{
 				credentials = authentication.getCredentials().toString();
-				captchaValido = checaCaptcha(usernameAuthentication); 
+				captchaValido = checaCaptcha(usernameAuthentication);
+				acessoAoSistema = userDetailsImpl.isAccountNonExpired();
 			}
-
-			if (!captchaValido || !this.getPasswordEncoder().isPasswordValid(userDetails.getPassword(), credentials, salt))
+			
+			if (!captchaValido || !this.getPasswordEncoder().isPasswordValid(userDetails.getPassword(), credentials, salt) || !acessoAoSistema)
 				throw new BadCredentialsException(messages.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"), userDetails);
 
-			if( ((UserDetailsImpl)userDetails).getColaborador() != null && ((UserDetailsImpl)userDetails).getColaborador().getId() != null ) {
-				Colaborador colaborador = colaboradorManager.findByIdProjectionEmpresa(((UserDetailsImpl)userDetails).getColaborador().getId());
+			if( userDetailsImpl.getColaborador() != null && userDetailsImpl.getColaborador().getId() != null ) {
+				Colaborador colaborador = colaboradorManager.findByIdProjectionEmpresa(userDetailsImpl.getColaborador().getId());
 
 				if ( colaborador.getDataAdmissao().getTime() > new Date().getTime() )
 					throw new BadCredentialsException(messages.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"), userDetails);

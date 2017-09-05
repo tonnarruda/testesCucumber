@@ -519,4 +519,11 @@
 		<ref bean="sessionFactory" />
 	</property>
   </bean>
+
+  <bean id="papelDao" class="com.fortes.rh.dao.hibernate.acesso.PapelDaoHibernate">
+	<property name="sessionFactory">
+		<ref bean="sessionFactory" />
+	</property>
+  </bean>  
+  
 </beans>

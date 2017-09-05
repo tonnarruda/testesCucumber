@@ -18,6 +18,7 @@
 		<Item visivel="S" motivo="S16110000170"><![CDATA[Aval. Desempenho > Movimentações > Responder Avaliações de Desempenho: Novo video de ajuda de como gerar a avaliação de desempenho.]]></Item>
 		<Item visivel="S" motivo="S16110000170"><![CDATA[Aval. Desempenho > Movimentações > Responder Avaliações de Desempenho > Responder: Novo video de ajuda de como gerar a avaliação de desempenho.]]></Item>
 		<Item visivel="S" motivo="S16110000170"><![CDATA[Aval. Desempenho > Relatórios > Análise de Desempenho das Competências do Colaborador: Novo video de ajuda de como gerar a avaliação de desempenho.]]></Item>
+		<Item visivel="S" motivo="P17080000198"><![CDATA[Utilitários > Cadastros > Usuários > Criar Usuários Automaticamente: Ajuste de inconsistência ao gerar usuários com login em branco.]]></Item>
 	</Versao>
 	<Versao id="1.1.183.215" db="" data="30/08/2017">
 		<Item visivel="S" motivo="P17080000197"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Clonar: Ajuste de inconsistência ao exibir áreas organizacionais que não são do responsável e/ou do corresponsável.]]></Item>

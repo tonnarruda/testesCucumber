@@ -87,6 +87,8 @@ public class UsuarioDaoHibernate extends GenericDaoHibernate<Usuario> implements
 		if(empresa != null && empresa.getId() != null)
 			criteria.add(Expression.eq("usuEmp.empresa.id", empresa.getId()));
 
+		criteria.add(Expression.isNotNull("usu.login"));
+		
 		criteria.setFirstResult(((page - 1) * pagingSize));
 		criteria.setMaxResults(pagingSize);
 

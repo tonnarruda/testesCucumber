@@ -1,8 +1,16 @@
 package com.fortes.rh.test.dao.hibernate.acesso;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.acesso.PapelDao;
@@ -19,7 +27,7 @@ import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.dao.GenericDaoHibernateTest_JUnit4;
 import com.fortes.rh.test.factory.acesso.PapelFactory;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
@@ -29,15 +37,15 @@ import com.fortes.rh.test.factory.geral.UsuarioEmpresaFactory;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 
-public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
+public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<Usuario>
 {
-	private UsuarioDao usuarioDao;
-	private EmpresaDao empresaDao;
-	private AreaOrganizacionalDao areaOrganizacionalDao;
-	private UsuarioEmpresaDao usuarioEmpresaDao;
-	private ColaboradorDao colaboradorDao;
-	private PerfilDao perfilDao;
-	private PapelDao papelDao;
+	@Autowired private UsuarioDao usuarioDao;
+	@Autowired private EmpresaDao empresaDao;
+	@Autowired private AreaOrganizacionalDao areaOrganizacionalDao;
+	@Autowired private UsuarioEmpresaDao usuarioEmpresaDao;
+	@Autowired private ColaboradorDao colaboradorDao;
+	@Autowired private PerfilDao perfilDao;
+	@Autowired private PapelDao papelDao;
 
 	public Usuario getEntity()
 	{
@@ -52,6 +60,7 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		return usuario;
 	}
 
+	@Test
 	public void testFindByLogin()
 	{
 		Usuario usuario = UsuarioFactory.getEntity();
@@ -61,6 +70,7 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		assertEquals(usuario, usuarioDao.findByLogin(usuario.getLogin()));
 	}
 
+	@Test
 	public void testFindByLoginNull()
 	{
 		Usuario usuario = new Usuario();
@@ -69,6 +79,7 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		assertNull(usuarioDao.findByLogin(usuario.getLogin()));
 	}
 	
+	@Test
 	public void testDesativaSuperAdmin()
 	{
 		Usuario usuarioJoao = UsuarioFactory.getEntity();
@@ -87,6 +98,7 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		assertFalse(usuarioDao.findByLogin(usuarioMaria.getLogin()).isSuperAdmin());
 	}
 
+	@Test
 	public void testFindUsuarios()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -104,6 +116,7 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		assertEquals(usuario, usuarioDao.findUsuarios(1, 1, usuario.getNome(), usuarioEmpresa.getEmpresa()).toArray()[0]);
 	}
 
+	@Test
 	public void testFindUsuariosNull()
 	{
 		Empresa empresa = new Empresa();
@@ -115,7 +128,38 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 
 		assertTrue(usuarioDao.findUsuarios(0, 0, usuario.getNome(), usuarioEmpresa.getEmpresa()).isEmpty());
 	}
+	
+	@Test
+	public void testFindUsuariosLoginVazio()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Usuario usuario1 = UsuarioFactory.getEntity();
+		usuarioDao.save(usuario1);
+		
+		Usuario usuario2 = UsuarioFactory.getEntity();
+		usuarioDao.save(usuario2);
 
+		UsuarioEmpresa usuarioEmpresa1 = new UsuarioEmpresa();
+		usuarioEmpresa1.setUsuario(usuario1);
+		usuarioEmpresa1.setEmpresa(empresa);
+		usuarioEmpresaDao.save(usuarioEmpresa1);
+		
+		UsuarioEmpresa usuarioEmpresa2 = new UsuarioEmpresa();
+		usuarioEmpresa2.setUsuario(usuario2);
+		usuarioEmpresa2.setEmpresa(empresa);
+		usuarioEmpresaDao.save(usuarioEmpresa2);
+
+		assertEquals(2, usuarioDao.findUsuarios(0, 15, usuario1.getNome(), empresa).size());
+		
+		usuario2.setLogin(null);
+		usuarioDao.update(usuario2);
+		
+		assertEquals(1, usuarioDao.findUsuarios(0, 15, usuario1.getNome(), empresa).size());
+	}
+
+	@Test
 	public void testGetCountUsuario()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -133,18 +177,25 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		assertEquals(1, usuarioDao.getCountUsuario(usuario.getNome(), usuarioEmpresa.getEmpresa()).intValue());
 	}
 
+	@Test
 	public void testGetCountUsuarioNull()
 	{
-		Empresa empresa = new Empresa();
-		Usuario usuario = new Usuario();
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+
+		Usuario usuario = UsuarioFactory.getEntity();
+		usuario.setNome("nome");
+		usuarioDao.save(usuario);
 
 		UsuarioEmpresa usuarioEmpresa = new UsuarioEmpresa();
 		usuarioEmpresa.setUsuario(usuario);
 		usuarioEmpresa.setEmpresa(empresa);
+		usuarioEmpresaDao.save(usuarioEmpresa);
 
-//		assertEquals(0, usuarioDao.getCountUsuario(usuario.getNome(), usuarioEmpresa.getEmpresa()).intValue());
+		assertTrue(usuarioDao.getCountUsuario(usuario.getNome(), usuarioEmpresa.getEmpresa()).intValue() > 0);
 	}
 	
+	@Test
 	public void testRemoveAcessoSistema()
 	{
 		Usuario usuario = UsuarioFactory.getEntity();
@@ -166,6 +217,7 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		assertNull(usuarioRetorno1.getSenha());
 	}
 	
+	@Test
 	public void testDesativaAcessoSistema()
 	{
 		Usuario usuario = UsuarioFactory.getEntity();
@@ -185,6 +237,7 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		assertFalse(usuarioRetorno1.isAcessoSistema());
 	}
 
+	@Test
 	public void testRemoveAcessoSistemaMultiploColaboradores()
 	{
 		Usuario usuario1 = UsuarioFactory.getEntity();
@@ -221,6 +274,7 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		assertNull(usuarioRetorno2.getSenha());
 	}
 
+	@Test
 	public void testExisteLogin()
 	{
 		Usuario usuario = UsuarioFactory.getEntity();
@@ -230,6 +284,7 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		assertEquals(usuario, usuarioDao.findByLogin(usuario));
 	}
 
+	@Test
 	public void testExisteLoginFalse()
 	{
 		Usuario usuario = UsuarioFactory.getEntity();
@@ -238,11 +293,13 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		assertEquals(null, usuarioDao.findByLogin(usuario));
 	}
 
+	@Test
 	public void testFindAllSelect()
 	{
 		usuarioDao.findAllSelect();
 	}
 	
+	@Test
 	public void testReativaAcessoSistema()
 	{
 		Usuario usuario = UsuarioFactory.getEntity();
@@ -260,7 +317,7 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		assertTrue(usuarioDoBanco.isAcessoSistema());
 	}
 	
-	
+	@Test
 	public void testFindEmailsByUsuarioComEmailDesconsiderado()
 	{
 		Usuario usuario1 = UsuarioFactory.getEntity();
@@ -282,6 +339,7 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		assertEquals(colaborador2.getContato().getEmail(), emails[0]);
 	}
 	
+	@Test
 	public void testFindEmailsByUsuarioSemEmailDesconsiderado()
 	{
 		Usuario usuario1 = UsuarioFactory.getEntity();
@@ -304,6 +362,7 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		assertEquals(colaborador2.getContato().getEmail(), emails[1]);
 	}
 	
+	@Test
 	public void testFindAllSelectEmpresa()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -337,6 +396,7 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		assertEquals(usuario.getId(), usuarioRetorno.getId());
 	}
 	
+	@Test
 	public void testFindEmpresas()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -369,7 +429,7 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		assertEquals("Empresa 1", EmpresaRetorno1.getNome());
 	}
 	
-	
+	@Test
 	public void testFindEmpresasUsuarioSOS()
 	{
 		for (int i = 0; i < 10; i++) {
@@ -381,6 +441,7 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		assertTrue(empresas.size() >= 10);
 	}
 	
+	@Test
 	public void testSetUltimoLogin()
 	{
 		Usuario usuario = UsuarioFactory.getEntity();
@@ -393,6 +454,7 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		
 	}
 	
+	@Test
 	public void testFindEmailsByPerfil()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -428,6 +490,7 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		assertEquals("colab@gmail.com", ((String) retorno[0]));
 	}
 	
+	@Test
 	public void testFindEmailByPerfilAndResponsavelComGestor()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -463,6 +526,7 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		assertEquals("colab@gmail.com", ((String) retorno[0]));
 	}
 
+	@Test
 	public void testFindEmailByPerfilAndResponsavelComPermissaoDeVerTodosColaboradores()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -502,6 +566,7 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		assertEquals("colab@gmail.com", ((String) retorno[0]));
 	}
 	
+	@Test
 	public void testFindEmailByPerfilAndResponsavelApenasComPermissaoDeAprovarOrreprovarSolicitacaoDesligamento()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -537,6 +602,7 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		assertEquals(0, retorno.length);
 	}
 	
+	@Test
 	public void testFindEmailByPerfilAndResponsavelDesconsiderandoEmail()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -583,6 +649,7 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		assertEquals(colab2.getContato().getEmail(), ((String) retorno[0]));
 	}
 	
+	@Test
 	public void testIsResponsavelOrCoResponsavelReturnFalse() {
 		Usuario usuario = UsuarioFactory.getEntity();
 		usuarioDao.save(usuario);
@@ -594,6 +661,7 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		assertFalse(usuarioDao.isResponsavelOrCoResponsavel(usuario.getId()));
 	}
 	
+	@Test
 	public void testIsResponsavelOrCoResponsavelReturnTrue() {
 		Usuario usuario = UsuarioFactory.getEntity();
 		usuarioDao.save(usuario);
@@ -612,6 +680,7 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		assertTrue(usuarioDao.isResponsavelOrCoResponsavel(usuario.getId()));
 	}
 	
+	@Test
 	public void testFindEmailByUsuarioId()
 	{
 		Usuario usuario  = UsuarioFactory.getEntity();
@@ -625,6 +694,7 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		assertEquals(colaborador.getContato().getEmail(), usuarioDao.findEmailByUsuarioId(usuario.getId()));
 	}
 	
+	@Test
 	public void testFindEmailByUsuarioIdColaboradorSemEmail()
 	{
 		Usuario usuario  = UsuarioFactory.getEntity();
@@ -638,7 +708,7 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		assertNull(usuarioDao.findEmailByUsuarioId(usuario.getId()));
 	}
 
-
+	@Test
 	public void testFindEmailByUsuarioIdUsuarioSemColaborador()
 	{
 		Usuario usuario  = UsuarioFactory.getEntity();
@@ -651,37 +721,4 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 	{
 		return usuarioDao;
 	}
-
-	public void setUsuarioDao(UsuarioDao usuarioDao)
-	{
-		this.usuarioDao = usuarioDao;
-	}
-
-	public void setEmpresaDao(EmpresaDao empresaDao)
-	{
-		this.empresaDao = empresaDao;
-	}
-
-	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao) {
-		this.areaOrganizacionalDao = areaOrganizacionalDao;
-	}
-
-	public void setUsuarioEmpresaDao(UsuarioEmpresaDao usuarioEmpresaDao)
-	{
-		this.usuarioEmpresaDao = usuarioEmpresaDao;
-	}
-
-	public void setColaboradorDao(ColaboradorDao colaboradorDao)
-	{
-		this.colaboradorDao = colaboradorDao;
-	}
-
-	public void setPerfilDao(PerfilDao perfilDao) {
-		this.perfilDao = perfilDao;
-	}
-
-	public void setPapelDao(PapelDao papelDao) {
-		this.papelDao = papelDao;
-	}
-
 }
