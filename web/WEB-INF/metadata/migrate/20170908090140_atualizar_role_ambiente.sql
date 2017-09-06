@@ -1,0 +1,1 @@
+update papel set codigo = 'ROLE_AMBIENTE_FUNCAO_COLABORADOR' where id=477;--.go

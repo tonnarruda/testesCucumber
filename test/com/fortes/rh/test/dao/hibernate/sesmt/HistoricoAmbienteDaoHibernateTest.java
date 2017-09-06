@@ -117,17 +117,30 @@ public class HistoricoAmbienteDaoHibernateTest extends GenericDaoHibernateTest_J
 	@Test
 	public void testFindUltimoHistoricoAteData()
 	{
-		Date data1 = DateUtil.criarDataMesAno(01, 10, 2009);
+		Date hoje = new Date();
 		
-		Ambiente ambiente = new Ambiente();
-		ambienteDao.save(ambiente);
+		Ambiente ambiente1 = new Ambiente();
+		ambienteDao.save(ambiente1);
 		
-		HistoricoAmbiente historicoAmbiente = new HistoricoAmbiente();
-		historicoAmbiente.setAmbiente(ambiente);
-		historicoAmbiente.setData(data1);
-		historicoAmbienteDao.save(historicoAmbiente);
+		HistoricoAmbiente historicoAmbiente1_1 = HistoricoAmbienteFactory.getEntity(ambiente1, DateUtil.incrementaDias(hoje, -2));
+		historicoAmbienteDao.save(historicoAmbiente1_1);
 		
-		assertEquals(ambiente.getId(), historicoAmbienteDao.findUltimoHistoricoAteData(ambiente.getId(), new Date()).getAmbiente().getId());
+		HistoricoAmbiente historicoAmbiente1_2 = HistoricoAmbienteFactory.getEntity(ambiente1, DateUtil.incrementaDias(hoje, 0));
+		historicoAmbienteDao.save(historicoAmbiente1_2);
+		
+		HistoricoAmbiente historicoAmbiente1_3 = HistoricoAmbienteFactory.getEntity(ambiente1, DateUtil.incrementaDias(hoje, 1));
+		historicoAmbienteDao.save(historicoAmbiente1_3);
+		
+		Ambiente ambiente2 = new Ambiente();
+		ambienteDao.save(ambiente2);
+
+		HistoricoAmbiente historicoAmbiente2_1 = HistoricoAmbienteFactory.getEntity(ambiente2, hoje);
+		historicoAmbienteDao.save(historicoAmbiente2_1);
+		
+		HistoricoAmbiente historicoAmbienteRetorno = historicoAmbienteDao.findUltimoHistoricoAteData(ambiente1.getId(), hoje);
+		
+		assertEquals(ambiente1.getId(), historicoAmbienteRetorno.getAmbiente().getId());
+		assertEquals(historicoAmbiente1_2.getId(), historicoAmbienteRetorno.getId());
 	}
 	
 	@Test

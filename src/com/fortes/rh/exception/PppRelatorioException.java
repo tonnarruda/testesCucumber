@@ -57,7 +57,7 @@ public class PppRelatorioException extends Exception
 	}
 
 	private void selecionaLink(StringBuilder msgHistorico, Long colaboradorId, String msg) {
-		if (SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_AMBIENTE"}))
+		if (SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_AMBIENTE_FUNCAO_COLABORADOR"}))
 			msgHistorico.append("<a href='../../cargosalario/historicoColaborador/prepareUpdateAmbientesEFuncoes.action?colaborador.id=" + colaboradorId + "'>" + msg + "</a><br />");
 		else if (SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_CAD_HISTORICOCOLABORADOR"}))
 			msgHistorico.append("<a href='../../cargosalario/historicoColaborador/historicoColaboradorList.action?colaborador.id=" + colaboradorId + "'>" + msg + "</a><br />");

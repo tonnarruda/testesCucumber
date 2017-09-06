@@ -79,6 +79,8 @@ public class HistoricoAmbienteDaoHibernate extends GenericDaoHibernate<Historico
 		criteria.createCriteria("ha.riscoAmbientes", "ra", Criteria.LEFT_JOIN);
 		
 		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("ha.id"), "id");
+		p.add(Projections.property("ha.data"), "data");
 		p.add(Projections.property("a.id"), "ambienteId");
 		p.add(Projections.property("ra.id"), "ricoAmbienteId");
 		criteria.setProjection(p);

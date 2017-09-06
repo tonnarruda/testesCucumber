@@ -483,7 +483,6 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 	public Collection<HistoricoColaborador> findByColaboradorData(Long idColaborador, Date data)
 	{
 		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
-//		criteria.createCriteria("hc.colaborador", "c");
 		criteria.setFetchMode("hc.colaborador", FetchMode.DEFAULT);
 
 		criteria.add(Expression.eq("hc.colaborador.id", idColaborador));

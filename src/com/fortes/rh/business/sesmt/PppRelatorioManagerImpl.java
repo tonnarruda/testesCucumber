@@ -3,6 +3,8 @@ package com.fortes.rh.business.sesmt;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -82,15 +84,24 @@ public class PppRelatorioManagerImpl implements PppRelatorioManager
 	private Collection<PppFatorRisco> populaFatoresDeRiscos(Date data, Collection<HistoricoColaborador> historicosDoColaborador){
 		Collection<PppFatorRisco> pppFatoresRiscos = new ArrayList<PppFatorRisco>();
 		
-		if(controlaRiscoPorAmbiente)
-			pppFatoresRiscos.addAll(populaFatoresDeRiscosAmbienteOuFuncao(data, historicosDoColaborador));
-		else
-			pppFatoresRiscos.addAll(populaFatoresDeRiscosAmbienteOuFuncao(data, historicosDoColaborador));
+		pppFatoresRiscos.addAll(populaFatoresDeRiscosAmbienteOuFuncao(data, historicosDoColaborador));
 		
 		if (pppFatoresRiscos.isEmpty())
 			return Arrays.asList(new PppFatorRisco());
 		
-		return new CollectionUtil<PppFatorRisco>().sortCollectionDate(pppFatoresRiscos, "dataInicio", "asc");
+		Collections.sort((List<PppFatorRisco>)pppFatoresRiscos, new Comparator<PppFatorRisco>() {
+			@Override
+			public int compare(PppFatorRisco pppFatorRisco1, PppFatorRisco pppFatorRisco2) {
+				int i = pppFatorRisco1.getRisco().getDescricao().compareTo(pppFatorRisco2.getRisco().getDescricao());
+				
+				if(i == 0)
+					i = pppFatorRisco1.getDataInicio().compareTo(pppFatorRisco2.getDataInicio());
+				
+				return i;
+			}
+		});
+
+		return pppFatoresRiscos;
 	}
 	
 	private Collection<PppFatorRisco> populaFatoresDeRiscosAmbienteOuFuncao(Date data, Collection<HistoricoColaborador> historicosDoColaborador) {
@@ -232,9 +243,9 @@ public class PppRelatorioManagerImpl implements PppRelatorioManager
 		return riscosPorHistoricoAmbienteOuFuncao; 
 	}
 
-	private Date getProxDataHistorico(List<DadosAmbienteOuFuncaoRisco> historicoAmbientesRiscos, Date dataAmbienteOuFuncaoIni) 
+	private Date getProxDataHistorico(List<DadosAmbienteOuFuncaoRisco> historicoAmbienteFuncaoRiscos, Date dataAmbienteOuFuncaoIni) 
 	{
-		for (DadosAmbienteOuFuncaoRisco dadosAmbienteOuFuncaoRisco : historicoAmbientesRiscos) 
+		for (DadosAmbienteOuFuncaoRisco dadosAmbienteOuFuncaoRisco : historicoAmbienteFuncaoRiscos) 
 		{
 			if(dadosAmbienteOuFuncaoRisco.getHistoricoAmbienteOuFuncaoData().compareTo(dataAmbienteOuFuncaoIni) > 0)
 				return dadosAmbienteOuFuncaoRisco.getHistoricoAmbienteOuFuncaoData();

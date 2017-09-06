@@ -33,9 +33,9 @@ public class RiscoMedicaoRiscoManagerImpl extends GenericManagerImpl<RiscoMedica
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<RiscoMedicaoRisco> getByRiscoPeriodo(Long riscoId, Long ambienteId, Date dataAmbienteOuFuncaoIni, Date dataAmbienteOuFuncaoFim, boolean controlaRiscoPorAmbiente) 
+	public List<RiscoMedicaoRisco> getByRiscoPeriodo(Long riscoId, Long ambienteOuFuncaoId, Date dataAmbienteOuFuncaoIni, Date dataAmbienteOuFuncaoFim, boolean controlaRiscoPorAmbiente) 
 	{
-		Collection<RiscoMedicaoRisco> riscoMedicaoRiscos = getDao().findByRiscoAteData(riscoId, ambienteId, dataAmbienteOuFuncaoFim, controlaRiscoPorAmbiente);
+		Collection<RiscoMedicaoRisco> riscoMedicaoRiscos = getDao().findByRiscoAteData(riscoId, ambienteOuFuncaoId, dataAmbienteOuFuncaoFim, controlaRiscoPorAmbiente);
 		
 		Collection<RiscoMedicaoRisco> riscoMedicaoRiscosResultado = new ArrayList<RiscoMedicaoRisco>(); 
 		

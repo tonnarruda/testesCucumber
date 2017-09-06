@@ -22,7 +22,6 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.business.GenericManagerImpl;
-import com.fortes.model.AbstractModel;
 import com.fortes.rh.annotations.TesteAutomatico;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
@@ -60,6 +59,7 @@ import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
+import com.fortes.rh.util.ModelUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientColaborador;
@@ -1534,9 +1534,9 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		
 		for (HistoricoColaborador historicoColaborador : todosHistoricos) {
 			if( !(historicoColaborador.getEstabelecimento().getId().equals(ultimoHistoricoValido.getEstabelecimento().getId())) 
-					|| (!(historicoColaborador.getFaixaSalarial().getCargo().getId().equals(ultimoHistoricoValido.getFaixaSalarial().getCargo().getId())))
-					|| (validaIdNulo(historicoColaborador.getAmbiente()) && !(historicoColaborador.getAmbiente().getId().equals(validaIdNulo(ultimoHistoricoValido.getAmbiente()) ? ultimoHistoricoValido.getAmbiente().getId() : 0L)))
-					|| (validaIdNulo(historicoColaborador.getFuncao()) && !(historicoColaborador.getFuncao().getId().equals(validaIdNulo(ultimoHistoricoValido.getFuncao()) ? ultimoHistoricoValido.getFuncao().getId(): 0L))) ){
+					|| !(historicoColaborador.getFaixaSalarial().getCargo().getId().equals(ultimoHistoricoValido.getFaixaSalarial().getCargo().getId()))
+					|| !(ModelUtil.hasNull("getAmbiente().getId()", historicoColaborador) && !(historicoColaborador.getAmbiente().getId().equals(ModelUtil.getValor(ultimoHistoricoValido, "getAmbiente().getId()", true)))
+					|| !(ModelUtil.hasNull("getFuncao().getId()", historicoColaborador) && !(historicoColaborador.getFuncao().getId().equals(ModelUtil.getValor(ultimoHistoricoValido, "getFuncao().getId()", true)))))){
 				
 				historicosFiltrados.add(historicoColaborador);
 				ultimoHistoricoValido = historicoColaborador;
@@ -1547,14 +1547,6 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return historicosFiltrados;
 	}
 	
-	private boolean validaIdNulo(AbstractModel entidade) throws Exception 
-	{
-		if(entidade == null || entidade.getId() == null)
-			return false;
-		
-		return true;
-	}
-
 	public void deleteHistoricosAguardandoConfirmacaoByColaborador(Long... colaboradoresIds)
 	{
 		getDao().deleteHistoricosAguardandoConfirmacaoByColaborador(colaboradoresIds);

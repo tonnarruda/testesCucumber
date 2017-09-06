@@ -498,8 +498,8 @@
 				/cargosalario/reajusteRelatorio/formFiltro*/**=ROLE_REL_SIMULACAOREAJUSTE
 				/cargosalario/reajusteRelatorio/gerarRelatorio*/**=ROLE_REL_SIMULACAOREAJUSTE
 				/cargosalario/reajusteRelatorio/*/**=ROLE_MOV_SIMULACAOREAJUSTE
-				/cargosalario/historicoColaborador/prepareUpdateAmbientesEFuncoes*/** = ROLE_AMBIENTE
-				/cargosalario/historicoColaborador/updateAmbientesEFuncoes*/** = ROLE_AMBIENTE
+				/cargosalario/historicoColaborador/prepareUpdateAmbientesEFuncoes*/** = ROLE_AMBIENTE_FUNCAO_COLABORADOR
+				/cargosalario/historicoColaborador/updateAmbientesEFuncoes*/** = ROLE_AMBIENTE_FUNCAO_COLABORADOR
 				/cargosalario/historicoColaborador/prepareRelatorioPromocoes*/** = ROLE_REL_PROMOCAO 
 				/cargosalario/historicoColaborador/imprimirRelatorioPromocoes*/** = ROLE_REL_PROMOCAO 
 				/cargosalario/historicoColaborador/prepareAjusteDissidio.action*=ROLE_MOV_DISSIDIO

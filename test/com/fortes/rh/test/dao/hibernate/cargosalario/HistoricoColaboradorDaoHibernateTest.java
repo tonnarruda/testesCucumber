@@ -960,8 +960,10 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		historicoColaborador.setColaborador(colaborador);
 		historicoColaborador.setData(DateUtil.criarDataMesAno(01, 01, 2008));
 		historicoColaborador = historicoColaboradorDao.save(historicoColaborador);
+		
+		Collection<HistoricoColaborador> a = historicoColaboradorDao.findByColaboradorData(colaborador.getId(), DateUtil.criarDataMesAno(01, 01, 2007));
 
-		assertEquals(0, historicoColaboradorDao.findByColaboradorData(colaborador.getId(), DateUtil.criarDataMesAno(01, 01, 2007)).size());
+		assertEquals(0, a.size());
 		assertEquals(1, historicoColaboradorDao.findByColaboradorData(colaborador.getId(), DateUtil.criarDataMesAno(01, 01, 2009)).size());
 	}
 
