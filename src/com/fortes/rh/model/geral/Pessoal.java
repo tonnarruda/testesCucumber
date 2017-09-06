@@ -36,7 +36,7 @@ public class Pessoal implements Serializable
 	private String pis;
 	@Column(length=15)
 	private String rg;
-	@Column(length=15)
+	@Column(length=20)
 	private String rgOrgaoEmissor;
 	@ManyToOne
 	private Estado rgUf;
@@ -50,11 +50,11 @@ public class Pessoal implements Serializable
 	private Ctps ctps = new Ctps();
 	@Column(length=100)
 	private String naturalidade;
-	@Column(length=60)
+	@Column(length=70)
 	private String pai;
-	@Column(length=60)
+	@Column(length=70)
 	private String mae;
-	@Column(length=40)
+	@Column(length=70)
 	private String conjuge;
 	@Column(length=100)
 	private String profissaoPai;

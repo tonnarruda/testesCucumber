@@ -88,7 +88,7 @@
 		<@ww.actionmessage />
 		<@ww.actionerror />
 		<@ww.form name="form" action="insertCurriculoTexto.action" onsubmit="${validarCampos}" validate="true" method="POST" enctype="multipart/form-data">
-			<@ww.textfield label="Nome" id="nome" name="candidato.nome" required="true" cssStyle="width:396px;" liClass="liLeft" onblur="getCandidatosHomonimos();"/>
+			<@ww.textfield label="Nome" id="nome" name="candidato.nome" required="true" cssStyle="width:396px;" liClass="liLeft" onblur="getCandidatosHomonimos();" maxLength="70"/>
 			<@ww.select label="Sexo" id="sexo" required="true" name="candidato.pessoal.sexo" list="sexos" cssStyle="width: 100px;" />
 			
 			<@ww.div id="homonimos" cssStyle="color:blue;display:none; ">
@@ -107,7 +107,7 @@
 			
 			<@ww.select label="Estado" name="candidato.endereco.uf.id" id="uf" list="ufs"  liClass="liLeft" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue="" onchange="javascript:populaCidades()"/>
 			<@ww.select label="Cidade" name="candidato.endereco.cidade.id" id="cidade"  list="cidades" listKey="id" listValue="nome" cssStyle="width: 245px;" headerKey="" headerValue="" liClass="liLeft"/>
-			<@ww.textfield label="Bairro" name="candidato.endereco.bairro" id="bairroNome" cssStyle="width: 197px;"  maxLength="85"/>
+			<@ww.textfield label="Bairro" name="candidato.endereco.bairro" id="bairroNome" cssStyle="width: 197px;"  maxLength="60"/>
 	
 			<@ww.textarea label="Currículo" name="candidato.ocrTexto" id="ocrTexto" required="true" cssStyle="width: 758px;height: 300px"/>
 		</@ww.form>

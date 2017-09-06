@@ -802,7 +802,7 @@
 				<@ww.file label="Foto" name="colaborador.foto" id="foto"/>
 	        </#if>
 
-			<@ww.textfield label="Nome" name="colaborador.nome" id="nome" liClass="liLeft campo campoAdd" cssClass="campo-integrado" cssStyle="width: 300px;" maxLength="60" onblur="${funcaoNome};"/>
+			<@ww.textfield label="Nome" name="colaborador.nome" id="nome" liClass="liLeft campo campoAdd" cssClass="campo-integrado" cssStyle="width: 300px;" maxLength="70" onblur="${funcaoNome};"/>
 			<@ww.textfield label="Nome Comercial" name="colaborador.nomeComercial"  liClass="campo" id="nomeComercial" cssStyle="width: 300px;" maxLength="30" cssClass="campo-integrado"/>
 			<#if desabilitarEdicaoCamposIntegrados>
 				<@ww.textfield label="Nascimento" name="colaborador.pessoal.dataNascimento"  value="${dataNasc}" id="nascimento" liClass="liLeft campo campoAdd" cssClass="mascaraData campo-integrado"/>
@@ -823,12 +823,12 @@
 			
 			<@ww.div id="wwgrp_endereco" cssClass="campo">
 				<@ww.textfield label="CEP" name="colaborador.endereco.cep" id="cep" cssClass="mascaraCep campo-integrado" liClass="liLeft campoAdd"/>
-				<@ww.textfield label="Logradouro" name="colaborador.endereco.logradouro" id="ende" cssStyle="width: 300px;" liClass="liLeft campoAdd" cssClass="campo-integrado" maxLength="40"/>
+				<@ww.textfield label="Logradouro" name="colaborador.endereco.logradouro" id="ende" cssStyle="width: 300px;" liClass="liLeft campoAdd" cssClass="campo-integrado" maxLength="80"/>
 				<@ww.textfield label="Nº"  name="colaborador.endereco.numero" id="num" cssStyle="width:40px;" liClass="liLeft campoAdd" cssClass="campo-integrado" maxLength="10"/>
-				<@ww.textfield label="Complemento" name="colaborador.endereco.complemento" id="complemento" licClass="campoAdd" cssClass="campo-integrado" cssStyle="width: 205px;" maxLength="20"/>
+				<@ww.textfield label="Complemento" name="colaborador.endereco.complemento" id="complemento" licClass="campoAdd" cssClass="campo-integrado" cssStyle="width: 205px;" maxLength="30"/>
 				<@ww.select label="Estado"     name="colaborador.endereco.uf.id" id="uf" list="estados" liClass="liLeft campoAdd" cssClass="campo-integrado-select" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue=""/>
 				<@ww.select label="Cidade" name="colaborador.endereco.cidade.id" id="cidade" list="cidades" liClass="liLeft campoAdd" cssClass="campo-integrado-select" listKey="id" listValue="nome" cssStyle="width: 245px;" headerKey="" headerValue=""/>
-				<@ww.textfield label="Bairro" name="colaborador.endereco.bairro" id="bairroNome" liClass="campoAdd" cssClass="campo-integrado" cssStyle="width: 325px;" maxLength="85"/>
+				<@ww.textfield label="Bairro" name="colaborador.endereco.bairro" id="bairroNome" liClass="campoAdd" cssClass="campo-integrado" cssStyle="width: 325px;" maxLength="60"/>
 				<@ww.div id="bairroContainer"/>
 			</@ww.div>
 
@@ -983,7 +983,7 @@
 					<ul>
 						<b><@ww.label label="Identidade" /></b>
 				    	<@ww.textfield label="Número" name="colaborador.pessoal.rg" id="identidade" cssStyle="width: 106px;" maxLength="15" liClass="liLeft campoAdd" cssClass="campo-integrado" onkeypress = "return(somenteNumeros(event,'{,}'));"/>
-				  	   	<@ww.textfield label="Órgão Emissor" id="rgOrgaoEmissor" name="colaborador.pessoal.rgOrgaoEmissor" cssStyle="width: 73px;" maxLength="10" liClass="liLeft campoAdd" cssClass="campo-integrado"/>
+				  	   	<@ww.textfield label="Órgão Emissor" id="rgOrgaoEmissor" name="colaborador.pessoal.rgOrgaoEmissor" cssStyle="width: 73px;" maxLength="20" liClass="liLeft campoAdd" cssClass="campo-integrado"/>
 				       	<@ww.select label="Estado" name="colaborador.pessoal.rgUf.id" id="rgUf" list="estados" liClass="liLeft campoAdd" cssClass="campo-integrado-select" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue=""/>
 				      	<#if desabilitarEdicaoCamposIntegrados>
 							<@ww.textfield label="Data de Expedição" name="colaborador.pessoal.rgDataExpedicao" id="rgDataExpedicao" liClass="campoAdd" cssClass="mascaraData campo-integrado" value="${rgDataExpedicao}"/>
@@ -999,7 +999,7 @@
 				<@ww.div id="wwgrp_carteiraHabilitacao" cssClass="campo">
 					<ul>
 				       	<b><@ww.label label="Carteira de Habilitação" /></b>
-						<@ww.textfield label="Nº de Registro" id="carteiraHabilitacao" name="colaborador.habilitacao.numeroHab" cssStyle="width: 100px;" maxLength="11" liClass="liLeft campoAdd" cssClass="campo-integrado" onkeypress = "return(somenteNumeros(event,'{,}'));"/>
+						<@ww.textfield label="Nº de Registro" id="carteiraHabilitacao" name="colaborador.habilitacao.numeroHab" cssStyle="width: 100px;" maxLength="12" liClass="liLeft campoAdd" cssClass="campo-integrado" onkeypress = "return(somenteNumeros(event,'{,}'));"/>
 				      	<@ww.textfield label="Prontuário" id="prontuario" name="colaborador.habilitacao.registro" cssStyle="" maxLength="15" liClass="liLeft campoAdd" cssClass="campo-integrado"/>
 				      	<#if desabilitarEdicaoCamposIntegrados>
 							<@ww.textfield label="Emissão" name="colaborador.habilitacao.emissao" id="emissao" liClass="liLeft campoAdd" cssClass="mascaraData campo-integrado" value="${habEmissao}"/>
@@ -1044,7 +1044,7 @@
 				<@ww.div >
 					<ul>
 						<b><@ww.label label="CTPS - Carteira de Trabalho e Previdência Social" /></b>
-				    	<@ww.textfield label="Número" name="colaborador.pessoal.ctps.ctpsNumero" id="ctps" cssStyle="width: 58px;" maxLength="8" liClass="liLeft" cssClass="campo-integrado"/>
+				    	<@ww.textfield label="Número" name="colaborador.pessoal.ctps.ctpsNumero" id="ctps" cssStyle="width: 58px;" maxLength="11" liClass="liLeft" cssClass="campo-integrado"/>
 				    	<@ww.textfield label="Série" name="colaborador.pessoal.ctps.ctpsSerie" id="ctpsSerie" cssStyle="width: 38px;" maxLength="6" liClass="liLeft" cssClass="campo-integrado"/>
 				    	<@ww.textfield label="DV" name="colaborador.pessoal.ctps.ctpsDv" id="ctpsDv" cssStyle="width: 11px;" maxLength="1" liClass="liLeft" cssClass="campo-integrado"/>
 				       	<@ww.select label="Estado" name="colaborador.pessoal.ctps.ctpsUf.id" id="ctpsUf" list="estados" liClass="liLeft campoAdd" cssClass="campo-integrado-select" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue=""/>

@@ -15,7 +15,7 @@ import com.fortes.rh.util.DateUtil;
 
 public class Ctps implements Serializable
 {
-	@Column(length=8)
+	@Column(length=11)
 	private String ctpsNumero;
 	@Column(length=6)
 	private String ctpsSerie;

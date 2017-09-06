@@ -21,7 +21,7 @@ import com.fortes.security.auditoria.NaoAudita;
 
 public class Habilitacao implements Serializable
 {
-	@Column(length=11)
+	@Column(length=12)
 	private String numeroHab;
 	@Column(length=30)
 	private String registro;

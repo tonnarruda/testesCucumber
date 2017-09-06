@@ -20,3 +20,32 @@ alter table candidato add column ufHab_id bigint; --.go
 
 update colaborador set dddCelular = ddd; --.go 
 update candidato set dddCelular = ddd; --.go
+
+--Bairro
+ALTER TABLE bairro ALTER COLUMN nome TYPE character varying(60) USING SUBSTR(nome, 1, 60);--.go;
+
+--Colaborador
+UPDATE pg_attribute SET atttypmod = 70+4 WHERE attrelid = 'colaborador'::regclass AND attname = 'nome'; --.go
+
+ALTER TABLE colaborador ALTER COLUMN pai TYPE character varying(70);--.go
+ALTER TABLE colaborador ALTER COLUMN mae TYPE character varying(70);--.go
+ALTER TABLE colaborador ALTER COLUMN conjuge TYPE character varying(70);--.go
+ALTER TABLE colaborador ALTER COLUMN ctpsnumero TYPE character varying(11);--.go
+ALTER TABLE colaborador ALTER COLUMN rgorgaoemissor TYPE character varying(20);--.go
+ALTER TABLE colaborador ALTER COLUMN numerohab TYPE character varying(12);--.go
+ALTER TABLE colaborador ALTER COLUMN logradouro TYPE character varying(80);--.go
+ALTER TABLE colaborador ALTER COLUMN complemento TYPE character varying(30);--.go
+ALTER TABLE colaborador ALTER COLUMN bairro TYPE character varying(60) USING SUBSTR(bairro, 1, 60);--.go;
+
+
+--Candidato
+ALTER TABLE candidato ALTER COLUMN nome TYPE character varying(70);--.go
+ALTER TABLE candidato ALTER COLUMN pai TYPE character varying(70);--.go
+ALTER TABLE candidato ALTER COLUMN mae TYPE character varying(70);--.go
+ALTER TABLE candidato ALTER COLUMN conjuge TYPE character varying(70);--.go
+ALTER TABLE candidato ALTER COLUMN ctpsnumero TYPE character varying(11);--.go
+ALTER TABLE candidato ALTER COLUMN rgorgaoemissor TYPE character varying(20);--.go
+ALTER TABLE candidato ALTER COLUMN numerohab TYPE character varying(12);--.go
+ALTER TABLE candidato ALTER COLUMN logradouro TYPE character varying(80);--.go
+ALTER TABLE candidato ALTER COLUMN complemento TYPE character varying(30);--.go
+ALTER TABLE candidato ALTER COLUMN bairro TYPE character varying(60);--.go

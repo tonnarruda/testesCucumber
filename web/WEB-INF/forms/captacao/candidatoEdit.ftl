@@ -562,7 +562,7 @@
 			
 			<@ww.div id="msgCPFDuplicado" cssStyle="display:none;"></@ww.div>			
 			
-			<@ww.textfield label="Nome" name="candidato.nome" id="nome" liClass="liLeft" cssStyle="width: 300px;" maxLength="60" onblur="candidatosHomonimos();${capitalizar}"/>
+			<@ww.textfield label="Nome" name="candidato.nome" id="nome" liClass="liLeft" cssStyle="width: 300px;" maxLength="70" onblur="candidatosHomonimos();${capitalizar}"/>
 			
 			<@ww.datepicker label="Nascimento" name="candidato.pessoal.dataNascimento" id="nascimento" liClass="liLeft campo" cssClass="mascaraData" value="${dataNas}"/>
 			<@ww.textfield label="Naturalidade" id="naturalidade" name="candidato.pessoal.naturalidade" cssStyle="width: 160px;" maxLength="100" liClass="liLeft , campo" onblur="${capitalizar}"/>
@@ -575,13 +575,13 @@
 				<@ww.div id="wwgrp_endereco" cssClass="campo">
 					<ul>
 						<@ww.textfield label="CEP" name="candidato.endereco.cep" id="cep" cssClass="mascaraCep" liClass="liLeft" />
-						<@ww.textfield label="Logradouro" name="candidato.endereco.logradouro" id="ende" cssStyle="width: 300px;" maxLength="40" liClass="liLeft" onblur="${capitalizar}"/>
+						<@ww.textfield label="Logradouro" name="candidato.endereco.logradouro" id="ende" cssStyle="width: 300px;" maxLength="80" liClass="liLeft" onblur="${capitalizar}"/>
 						<@ww.textfield label="Nº" name="candidato.endereco.numero" id="num" cssStyle="width:40px;" maxLength="8" liClass="liLeft" onblur="${capitalizar}"/>
-						<@ww.textfield label="Complemento" name="candidato.endereco.complemento" id="complemento" cssStyle="width: 250px;" maxLength="20" onblur="${capitalizar}" liClass="liLeft" />
+						<@ww.textfield label="Complemento" name="candidato.endereco.complemento" id="complemento" cssStyle="width: 250px;" maxLength="30" onblur="${capitalizar}" liClass="liLeft" />
 			
 						<@ww.select label="Estado" name="candidato.endereco.uf.id" id="uf" list="ufs" liClass="liLeft" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue="" />
 						<@ww.select label="Cidade" name="candidato.endereco.cidade.id" id="cidade" list="cidades" liClass="liLeft" listKey="id" listValue="nome" cssStyle="width: 245px;" headerKey="" headerValue="" />
-						<@ww.textfield label="Bairro" name="candidato.endereco.bairro" id="bairroNome" cssStyle="width: 300px;" maxLength="85" onblur="${capitalizar}" liClass="liLeft" />
+						<@ww.textfield label="Bairro" name="candidato.endereco.bairro" id="bairroNome" cssStyle="width: 300px;" maxLength="60" onblur="${capitalizar}" liClass="liLeft" />
 						<div id="bairroContainer"></div>
 					</ul>
 				</@ww.div>
@@ -608,13 +608,13 @@
 			<@ww.select label="Estado Civil" id="estadoCivil" name="candidato.pessoal.estadoCivil" list="estadosCivis" cssStyle="width: 210px;" liClass="liLeft , campo" />
 			<@ww.textfield label="Qtd. Filhos" id="qtdFilhos" onkeypress = "return(somenteNumeros(event,''));" maxLength="2" name="candidato.pessoal.qtdFilhos" cssStyle="width:72px; text-align:right;" liClass="liLeft , campo"/>
 
-			<@ww.textfield label="Nome do Cônjuge" id="nomeConjuge" name="candidato.pessoal.conjuge" cssStyle="width: 300px;" maxLength="40" liClass="liLeft , campo" onblur="${capitalizar}" />
+			<@ww.textfield label="Nome do Cônjuge" id="nomeConjuge" name="candidato.pessoal.conjuge" cssStyle="width: 300px;" maxLength="70" liClass="liLeft , campo" onblur="${capitalizar}" />
 			<@ww.textfield label="Profissão do Cônjuge" id="profConjuge" name="candidato.pessoal.profissaoConjuge" cssStyle="width: 300px;" maxLength="100" onblur="${capitalizar}"  liClass="liLeft , campo"/>
 
-			<@ww.textfield label="Nome do Pai" id="nomePai" name="candidato.pessoal.pai" cssStyle="width: 300px;" maxLength="60" liClass="liLeft , campo" onblur="${capitalizar}"/>
+			<@ww.textfield label="Nome do Pai" id="nomePai" name="candidato.pessoal.pai" cssStyle="width: 300px;" maxLength="70" liClass="liLeft , campo" onblur="${capitalizar}"/>
 			<@ww.textfield label="Profissão do Pai" id="profPai" name="candidato.pessoal.profissaoPai" cssStyle="width: 300px;" maxLength="100" onblur="${capitalizar}"  liClass="liLeft , campo"/>
 
-			<@ww.textfield label="Nome da Mãe" id="nomeMae" name="candidato.pessoal.mae" cssStyle="width: 300px;" maxLength="60" liClass="liLeft , campo" onblur="${capitalizar}"/>
+			<@ww.textfield label="Nome da Mãe" id="nomeMae" name="candidato.pessoal.mae" cssStyle="width: 300px;" maxLength="70" liClass="liLeft , campo" onblur="${capitalizar}"/>
 			<@ww.textfield label="Profissão da Mãe" id="profMae" name="candidato.pessoal.profissaoMae" cssStyle="width: 300px;" maxLength="100" onblur="${capitalizar}" liClass="liLeft , campo"/>
 			<li>
 				<@ww.div id="wwgrp_comoFicouSabendoVaga" cssClass="campo">
@@ -698,7 +698,7 @@
 				<ul>
 					<b><@ww.label label="Identidade" /></b>
 			    	<@ww.textfield label="RG" name="candidato.pessoal.rg" id="identidade" cssStyle="width: 106px;" maxLength="15" liClass="liLeft" onkeypress = "return(somenteNumeros(event,'{,}'));" />
-			  	   	<@ww.textfield label="Órgão Emissor" id="rgOrgaoEmissor" name="candidato.pessoal.rgOrgaoEmissor" cssStyle="width: 73px;" maxLength="10" liClass="liLeft" />
+			  	   	<@ww.textfield label="Órgão Emissor" id="rgOrgaoEmissor" name="candidato.pessoal.rgOrgaoEmissor" cssStyle="width: 73px;" maxLength="20" liClass="liLeft" />
 			       	<@ww.select label="Estado" name="candidato.pessoal.rgUf.id" id="rgUf" list="ufs" liClass="liLeft" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue=""/>
 			      	<@ww.datepicker label="Data de Expedição" name="candidato.pessoal.rgDataExpedicao" id="rgDataExpedicao" cssClass="mascaraData" value="${rgDataExpedicao}"/>
 		        	<li><hr style="border-top: 1px solid #CCCCCC; border-bottom:0;"/></li>
@@ -710,7 +710,7 @@
 			<@ww.div id="wwgrp_carteiraHabilitacao" cssClass="campo">
 				<ul>
 			       	<b><@ww.label label="Carteira de Habilitação" /></b>
-					<@ww.textfield id="carteiraHabilitacao" label="Nº de Registro" name="candidato.habilitacao.numeroHab" cssStyle="width: 100px;" maxLength="11" liClass="liLeft" onkeypress = "return(somenteNumeros(event,'{,}'));"/>
+					<@ww.textfield id="carteiraHabilitacao" label="Nº de Registro" name="candidato.habilitacao.numeroHab" cssStyle="width: 100px;" maxLength="12" liClass="liLeft" onkeypress = "return(somenteNumeros(event,'{,}'));"/>
 			      	<@ww.textfield label="Prontuário" name="candidato.habilitacao.registro"  cssStyle="width: 120px;" maxLength="15" liClass="liLeft"/>
 			      	<@ww.datepicker label="Emissão" name="candidato.habilitacao.emissao" id="emissao" liClass="liLeft" cssClass="mascaraData validaDataIni" value="${habEmissao}"/>
 			      	<@ww.datepicker label="Vencimento" name="candidato.habilitacao.vencimento" id="vencimento" liClass="liLeft" cssClass="mascaraData validaDataFim" value="${dataVenc}"/>
@@ -750,7 +750,7 @@
 			<@ww.div >
 				<ul>
 					<b><@ww.label label="CTPS - Carteira de Trabalho e Previdência Social" /></b>
-			    	<@ww.textfield label="Número" name="candidato.pessoal.ctps.ctpsNumero" id="ctps" cssStyle="width: 58px;" maxLength="8" liClass="liLeft"/>
+			    	<@ww.textfield label="Número" name="candidato.pessoal.ctps.ctpsNumero" id="ctps" cssStyle="width: 58px;" maxLength="11" liClass="liLeft"/>
 			    	<@ww.textfield label="Série" name="candidato.pessoal.ctps.ctpsSerie" id="ctpsSerie" cssStyle="width: 38px;" maxLength="6" liClass="liLeft"/>
 			    	<@ww.textfield label="DV" name="candidato.pessoal.ctps.ctpsDv" id="ctpsDv" cssStyle="width: 9px;" maxLength="1" liClass="liLeft"/>
 			       	<@ww.select label="Estado" name="candidato.pessoal.ctps.ctpsUf.id" id="ctpsUf" list="ufs" liClass="liLeft" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue=""/>

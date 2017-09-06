@@ -34,9 +34,9 @@
 		<@ww.textfield label="CPF" name="candidato.pessoal.cpf" cssClass="mascaraCpf" />
 		<@ww.password label="Senha" name="candidato.senha" cssStyle="width: 80px;" liClass="liLeft"/>
 		<@ww.password label="Confirma senha" name="confirmaSenha" cssStyle="width: 80px;"/>
-		<@ww.textfield label="Nome" name="candidato.nome" maxLength="60" cssStyle="width:445px;"/>
-		<@ww.textfield label="Logradouro" name="candidato.endereco.logradouro" maxLength="40" cssClass="medium" id="ende"/>
-		<@ww.textfield label="Bairro" name="candidato.endereco.bairro" cssClass="medium"  maxLength="85" id="bairroNome"/>
+		<@ww.textfield label="Nome" name="candidato.nome" maxLength="70" cssStyle="width:445px;"/>
+		<@ww.textfield label="Logradouro" name="candidato.endereco.logradouro" maxLength="80" cssClass="medium" id="ende"/>
+		<@ww.textfield label="Bairro" name="candidato.endereco.bairro" cssClass="medium"  maxLength="60" id="bairroNome"/>
 		<@ww.textfield label="Cidade" name="candidato.endereco.cidade" cssClass="medium" id="cidade"/>
 		<@ww.select label="Estado" name="candidato.endereco.uf" list="estados" id="uf"/>
 		<@ww.textfield label="CEP" name="candidato.endereco.cep" cssClass="mascaraCep" id="cep" />
@@ -47,7 +47,7 @@
 		<@ww.datepicker label="Data de nascimento" name="candidato.pessoal.dataNascimento" cssClass="mascaraData" value="${data}"/>
 		<@ww.select label="Escolaridade" name="candidato.pessoal.escolaridade" list="escolaridades" headerKey="" headerValue=""/>
 		<@ww.select label="Estado Civil" name="candidato.pessoal.estadoCivil" list="estadosCivis" />
-		<@ww.textfield label="Cônjuge" name="candidato.pessoal.conjuge" />
+		<@ww.textfield label="Cônjuge" name="candidato.pessoal.conjuge" maxLength="70" />
 		<@ww.select label="Cônjuge trabalha" name="candidato.pessoal.conjugeTrabalha" list=r"#{'true':'Sim','false':'Não'}"/>
 
 		<@ww.textfield label="Dependentes" name="candidato.qtdDependentes" size="02"/>

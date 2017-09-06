@@ -102,7 +102,7 @@
 	<@ww.form name="form" action="insertCurriculoPlus.action" onsubmit="${validarCampos}" validate="true" method="POST" enctype="multipart/form-data">
 		<b>Preenchimento de Dados</b>
 		<br><br>
-		<@ww.textfield label="Nome" id="nome" name="candidato.nome" required="true" cssStyle="width:400px;" liClass="liLeft" onblur="candidatosHomonimos();"/>
+		<@ww.textfield label="Nome" id="nome" name="candidato.nome" required="true" cssStyle="width:400px;" liClass="liLeft" onblur="candidatosHomonimos();" maxLength="70"/>
 		<@ww.select label="Sexo" required="true" name="candidato.pessoal.sexo" list="sexos" cssStyle="width: 100px;" />
 		<@ww.div id="homonimos" cssStyle="color:blue;display:none; ">
 			Existe(m) candidato(s) homônimo(s):
@@ -127,7 +127,7 @@
 					<br>
 					<@ww.select label="Estado" name="candidato.endereco.uf.id" id="uf" list="ufs"  liClass="liLeft" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue=""/>
 					<@ww.select label="Cidade" name="candidato.endereco.cidade.id" id="cidade"  list="cidades" listKey="id" listValue="nome" cssStyle="width: 245px;" headerKey="" headerValue=""  liClass="liLeft"/>
-					<@ww.textfield label="Bairro" name="candidato.endereco.bairro" id="bairroNome" cssStyle="width: 300px;"  maxLength="85"/>
+					<@ww.textfield label="Bairro" name="candidato.endereco.bairro" id="bairroNome" cssStyle="width: 300px;"  maxLength="60"/>
 					<@ww.div id="bairroContainer"/>
 				</ul>
 			</@ww.div>

@@ -71,7 +71,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 {
 	@Column(length=20)
 	private String matricula;
-	@Column(length=60)
+	@Column(length=70)
 	private String nome;
 	@Column(length=30)
 	private String nomeComercial;

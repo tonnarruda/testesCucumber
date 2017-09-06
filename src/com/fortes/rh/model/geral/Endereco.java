@@ -18,13 +18,13 @@ import com.fortes.security.auditoria.NaoAudita;
 @SuppressWarnings("serial")
 public class Endereco implements Serializable
 {
-	@Column(length=40)
+	@Column(length=80)
 	private String logradouro;
 	@Column(length=10)
 	private String numero;
-	@Column(length=20)
+	@Column(length=30)
 	private String complemento;
-	@Column(length=85)
+	@Column(length=60)
  	private String bairro;
 	@ManyToOne(fetch=FetchType.LAZY)
 	private Estado uf;

@@ -55,7 +55,7 @@ import com.fortes.thumb.GeradorDeThumbnailUtils;
 @SequenceGenerator(name="sequence", sequenceName="candidato_sequence", allocationSize=1)
 public class Candidato extends AbstractModel implements Serializable, Cloneable
 {
-	@Column(length=60)
+	@Column(length=70)
 	private String nome;
 	@Column(length=30)
 	private String senha;//variavel de senha de candidato para acesso as vagas.
