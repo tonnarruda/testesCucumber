@@ -1,26 +1,39 @@
 package com.fortes.rh.test.business.cargosalario;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 
-import mockit.Mockit;
-
+import org.hibernate.SessionFactory;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.BDDMockito;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManagerImpl;
+import com.fortes.rh.business.cargosalario.ReajusteColaboradorManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
+import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
@@ -29,6 +42,8 @@ import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.cargosalario.ReajusteColaborador;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
@@ -42,21 +57,30 @@ import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialHistoricoFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
+import com.fortes.rh.test.factory.cargosalario.ReajusteColaboradorFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
-import com.fortes.rh.test.util.mockObjects.MockHibernateTemplate;
-import com.fortes.rh.test.util.mockObjects.MockSpringUtilJUnit4;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.SpringUtil;
+import com.fortes.rh.web.ws.AcPessoalClientColaborador;
+import com.fortes.rh.web.ws.AcPessoalClientTabelaReajuste;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({SpringUtil.class})
 public class HistoricoColaboradorManagerTest_Junit4
 {
 	private HistoricoColaboradorManagerImpl historicoColaboradorManagerImpl = new HistoricoColaboradorManagerImpl();
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	private AcPessoalClientTabelaReajuste acPessoalClientTabelaReajuste;
 	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
+	private AcPessoalClientColaborador acPessoalClientColaborador; 
+	private ReajusteColaboradorManager reajusteColaboradorManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private HistoricoColaboradorDao historicoColaboradorDao;
 	private EstabelecimentoManager estabelecimentoManager;
 	private FaixaSalarialManager faixaSalarialManager;
 	private SolicitacaoManager solicitacaoManager;
+	private ColaboradorManager colaboradorManager;
+	private HibernateTemplate hibernateTemplate;
 	private EmpresaManager empresaManager;
 	
 	@Before
@@ -77,17 +101,33 @@ public class HistoricoColaboradorManagerTest_Junit4
 		gerenciadorComunicacaoManager = mock(GerenciadorComunicacaoManager.class);
 		historicoColaboradorManagerImpl.setGerenciadorComunicacaoManager(gerenciadorComunicacaoManager);
 
+		acPessoalClientColaborador = mock(AcPessoalClientColaborador.class);
+		historicoColaboradorManagerImpl.setAcPessoalClientColaborador(acPessoalClientColaborador);
+
+		reajusteColaboradorManager = mock(ReajusteColaboradorManager.class);
+		historicoColaboradorManagerImpl.setReajusteColaboradorManager(reajusteColaboradorManager);
+		
 		estabelecimentoManager = mock(EstabelecimentoManager.class);
 		historicoColaboradorManagerImpl.setEstabelecimentoManager(estabelecimentoManager);
 
 		solicitacaoManager = mock(SolicitacaoManager.class);
 		historicoColaboradorManagerImpl.setSolicitacaoManager(solicitacaoManager);
+
+		colaboradorManager = mock(ColaboradorManager.class);
 		
 		empresaManager = mock(EmpresaManager.class);
 		historicoColaboradorManagerImpl.setEmpresaManager(empresaManager);
+
+		acPessoalClientTabelaReajuste = mock(AcPessoalClientTabelaReajuste.class);
+		historicoColaboradorManagerImpl.setAcPessoalClientTabelaReajuste(acPessoalClientTabelaReajuste);
 		
-		Mockit.redefineMethods(SpringUtil.class, MockSpringUtilJUnit4.class);
-		Mockit.redefineMethods(HibernateTemplate.class, MockHibernateTemplate.class);
+		PowerMockito.mockStatic(SpringUtil.class);
+		
+		hibernateTemplate = mock(HibernateTemplate.class);
+		SessionFactory sessionFactory  = PowerMockito.mock(SessionFactory.class);
+		hibernateTemplate.setSessionFactory(sessionFactory);
+		
+		BDDMockito.given(SpringUtil.getBean("colaboradorManager")).willReturn(colaboradorManager);
 	}
 
 	@Test
@@ -297,13 +337,89 @@ public class HistoricoColaboradorManagerTest_Junit4
     }
 	
 	@Test
-	public void testIsUltimoHistoricoByDadosAC() throws Exception
+	public void testIsUltimoHistoricoOrPosteriorAoUltimo() throws Exception
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa(1L, "Empresa", "000001", "001");
 		String empregadoCodigoAC = "000001";
 		Date data = new Date(); 
 		
-		when(historicoColaboradorDao.isUltimoHistoricoByDadosAC(data, empregadoCodigoAC, empresa.getCodigoAC(), empresa.getGrupoAC())).thenReturn(true);
-		assertTrue(historicoColaboradorManagerImpl.isUltimoHistoricoByDadosAC(data, empregadoCodigoAC, empresa.getCodigoAC(), empresa.getGrupoAC()));
+		when(historicoColaboradorDao.isUltimoHistoricoOrPosteriorAoUltimo(data, empregadoCodigoAC, empresa.getCodigoAC(), empresa.getGrupoAC())).thenReturn(true);
+		assertTrue(historicoColaboradorManagerImpl.isUltimoHistoricoOrPosteriorAoUltimo(data, empregadoCodigoAC, empresa.getCodigoAC(), empresa.getGrupoAC()));
+	}
+	
+	@Test
+	public void testRemoveHistoricoAndReajuste()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		empresa.setAcIntegra(true);
+
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		DateUtil.criarDataMesAno(02, 02, 2000);
+		colaborador.setCodigoAC("43232342");
+
+		ReajusteColaborador reajusteColaborador = ReajusteColaboradorFactory.getReajusteColaborador(1L);
+
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1L);
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaborador.setData(DateUtil.criarDataMesAno(03, 02, 2000));
+		historicoColaborador.setReajusteColaborador(reajusteColaborador);
+		
+		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity(2L);
+		historicoColaborador2.setColaborador(colaborador);
+		historicoColaborador2.setData(DateUtil.criarDataMesAno(03, 02, 2005));
+
+		Collection<HistoricoColaborador> historicoColaboradors = Arrays.asList(historicoColaborador, historicoColaborador2);
+
+		when(historicoColaboradorDao.findByIdProjection(eq(historicoColaborador.getId()))).thenReturn(historicoColaborador);
+		when(historicoColaboradorDao.findHistoricoAprovado(eq(historicoColaborador.getId()), eq(colaborador.getId()))).thenReturn(historicoColaboradors);
+		when(acPessoalClientColaborador.verificaHistoricoNaFolhaAC(historicoColaborador.getId(), colaborador.getCodigoAC(), empresa)).thenReturn(false);
+		when(historicoColaboradorDao.findByColaboradorProjection(eq(colaborador.getId()), eq(StatusRetornoAC.CONFIRMADO))).thenReturn(historicoColaboradors);
+		when(historicoColaboradorDao.findReajusteByHistoricoColaborador(eq(historicoColaborador.getId()))).thenReturn(1L);
+		when(historicoColaboradorDao.getHibernateTemplateByGenericDao()).thenReturn(hibernateTemplate);
+		when(colaboradorManager.findColaboradorByIdProjection(eq(colaborador.getId()))).thenReturn(colaborador);
+		
+		Exception exception = null;
+		try
+		{
+			historicoColaboradorManagerImpl.removeHistoricoAndReajuste(historicoColaborador.getId(), colaborador.getId(), empresa, true);
+		}
+		catch (Exception e)
+		{
+			exception = e;
+			e.printStackTrace();
+		}
+
+		assertNull(exception);
+	}
+
+	@Test
+	public void  testRemoveHistoricoAndReajusteException()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		empresa.setAcIntegra(true);
+
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setCodigoAC("43232342");
+
+		ReajusteColaborador reajusteColaborador = ReajusteColaboradorFactory.getReajusteColaborador(1L);
+
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1L);
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaborador.setReajusteColaborador(reajusteColaborador);
+
+		when(historicoColaboradorDao.findByIdProjection(eq(historicoColaborador.getId()))).thenReturn(null);
+
+		Exception exception = null;
+		try
+		{
+			historicoColaboradorManagerImpl.removeHistoricoAndReajuste(historicoColaborador.getId(), colaborador.getId(), empresa, true);
+		}
+		catch (Exception e)
+		{
+			exception = e;
+			e.printStackTrace();
+		}
+
+		assertNotNull(exception);
 	}
 }

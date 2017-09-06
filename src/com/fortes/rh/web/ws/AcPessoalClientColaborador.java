@@ -56,4 +56,6 @@ public interface AcPessoalClientColaborador
 	public boolean isHistoricoCadastralDoColaboradorEInicioVinculo(Empresa empresa, String colaboradorCodigoAC) throws Exception;
 	
 	public Integer statusAdmissaoNoFortesPessoal(Empresa empresa, Long colaboradorId) throws Exception;
+	
+	public String getUltimaCategoriaESocial(Empresa empresa, String colaboradorCodigoAC) throws Exception;
 }

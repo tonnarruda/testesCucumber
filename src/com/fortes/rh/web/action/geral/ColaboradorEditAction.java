@@ -863,10 +863,9 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 	public String update() throws Exception
 	{
+		String mensagem = "";
 		try
 		{
-			validaEdicaoDeCamposIntegrados();
-			
 			if(areaOrganizacionalManager.verificaMaternidade(historicoColaborador.getAreaOrganizacional().getId(), null))
 			{
 				addActionError("Colaborador não pode ser inserido em áreas que possuem sub-áreas.");
@@ -900,7 +899,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			}
 
 			recuperarSessao();
-
+			
 			Colaborador colaboradorAux = (Colaborador) colaboradorManager.findToList(new String[]{"candidato"}, new String[]{"candidato"}, new String[]{"id"}, new Object[]{colaborador.getId()}).toArray()[0];
 			if(colaboradorAux.getCandidato() != null && colaboradorAux.getCandidato().getId() != null)
 				colaborador.setCandidato(colaboradorAux.getCandidato());
@@ -919,6 +918,12 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 				colaborador.setCamposExtras(null);
 				
 			setDadosHistoricoColaborador();
+			
+			if(colaboradorManager.isExisteHistoricoCadastralDoColaboradorComPendenciaNoESocial(getEmpresaSistema(), colaborador.getCodigoAC())){
+				colaboradorManager.setDadosIntegrados(colaborador);
+				dadosIntegradosAtualizados = false;
+				mensagem = "Os dados integrados não podem ser editados pois no Fortes Pessoal existe pendência como eSocial.";
+			}
 			
 			colaboradorManager.update(colaborador, formacaos, idiomas, experiencias, getEmpresaSistema(),editarHistorico, salarioColaborador, dataAlteracao, dadosIntegradosAtualizados);
 			
@@ -952,7 +957,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			return Action.INPUT;
 		}
 
-		addActionSuccess("Colaborador <strong>" + colaborador.getNome() + "</strong> alterado com sucesso.");
+		addActionSuccess("Colaborador <strong>" + colaborador.getNome() + "</strong> alterado com sucesso." + "</br>" + mensagem);
 		return Action.SUCCESS;
 	}
 

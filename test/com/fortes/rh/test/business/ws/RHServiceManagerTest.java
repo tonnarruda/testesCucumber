@@ -42,7 +42,9 @@ import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.Indice;
+import com.fortes.rh.model.dicionario.CategoriaESocial;
 import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
+import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
@@ -509,6 +511,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		TSituacao situacao = new TSituacao();
 		situacao.setEmpresaCodigoAC("12345");
 		situacao.setEmpregadoCodigoAC("54321");
+		situacao.setCategoriaESocial(CategoriaESocial.CATEGORIA_101.getCodigo());
 		
 		TEmpregado empregado = new TEmpregado();
 		empregado.setNome("chaves");
@@ -518,13 +521,14 @@ public class RHServiceManagerTest extends MockObjectTestCase
 
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
 		colaborador.setNome("Colaborador");
+		colaborador.setVinculo(Vinculo.TEMPORARIO);
 
 		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1L);
 
 		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
 		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		historicoColaboradorManager.expects(once()).method("prepareSituacao").with(eq(situacao)).will(returnValue(historicoColaborador));
-		colaboradorManager.expects(once()).method("getVinculo").with(eq(empregado.getTipoAdmissao()), eq(empregado.getVinculo()), eq(empregado.getCategoria()));
+		colaboradorManager.expects(once()).method("updateVinculo").withAnyArguments().will(returnValue(Vinculo.EMPREGO));
 		colaboradorManager.expects(once()).method("findByCodigoAC").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaborador));
 		historicoColaboradorManager.expects(once()).method("save").with(eq(historicoColaborador));
 		gerenciadorComunicacaoManager.expects(once()).method("enviaMensagemCadastroSituacaoAC").with(eq(empregado.getNome()), eq(situacao));
@@ -580,6 +584,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
 		tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 		historicoColaboradorManager.expects(once()).method("updateSituacao").with(eq(situacao));
+		colaboradorManager.expects(once()).method("updateVinculo").withAnyArguments();
 		assertEquals(true, rHServiceManager.atualizarSituacao("TOKEN", situacao).isSucesso());
 	}
 
@@ -1413,5 +1418,68 @@ public class RHServiceManagerTest extends MockObjectTestCase
     	FeedbackWebService feedback = rHServiceManager.removerEmpregadoComDependencia("TOKEN", tEmpregado, tAuditoria);
     	
     	assertEquals(true, feedback.isSucesso());
+    }
+    
+    public void testConfirmarContratacao() {
+    	TEmpregado empregado = new TEmpregado();
+    	TSituacao situacao = new TSituacao();
+    	
+    	tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+    	tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
+    	colaboradorManager.expects(once()).method("confirmarContratacao").with(eq(empregado), eq(situacao)).isVoid();
+    	
+    	FeedbackWebService feedback = rHServiceManager.confirmarContratacao("TOKEN", empregado, situacao);
+  	
+    	assertEquals(true, feedback.isSucesso());
+    }
+    
+    public void testConfirmarContratacaoTokenInvalido() {
+    	TEmpregado empregado = new TEmpregado();
+    	TSituacao situacao = new TSituacao();
+    	
+    	tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(null));
+    	
+    	FeedbackWebService feedback = rHServiceManager.confirmarContratacao("TOKEN", empregado, situacao);
+    	assertEquals(false, feedback.isSucesso());
+    	assertEquals("Token incorreto.", feedback.getMensagem());
+    }
+    
+    public void testConfirmarContratacaoErroAoAtualizarEmpregdoESituacao() {
+    	TEmpregado empregado = new TEmpregado();
+    	TSituacao situacao = new TSituacao();
+    	
+    	tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+    	tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
+    	colaboradorManager.expects(once()).method("confirmarContratacao").with(eq(empregado), eq(situacao)).will(throwException(new Exception()));
+
+    	FeedbackWebService feedback = rHServiceManager.confirmarContratacao("TOKEN", empregado, situacao);
+    	
+    	assertEquals(false, feedback.isSucesso());
+    	assertEquals("Erro ao atualizar empregado e/ou situação.", feedback.getMensagem());
+    }
+    
+    public void testSetUltimaCategoriaESocialColaborador() {
+    	String categoriaESocial = CategoriaESocial.CATEGORIA_101.getCodigo();
+    	String colaboradorCodigoAC = "000001";
+    	String empresaCodigoAC = "0004";
+    	String grupoAC = "001";
+    	
+    	tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new Token("TOKEN")));
+    	tokenManager.expects(once()).method("remove").with(ANYTHING).isVoid();
+    	colaboradorManager.expects(once()).method("updateVinculo").with(eq(categoriaESocial),eq(colaboradorCodigoAC), eq(empresaCodigoAC), eq(grupoAC)).isVoid();
+    	FeedbackWebService feedback = rHServiceManager.setUltimaCategoriaESocialColaborador("TOKEN", categoriaESocial, colaboradorCodigoAC, empresaCodigoAC, grupoAC);
+    	assertEquals(true, feedback.isSucesso());
+    }
+    
+    public void testSetUltimaCategoriaESocialColaboradorTokenInvalido() {
+    	String categoriaESocial = CategoriaESocial.CATEGORIA_101.getCodigo();
+    	String colaboradorCodigoAC = "000001";
+    	String empresaCodigoAC = "0004";
+    	String grupoAC = "001";
+    	
+    	tokenManager.expects(once()).method("findFirst").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(null));
+    	FeedbackWebService feedback = rHServiceManager.setUltimaCategoriaESocialColaborador("TOKEN", categoriaESocial, colaboradorCodigoAC, empresaCodigoAC, grupoAC);
+    	assertEquals(false, feedback.isSucesso());
+    	assertEquals("Token incorreto.", feedback.getMensagem());
     }
 }

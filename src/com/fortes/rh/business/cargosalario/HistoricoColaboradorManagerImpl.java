@@ -836,6 +836,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		{
 			TSituacao situacao = bindSituacao(historicoColaboradorTmp, empresa.getCodigoAC());
 			acPessoalClientTabelaReajuste.deleteHistoricoColaboradorAC(empresa, situacao);
+			colaboradorManager.findUltimoVinculo(colaborador.getCodigoAC(), empresa.getCodigoAC(), empresa.getGrupoAC());
 		}
 		
 		if(historicoColaboradorTmp.getCandidatoSolicitacao() != null && historicoColaboradorTmp.getCandidatoSolicitacao().getId() != null)
@@ -876,7 +877,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 
 			if(reajusteColaboradorId != null)
 				reajusteColaboradorManager.remove(reajusteColaboradorId);
-
+			
 			transactionManager.commit(status);
 		}
 		catch (Exception e)
@@ -1653,7 +1654,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return acPessoalClientTabelaReajuste.situacaoContratualEhInicioVinculo(empresa, colaboradorCodigoAC, dataSituacao);
 	}
 
-	public boolean isUltimoHistoricoByDadosAC(Date data, String empregadoCodigoAC, String empresaCodigoAC, String grupoAC) {
-		return getDao().isUltimoHistoricoByDadosAC(data, empregadoCodigoAC, empresaCodigoAC, grupoAC);
+	public boolean isUltimoHistoricoOrPosteriorAoUltimo(Date data, String empregadoCodigoAC, String empresaCodigoAC, String grupoAC) {
+		return getDao().isUltimoHistoricoOrPosteriorAoUltimo(data, empregadoCodigoAC, empresaCodigoAC, grupoAC);
 	}
 }

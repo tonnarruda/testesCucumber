@@ -323,6 +323,7 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 	}
 
 	private void configuraEdicaoCamposIntegrados() {
+		disabledCamposIntegrados = false;
 		if(isEmpresaIntegradaEAderiuAoESocial()){
 			try {
 				verificaPendenciaNoESocial();
@@ -353,10 +354,13 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 	public String update() throws Exception
 	{
 		try {
-		    if(isEmpresaIntegradaEAderiuAoESocial() && historicoColaborador.getStatus() == StatusRetornoAC.AGUARDANDO){
-		       throw new ESocialException();
-		    }
-		    if(disabledCamposIntegrados){
+			boolean possuiPendencia = false;
+			empresaEstaIntegradaEAderiuAoESocial = isEmpresaIntegradaEAderiuAoESocial();
+			
+			if(empresaEstaIntegradaEAderiuAoESocial)
+				possuiPendencia = historicoColaboradorManager.existeHistoricoContratualComPendenciaNoESocial(getEmpresaSistema(), historicoColaborador.getColaborador().getCodigoAC());
+		    		    
+		    if(disabledCamposIntegrados || possuiPendencia){
 		    	historicoColaboradorManager.updateAmbienteEFuncao(historicoColaborador);
 		    }
 		    else{
@@ -364,7 +368,10 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 				historicoColaborador = historicoColaboradorManager.ajustaAmbienteFuncao(historicoColaborador);
 				historicoColaboradorManager.updateHistorico(historicoColaborador, getEmpresaSistema());
 		    }
-
+		    
+		    if(possuiPendencia)
+		    	addActionSuccess("Os dados integrados não podem ser editados pois no Fortes Pessoal existe pendência com eSocial. <br/> Dados editados: Função e Ambiente.");
+		    	
 			return Action.SUCCESS;
 			
 		} catch (IntegraACException e) {

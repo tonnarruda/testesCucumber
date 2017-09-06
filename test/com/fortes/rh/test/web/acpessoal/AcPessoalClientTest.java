@@ -23,7 +23,7 @@ public abstract class AcPessoalClientTest extends MockObjectTestCase
 	protected Empresa empresa;
 	protected GrupoAC grupoAC;
 	private Mock grupoACManager;
-	private static String IP = "10.1.18.214";
+	private static String IP = "10.1.19.27";
 	
 	public Connection getConexaoAC() throws ClassNotFoundException, SQLException 
 	{

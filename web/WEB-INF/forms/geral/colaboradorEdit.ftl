@@ -735,9 +735,9 @@
 				<#else>
 					<@ww.hidden id="naoIntegraAc" name="colaborador.naoIntegraAc"/>
 					<#if colaborador.naoIntegraAc>
-						Este colaborador não está integrado com o Fortes Pessoal
+						<div>Este colaborador não está integrado com o Fortes Pessoal</div>
 					<#else>
-						Este colaborador está integrado com o Fortes Pessoal
+						<div>Este colaborador está integrado com o Fortes Pessoal</div>
 					</#if>
 				</#if>
 
@@ -759,16 +759,21 @@
 								</#if>
 							</td>
 							<td>
-								<@ww.checkbox label="Manter foto atual" name="manterFoto" onclick="mostraFoto()" value="true" checked="checked" labelPosition="left"/>
-								<div id="fotoUpLoad" style="display:none;">
-									<@ww.file label="Nova Foto" name="colaborador.foto" id="foto"/>
-								</div>
+								<#if !desabilitarEdicaoCamposIntegrados>
+									<@ww.checkbox label="Manter foto atual" name="manterFoto" onclick="mostraFoto()" value="true" checked="checked" labelPosition="left"/>
+									<div id="fotoUpLoad" style="display:none;">
+										<@ww.file label="Nova Foto" name="colaborador.foto" id="foto"/>
+									</div>
+								<#else>
+									<@ww.hidden id="manterFoto" name="manterFoto" value="true"/>
+								</#if>
+								
 							</td>
 						</tr>
 					</table>
 					<hr>
 				</div>
-	        <#else>
+	        <#elseif !desabilitarEdicaoCamposIntegrados>
 				<@ww.file label="Foto" name="colaborador.foto" id="foto"/>
 	        </#if>
 

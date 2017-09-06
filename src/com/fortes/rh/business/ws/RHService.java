@@ -64,6 +64,7 @@ public interface RHService
 	FeedbackWebService criarSituacao(String token, TEmpregado empregado, TSituacao situacao);
 	FeedbackWebService atualizarSituacao(String token, TSituacao situacao);
 	FeedbackWebService cancelarSituacao(String token, TSituacao situacao, String mensagem);
+	FeedbackWebService setUltimaCategoriaESocialColaborador(String token, String categoriaESocial, String colaboradorCodigoAC, String empresaCodigoAC, String grupoAC);
 
 	FeedbackWebService criarEstabelecimento(String token, TEstabelecimento testabelecimento);
 	FeedbackWebService atualizarEstabelecimento(String token, TEstabelecimento testabelecimento);

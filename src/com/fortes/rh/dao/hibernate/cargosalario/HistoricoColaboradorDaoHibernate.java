@@ -1622,7 +1622,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
         return ((Integer) criteria.uniqueResult()) > 0;
     }
  
-	public boolean isUltimoHistoricoByDadosAC(Date data, String empregadoCodigoAC, String empresaCodigoAC, String grupoAC)
+	public boolean isUltimoHistoricoOrPosteriorAoUltimo(Date data, String empregadoCodigoAC, String empresaCodigoAC, String grupoAC)
 	{
 		DetachedCriteria subQueryHc = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2")
 				.setProjection(Projections.max("hc2.data"))

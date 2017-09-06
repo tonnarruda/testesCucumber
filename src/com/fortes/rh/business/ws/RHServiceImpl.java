@@ -795,8 +795,9 @@ public class RHServiceImpl implements RHService
 		try{
 			verifyToken(token, true);
 			HistoricoColaborador historico = historicoColaboradorManager.findByAC(situacao.getDataFormatada(), situacao.getEmpregadoCodigoAC(),  situacao.getEmpresaCodigoAC(), situacao.getGrupoAC());
-			if(historico != null)
+			if(historico != null){
 				historicoColaboradorManager.removeHistoricoAndReajusteAC(historico);
+			}
 			return new FeedbackWebService(true);
 		}catch (TokenException e) {
 			return new FeedbackWebService(false, "Token incorreto.", "");
@@ -1552,6 +1553,17 @@ public class RHServiceImpl implements RHService
 	public String versaoDoSistema()
 	{
 		return parametrosDoSistemaManager.findById(1L).getAppVersao();
+	}
+	
+	public FeedbackWebService setUltimaCategoriaESocialColaborador(String token, String categoriaESocial, String colaboradorCodigoAC, String empresaCodigoAC, String grupoAC) {
+		try {
+			verifyToken(token, true);
+			colaboradorManager.updateVinculo(categoriaESocial, colaboradorCodigoAC, empresaCodigoAC, grupoAC);
+			return new FeedbackWebService(true);
+		} catch (TokenException e) {
+			e.printStackTrace();
+			return new FeedbackWebService(false, "Token incorreto.", "");
+		}
 	}
 	
 	public void setCidadeManager(CidadeManager cidadeManager)

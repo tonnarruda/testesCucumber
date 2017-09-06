@@ -195,6 +195,8 @@
 	<@ww.actionmessage />
 	<@ww.form name="form" action="${formAction}" onsubmit="enviaForm();"  validate="true" method="POST">
 		
+		<@ww.hidden name="disabledCamposIntegrados"/>
+		
 		<#if historicoColaborador?exists && historicoColaborador.id?exists>
 			<@ww.hidden name="historicoColaborador.data" id="data" value="${historicoColaborador.data}"/>
 		<#else>

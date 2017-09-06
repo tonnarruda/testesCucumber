@@ -6,6 +6,7 @@ import java.util.Collection;
 
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.dicionario.CategoriaESocial;
 import com.fortes.rh.model.dicionario.StatusAdmisaoColaboradorNoFortesPessoal;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.geral.AreaOrganizacional;
@@ -500,5 +501,20 @@ public class AcPessoalClientColaboradorTest extends AcPessoalClientTest
 		colaborador.setId(1L);
 		
 		assertEquals(StatusAdmisaoColaboradorNoFortesPessoal.EMPREGADO.getOpcao(), acPessoalClientColaboradorImpl.statusAdmissaoNoFortesPessoal(empresa, colaborador.getId()));
-	}	
+	}
+	
+	public void testGetUltimaCategoriaESocial() throws Exception{
+		montaMockGrupoAC();
+		execute("INSERT INTO EPG (EMP_CODIGO,CODIGO,NOME) VALUES ('"+ empresa.getCodigoAC() +"','991199','TESTE do RH')");
+    	execute("INSERT INTO SEP (EMP_CODIGO,EPG_CODIGO,DATA,VALOR,INDQTDE,VALETRANSPORTEALIQ,HOR_CODIGO,LOT_CODIGO,"
+    			+ "EXPAGENOCIV,HORASMES,HORASSEMANA,TIPOPAGAMENTO,EST_CODIGO,CAR_CODIGO,SIN_CODIGO,SALCONTRATUAL,SALTIPO,STATUS,CATEGORIAESOCIAL) "
+    			+ "VALUES ('"+ empresa.getCodigoAC() +"','991199','2017-01-01',0.0,0,0,'000001','001',0,240,40,'04','0001','001','001','S','V',7,'102')");
+    	
+    	execute("INSERT INTO SEP (EMP_CODIGO,EPG_CODIGO,DATA,VALOR,INDQTDE,VALETRANSPORTEALIQ,HOR_CODIGO,LOT_CODIGO,"
+    			+ "EXPAGENOCIV,HORASMES,HORASSEMANA,TIPOPAGAMENTO,EST_CODIGO,CAR_CODIGO,SIN_CODIGO,SALCONTRATUAL,SALTIPO,STATUS,CATEGORIAESOCIAL) "
+    			+ "VALUES ('"+ empresa.getCodigoAC() +"','991199','2017-02-01',0.0,0,0,'000001','001',0,240,40,'04','0001','001','001','S','V',7,'101')");	
+
+
+    	assertEquals(CategoriaESocial.CATEGORIA_101.getCodigo(), acPessoalClientColaboradorImpl.getUltimaCategoriaESocial(empresa, "991199"));
+	}
 }

@@ -262,5 +262,8 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public boolean isHistoricoCadastralDoColaboradorEInicioVinculo(Empresa empresa, String codigoAcColaborador) throws Exception;
 	public Integer statusAdmissaoNoFortesPessoal(Empresa empresa, Long colaboradorId) throws Exception;
 	public String configuraCamposObrigatorios(ParametrosDoSistema parametrosDoSistema);
-	public String updateVinculo(String vinculoAtual, TSituacao situacao, String colaboradorCodigoAC, String empresaCodigoAc, String grupoAC);
+	public String updateVinculo(String vinculoAtual, TSituacao situacao, String colaboradorCodigoAC, String empresaCodigoAC, String grupoAC);
+	public void findUltimoVinculo(String colaboradorCodigoAC, String empresaCodigoAC, String grupoAC) throws Exception;
+	public void updateVinculo(String categoriaESocial, String colaboradorCodigoAC, String empresaCodigoAC, String grupoAC);
+	public Colaborador setDadosIntegrados(Colaborador colaborador);
 }

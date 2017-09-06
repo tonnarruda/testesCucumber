@@ -36,7 +36,6 @@
 		<@display.column title="Ações" style="text-align:center;width:40px">
 			<#if historicoColaboradors?size == 1 && colaborador.codigoAC?exists && colaborador.codigoAC == "" && !colaborador.naoIntegraAc>
 				<img border="0" title="Edição da primeira situação pode ser realizada no cadastro de colaborador." src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">			
-				<img border="0" title="Devido as adequações ao eSocial, não é possível editar no Fortes RH, uma situação que está aguardando confirmação. Caso deseje modificar alguma informação entre em contato com o setor pessoal." src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>" style="opacity:0.5;filter:alpha(opacity=50);">
 			<#else>
 				<a href="prepareUpdate.action?historicoColaborador.id=${historicoColaborador.id}&colaborador.id=${colaborador.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 			</#if>

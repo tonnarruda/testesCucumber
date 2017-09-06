@@ -492,28 +492,6 @@ public class HistoricoColaboradorEditActionTest
 	}
 	
 	@Test
-	public void testUpdateExceptionESocial() throws Exception
-	{
-		empresaDoSistema.setAcIntegra(true);
-		action.setEmpresaSistema(empresaDoSistema);
-		
-		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
-		action.setColaborador(colaborador);
-		
-		historicoColaborador.setFaixaSalarial(FaixaSalarialFactory.getEntity(1L));
-		historicoColaborador.setAreaOrganizacional(AreaOrganizacionalFactory.getEntity(1L));
-		historicoColaborador.setColaborador(colaborador);
-		historicoColaborador.setMotivo(MotivoHistoricoColaborador.PROMOCAO);
-		historicoColaborador.setStatus(StatusRetornoAC.AGUARDANDO);
-		historicoColaborador.setData(new Date());
-		action.setHistoricoColaborador(historicoColaborador);
-		
-		when(parametrosDoSistemaManager.isAderiuAoESocial(action.getEmpresaSistema())).thenReturn(true);
-		
-		assertEquals("eSocial",action.update()); 
-	}
-	
-	@Test
 	public void testUpdateUpdateSomenteAmbienteEFuncao() throws Exception
 	{
 		empresaDoSistema.setAcIntegra(true);

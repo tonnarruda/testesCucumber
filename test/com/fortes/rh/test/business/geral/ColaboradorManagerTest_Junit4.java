@@ -9,6 +9,8 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -920,7 +922,13 @@ public class ColaboradorManagerTest_Junit4
     @Test
     public void testConfirmarContratacao() throws Exception {
         TEmpregado empregado = new TEmpregado();
+        empregado.setCodigoAC("000001");
+        empregado.setEmpresaCodigoAC("0002");
+        empregado.setGrupoAC("001");
+        
         TSituacao situacao = new TSituacao();
+        situacao.setData(DateUtil.formataDiaMesAno(new Date()));
+        situacao.setCategoriaESocial(CategoriaESocial.CATEGORIA_101.getCodigo());
 
         Empresa empresa = EmpresaFactory.getEmpresa(2L);
         Colaborador colaborador = ColaboradorFactory.getEntity(1L, empresa);
@@ -930,7 +938,7 @@ public class ColaboradorManagerTest_Junit4
         when(colaboradorManager.updateEmpregado(empregado)).thenReturn(colaborador);
         when(historicoColaboradorManager.atualizarHistoricoContratacao(situacao)).thenReturn(historicoColaborador);
         when(empresaManager.findEntidadeComAtributosSimplesById(empresa.getId())).thenReturn(empresa);
-        
+        when(historicoColaboradorManager.isUltimoHistoricoOrPosteriorAoUltimo(any(Date.class), eq(empregado.getCodigoAC()), eq(empregado.getEmpresaCodigoAC()), eq(empregado.getGrupoAC()))).thenReturn(true);
 
         Exception exception = null;
         try {
@@ -953,7 +961,7 @@ public class ColaboradorManagerTest_Junit4
     	String empresaCodigoAc = "0002";
     	String grupoAC = "001";
     	
-		when(historicoColaboradorManager.isUltimoHistoricoByDadosAC(any(Date.class), eq(colaboradorCodigoAC), eq(empresaCodigoAc), eq(grupoAC))).thenReturn(true);
+		when(historicoColaboradorManager.isUltimoHistoricoOrPosteriorAoUltimo(any(Date.class), eq(colaboradorCodigoAC), eq(empresaCodigoAc), eq(grupoAC))).thenReturn(true);
 		assertEquals(Vinculo.EMPREGO, colaboradorManager.updateVinculo(vinculoAtual, situacao, colaboradorCodigoAC, empresaCodigoAc, grupoAC));	
 	}
     
@@ -968,7 +976,54 @@ public class ColaboradorManagerTest_Junit4
     	String empresaCodigoAc = "0002";
     	String grupoAC = "001";
     	
-		when(historicoColaboradorManager.isUltimoHistoricoByDadosAC(any(Date.class), eq(colaboradorCodigoAC), eq(empresaCodigoAc), eq(grupoAC))).thenReturn(false);
+		when(historicoColaboradorManager.isUltimoHistoricoOrPosteriorAoUltimo(any(Date.class), eq(colaboradorCodigoAC), eq(empresaCodigoAc), eq(grupoAC))).thenReturn(false);
 		assertEquals(Vinculo.TEMPORARIO, colaboradorManager.updateVinculo(vinculoAtual, situacao, colaboradorCodigoAC, empresaCodigoAc, grupoAC));	
 	}
+    
+    @Test
+    public void testFindUltimoVinculo() throws Exception{
+    	String colaboradorCodigoAC = "000001";
+    	String empresaCodigoAC = "0002";
+    	String grupoAC = "001";
+    	String categoriaESocial = CategoriaESocial.CATEGORIA_101.getCodigo();
+    	
+		Empresa empresa = EmpresaFactory.getEmpresa(1L, "Empresa", empresaCodigoAC, grupoAC);
+		when(empresaManager.findByCodigoAC(empresaCodigoAC, grupoAC)).thenReturn(empresa);
+		when(acPessoalClientColaborador.getUltimaCategoriaESocial(empresa, colaboradorCodigoAC)).thenReturn(categoriaESocial);
+		
+		Exception exception = null;
+        try {
+            colaboradorManager.findUltimoVinculo(colaboradorCodigoAC, empresaCodigoAC, grupoAC);
+        } catch (Exception e) {
+            exception = e;
+        }
+
+        verify(empresaManager, times(1)).findByCodigoAC(empresaCodigoAC, grupoAC);
+        verify(acPessoalClientColaborador, times(1)).getUltimaCategoriaESocial(empresa, colaboradorCodigoAC);
+        assertNull(exception);
+	}
+	
+    @Test
+	public void testUpdateVinculo(){
+    	String categoriaESocial = CategoriaESocial.CATEGORIA_101.getCodigo();
+    	String colaboradorCodigoAC = "000001";
+    	String empresaCodigoAC = "0002";
+    	String grupoAC = "001";
+    	
+    	Exception exception = null;
+        try {
+        	colaboradorManager.updateVinculo(categoriaESocial, colaboradorCodigoAC, empresaCodigoAC, grupoAC);
+        } catch (Exception e) {
+            exception = e;
+        }
+        verify(colaboradorDao, times(1)).updateVinculo(eq(Vinculo.EMPREGO), eq(colaboradorCodigoAC), eq(empresaCodigoAC), eq(grupoAC));
+        assertNull(exception);
+	}
+    
+    @Test
+    public void testSetDadosIntegrados() {
+    	Colaborador colaborador = ColaboradorFactory.getEntity();
+		when(colaboradorDao.findColaboradorById(colaborador.getId())).thenReturn(colaborador);
+		assertNotNull(colaboradorManager.setDadosIntegrados(colaborador));
+    }
 }

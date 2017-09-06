@@ -314,7 +314,7 @@ public class HistoricoColaboradorDaoHibernateTest_Junit4 extends GenericDaoHiber
 	}
 	
 	@Test
-	public void testIsUltimoHistoricoByDadosACTrue()
+	public void testIsUltimoHistoricoOrPosteriorAoUltimoTrue()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa(1L, "Empresa", "9999", "001");
 		empresaDao.save(empresa);
@@ -331,11 +331,11 @@ public class HistoricoColaboradorDaoHibernateTest_Junit4 extends GenericDaoHiber
 		
 		historicoColaboradorDao.getHibernateTemplateByGenericDao().flush();
 		
-		assertTrue(historicoColaboradorDao.isUltimoHistoricoByDadosAC(historicoColaborador.getData(), colaborador.getCodigoAC(), empresa.getCodigoAC(), empresa.getGrupoAC()));
+		assertTrue(historicoColaboradorDao.isUltimoHistoricoOrPosteriorAoUltimo(historicoColaborador.getData(), colaborador.getCodigoAC(), empresa.getCodigoAC(), empresa.getGrupoAC()));
 	}
 	
 	@Test
-	public void testIsUltimoHistoricoByDadosACFalse()
+	public void testIsUltimoHistoricoOrPosteriorAoUltimoFalse()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa(1L, "Empresa", "9999", "001");
 		empresaDao.save(empresa);
@@ -355,7 +355,7 @@ public class HistoricoColaboradorDaoHibernateTest_Junit4 extends GenericDaoHiber
 		
 		historicoColaboradorDao.getHibernateTemplateByGenericDao().flush();
 		
-		assertFalse(historicoColaboradorDao.isUltimoHistoricoByDadosAC(historicoColaborador1.getData(), colaborador.getCodigoAC(), empresa.getCodigoAC(), empresa.getGrupoAC()));
+		assertFalse(historicoColaboradorDao.isUltimoHistoricoOrPosteriorAoUltimo(historicoColaborador1.getData(), colaborador.getCodigoAC(), empresa.getCodigoAC(), empresa.getGrupoAC()));
 	}
 	
 	private HistoricoColaborador saveHistoricoColaborador(Colaborador joao, AreaOrganizacional garagem, FaixaSalarial faixaUmCobrador, Date data, Double valorSalario, String motivo, Integer status, ReajusteColaborador reajusteColaborador) {

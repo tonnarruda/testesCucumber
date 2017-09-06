@@ -479,16 +479,6 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			}
 		}
 	}
-
-	public String updateVinculo(String vinculoAtual, TSituacao situacao, String colaboradorCodigoAC, String empresaCodigoAc, String grupoAC){
-		boolean isUltimoHistorico = historicoColaboradorManager .isUltimoHistoricoByDadosAC(DateUtil.criarDataDiaMesAno(situacao.getData()), colaboradorCodigoAC, empresaCodigoAc, grupoAC);
-
-		if (isUltimoHistorico){
-			vinculoAtual = CategoriaESocial.getCategoriaESocial(situacao.getCategoriaESocial());
-			getDao().updateVinculo(CategoriaESocial.getCategoriaESocial(situacao.getCategoriaESocial()), colaboradorCodigoAC, empresaCodigoAc, grupoAC);
-		}
-		return vinculoAtual;
-	}
 	
 	// TODO: SEM TESTE
 	public void contratarColaboradorNoAC(Colaborador colaborador, HistoricoColaborador historico, Empresa empresa, boolean enviarEmailContratacao) throws AddressException, MessagingException,Exception
@@ -3315,5 +3305,45 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	}
 	public void setCargoManager(CargoManager cargoManager) {
 		this.cargoManager = cargoManager;
+	}
+
+	public String updateVinculo(String vinculoAtual, TSituacao situacao, String colaboradorCodigoAC, String empresaCodigoAC, String grupoAC){
+		boolean isUltimoHistorico = historicoColaboradorManager .isUltimoHistoricoOrPosteriorAoUltimo(DateUtil.criarDataDiaMesAno(situacao.getData()), colaboradorCodigoAC, empresaCodigoAC, grupoAC);
+
+		if (isUltimoHistorico){
+			vinculoAtual = CategoriaESocial.getCategoriaESocial(situacao.getCategoriaESocial());
+			updateVinculo(situacao.getCategoriaESocial(), colaboradorCodigoAC, empresaCodigoAC, grupoAC);
+		}
+		return vinculoAtual;
+	}
+
+	public void findUltimoVinculo(String colaboradorCodigoAC, String empresaCodigoAC, String grupoAC) throws Exception {
+		Empresa empresa = empresaManager.findByCodigoAC(empresaCodigoAC, grupoAC);
+		String categoriaESocial = acPessoalClientColaborador.getUltimaCategoriaESocial(empresa, colaboradorCodigoAC);
+		updateVinculo(categoriaESocial, colaboradorCodigoAC, empresaCodigoAC, grupoAC);
+	}
+	
+	public void updateVinculo(String categoriaESocial, String colaboradorCodigoAC, String empresaCodigoAC, String grupoAC){
+		getDao().updateVinculo(CategoriaESocial.getCategoriaESocial(categoriaESocial), colaboradorCodigoAC, empresaCodigoAC, grupoAC);
+	}
+
+	public Colaborador setDadosIntegrados(Colaborador colaborador) {
+		int qtdFilhos = colaborador.getPessoal().getQtdFilhos();
+		Colaborador colaboradorAux = getDao().findColaboradorById(colaborador.getId());
+		colaborador.setManterFoto(true);
+		colaborador.setMatricula(colaboradorAux.getMatricula());
+		colaborador.setNome(colaboradorAux.getNome());
+		colaborador.setNomeComercial(colaboradorAux.getNomeComercial());
+		colaborador.setPessoal(colaborador.getPessoal());
+		colaborador.getPessoal().setQtdFilhos(qtdFilhos);
+		colaborador.setEndereco(colaboradorAux.getEndereco());
+		colaborador.setContato(colaboradorAux.getContato());
+		colaborador.setHabilitacao(colaboradorAux.getHabilitacao());
+		try {
+			colaborador.setFoto(getFoto(colaborador.getId()));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return colaborador;
 	}
 }

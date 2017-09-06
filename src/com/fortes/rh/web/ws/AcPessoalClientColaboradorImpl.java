@@ -578,7 +578,30 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 			call.setReturnType(xmlint);
 			
 			Object[] param = new Object[] { token.toString(), empresa.getCodigoAC(), new Integer(colaboradorId.toString()) };
-			int result =(int) call.invoke(param);
+			int result = (int) call.invoke(param);
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+	
+	public String getUltimaCategoriaESocial(Empresa empresa, String colaboradorCodigoAC) throws Exception{
+		try {
+			StringBuilder token = new StringBuilder();
+			GrupoAC grupoAC = new GrupoAC();
+			Call call = acPessoalClient.createCall(empresa, token, grupoAC, "UltimaCategoriaESocialColaborador");
+			
+			QName xmlstring = new QName("xs:string");
+
+			call.addParameter("Token", xmlstring, ParameterMode.IN);
+			call.addParameter("Emp_Codigo", xmlstring, ParameterMode.IN);
+			call.addParameter("Epg_Codigo", xmlstring, ParameterMode.IN);
+
+			call.setReturnType(xmlstring);
+			
+			Object[] param = new Object[] { token.toString(), empresa.getCodigoAC(), colaboradorCodigoAC};
+			String result = (String) call.invoke(param);
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();
