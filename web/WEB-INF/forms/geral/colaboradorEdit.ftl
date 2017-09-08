@@ -843,9 +843,9 @@
 			<@ww.select label="Estado Civil" name="colaborador.pessoal.estadoCivil" id="estadoCivil" list="estadosCivis" cssStyle="width: 210px;" liClass="liLeft campo campoAdd" cssClass="campo-integrado-select"/>
 			<@ww.select label="Deficiência" name="colaborador.pessoal.deficiencia" id="deficiencia" list="deficiencias" cssStyle="width: 160px;" liClass="campo campoAdd" cssClass="campo-integrado-select"/>
 
-			<@ww.textfield label="Nome do Pai" name="colaborador.pessoal.pai" id="nomePai" liClass="liLeft campo campoAdd" cssClass="campo-integrado" cssStyle="width: 300px;" maxLength="60"/>
-			<@ww.textfield label="Nome da Mãe" name="colaborador.pessoal.mae" id="nomeMae" cssStyle="width: 300px;" maxLength="60"  liClass="campo campoAdd" cssClass="campo-integrado"/>
-			<@ww.textfield label="Nome do Cônjuge" name="colaborador.pessoal.conjuge" id="nomeConjuge" cssStyle="width: 300px;" maxLength="40" liClass="liLeft campo campoAdd" cssClass="campo-integrado"/>
+			<@ww.textfield label="Nome do Pai" name="colaborador.pessoal.pai" id="nomePai" liClass="liLeft campo campoAdd" cssClass="campo-integrado" cssStyle="width: 300px;" maxLength="70"/>
+			<@ww.textfield label="Nome da Mãe" name="colaborador.pessoal.mae" id="nomeMae" cssStyle="width: 300px;" maxLength="70"  liClass="campo campoAdd" cssClass="campo-integrado"/>
+			<@ww.textfield label="Nome do Cônjuge" name="colaborador.pessoal.conjuge" id="nomeConjuge" cssStyle="width: 300px;" maxLength="70" liClass="liLeft campo campoAdd" cssClass="campo-integrado"/>
 			<@ww.textfield label="Qtd. Filhos" onkeypress = "return(somenteNumeros(event,''));" maxLength="2" name="colaborador.pessoal.qtdFilhos" id="qtdFilhos" liClass="campo campoAdd" cssStyle="width:25px; text-align:right;" maxLength="2" />
 			<div style="clear: both;"></div>
 		</div>
