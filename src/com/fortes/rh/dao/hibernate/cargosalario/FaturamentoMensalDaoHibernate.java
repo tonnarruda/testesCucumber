@@ -17,7 +17,6 @@ import com.fortes.rh.model.cargosalario.FaturamentoMensal;
 @SuppressWarnings("unchecked")
 public class FaturamentoMensalDaoHibernate extends GenericDaoHibernate<FaturamentoMensal> implements FaturamentoMensalDao
 {
-
 	public Collection<FaturamentoMensal> findAllSelect(Long empresaId) 
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "f");
@@ -37,7 +36,7 @@ public class FaturamentoMensalDaoHibernate extends GenericDaoHibernate<Faturamen
 		return criteria.list();
 	}
 
-	public Collection<FaturamentoMensal> findByPeriodo(Date inicio, Date fim, Long empresaId) 
+	public Collection<FaturamentoMensal> findByPeriodo(Date inicio, Date fim, Long empresaId, Long[] estabelecimentosIds) 
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "f");
 		
@@ -51,6 +50,9 @@ public class FaturamentoMensalDaoHibernate extends GenericDaoHibernate<Faturamen
 		
 		criteria.add(Expression.between("f.mesAno", inicio, fim));		
 		criteria.add(Expression.eq("f.empresa.id", empresaId));
+	
+		if(estabelecimentosIds!=null && estabelecimentosIds.length>0)
+			criteria.add(Expression.in("f.estabelecimento.id", estabelecimentosIds));
 		
 		criteria.addOrder(Order.asc("f.mesAno"));
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
@@ -58,7 +60,7 @@ public class FaturamentoMensalDaoHibernate extends GenericDaoHibernate<Faturamen
 		return criteria.list();
 	}
 
-	public FaturamentoMensal findAtual(Date data, Long empresaId) {
+	public FaturamentoMensal findAtual(Date data, Long empresaId, Long[] estabelecimentosIds) {
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "f");
 		
 		ProjectionList p = Projections.projectionList().create();
@@ -70,6 +72,9 @@ public class FaturamentoMensalDaoHibernate extends GenericDaoHibernate<Faturamen
 		criteria.setProjection(p);
 		criteria.add(Expression.le("f.mesAno", data));
 		criteria.add(Expression.eq("f.empresa.id", empresaId));
+		
+		if(estabelecimentosIds!=null && estabelecimentosIds.length>0)
+			criteria.add(Expression.in("f.estabelecimento.id", estabelecimentosIds));
 		
 		criteria.addOrder(Order.desc("f.mesAno"));
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));

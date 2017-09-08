@@ -4,7 +4,9 @@ package com.fortes.rh.web.action.cargosalario;
 import java.util.Collection;
 
 import com.fortes.rh.business.cargosalario.FaturamentoMensalManager;
+import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.model.cargosalario.FaturamentoMensal;
+import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
@@ -17,14 +19,17 @@ public class FaturamentoMensalEditAction extends MyActionSupportList
 	private Collection<FaturamentoMensal> faturamentoMensals;
 
 	private String dataMesAno;
+	private EstabelecimentoManager estabelecimentoManager;
+	private Collection<Estabelecimento> estabelecimentos;
 	
 	private void prepare() throws Exception
 	{
 		if(faturamentoMensal != null && faturamentoMensal.getId() != null)
 		{
 			faturamentoMensal = (FaturamentoMensal) faturamentoMensalManager.findById(faturamentoMensal.getId());
-			dataMesAno = DateUtil.formataMesAno(faturamentoMensal.getMesAno());			
+			dataMesAno = DateUtil.formataMesAno(faturamentoMensal.getMesAno());
 		}
+		estabelecimentos=estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
 	}
 
 	public String prepareInsert() throws Exception
@@ -47,6 +52,9 @@ public class FaturamentoMensalEditAction extends MyActionSupportList
 			return Action.INPUT;
 		}
 		
+		if(faturamentoMensal.getEstabelecimento()!= null && faturamentoMensal.getEstabelecimento().getId()==-1)
+			faturamentoMensal.setEstabelecimento(null);
+			
 		faturamentoMensal.setEmpresa(getEmpresaSistema());
 		faturamentoMensal.setMesAno(DateUtil.criarDataMesAno(dataMesAno));
 		faturamentoMensalManager.save(faturamentoMensal);
@@ -111,5 +119,17 @@ public class FaturamentoMensalEditAction extends MyActionSupportList
 
 	public void setDataMesAno(String dataMesAno) {
 		this.dataMesAno = dataMesAno;
+	}
+
+	public EstabelecimentoManager getEstabelecimentoManager() {
+		return estabelecimentoManager;
+	}
+
+	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager) {
+		this.estabelecimentoManager = estabelecimentoManager;
+	}
+
+	public Collection<Estabelecimento> getEstabelecimentos() {
+		return estabelecimentos;
 	}
 }

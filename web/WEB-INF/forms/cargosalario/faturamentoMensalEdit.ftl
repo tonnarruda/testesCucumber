@@ -22,6 +22,8 @@
 			
 			<@ww.textfield label="Mês/Ano" name="dataMesAno" id="dataMesAno" required="true" cssClass="mascaraMesAnoData" disabled="${somenteLeitura}" />
 			<@ww.textfield label="Valor" id="valor"  required="true" cssClass="currency" cssStyle="text-align:right; width:85px;" name="faturamentoMensal.valor" maxLength="12" />
+			<@ww.select label="Estabelecimentos" name="faturamentoMensal.estabelecimento.id" list="estabelecimentos" listKey="id" listValue="nome" headerKey="-1" headerValue="Sem estabelecimento definido."/>
+			
 			<@ww.hidden name="faturamentoMensal.id" />
 			<@ww.hidden name="faturamentoMensal.mesAno" />
 			<@ww.hidden name="faturamentoMensal.empresa.id" />

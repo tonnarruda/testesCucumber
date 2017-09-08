@@ -80,6 +80,20 @@
 		.conteudo { background-color: #F6F6F6; padding: 10px; border: 1px solid #CCC; }
 		
 		.x1Axis .tickLabel { cursor: default; }
+		
+		.mini-info {
+			padding: 7px 12px;
+		    padding-left: 36px;
+		    margin-top: 5px;
+		    border-radius: 3px;
+		    color: #2b7bb5;
+		    width: 456px;
+		    background: #DCEBFC;
+		    background-image: url(${request.contextPath}/imgs/infoHelp.png);
+		    background-repeat: no-repeat;
+		    background-size: 17px 17px;
+			background-position: 10px center;
+		}
 	</style>
 		<!--[if lte IE 8]><script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/excanvas.min.js"/>'></script><![endif]-->
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.js"/>'></script>
@@ -789,7 +803,7 @@
 					<li>&nbsp;</li>
 					<li><strong>Indicador de Salário por Área Organizacional</strong></li>
 					<@ww.datepicker label="Data" name="dataBase" value="${dateBase}" id="dataBase"  cssClass="mascaraData" />
-					<@ww.select label="Área Organizacional" name="areaOrganizacioanal.id" list="areasSelect" listKey="id" listValue="descricao" headerValue="Selecione..." headerKey=""/>
+					<@ww.select label="Área Organizacional" name="areaOrganizacioanal.id" list="areasSelect" listKey="id" listValue="descricao" headerValue="Selecione..." headerKey="" cssStyle="width: 940px;" />
 					<li>&nbsp;</li>
 					<li><strong>Indicadores de Evolução Salarial e Promoção</strong></li>
 				</div>
@@ -803,7 +817,12 @@
 				<div class="conteudo-2 conteudo-aba">
 					<@frt.checkListBox label="Áreas Organizacionais" name="areasPieChartCheck" id="areasPieChartCheck" list="areasPieChartCheckList" filtro="true" selectAtivoInativo="true" onClick=""/>
 				</div>
-		
+				<div class="conteudo-1 conteudo-aba">
+					<li>&nbsp;</li>
+					<li><strong>Indicadores de Evolução Salarial</strong></li>
+					<@frt.checkListBox label="Estabelecimentos" name="estabelecimentosCheck" id="estabelecimentosCheckList" list="estabelecimentosCheckList" filtro="true"/>
+					<div class="mini-info"> Caso não seja selecionado nenhum estabelecimento, serão considerados os faturamentos sem estabelecimentos definidos.</div>
+				</div>
 				<button onclick="return enviaForm();" class="btnPesquisar grayBGE"></button>
 				<#include "../util/bottomFiltro.ftl" />
 			</@ww.form>

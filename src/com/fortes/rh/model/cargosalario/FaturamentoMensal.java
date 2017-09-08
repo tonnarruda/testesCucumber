@@ -11,6 +11,7 @@ import javax.persistence.TemporalType;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Estabelecimento;
 
 @SuppressWarnings("serial")
 @Entity
@@ -22,6 +23,8 @@ public class FaturamentoMensal extends AbstractModel implements Serializable
 	private Double valor;
 	@ManyToOne
 	private Empresa empresa;
+	@ManyToOne
+	private Estabelecimento estabelecimento;
 	
 	public Date getMesAno() {
 		return mesAno;
@@ -47,5 +50,11 @@ public class FaturamentoMensal extends AbstractModel implements Serializable
 		if(this.empresa == null)
 			this.empresa = new Empresa();
 		this.empresa.setId(empresaId);
+	}
+	public Estabelecimento getEstabelecimento() {
+		return estabelecimento;
+	}
+	public void setEstabelecimento(Estabelecimento estabelecimento) {
+		this.estabelecimento = estabelecimento;
 	}
 }

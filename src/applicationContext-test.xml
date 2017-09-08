@@ -527,6 +527,12 @@
   </bean>  
   
   <bean id="riscoDao" class="com.fortes.rh.dao.hibernate.sesmt.RiscoDaoHibernate">
+  	<property name="sessionFactory">
+		<ref bean="sessionFactory" />
+	</property>
+  </bean>
+
+   <bean id="FaturamentoMensalDao" class="com.fortes.rh.dao.hibernate.cargosalario.FaturamentoMensalDaoHibernate">
 	<property name="sessionFactory">
 		<ref bean="sessionFactory" />
 	</property>
@@ -567,5 +573,4 @@
 		<ref bean="sessionFactory" />
 	</property>
   </bean>    
-  
 </beans>

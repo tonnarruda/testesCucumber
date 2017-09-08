@@ -17,10 +17,10 @@ public class FaturamentoMensalManagerImpl extends GenericManagerImpl<Faturamento
 		return getDao().findAllSelect(empresaId);
 	}
 
-	public Collection<Object[]> findByPeriodo(Date inicio, Date fim, Long empresaId) 
+	public Collection<Object[]> findByPeriodo(Date inicio, Date fim, Long empresaId, Long[] estabelecimentosIds) 
 	{
-		FaturamentoMensal faturamentoInicial = getDao().findAtual(inicio, empresaId);
-		Collection<FaturamentoMensal> faturamentos = getDao().findByPeriodo(inicio, fim, empresaId);
+		FaturamentoMensal faturamentoInicial = getDao().findAtual(inicio, empresaId, estabelecimentosIds);
+		Collection<FaturamentoMensal> faturamentos = getDao().findByPeriodo(inicio, fim, empresaId, estabelecimentosIds);
 		Collection<Object[]> graficoEvolucaoFaturamento = new ArrayList<Object[]>();
 
 		Date mesAno=DateUtil.criarDataMesAno(inicio);

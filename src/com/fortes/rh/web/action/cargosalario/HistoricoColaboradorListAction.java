@@ -303,6 +303,9 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		areasPieChartCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(empresa.getId());
 		areasPieChartCheckList = CheckListBoxUtil.marcaCheckListBox(areasPieChartCheckList, areasPieChartCheck);
 		
+		estabelecimentosCheckList = estabelecimentoManager.populaCheckBox(empresaId);
+		estabelecimentosCheckList = CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, estabelecimentosCheck);
+		
 		compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
 		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores, getEmpresaSistema().getId(),SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_CES_PAINEL_IND");
 		
@@ -325,12 +328,14 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		Long[] areasIds = LongUtil.arrayStringToArrayLong(areasCheck);
 		
 		Long[] areasPieChartIds = LongUtil.arrayStringToArrayLong(areasPieChartCheck);
-
+		
+		Long[] estabelecimentosIds = LongUtil.arrayStringToArrayLong(estabelecimentosCheck);
+		
 		dataIni = DateUtil.criarDataMesAno(dataMesAnoIni);
 		dataFim = DateUtil.criarDataMesAno(dataMesAnoFim);
 
 		Collection<Object[]> graficoEvolucaoFolha   = colaboradorManager.montaGraficoEvolucaoFolha(dataIni, dataFim, empresa.getId(), areasIds);
-		Collection<Object[]> graficoEvolucaoFaturamento   = faturamentoMensalManager.findByPeriodo(dataIni, dataFim, empresa.getId());
+		Collection<Object[]> graficoEvolucaoFaturamento   = faturamentoMensalManager.findByPeriodo(dataIni, dataFim, empresa.getId(), estabelecimentosIds);
 		
 		grfSalarioAreas  = StringUtil.toJSON(graficoSalarioArea, null);
 		grfEvolucaoFolha = StringUtil.toJSON(graficoEvolucaoFolha, null);

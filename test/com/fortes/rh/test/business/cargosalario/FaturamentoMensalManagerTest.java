@@ -1,40 +1,54 @@
 package com.fortes.rh.test.business.cargosalario;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.fortes.rh.business.cargosalario.FaturamentoMensalManagerImpl;
 import com.fortes.rh.dao.cargosalario.FaturamentoMensalDao;
 import com.fortes.rh.model.cargosalario.FaturamentoMensal;
 import com.fortes.rh.test.factory.cargosalario.FaturamentoMensalFactory;
 import com.fortes.rh.util.DateUtil;
-
-public class FaturamentoMensalManagerTest extends MockObjectTestCase
+import com.fortes.rh.util.SpringUtil;
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(SpringUtil.class)
+public class FaturamentoMensalManagerTest 
 {
-	private FaturamentoMensalManagerImpl faturamentoMensalManager = new FaturamentoMensalManagerImpl();
-	private Mock faturamentoMensalDao;
+	private FaturamentoMensalManagerImpl faturamentoMensalManager;
+	private FaturamentoMensalDao faturamentoMensalDao;
 	
-	protected void setUp() throws Exception
+	@Before
+	public void setUp() throws Exception
     {
-        super.setUp();
-        faturamentoMensalDao = new Mock(FaturamentoMensalDao.class);
-        faturamentoMensalManager.setDao((FaturamentoMensalDao) faturamentoMensalDao.proxy());
+        faturamentoMensalDao = mock(FaturamentoMensalDao.class);
+        
+        faturamentoMensalManager= new FaturamentoMensalManagerImpl();
+        faturamentoMensalManager.setDao(faturamentoMensalDao);
+        PowerMockito.mockStatic(SpringUtil.class);
     }
 
+	@Test
 	public void testFindAllSelect()
 	{
 		Long empresaId = 1L;
 		
-		Collection<FaturamentoMensal> faturamentoMensals = FaturamentoMensalFactory.getCollection(1L);
+		Collection<FaturamentoMensal> faturamentoMensals = FaturamentoMensalFactory.getCollection(empresaId);
 
-		faturamentoMensalDao.expects(once()).method("findAllSelect").with(eq(empresaId)).will(returnValue(faturamentoMensals));
+		when(faturamentoMensalDao.findAllSelect(empresaId)).thenReturn(faturamentoMensals);
 		assertEquals(faturamentoMensals, faturamentoMensalManager.findAllSelect(empresaId));
 	}
-
+	@Test
 	public void testFindByPeriodo()
 	{
 		Date inicio = DateUtil.criarDataMesAno(1, 2, 2000);
@@ -47,8 +61,9 @@ public class FaturamentoMensalManagerTest extends MockObjectTestCase
 		
 		Collection<FaturamentoMensal> faturamentoMensals = Arrays.asList(janeiro);
 		
-		faturamentoMensalDao.expects(once()).method("findByPeriodo").with(eq(inicio), eq(fim),eq(empresaId)).will(returnValue(faturamentoMensals));
-		faturamentoMensalDao.expects(once()).method("findAtual").with(eq(inicio),eq(empresaId)).will(returnValue(null));
-		assertEquals(10, faturamentoMensalManager.findByPeriodo(inicio, fim, empresaId).size());
+		when(faturamentoMensalDao.findByPeriodo(inicio,fim,empresaId,null)).thenReturn(faturamentoMensals);
+		when(faturamentoMensalDao.findAtual(inicio,empresaId,null)).thenReturn(null);
+		
+		assertEquals(10, faturamentoMensalManager.findByPeriodo(inicio, fim, empresaId, null).size());
 	}
 }
