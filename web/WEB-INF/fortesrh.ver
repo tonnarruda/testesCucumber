@@ -11,6 +11,7 @@
 		<Item visivel="S" motivo="S16110000171"><![CDATA[C&S > Movimentações > Planejamentos de Realinhamentos > imprimir: Novo video de ajuda de como realizar o realinhamento do colaborador.]]></Item>
 		<Item visivel="S" motivo="S16110000171"><![CDATA[C&S > Movimentações > Solicitação de Realinhamento para Colaborador: Novo video de ajuda de como realizar o realinhamento do colaborador.]]></Item>
 		<Item visivel="S" motivo="S16110000171"><![CDATA[C&S > Relatórios > Realinhamentos: Novo video de ajuda de como realizar o realinhamento do colaborador.]]></Item>		
+		<Item visivel="S" motivo="P17090000055"><![CDATA[T&D > Relatórios > Colaboradores x Certificações: Ajuste de inconsistência ao gerar relatório na qual considerava o colaborador como "Não realizou o curso", quando na verdade o colaborador havia realizado o curso.]]></Item>
 		<Item visivel="S" motivo="S16110000170"><![CDATA[Aval. Desempenho > Cadastros > Avaliações de Desempenho/Acomp. do Período de Experiência: Novo video de ajuda de como gerar a avaliação de desempenho.]]></Item>
 		<Item visivel="S" motivo="S16110000170"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho: Novo video de ajuda de como gerar a avaliação de desempenho.]]></Item>
 		<Item visivel="S" motivo="S16110000170"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Participantes: Novo video de ajuda de como gerar a avaliação de desempenho.]]></Item>

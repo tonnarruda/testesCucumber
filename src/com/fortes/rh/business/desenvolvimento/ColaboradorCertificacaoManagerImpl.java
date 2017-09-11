@@ -160,7 +160,7 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 			Collection<ColaboradorCertificacao> colaboradoresCertificacaoes = new ArrayList<ColaboradorCertificacao>();
 			colaboradoresCertificacaoes = getDao().findColaboradoresCertificados(dataIni, dataFim, mesesCertificacoesAVencer, new Long[]{certificacao.getId()}, areaIds, estabelecimentoIds, filtroColaboradoresIds, situacaoColaborador, false);
 
-			if(Boolean.FALSE.equals(certificado)){
+			if(certificado == null || Boolean.FALSE.equals(certificado)){
 				Collection<ColaboradorCertificacao> colaboradoresCertificadosVencidos = getDao().findColaboradoresCertificados(dataIni, dataFim, mesesCertificacoesAVencer, new Long[]{certificacao.getId()}, areaIds, estabelecimentoIds, filtroColaboradoresIds, situacaoColaborador, true);
 				Collection<ColaboradorCertificacao> colaboradoresQueParticipamDaCertificacaoNaoCertificados = getDao().findColaboradoresQueParticipamDaCertificacao(new Long[]{certificacao.getId()}, areaIds, estabelecimentoIds, filtroColaboradoresIds, situacaoColaborador, new CollectionUtil<ColaboradorCertificacao>().convertCollectionToArrayIds(colaboradoresCertificacaoes, "getColaboradorId"));
 				colaboradoresCertificacaoes.addAll(decideColaboradorCertificacaoAdicionar(colaboradoresCertificadosVencidos, colaboradoresQueParticipamDaCertificacaoNaoCertificados));
@@ -225,7 +225,7 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 			arrayCursosIds.clear();
 		}
 
-		if(colaboradorCertificacaosRetorno.size() == 0 || (certificado != null && certificado))
+		if(certificado != null && certificado)
 			return colaboradorCertificacaosRetorno;
 		else{ 
 			adicionarCertificacoesATodosOsColaboradores(certificacoes,mapAvaliacoesPraticas, mapCursosCertificacao, mapCertificadoColaboradorAvaliacoesPraticas, colaboradorCertificacaosRetorno, filtroColaboradoresIds, areaIds, estabelecimentoIds, situacaoColaborador, empresaId);
@@ -244,7 +244,7 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 		}
 	}
 
-	private void adicionarCertificacoesATodosOsColaboradores(Collection<Certificacao> certificacoes,	Map<Long, Collection<AvaliacaoPratica>> mapAvaliacoesPraticas, Map<Long, Collection<Curso>> mapCursosCertificacao, Map<Long, Map<Long, Collection<ColaboradorAvaliacaoPratica>>> mapCertificadoColaboradorAvaliacoesPraticas, Collection<ColaboradorCertificacao> colaboradorCertificacaosRetorno, Long[] filtroColaboradoresIds, Long[] areasIds, Long[] estabelecimentosIds, String situacaoColaborador, Long empresaId) throws CloneNotSupportedException {
+	private void adicionarCertificacoesATodosOsColaboradores(Collection<Certificacao> certificacoes, Map<Long, Collection<AvaliacaoPratica>> mapAvaliacoesPraticas, Map<Long, Collection<Curso>> mapCursosCertificacao, Map<Long, Map<Long, Collection<ColaboradorAvaliacaoPratica>>> mapCertificadoColaboradorAvaliacoesPraticas, Collection<ColaboradorCertificacao> colaboradorCertificacaosRetorno, Long[] filtroColaboradoresIds, Long[] areasIds, Long[] estabelecimentosIds, String situacaoColaborador, Long empresaId) throws CloneNotSupportedException {
 		Map<Long, Collection<Long>> mapColabCertificoes = new HashMap<Long, Collection<Long>>();
 		Map<Long, Colaborador> mapColaborador = new HashMap<Long, Colaborador>();
 		Long idColaborador = null;
