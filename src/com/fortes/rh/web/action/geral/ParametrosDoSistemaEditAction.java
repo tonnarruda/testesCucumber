@@ -337,6 +337,7 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 		parametrosDoSistemaTmp.setCamposCandidatoTabs(camposTabs);
 		
 		parametrosDoSistemaManager.update(parametrosDoSistemaTmp);
+		setActionMsg("Campos do candidato gravados com sucesso");
 		
 		return Action.SUCCESS;
 	}
@@ -350,6 +351,7 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 		parametrosDoSistemaTmp.setCamposColaboradorTabs(camposTabs);
 		
 		parametrosDoSistemaManager.update(parametrosDoSistemaTmp);
+		setActionMsg("Campos do colaborador gravados com sucesso");
 		
 		return Action.SUCCESS;
 	}
@@ -363,6 +365,7 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 		parametrosDoSistemaTmp.setCamposCandidatoExternoTabs(camposTabs);
 		
 		parametrosDoSistemaManager.update(parametrosDoSistemaTmp);
+		setActionMsg("Campos do candidato pelo módulo externo gravados com sucesso");
 		
 		return Action.SUCCESS;
 	}

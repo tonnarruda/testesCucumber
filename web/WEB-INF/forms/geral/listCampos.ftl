@@ -8,6 +8,9 @@
 	<title>Configurar campos padrões o sistema para o cadastro de Colaborador e Candidato</title>
 </head>
 <body>
+	<@ww.actionerror />
+	<@ww.actionmessage />
+	</br>
 	<style type="text/css">
 		.configCampos {
 			margin: 8px 0;
@@ -105,8 +108,6 @@
 			background-color: #F2F2F2 !important;
 		}
 	</style>
-	<@ww.actionerror />
-	<@ww.actionmessage />
 	
 	<script type='text/javascript'>
 		var entidade = '${entidade?if_exists}';

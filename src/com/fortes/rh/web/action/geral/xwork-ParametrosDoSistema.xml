@@ -20,15 +20,14 @@
 			<result name="success_colaborador" type="freemarker">/WEB-INF/forms/geral/configCamposColaborador.ftl</result>
 		</action>
 		<action name="updateCamposCandidato" class="com.fortes.rh.web.action.geral.ParametrosDoSistemaEditAction" method="updateCamposCandidato">
-			<result name="success" type="redirect">listCampos.action?entidade=candidato</result>
+			<result name="success" type="redirect"><![CDATA[listCampos.action?actionSuccess=${actionMsg}&entidade=candidato]]></result>
 		</action>
 		<action name="updateCamposCandidatoExterno" class="com.fortes.rh.web.action.geral.ParametrosDoSistemaEditAction" method="updateCamposCandidatoExterno">
-			<result name="success" type="redirect">listCampos.action?entidade=candidatoExterno</result>
+			<result name="success" type="redirect"><![CDATA[listCampos.action?actionSuccess=${actionMsg}&entidade=candidatoExterno]]></result>
 		</action>
 		<action name="updateCamposColaborador" class="com.fortes.rh.web.action.geral.ParametrosDoSistemaEditAction" method="updateCamposColaborador">
-			<result name="success" type="redirect">listCampos.action?entidade=colaborador</result>
+			<result name="success" type="redirect"><![CDATA[listCampos.action?actionSuccess=${actionMsg}&entidade=colaborador]]></result>
 		</action>	
-		
 		
 		<action name="listCamposExtras" class="com.fortes.rh.web.action.geral.ParametrosDoSistemaEditAction" method="listCamposExtras">
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/listCamposExtras.ftl</result>
