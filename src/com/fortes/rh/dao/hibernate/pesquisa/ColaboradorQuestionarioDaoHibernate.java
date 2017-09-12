@@ -295,7 +295,7 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		return criteria.list();
 	}
 
-	public Collection<ColaboradorQuestionario> findFichasMedicas(Character vinculo, Date dataIni, Date dataFim, String nomeBusca, String cpfBusca, String matriculaBusca)
+	public Collection<ColaboradorQuestionario> findFichasMedicas(Character vinculo, Date dataIni, Date dataFim, String nomeBusca, String cpfBusca, String matriculaBusca, Long empresaId)
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "cq");
 		criteria.createCriteria("cq.questionario", "q", Criteria.LEFT_JOIN);
@@ -309,7 +309,10 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		}
 		else if(vinculo == 'A')
 			criteria.createCriteria("cq.candidato", "c");
-			
+		
+		criteria.createCriteria("c.empresa","emp");
+		criteria.add(Expression.eq("emp.id", empresaId));
+		
 		if(StringUtils.isNotBlank(nomeBusca))
 			criteria.add(Expression.like("c.nome", "%"+ nomeBusca +"%").ignoreCase());
 		
@@ -335,12 +338,14 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		return criteria.list();
 	}
 
-	public Collection<ColaboradorQuestionario> findFichasMedicas()
+	public Collection<ColaboradorQuestionario> findFichasMedicas(Long empresaId)
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "cq");
 		criteria.createCriteria("cq.questionario", "q", Criteria.LEFT_JOIN);
 		criteria.createCriteria("cq.colaborador", "colab", Criteria.LEFT_JOIN);
 		criteria.createCriteria("cq.candidato", "cand", Criteria.LEFT_JOIN);
+		criteria.createCriteria("colab.empresa", "empColab",Criteria.LEFT_JOIN);
+		criteria.createCriteria("cand.empresa", "empCand",Criteria.LEFT_JOIN);
 		
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("cq.id"), "id");
@@ -355,6 +360,7 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		criteria.setProjection(p);
 		
 		criteria.add(Expression.eq("q.tipo", TipoQuestionario.FICHAMEDICA));
+		criteria.add(Expression.or(Expression.eq("empColab.id", empresaId), Expression.eq("empCand.id",empresaId)));
 		
 		criteria.addOrder(Order.desc("cq.respondidaEm"));
 		criteria.addOrder(Order.asc("colab.nome"));

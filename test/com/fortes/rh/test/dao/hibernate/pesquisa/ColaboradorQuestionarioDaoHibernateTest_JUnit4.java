@@ -2,6 +2,8 @@ package com.fortes.rh.test.dao.hibernate.pesquisa;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Collection;
+
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -9,18 +11,28 @@ import com.fortes.rh.dao.avaliacao.AvaliacaoDao;
 import com.fortes.rh.dao.captacao.CandidatoDao;
 import com.fortes.rh.dao.captacao.CandidatoSolicitacaoDao;
 import com.fortes.rh.dao.captacao.SolicitacaoDao;
+import com.fortes.rh.dao.geral.ColaboradorDao;
+import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.pesquisa.ColaboradorQuestionarioDao;
+import com.fortes.rh.dao.pesquisa.QuestionarioDao;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.dicionario.TipoQuestionario;
+import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
+import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.test.dao.DaoHibernateAnnotationTest;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoSolicitacaoFactory;
+import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
+import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
+import com.fortes.rh.test.factory.pesquisa.QuestionarioFactory;
 
 public class ColaboradorQuestionarioDaoHibernateTest_JUnit4  extends DaoHibernateAnnotationTest
 {
@@ -34,7 +46,13 @@ public class ColaboradorQuestionarioDaoHibernateTest_JUnit4  extends DaoHibernat
 	private CandidatoDao candidatoDao;
 	@Autowired
 	private CandidatoSolicitacaoDao candidatoSolicitacaoDao;
-
+	@Autowired
+	private EmpresaDao empresaDao;
+	@Autowired
+	private QuestionarioDao questionarioDao;
+	@Autowired
+	private ColaboradorDao colaboradorDao;
+	
 	@Test
 	public void testGetAvaliacoesBySolicitacaoIdAndCandidatoSolicitacaoId(){
 
@@ -86,5 +104,60 @@ public class ColaboradorQuestionarioDaoHibernateTest_JUnit4  extends DaoHibernat
 		Long[] candidatosSolicitacaoIds = new Long[]{candidatoSolicitacao1.getId(),candidatoSolicitacao2.getId(),candidatoSolicitacao3.getId()};
 		
 		assertEquals(2, colaboradorQuestionarioDao.getAvaliacoesBySolicitacaoIdAndCandidatoSolicitacaoId(solicitacao.getId(), candidatosSolicitacaoIds).size());
+	}
+	@Test
+	public void testFindFichaMedica()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1l);
+		empresaDao.save(empresa);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setEmpresa(empresa);
+		colaboradorDao.save(colaborador);
+
+		Questionario questionario = QuestionarioFactory.getEntity();
+		questionario.setTipo(TipoQuestionario.getFICHAMEDICA());
+		questionarioDao.save(questionario);
+
+		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario.setColaborador(colaborador);
+		colaboradorQuestionario.setQuestionario(questionario);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario);
+
+		Collection<ColaboradorQuestionario> fichasMedicasColaboradores = colaboradorQuestionarioDao.findFichasMedicas('C', null, null, null, null, null, empresa.getId());
+		
+		assertEquals(1, fichasMedicasColaboradores.size());
+	}
+	@Test
+	public void testFindFichaMedicaSemVinculo()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1l);
+		empresaDao.save(empresa);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setEmpresa(empresa);
+		colaboradorDao.save(colaborador);
+		
+		Candidato candidato = CandidatoFactory.getCandidato();
+		candidato.setEmpresa(empresa);
+		candidatoDao.save(candidato);
+
+		Questionario questionario = QuestionarioFactory.getEntity();
+		questionario.setTipo(TipoQuestionario.getFICHAMEDICA());
+		questionarioDao.save(questionario);
+
+		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario.setColaborador(colaborador);
+		colaboradorQuestionario.setQuestionario(questionario);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario);
+		
+		ColaboradorQuestionario candidatoQuestionario = ColaboradorQuestionarioFactory.getEntity();
+		candidatoQuestionario.setCandidato(candidato);
+		candidatoQuestionario.setQuestionario(questionario);
+		colaboradorQuestionarioDao.save(candidatoQuestionario);
+
+		Collection<ColaboradorQuestionario> fichasMedicasSemVinculos = colaboradorQuestionarioDao.findFichasMedicas(empresa.getId());
+
+		assertEquals(2, fichasMedicasSemVinculos.size());
 	}
 }

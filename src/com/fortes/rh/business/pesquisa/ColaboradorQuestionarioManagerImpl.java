@@ -209,12 +209,12 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 		return getDao().findRespondidasByColaboradorETurma(colaboradorId, turmaId, empresaId);
 	}
 
-	public Collection<ColaboradorQuestionario> findFichasMedicas(Character vinculo, Date dataIni, Date dataFim, String nomeBusca, String cpfBusca, String matriculaBusca)
+	public Collection<ColaboradorQuestionario> findFichasMedicas(Character vinculo, Date dataIni, Date dataFim, String nomeBusca, String cpfBusca, String matriculaBusca, Long empresaId)
 	{
 		if(vinculo == null)
-			return getDao().findFichasMedicas();
+			return getDao().findFichasMedicas(empresaId);
 		else	
-			return getDao().findFichasMedicas(vinculo, dataIni, dataFim, nomeBusca, cpfBusca, matriculaBusca);
+			return getDao().findFichasMedicas(vinculo, dataIni, dataFim, nomeBusca, cpfBusca, matriculaBusca, empresaId);
 	}
 
 	public ColaboradorQuestionario findByQuestionarioCandidato(Long id, Long candidatoId)

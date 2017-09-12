@@ -531,42 +531,6 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 		assertEquals(1, respondidasPorTurma.size());
 	}
 
-	public void testFindFichaMedica()
-	{
-		Colaborador colaborador = ColaboradorFactory.getEntity();
-		colaboradorDao.save(colaborador);
-
-		Questionario questionario = QuestionarioFactory.getEntity();
-		questionario.setTipo(TipoQuestionario.getFICHAMEDICA());
-		questionarioDao.save(questionario);
-
-		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
-		colaboradorQuestionario.setColaborador(colaborador);
-		colaboradorQuestionario.setQuestionario(questionario);
-		colaboradorQuestionarioDao.save(colaboradorQuestionario);
-
-		Collection<ColaboradorQuestionario> colaboradors = colaboradorQuestionarioDao.findFichasMedicas('C', null, null, null, null, null);
-		assertTrue(colaboradors.size() > 0);
-	}
-
-	public void testFindFichaMedicaSemVinculo()
-	{
-		Colaborador colaborador = ColaboradorFactory.getEntity();
-		colaboradorDao.save(colaborador);
-
-		Questionario questionario = QuestionarioFactory.getEntity();
-		questionario.setTipo(TipoQuestionario.getFICHAMEDICA());
-		questionarioDao.save(questionario);
-
-		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
-		colaboradorQuestionario.setColaborador(colaborador);
-		colaboradorQuestionario.setQuestionario(questionario);
-		colaboradorQuestionarioDao.save(colaboradorQuestionario);
-
-		Collection<ColaboradorQuestionario> colaboradors = colaboradorQuestionarioDao.findFichasMedicas();
-		assertTrue(colaboradors.size() > 0);
-	}
-
 	public void testFindByIdProjection()
 	{
 		Colaborador colaborador = ColaboradorFactory.getEntity();

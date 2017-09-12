@@ -79,7 +79,7 @@ public class FichaMedicaListAction extends MyActionSupportList
 		if(StringUtils.isNotBlank(actionMsg))
 			addActionMessage(actionMsg);
 		
-		colaboradorQuestionarios = colaboradorQuestionarioManager.findFichasMedicas(vinculo, dataIni, dataFim, nomeBusca, cpfBusca, matriculaBusca);
+		colaboradorQuestionarios = colaboradorQuestionarioManager.findFichasMedicas(vinculo, dataIni, dataFim, nomeBusca, cpfBusca, matriculaBusca, getEmpresaSistema().getId());
 		
 		return Action.SUCCESS;
 	}
