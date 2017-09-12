@@ -915,6 +915,10 @@ public class CandidatoEditAction extends MyActionSupportEdit
 	
 	private boolean verificaCPFDuplicado(Long empresaId, Boolean prepareSimple) throws Exception {
 		if (candidato != null && candidato.getPessoal().getCpf() != null && !candidato.getPessoal().getCpf().isEmpty()) {
+			
+			if(empresaId == null && !moduloExterno)
+				empresaId = getEmpresaSistema().getId();
+			
 			Candidato candidatoTmp = candidatoManager.verifyCPF(candidato.getPessoal().getCpf(), empresaId, candidato.getId(), null);
 			if(candidatoTmp != null) {
 				if (moduloExterno) {

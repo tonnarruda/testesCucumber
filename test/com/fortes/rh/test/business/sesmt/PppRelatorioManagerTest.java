@@ -264,12 +264,12 @@ public class PppRelatorioManagerTest
 		assertEquals(2, PppFatorRisco.size());
 		
 		assertEquals(dataH1, ((PppFatorRisco)PppFatorRisco.toArray()[0]).getDataInicio());
-		assertEquals(dataH2, ((PppFatorRisco)PppFatorRisco.toArray()[0]).getDataFim());
-		assertEquals(riscoFisico.getId(), ((PppFatorRisco)PppFatorRisco.toArray()[0]).getRisco().getId());
-		
+		assertNull(((PppFatorRisco)PppFatorRisco.toArray()[0]).getDataFim());
+		assertEquals(riscoBiologico.getId(), ((PppFatorRisco)PppFatorRisco.toArray()[0]).getRisco().getId());
+
 		assertEquals(dataH1, ((PppFatorRisco)PppFatorRisco.toArray()[1]).getDataInicio());
-		assertNull(((PppFatorRisco)PppFatorRisco.toArray()[1]).getDataFim());
-		assertEquals(riscoBiologico.getId(), ((PppFatorRisco)PppFatorRisco.toArray()[1]).getRisco().getId());
+		assertEquals(dataH2, ((PppFatorRisco)PppFatorRisco.toArray()[1]).getDataFim());
+		assertEquals(riscoFisico.getId(), ((PppFatorRisco)PppFatorRisco.toArray()[1]).getRisco().getId());
 		
 		when(empresaManager.isControlaRiscoPorAmbiente(empresa.getId())).thenReturn(false);
 		
@@ -280,12 +280,12 @@ public class PppRelatorioManagerTest
 		assertEquals(2, PppFatorRisco.size());
 		
 		assertEquals(dataH1, ((PppFatorRisco)PppFatorRisco.toArray()[0]).getDataInicio());
-		assertEquals(dataH2, ((PppFatorRisco)PppFatorRisco.toArray()[0]).getDataFim());
-		assertEquals(riscoFisico.getId(), ((PppFatorRisco)PppFatorRisco.toArray()[0]).getRisco().getId());
-		
+		assertNull(((PppFatorRisco)PppFatorRisco.toArray()[0]).getDataFim());
+		assertEquals(riscoBiologico.getId(), ((PppFatorRisco)PppFatorRisco.toArray()[0]).getRisco().getId());
+
 		assertEquals(dataH1, ((PppFatorRisco)PppFatorRisco.toArray()[1]).getDataInicio());
-		assertNull(((PppFatorRisco)PppFatorRisco.toArray()[1]).getDataFim());
-		assertEquals(riscoBiologico.getId(), ((PppFatorRisco)PppFatorRisco.toArray()[1]).getRisco().getId());
+		assertEquals(dataH2, ((PppFatorRisco)PppFatorRisco.toArray()[1]).getDataFim());
+		assertEquals(riscoFisico.getId(), ((PppFatorRisco)PppFatorRisco.toArray()[1]).getRisco().getId());
 	}
 	
 	@Test
