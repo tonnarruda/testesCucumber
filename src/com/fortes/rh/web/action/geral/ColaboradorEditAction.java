@@ -501,7 +501,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			} catch (Exception e) {
 				e.printStackTrace();
 				desabilitarEdicaoCamposIntegrados = true;
-				addActionError("Não foi possível estabelecer conexão com o Fortes Pessoal, desta forma não é possível editar as informações integradas.");
+				addActionWarning("Não foi possível estabelecer conexão com o Fortes Pessoal, desta forma não é possível editar as informações integradas.");
 			}
 		}else if(empresaEstaIntegradaEAderiuAoESocial && !colaborador.isNaoIntegraAc()){
 			verificaPendenciaNoESocial();
@@ -530,7 +530,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		} catch (Exception e) {
 			e.printStackTrace();
 			desabilitarEdicaoCamposIntegrados = true;
-			addActionSuccess("Não foi possível estabelecer conexão com o Fortes Pessoal, desta forma não é possível editar as informações integradas.");
+			addActionWarning("Não foi possível estabelecer conexão com o Fortes Pessoal, desta forma não é possível editar as informações integradas.");
 		}
 	}
 	

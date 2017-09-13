@@ -810,7 +810,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		
 		verificaUnicoHistorico(colaboradorId, empresa, historicoColaboradorTmp);
 		
-		if(empresa.isAcIntegra() && !historicoColaboradorTmp.getColaborador().isNaoIntegraAc())
+		if(empresa.isAcIntegra() && !historicoColaboradorTmp.getColaborador().isNaoIntegraAc() && historicoColaboradorTmp.getStatus() != StatusRetornoAC.CANCELADO)
 		{
 			if(historicoColaboradorTmp.getColaborador().getCodigoAC() == null)
 				throw new Exception("Cadastro do Colaborador pendente no Fortes Pessoal.");
@@ -832,7 +832,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		
 		getDao().getHibernateTemplateByGenericDao().flush();
 
-		if(removerDoAC && empresa.isAcIntegra() && !historicoColaboradorTmp.getColaborador().isNaoIntegraAc())
+		if(removerDoAC && empresa.isAcIntegra() && !historicoColaboradorTmp.getColaborador().isNaoIntegraAc() && historicoColaboradorTmp.getStatus() != StatusRetornoAC.CANCELADO)
 		{
 			TSituacao situacao = bindSituacao(historicoColaboradorTmp, empresa.getCodigoAC());
 			acPessoalClientTabelaReajuste.deleteHistoricoColaboradorAC(empresa, situacao);

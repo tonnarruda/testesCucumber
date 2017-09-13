@@ -214,7 +214,7 @@
 		<@authz.authorize ifAllGranted="ROLE_COMPROU_SESMT">
 			<@ww.select label="Cargo/Faixa" name="historicoColaborador.faixaSalarial.id" id="faixa" list="faixaSalarials" listKey="id" listValue="descricao" required="true" headerKey="" headerValue="Selecione..." onchange="populaFuncao(this.value);calculaSalario();" cssStyle="width: 355px;" disabled="${somenteLeitura}"/>
 			<@ww.select label="Ambiente" name="historicoColaborador.ambiente.id" id="ambiente" required="${obrigarAmbienteFuncao?string}" list="ambientes" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." cssStyle="width: 355px;"/>
-			<@ww.select label="Função" name="historicoColaborador.funcao.id" id="funcao" required="${obrigarAmbienteFuncao?string}" list="funcaos" listKey="id" listValue="nome" headerValue="Selecione..." headerKey="-1" cssStyle="width: 355px;"/>
+			<@ww.select label="Função" name="historicoColaborador.funcao.id" id="funcao" required="${obrigarAmbienteFuncao?string}" list="funcaos" listKey="id" listValue="nome" headerValue="Selecione..." headerKey="" cssStyle="width: 355px;"/>
 		</@authz.authorize>
 		<@authz.authorize ifNotGranted="ROLE_COMPROU_SESMT">
 			<@ww.select label="Cargo/Faixa" name="historicoColaborador.faixaSalarial.id" id="faixa" list="faixaSalarials" listKey="id" listValue="descricao" required="true" headerKey="" headerValue="Selecione..." onchange="calculaSalario();" cssStyle="width: 355px;" disabled="${somenteLeitura}"/>

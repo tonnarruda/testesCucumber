@@ -6,6 +6,7 @@
 	<link rel="stylesheet" href="<@ww.url includeParams="none" value="/css/displaytag.css?version=${versao}"/>" type="text/css">
 	<link rel="stylesheet" href="<@ww.url includeParams="none" value="/css/colaborador.css?version=${versao}"/>" media="screen" type="text/css">
 	<link rel="stylesheet" href="<@ww.url includeParams="none" value="/css/font-awesome.min.css?version=${versao}"/>" type="text/css">
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/moment.min.2.18.1.js?version=${versao}"/>'></script>
 
 	<meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
 	<meta http-equiv="Content-Language" content="pt-br" />
@@ -158,6 +159,13 @@
 	<#else>
 		<#assign dataNasc = ""/>
 	</#if>
+	
+	<#if colaborador?exists && colaborador.dataDesligamento?exists>
+		<#assign dataDesligamento = colaborador.dataDesligamento?date/>
+	<#else>
+		<#assign dataDesligamento = ""/>
+	</#if>
+	
 
 	<#assign validaDataCamposExtras = ""/>
 	<#if habilitaCampoExtra>
@@ -617,8 +625,8 @@
 				$('#divDecideAlteracaoOrRetificacao').dialog({ 	
 													modal: true, 
 													title: 'Informações Pessoais',
-													height: 230,
 													width: 480,
+													height: 260,
 													buttons: 
 													[
 													    {
@@ -643,23 +651,33 @@
 			}
 		}
 		
+		
 		function exibeOuOcultaDataDeAlteracao(){
 			if($('input[name="tipoAlteracao"]:checked').val() == 'A'){
-				$("#divDecideAlteracaoOrRetificacao").dialog("option", "height",280);
+				$("#divDecideAlteracaoOrRetificacao").dialog("option", "height",350);
 				$('#divInformeDataAlteracao').show();
 			}
 			else if($('input[name="tipoAlteracao"]:checked').val() == 'R'){
-				$("#divDecideAlteracaoOrRetificacao").dialog("option", "height",230);
+				$("#divDecideAlteracaoOrRetificacao").dialog("option", "height",260);
 				$('#divInformeDataAlteracao').hide();
 			}
 		}
 			
 		function validaDataAlteracao(){
 			$('.dataValida').remove();
+			
+			var dataDesligamento1 = "${dataDesligamento?string}";
+			
 			if($('input[name="tipoAlteracao"]:checked').val() == 'A' || $('#podeEfetuarRetificacao').val() == "false"){
-				if(validaDate($('#dataAlt')[0]) && $('#dataAlt').val() != "  /  /    " &&  $('#dataAlt').val() != ""){
-					$('#dataAlteracao').val($('#dataAlt').val());
-					$('#form').submit();
+				if(moment($("#dataAlt").val(),'DD/MM/YYYY',true).locale('pt-BR').isValid()){
+					var dataNovoHistorico = moment($("#dataAlt").val(),'DD-MM-YYYY').locale('pt-BR');
+					var dataDesligamento = moment("${dataDesligamento?string}","DD-MM-YYYY").locale("pt-BR");
+					if(!dataNovoHistorico.isAfter(dataDesligamento)){
+						$('#dataAlteracao').val($('#dataAlt').val());
+						$('#form').submit();
+					}else{
+						jAlert("Colaborador <strong>${colaborador.nome}</strong> está desligado. Só é possível inserrir um novo histórico com data menor ou igual a data do desligamento.<br><br>Data do desligamento: <strong>${dataDesligamento?string}</strong>.</span>");
+					}
 				}
 				else
 					$('#dataAlt').parent().append("<span class='dataValida' style='color: #9F6000;padding: 3px 10px;padding-top: 2px;margin-left:2px;font-size: 11px;background-color: #FEEFB3;'>Informe uma data válida.</span>")
@@ -1202,8 +1220,19 @@
 	
 	<@ww.hidden id ="podeEfetuarRetificacao" value="${podeRetificar?string}"/>
 	
+	<#if colaborador?exists && !colaborador.dataDesligamento?exists>
+		<#assign dataNovoHistorico = dataAlteracao?date />
+	<#else>
+		<#assign dataNovoHistorico = "" />
+	</#if>
+	
 	<#if podeRetificar>
-		<div id="divDecideAlteracaoOrRetificacao">Para as informações modificadas, Você deseja que no Fortes Pessoal seja criado um novo histórico ou que sejam retificadas?
+		<div id="divDecideAlteracaoOrRetificacao">
+		<#if colaborador?exists && colaborador.dataDesligamento?exists>
+			Este colaborador está desligado. Só é possível inserir um novo histórico com data menor ou igual a data do desligamento.<br>Data do desligamento: <strong>${dataDesligamento?string}</strong>.
+			</br></br>
+		</#if>
+			Para as informações modificadas, Você deseja que no Fortes Pessoal seja criado um novo histórico ou que sejam retificadas?
 			</br></br>
 			<@ww.div id="divTipoAlteracao" cssClass="radio">
 				<input id="tipoAlteracao" name="tipoAlteracao" type="radio" value="A" onchange="exibeOuOcultaDataDeAlteracao();"/><label>Novo Histórico</label>
@@ -1211,15 +1240,20 @@
 			</@ww.div>
 			</br>
 			<@ww.div id="divInformeDataAlteracao">
-				<@ww.datepicker label="Informe a data a partir de quando ocorreu a atualização" value="${dataAlteracao?date}" id="dataAlt" liClass="liLeft" cssClass="mascaraData"/>
+				<@ww.datepicker label="Informe a data a partir de quando ocorreu a atualização" value="${dataNovoHistorico}" id="dataAlt" liClass="liLeft" cssClass="mascaraData"/>
 				</br></br>
 				<h5>Essa informação é obrigatória em virtude de exigência do eSocial.</h5>
 			</@ww.div>
 		</div>
 	<#else>
-		<div id="divDecideAlteracaoOrRetificacao">Será criado no Fortes Pessoal um novo histórico cadastral para o colaborador.
+		<div id="divDecideAlteracaoOrRetificacao">
+			<#if colaborador?exists && colaborador.dataDesligamento?exists>
+			Este colaborador está desligado. Só é possível inserir um novo histórico com data menor ou igual a data do desligamento.<br>Data do desligamento: <strong>${dataDesligamento?string}</strong>.
 			</br></br>
-			<@ww.datepicker label="Informe a data a partir de quando ocorreu a atualização" value="${dataAlteracao?date}" id="dataAlt" liClass="liLeft" cssClass="mascaraData"/>
+			</#if>
+			Será criado no Fortes Pessoal um novo histórico cadastral para o colaborador.
+			</br></br>
+			<@ww.datepicker label="Informe a data a partir de quando ocorreu a atualização" value="${dataNovoHistorico}" id="dataAlt" liClass="liLeft" cssClass="mascaraData"/>
 			</br></br>
 			<h5>Essa informação é obrigatória em virtude de exigência do eSocial.</h5>
 		</div>

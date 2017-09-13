@@ -129,12 +129,7 @@
 			<@display.column title="Ações" class="acao">
 				<#if (faixaSalarialHistoricoVO.editavel)>
 					<a href="../faixaSalarialHistorico/prepareUpdate.action?faixaSalarialHistorico.id=${faixaSalarialHistoricoVO.id}&faixaSalarialAux.id=${faixaSalarialAux.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
-					<#if empresaEstaIntegradaEAderiuAoESocial && faixaSalarialHistoricoVO.status != 3>
-						<img border="0" title="Devido as adequações ao eSocial, não é possível excluir no Fortes RH o histórico de uma faixa salarial." src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>" style="opacity:0.5;filter:alpha(opacity=50);">
-					<#else>
-						<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='../faixaSalarialHistorico/delete.action?faixaSalarialHistorico.id=${faixaSalarialHistoricoVO.id}&faixaSalarialAux.id=${faixaSalarialAux.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url value="/imgs/delete.gif"/>"></a>
-					</#if>	
-					
+					<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='../faixaSalarialHistorico/delete.action?faixaSalarialHistorico.id=${faixaSalarialHistoricoVO.id}&faixaSalarialAux.id=${faixaSalarialAux.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 				<#else>
 					<span title="Essa evolução do histórico da faixa foi devido ao reajuste do índice">(Índice)</span>
 				</#if>
