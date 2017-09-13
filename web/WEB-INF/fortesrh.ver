@@ -20,6 +20,7 @@
 		<Item visivel="S" motivo="S16110000170"><![CDATA[Aval. Desempenho > Movimentações > Responder Avaliações de Desempenho: Novo video de ajuda de como gerar a avaliação de desempenho.]]></Item>
 		<Item visivel="S" motivo="S16110000170"><![CDATA[Aval. Desempenho > Movimentações > Responder Avaliações de Desempenho > Responder: Novo video de ajuda de como gerar a avaliação de desempenho.]]></Item>
 		<Item visivel="S" motivo="S16110000170"><![CDATA[Aval. Desempenho > Relatórios > Análise de Desempenho das Competências do Colaborador: Novo video de ajuda de como gerar a avaliação de desempenho.]]></Item>
+		<Item visivel="S" motivo="P17090000113"><![CDATA[SESMT > Movimentações > Fichas Médicas: Ajuste de inconsistência ao exibir candidatos ou colaboradores vinculados a outras empresas.]]></Item>
 		<Item visivel="S" motivo="S17070000270"><![CDATA[SESMT > Relatórios > PPP > Gerar PPP: Exibir os riscos de acordo com a configuração "Considerar a medição dos riscos nos relatórios de PPP, PPRA e LTCAT por" existente no cadastro de empresa.]]></Item>
 		<Item visivel="S" motivo="P17080000198"><![CDATA[Utilitários > Cadastros > Usuários > Criar Usuários Automaticamente: Ajuste de inconsistência ao gerar usuários com login em branco.]]></Item>
 		<Item visivel="S" motivo="S17070000056"><![CDATA[Utilitários > Configurações > Configurar Cadastro de Colaborador e Candidato: Novas opções de configurar o campo de "indicado por" no cadastro do candidato pelo módulo externo.]]></Item>
