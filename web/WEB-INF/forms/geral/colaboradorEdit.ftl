@@ -676,7 +676,7 @@
 						$('#dataAlteracao').val($('#dataAlt').val());
 						$('#form').submit();
 					}else{
-						jAlert("Colaborador <strong>${colaborador.nome}</strong> está desligado. Só é possível inserrir um novo histórico com data menor ou igual a data do desligamento.<br><br>Data do desligamento: <strong>${dataDesligamento?string}</strong>.</span>");
+						jAlert("Colaborador <strong>${colaborador.nome}</strong> está desligado. Só é possível inserir um novo histórico com data menor ou igual a data do desligamento.<br><br>Data do desligamento: <strong>${dataDesligamento?string}</strong>.</span>");
 					}
 				}
 				else
