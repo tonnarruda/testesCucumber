@@ -51,6 +51,7 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ComoFicouSabendoVaga;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.StringUtil;
+import com.fortes.rh.web.action.captacao.dto.CandidatoDTO;
 
 @SuppressWarnings({ "deprecation", "unchecked", "rawtypes" })
 public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implements CandidatoDao
@@ -145,11 +146,11 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		return (Candidato) criteria.uniqueResult();
 	}
 	
-	public Collection<Candidato> find(int page, int pagingSize, String nomeBusca, String cpfBusca, String ddd, String foneFixo, String foneCelular, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno, Long... empresasIds)
+	public Collection<Candidato> find(int page, int pagingSize, CandidatoDTO candidatoDTO, Long... empresasIds)
 	{
 		StringBuilder sql = new StringBuilder();
 		sql.append("select can.id, can.nome, can.disponivel, can.contratado, can.dataCadastro, can.dataAtualizacao, can.indicadoPor, can.cpf, emp.id, exists(select cpf from colaborador where cpf=can.cpf and can.cpf is not null and can.cpf <> '') as jaFoiColaborador "); 
-		Query query = montaListaCandidato(page, pagingSize, nomeBusca, cpfBusca, ddd, foneFixo, foneCelular, indicadoPor, visualizar, dataIni, dataFim, observacaoRH, exibeContratados, exibeExterno, sql, empresasIds);
+		Query query = montaListaCandidato(page, pagingSize, sql, candidatoDTO, empresasIds);
 		
 		List resultado = query.list();
 		Collection<Candidato> candidatos = new ArrayList<Candidato>();
@@ -185,17 +186,17 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		return candidatos;
 	}
 
-	public Integer getCount(String nomeBusca, String cpfBusca, String ddd, String foneFixo, String foneCelular, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno, Long... empresasIds)
+	public Integer getCount(CandidatoDTO candidatoDTO, Long... empresasIds)
 	{
 		StringBuilder sql = new StringBuilder();
 		sql.append("select count(*) as total "); 
 		
-		Query query = montaListaCandidato(0, 0, nomeBusca, cpfBusca, ddd, foneFixo, foneCelular, indicadoPor, visualizar, dataIni, dataFim, observacaoRH, exibeContratados, exibeExterno, sql, empresasIds);
+		Query query = montaListaCandidato(0, 0, sql, candidatoDTO, empresasIds);
 		
 		return (Integer) query.uniqueResult();
 	}
 
-	private Query montaListaCandidato(int page, int pagingSize, String nomeBusca, String cpfBusca, String ddd, String foneFixo, String foneCelular, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno, StringBuilder sql, Long... empresasIds) 
+	private Query montaListaCandidato(int page, int pagingSize, StringBuilder sql, CandidatoDTO candidatoDTO, Long... empresasIds) 
 	{
 		sql.append("from Candidato can ");
 		sql.append("left join Empresa emp on can.empresa_id = emp.id ");
@@ -204,42 +205,42 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		if(empresasIds != null && empresasIds.length > 0)
 			sql.append("and can.empresa_id in (:empresasIds) ");
 		
-		if (exibeExterno)
+		if (candidatoDTO.isExibeExterno())
 			sql.append("and can.origem = :origem ");
 				
-		if (!exibeContratados)
+		if (!candidatoDTO.isExibeContratados())
 			sql.append("and can.contratado = false ");
 
-		if(StringUtils.isNotBlank(nomeBusca))
+		if(StringUtils.isNotBlank(candidatoDTO.getNomeBusca()))
 			sql.append("and normalizar(upper(can.nome)) like normalizar(:nomeBusca) ");
 		
-		if(StringUtils.isNotBlank(cpfBusca))
+		if(StringUtils.isNotBlank(candidatoDTO.getCpfBusca()))
 			sql.append("and can.cpf like :cpfBusca ");
 
-		if(StringUtils.isNotBlank(ddd))
+		if(StringUtils.isNotBlank(candidatoDTO.getDddFoneFixo()))
 			sql.append("and can.ddd = :ddd ");
 
-		if(StringUtils.isNotBlank(foneFixo))
+		if(StringUtils.isNotBlank(candidatoDTO.getFoneFixo()))
 			sql.append("and can.foneFixo like :foneFixo ");
 		
-		if(StringUtils.isNotBlank(foneCelular))
+		if(StringUtils.isNotBlank(candidatoDTO.getFoneCelular()))
 			sql.append("and can.foneCelular like :foneCelular ");
 		
-		if(visualizar == 'D')
+		if(candidatoDTO.getVisualizar() == 'D')
 			sql.append("and can.disponivel = true ");
-		else if(visualizar == 'I')
+		else if(candidatoDTO.getVisualizar() == 'I')
 			sql.append("and can.disponivel = false ");
 
-		if(dataIni != null)
+		if(candidatoDTO.getDataIni() != null)
 			sql.append("and can.dataAtualizacao >= :dataIni ");
 	
-		if(dataFim != null)
+		if(candidatoDTO.getDataFim() != null)
 			sql.append("and can.dataAtualizacao <= :dataFim ");
 		
-		if(StringUtils.isNotBlank(indicadoPor))
+		if(StringUtils.isNotBlank(candidatoDTO.getIndicadoPor()))
 			sql.append("and normalizar(upper(can.indicadoPor)) like normalizar(:indicadoPor) ");
 
-		if(StringUtils.isNotBlank(observacaoRH))
+		if(StringUtils.isNotBlank(candidatoDTO.getObservacaoRH()))
 			sql.append("and normalizar(upper(can.observacaoRH)) like normalizar(:observacaoRH) ");
 		
 		if (pagingSize != 0)
@@ -247,35 +248,35 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		
 		SQLQuery query = getSession().createSQLQuery(sql.toString());
 			
-		if (exibeExterno)
+		if (candidatoDTO.isExibeExterno())
 			query.setCharacter("origem", OrigemCandidato.EXTERNO);
 		
-		if(StringUtils.isNotBlank(nomeBusca))
-			query.setString("nomeBusca", "%" + nomeBusca.toUpperCase() + "%");
+		if(StringUtils.isNotBlank(candidatoDTO.getNomeBusca()))
+			query.setString("nomeBusca", "%" + candidatoDTO.getNomeBusca().toUpperCase() + "%");
 		
-		if(StringUtils.isNotBlank(cpfBusca))
-			query.setString("cpfBusca", "%" + cpfBusca + "%");
+		if(StringUtils.isNotBlank(candidatoDTO.getCpfBusca()))
+			query.setString("cpfBusca", "%" + candidatoDTO.getCpfBusca() + "%");
 
-		if(StringUtils.isNotBlank(ddd))
-			query.setString("ddd", ddd);
+		if(StringUtils.isNotBlank(candidatoDTO.getDddFoneFixo()))
+			query.setString("ddd", candidatoDTO.getDddFoneFixo());
 		
-		if(StringUtils.isNotBlank(foneFixo))
-			query.setString("foneFixo", "%" + foneFixo + "%");
+		if(StringUtils.isNotBlank(candidatoDTO.getFoneFixo()))
+			query.setString("foneFixo", "%" + candidatoDTO.getFoneFixo() + "%");
 		
-		if(StringUtils.isNotBlank(foneCelular))
-			query.setString("foneCelular", "%" + foneCelular + "%");
+		if(StringUtils.isNotBlank(candidatoDTO.getFoneCelular()))
+			query.setString("foneCelular", "%" + candidatoDTO.getFoneCelular() + "%");
 		
-		if(dataIni != null)
-			query.setDate("dataIni", dataIni);
+		if(candidatoDTO.getDataIni() != null)
+			query.setDate("dataIni", candidatoDTO.getDataIni());
 		
-		if(dataFim != null)
-			query.setDate("dataFim", dataFim);
+		if(candidatoDTO.getDataFim() != null)
+			query.setDate("dataFim", candidatoDTO.getDataFim());
 		
-		if(StringUtils.isNotBlank(indicadoPor))
-			query.setString("indicadoPor", "%" + indicadoPor.toUpperCase() + "%");
+		if(StringUtils.isNotBlank(candidatoDTO.getIndicadoPor()))
+			query.setString("indicadoPor", "%" + candidatoDTO.getIndicadoPor().toUpperCase() + "%");
 		
-		if(StringUtils.isNotBlank(observacaoRH))
-			query.setString("observacaoRH", "%" + observacaoRH.toUpperCase() + "%");
+		if(StringUtils.isNotBlank(candidatoDTO.getObservacaoRH()))
+			query.setString("observacaoRH", "%" + candidatoDTO.getObservacaoRH().toUpperCase() + "%");
 		
 		if(empresasIds != null && empresasIds.length > 0)
 			query.setParameterList("empresasIds", empresasIds);

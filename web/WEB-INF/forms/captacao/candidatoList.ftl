@@ -96,24 +96,25 @@
 	<#include "../util/topFiltro.ftl" />
 		<@ww.form name="formBusca" id="formBusca" action="list.action" onsubmit="${validarCampos}" validate="true" method="POST">
 			<@ww.select label="Empresa" id="empresaId" name="empresaId" list="empresas" listKey="id" listValue="nome" headerKey="-1" headerValue="Todas" disabled="!compartilharCandidatos"/>
-			<@ww.textfield label="Nome" name="nomeBusca" liClass="liLeft" cssStyle="width: 350px;" value="${nomeBusca}"/>
+			<@ww.textfield label="Nome" name="candidatoDTO.nomeBusca" liClass="liLeft" cssStyle="width: 350px;" value="${nomeBusca}"/>
 			<@ww.textfield label="CPF" id="cpfBusca" name="cpfBusca" value="${cpfBusca}" cssClass="mascaraCpf"/>
 			
-			<@ww.textfield label="DDD" name="ddd" id="ddd" onkeypress="return somenteNumeros(event,'');" cssStyle="width: 25px;" maxLength="2"  liClass="liLeft"/>
-			<@ww.textfield label="Telefone" name="foneFixo" id="fone" onkeypress="return somenteNumeros(event,'');"  cssStyle="width: 80px;" maxLength="9"  liClass="liLeft" />
-			<@ww.textfield label="Celular" id="celular" name="foneCelular" onkeypress = "return somenteNumeros(event,'');" cssStyle="width: 80px;" maxLength="9" liClass="campo"/>
+			<@ww.textfield label="DDD" name="candidatoDTO.dddFoneFixo" id="dddFone" onkeypress="return somenteNumeros(event,'');" cssStyle="width: 30px;" maxLength="2"  liClass="liLeft"/>
+			<@ww.textfield label="Telefone" name="candidatoDTO.foneFixo" id="fone" onkeypress="return somenteNumeros(event,'');"  cssStyle="width: 80px;" maxLength="9"  liClass="liLeft" />
+			<@ww.textfield label="DDD" name="candidatoDTO.dddCelular" id="dddCelular" onkeypress="return somenteNumeros(event,'');" cssStyle="width: 30px;" maxLength="2"  liClass="liLeft"/>
+			<@ww.textfield label="Celular" id="celular" name="candidatoDTO.foneCelular" onkeypress = "return somenteNumeros(event,'');" cssStyle="width: 80px;" maxLength="9" liClass="campo"/>
 			
-			<@ww.textfield label="Indicado por" name="indicadoPor" />
-			<@ww.textfield label="Observações do RH" name="observacaoRH"  cssStyle="width: 240px;"/>
+			<@ww.textfield label="Indicado por" name="candidatoDTO.indicadoPor" />
+			<@ww.textfield label="Observações do RH" name="candidatoDTO.observacaoRH"  cssStyle="width: 240px;"/>
 
-			<@ww.select id="visualizacao" label="Visualizar" name="visualizar" list=r"#{'T':'Todos','D':'Disponíveis','I':'Indisponíveis'}"  liClass="liLeft"/>
+			<@ww.select id="visualizacao" label="Visualizar" name="candidatoDTO.visualizar" list=r"#{'T':'Todos','D':'Disponíveis','I':'Indisponíveis'}"  liClass="liLeft"/>
 
-			<@ww.datepicker label="Atualização" name="dataCadIni" id="dataIni" value="${dataValueIni}" cssClass="mascaraData" liClass="liLeft"/>
-			<@ww.datepicker label="" name="dataCadFim" id="dataFim" value="${dataValueFim}" cssClass="mascaraData"/>
+			<@ww.datepicker label="Atualização" name="candidatoDTO.dataCadIni" id="dataIni" value="${dataValueIni}" cssClass="mascaraData" liClass="liLeft"/>
+			<@ww.datepicker label="" name="candidatoDTO.dataCadFim" id="dataFim" value="${dataValueFim}" cssClass="mascaraData"/>
 			<@ww.hidden id="pagina" name="page"/>
 			
-			<@ww.checkbox label="Exibir também contratados" id="exibeContratados" name="exibeContratados" labelPosition="left"/>
-			<@ww.checkbox label="" id="exibeExterno" name="exibeExterno" labelPosition="left" theme="simple" />
+			<@ww.checkbox label="Exibir também contratados" id="exibeContratados" name="candidatoDTO.exibeContratados" labelPosition="left"/>
+			<@ww.checkbox label="" id="exibeExterno" name="candidatoDTO.exibeExterno" labelPosition="left" theme="simple" />
 			Exibir somente cadastrados pelo módulo externo
 			<span class="hotspot" id="help_exibeExterno" ><img src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" /></span><br>
 

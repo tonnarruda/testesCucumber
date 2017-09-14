@@ -27,6 +27,8 @@ public class Contato implements Serializable
 	private String email;
 	@Column(length=30)
 	private String nomeContato;
+	@Column(length=5)
+	private String dddCelular;
 
 	public String getEmail()
 	{
@@ -103,9 +105,11 @@ public class Contato implements Serializable
 	public String toString()
 	{
 		return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-				.append("email", this.email).append("foneFixo", this.foneFixo)
-				.append("foneCelular", this.foneCelular)
-				.append("ddd", this.ddd).toString();
+				.append("email", this.email)
+				.append("dddFoneFixo", this.ddd)
+				.append("foneFixo", this.foneFixo)
+				.append("dddCelular", this.dddCelular)
+				.append("foneCelular", this.foneCelular).toString();
 	}
 	
 	public String getNomeContato()
@@ -118,4 +122,11 @@ public class Contato implements Serializable
 		this.nomeContato = nomeContato;
 	}
 
+	public String getDddCelular() {
+		return dddCelular;
+	}
+
+	public void setDddCelular(String dddCelular) {
+		this.dddCelular = dddCelular;
+	}
 }

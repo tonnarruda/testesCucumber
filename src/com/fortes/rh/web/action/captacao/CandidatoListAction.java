@@ -81,6 +81,7 @@ import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
+import com.fortes.rh.web.action.captacao.dto.CandidatoDTO;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.Action;
@@ -168,6 +169,7 @@ public class CandidatoListAction extends MyActionSupportList
 	//variavel para busca no candidatoList
 	private String nomeBusca = "";
 	private String ddd = "";
+	private String dddCelular = "";
 	private String foneFixo = "";
 	private String foneCelular = "";
 	private String indicadoPorBusca = "";
@@ -262,6 +264,7 @@ public class CandidatoListAction extends MyActionSupportList
 	private String reportTitle;
 	private String reportFilter;
 	
+	private CandidatoDTO candidatoDTO = new CandidatoDTO();
 	
 	public String find() throws Exception
 	{
@@ -279,8 +282,9 @@ public class CandidatoListAction extends MyActionSupportList
 			empresaId = getEmpresaSistema().getId();
 		
 		cpfBusca = StringUtil.removeMascara(cpfBusca);
-		setTotalSize(candidatoManager.getCount(nomeBusca, cpfBusca, ddd, foneFixo, foneCelular, indicadoPor, visualizar, dataCadIni, dataCadFim, observacaoRH, exibeContratados, exibeExterno, EmpresaUtil.empresasSelecionadas(empresaId, empresas)));
-		candidatos = candidatoManager.list(getPage(), getPagingSize(), nomeBusca, cpfBusca, ddd, foneFixo, foneCelular, indicadoPor, visualizar, dataCadIni, dataCadFim, observacaoRH, exibeContratados, exibeExterno, EmpresaUtil.empresasSelecionadas(empresaId, empresas));
+		candidatoDTO.setCpfBusca(cpfBusca);
+		setTotalSize(candidatoManager.getCount(candidatoDTO, EmpresaUtil.empresasSelecionadas(empresaId, empresas)));
+		candidatos = candidatoManager.list(getPage(), getPagingSize(), candidatoDTO, EmpresaUtil.empresasSelecionadas(empresaId, empresas));
 
 		if(candidatos == null || candidatos.isEmpty())
 			addActionMessage("Não existem candidatos a serem listados");
@@ -1922,6 +1926,14 @@ public class CandidatoListAction extends MyActionSupportList
 		this.ddd = ddd;
 	}
 
+	public String getDddCelular() {
+		return dddCelular;
+	}
+
+	public void setDddCelular(String dddCelular) {
+		this.dddCelular = dddCelular;
+	}
+	
 	public String getFoneFixo() {
 		return foneFixo;
 	}
@@ -1977,5 +1989,13 @@ public class CandidatoListAction extends MyActionSupportList
 
 	public boolean isContratacoesExcederam() {
 		return contratacoesExcederam;
+	}
+
+	public CandidatoDTO getCandidatoDTO() {
+		return candidatoDTO;
+	}
+
+	public void setCandidatoDTO(CandidatoDTO candidatoDTO) {
+		this.candidatoDTO = candidatoDTO;
 	}
 }

@@ -249,23 +249,23 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<Ca
 		candidatoDao.save(c3);
 
 		candidatoDao.getHibernateTemplateByGenericDao().flush();
-		Collection<Candidato> candidatos = candidatoDao.find(1, 10, "", "", null, null, null, "", 'T',null, null, null, false, false, empresa.getId());
+		Collection<Candidato> candidatos = candidatoDao.find(1, 10, null, empresa.getId());
 
 		assertFalse(candidatos.isEmpty());
 		assertEquals(2, candidatos.size());
 
-		candidatos = candidatoDao.find(1, 10, "chi", "", null, null, null, "", 'T',null, null, null, false, false, empresa.getId());
+		candidatos = candidatoDao.find(1, 10, null, empresa.getId());
 		assertEquals(1, candidatos.size());
 		assertEquals(c1.getId(), ((Candidato)(candidatos.toArray()[0])).getId(), 'T');
 
-		candidatos = candidatoDao.find(1, 10, "chi", "11111111111", null, null, null, "", 'T',null, null, null, false, false, empresa.getId());
+		candidatos = candidatoDao.find(1, 10, null, empresa.getId());
 		assertEquals(1, candidatos.size());
 		assertEquals(c1.getId(), ((Candidato)(candidatos.toArray()[0])).getId(), 'T');
 
-		candidatos = candidatoDao.find(1, 10, "chi", "22222", null, null, null, "", 'T',null, null, null, false, false, empresa.getId());
+		candidatos = candidatoDao.find(1, 10, null, empresa.getId());
 		assertTrue(candidatos.isEmpty());
 
-		candidatos = candidatoDao.find(1, 10, "bob", "", null, null, null, "", 'T',null, null, null, false, false, empresa.getId());
+		candidatos = candidatoDao.find(1, 10, null, empresa.getId());
 		assertEquals(1, candidatos.size());
 
 		assertEquals(c2.getId(), ((Candidato)(candidatos.toArray()[0])).getId(), 'T');
@@ -287,13 +287,13 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<Ca
 		candidatoDao.save(c3);
 
 		candidatoDao.getHibernateTemplateByGenericDao().flush();
-		Collection<Candidato> candidatos = candidatoDao.find(1, 10, "", "", null, null, null, "", 'T',null, null, null, false, false, empresa.getId());
+		Collection<Candidato> candidatos = candidatoDao.find(1, 10, null, empresa.getId());
 		assertEquals(3, candidatos.size());
 
-		candidatos = candidatoDao.find(1, 10, "", "", null, null, null, "", 'D',null, null, null, false, false, empresa.getId());
+		candidatos = candidatoDao.find(1, 10, null, empresa.getId());
 		assertEquals(1, candidatos.size());
 
-		candidatos = candidatoDao.find(1, 10, "", "", null, null, null, "", 'I',null, null, null, false, false, empresa.getId());
+		candidatos = candidatoDao.find(1, 10, null, empresa.getId());
 		assertEquals(2, candidatos.size());
 	}
 	
@@ -340,7 +340,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<Ca
 
 		candidatoDao.getHibernateTemplateByGenericDao().flush();
 
-		Integer count = candidatoDao.getCount(nomeBusca, cpfBusca, "85", "344", "8889", "", 'T',null, null, null, false, false, empresa.getId());
+		Integer count = candidatoDao.getCount(null, empresa.getId());
 
 		assertEquals(1, (int)count);
 	}
@@ -365,13 +365,13 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<Ca
 		candidatoDao.save(c1);
 
 		candidatoDao.getHibernateTemplateByGenericDao().flush();
-		assertEquals("disponivel", 1, (int)candidatoDao.getCount(nomeBusca, cpfBusca, "85", "344", "8889", "", 'D',null, null, null, false, false, empresa.getId()));
+		assertEquals("disponivel", 1, (int)candidatoDao.getCount(null, empresa.getId()));
 		
 		c1.setDisponivel(false);
 		candidatoDao.save(c1);
 		candidatoDao.getHibernateTemplateByGenericDao().flush();
 		
-		assertEquals("indisponivel", 1, (int)candidatoDao.getCount(nomeBusca, cpfBusca, "85", "344", "8889", "", 'I',null, null, null, false, false, empresa.getId()));
+		assertEquals("indisponivel", 1, (int)candidatoDao.getCount(null, empresa.getId()));
 	}
 
 	@Test
@@ -395,7 +395,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<Ca
 		candidatoDao.save(c1);
 
 		candidatoDao.getHibernateTemplateByGenericDao().flush();
-		Integer count = candidatoDao.getCount(nomeBusca, cpfBusca, "", "", "", "", 'I',dataIni, dataFim, null, false, false, empresa.getId());
+		Integer count = candidatoDao.getCount(null, empresa.getId());
 
 		assertEquals(1, (int)count);
 	}

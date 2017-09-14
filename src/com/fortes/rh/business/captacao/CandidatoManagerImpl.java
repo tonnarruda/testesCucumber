@@ -69,6 +69,7 @@ import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.util.Zip;
+import com.fortes.rh.web.action.captacao.dto.CandidatoDTO;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
@@ -183,14 +184,14 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		return false;
 	}
 
-	public Collection<Candidato> list(int page, int pagingSize, String nomeBusca, String cpfBusca, String ddd, String foneFixo, String foneCelular, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno, Long... empresasIds)
+	public Collection<Candidato> list(int page, int pagingSize, CandidatoDTO candidatoDTO, Long... empresasIds)
 	{
-		return getDao().find(page, pagingSize, nomeBusca, cpfBusca, ddd, foneFixo, foneCelular, indicadoPor, visualizar, dataIni, dataFim, observacaoRH, exibeContratados, exibeExterno, empresasIds);
+		return getDao().find(page, pagingSize, candidatoDTO, empresasIds);
 	}
 
-	public Integer getCount(String nomeBusca, String cpfBusca, String ddd, String foneFixo, String foneCelular, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno, Long... empresasIds)
+	public Integer getCount(CandidatoDTO candidatoDTO, Long... empresasIds)
 	{
-		return getDao().getCount(nomeBusca, cpfBusca, ddd, foneFixo, foneCelular, indicadoPor, visualizar, dataIni, dataFim, observacaoRH, exibeContratados, exibeExterno, empresasIds);
+		return getDao().getCount(candidatoDTO, empresasIds);
 	}
 
 	public File getFoto(Long id) throws Exception

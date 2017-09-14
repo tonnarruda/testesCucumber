@@ -8,12 +8,14 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
+import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.security.auditoria.NaoAudita;
 
@@ -29,6 +31,8 @@ public class Habilitacao implements Serializable
 	private Date vencimento;
 	@Column(length=3)
 	private String categoria;
+	@ManyToOne
+	private Estado habUf;
 
 	public String getCategoria() {
 		return categoria;
@@ -68,6 +72,23 @@ public class Habilitacao implements Serializable
 	}
 	public void setVencimento(Date vencimento) {
 		this.vencimento = vencimento;
+	}
+	public Estado getHabUf()
+	{
+		return habUf;
+	}
+
+	public void setHabUf(Estado habUf)
+	{
+		this.habUf = habUf;
+	}
+	
+	@NaoAudita
+	public void setHabUfSigla(String sigla){
+		if(this.habUf == null)
+			habUf = new Estado();
+		
+		this.habUf.setSigla(sigla);
 	}
 
 	public String toString()

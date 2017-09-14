@@ -18,13 +18,14 @@ import com.fortes.rh.model.captacao.relatorio.AvaliacaoCandidatosRelatorio;
 import com.fortes.rh.model.geral.AutoCompleteVO;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ComoFicouSabendoVaga;
+import com.fortes.rh.web.action.captacao.dto.CandidatoDTO;
 
 @SuppressWarnings("rawtypes")
 public interface CandidatoDao extends GenericDao<Candidato>
 {
 	public Collection<Candidato> findBusca(Map parametros, Long[] empresaIds, Collection<Long> idsCandidatos, boolean somenteSemSolicitacao, Integer qtdRegistros, String ordenar) throws Exception;
-	public Collection<Candidato> find(int page, int pagingSize, String nomeBusca, String cpfBusca, String ddd, String foneFixo, String foneCelular, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno, Long... empresasIds);
-	public Integer getCount(String nomeBusca, String cpfBusca, String ddd, String foneFixo, String foneCelular, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno, Long... empresasIds);
+	public Collection<Candidato> find(int page, int pagingSize, CandidatoDTO candidatoDTO, Long... empresasIds);
+	public Integer getCount(CandidatoDTO candidatoDTO, Long... empresasIds);
 	public Collection<Candidato> findCandidatosById(Long[] ids);
 	public List getConhecimentosByCandidatoId(Long id);
 	public Collection<Candidato> getCandidatosByCpf(String[] cpfs, Long empresaId);

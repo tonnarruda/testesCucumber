@@ -20,6 +20,7 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.security.spring.aop.callback.CandidatoAuditorCallbackImpl;
+import com.fortes.rh.web.action.captacao.dto.CandidatoDTO;
 import com.fortes.security.auditoria.Audita;
 
 public interface CandidatoManager extends GenericManager<Candidato>
@@ -30,8 +31,8 @@ public interface CandidatoManager extends GenericManager<Candidato>
 	public void removeCandidato(Candidato candidato) throws Exception;
 
 	public Candidato findByCPF(String cpf, Long empresaId);
-	public Collection<Candidato> list(int page, int pagingSize, String nomeBusca, String cpfBusca, String ddd, String foneFixo, String foneCelular, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno, Long... empresasIds);
-	public Integer getCount(String nomeBusca, String cpfBusca, String ddd, String foneFixo, String foneCelular, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno, Long... empresasIds);
+	public Collection<Candidato> list(int page, int pagingSize, CandidatoDTO candidatoDTO, Long... empresasIds);
+	public Integer getCount(CandidatoDTO candidatoDTO, Long... empresasIds);
 	public Collection<Candidato> busca(Map<String, Object> parametros, Long solicitacaoId, boolean somenteSemSolicitacao, Integer qtdRegistros, String ordenar, Long... empresaIds) throws Exception;
 	public File getFoto(Long id) throws Exception;
 	public void updateSenha(Candidato candidato);

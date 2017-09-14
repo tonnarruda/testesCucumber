@@ -127,6 +127,7 @@ import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.MathUtil;
+import com.fortes.rh.util.ModelUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientColaborador;
@@ -347,8 +348,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		empregado.setMae(colaborador.getPessoal().getMae());
 		empregado.setDeficiencia(Character.toString(colaborador.getPessoal().getDeficiencia()));
 
-		empregado.setDdd(colaborador.getContato().getDdd());
+		empregado.setDddFoneFixo(colaborador.getContato().getDdd());
 		empregado.setFoneFixo(colaborador.getContato().getFoneFixo());
+		empregado.setDddCelular(colaborador.getContato().getDddCelular());
 		empregado.setFoneCelular(colaborador.getContato().getFoneCelular());
 		empregado.setEmail(colaborador.getContato().getEmail());
 		
@@ -457,6 +459,10 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 				empregado.setHabilitacaoVencimento(DateUtil.formataDiaMesAno(colaborador.getHabilitacao().getVencimento()));
 			if (colaborador.getHabilitacao().getCategoria() != null)
 				empregado.setHabilitacaoCategoria(colaborador.getHabilitacao().getCategoria());
+			if(!ModelUtil.hasNull("getHabilitacao().getHabUf().getId()", colaborador)){
+				Estado estado = estadoManager.findById(colaborador.getHabilitacao().getHabUf().getId());
+				empregado.setHabilitacaoUF(estado.getSigla());
+			}
 		}
 	}
 	
@@ -1436,7 +1442,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 		if(colaborador.getContato() == null)
 			colaborador.setContato(new Contato());
-		colaborador.getContato().setDdd(empregado.getDdd());
+		colaborador.getContato().setDdd(empregado.getDddFoneFixo());
 		colaborador.getContato().setFoneFixo(empregado.getFoneFixo());
 		colaborador.getContato().setFoneCelular(empregado.getFoneCelular());
 		colaborador.getContato().setEmail(empregado.getEmail());

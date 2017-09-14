@@ -31,9 +31,10 @@ public class TEmpregado implements Serializable
 	private String pai;
 	private String mae;
 	private String deficiencia;
-	private String ddd;
+	private String dddFoneFixo;
 	private String foneFixo;
 	private String foneCelular;
+	private String dddCelular;
 	private String email;
 	private String ufSigla;
 	private String cidadeCodigoAC;
@@ -45,6 +46,7 @@ public class TEmpregado implements Serializable
 	private String habilitacaoEmissao;
 	private String habilitacaoVencimento;
 	private String habilitacaoCategoria;
+	private String habilitacaoUF;
 	private String tituloNumero;	
 	private String tituloZona;	
 	private String tituloSecao;	
@@ -189,13 +191,13 @@ public class TEmpregado implements Serializable
 	{
 		this.ctpsUFSigla = ctpsUFSigla;
 	}
-	public String getDdd()
+	public String getDddFoneFixo()
 	{
-		return ddd;
+		return dddFoneFixo;
 	}
-	public void setDdd(String ddd)
+	public void setDddFoneFixo(String dddFoneFixo)
 	{
-		this.ddd = ddd;
+		this.dddFoneFixo = dddFoneFixo;
 	}
 	public String getDeficiencia()
 	{
@@ -237,6 +239,12 @@ public class TEmpregado implements Serializable
 	{
 		this.foneCelular = foneCelular;
 	}
+	public String getDddCelular() {
+		return dddCelular;
+	}
+	public void setDddCelular(String dddCelular) {
+		this.dddCelular = dddCelular;
+	}
 	public String getFoneFixo()
 	{
 		return foneFixo;
@@ -260,6 +268,12 @@ public class TEmpregado implements Serializable
 	public void setHabilitacaoNumero(String habilitacaoNumero)
 	{
 		this.habilitacaoNumero = habilitacaoNumero;
+	}
+	public String getHabilitacaoUF() {
+		return habilitacaoUF;
+	}
+	public void setHabilitacaoUF(String habilitacaoUF) {
+		this.habilitacaoUF = habilitacaoUF;
 	}
 	public Integer getId()
 	{

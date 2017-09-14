@@ -3,9 +3,6 @@ package com.fortes.rh.test.web.action.captacao;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyChar;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
@@ -95,6 +92,7 @@ import com.fortes.rh.util.EmpresaUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.captacao.CandidatoListAction;
+import com.fortes.rh.web.action.captacao.dto.CandidatoDTO;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionContext;
@@ -231,13 +229,16 @@ public class CandidatoListActionTest
 		
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		action.setEmpresaSistema(empresa);
+		
+		action.setCandidatoDTO(new CandidatoDTO());
+		
 		Collection<Empresa> empresas = Arrays.asList(empresa);
 		Collection<Candidato> candidatos = Arrays.asList(CandidatoFactory.getCandidato(1L, "Candidato 1"));
 		
 		when(parametrosDoSistemaManager.findById(1L)).thenReturn(parametrosDoSistema);
         when(empresaManager.findEmpresasPermitidas(true, action.getEmpresaSistema().getId(), SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()))).thenReturn(empresas);
-        when(candidatoManager.getCount(anyString(),anyString(), anyString(), anyString(), anyString(), anyString(), anyChar(), any(Date.class), any(Date.class), anyString(), anyBoolean(), anyBoolean(), eq(new Long[]{empresa.getId()}))).thenReturn(1);
-        when(candidatoManager.list(eq(1),eq(15), eq(""), eq(""),eq(""), eq(""), eq(""), eq(""), anyChar(), any(Date.class), any(Date.class), eq(""),eq(false), eq(false), eq(new Long[]{empresa.getId()}))).thenReturn(candidatos);
+        when(candidatoManager.getCount(eq(action.getCandidatoDTO()),eq(new Long[]{empresa.getId()}))).thenReturn(1);
+        when(candidatoManager.list(eq(1),eq(15), eq(action.getCandidatoDTO()), eq(new Long[]{empresa.getId()}))).thenReturn(candidatos);
 		assertEquals("success",action.list());
 	}
 	

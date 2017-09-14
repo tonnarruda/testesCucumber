@@ -10,3 +10,13 @@ update parametrosdosistema set camposColaboradorVisivel = camposColaboradorVisiv
 
 update parametrosdosistema set camposcolaboradorobrigatorio = (select regexp_replace(camposcolaboradorobrigatorio, 'vinculo,|,vinculo','') from  parametrosdosistema);
 update parametrosdosistema set camposcolaboradorobrigatorio = camposcolaboradorobrigatorio || ',vinculo';
+
+
+alter table colaborador add column dddCelular character varying(5); --.go
+alter table candidato add column dddCelular character varying(5); --.go
+
+alter table colaborador add column habuf_id bigint; --.go
+alter table candidato add column habuf_id bigint; --.go
+
+update colaborador set dddCelular = ddd; --.go 
+update candidato set dddCelular = ddd; --.go
