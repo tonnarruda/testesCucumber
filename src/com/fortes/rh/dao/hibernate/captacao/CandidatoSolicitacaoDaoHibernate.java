@@ -161,6 +161,7 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
         p.add(Projections.property("c.nome"), "candidatoNome");
         p.add(Projections.property("c.contato.foneFixo"), "candidatoFoneFixo");
         p.add(Projections.property("c.contato.foneCelular"), "candidatoFoneCelular");
+        p.add(Projections.property("c.contato.dddCelular"), "candidatoDddCelular");
         p.add(Projections.property("c.contato.ddd"), "candidatoDdd");
         p.add(Projections.property("c.contato.email"), "candidatoEmail");
         p.add(Projections.property("c.contratado"), "candidatoContratado");

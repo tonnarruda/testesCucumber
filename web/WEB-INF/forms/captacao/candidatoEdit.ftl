@@ -598,6 +598,7 @@
 				</@ww.div>
 			</li>			
 			
+			<@ww.textfield label="DDD" name="candidato.contato.dddCelular" id="dddCelular" onkeypress="return(somenteNumeros(event,''));" cssStyle="width: 25px;" maxLength="2"  liClass="liLeft"/>
 			<@ww.textfield label="Celular" id="celular" name="candidato.contato.foneCelular" onkeypress = "return(somenteNumeros(event,''));" cssStyle="width: 80px;" maxLength="9" liClass="liLeft , campo"/>
 			<@ww.textfield label="Contato" name="candidato.contato.nomeContato" id="nomeContato" cssStyle="width: 180px;" maxLength="30" liClass="liLeft , campo" onblur="${capitalizar}"/>
 

@@ -267,32 +267,33 @@ public class Candidato extends AbstractModel implements Serializable, Cloneable
 	//Contato
 	public void setContatoDdd(String contatoDdd)
 	{
-		if (contato == null)
-			contato = new Contato();
+		inicializaContato();
 		contato.setDdd(contatoDdd);
 	}
+
 	public void setContatoFoneFixo(String contatoFoneFixo)
 	{
-		if (contato == null)
-			contato = new Contato();
+		inicializaContato();
 		contato.setFoneFixo(contatoFoneFixo);
+	}
+	public void setContatoDddCelular(String dddCelular)
+	{
+		inicializaContato();
+		contato.setDddCelular(dddCelular);
 	}
 	public void setContatoFoneCelular(String contatoFoneCelular)
 	{
-		if (contato == null)
-			contato = new Contato();
+		inicializaContato();
 		contato.setFoneCelular(contatoFoneCelular);
 	}
 	public void setContatoEmail(String contatoEmail)
 	{
-		if (contato == null)
-			contato = new Contato();
+		inicializaContato();
 		contato.setEmail(contatoEmail);
 	}
 	public void setNomeContato(String nomeContato)
 	{
-		if (contato == null)
-			contato = new Contato();
+		inicializaContato();
 		contato.setNomeContato(nomeContato);
 	}
 
@@ -907,29 +908,25 @@ public class Candidato extends AbstractModel implements Serializable, Cloneable
 
 	public void setFoneFixo(String foneFixo)
 	{
-		if (contato == null)
-			contato = new Contato();
+		inicializaContato();
 		contato.setFoneFixo(foneFixo);
 	}
 
 	public void setFoneCelular(String foneCelular)
 	{
-		if (contato == null)
-			contato = new Contato();
+		inicializaContato();
 		contato.setFoneCelular(foneCelular);
 	}
 	
 	public void setEmail (String email)
 	{
-		if (contato == null)
-			contato = new Contato();
+		inicializaContato();
 		contato.setEmail(email);
 	}
 
 	public void setDdd(String ddd)
 	{
-		if (contato == null)
-			contato = new Contato();
+		inicializaContato();
 		contato.setDdd(ddd);
 	}
 
@@ -1258,6 +1255,11 @@ public class Candidato extends AbstractModel implements Serializable, Cloneable
 	private void iniciaCamposExtras() {
 		if(camposExtras == null)
 			camposExtras = new CamposExtras();
+	}
+	
+	private void inicializaContato() {
+		if (this.contato == null)
+			this.contato = new Contato();
 	}
 	
 	public String getNomeComDataCadastro(){
