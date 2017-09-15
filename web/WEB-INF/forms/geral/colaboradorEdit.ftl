@@ -166,6 +166,12 @@
 		<#assign dataDesligamento = ""/>
 	</#if>
 	
+	<#if colaborador?exists && colaborador.nome?exists>
+		<#assign nomeColaborador = colaborador.nome/>
+	<#else>
+		<#assign nomeColaborador = ""/>
+	</#if>
+	
 
 	<#assign validaDataCamposExtras = ""/>
 	<#if habilitaCampoExtra>
@@ -668,6 +674,7 @@
 			
 			var dataDesligamento1 = "${dataDesligamento?string}";
 			
+			
 			if($('input[name="tipoAlteracao"]:checked').val() == 'A' || $('#podeEfetuarRetificacao').val() == "false"){
 				if(moment($("#dataAlt").val(),'DD/MM/YYYY',true).locale('pt-BR').isValid()){
 					var dataNovoHistorico = moment($("#dataAlt").val(),'DD-MM-YYYY').locale('pt-BR');
@@ -676,7 +683,7 @@
 						$('#dataAlteracao').val($('#dataAlt').val());
 						$('#form').submit();
 					}else{
-						jAlert("Colaborador <strong>${colaborador.nome}</strong> está desligado. Só é possível inserir um novo histórico com data menor ou igual a data do desligamento.<br><br>Data do desligamento: <strong>${dataDesligamento?string}</strong>.</span>");
+						jAlert("Colaborador <strong>${nomeColaborador}</strong> está desligado. Só é possível inserir um novo histórico com data menor ou igual a data do desligamento.<br><br>Data do desligamento: <strong>${dataDesligamento?string}</strong>.</span>");
 					}
 				}
 				else

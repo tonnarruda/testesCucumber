@@ -412,7 +412,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			session.put("SESSION_IDIOMA", null);
 			session.put("SESSION_EXPERIENCIA", null);
 		}
-
+		setEmpresaEstaIntegradaEAderiuAoESocial();
 		return Action.SUCCESS;
 	}
 
