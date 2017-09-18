@@ -68,8 +68,8 @@ public class ReportColumn implements Serializable, Cloneable
 		columns.add(new ReportColumn("Cidade/Estado", "endereco.cidadeEstado", "co.endereco.cidadeEstado", 80, false));
 		columns.add(new ReportColumn("Cep", "endereco.cepFormatado", "co.endereco.cep", 60, false));
 		columns.add(new ReportColumn("Email", "contato.email", "co.contato.email", 150, false));
-		columns.add(new ReportColumn("Celular", "contato.foneCelularFormatado", "co.contato.foneCelular", 40, false));
-		columns.add(new ReportColumn("Fone Fixo", "contato.foneFixoFormatado", "co.contato.foneFixo", 40, false));
+		columns.add(new ReportColumn("Celular", "contato.celularComDddFormato", "co.contato.foneCelular", 42, false));
+		columns.add(new ReportColumn("Fone Fixo", "contato.foneFixoComDddFormato", "co.contato.foneFixo", 40, false));
 		columns.add(new ReportColumn("Afastado", "afastadoString", "caf.inicio", 15, false));
 		
 		return columns;

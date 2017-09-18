@@ -1164,8 +1164,9 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getEndereco().getCidade().getNome()", mensagem, "Cidade:", colaboradorMensagem);
 		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getEndereco().getBairro()", mensagem, "Bairro:", colaboradorMensagem);
 		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getContato().getEmail()", mensagem, "Email:", colaboradorMensagem);
-		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getContato().getDdd()", mensagem, "DDD:", colaboradorMensagem);
+		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getContato().getDdd()", mensagem, "DDD Telefone Fixo:", colaboradorMensagem);
 		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getContato().getFoneFixo()", mensagem, "Telefone Fixo:", colaboradorMensagem);
+		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getContato().getDddCelular()", mensagem, "DDD Celular:", colaboradorMensagem);
 		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getContato().getFoneCelular()", mensagem, "Telefone Celular:", colaboradorMensagem);
 		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getPessoal().getEscolaridade()", mensagem, "Escolaridade:", colaboradorMensagem);
 		verificaDadoAtualizado(colaboradorOriginal, colaboradorAtualizado, "getPessoal().getEstadoCivil()", mensagem, "Estado Civil:", colaboradorMensagem);

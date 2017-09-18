@@ -430,7 +430,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		{
 			addActionWarning("Sua conta de usuário não está vinculada à nenhum colaborador");
 		}
-		else if( ! colaborador.getEmpresa().getId().equals(getEmpresaSistema().getId()))//isso é muito importante, evita que o cara edite o colaborador com os dados errado no AC (Francisco Barroso)
+		else if(!colaborador.getEmpresa().getId().equals(getEmpresaSistema().getId()))//isso é muito importante, evita que o cara edite o colaborador com os dados errado no AC (Francisco Barroso)
 		{
 			addActionWarning("Só é possível editar dados pessoais para empresa na qual você foi contratado(a). Acesse a empresa " + colaborador.getEmpresaNome() + " para alterar suas informações.");
 			colaborador = null;
@@ -492,8 +492,8 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	}
 
 	private void validaEdicaoDeCamposIntegrados() {
-		setEmpresaEstaIntegradaEAderiuAoESocial();
 		if(getEmpresaSistema().isAcIntegra() && !colaborador.isNaoIntegraAc() && StringUtils.isBlank(colaborador.getCodigoAC())){
+			setEmpresaEstaIntegradaEAderiuAoESocial();
 			try {
 				desabilitarEdicaoCamposIntegrados = colaboradorManager.statusAdmissaoNoFortesPessoal(getEmpresaSistema(), colaborador.getId()) != StatusAdmisaoColaboradorNoFortesPessoal.NA_TABELA_TEMPORARIA.getOpcao();
 				if(desabilitarEdicaoCamposIntegrados)
@@ -919,7 +919,8 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 				
 			setDadosHistoricoColaborador();
 			
-			if(colaboradorManager.isExisteHistoricoCadastralDoColaboradorComPendenciaNoESocial(getEmpresaSistema(), colaborador.getCodigoAC())){
+			if(getEmpresaSistema().isAcIntegra() && StringUtils.isNotBlank(colaborador.getCodigoAC()) && !colaborador.isNaoIntegraAc()  && 
+					colaboradorManager.isExisteHistoricoCadastralDoColaboradorComPendenciaNoESocial(getEmpresaSistema(), colaborador.getCodigoAC())){
 				colaboradorManager.setDadosIntegrados(colaborador);
 				dadosIntegradosAtualizados = false;
 				mensagem = "Os dados integrados não podem ser editados pois no Fortes Pessoal existe pendência como eSocial.";

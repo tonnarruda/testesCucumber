@@ -93,8 +93,9 @@ public class Contato implements Serializable
 		if (StringUtils.isNotBlank(foneCelular))
 		{ 
 			if (StringUtils.isNotBlank(foneFixo)){
+				result += " / ";
 				if(StringUtils.isNotBlank(dddCelular))
-					result += " / (" + dddCelular + ") ";
+					result += "(" + dddCelular + ") ";
 				
 				result += StringUtil.criarMascaraTelefone(foneCelular);
 			}
@@ -107,6 +108,27 @@ public class Contato implements Serializable
 		}
 
 
+		return result;
+	}
+	
+	public String getFoneFixoComDddFormato(){
+		String result = "";
+		
+		if (StringUtils.isNotBlank(ddd) && StringUtils.isNotBlank(foneFixo)){
+			result += "(" + ddd + ") ";
+			result += this.getFoneFixoFormatado();
+		}
+		return result;
+	}
+	
+	public String getCelularComDddFormato(){
+		String result = "";
+		
+		if (StringUtils.isNotBlank(dddCelular) && StringUtils.isNotBlank(foneCelular)){
+			result += "(" + dddCelular + ") ";
+			result += this.getFoneCelularFormatado();
+		}
+		
 		return result;
 	}
 

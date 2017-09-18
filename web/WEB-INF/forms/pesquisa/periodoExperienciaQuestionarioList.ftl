@@ -53,7 +53,7 @@
 		<b>Cargo: ${colaborador.faixaSalarial.descricao}</b> <br/>
 		<b>Área Organizacional: ${colaborador.areaOrganizacional.descricao}</b> <br/>
 		<b>Data de Admissão: ${colaborador.dataAdmissaoFormatada}</b> <br/>
-		<b>Telefone : ${colaborador.contato.foneContatoFormatado}</b> <br/><br/>
+		<b>Telefone Fixo:${colaborador.contato.foneFixoComDddFormato}</b> &nbsp&nbsp<b>Celular: ${colaborador.contato.celularComDddFormato}</b><br/><br/>
 
 		<@display.table name="colaboradorQuestionarios" id="colaboradorQuestionario" class="dados">
 			<@display.column title="Ações" class="acao">

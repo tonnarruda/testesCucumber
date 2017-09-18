@@ -182,8 +182,8 @@
 	<#if colaborador.contato?exists && colaborador.contato.foneFixo?exists && colaborador.contato.ddd?exists>
 		<div class='grade_field'><strong>Telefone:</strong> (${colaborador.contato.ddd}) ${colaborador.contato.foneFixoFormatado}</div>
 	</#if>
-	<#if colaborador.contato?exists && colaborador.contato.foneCelular?exists && colaborador.contato.ddd?exists>
-		<div class='grade_field'><strong>Celular:</strong> (${colaborador.contato.ddd}) ${colaborador.contato.foneCelularFormatado}</div>
+	<#if colaborador.contato?exists && colaborador.contato.foneCelular?exists>
+		<div class='grade_field'><strong>Celular:</strong> ${colaborador.contato.celularComDddFormato}</div>
 	</#if>
 	<#if colaborador.pessoal?exists && colaborador.pessoal.conjuge?exists && colaborador.pessoal.conjuge != "">
 		<div class='grade_field'><strong>Cônjuge:</strong> ${colaborador.pessoal.conjuge}</div>

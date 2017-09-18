@@ -8,6 +8,7 @@ public class CandidatoDTO {
 	private String cpfBusca;
 	private String dddFoneFixo;
 	private String foneFixo;
+	private String dddCelular;
 	private String foneCelular;
 	private String indicadoPor;
 	private char visualizar;
@@ -40,6 +41,12 @@ public class CandidatoDTO {
 	}
 	public void setFoneFixo(String foneFixo) {
 		this.foneFixo = foneFixo;
+	}
+	public String getDddCelular() {
+		return dddCelular;
+	}
+	public void setDddCelular(String dddCelular) {
+		this.dddCelular = dddCelular;
 	}
 	public String getFoneCelular() {
 		return foneCelular;

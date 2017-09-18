@@ -578,5 +578,10 @@
 	<property name="sessionFactory">
 		<ref bean="sessionFactory" />
 	</property>
-  </bean>    
+  </bean>
+  <bean id="riscoDao" class="com.fortes.rh.dao.hibernate.sesmt.RiscoDaoHibernate">
+	<property name="sessionFactory">
+		<ref bean="sessionFactory" />
+	</property>
+  </bean>
 </beans>

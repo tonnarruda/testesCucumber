@@ -84,6 +84,7 @@ import com.fortes.rh.test.factory.geral.EstadoFactory;
 import com.fortes.rh.test.util.mockObjects.MockCandidato;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.StringUtil;
+import com.fortes.rh.web.action.captacao.dto.CandidatoDTO;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<Candidato>
 {
@@ -249,23 +250,32 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<Ca
 		candidatoDao.save(c3);
 
 		candidatoDao.getHibernateTemplateByGenericDao().flush();
-		Collection<Candidato> candidatos = candidatoDao.find(1, 10, null, empresa.getId());
-
+		CandidatoDTO candidatoDTO = new CandidatoDTO();
+		candidatoDTO.setCpfBusca("");
+		candidatoDTO.setNomeBusca("");
+		candidatoDTO.setVisualizar('T');
+		
+		Collection<Candidato> candidatos = candidatoDao.find(1, 10, candidatoDTO, empresa.getId());
 		assertFalse(candidatos.isEmpty());
 		assertEquals(2, candidatos.size());
 
-		candidatos = candidatoDao.find(1, 10, null, empresa.getId());
+		candidatoDTO.setNomeBusca("chi");
+		candidatos = candidatoDao.find(1, 10, candidatoDTO, empresa.getId());
 		assertEquals(1, candidatos.size());
 		assertEquals(c1.getId(), ((Candidato)(candidatos.toArray()[0])).getId(), 'T');
 
-		candidatos = candidatoDao.find(1, 10, null, empresa.getId());
+		candidatoDTO.setCpfBusca("11111111111");
+		candidatos = candidatoDao.find(1, 10, candidatoDTO, empresa.getId());
 		assertEquals(1, candidatos.size());
 		assertEquals(c1.getId(), ((Candidato)(candidatos.toArray()[0])).getId(), 'T');
 
-		candidatos = candidatoDao.find(1, 10, null, empresa.getId());
+		candidatoDTO.setCpfBusca("22222");
+		candidatos = candidatoDao.find(1, 10, candidatoDTO, empresa.getId());
 		assertTrue(candidatos.isEmpty());
 
-		candidatos = candidatoDao.find(1, 10, null, empresa.getId());
+		candidatoDTO.setCpfBusca("");
+		candidatoDTO.setNomeBusca("bob");
+		candidatos = candidatoDao.find(1, 10, candidatoDTO, empresa.getId());
 		assertEquals(1, candidatos.size());
 
 		assertEquals(c2.getId(), ((Candidato)(candidatos.toArray()[0])).getId(), 'T');
@@ -286,14 +296,21 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<Ca
 		c3.setDisponivel(false);
 		candidatoDao.save(c3);
 
+		CandidatoDTO candidatoDTO = new CandidatoDTO();
+		candidatoDTO.setCpfBusca("");
+		candidatoDTO.setNomeBusca("");
+		candidatoDTO.setVisualizar('T');
+		
 		candidatoDao.getHibernateTemplateByGenericDao().flush();
-		Collection<Candidato> candidatos = candidatoDao.find(1, 10, null, empresa.getId());
+		Collection<Candidato> candidatos = candidatoDao.find(1, 10, candidatoDTO, empresa.getId());
 		assertEquals(3, candidatos.size());
 
-		candidatos = candidatoDao.find(1, 10, null, empresa.getId());
+		candidatoDTO.setVisualizar('D');
+		candidatos = candidatoDao.find(1, 10, candidatoDTO, empresa.getId());
 		assertEquals(1, candidatos.size());
 
-		candidatos = candidatoDao.find(1, 10, null, empresa.getId());
+		candidatoDTO.setVisualizar('I');
+		candidatos = candidatoDao.find(1, 10, candidatoDTO, empresa.getId());
 		assertEquals(2, candidatos.size());
 	}
 	
@@ -335,12 +352,21 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<Ca
 		c1.setDisponivel(true);
 		c1.setContatoDdd("85");
 		c1.setContatoFoneFixo("33334444");
+		c1.setContatoDddCelular("88");
 		c1.setContatoFoneCelular("88889999");
 		candidatoDao.save(c1);
 
 		candidatoDao.getHibernateTemplateByGenericDao().flush();
+		CandidatoDTO candidatoDTO = new CandidatoDTO();
+		candidatoDTO.setCpfBusca(cpfBusca);
+		candidatoDTO.setNomeBusca(nomeBusca);
+		candidatoDTO.setVisualizar('T');
+		candidatoDTO.setDddFoneFixo("85");
+		candidatoDTO.setFoneFixo("344");
+		candidatoDTO.setFoneCelular("8889");
+		candidatoDTO.setDddCelular("88");
 
-		Integer count = candidatoDao.getCount(null, empresa.getId());
+		Integer count = candidatoDao.getCount(candidatoDTO, empresa.getId());
 
 		assertEquals(1, (int)count);
 	}
@@ -359,19 +385,30 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<Ca
 		c1.setCpf(cpfBusca);
 		c1.setContatoDdd("85");
 		c1.setContatoFoneFixo("33334444");
+		c1.setContatoDddCelular("88");
 		c1.setContatoFoneCelular("88889999");
 		c1.setEmpresa(empresa);
 		c1.setDisponivel(true);
 		candidatoDao.save(c1);
+		
+		CandidatoDTO candidatoDTO = new CandidatoDTO();
+		candidatoDTO.setCpfBusca(cpfBusca);
+		candidatoDTO.setNomeBusca(nomeBusca);
+		candidatoDTO.setVisualizar('D');
+		candidatoDTO.setDddFoneFixo("85");
+		candidatoDTO.setFoneFixo("344");
+		candidatoDTO.setFoneCelular("8889");
+		candidatoDTO.setDddCelular("88");
 
 		candidatoDao.getHibernateTemplateByGenericDao().flush();
-		assertEquals("disponivel", 1, (int)candidatoDao.getCount(null, empresa.getId()));
+		assertEquals("disponivel", 1, (int)candidatoDao.getCount(candidatoDTO, empresa.getId()));
 		
 		c1.setDisponivel(false);
 		candidatoDao.save(c1);
 		candidatoDao.getHibernateTemplateByGenericDao().flush();
 		
-		assertEquals("indisponivel", 1, (int)candidatoDao.getCount(null, empresa.getId()));
+		candidatoDTO.setVisualizar('I');
+		assertEquals("indisponivel", 1, (int)candidatoDao.getCount(candidatoDTO, empresa.getId()));
 	}
 
 	@Test
@@ -394,8 +431,20 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<Ca
 		c1.setDisponivel(false);
 		candidatoDao.save(c1);
 
+		CandidatoDTO candidatoDTO = new CandidatoDTO();
+		candidatoDTO.setCpfBusca(cpfBusca);
+		candidatoDTO.setNomeBusca(nomeBusca);
+		candidatoDTO.setVisualizar('I');
+		candidatoDTO.setDddFoneFixo("");
+		candidatoDTO.setFoneFixo("");
+		candidatoDTO.setFoneCelular("");
+		candidatoDTO.setDddCelular("");
+		candidatoDTO.setDataIni(dataIni);
+		candidatoDTO.setDataFim(dataFim);
+		candidatoDTO.setIndicadoPor("");
+
 		candidatoDao.getHibernateTemplateByGenericDao().flush();
-		Integer count = candidatoDao.getCount(null, empresa.getId());
+		Integer count = candidatoDao.getCount(candidatoDTO, empresa.getId());
 
 		assertEquals(1, (int)count);
 	}

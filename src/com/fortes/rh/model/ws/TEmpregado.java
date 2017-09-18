@@ -31,7 +31,7 @@ public class TEmpregado implements Serializable
 	private String pai;
 	private String mae;
 	private String deficiencia;
-	private String dddFoneFixo;
+	private String ddd;
 	private String foneFixo;
 	private String foneCelular;
 	private String dddCelular;
@@ -191,13 +191,13 @@ public class TEmpregado implements Serializable
 	{
 		this.ctpsUFSigla = ctpsUFSigla;
 	}
-	public String getDddFoneFixo()
+	public String getDdd()
 	{
-		return dddFoneFixo;
+		return ddd;
 	}
-	public void setDddFoneFixo(String dddFoneFixo)
+	public void setDdd(String ddd)
 	{
-		this.dddFoneFixo = dddFoneFixo;
+		this.ddd = ddd;
 	}
 	public String getDeficiencia()
 	{

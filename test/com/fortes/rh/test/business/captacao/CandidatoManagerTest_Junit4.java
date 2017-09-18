@@ -33,6 +33,7 @@ import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.geral.CamposExtrasFactory;
 import com.fortes.rh.test.factory.geral.CidadeFactory;
 import com.fortes.rh.test.factory.geral.EstadoFactory;
+import com.fortes.rh.web.action.captacao.dto.CandidatoDTO;
 
 public class CandidatoManagerTest_Junit4 
 {
@@ -305,5 +306,63 @@ public class CandidatoManagerTest_Junit4
 
 		candidatoManager.setMail(null);
 		candidatoManager.enviaNovaSenha(candidato, empresa);
+	}
+	
+	@Test
+	public void testList() throws Exception {
+		Empresa empresa = new Empresa();
+		empresa.setId(654654L);
+
+		int page = 1;
+		int pagingSize = 1;
+		String nomeBusca = "";
+		String cpfBusca = "";
+		Long empresaId = empresa.getId();
+
+		Candidato candidato = new Candidato();
+		candidato.setId(2L);
+		candidato.setEmpresa(empresa);
+
+		Candidato candidato2 = new Candidato();
+		candidato2.setId(3L);
+		candidato2.setEmpresa(empresa);
+
+		Candidato candidato3 = new Candidato();
+		candidato3.setId(4L);
+		candidato3.setEmpresa(empresa);
+
+		Collection<Candidato> candidatos = new ArrayList<Candidato>();
+		candidatos.add(candidato);
+		candidatos.add(candidato2);
+		candidatos.add(candidato3);
+
+		CandidatoDTO candidatoDTO = new CandidatoDTO();
+		candidatoDTO.setNomeBusca(nomeBusca);
+		candidatoDTO.setCpfBusca(cpfBusca);
+		candidatoDTO.setIndicadoPor("");
+		candidatoDTO.setVisualizar('T');
+		
+		when(candidatoDao.find(page, pagingSize, candidatoDTO, new Long[]{empresaId})).thenReturn(candidatos);
+		Collection<Candidato> retorno = candidatoManager.list(page, pagingSize, candidatoDTO,empresaId);
+
+		assertEquals(3, retorno.size());
+	}
+
+	@Test
+	public void testGetCount() throws Exception {
+		String nomeBusca = "";
+		String cpfBusca = "";
+		Long empresaId = 1L;
+
+		CandidatoDTO candidatoDTO = new CandidatoDTO();
+		candidatoDTO.setNomeBusca(nomeBusca);
+		candidatoDTO.setCpfBusca(cpfBusca);
+		candidatoDTO.setIndicadoPor("");
+		candidatoDTO.setVisualizar('T');
+		
+		when(candidatoDao.getCount(candidatoDTO,  new Long[]{empresaId})).thenReturn(3);
+		Integer retorno = candidatoManager.getCount(candidatoDTO, empresaId);
+
+		assertTrue(retorno == 3);
 	}
 }

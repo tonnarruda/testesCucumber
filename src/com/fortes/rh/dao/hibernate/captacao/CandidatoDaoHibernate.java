@@ -222,6 +222,9 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 
 		if(StringUtils.isNotBlank(candidatoDTO.getFoneFixo()))
 			sql.append("and can.foneFixo like :foneFixo ");
+
+		if(StringUtils.isNotBlank(candidatoDTO.getDddCelular()))
+			sql.append("and can.dddCelular = :dddCelular ");
 		
 		if(StringUtils.isNotBlank(candidatoDTO.getFoneCelular()))
 			sql.append("and can.foneCelular like :foneCelular ");
@@ -262,6 +265,9 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		
 		if(StringUtils.isNotBlank(candidatoDTO.getFoneFixo()))
 			query.setString("foneFixo", "%" + candidatoDTO.getFoneFixo() + "%");
+		
+		if(StringUtils.isNotBlank(candidatoDTO.getDddCelular()))
+			query.setString("dddCelular", candidatoDTO.getDddCelular());
 		
 		if(StringUtils.isNotBlank(candidatoDTO.getFoneCelular()))
 			query.setString("foneCelular", "%" + candidatoDTO.getFoneCelular() + "%");

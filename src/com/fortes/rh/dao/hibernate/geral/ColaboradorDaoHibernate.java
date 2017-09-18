@@ -556,6 +556,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("c.endereco.cep"), "enderecoCep");
 		p.add(Projections.property("c.contato.email"), "emailColaborador");
 		p.add(Projections.property("c.contato.ddd"), "contatoDdd");
+		p.add(Projections.property("c.contato.dddCelular"), "contatoDddCelular");
 		p.add(Projections.property("c.contato.foneCelular"), "contatoCelular");
 		p.add(Projections.property("c.contato.foneFixo"), "contatoFoneFixo");
 	}
@@ -1051,7 +1052,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 				"co.pessoal.rgOrgaoEmissor, rgUf.sigla, co.pessoal.deficiencia, co.pessoal.rgDataExpedicao, co.pessoal.sexo,  " +
 				"co.pessoal.dataNascimento, co.pessoal.conjuge, co.pessoal.qtdFilhos, co.pessoal.ctps.ctpsNumero, co.pessoal.ctps.ctpsSerie, co.pessoal.ctps.ctpsDv,  " +
 				"co.habilitacao.numeroHab, co.habilitacao.emissao, co.habilitacao.vencimento, co.habilitacao.categoria, co.endereco.logradouro, co.endereco.complemento,  " +
-				"co.endereco.numero, co.endereco.bairro, co.endereco.cep, co.contato.email, co.contato.foneCelular,	co.contato.foneFixo, fun.nome, amb.nome, " +
+				"co.endereco.numero, co.endereco.bairro, co.endereco.cep, co.contato.email, co.contato.dddCelular, co.contato.foneCelular, co.contato.ddd, co.contato.foneFixo, fun.nome, amb.nome, " +
 				"cidade.nome, uf.sigla, caf.inicio, caf.fim, cand.pessoal.indicadoPor, hc1.salario, hc1.tipoSalario, hc1.quantidadeIndice, i, fs, fsh, ih, ifs, ifsh " );
 				
 				if(habilitaCampoExtra && camposExtras != null)
@@ -2206,6 +2207,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append(" contato.email = :email ,");
 		hql.append(" contato.ddd = :ddd ,");
 		hql.append(" contato.foneFixo = :foneFixo ,");
+		hql.append(" contato.dddCelular = :dddCelular ,");
 		hql.append(" contato.foneCelular = :foneCelular ,");
 		hql.append(" pessoal.escolaridade = :escolaridade ,");
 		hql.append(" pessoal.estadoCivil = :estadoCivil ,");
@@ -2260,6 +2262,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.setString("email", colaborador.getContato().getEmail());
 		query.setString("ddd", colaborador.getContato().getDdd());
 		query.setString("foneFixo", colaborador.getContato().getFoneFixo());
+		query.setString("dddCelular", colaborador.getContato().getDddCelular());
 		query.setString("foneCelular", colaborador.getContato().getFoneCelular());
 		query.setString("escolaridade", colaborador.getPessoal().getEscolaridade());
 		query.setString("estadoCivil", colaborador.getPessoal().getEstadoCivil());
@@ -2974,7 +2977,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	{
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, co.matricula, ");
-		hql.append("ao.id, ao.nome, fs.nome, ca.nome, co.dataAdmissao, e.nome, co.contato.ddd, co.contato.foneFixo, co.contato.foneCelular) ");
+		hql.append("ao.id, ao.nome, fs.nome, ca.nome, co.dataAdmissao, e.nome, co.contato.ddd, co.contato.foneFixo, co.contato.foneCelular, co.contato.dddCelular ) ");
 		hql.append("from HistoricoColaborador as hc ");
 		hql.append("left join hc.colaborador as co ");
 		hql.append("left join hc.estabelecimento as e ");
@@ -3246,6 +3249,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("c.desligado"), "desligado");
 		p.add(Projections.property("c.dataAdmissao"), "dataAdmissao");
 		p.add(Projections.property("c.contato.ddd"), "contatoDdd");
+		p.add(Projections.property("c.contato.dddCelular"), "contatoDddCelular");
 		p.add(Projections.property("c.contato.foneCelular"), "contatoCelular");
 		p.add(Projections.property("c.contato.foneFixo"), "contatoFoneFixo");
 		return p;

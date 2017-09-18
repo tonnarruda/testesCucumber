@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
-<!-- 2016-10-03T14:07:32 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="performanceFuncional" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="f5bf1021-9960-4142-9856-02d50ce124e5">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="210"/>
+	<property name="ireport.x" value="15"/>
+	<property name="ireport.y" value="125"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -28,9 +26,8 @@
 	<field name="colaborador.endereco.bairro" class="java.lang.String"/>
 	<field name="colaborador.endereco.cidade.nome" class="java.lang.String"/>
 	<field name="colaborador.endereco.uf.sigla" class="java.lang.String"/>
-	<field name="colaborador.contato.ddd" class="java.lang.String"/>
-	<field name="colaborador.contato.foneFixoFormatado" class="java.lang.String"/>
-	<field name="colaborador.contato.foneCelularFormatado" class="java.lang.String"/>
+	<field name="colaborador.contato.foneFixoComDddFormato" class="java.lang.String"/>
+	<field name="colaborador.contato.celularComDddFormato" class="java.lang.String"/>
 	<field name="colaborador.pessoal.getEstadoCivilDic()" class="java.lang.String"/>
 	<field name="colaborador.pessoal.getEscolaridadeDic()" class="java.lang.String"/>
 	<field name="colaborador.endereco.cepFormatado" class="java.lang.String"/>
@@ -278,18 +275,7 @@
 					<text><![CDATA[Telefone:]]></text>
 				</staticText>
 				<textField isBlankWhenNull="false">
-					<reportElement key="textField" x="342" y="45" width="14" height="15" uuid="021358c3-d91e-4302-b698-80a03144548b"/>
-					<box>
-						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle"/>
-					<textFieldExpression><![CDATA[$F{colaborador.contato.ddd}]]></textFieldExpression>
-				</textField>
-				<textField isBlankWhenNull="false">
-					<reportElement key="textField" x="356" y="45" width="140" height="15" uuid="38ff5473-4ba1-42e8-8abb-2467e1312376"/>
+					<reportElement key="textField" x="343" y="45" width="153" height="15" uuid="38ff5473-4ba1-42e8-8abb-2467e1312376"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -297,7 +283,7 @@
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement verticalAlignment="Middle"/>
-					<textFieldExpression><![CDATA[$F{colaborador.contato.foneFixoFormatado}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{colaborador.contato.foneFixoComDddFormato}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="false">
 					<reportElement key="textField" x="551" y="45" width="153" height="15" uuid="d997d5b2-a341-4887-947f-7cf8be104a63"/>
@@ -308,7 +294,7 @@
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement verticalAlignment="Middle"/>
-					<textFieldExpression><![CDATA[$F{colaborador.contato.foneCelularFormatado}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{colaborador.contato.celularComDddFormato}]]></textFieldExpression>
 				</textField>
 				<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
 					<reportElement key="textField" x="389" y="99" width="107" height="15" uuid="a262622e-1509-4e87-a5dc-0d9c4a3b3a7d"/>

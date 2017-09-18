@@ -665,7 +665,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 						String rgOrgaoEmissor,  String rgUfSigla,  Character deficiencia, Date rgDataExpedicao, Character sexo, 
 						Date dataNascimento, String conjuge, Integer qtdFilhos, String ctpsNumero, String ctpsSerie, Character ctpsDv, String numeroHab, Date emissao, 
 						Date vencimento, String categoria, String logradouro, String complemento, String numero, 
-						String bairro, String cep, String email, String foneCelular, String foneFixo, String funcaoNome, String ambienteNome,  
+						String bairro, String cep, String email, String dddCelular, String foneCelular, String dddFoneFixo, String foneFixo, String funcaoNome, String ambienteNome,  
 						String cidadeNome, String ufSigla, Date afastamentoInicio, Date afastamentoFim, String candIndicadoPor,
 						Double salario, int tipoSalario, Double quantidadeIndice, Indice indice, FaixaSalarial faixaSalarial, FaixaSalarialHistorico faixaSalarialHistorico, IndiceHistorico indiceHistorico, Indice faixaIndice, IndiceHistorico faixaHistoricoIndice,  
 						String texto1,  String texto2,  String texto3,  String texto4,  String texto5,  String texto6,  String texto7,  String texto8,  String textolongo1,  String textolongo2,
@@ -676,7 +676,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this(esId, esNome, aoId, aoNome, reNome, coId, coNome, cgNome, fsNome, empresaId, empresaNome, empresaAcIntegra, nomeComercial,
 				matricula, codigoAC, desligado, dataAdmissao, dataDesligamento, vinculo, naoIntegraAc, cursos, dataEncerramentoContrato, estadoCivil, escolaridade, mae, pai,
 				cpf, pis, rg, rgOrgaoEmissor, rgUfSigla, deficiencia, rgDataExpedicao, sexo, dataNascimento, conjuge, qtdFilhos, ctpsNumero, ctpsSerie,
-				ctpsDv, numeroHab, emissao, vencimento, categoria, logradouro, complemento, numero, bairro, cep, email, foneCelular, foneFixo, 
+				ctpsDv, numeroHab, emissao, vencimento, categoria, logradouro, complemento, numero, bairro, cep, email, dddCelular, foneCelular, dddFoneFixo, foneFixo, 
 				funcaoNome, ambienteNome, cidadeNome, ufSigla, afastamentoInicio, afastamentoFim, candIndicadoPor,
 				salario, tipoSalario, quantidadeIndice, indice, faixaSalarial, faixaSalarialHistorico, indiceHistorico, faixaIndice, faixaHistoricoIndice);
 		
@@ -709,7 +709,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 			String rgOrgaoEmissor, String rgUfSigla, Character deficiencia, Date rgDataExpedicao, Character sexo, 
 			Date dataNascimento, String conjuge, Integer qtdFilhos, String ctpsNumero, String ctpsSerie, Character ctpsDv, String numeroHab, Date emissao, 
 			Date vencimento, String categoria, String logradouro, String complemento, String numero, 
-			String bairro, String cep, String email, String foneCelular, String foneFixo, String funcaoNome, String ambienteNome, 
+			String bairro, String cep, String email, String dddCelular, String foneCelular, String dddFoneFixo, String foneFixo, String funcaoNome, String ambienteNome, 
 			String cidadeNome, String ufSigla, Date afastamentoInicio, Date afastamentoFim, String candIndicadoPor,
 			Double salario, int tipoSalario, Double quantidadeIndice, Indice indice, FaixaSalarial faixaSalarial, FaixaSalarialHistorico faixaSalarialHistorico, IndiceHistorico indiceHistorico, Indice faixaIndice, IndiceHistorico faixaHistoricoIndice
 			) 
@@ -721,7 +721,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 				pis, rg, rgOrgaoEmissor, deficiencia, rgDataExpedicao, sexo,
 				dataNascimento, conjuge, qtdFilhos, ctpsNumero, ctpsSerie,
 				ctpsDv, numeroHab, emissao, vencimento, categoria, logradouro,
-				complemento, numero, bairro, cep, email, foneCelular, foneFixo,
+				complemento, numero, bairro, cep, email, dddCelular, foneCelular, dddFoneFixo, foneFixo,
 				cidadeNome, ufSigla, afastamentoInicio, afastamentoFim,
 				candIndicadoPor);
 		
@@ -761,7 +761,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 			String estadoCivil, String escolaridade, String mae, String pai, String cpf, String pis, String rg, String rgOrgaoEmissor,
 			Character deficiencia, Date rgDataExpedicao, Character sexo, Date dataNascimento, String conjuge, Integer qtdFilhos,
 			String ctpsNumero, String ctpsSerie, Character ctpsDv, String numeroHab, Date emissao, Date vencimento, String categoria,
-			String logradouro, String complemento, String numero, String bairro, String cep, String email, String foneCelular,
+			String logradouro, String complemento, String numero, String bairro, String cep, String email,String dddCelular, String foneCelular, String dddFoneFixo,
 			String foneFixo, String cidadeNome, String ufSigla, Date afastamentoInicio, Date afastamentoFim, String candIndicadoPor) 
 	{
 		
@@ -846,6 +846,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.getContato().setEmail(email);
 		this.getContato().setFoneCelular(foneCelular);
 		this.getContato().setFoneFixo(foneFixo);
+		this.getContato().setDddCelular(dddCelular);
+		this.getContato().setDdd(dddFoneFixo);
 		
 		if (candidato == null)
 			this.candidato = new Candidato();
@@ -920,7 +922,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	}
 	
 	//usado por findByIdHistoricoAtual 
-	public Colaborador(Long id, String nome, String nomeComercial, String matricula, Long areaOrganizacionalId, String areaOrganizacionalNome, String faixaSalarialNome, String cargoNome, Date dataAdmissao, String estabelecimentoNome, String ddd, String foneFixo, String celular)
+	public Colaborador(Long id, String nome, String nomeComercial, String matricula, Long areaOrganizacionalId, String areaOrganizacionalNome, String faixaSalarialNome, String cargoNome, 
+			Date dataAdmissao, String estabelecimentoNome, String ddd, String foneFixo, String celular, String dddCelular)
 	{
 		this.setId(id);
 		this.nome = nome;
@@ -935,6 +938,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.setContatoDdd(ddd);
 		this.setContatoFoneFixo(foneFixo);
 		this.setContatoCelular(celular);
+		this.setContatoDddCelular(dddCelular);
 	}
 	
 	//Construtor usado pela consulta de aniversariantes
@@ -1766,6 +1770,13 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		if (this.contato == null)
 			this.contato = new Contato();
 		this.contato.setDdd(ddd);
+	}
+	
+	public void setContatoDddCelular(String dddCelular)
+	{
+		if (this.contato == null)
+			this.contato = new Contato();
+		this.contato.setDddCelular(dddCelular);
 	}
 
 	public void setContatoCelular(String celular)

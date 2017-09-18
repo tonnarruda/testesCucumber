@@ -348,7 +348,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		empregado.setMae(colaborador.getPessoal().getMae());
 		empregado.setDeficiencia(Character.toString(colaborador.getPessoal().getDeficiencia()));
 
-		empregado.setDddFoneFixo(colaborador.getContato().getDdd());
+		empregado.setDdd(colaborador.getContato().getDdd());
 		empregado.setFoneFixo(colaborador.getContato().getFoneFixo());
 		empregado.setDddCelular(colaborador.getContato().getDddCelular());
 		empregado.setFoneCelular(colaborador.getContato().getFoneCelular());
@@ -1442,7 +1442,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 		if(colaborador.getContato() == null)
 			colaborador.setContato(new Contato());
-		colaborador.getContato().setDdd(empregado.getDddFoneFixo());
+		colaborador.getContato().setDdd(empregado.getDdd());
 		colaborador.getContato().setFoneFixo(empregado.getFoneFixo());
 		colaborador.getContato().setFoneCelular(empregado.getFoneCelular());
 		colaborador.getContato().setEmail(empregado.getEmail());

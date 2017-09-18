@@ -406,54 +406,6 @@ public class CandidatoManagerTest extends MockObjectTestCaseManager<CandidatoMan
     	assertNull(retorno);
     }
 
-    public void testList() throws Exception
-    {
-    	Empresa empresa = new Empresa();
-    	empresa.setId(654654L);
-
-    	Candidato candidato = new Candidato();
-    	candidato.setId(2L);
-    	candidato.setEmpresa(empresa);
-
-    	Candidato candidato2 = new Candidato();
-    	candidato2.setId(3L);
-    	candidato2.setEmpresa(empresa);
-
-    	Candidato candidato3 = new Candidato();
-    	candidato3.setId(4L);
-    	candidato3.setEmpresa(empresa);
-
-    	Collection<Candidato> candidatos = new ArrayList<Candidato>();
-    	candidatos.add(candidato);
-    	candidatos.add(candidato2);
-    	candidatos.add(candidato3);
-
-    	candidatoDao.expects(once()).method("find").withAnyArguments().will(returnValue(candidatos));
-
-    	int page = 1;
-		int pagingSize = 1;
-		String nomeBusca = "";
-		String cpfBusca = "";
-		Long empresaId = empresa.getId();
-
-		Collection<Candidato> retorno = manager.list(page, pagingSize, null, empresaId);
-
-    	assertEquals(3, retorno.size());
-    }
-
-    public void testGetCount() throws Exception
-    {
-    	candidatoDao.expects(once()).method("getCount").withAnyArguments().will(returnValue(3));
-
-    	String nomeBusca = "";
-    	String cpfBusca = "";
-    	Long empresaId = 1L;
-
-    	Integer retorno = manager.getCount(null, empresaId);
-
-    	assertTrue(retorno == 3);
-    }
-
 	public void testGetFoto() throws Exception
 	{
 		Long id = 1L;
