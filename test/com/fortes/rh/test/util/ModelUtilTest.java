@@ -130,5 +130,40 @@ public class ModelUtilTest extends TestCase
     	assertTrue(ModelUtil.hasNull("getPessoal().getCtps().getCtpsNumero()", colaborador1, colaborador2, colaborador3));
     	assertFalse(ModelUtil.hasNull("getPessoal().getCtps().getCtpsNumero()", colaborador1, colaborador2));
     }
+ 
+    public void testHasNotNull()
+    {
+		Estado uf = new Estado();
+		uf.setSigla("RN");
+
+    	Colaborador colaborador = ColaboradorFactory.getEntity();
+    	colaborador.getPessoal().setCertificadoMilitar(null);
+    	colaborador.getPessoal().getCtps().setCtpsNumero(null);
+    	colaborador.getPessoal().getCtps().setCtpsDataExpedicao(null);
+    	colaborador.getPessoal().getCtps().setCtpsUf(uf);
+    	
+    	assertFalse(ModelUtil.hasNotNull("getPessoal().getCertificadoMilitar()", colaborador));
+    	assertFalse(ModelUtil.hasNotNull("getPessoal().getCertificadoMilitar().getCertMilNumero()", colaborador));
+    	assertTrue(ModelUtil.hasNotNull("getPessoal().getCtps()", colaborador));
+    	assertFalse(ModelUtil.hasNotNull("getPessoal().getCtps().getCtpsNumero()", colaborador));
+    	assertFalse(ModelUtil.hasNotNull("getPessoal().getCtps().getCtpsDataExpedicao()", colaborador));
+    	assertTrue(ModelUtil.hasNotNull("getPessoal().getCtps().getCtpsUf()", colaborador));
+    }
     
+    public void testHasNotNullModelo1Null()
+    {
+    	Colaborador colaboradorNulo = null;
+    	Colaborador colaborador1 = ColaboradorFactory.getEntity();
+    	colaborador1.setPessoal(null);
+    	Colaborador colaborador2 = ColaboradorFactory.getEntity();
+    	colaborador2.getPessoal().getCtps().setCtpsNumero("1234");
+    	Colaborador colaborador3 = ColaboradorFactory.getEntity();
+    	colaborador3.getPessoal().getCtps().setCtpsNumero("");
+    	
+    	assertFalse(ModelUtil.hasNotNull("getPessoal().getCtps().getCtpsNumero()", colaborador1, colaborador2, colaborador3));
+    	assertTrue(ModelUtil.hasNotNull("getPessoal().getCtps().getCtpsNumero()", colaborador2, colaborador3));
+    	assertFalse(ModelUtil.hasNotNull("getPessoal().getCtps().getCtpsNumero()", colaboradorNulo));
+    }
+    
+
 }

@@ -146,16 +146,19 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 		setId(id);
 	}
 
-	public Solicitacao(Long id, int quantidade, Date data, boolean encerrada, Long empresaId, Double valorDoHistoricoDaFaixaSalarial, Long faixaSalarialId, Long idCargo, String nomeCargo, String nomeAreaOrganizacional, String nomeSolicitante, Integer qtdVagasPreenchidas)
+	public Solicitacao(Long id, int quantidade, Date data, boolean encerrada, Long empresaId, Double valorDoHistoricoDaFaixaSalarial, Long faixaSalarialId, Long idCargo, String nomeCargo, Long idArea, String nomeAreaOrganizacional, String nomeSolicitante, Integer qtdVagasPreenchidas, Long motivoSolicitacaoId, boolean motivoSolicitacaoConsiderarQtdColaboradoresPorCargo)
 	{
 		setId(id);
 		setQuantidade(quantidade);
 		setData(data);
 		setNomeArea(nomeAreaOrganizacional);
+		setIdArea(idArea);
 		setSolicitanteNome(nomeSolicitante);
 		setProjectionEmpresaId(empresaId);
 		this.encerrada = encerrada;
 		this.qtdVagasPreenchidas = qtdVagasPreenchidas;
+		setMotivoSolicitacaoId(motivoSolicitacaoId);
+		setMotivoSolicitacaoConsiderarQtdColaboradoresPorCargo(motivoSolicitacaoConsiderarQtdColaboradoresPorCargo);
 		
 		setProjectionFaixaSalarialId(faixaSalarialId);
 		getFaixaSalarial().setFaixaSalarialHistoricoAtual(new FaixaSalarialHistorico());
@@ -164,7 +167,7 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 		getFaixaSalarial().getCargo().setId(idCargo);
 		getFaixaSalarial().getCargo().setNome(nomeCargo);
 	}
-	
+
 	public Solicitacao(Long id, Integer quantidade, Integer qtdVagasPreenchidas){
 		setId(id);
 		setQuantidade(quantidade);
@@ -340,12 +343,22 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 		getFaixaSalarial().getCargo().setId(cargoId);
 	}
 
+	public void setIdArea(Long idArea)
+	{
+		iniciaArea();
+		areaOrganizacional.setId(idArea);
+	}
+
+	
 	public void setNomeArea(String nomeArea)
 	{
+		iniciaArea();
+		areaOrganizacional.setNome(nomeArea);
+	}
+
+	private void iniciaArea() {
 		if(this.areaOrganizacional == null)
 			areaOrganizacional = new AreaOrganizacional();
-
-		areaOrganizacional.setNome(nomeArea);
 	}
 
 	public void setCargoId(Long cargoId)
@@ -978,5 +991,20 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 
 	public void setExperiencias(String experiencias) {
 		this.experiencias = experiencias;
+	}
+
+	private void iniciaMotivoSolicitacao() {
+		if(this.motivoSolicitacao == null)
+			this.motivoSolicitacao = new MotivoSolicitacao();
+	}
+
+	public void setMotivoSolicitacaoId(Long motivoSolicitacaoId) {
+		iniciaMotivoSolicitacao();
+		this.motivoSolicitacao.setId(motivoSolicitacaoId);
+	}
+	
+	private void setMotivoSolicitacaoConsiderarQtdColaboradoresPorCargo(boolean motivoSolicitacaoConsiderarQtdColaboradoresPorCargo) {
+		iniciaMotivoSolicitacao();
+		this.motivoSolicitacao.setConsiderarQtdColaboradoresPorCargo(motivoSolicitacaoConsiderarQtdColaboradoresPorCargo);
 	}
 }

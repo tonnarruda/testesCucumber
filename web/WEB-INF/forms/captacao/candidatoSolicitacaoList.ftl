@@ -232,7 +232,9 @@
 				<#if !solicitacao.encerrada>
 					<#assign nomeFormatado=stringUtil.removeApostrofo(candidatoSolicitacao.candidato.nome)>
 					
-					<#if (contratacoesExcederam) || (candidatoSolicitacao?exists && (candidatoSolicitacao.status == 'P' || candidatoSolicitacao.status == 'C' || !autorizadoPeloGestor))>
+					<#if qtdLimiteColaboradorPorCargo>
+						<img border="0" style="opacity:0.3;filter:alpha(opacity=30)" title="Quantidade limite de colaboradores por cargo foi alcançado" src="<@ww.url includeParams="none" value="/imgs/contrata_colab.gif"/>">
+					<#elseif (contratacoesExcederam) || (candidatoSolicitacao?exists && (candidatoSolicitacao.status == 'P' || candidatoSolicitacao.status == 'C' || !autorizadoPeloGestor))>
 						<img border="0" style="opacity:0.3;filter:alpha(opacity=30)" title="${titleAceito}" src="<@ww.url includeParams="none" value="/imgs/contrata_colab.gif"/>">
 					<#else>
 						<#if candidatoSolicitacao?exists && candidatoSolicitacao.candidato.empresa.id != solicitacao.empresa.id>

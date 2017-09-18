@@ -1,7 +1,6 @@
 package com.fortes.rh.test.dao.hibernate.captacao;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -26,19 +25,14 @@ import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.MotivoSolicitacao;
-import com.fortes.rh.model.captacao.PausaPreenchimentoVagas;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
-import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
-import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
-import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.StatusSolicitacao;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Bairro;
-import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
@@ -46,13 +40,11 @@ import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoSolicitacaoFactory;
-import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.MotivoSolicitacaoFactory;
 import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
-import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.util.DateUtil;
 
@@ -184,50 +176,6 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		Collection<Solicitacao> solicitacaos = solicitacaoDao.findSolicitacaoList(empresa.getId(), true, StatusAprovacaoSolicitacao.APROVADO, true);
 
 		assertEquals(1, solicitacaos.size());
-	}
-
-	public void testGetValor()
-	{
-		
-		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
-		solicitacaoDao.save(solicitacao);
-
-		Candidato candidato1 = CandidatoFactory.getCandidato();
-		candidatoDao.save(candidato1);
-		
-		CandidatoSolicitacao candidatoSolicitacao1 = CandidatoSolicitacaoFactory.getEntity();
-		candidatoSolicitacao1.setCandidato(candidato1);
-		candidatoSolicitacao1.setSolicitacao(solicitacao);
-		candidatoSolicitacao1.setStatus(StatusCandidatoSolicitacao.CONTRATADO);
-		candidatoSolicitacaoDao.save(candidatoSolicitacao1);
-		
-		Candidato candidato2 = CandidatoFactory.getCandidato();
-		candidatoDao.save(candidato2);
-		
-		CandidatoSolicitacao candidatoSolicitacao2 = CandidatoSolicitacaoFactory.getEntity();
-		candidatoSolicitacao2.setSolicitacao(solicitacao);
-		candidatoSolicitacao2.setStatus(StatusCandidatoSolicitacao.PROMOVIDO);
-		candidatoSolicitacao2.setCandidato(candidato2);
-		candidatoSolicitacaoDao.save(candidatoSolicitacao2);
-		
-		Candidato candidato3 = CandidatoFactory.getCandidato();
-		candidatoDao.save(candidato3);
-		
-		CandidatoSolicitacao candidatoSolicitacao3 = CandidatoSolicitacaoFactory.getEntity();
-		candidatoSolicitacao3.setSolicitacao(solicitacao);
-		candidatoSolicitacao3.setStatus(StatusCandidatoSolicitacao.INDIFERENTE);
-		candidatoSolicitacao3.setCandidato(candidato3);
-		candidatoSolicitacaoDao.save(candidatoSolicitacao3);
-		
-		Collection<CandidatoSolicitacao> candidatoSolicitacaos = Arrays.asList(candidatoSolicitacao1, candidatoSolicitacao2, candidatoSolicitacao3);
-		
-		solicitacao.setCandidatoSolicitacaos(candidatoSolicitacaos);
-		solicitacaoDao.save(solicitacao);
-		
-		Solicitacao solicitacaoRetorno = solicitacaoDao.getValor(solicitacao.getId());
-
-		assertEquals(solicitacao, solicitacaoRetorno);
-		assertEquals(2, solicitacaoRetorno.getQtdVagasPreenchidas().intValue());
 	}
 
 	public void testFindByIdProjectionAreaFaixaSalarial()

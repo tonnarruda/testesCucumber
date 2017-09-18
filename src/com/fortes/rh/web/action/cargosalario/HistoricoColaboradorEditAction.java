@@ -24,7 +24,7 @@ import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.exception.ESocialException;
 import com.fortes.rh.exception.IntegraACException;
-import com.fortes.rh.exception.LimiteColaboradorExceditoException;
+import com.fortes.rh.exception.LimiteColaboradorExcedidoException;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
@@ -268,7 +268,7 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 
 			return Action.INPUT;
 		}
-		catch (LimiteColaboradorExceditoException e)
+		catch (LimiteColaboradorExcedidoException e)
 		{
 			transactionManager.rollback(status);
 
@@ -389,8 +389,7 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
             addActionWarning(e.getMessage());
             setActionMsg(e.getMessage());
             return "eSocial";
-        }
-		catch (LimiteColaboradorExceditoException e) {
+		} catch (LimiteColaboradorExcedidoException e) {
 			e.printStackTrace();
 			addActionWarning(e.getMessage());
 			prepareUpdate();

@@ -20,6 +20,7 @@ public class MotivoSolicitacao extends AbstractModel implements Serializable
     private String descricao;
     
     private boolean turnover;
+    private boolean considerarQtdColaboradoresPorCargo;
     
     @Transient
     private int qtdContratados;
@@ -55,5 +56,14 @@ public class MotivoSolicitacao extends AbstractModel implements Serializable
 
 	public void setQtdContratados(int qtdContratados) {
 		this.qtdContratados = qtdContratados;
+	}
+
+	public boolean isConsiderarQtdColaboradoresPorCargo() {
+		return considerarQtdColaboradoresPorCargo;
+	}
+
+	public void setConsiderarQtdColaboradoresPorCargo(
+			boolean considerarQtdColaboradoresPorCargo) {
+		this.considerarQtdColaboradoresPorCargo = considerarQtdColaboradoresPorCargo;
 	}
 }

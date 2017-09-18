@@ -15,7 +15,7 @@ import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.exception.IntegraACException;
-import com.fortes.rh.exception.LimiteColaboradorExceditoException;
+import com.fortes.rh.exception.LimiteColaboradorExcedidoException;
 import com.fortes.rh.model.cargosalario.GrupoOcupacional;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
 import com.fortes.rh.model.cargosalario.ReajusteFaixaSalarial;
@@ -218,7 +218,7 @@ public class TabelaReajusteColaboradorEditAction extends MyActionSupportEdit
 				addActionWarning(exception.getMessage());
 			else if (exception instanceof ColecaoVaziaException)
 				addActionMessage(exception.getMessage());
-			else if (exception instanceof LimiteColaboradorExceditoException)
+			else if (exception instanceof LimiteColaboradorExcedidoException)
 				addActionMessage(exception.getMessage());
 			else if (exception instanceof IntegraACException)
 				addActionError(((IntegraACException)exception).getMensagemDetalhada());

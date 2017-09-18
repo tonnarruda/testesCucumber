@@ -35,15 +35,17 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ReajusteDWR.js?version=${versao}"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/interface/FuncaoDWR.js?version=${versao}"/>"></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/interface/AmbienteDWR.js?version=${versao}"/>"></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/interface/SolicitacaoDWR.js?version=${versao}"/>"></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/FaixaSalarialDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/formataValores.js?version=${versao}"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/FaixaSalarialDWR.js?version=${versao}"/>'></script>
 
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/cssYui/fonts-min.css"/>');
+		@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
 	</style>
 
 	<#assign empresaId><@authz.authentication operation="empresaId"/></#assign>
@@ -288,6 +290,32 @@
 			else
 				$('#faixa').append('<option value="" selected="selected">Não existem cargos vinculados a área organizacional selecionada.</option>');
 		}
+		
+		function checaQtdLimiteColaboradorPorCargo(){
+			if($('#motivoSolicitacaoId').val() && $('#faixa').val())
+				SolicitacaoDWR.checaQtdLimiteColaboradorPorCargo(dialogQtdLimiteColaboradorParaOCargoCargo, ${empresaSistema.id}, $('#area').val(), $('#faixa').val(), $('#motivoSolicitacaoId').val(), $('#quantidade').val());
+		}
+		
+		function dialogQtdLimiteColaboradorParaOCargoCargo(data){
+			if(data)
+				$('#tipoAgrupamentoDialog').html(data).dialog({ title: "Aviso", 
+																modal: true, 
+																width: 550, 
+																height: 270,
+																buttons: 
+																[
+																    {
+																        text: "Continuar",
+																        click: function() { 
+																			$('#tipoAgrupamentoDialog').dialog('close');							        
+																        }
+																    }
+																]
+															});
+				
+
+				
+		}
 	</script>
 
 	<#assign validarCampos="return validacaoFormulario(); "/>
@@ -334,8 +362,8 @@
 		</#if>
 
 		<#if !clone && possuiCandidatoSolicitacao && solicitacao.areaOrganizacional?exists && solicitacao.areaOrganizacional.id?exists || somenteLeitura>
-			<@ww.textfield readonly="true" label="Área" name="solicitacao.areaOrganizacional.nome" id="area" cssStyle="width: 447px;background: #EBEBEB;"/>
-			<@ww.hidden name="solicitacao.areaOrganizacional.id"/>
+			<@ww.textfield readonly="true" label="Área Organizacional" name="solicitacao.areaOrganizacional.nome" cssStyle="width: 447px;background: #EBEBEB;"/>
+			<@ww.hidden name="solicitacao.areaOrganizacional.id" id="area"/>
 		<#else>
 			<#if solicitacao.id?exists>
 				<#assign funcaoPopulaEmails=""/>
@@ -348,14 +376,15 @@
 		<#if !clone && possuiCandidatoSolicitacao && solicitacao.faixaSalarial?exists && solicitacao.faixaSalarial.id?exists || somenteLeitura>
 			<@authz.authorize ifAllGranted="ROLE_COMPROU_SESMT">
 				<@ww.textfield readonly="true" label="Ambiente" name="solicitacao.ambiente.nome" id="ambiente" cssStyle="width: 447px;background: #EBEBEB;"/>
-				<@ww.textfield readonly="true" label="Cargo/Faixa" name="solicitacao.faixaSalarial.descricao" id="faixa" cssStyle="width: 447px;background: #EBEBEB;"/>
+				<@ww.textfield readonly="true" label="Cargo/Faixa" name="solicitacao.faixaSalarial.descricao" cssStyle="width: 447px;background: #EBEBEB;"/>
 				<@ww.textfield readonly="true" label="Função" name="solicitacao.funcao.nome" id="funcao" cssStyle="width: 447px;background: #EBEBEB;"/>
 			</@authz.authorize>
 			<@authz.authorize ifNotGranted="ROLE_COMPROU_SESMT">
-				<@ww.textfield readonly="true" label="Cargo/Faixa" name="solicitacao.faixaSalarial.descricao" id="faixa" cssStyle="width: 447px;background: #EBEBEB;"/>
+				<@ww.textfield readonly="true" label="Cargo/Faixa" name="solicitacao.faixaSalarial.descricao" cssStyle="width: 447px;background: #EBEBEB;"/>
 				<@ww.hidden name="solicitacao.ambiente.id" id="ambiente"/>
 				<@ww.hidden name="solicitacao.funcao.id" id="funcao"/>
 			</@authz.authorize>
+			<@ww.hidden name="solicitacao.faixaSalarial.id" id="faixa"/>
 		<#else>
 			<#if !faixaSalarials?exists || faixaSalarials?size == 0>
 				<#assign headerValueCargo="Selecione uma área organizacional..."/>
@@ -364,11 +393,11 @@
 			</#if>
 			<@authz.authorize ifAllGranted="ROLE_COMPROU_SESMT">
 				<@ww.select label="Ambiente" name="solicitacao.ambiente.id" id="ambiente" required="${obrigarAmbienteFuncao?string}" list="ambientes" listKey="id" listValue="nome" headerKey="" headerValue="Nenhum" cssStyle="width: 447px;"/>
-				<@ww.select label="Cargo/Faixa" name="solicitacao.faixaSalarial.id" onchange="javascript:calculaSalario();populaFuncao(this.value);" list="faixaSalarials" id="faixa" listKey="id" headerKey="" headerValue="${headerValueCargo}" listValue="descricao" required="true" cssStyle="width: 447px;"/>
+				<@ww.select label="Cargo/Faixa" name="solicitacao.faixaSalarial.id" onchange="javascript:calculaSalario();populaFuncao(this.value);checaQtdLimiteColaboradorPorCargo();" list="faixaSalarials" id="faixa" listKey="id" headerKey="" headerValue="${headerValueCargo}" listValue="descricao" required="true" cssStyle="width: 447px;"/>
 				<@ww.select label="Função" name="solicitacao.funcao.id" id="funcao" required="${obrigarAmbienteFuncao?string}" list="funcoes" listKey="id" listValue="nome" headerValue="Nenhuma" headerKey="" cssStyle="width: 447px;"/>
 			</@authz.authorize>
 			<@authz.authorize ifNotGranted="ROLE_COMPROU_SESMT">
-				<@ww.select label="Cargo/Faixa" name="solicitacao.faixaSalarial.id" onchange="javascript:calculaSalario();" list="faixaSalarials" id="faixa" listKey="id" headerKey="" headerValue="${headerValueCargo}" listValue="descricao" required="true" cssStyle="width: 447px;"/>
+				<@ww.select label="Cargo/Faixa" name="solicitacao.faixaSalarial.id" onchange="javascript:calculaSalario();checaQtdLimiteColaboradorPorCargo()" list="faixaSalarials" id="faixa" listKey="id" headerKey="" headerValue="${headerValueCargo}" listValue="descricao" required="true" cssStyle="width: 447px;"/>
 				<@ww.hidden name="solicitacao.ambiente.id" id="ambiente"/>
 				<@ww.hidden name="solicitacao.funcao.id" id="funcao"/>
 			</@authz.authorize>
@@ -382,14 +411,13 @@
 		
 		<#if somenteLeitura>
 			<@ww.textfield readonly="true" label="Nº Vagas" id="quantidade" name="solicitacao.quantidade" cssStyle="width:35px; text-align:right; background: #EBEBEB;"/>
-			<@ww.textfield readonly="true" label="Motivo da Solicitação" name="solicitacao.motivoSolicitacao.descricao" id="motivoSolicitacaoId" cssClass="inputNome" cssStyle="width: 250px; background: #EBEBEB;" />
+			<@ww.textfield readonly="true" label="Motivo da Solicitação" name="solicitacao.motivoSolicitacao.descricao" id="motivoSolicitacaoId" cssClass="inputNome" cssStyle="width: 250px; background: #EBEBEB;" onchange="checaQtdLimiteColaboradorPorCargo()"/>
 			<@authz.authorize ifAllGranted="ROLE_MOV_SOLICITACAO_BLOQUEAR_VISUALIZACAO_GESTOR">
 				<@ww.checkbox label="Definir solicitação de pessoal como invisível para o gestor da área organizacional" name="solicitacao.invisivelParaGestor" id="invisivelparagestor" labelPosition="left" disabled="true" />
 			</@authz.authorize>
 			<@authz.authorize ifNotGranted="ROLE_MOV_SOLICITACAO_BLOQUEAR_VISUALIZACAO_GESTOR">
 				<@ww.hidden name="solicitacao.invisivelParaGestor" id="invisivelparagestor"/>
 			</@authz.authorize>
-			
 		<#else>
 			<@authz.authorize ifAllGranted="ROLE_MOV_SOLICITACAO_BLOQUEAR_VISUALIZACAO_GESTOR">
 				<@ww.checkbox label="Definir solicitação de pessoal como invisível para o gestor da área organizacional" name="solicitacao.invisivelParaGestor" id="invisivelparagestor" labelPosition="left"/>
@@ -397,8 +425,8 @@
 			<@authz.authorize ifNotGranted="ROLE_MOV_SOLICITACAO_BLOQUEAR_VISUALIZACAO_GESTOR">
 				<@ww.hidden name="solicitacao.invisivelParaGestor" id="invisivelparagestor"/>
 			</@authz.authorize>
-			<@ww.textfield label="Nº Vagas" id="quantidade" name="solicitacao.quantidade" onkeypress = "return(somenteNumeros(event,''));" required="true" cssStyle="width:35px; text-align:right;" maxLength="4" />
-			<@ww.select  id="motivoSolicitacaoId" label="Motivo da Solicitação" name="solicitacao.motivoSolicitacao.id" list="motivoSolicitacaos"  required="true" cssStyle="width: 250px;" listKey="id" listValue="descricao"  headerKey="" headerValue="" />
+			<@ww.textfield label="Nº Vagas" id="quantidade" name="solicitacao.quantidade" onkeypress = "return(somenteNumeros(event,''));" required="true" cssStyle="width:35px; text-align:right;" maxLength="4" onchange="checaQtdLimiteColaboradorPorCargo()" onblur="checaQtdLimiteColaboradorPorCargo()" />
+			<@ww.select  id="motivoSolicitacaoId" label="Motivo da Solicitação" name="solicitacao.motivoSolicitacao.id" list="motivoSolicitacaos"  required="true" cssStyle="width: 250px;" listKey="id" listValue="descricao"  headerKey="" headerValue="" onchange="checaQtdLimiteColaboradorPorCargo()"/>
 		</#if>
 		
 		<#if exibeColaboradorSubstituido>
@@ -549,5 +577,7 @@
 			<button onclick="window.location='list.action'" class="btnCancelar" accesskey="V" ></button>
 		</#if>
 	</div>
+	
+	<div id="tipoAgrupamentoDialog" />
 </body>
 </html>

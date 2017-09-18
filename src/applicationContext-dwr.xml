@@ -105,6 +105,8 @@
 		<property name="solicitacaoAvaliacaoManager" ref="solicitacaoAvaliacaoManager"/>
 		<property name="anuncioManager" ref="anuncioManager"/>
 		<property name="colaboradorQuestionarioManager" ref="colaboradorQuestionarioManager"/>
+		<property name="motivoSolicitacaoManager" ref="motivoSolicitacaoManager"/>
+		<property name="quantidadeLimiteColaboradoresPorCargoManager" ref="quantidadeLimiteColaboradoresPorCargoManager"/>
 	</bean>
 	<bean id="conhecimentoDWR" class="com.fortes.rh.web.dwr.ConhecimentoDWR">
 		<property name="conhecimentoManager" ref="conhecimentoManager"/>

@@ -3,9 +3,9 @@ package com.fortes.rh.util;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import net.vidageek.mirror.dsl.Mirror;
-
 import com.fortes.model.AbstractModel;
+
+import net.vidageek.mirror.dsl.Mirror;
 
 
 public class ModelUtil
@@ -59,14 +59,26 @@ public class ModelUtil
 
 	public static boolean hasNull(String metodos, AbstractModel... models) {
 		if (models == null)
-			return true;
+			return Boolean.TRUE;
 		
 		for (AbstractModel model : models) {
-			Object valor = getValor(model, metodos, false);
+			Object valor = getValor(model, metodos, Boolean.FALSE);
 			if(valor == null)
-				return true;
+				return Boolean.TRUE;
 		}
-		return false;
+		return Boolean.FALSE;
+	}
+	
+	/**
+	 * Verifica se nenhum dos nós dos métodos <b>get</b> contidos no parâmetro <b>metodos</b> retorna um valor nulo.
+	 * @param metodos - Caminho dos métodos no qual será testado se o valor é nulo.
+	 * @param models - Um ou mais modelos podem ser avaliados para o mesmo caminho de métodos.
+	 * 
+	 * @return Retorna <b>true</b> caso nenhum dos métodos <b>get</b> contidos no parâmetro <b>metodos</b> retorne um valor nulo.
+	 */
+	
+	public static boolean hasNotNull(String metodos, AbstractModel... models) {
+		return !hasNull(metodos, models);
 	}
 
 }

@@ -10,6 +10,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.Type;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.model.AbstractModel;
@@ -80,10 +81,15 @@ public class QuantidadeLimiteColaboradoresPorCargoDaoHibernate extends GenericDa
 	public QuantidadeLimiteColaboradoresPorCargo findLimite(Long cargoId, Collection<Long> areasIds) 
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "q");
+		criteria.createCriteria("q.areaOrganizacional", "a", Criteria.LEFT_JOIN);
+		criteria.createCriteria("q.cargo", "c", Criteria.LEFT_JOIN);
 		
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("q.limite"), "limite");
-		p.add(Projections.property("q.areaOrganizacional.id"), "projectionAreaOrganizacionalId");
+		p.add(Projections.property("c.id"), "projectionCargoId");
+		p.add(Projections.property("c.nome"), "projectionCargoNome");
+		p.add(Projections.property("a.id"), "projectionAreaOrganizacionalId");
+		p.add(Projections.alias(Projections.sqlProjection("monta_familia_area(a1_.id) as areaOrganizacionalNome", new String[] {"areaOrganizacionalNome"}, new Type[] {Hibernate.TEXT}), "projectionAreaOrganizacionalNome"));
 
 		criteria.setProjection(p);
 		criteria.add(Expression.eq("q.cargo.id", cargoId));

@@ -2,11 +2,11 @@
 <head>
 <@ww.head/>
 <#if motivoSolicitacao.id?exists>
-	<title>Editar Motivo de Solicitação</title>
+	<title>Editar Motivo de Solicitação de Pessoal</title>
 	<#assign formAction="update.action"/>
 	<#assign accessKey="A"/>
 <#else>
-	<title>Inserir Motivo de Solicitação</title>
+	<title>Inserir Motivo de Solicitação de Pessoal</title>
 	<#assign formAction="insert.action"/>
 	<#assign accessKey="I"/>
 </#if>
@@ -20,6 +20,12 @@
 		
 		<#if exibeFlagTurnover>
 			<@ww.checkbox label="Considerar para cálculo de turnover" name="motivoSolicitacao.turnover" labelPosition="left"/>
+		</#if>
+		
+		<#if existeConfigQtdColaboradoresPorCargo>
+			<@ww.checkbox label="Alertar quantidade limite de colaboradores por cargo ao criar solicitação de pessoal." name="motivoSolicitacao.considerarQtdColaboradoresPorCargo" labelPosition="left"/>
+		<#else>
+			<@ww.hidden name="motivoSolicitacao.considerarQtdColaboradoresPorCargo"/>	
 		</#if>
 		
 		<@ww.hidden label="Id" name="id" />

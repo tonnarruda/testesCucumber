@@ -54,7 +54,7 @@ import com.fortes.rh.business.sesmt.ComissaoManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.exception.IntegraACException;
-import com.fortes.rh.exception.LimiteColaboradorExceditoException;
+import com.fortes.rh.exception.LimiteColaboradorExcedidoException;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
@@ -763,7 +763,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			else if(e.getCause() != null && e.getCause().getLocalizedMessage() != null)
 				message = e.getCause().getLocalizedMessage();
 			
-			if (e instanceof FortesException || e instanceof LimiteColaboradorExceditoException)
+			if (e instanceof FortesException || e instanceof LimiteColaboradorExcedidoException)
 				addActionWarning(message);
 			else
 				addActionError(message);
@@ -943,7 +943,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			prepareUpdate();
 			return Action.INPUT;
 		}
-		catch (LimiteColaboradorExceditoException e)
+		catch (LimiteColaboradorExcedidoException e)
 		{
 			e.printStackTrace();
 			addActionWarning(e.getMessage());

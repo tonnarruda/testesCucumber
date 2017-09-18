@@ -34,6 +34,7 @@ import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
+import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
@@ -722,6 +723,58 @@ public class SolicitacaoDaoHibernateTest_JUnit4 extends GenericDaoHibernateTest_
 		assertEquals("deve retornar qtd contratados sem solicitação especificada com histórico futuro", 3, indicadorDuracaoPreenchimentoVagaComHistoricoFuturo.getQtdContratados().intValue());
 		assertEquals("deve retornar qtd contratados com solicitação especificada", 1, indicadorDuracaoPreenchimentoVagaComSolicitacao.getQtdContratados().intValue());
 		assertEquals("deve retornar qtd contratados com solicitação especificada (com pausa)", new Double(11.0), indicadorDuracaoPreenchimentoVagaComPausa.getMediaDias());
+	}
+	
+	@Test
+	public void testGetValor()
+	{
+		AreaOrganizacional area = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(area);
+		
+		MotivoSolicitacao motivoSolicitacao = MotivoSolicitacaoFactory.getEntity();
+		motivoSolicitacaoDao.save(motivoSolicitacao);
+		
+		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
+		solicitacao.setMotivoSolicitacao(motivoSolicitacao);
+		solicitacao.setAreaOrganizacional(area);
+		solicitacaoDao.save(solicitacao);
+
+		Candidato candidato1 = CandidatoFactory.getCandidato();
+		candidatoDao.save(candidato1);
+		
+		CandidatoSolicitacao candidatoSolicitacao1 = CandidatoSolicitacaoFactory.getEntity();
+		candidatoSolicitacao1.setCandidato(candidato1);
+		candidatoSolicitacao1.setSolicitacao(solicitacao);
+		candidatoSolicitacao1.setStatus(StatusCandidatoSolicitacao.CONTRATADO);
+		candidatoSolicitacaoDao.save(candidatoSolicitacao1);
+		
+		Candidato candidato2 = CandidatoFactory.getCandidato();
+		candidatoDao.save(candidato2);
+		
+		CandidatoSolicitacao candidatoSolicitacao2 = CandidatoSolicitacaoFactory.getEntity();
+		candidatoSolicitacao2.setSolicitacao(solicitacao);
+		candidatoSolicitacao2.setStatus(StatusCandidatoSolicitacao.PROMOVIDO);
+		candidatoSolicitacao2.setCandidato(candidato2);
+		candidatoSolicitacaoDao.save(candidatoSolicitacao2);
+		
+		Candidato candidato3 = CandidatoFactory.getCandidato();
+		candidatoDao.save(candidato3);
+		
+		CandidatoSolicitacao candidatoSolicitacao3 = CandidatoSolicitacaoFactory.getEntity();
+		candidatoSolicitacao3.setSolicitacao(solicitacao);
+		candidatoSolicitacao3.setStatus(StatusCandidatoSolicitacao.INDIFERENTE);
+		candidatoSolicitacao3.setCandidato(candidato3);
+		candidatoSolicitacaoDao.save(candidatoSolicitacao3);
+		
+		Collection<CandidatoSolicitacao> candidatoSolicitacaos = Arrays.asList(candidatoSolicitacao1, candidatoSolicitacao2, candidatoSolicitacao3);
+		
+		solicitacao.setCandidatoSolicitacaos(candidatoSolicitacaos);
+		solicitacaoDao.save(solicitacao);
+		
+		Solicitacao solicitacaoRetorno = solicitacaoDao.getValor(solicitacao.getId());
+
+		assertEquals(solicitacao, solicitacaoRetorno);
+		assertEquals(2, solicitacaoRetorno.getQtdVagasPreenchidas().intValue());
 	}
 
 	private Solicitacao saveSolicitacao(Date dataSolicitacao, Date dataEncerramento, Empresa empresa, FaixaSalarial faixaSalarial, Estabelecimento estabelecimento, AreaOrganizacional areaOrganizacional, Integer qtdVagas) {

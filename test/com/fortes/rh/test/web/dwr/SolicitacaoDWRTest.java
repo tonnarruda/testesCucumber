@@ -13,21 +13,29 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.fortes.rh.business.captacao.MotivoSolicitacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoAvaliacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
+import com.fortes.rh.business.geral.QuantidadeLimiteColaboradoresPorCargoManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
+import com.fortes.rh.model.captacao.MotivoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.SolicitacaoAvaliacao;
+import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.model.geral.QuantidadeLimiteColaboradoresPorCargo;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.captacao.MotivoSolicitacaoFactory;
 import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
+import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
+import com.fortes.rh.test.factory.geral.QuantidadeLimiteColaboradoresPorCargoFactory;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.web.dwr.SolicitacaoDWR;
 
@@ -37,6 +45,8 @@ public class SolicitacaoDWRTest
 	private SolicitacaoManager solicitacaoManager;
 	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
 	private SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager;
+	private MotivoSolicitacaoManager motivoSolicitacaoManager;
+	private QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager;
 
 	@Before
 	public void setUp() throws Exception
@@ -51,6 +61,12 @@ public class SolicitacaoDWRTest
 		
 		solicitacaoAvaliacaoManager = mock(SolicitacaoAvaliacaoManager.class);
 		solicitacoaDWR.setSolicitacaoAvaliacaoManager(solicitacaoAvaliacaoManager);
+		
+		motivoSolicitacaoManager = mock(MotivoSolicitacaoManager.class);
+		solicitacoaDWR.setMotivoSolicitacaoManager(motivoSolicitacaoManager);
+		
+		quantidadeLimiteColaboradoresPorCargoManager = mock(QuantidadeLimiteColaboradoresPorCargoManager.class);
+		solicitacoaDWR.setQuantidadeLimiteColaboradoresPorCargoManager(quantidadeLimiteColaboradoresPorCargoManager);
 	}
 	
 	@Test
@@ -190,6 +206,102 @@ public class SolicitacaoDWRTest
 		String retorno = solicitacoaDWR.verificaModeloAvaliacaoSolicitacaoDestinoExiste(solicitacaoOrigemId, solicitacaoDestinoId, candidatosSolicitacaoIds);
 		
 		assertEquals("", retorno);
+	}
+	
+	@Test
+	public void testChecaQtdLimiteColaboradorPorCargoComMotivoSemConsiderarQtdColaboradoresPorCargo(){
+		Long empresaId = 1L;
+		Long faixaId = 5L;
+		
+		MotivoSolicitacao motivoSolicitacao = MotivoSolicitacaoFactory.getEntity();
+		motivoSolicitacao.setId(2L);
+		motivoSolicitacao.setConsiderarQtdColaboradoresPorCargo(false);
+
+		AreaOrganizacional area = AreaOrganizacionalFactory.getEntity(3L);
+		area.setNome("Área");
+		
+		Cargo cargo = CargoFactory.getEntity(3L);
+		cargo.setNome("Cargo");
+		
+		QuantidadeLimiteColaboradoresPorCargo qtdLimiteColabPorCargo = QuantidadeLimiteColaboradoresPorCargoFactory.getEntity(area, cargo);
+		qtdLimiteColabPorCargo.setLimite(5);
+		qtdLimiteColabPorCargo.setQtdColaboradoresCadastrados(3);
+		
+		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao(null, null, null, 2);
+
+		when(motivoSolicitacaoManager.findEntidadeComAtributosSimplesById(motivoSolicitacao.getId())).thenReturn(motivoSolicitacao);
+		when(quantidadeLimiteColaboradoresPorCargoManager.qtdLimiteColaboradorPorCargo(area.getId(), faixaId, empresaId, null)).thenReturn(qtdLimiteColabPorCargo);	
+		
+		String retorno = solicitacoaDWR.checaQtdLimiteColaboradorPorCargo(empresaId, area.getId(), faixaId, motivoSolicitacao.getId(), solicitacao.getQuantidade());
+		
+		assertEquals("", retorno);
+	}
+	
+	@Test
+	public void testChecaQtdLimiteColaboradorPorCargoComVagasCompletas(){
+		Long empresaId = 1L;
+		Long faixaId = 5L;
+		
+		MotivoSolicitacao motivoSolicitacao = MotivoSolicitacaoFactory.getEntity();
+		motivoSolicitacao.setId(2L);
+		motivoSolicitacao.setConsiderarQtdColaboradoresPorCargo(true);
+
+		AreaOrganizacional area = AreaOrganizacionalFactory.getEntity(3L);
+		area.setNome("Área I");
+		
+		Cargo cargo = CargoFactory.getEntity(3L);
+		cargo.setNome("Cargo I");
+		
+		QuantidadeLimiteColaboradoresPorCargo qtdLimiteColabPorCargo = QuantidadeLimiteColaboradoresPorCargoFactory.getEntity(area, cargo);
+		qtdLimiteColabPorCargo.setLimite(3);
+		qtdLimiteColabPorCargo.setQtdColaboradoresCadastrados(3);
+		
+		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao(null, null, null, 1);
+
+		when(motivoSolicitacaoManager.findEntidadeComAtributosSimplesById(motivoSolicitacao.getId())).thenReturn(motivoSolicitacao);
+		when(quantidadeLimiteColaboradoresPorCargoManager.qtdLimiteColaboradorPorCargo(area.getId(), faixaId, empresaId, null)).thenReturn(qtdLimiteColabPorCargo);	
+		
+		String retorno = solicitacoaDWR.checaQtdLimiteColaboradorPorCargo(empresaId, area.getId(), faixaId, motivoSolicitacao.getId(), solicitacao.getQuantidade());
+		
+		assertEquals("O limite de contratações configurado para o cargo abaixo é de 3 vaga(s).<br /><br />"
+				+ "<strong>Cargo:</strong> "+cargo.getNome()+"<br />"
+				+ "<strong>Área organizacional:</strong> "+area.getNome()+"<br /><br />"
+				+ "Atualmente não existe vaga disponível para este cargo e esta solicitação de pessoal está disponibilizando "+solicitacao.getQuantidade()+" vaga(s).<br /><br />"
+				+ "Caso continue o processo de seleção, não será possível realizar contratações acima das vagas disponíveis.", retorno);
+	}
+	
+	@Test
+	public void testChecaQtdLimiteColaboradorPorCargoComVagasExcedidas(){
+		Long empresaId = 1L;
+		Long faixaId = 5L;
+		
+		MotivoSolicitacao motivoSolicitacao = MotivoSolicitacaoFactory.getEntity();
+		motivoSolicitacao.setId(2L);
+		motivoSolicitacao.setConsiderarQtdColaboradoresPorCargo(true);
+
+		AreaOrganizacional area = AreaOrganizacionalFactory.getEntity(3L);
+		area.setNome("Área I");
+		
+		Cargo cargo = CargoFactory.getEntity(3L);
+		cargo.setNome("Cargo I");
+		
+		QuantidadeLimiteColaboradoresPorCargo qtdLimiteColabPorCargo = QuantidadeLimiteColaboradoresPorCargoFactory.getEntity(area, cargo);
+		qtdLimiteColabPorCargo.setLimite(3);
+		qtdLimiteColabPorCargo.setQtdColaboradoresCadastrados(5);
+		
+		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao(null, null, null, 2);
+		
+		when(motivoSolicitacaoManager.findEntidadeComAtributosSimplesById(motivoSolicitacao.getId())).thenReturn(motivoSolicitacao);
+		when(quantidadeLimiteColaboradoresPorCargoManager.qtdLimiteColaboradorPorCargo(area.getId(), faixaId, empresaId, null)).thenReturn(qtdLimiteColabPorCargo);	
+		
+		String retorno = solicitacoaDWR.checaQtdLimiteColaboradorPorCargo(empresaId, area.getId(), faixaId, motivoSolicitacao.getId(), solicitacao.getQuantidade());
+		
+		assertEquals("O limite de contratações configurado para o cargo abaixo é de 3 vaga(s).<br /><br />"
+				+ "<strong>Cargo:</strong> "+cargo.getNome()+"<br />"
+				+ "<strong>Área organizacional:</strong> "+area.getNome()+"<br /><br />"
+				+ "Atualmente não existe vaga disponível para este cargo e esta solicitação de pessoal está disponibilizando "+solicitacao.getQuantidade()+" vaga(s).<br /><br />"
+				+ "Caso continue o processo de seleção, não será possível realizar contratações acima das vagas disponíveis.", retorno);
+
 	}
 }
 	

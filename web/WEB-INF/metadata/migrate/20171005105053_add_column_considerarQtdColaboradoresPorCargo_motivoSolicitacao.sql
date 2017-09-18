@@ -1,0 +1,1 @@
+ALTER TABLE motivoSolicitacao ADD COLUMN considerarQtdColaboradoresPorCargo boolean DEFAULT false;--.go

@@ -6,6 +6,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 
+import org.apache.commons.collections4.CollectionUtils;
+
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.captacao.EtapaSeletivaManager;
@@ -16,8 +18,10 @@ import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
+import com.fortes.rh.business.geral.QuantidadeLimiteColaboradoresPorCargoManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.exception.LimiteColaboradorExcedidoException;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.EtapaSeletiva;
@@ -30,6 +34,7 @@ import com.fortes.rh.model.dicionario.StatusAutorizacaoGestor;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.util.ModelUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
@@ -50,6 +55,7 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
 	private ColaboradorManager colaboradorManager;
+	private QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager;
 	
 	private Collection<CandidatoSolicitacao> candidatoSolicitacaos;
 	private Collection<Solicitacao> solicitacaos;
@@ -80,6 +86,7 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 	private String colaboradorNomeBusca;
 	private Boolean atualizarModelo;
 	private boolean contratacoesExcederam;
+	private boolean qtdLimiteColaboradorPorCargo;
 
 	// Utilizado no ftl para escapar nomes de candidatos contendo apóstrofos
 	private StringUtil stringUtil = new StringUtil();
@@ -95,7 +102,7 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 		candidatoSolicitacaos = candidatoSolicitacaoManager.getCandidatoSolicitacaoList(getPage(), getPagingSize(), solicitacao.getId(), etapaSeletivaId, indicadoPor, getValueApto(visualizar), false, true, observacaoRH, nomeBusca, visualizar);
 		solicitacaoAvaliacaos = solicitacaoAvaliacaoManager.findBySolicitacaoId(solicitacao.getId(), null);
 		
-		if(candidatoSolicitacaos == null || candidatoSolicitacaos.size() == 0){
+		if(CollectionUtils.isEmpty(candidatoSolicitacaos)){
 			if (getPage() > 1){
 				setPage(getPage()-1);
 				candidatoSolicitacaos = candidatoSolicitacaoManager.getCandidatoSolicitacaoList(getPage(), getPagingSize(), solicitacao.getId(), etapaSeletivaId, indicadoPor, getValueApto(visualizar), false, false, observacaoRH, null, null);
@@ -104,12 +111,21 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 		}
 		contratacoesExcederam = colaboradorManager.excedeuContratacao(getEmpresaSistema().getId());
 
+		if(ModelUtil.getValor(solicitacao, "getMotivoSolicitacao().isConsiderarQtdColaboradoresPorCargo()", Boolean.FALSE).equals(Boolean.TRUE)){
+			try {
+				quantidadeLimiteColaboradoresPorCargoManager.validaLimite(solicitacao.getAreaOrganizacional().getId(), solicitacao.getFaixaSalarial().getId(), getEmpresaSistema().getId(), null);
+			} catch (LimiteColaboradorExcedidoException e) {
+				qtdLimiteColaboradorPorCargo = true;
+				if(CollectionUtils.isNotEmpty(candidatoSolicitacaos) && ModelUtil.hasNotNull("getFaixaSalarial().getCargo()", solicitacao) )
+					addActionMessage("O limite de colaboradores cadastrados para o cargo \"" + solicitacao.getFaixaSalarial().getCargo().getNome() + "\" foi atingido de acordo com a configuração existente.");
+			}
+		}
+
 		if(getActionMsg() != null && !getActionMsg().equals("") && (getActionMessages() != null && getActionMessages().toArray()[0].equals(""))){
 			addActionError(getActionMsg());
 			getActionMessages().clear();
 		}
 
-		//Não sei pq essa ActionMessages vem vazia "" (ajuste tecnico) Fco Barroso
 		if(getActionMessages() == null || getActionMessages().isEmpty() || getActionMessages().toArray()[0].equals("")){
 			setActionMessages(null);
 		}
@@ -119,7 +135,7 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 
-	private Boolean getValueApto(Character opcaoVisualizar)
+	public Boolean getValueApto(Character opcaoVisualizar)
 	{
 		if(opcaoVisualizar != null && opcaoVisualizar == 'A')
 			return true;
@@ -553,5 +569,13 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 
 	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
 		this.colaboradorManager = colaboradorManager;
+	}
+
+	public void setQuantidadeLimiteColaboradoresPorCargoManager(QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager) {
+		this.quantidadeLimiteColaboradoresPorCargoManager = quantidadeLimiteColaboradoresPorCargoManager;
+	}
+
+	public boolean isQtdLimiteColaboradorPorCargo() {
+		return qtdLimiteColaboradorPorCargo;
 	}
 }
