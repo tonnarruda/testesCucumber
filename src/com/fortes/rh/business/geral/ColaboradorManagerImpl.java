@@ -619,6 +619,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		if (colaborador.getPessoal().getCtps() != null && colaborador.getPessoal().getCtps().getCtpsUf() != null
 				&& colaborador.getPessoal().getCtps().getCtpsUf().getId() == null)
 			colaborador.getPessoal().getCtps().setCtpsUf(null);
+		
+		if(ModelUtil.hasNull("getHabilitacao().getUfHab().getId()", colaborador))
+			colaborador.getHabilitacao().setUfHab(null);
 	}
 
 	private void salvarBairro(Colaborador colaborador)

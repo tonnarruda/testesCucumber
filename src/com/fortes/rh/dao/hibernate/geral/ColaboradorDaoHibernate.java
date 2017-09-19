@@ -67,6 +67,7 @@ import com.fortes.rh.model.sesmt.HistoricoFuncao;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
+import com.fortes.rh.util.ModelUtil;
 import com.fortes.rh.util.StringUtil;
 
 @SuppressWarnings({"unchecked","rawtypes"})
@@ -549,6 +550,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("c.habilitacao.emissao"), "projectionEmissaoHabilitacao");
 		p.add(Projections.property("c.habilitacao.vencimento"), "projectionVencimentoHabilitacao");
 		p.add(Projections.property("c.habilitacao.categoria"), "projectionCategoriaHabilitacao");
+		p.add(Projections.property("c.habilitacao.ufHab.id"), "projectionUFHabilitacao");
 		p.add(Projections.property("c.endereco.logradouro"), "enderecoLogradouro");
 		p.add(Projections.property("c.endereco.complemento"), "enderecoComplemento");
 		p.add(Projections.property("c.endereco.numero"), "enderecoNumero");
@@ -2227,6 +2229,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append(" habilitacao.emissao = :habilitacaoEmissao , ");
 		hql.append(" habilitacao.vencimento = :habilitacaoVencimento , ");
 		hql.append(" habilitacao.categoria = :habilitacaoCategoria , ");
+		hql.append(" habilitacao.ufHab.id = :ufHabId , ");
 		hql.append(" pessoal.tituloEleitoral.titEleitNumero = :titEleitNumero , ");
 		hql.append(" pessoal.tituloEleitoral.titEleitZona = :titEleitZona , ");
 		hql.append(" pessoal.tituloEleitoral.titEleitSecao = :titEleitSecao , ");
@@ -2280,6 +2283,11 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			query.setLong("rgUfId", colaborador.getPessoal().getRgUf().getId());
 		else
 			query.setParameter("rgUfId", null, Hibernate.LONG);
+		
+		if(ModelUtil.hasNull("getHabilitacao().getUfHab().getId()", colaborador))
+			query.setParameter("ufHabId", null, Hibernate.LONG);
+		else
+			query.setLong("ufHabId", colaborador.getHabilitacao().getUfHab().getId());
 		
 		query.setDate("rgDataExpedicao", colaborador.getPessoal().getRgDataExpedicao());
 		query.setString("numeroHab", colaborador.getHabilitacao().getNumeroHab());

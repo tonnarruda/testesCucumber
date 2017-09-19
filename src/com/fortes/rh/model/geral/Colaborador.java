@@ -1894,6 +1894,12 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		inicializaHabilitacao();
 		this.habilitacao.setCategoria(categoria);
 	}
+	
+	public void setProjectionUFHabilitacao(Long ufId)
+	{
+		inicializaHabilitacao();
+		this.habilitacao.setIdUFHabilitacao(ufId);
+	}
 
 	public void setProjectionCertMilNumero(String numero)
 	{
