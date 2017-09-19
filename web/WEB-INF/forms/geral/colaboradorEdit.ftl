@@ -752,7 +752,7 @@
 			
 			<@ww.div id="wwgrp_endereco" cssClass="campo">
 				<@ww.textfield label="CEP" name="colaborador.endereco.cep" id="cep" cssClass="mascaraCep" liClass="liLeft campoAdd"/>
-				<@ww.textfield label="Logradouro" name="colaborador.endereco.logradouro" id="endereco" cssStyle="width: 300px;" liClass="liLeft campoAdd" maxLength="40" />
+				<@ww.textfield label="Logradouro" name="colaborador.endereco.logradouro" id="ende" cssStyle="width: 300px;" liClass="liLeft campoAdd" maxLength="40" />
 				<@ww.textfield label="Nº"  name="colaborador.endereco.numero" id="num" cssStyle="width:40px;" liClass="liLeft campoAdd" maxLength="10" />
 				<@ww.textfield label="Complemento" name="colaborador.endereco.complemento" id="complemento" licClass="campoAdd" cssStyle="width: 205px;" maxLength="20" />
 				<@ww.select label="Estado"     name="colaborador.endereco.uf.id" id="uf" list="estados" liClass="liLeft campoAdd" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue="" />

@@ -575,7 +575,7 @@
 				<@ww.div id="wwgrp_endereco" cssClass="campo">
 					<ul>
 						<@ww.textfield label="CEP" name="candidato.endereco.cep" id="cep" cssClass="mascaraCep" liClass="liLeft" />
-						<@ww.textfield label="Logradouro" name="candidato.endereco.logradouro" id="endereco" cssStyle="width: 300px;" maxLength="40" liClass="liLeft" onblur="${capitalizar}"/>
+						<@ww.textfield label="Logradouro" name="candidato.endereco.logradouro" id="ende" cssStyle="width: 300px;" maxLength="40" liClass="liLeft" onblur="${capitalizar}"/>
 						<@ww.textfield label="Nº" name="candidato.endereco.numero" id="num" cssStyle="width:40px;" maxLength="8" liClass="liLeft" onblur="${capitalizar}"/>
 						<@ww.textfield label="Complemento" name="candidato.endereco.complemento" id="complemento" cssStyle="width: 250px;" maxLength="20" onblur="${capitalizar}" liClass="liLeft" />
 			
@@ -697,7 +697,7 @@
 				<ul>
 					<b><@ww.label label="Identidade" /></b>
 			    	<@ww.textfield label="RG" name="candidato.pessoal.rg" id="identidade" cssStyle="width: 106px;" maxLength="15" liClass="liLeft" onkeypress = "return(somenteNumeros(event,'{,}'));" />
-			  	   	<@ww.textfield label="Órgão Emissor" name="candidato.pessoal.rgOrgaoEmissor" cssStyle="width: 73px;" maxLength="10" liClass="liLeft" />
+			  	   	<@ww.textfield label="Órgão Emissor" id="rgOrgaoEmissor" name="candidato.pessoal.rgOrgaoEmissor" cssStyle="width: 73px;" maxLength="10" liClass="liLeft" />
 			       	<@ww.select label="Estado" name="candidato.pessoal.rgUf.id" id="rgUf" list="ufs" liClass="liLeft" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue=""/>
 			      	<@ww.datepicker label="Data de Expedição" name="candidato.pessoal.rgDataExpedicao" id="rgDataExpedicao" cssClass="mascaraData" value="${rgDataExpedicao}"/>
 		        	<li><hr style="border-top: 1px solid #CCCCCC; border-bottom:0;"/></li>
@@ -712,8 +712,8 @@
 					<@ww.textfield id="carteiraHabilitacao" label="Nº de Registro" name="candidato.habilitacao.numeroHab" cssStyle="width: 100px;" maxLength="11" liClass="liLeft" onkeypress = "return(somenteNumeros(event,'{,}'));"/>
 			      	<@ww.textfield label="Prontuário" name="candidato.habilitacao.registro"  cssStyle="width: 120px;" maxLength="15" liClass="liLeft"/>
 			      	<@ww.datepicker label="Emissão" name="candidato.habilitacao.emissao" id="emissao" liClass="liLeft" cssClass="mascaraData validaDataIni" value="${habEmissao}"/>
-			      	<@ww.datepicker label="Vencimento" name="candidato.habilitacao.vencimento" id="vencimento" liClass="liLeft" cssClass="mascaraData validaDataFim" value="${dataVenc}"/>
-			       	<@ww.textfield label="Categoria(s)" name="candidato.habilitacao.categoria" cssStyle="width:25px" maxLength="3" />
+			      	<@ww.datepicker label="Vencimento" name="candidato.habilitacao.vencimento" id="vencimento"  liClass="liLeft" cssClass="mascaraData validaDataFim" value="${dataVenc}"/>
+			       	<@ww.textfield label="Categoria(s)" name="candidato.habilitacao.categoria" id="chCategoria" cssStyle="width:25px" maxLength="3" />
 			        <li><hr style="border-top: 1px solid #CCCCCC; border-bottom:0;"/></li>
       			</ul>
 			</@ww.div>

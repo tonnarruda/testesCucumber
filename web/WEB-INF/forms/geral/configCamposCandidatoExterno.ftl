@@ -45,6 +45,10 @@
 				
 				$("#marcador").text(marcado ? "Desmarcar Todos" : "Marcar Todos");
 			});
+			
+			$('.checkCampoComposto').each(function(index,elem){
+				validaCampoCompostoObrigatorio(elem);
+			});
 		});
 </script>
 
@@ -180,6 +184,8 @@
 				<td class="campo" class="grupoObrigatorio">Estado/Cidade</td>
 				<td>
 					<input name="camposObrigatorios" value="cidade" type="checkbox" class="endereco"/>
+					
+					<input type="hidden" name="camposObrigatorios" value="uf"/>
 				</td>
 			</tr>
 
@@ -478,40 +484,64 @@
 					<input id="visivel-candidatoExterno-identidade" class="check-visivel" name="camposVisivels" value="identidade" type="checkbox"/>
     				<label for="visivel-candidatoExterno-identidade" class="label-visivel"></label>
 				</td>
-				<td class="campo">Identidade</td>
-				<td><input type="checkbox" value="identidade" name="camposObrigatorios" /></td>
+				<td class="campo">Dados da Identidade</td>
+				<td>
+					<input id="checkIdentidade" type="checkbox" class='checkCampoComposto' type="checkbox" name="camposObrigatorios"  value="identidade" onchange="validaCampoCompostoObrigatorio(this)" />
+					
+					<input type="hidden" class="campo-hidden" value="rgOrgaoEmissor" />
+				</td>
 			</tr>
 			<tr>
 				<td>
 					<input id="visivel-candidatoExterno-carteiraHabilitacao" class="check-visivel" name="camposVisivels" value="carteiraHabilitacao" type="checkbox"/>
     				<label for="visivel-candidatoExterno-carteiraHabilitacao" class="label-visivel"></label>
 				</td>
-				<td class="campo">Carteira de Habilitação</td>
-				<td><input type="checkbox" value="carteiraHabilitacao" name="camposObrigatorios" /></td>
+				<td class="campo">Dados da Carteira de Habilitação</td>
+				<td>
+					<input id="checkCarteiraHabilitacao" class='checkCampoComposto' type="checkbox" name="camposObrigatorios" value="carteiraHabilitacao" onchange="validaCampoCompostoObrigatorio(this)" />
+					
+					<input type="hidden"  class="campo-hidden" value="vencimento"  />
+					<input type="hidden"  class="campo-hidden" value="chCategoria"/>
+				</td>
 			</tr>
 			<tr>
 				<td>
 					<input id="visivel-candidatoExterno-tituloEleitoral" class="check-visivel" name="camposVisivels" value="tituloEleitoral" type="checkbox"/>
     				<label for="visivel-candidatoExterno-tituloEleitoral" class="label-visivel"></label>
 				</td>
-				<td class="campo">Título Eleitoral</td>
-				<td><input type="checkbox" value="tituloEleitoral" name="camposObrigatorios" /></td>
+				<td class="campo">Dados do Título Eleitoral</td>
+				<td>
+					<input id="checkTituloEleitoral" class="checkCampoComposto" type="checkbox" name="camposObrigatorios" value="tituloEleitoral" onchange="validaCampoCompostoObrigatorio(this)" />
+					
+					<input type="hidden" class="campo-hidden" value="titEleitZona"/>
+					<input type="hidden" class="campo-hidden" value="titEleitSecao" />
+				</td>
 			</tr>
 			<tr>
 				<td>
 					<input id="visivel-candidatoExterno-certificadoMilitar" class="check-visivel" name="camposVisivels" value="certificadoMilitar" type="checkbox"/>
     				<label for="visivel-candidatoExterno-certificadoMilitar" class="label-visivel"></label>
 				</td>
-				<td class="campo">Certificado Militar</td>
-				<td><input type="checkbox" value="certificadoMilitar" name="camposObrigatorios" /></td>
+				<td class="campo">Dados do Certificado Militar</td>
+				<td>
+					<input id="checkCertificadoMilitar" class="checkCampoComposto" type="checkbox" name="camposObrigatorios" value="certificadoMilitar" onchange="validaCampoCompostoObrigatorio(this)" />
+					
+					<input type="hidden" class="campo-hidden"  value="certMilTipo"/>	
+					<input type="hidden" class="campo-hidden"  value="certMilSerie" />
+				</td>
 			</tr>
 			<tr>
 				<td>
 					<input id="visivel-candidatoExterno-ctps" class="check-visivel" name="camposVisivels" value="ctps" type="checkbox"/>
     				<label for="visivel-candidatoExterno-ctps" class="label-visivel"></label>
 				</td>
-				<td class="campo">CTPS - Carteira de Trabalho e Previdência Social</td>
-				<td><input type="checkbox" value="ctps" name="camposObrigatorios" /></td>
+				<td class="campo">Dados da CTPS - Carteira de Trabalho e Previdência Social</td>
+				<td>
+					<input id="checkCTPS" class="checkCampoComposto" type="checkbox" name="camposObrigatorios" value="ctps" onchange="validaCampoCompostoObrigatorio(this)" />
+					
+					<input type="hidden" class="campo-hidden" value="ctpsSerie"/>
+					<input type="hidden" class="campo-hidden" value="ctpsUf" />
+				</td>
 			</tr>
 			<tr>
 				<td>

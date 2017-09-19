@@ -114,14 +114,14 @@
 		$(function() {
 			showBox(entidade == '' ? $("#menuCadastro a:eq(0)").attr("class") : entidade);
 		});
-	
+
 		function enviaForm()
 		{
 			var abas = $('input[name=camposVisivels]:checked').parents('table');
 			var abasStr = $.map(abas, function (t){ return t.id; }).join(',');
 			
 			$('input[name=camposTabs]').val(abasStr);
-			$("form:visible").submit();		
+			$("form:visible").submit();
 		}
 	
 		function abas(num) {
@@ -141,12 +141,22 @@
 			$("#box-candidatoExterno").html("");
 			
 			$("#box-"+entity).load("configCampos.action?entidade="+entity);
-			
+
 			$("#menuCadastro a").removeClass("ativa");
 			$("#menuCadastro a."+entity).addClass("ativa");
 			
 			abas(1);
 		}
+		
+		function validaCampoCompostoObrigatorio(elem){
+			var id = '#' +  $(elem).attr('id');
+		
+			if(!$(elem).is(':checked'))
+				$(id).parent().find('.campo-hidden').removeAttr('name');		
+			else
+				$(id).parent().find('.campo-hidden').attr('name','camposObrigatorios');		
+		}
+	
 	</script>	
 
 	<style type="text/css">
