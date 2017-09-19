@@ -19,24 +19,23 @@ public class FaturamentoMensalManagerImpl extends GenericManagerImpl<Faturamento
 
 	public Collection<Object[]> findByPeriodo(Date inicio, Date fim, Long empresaId, Long[] estabelecimentosIds) 
 	{
-		FaturamentoMensal faturamentoInicial = getDao().findAtual(inicio, empresaId, estabelecimentosIds);
 		Collection<FaturamentoMensal> faturamentos = getDao().findByPeriodo(inicio, fim, empresaId, estabelecimentosIds);
 		Collection<Object[]> graficoEvolucaoFaturamento = new ArrayList<Object[]>();
 
 		Date mesAno=DateUtil.criarDataMesAno(inicio);
 		fim=DateUtil.criarDataMesAno(fim);
 		
-		double faturamentoAtual = (faturamentoInicial != null && faturamentoInicial.getValor() != null) ? faturamentoInicial.getValor() : 0;
-		
+		double faturamentoAtual = 0.0;
 		while (!mesAno.after(fim))
 		{
+			faturamentoAtual = 0.0;
+			
 			for (FaturamentoMensal faturamento : faturamentos){
 				if (DateUtil.equalsMesAno(mesAno, faturamento.getMesAno())){
-					faturamentoAtual = faturamento.getValor();
-					break;
+					faturamentoAtual += faturamento.getValor();
 				}
 				else
-					faturamentoAtual = 0;			
+					faturamentoAtual += 0.0;			
 			}
 			graficoEvolucaoFaturamento.add(new Object[]{mesAno.getTime(), faturamentoAtual});			
 			mesAno = DateUtil.incrementaMes(mesAno, 1);
@@ -48,5 +47,9 @@ public class FaturamentoMensalManagerImpl extends GenericManagerImpl<Faturamento
 	public Double somaByPeriodo(Date dataIni, Date dataFim, Long[] empresaIds) 
 	{
 		return getDao().somaByPeriodo(DateUtil.getInicioMesData(dataIni), DateUtil.getUltimoDiaMes(dataFim), empresaIds);
+	}
+
+	public Boolean isExisteNaMesmaDataAndEstabelecimento(FaturamentoMensal faturamentoMensal) {
+		return getDao().isExisteNaMesmaDataAndEstabelecimento(faturamentoMensal);
 	}
 }

@@ -20,12 +20,14 @@ public class FaturamentoMensalDaoHibernate extends GenericDaoHibernate<Faturamen
 	public Collection<FaturamentoMensal> findAllSelect(Long empresaId) 
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "f");
+		criteria.createCriteria("f.estabelecimento", "e", Criteria.LEFT_JOIN);
 		
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("f.id"), "id");
 		p.add(Projections.property("f.mesAno"), "mesAno");
 		p.add(Projections.property("f.valor"), "valor");
 		p.add(Projections.property("f.empresa.id"), "projectionEmpresaId");
+		p.add(Projections.property("e.nome"), "estabelecimentoNome");
 		
 		criteria.setProjection(p);
 		
@@ -60,30 +62,6 @@ public class FaturamentoMensalDaoHibernate extends GenericDaoHibernate<Faturamen
 		return criteria.list();
 	}
 
-	public FaturamentoMensal findAtual(Date data, Long empresaId, Long[] estabelecimentosIds) {
-		Criteria criteria = getSession().createCriteria(getEntityClass(), "f");
-		
-		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("f.id"), "id");
-		p.add(Projections.property("f.mesAno"), "mesAno");
-		p.add(Projections.property("f.valor"), "valor");
-		p.add(Projections.property("f.empresa.id"), "projectionEmpresaId");
-		
-		criteria.setProjection(p);
-		criteria.add(Expression.le("f.mesAno", data));
-		criteria.add(Expression.eq("f.empresa.id", empresaId));
-		
-		if(estabelecimentosIds!=null && estabelecimentosIds.length>0)
-			criteria.add(Expression.in("f.estabelecimento.id", estabelecimentosIds));
-		
-		criteria.addOrder(Order.desc("f.mesAno"));
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
-
-		criteria.setMaxResults(1);
-		
-		return (FaturamentoMensal) criteria.uniqueResult();
-	}
-
 	public Double somaByPeriodo(Date dataIni, Date dataFim, Long[] empresaIds) {
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "f");
 		
@@ -95,5 +73,24 @@ public class FaturamentoMensalDaoHibernate extends GenericDaoHibernate<Faturamen
 		Double valor = (Double) criteria.uniqueResult();
 		
 		return valor == null ? 0.0 : valor;
+	}
+
+	public Boolean isExisteNaMesmaDataAndEstabelecimento(FaturamentoMensal faturamentoMensal) {
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "f");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("f.id"), "id");
+		criteria.setProjection(p);
+		
+		if(faturamentoMensal.getId() != null)
+			criteria.add(Expression.not(Expression.eq("f.id", faturamentoMensal.getId())));
+		
+		if(faturamentoMensal.getEstabelecimento() != null && faturamentoMensal.getEstabelecimento().getId() != null )
+			criteria.add(Expression.eq("f.estabelecimento.id", faturamentoMensal.getEstabelecimento().getId()));
+
+		criteria.add(Expression.eq("f.empresa.id", faturamentoMensal.getEmpresa().getId()));
+		criteria.add(Expression.eq("f.mesAno", faturamentoMensal.getMesAno()));
+		
+		return criteria.list().size() > 0;
 	}
 }

@@ -44,7 +44,6 @@ public class FaturamentoMensal extends AbstractModel implements Serializable
 	public void setEmpresa(Empresa empresa) {
 		this.empresa = empresa;
 	}
-
 	public void setProjectionEmpresaId(Long empresaId) 
 	{
 		if(this.empresa == null)
@@ -56,5 +55,11 @@ public class FaturamentoMensal extends AbstractModel implements Serializable
 	}
 	public void setEstabelecimento(Estabelecimento estabelecimento) {
 		this.estabelecimento = estabelecimento;
+	}
+	public void setEstabelecimentoNome(String estabelecimentoNome){
+		if(this.estabelecimento == null)
+			this.estabelecimento = new Estabelecimento();
+		
+		this.estabelecimento.setNome(estabelecimentoNome);
 	}
 }

@@ -62,7 +62,6 @@ public class FaturamentoMensalManagerTest
 		Collection<FaturamentoMensal> faturamentoMensals = Arrays.asList(janeiro);
 		
 		when(faturamentoMensalDao.findByPeriodo(inicio,fim,empresaId,null)).thenReturn(faturamentoMensals);
-		when(faturamentoMensalDao.findAtual(inicio,empresaId,null)).thenReturn(null);
 		
 		assertEquals(10, faturamentoMensalManager.findByPeriodo(inicio, fim, empresaId, null).size());
 	}

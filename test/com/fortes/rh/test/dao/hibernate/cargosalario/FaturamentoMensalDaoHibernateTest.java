@@ -1,6 +1,6 @@
 package com.fortes.rh.test.dao.hibernate.cargosalario;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.util.Collection;
 import java.util.Date;
@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.cargosalario.FaturamentoMensalDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
+import com.fortes.rh.dao.geral.EstabelecimentoDao;
 import com.fortes.rh.model.cargosalario.FaturamentoMensal;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
@@ -26,6 +27,8 @@ public class FaturamentoMensalDaoHibernateTest extends GenericDaoHibernateTest_J
 	private FaturamentoMensalDao faturamentoMensalDao;
 	@Autowired
 	private EmpresaDao empresaDao;
+	@Autowired
+	private EstabelecimentoDao estabelecimentoDao;
 
 	@Override
 	public FaturamentoMensal getEntity()
@@ -110,51 +113,6 @@ public class FaturamentoMensalDaoHibernateTest extends GenericDaoHibernateTest_J
 		assertEquals(2, faturamentos.size());
 	}
 	@Test
-	public void testFindAtual()
-	{
-		Date data1 = DateUtil.criarDataMesAno(1, 2, 2000);
-		Date data2 = DateUtil.criarDataMesAno(1, 11, 2000);
-		
-		Empresa empresa = EmpresaFactory.getEmpresa();
-		empresaDao.save(empresa);
-		
-		FaturamentoMensal janeiro = new FaturamentoMensal();
-		janeiro.setMesAno(data1);
-		janeiro.setValor(200.0);
-		janeiro.setEmpresa(empresa);
-		faturamentoMensalDao.save(janeiro);
-		
-		FaturamentoMensal novembro = new FaturamentoMensal();
-		novembro.setMesAno(data2);
-		novembro.setValor(200.0);
-		novembro.setEmpresa(empresa);
-		faturamentoMensalDao.save(novembro);
-		
-		FaturamentoMensal faturamento = faturamentoMensalDao.findAtual(DateUtil.criarDataMesAno(1, 12, 2000), empresa.getId(), null);
-		assertEquals(novembro, faturamento);
-	}
-	@Test
-	public void testFindAtualPorEstabelecimento()
-	{
-		Date data = DateUtil.criarDataMesAno(1, 11, 2000);
-		
-		Empresa empresa = EmpresaFactory.getEmpresa();
-		empresaDao.save(empresa);
-		
-		Estabelecimento estabelecimento= EstabelecimentoFactory.getEntity(1l);
-		
-		FaturamentoMensal novembro = new FaturamentoMensal();
-		novembro.setMesAno(data);
-		novembro.setValor(200.0);
-		novembro.setEmpresa(empresa);
-		novembro.setEstabelecimento(estabelecimento);
-		faturamentoMensalDao.save(novembro);
-		
-		FaturamentoMensal faturamento = faturamentoMensalDao.findAtual(DateUtil.criarDataMesAno(1, 12, 2000), empresa.getId(), new Long[]{estabelecimento.getId()});
-		
-		assertEquals(novembro, faturamento);
-	}
-	@Test
 	public void testSomaByPeriodo() {
 		Date dataIni = DateUtil.criarDataMesAno(1, 2, 2000);
 		Date dataFim = DateUtil.criarDataMesAno(1, 11, 2000);
@@ -195,6 +153,77 @@ public class FaturamentoMensalDaoHibernateTest extends GenericDaoHibernateTest_J
 		assertEquals("Empresa 1 e 2",new Double(650.0), faturamentoMensalDao.somaByPeriodo(dataIni, dataFim, new Long[]{empresa1.getId(), empresa2.getId()}));
 		assertEquals("Empresa desconhecida",new Double(0.0), faturamentoMensalDao.somaByPeriodo(dataIni, dataFim, new Long[]{100000001L}));
 		
+	}
+	
+	@Test
+	public void testVerificaSeExisteNaMesmaDataEstabelecimentoNotInId(){
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento);
+		
+		FaturamentoMensal faturamentoMensal = FaturamentoMensalFactory.getEntity();
+		faturamentoMensal.setMesAno(DateUtil.criarDataMesAno(1, 1, 2017));
+		faturamentoMensal.setEmpresa(empresa);
+		faturamentoMensal.setEstabelecimento(estabelecimento);
+		faturamentoMensalDao.save(faturamentoMensal);
+		
+		assertFalse(faturamentoMensalDao.isExisteNaMesmaDataAndEstabelecimento(faturamentoMensal));
+	}
+	
+	@Test
+	public void testVerificaSeExisteNaMesmaDataEstabelecimento(){
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento);
+		
+		FaturamentoMensal faturamentoMensal = FaturamentoMensalFactory.getEntity();
+		faturamentoMensal.setMesAno(DateUtil.criarDataMesAno(1, 1, 2017));
+		faturamentoMensal.setEmpresa(empresa);
+		faturamentoMensal.setEstabelecimento(estabelecimento);
+		
+		assertFalse(faturamentoMensalDao.isExisteNaMesmaDataAndEstabelecimento(faturamentoMensal));
+	}
+	
+	@Test
+	public void testVerificaSeExisteNaMesmaDataEstabelecimentoSemEstabelecimento(){
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		FaturamentoMensal faturamentoMensal = FaturamentoMensalFactory.getEntity();
+		faturamentoMensal.setMesAno(DateUtil.criarDataMesAno(1, 1, 2017));
+		faturamentoMensal.setEmpresa(empresa);
+		
+		assertFalse(faturamentoMensalDao.isExisteNaMesmaDataAndEstabelecimento(faturamentoMensal));
+	}
+	
+	@Test
+	public void testVerificaSeExisteNaMesmaDataEstabelecimentoMesmoEstabelecimento(){
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento1);
+		
+		FaturamentoMensal faturamentoMensal1 = FaturamentoMensalFactory.getEntity();
+		faturamentoMensal1.setMesAno(DateUtil.criarDataMesAno(1, 1, 2017));
+		faturamentoMensal1.setEmpresa(empresa);
+		faturamentoMensal1.setEstabelecimento(estabelecimento1);
+		faturamentoMensalDao.save(faturamentoMensal1);
+		
+		FaturamentoMensal faturamentoMensal2 = FaturamentoMensalFactory.getEntity();
+		faturamentoMensal2.setMesAno(DateUtil.criarDataMesAno(1, 1, 2017));
+		faturamentoMensal2.setEmpresa(empresa);
+		faturamentoMensal2.setEstabelecimento(estabelecimento1);
+		
+		assertTrue(faturamentoMensalDao.isExisteNaMesmaDataAndEstabelecimento(faturamentoMensal2));
 	}
 	
 	public void setFaturamentoMensalDao(FaturamentoMensalDao faturamentoMensalDao)

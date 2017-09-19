@@ -100,8 +100,8 @@
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.pie.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/grafico.js?version=${versao}"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/moment.min.2.18.1.js?version=${versao}"/>'></script>
-		
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js?version=${versao}"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js?version=${versao}"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 		
@@ -638,7 +638,16 @@
 			function createListAreasPieChart(data){
 				addChecks('areasPieChartCheck', data, 'escondeFilhas()');
 			}
-
+	
+			function populaEstabelecimentos(empresaId)	{
+				DWRUtil.useLoadingMessage('Carregando...');
+				EstabelecimentoDWR.getByEmpresa(carregaEstabeleciemntos, empresaId);
+			}
+	
+			function carregaEstabeleciemntos(data){
+				addChecks('estabelecimentosCheck', data);
+			}		
+			
 			function exibirTotalizadorGrafico(){
 				
 				var folha = ${grfEvolucaoFolha};
@@ -797,7 +806,7 @@
 			<@ww.form name="formBusca" id="formBusca" action="painelIndicadoresCargoSalario.action" method="POST">
 				<@ww.hidden name="abaMarcada" id="abaMarcada" value="1"/>
 				<#include "../util/topFiltro.ftl" />
-				<@ww.select label="Empresa" name="empresa.id" id="empresa" cssClass="empresa" listKey="id" listValue="nome" list="empresas" onchange="populaAreas(this.value);populaAreasPieChart(this.value);" />
+				<@ww.select label="Empresa" name="empresa.id" id="empresa" cssClass="empresa" listKey="id" listValue="nome" list="empresas" onchange="populaAreas(this.value);populaAreasPieChart(this.value);populaEstabelecimentos(this.value);" />
 				
 				<div class="conteudo-1 conteudo-aba">
 					<li>&nbsp;</li>

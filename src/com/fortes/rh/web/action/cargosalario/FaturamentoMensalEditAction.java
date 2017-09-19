@@ -29,7 +29,7 @@ public class FaturamentoMensalEditAction extends MyActionSupportList
 			faturamentoMensal = (FaturamentoMensal) faturamentoMensalManager.findById(faturamentoMensal.getId());
 			dataMesAno = DateUtil.formataMesAno(faturamentoMensal.getMesAno());
 		}
-		estabelecimentos=estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
+		estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
 	}
 
 	public String prepareInsert() throws Exception
@@ -46,24 +46,36 @@ public class FaturamentoMensalEditAction extends MyActionSupportList
 
 	public String insert() throws Exception
 	{
-		if(faturamentoMensalManager.verifyExists(new String[]{"mesAno", "empresa.id"}, new Object[]{DateUtil.criarDataMesAno(dataMesAno), getEmpresaSistema().getId()}))
-		{
-			addActionMessage("Faturamento para esse mês/ano já cadastrado.");
+		faturamentoMensal.setMesAno(DateUtil.criarDataMesAno(dataMesAno));
+		faturamentoMensal.setEmpresa(getEmpresaSistema());
+		
+		if(existeFaturmento()){
+			addActionMessage("Faturamento para esse mês/ano e estabeleciemnto já cadastrado.");
+			prepare();
 			return Action.INPUT;
 		}
-		
-		if(faturamentoMensal.getEstabelecimento()!= null && faturamentoMensal.getEstabelecimento().getId()==-1)
-			faturamentoMensal.setEstabelecimento(null);
 			
-		faturamentoMensal.setEmpresa(getEmpresaSistema());
-		faturamentoMensal.setMesAno(DateUtil.criarDataMesAno(dataMesAno));
 		faturamentoMensalManager.save(faturamentoMensal);
 		
 		return Action.SUCCESS;
 	}
 
+	private Boolean existeFaturmento() throws Exception {
+
+		if(faturamentoMensal.getEstabelecimento() != null && faturamentoMensal.getEstabelecimento().getId() == -1)
+			faturamentoMensal.setEstabelecimento(null);
+		
+		return faturamentoMensalManager.isExisteNaMesmaDataAndEstabelecimento(faturamentoMensal);
+	}
+
 	public String update() throws Exception
 	{
+		if(existeFaturmento()){
+			addActionMessage("Faturamento para esse mês/ano e estabeleciemnto já cadastrado.");
+			prepare();
+			return Action.INPUT;
+		}
+		
 		faturamentoMensalManager.update(faturamentoMensal);
 		
 		return Action.SUCCESS;

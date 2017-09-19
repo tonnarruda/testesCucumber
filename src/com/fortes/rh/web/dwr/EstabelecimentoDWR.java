@@ -38,9 +38,9 @@ public class EstabelecimentoDWR
 			estabelecimentos = estabelecimentoManager.findAllSelect(empresaId);
 
 		CollectionUtil<Estabelecimento> cu1 = new CollectionUtil<Estabelecimento>();
-		estabelecimentos = cu1.sortCollectionStringIgnoreCase(estabelecimentos, "nome");
+		estabelecimentos = cu1.sortCollectionStringIgnoreCase(estabelecimentos, "descricaoComEmpresa");
 
-		return cu1.convertCollectionToMap(estabelecimentos, "getId", "getNome");
+		return cu1.convertCollectionToMap(estabelecimentos, "getId", "getDescricaoComEmpresa");
 	}
 
 	@SuppressWarnings("unchecked")

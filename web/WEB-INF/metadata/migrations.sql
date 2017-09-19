@@ -1,2 +1,0 @@
-ALTER TABLE faturamentomensal ADD COLUMN estabelecimento_id bigint;--.go
-ALTER TABLE ONLY faturamentomensal ADD CONSTRAINT faturamentomensal_estabelecimento_fk FOREIGN KEY (estabelecimento_id) REFERENCES estabelecimento(id);--.go

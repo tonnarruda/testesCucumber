@@ -11,4 +11,5 @@ public interface FaturamentoMensalManager extends GenericManager<FaturamentoMens
 	Collection<FaturamentoMensal> findAllSelect(Long empresaId);
 	Collection<Object[]> findByPeriodo(Date inicio, Date fim, Long empresaId, Long[] estabelecimentosIds);
 	Double somaByPeriodo(Date dataIni, Date dataFim, Long[] empresaIds);
+	Boolean isExisteNaMesmaDataAndEstabelecimento(FaturamentoMensal faturamentoMensal);
 }

@@ -8,12 +8,8 @@ import com.fortes.rh.model.cargosalario.FaturamentoMensal;
 
 public interface FaturamentoMensalDao extends GenericDao<FaturamentoMensal> 
 {
-
 	Collection<FaturamentoMensal> findAllSelect(Long empresaId);
-
 	Collection<FaturamentoMensal> findByPeriodo(Date inicio, Date fim, Long empresaId, Long[] estabelecimentosIds);
-
-	FaturamentoMensal findAtual(Date data, Long empresaId, Long[] estabelecimentosIds);
-
 	Double somaByPeriodo(Date dataIni, Date dataFim, Long[] empresaIds);
+	Boolean isExisteNaMesmaDataAndEstabelecimento(FaturamentoMensal faturamentoMensal);
 }
