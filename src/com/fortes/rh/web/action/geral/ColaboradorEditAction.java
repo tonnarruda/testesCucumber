@@ -492,8 +492,10 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	}
 
 	private void validaEdicaoDeCamposIntegrados() {
-		if(getEmpresaSistema().isAcIntegra() && !colaborador.isNaoIntegraAc() && StringUtils.isBlank(colaborador.getCodigoAC())){
+		if(getEmpresaSistema().isAcIntegra() && !colaborador.isNaoIntegraAc())
 			setEmpresaEstaIntegradaEAderiuAoESocial();
+		
+		if(getEmpresaSistema().isAcIntegra() && !colaborador.isNaoIntegraAc() && StringUtils.isBlank(colaborador.getCodigoAC())){
 			try {
 				desabilitarEdicaoCamposIntegrados = colaboradorManager.statusAdmissaoNoFortesPessoal(getEmpresaSistema(), colaborador.getId()) != StatusAdmisaoColaboradorNoFortesPessoal.NA_TABELA_TEMPORARIA.getOpcao();
 				if(desabilitarEdicaoCamposIntegrados)
