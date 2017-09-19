@@ -164,4 +164,5 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Collection<Colaborador> findByAdmitidos(Date data);
 	public Collection<Colaborador> findDadosBasicosNotIds(Set<Long> notColabIds, Long[] colabIds, Long[] areasIds, Long[] estabelecimentosIds, String situacaoColaborador, Long empresaId);
 	public void updateVinculo(String vinculo, String colaboradorCodigoAC, String empresaCodigoAC, String grupoAC);
+	public void updateDddCelularAndUFHabilitacao(Long empresaId, String codigoAC, String dddCelular, String habilitacaoUF);
 }

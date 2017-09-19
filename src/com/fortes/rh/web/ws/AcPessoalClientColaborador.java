@@ -58,4 +58,6 @@ public interface AcPessoalClientColaborador
 	public Integer statusAdmissaoNoFortesPessoal(Empresa empresa, Long colaboradorId) throws Exception;
 	
 	public String getUltimaCategoriaESocial(Empresa empresa, String colaboradorCodigoAC) throws Exception;
+	
+	public TEmpregado[] getDddCelularAndUFHabilitacao(Empresa empresa) throws Exception;
 }

@@ -574,6 +574,14 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 	{
 		getDao().setProcessoExportacaoAC(empresaId, processoExportacaoAC);
 	}
+	
+	public Collection<Empresa> findEmpresasComCodigoACAndAtualizouDddCelularAndUFHabilitacao(){
+		return getDao().findEmpresasComCodigoACAndAtualizouDddCelularAndUFHabilitacao();
+	}
+	
+	public void setDddCelularAndUFHabilitacaoAtualizados(Long empresaId){
+		getDao().setDddCelularAndUFHabilitacaoAtualizados(empresaId);
+	}
 
 	public void setConhecimentoManager(ConhecimentoManager conhecimentoManager) {
 		this.conhecimentoManager = conhecimentoManager;

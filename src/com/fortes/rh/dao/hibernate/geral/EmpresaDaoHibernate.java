@@ -523,7 +523,8 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		criteria.addOrder(Order.asc("e.nome"));
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 		
-		return criteria.list();	}
+		return criteria.list();	
+	}
 
 	public boolean isControlaRiscoPorAmbiente(Long empresaId) 
 	{
@@ -621,5 +622,36 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Empresa.class));
 		
 		return criteria.list();
+	}
+
+	public Collection<Empresa> findEmpresasComCodigoACAndAtualizouDddCelularAndUFHabilitacao() {
+		Criteria criteria = getSession().createCriteria(Empresa.class, "e");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("e.id"), "id");
+		p.add(Projections.property("e.nome"),"nome");
+		p.add(Projections.property("e.codigoAC"),"codigoAC");
+		p.add(Projections.property("e.grupoAC"),"grupoAC");
+		
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.isNotNull("e.codigoAC"));
+		criteria.add(Expression.ne("e.codigoAC", ""));
+		criteria.add(Expression.eq("e.dddCelularAndUFHabilitacaoAtualizados", false));
+		
+		criteria.addOrder(Order.asc("e.nome"));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+		
+		return criteria.list();	
+	}
+	
+	public void setDddCelularAndUFHabilitacaoAtualizados(Long empresaId){
+
+		String hql = "update Empresa e set e.dddCelularAndUFHabilitacaoAtualizados = :dddCelularAndUFHabilitacaoAtualizados where e.id = :empresaId";
+		Query query = getSession().createQuery(hql);
+		query.setBoolean("dddCelularAndUFHabilitacaoAtualizados", true);
+		query.setLong("empresaId", empresaId);
+
+		query.executeUpdate();
 	}
 }

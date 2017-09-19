@@ -1448,6 +1448,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		colaborador.getContato().setDdd(empregado.getDdd());
 		colaborador.getContato().setFoneFixo(empregado.getFoneFixo());
 		colaborador.getContato().setFoneCelular(empregado.getFoneCelular());
+		colaborador.getContato().setDddCelular(empregado.getDddCelular());
 		colaborador.getContato().setEmail(empregado.getEmail());
 
 		if(colaborador.getHabilitacao() == null)
@@ -3356,5 +3357,21 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			e.printStackTrace();
 		}
 		return colaborador;
+	}
+	
+	public void updateDddCelularAndUFHabilitacao(){
+		try {
+			Collection<Empresa> empresas = empresaManager.findComCodigoAC();
+			
+			for (Empresa empresa : empresas) {
+				TEmpregado[] empregados = acPessoalClientColaborador.getDddCelularAndUFHabilitacao(empresa);
+				for (TEmpregado empregado : empregados) {
+					getDao().updateDddCelularAndUFHabilitacao(empresa.getId(), empregado.getCodigoAC(), empregado.getDddCelular(), empregado.getHabilitacaoUF());
+				}
+				empresaManager.setDddCelularAndUFHabilitacaoAtualizados(empresa.getId());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

@@ -34,4 +34,6 @@ public interface EmpresaDao extends GenericDao<Empresa>
 	boolean emProcessoExportacaoAC(Long empresaId);
 	void setProcessoExportacaoAC(Long empresaId, boolean processoExportacaoAC);
 	Collection<Empresa> findByLntId(Long lntId);
+	Collection<Empresa> findEmpresasComCodigoACAndAtualizouDddCelularAndUFHabilitacao();
+	public void setDddCelularAndUFHabilitacaoAtualizados(Long empresaId);
 }

@@ -538,4 +538,29 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<Empr
 		
 		assertEquals(0, retorno.size());
 	}
+	
+	@Test
+	public void testFindEmpresasComCodigoACAndAtualizouDddCelularAndUFHabilitacao() {
+		Empresa empresa1 = EmpresaFactory.getEmpresa(null, "Empresa 1", "0002", "001");
+		empresa1.setDddCelularAndUFHabilitacaoAtualizados(true);
+		empresaDao.save(empresa1);
+		
+		Empresa empresa2 = EmpresaFactory.getEmpresa(null, "Empresa 2", "0003", "001");
+		empresaDao.save(empresa2);
+		
+		Collection<Empresa> empresas = empresaDao.findEmpresasComCodigoACAndAtualizouDddCelularAndUFHabilitacao();
+		assertTrue(empresas.size() >= 1);
+	}
+	
+	@Test
+	public void testSetDddCelularAndUFHabilitacaoAtualizados(){
+		Empresa empresa1 = EmpresaFactory.getEmpresa(null, "Empresa 1", "0002", "001");
+		empresaDao.save(empresa1);
+
+		empresaDao.setDddCelularAndUFHabilitacaoAtualizados(empresa1.getId());
+		
+		Empresa empresaRetorno = empresaDao.findEntidadeComAtributosSimplesById(empresa1.getId());
+		
+		assertTrue(empresaRetorno.isDddCelularAndUFHabilitacaoAtualizados()); 
+	}
 }

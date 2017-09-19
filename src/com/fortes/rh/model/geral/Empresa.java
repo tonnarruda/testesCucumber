@@ -138,6 +138,8 @@ public class Empresa extends AbstractModel implements Serializable
 	private Collection<ConfiguracaoCampoExtraVisivelObrigadotorio> configuracaoCamposExtrasVisiveisObrigadotorios;
 	
 	private boolean aderiuAoESocial;
+	
+	private boolean dddCelularAndUFHabilitacaoAtualizados;
     
 	//projection
 	public void setProjectionCidadeNome(String cidadeNome)
@@ -746,4 +748,12 @@ public class Empresa extends AbstractModel implements Serializable
     public void setAderiuAoESocial(boolean aderiuAoESocial) {
         this.aderiuAoESocial = aderiuAoESocial;
     }
+
+	public boolean isDddCelularAndUFHabilitacaoAtualizados() {
+		return dddCelularAndUFHabilitacaoAtualizados;
+	}
+
+	public void setDddCelularAndUFHabilitacaoAtualizados(boolean dddCelularAndUFHabilitacaoAtualizados) {
+		this.dddCelularAndUFHabilitacaoAtualizados = dddCelularAndUFHabilitacaoAtualizados;
+	}
 }

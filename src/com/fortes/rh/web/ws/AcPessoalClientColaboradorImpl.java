@@ -608,4 +608,26 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 			throw e;
 		}
 	}
+
+	public TEmpregado[] getDddCelularAndUFHabilitacao(Empresa empresa) throws Exception {
+		try {
+			StringBuilder token = new StringBuilder();
+			GrupoAC grupoAC = new GrupoAC();
+			Call call = acPessoalClient.createCall(empresa, token, grupoAC, "AtualizaDDDAlternativoEHabilitacaoUFEmpregado");
+			
+			QName xmlstring = new QName("xs:string");
+
+			call.addParameter("Token", xmlstring, ParameterMode.IN);
+			call.addParameter("Emp_Codigo", xmlstring, ParameterMode.IN);
+
+			call.setReturnType(xmlstring);
+			
+			Object[] param = new Object[] { token.toString(), empresa.getCodigoAC()};
+			TEmpregado[] result = (TEmpregado[]) call.invoke(param);
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
 }

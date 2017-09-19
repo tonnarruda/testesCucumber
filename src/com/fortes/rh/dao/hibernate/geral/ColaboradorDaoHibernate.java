@@ -5785,4 +5785,14 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.setString("grupoAC", grupoAC);
 		query.executeUpdate();		
 	}
+
+	public void updateDddCelularAndUFHabilitacao(Long empresaId, String codigoAC, String dddCelular, String habilitacaoUF) {
+		String hql = "update Colaborador set dddCelular = :dddCelular, ufHab_id = (select e.id from Estado e where e.sigla = :habilitacaoUF)  where codigoAC = :codigoAC and empresa.id = :empresaId ";
+		Query query = getSession().createQuery(hql);
+		query.setString("dddCelular", dddCelular);
+		query.setString("habilitacaoUF", habilitacaoUF);
+		query.setString("codigoAC", codigoAC);
+		query.setLong("empresaId", empresaId);
+		query.executeUpdate();
+	}
 }

@@ -1,5 +1,7 @@
 
 alter table empresa add column aderiuaoesocial boolean default false;--.go
+alter table empresa add column dddCelularAndUFHabilitacaoAtualizados boolean default false;--.go
+
 
 update parametrosdosistema set camposcolaboradorobrigatorio = (select regexp_replace(camposcolaboradorobrigatorio, 'pis,|,pis','') from  parametrosdosistema);
 update parametrosdosistema set camposColaboradorVisivel = (select regexp_replace(camposColaboradorVisivel, 'pis,|,pis','') from  parametrosdosistema);
@@ -17,9 +19,6 @@ alter table candidato add column dddCelular character varying(5); --.go
 
 alter table colaborador add column ufHab_id bigint; --.go
 alter table candidato add column ufHab_id bigint; --.go
-
-update colaborador set dddCelular = ddd; --.go 
-update candidato set dddCelular = ddd; --.go
 
 --Bairro
 ALTER TABLE bairro ALTER COLUMN nome TYPE character varying(60) USING SUBSTR(nome, 1, 60);--.go;
