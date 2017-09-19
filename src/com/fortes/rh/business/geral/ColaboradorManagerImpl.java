@@ -459,8 +459,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 				empregado.setHabilitacaoVencimento(DateUtil.formataDiaMesAno(colaborador.getHabilitacao().getVencimento()));
 			if (colaborador.getHabilitacao().getCategoria() != null)
 				empregado.setHabilitacaoCategoria(colaborador.getHabilitacao().getCategoria());
-			if(!ModelUtil.hasNull("getHabilitacao().getHabUf().getId()", colaborador)){
-				Estado estado = estadoManager.findById(colaborador.getHabilitacao().getHabUf().getId());
+			if(!ModelUtil.hasNull("getHabilitacao().getUfHab().getId()", colaborador)){
+				Estado estado = estadoManager.findById(colaborador.getHabilitacao().getUfHab().getId());
 				empregado.setHabilitacaoUF(estado.getSigla());
 			}
 		}
@@ -1453,6 +1453,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		colaborador.getHabilitacao().setEmissao(empregado.getHabilitacaoEmissaoFormatada());
 		colaborador.getHabilitacao().setVencimento(empregado.getHabilitacaoVencimentoFormatada());
 		colaborador.getHabilitacao().setCategoria(empregado.getHabilitacaoCategoria());
+		if (StringUtils.isNotBlank(empregado.getHabilitacaoUF()))
+			colaborador.getHabilitacao().setUfHab(estadoManager.findBySigla(empregado.getHabilitacaoUF()));
 
 		bindFoto(colaborador, empregado);
 

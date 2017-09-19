@@ -15,8 +15,8 @@ update parametrosdosistema set camposcolaboradorobrigatorio = camposcolaboradoro
 alter table colaborador add column dddCelular character varying(5); --.go
 alter table candidato add column dddCelular character varying(5); --.go
 
-alter table colaborador add column habuf_id bigint; --.go
-alter table candidato add column habuf_id bigint; --.go
+alter table colaborador add column ufHab_id bigint; --.go
+alter table candidato add column ufHab_id bigint; --.go
 
 update colaborador set dddCelular = ddd; --.go 
 update candidato set dddCelular = ddd; --.go

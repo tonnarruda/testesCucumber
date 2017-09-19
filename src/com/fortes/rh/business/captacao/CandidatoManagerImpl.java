@@ -1059,6 +1059,9 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		if(candidato.getPessoal().getCtps() != null && candidato.getPessoal().getCtps().getCtpsUf() != null  && candidato.getPessoal().getCtps().getCtpsUf().getId() == null)
 			candidato.getPessoal().getCtps().setCtpsUf(null);
 
+		if(candidato.getHabilitacao().getUfHab() != null && candidato.getHabilitacao().getUfHab().getId() == null)
+			candidato.getHabilitacao().setUfHab(null);
+			
 		super.update(candidato);
 	}
 

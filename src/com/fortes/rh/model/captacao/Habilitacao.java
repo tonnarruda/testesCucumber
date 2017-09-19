@@ -32,7 +32,7 @@ public class Habilitacao implements Serializable
 	@Column(length=3)
 	private String categoria;
 	@ManyToOne
-	private Estado habUf;
+	private Estado ufHab;
 
 	public String getCategoria() {
 		return categoria;
@@ -73,22 +73,30 @@ public class Habilitacao implements Serializable
 	public void setVencimento(Date vencimento) {
 		this.vencimento = vencimento;
 	}
-	public Estado getHabUf()
+	public Estado getUfHab()
 	{
-		return habUf;
+		return ufHab;
 	}
 
-	public void setHabUf(Estado habUf)
+	public void setUfHab(Estado ufHab)
 	{
-		this.habUf = habUf;
+		this.ufHab = ufHab;
 	}
 	
 	@NaoAudita
-	public void setHabUfSigla(String sigla){
-		if(this.habUf == null)
-			habUf = new Estado();
+	public void setSiglaUFHabilitacao(String sigla){
+		if(this.ufHab == null)
+			ufHab = new Estado();
 		
-		this.habUf.setSigla(sigla);
+		this.ufHab.setSigla(sigla);
+	}
+	
+	@NaoAudita
+	public void setIdUFHabilitacao(Long ufId){
+		if(this.ufHab == null)
+			ufHab = new Estado();
+		
+		this.ufHab.setId(ufId);
 	}
 
 	public String toString()

@@ -614,6 +614,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		p.add(Projections.property("c.habilitacao.emissao"),"habilitacaoEmissao");
 		p.add(Projections.property("c.habilitacao.vencimento"),"habilitacaoVencimento");
 		p.add(Projections.property("c.habilitacao.categoria"),"habilitacaoCategoria");
+		p.add(Projections.property("c.habilitacao.ufHab.id"),"habilitacaoUFId");
 	}
 
 	public List getConhecimentosByCandidatoId(Long id)

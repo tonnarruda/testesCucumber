@@ -713,7 +713,8 @@
 					<@ww.textfield id="carteiraHabilitacao" label="Nº de Registro" name="candidato.habilitacao.numeroHab" cssStyle="width: 100px;" maxLength="11" liClass="liLeft" onkeypress = "return(somenteNumeros(event,'{,}'));"/>
 			      	<@ww.textfield label="Prontuário" name="candidato.habilitacao.registro"  cssStyle="width: 120px;" maxLength="15" liClass="liLeft"/>
 			      	<@ww.datepicker label="Emissão" name="candidato.habilitacao.emissao" id="emissao" liClass="liLeft" cssClass="mascaraData validaDataIni" value="${habEmissao}"/>
-			      	<@ww.datepicker label="Vencimento" name="candidato.habilitacao.vencimento" id="vencimento"  liClass="liLeft" cssClass="mascaraData validaDataFim" value="${dataVenc}"/>
+			      	<@ww.datepicker label="Vencimento" name="candidato.habilitacao.vencimento" id="vencimento" liClass="liLeft" cssClass="mascaraData validaDataFim" value="${dataVenc}"/>
+			      	<@ww.select label="Estado" name="candidato.habilitacao.ufHab.id" id="ufHab" list="ufs" liClass="liLeft" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue=""/>
 			       	<@ww.textfield label="Categoria(s)" name="candidato.habilitacao.categoria" id="chCategoria" cssStyle="width:25px" maxLength="3" />
 			        <li><hr style="border-top: 1px solid #CCCCCC; border-bottom:0;"/></li>
       			</ul>
