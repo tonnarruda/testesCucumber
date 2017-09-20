@@ -187,7 +187,6 @@
 				<td class="campo" class="grupoObrigatorio">Estado/Cidade</td>
 				<td>
 					<input class="endereco" type="checkbox"  name="camposObrigatorios" value="cidade" />
-		
 					<input type="hidden" name="camposObrigatorios" value="uf"/>
 				</td>
 			</tr>
@@ -497,7 +496,6 @@
 				<td class="campo">Dados da Identidade</td>
 				<td>
 					<input id="checkIdentidade" type="checkbox" class='checkCampoComposto' name="camposObrigatorios" value="identidade" onchange="validaCampoCompostoObrigatorio(this)" />
-					
 					<input type="hidden" class="campo-hidden" value="rgOrgaoEmissor" />
 				</td>
 			</tr>
@@ -509,7 +507,6 @@
 				<td class="campo">Dados da Carteira de Habilitação</td>
 				<td>
 					<input id="checkCarteiraHabilitacao" class='checkCampoComposto' type="checkbox"  name="camposObrigatorios" value="carteiraHabilitacao" onchange="validaCampoCompostoObrigatorio(this)" />
-					
 					<input type="hidden"  class="campo-hidden" value="vencimento" />
 					<input type="hidden"  class="campo-hidden" value="chCategoria"/>
 				</td>
@@ -522,7 +519,6 @@
 				<td class="campo">Dados do Título Eleitoral</td>
 				<td>
 					<input id="checkTituloEleitoral" class="checkCampoComposto" type="checkbox" name="camposObrigatorios" value="tituloEleitoral" onchange="validaCampoCompostoObrigatorio(this)" />
-					
 					<input type="hidden" class="campo-hidden" value="titEleitZona"/>
 					<input type="hidden" class="campo-hidden" value="titEleitSecao" />
 				</td>
@@ -535,7 +531,6 @@
 				<td class="campo">Dados do Certificado Militar</td>
 				<td>
 					<input id="checkCertificadoMilitar" class="checkCampoComposto" type="checkbox" name="camposObrigatorios" value="certificadoMilitar" onchange="validaCampoCompostoObrigatorio(this)" />
-						
 					<input type="hidden" class="campo-hidden"  value="certMilTipo"/>	
 					<input type="hidden" class="campo-hidden"  value="certMilSerie" />
 				</td>
@@ -548,7 +543,6 @@
 				<td class="campo">Dados da CTPS - Carteira de Trabalho e Previdência Social</td>
 				<td>
 					<input id="checkCTPS" class="checkCampoComposto" type="checkbox" name="camposObrigatorios" value="ctps" onchange="validaCampoCompostoObrigatorio(this)" />
-					
 					<input type="hidden" class="campo-hidden" value="ctpsSerie"/>
 					<input type="hidden" class="campo-hidden" value="ctpsUf" />
 				</td>

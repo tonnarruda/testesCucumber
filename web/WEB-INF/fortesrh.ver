@@ -25,7 +25,8 @@
 		<Item visivel="S" motivo="P17090000113"><![CDATA[SESMT > Movimentações > Fichas Médicas: Ajuste de inconsistência ao exibir candidatos ou colaboradores vinculados a outras empresas.]]></Item>
 		<Item visivel="S" motivo="S17070000270"><![CDATA[SESMT > Relatórios > PPP > Gerar PPP: Exibir os riscos de acordo com a configuração "Considerar a medição dos riscos nos relatórios de PPP, PPRA e LTCAT por" existente no cadastro de empresa.]]></Item>
 		<Item visivel="S" motivo="P17080000198"><![CDATA[Utilitários > Cadastros > Usuários > Criar Usuários Automaticamente: Ajuste de inconsistência ao gerar usuários com login em branco.]]></Item>
-		<Item visivel="S" motivo="S17070000056"><![CDATA[Utilitários > Configurações > Configurar Cadastro de Colaborador e Candidato: Novas opções de configurar o campo de "indicado por" no cadastro do candidato pelo módulo externo.]]></Item>
+		<Item visivel="S" motivo="S17070000056"><![CDATA[Utilitários > Configurações > Configurar Cadastro de Colaborador e Candidato > Campos Padrões do Sistema: Novas opções de configurar o campo de "indicado por" no cadastro do candidato pelo módulo externo.]]></Item>
+		<Item visivel="S" motivo="P17090000064"><![CDATA[Utilitários > Configurações > Configurar Cadastro de Colaborador e Candidato > Campos Padrões do Sistema: Ajuste de inconsistência ao validar a obrigatoriedade dos campos UF e logradouro, para colaboradores e candidatos.]]></Item>
 	</Versao>
 	<Versao id="1.1.183.215" db="" data="30/08/2017">
 		<Item visivel="S" motivo="P17080000197"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Clonar: Ajuste de inconsistência ao exibir áreas organizacionais que não são do responsável e/ou do corresponsável.]]></Item>
