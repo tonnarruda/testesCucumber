@@ -603,6 +603,11 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 		return codigo +" - " + this.descricao + " - " + nomeDoCargo +" - "+ data +" - " + descricaoDaAreaOrg;
 	}
 
+	public String getCodigoMaisDescricaoFormatada()
+	{
+		return getId() + " - " + this.descricao;
+	}
+	
 	public String getValorPromocao()
 	{
 		return valorPromocao;

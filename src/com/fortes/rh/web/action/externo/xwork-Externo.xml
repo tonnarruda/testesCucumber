@@ -70,28 +70,30 @@
 		<action name="insertAvaliacaoSolicitacao" class="com.fortes.rh.web.action.pesquisa.ColaboradorQuestionarioEditAction" method="insertAvaliacaoExperiencia">
 			<result name="success" type="redirect"><![CDATA[prepareListAnuncio.action?sucessoRespostaAvaliacao=true]]></result>
 		</action>
-		<action name="listDocumentosAnexos" class="com.fortes.rh.web.action.externo.ExternoAction" method="listDocumentosAnexos">
+		<action name="listDocumentosAnexos" class="com.fortes.rh.web.action.geral.DocumentoAnexoListAction" method="list">
 			<result name="success" type="freemarker">/WEB-INF/forms/externo/documentoAnexoList.ftl</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/externo/externoLogin.ftl</result>
 		</action>
-		<action name="showDocumentoAnexo" class="com.fortes.rh.web.action.externo.ExternoAction" method="showDocumentoAnexo">
+		<action name="showDocumentoAnexo" class="com.fortes.rh.web.action.geral.DocumentoAnexoEditAction" method="showDocumento">
 			<result name="input" type="freemarker">/WEB-INF/forms/externo/externoLogin.ftl</result>
 		</action>
-		<action name="deleteDocumentoAnexo" class="com.fortes.rh.web.action.externo.ExternoAction" method="deleteDocumentoAnexo">
+		<action name="deleteDocumentoAnexo" class="com.fortes.rh.web.action.geral.DocumentoAnexoListAction" method="delete">
 			<result name="success" type="freemarker">/WEB-INF/forms/externo/documentoAnexoList.ftl</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/externo/externoLogin.ftl</result>
 		</action>
-		<action name="prepareInsertDocumentoAnexo" class="com.fortes.rh.web.action.externo.ExternoAction" method="prepareInsertDocumentoAnexo">
+		<action name="prepareInsertDocumentoAnexo" class="com.fortes.rh.web.action.geral.DocumentoAnexoEditAction" method="prepare">
 			<result name="success" type="freemarker">/WEB-INF/forms/externo/documentoAnexoEdit.ftl</result>
 		</action>
-		<action name="insertDocumentoAnexo" class="com.fortes.rh.web.action.externo.ExternoAction" method="insertDocumentoAnexo">
-			<result name="success" type="redirect">listDocumentosAnexos.action</result>
+		<action name="insertDocumentoAnexo" class="com.fortes.rh.web.action.geral.DocumentoAnexoEditAction" method="insert">
+			<result name="success" type="redirect"><![CDATA[listDocumentosAnexos.action?documentoAnexo.origem=${documentoAnexo.origem}&documentoAnexo.origemId=${documentoAnexo.origemId}]]></result>
+			<result name="input" type="freemarker">/WEB-INF/forms/externo/documentoAnexoEdit.ftl</result>
 		</action>
-		<action name="prepareUpdateDocumentoAnexo" class="com.fortes.rh.web.action.externo.ExternoAction" method="prepareUpdateDocumentoAnexo">
+		<action name="prepareUpdateDocumentoAnexo" class="com.fortes.rh.web.action.geral.DocumentoAnexoEditAction" method="prepare">
 			<result name="success" type="freemarker">/WEB-INF/forms/externo/documentoAnexoEdit.ftl</result>
 		</action>
-		<action name="updateDocumentoAnexo" class="com.fortes.rh.web.action.externo.ExternoAction" method="updateDocumentoAnexo">
-			<result name="success" type="redirect">listDocumentosAnexos.action</result>
+		<action name="updateDocumentoAnexo" class="com.fortes.rh.web.action.geral.DocumentoAnexoEditAction" method="update">
+			<result name="success" type="redirect"><![CDATA[listDocumentosAnexos.action?documentoAnexo.origem=${documentoAnexo.origem}&documentoAnexo.origemId=${documentoAnexo.origemId}]]></result>
+			<result name="input" type="freemarker">/WEB-INF/forms/externo/documentoAnexoEdit.ftl</result>
 		</action>
 	</package>
 </xwork>

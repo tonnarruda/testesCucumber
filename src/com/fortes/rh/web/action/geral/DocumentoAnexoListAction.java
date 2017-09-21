@@ -3,81 +3,88 @@ package com.fortes.rh.web.action.geral;
 import java.util.Collection;
 
 import com.fortes.rh.business.geral.DocumentoAnexoManager;
+import com.fortes.rh.exception.FortesException;
+import com.fortes.rh.model.dicionario.OrigemAnexo;
 import com.fortes.rh.model.geral.DocumentoAnexo;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork.ActionContext;
 
 @SuppressWarnings("serial")
 public class DocumentoAnexoListAction extends MyActionSupportList
 {
 	private DocumentoAnexoManager documentoAnexoManager;
-
-	private Collection<DocumentoAnexo> documentoAnexos;
 	
+	private OrigemAnexo origemAnexo = new OrigemAnexo();
+	private Collection<DocumentoAnexo> documentoAnexos;
 	private DocumentoAnexo documentoAnexo;
-
-	private String diretorio;
-	private String nome;
-	//Usados pela listagem de Candidatos para manter dados do filtro
+	private String titulo = "";
+	private String voltar = "";
 	private Long etapaSeletivaId;
 	private char visualizar;
-	private Character origem;
-	private Long origemId;
-
-	//Usada apenas para armazenar quando os documentos são acessador através da tela de solicitação de pessoal.
 	private Long solicitacaoId;
+	private Long colaboradorId;
+	private Character origem; 
 
 	public String list() throws Exception
 	{
 		setVideoAjuda(764L);
 		
-		if(origem != null && origemId != null) {
-			documentoAnexo.setOrigem(origem);
-			documentoAnexo.setOrigemId(origemId);
-		} 
+		if(documentoAnexo.getOrigemId() == null || !origemAnexo.possuiPermissao(documentoAnexo.getOrigem(), solicitacaoId, ActionContext.getContext().getSession())){
+			addActionMessage("Usuário sem permissão de acesso.");
+			return Action.SUCCESS;
+		}
 		
-		documentoAnexos = documentoAnexoManager.getDocumentoAnexoByOrigemId(null, documentoAnexo.getOrigem(), documentoAnexo.getOrigemId());
-		nome = documentoAnexoManager.getNome(documentoAnexo.getOrigem(), documentoAnexo.getOrigemId());
+		if(colaboradorId != null){
+			documentoAnexo.setOrigem(OrigemAnexo.AnexoColaborador);
+			documentoAnexo.setOrigemId(colaboradorId);
+		}
+		
+		if(origem == null)
+			origem = documentoAnexo.getOrigem();
+		else
+			documentoAnexo.setOrigem(origem);
+		
+		documentoAnexos = documentoAnexoManager.getDocumentoAnexoByOrigemId(documentoAnexo.getOrigem(), documentoAnexo.getOrigemId());
+		titulo = documentoAnexoManager.getTituloList(documentoAnexo.getOrigem(), documentoAnexo.getOrigemId());
+
+		voltar = origemAnexo.getVoltarListAnexoByOrigem(documentoAnexo.getOrigem(), solicitacaoId);
+		
 		return Action.SUCCESS;
 	}
 
-	private String delete() throws Exception
+	public String delete() throws Exception
 	{
-		try
-		{
+		try{
+			if(documentoAnexo.getOrigemId() == null && !origemAnexo.possuiPermissao(documentoAnexo.getOrigem(), solicitacaoId, ActionContext.getContext().getSession()))
+				throw new Exception();
+			
+			checkCandidatoExterno();
 			documentoAnexo = documentoAnexoManager.findByIdProjection(documentoAnexo.getId());
-			documentoAnexoManager.deletarDocumentoAnexo(diretorio, documentoAnexo);
+			documentoAnexoManager.deletarDocumentoAnexo(origemAnexo.diretorioOrigemAnexo(documentoAnexo.getOrigem()), documentoAnexo);
 			addActionSuccess("Documento excluído com sucesso.");
-		}
-		catch (Exception e)
-		{
+		}catch (FortesException e){
+			e.printStackTrace();
+			addActionWarning(e.getMessage());
+		}catch (Exception e){
 			e.printStackTrace();
 			addActionError("Não foi possível excluir o documento.");
 		}
 
 		return list();
 	}
-
-	public String deleteCandidato() throws Exception
-	{
-		diretorio = "documentosCandidatos";
-		origem = documentoAnexo.getOrigem();
-		origemId = documentoAnexo.getOrigemId();
+	
+	private void checkCandidatoExterno() throws FortesException{
+		if(origem == null)
+			origem = documentoAnexo.getOrigem();
 		
-		return delete();
-	}
-
-	public String deleteColaborador() throws Exception
-	{
-		diretorio = "documentosColaboradores";
-		return delete();
+		if(origem == OrigemAnexo.AnexoCandidatoExterno){
+			DocumentoAnexo documentoAnexoTmp = documentoAnexoManager.findByIdProjection(documentoAnexo.getId());
+			if (!ActionContext.getContext().getSession().get("SESSION_CANDIDATO_ID").equals(documentoAnexoTmp.getOrigemId()))
+				throw new FortesException("O documento selecionado não consta na sua lista.");
+		}
 	}
 	
-	public String deleteCurso() throws Exception {
-		diretorio = "anexosCursos";
-		return delete();
-	}
-
 	public Collection<DocumentoAnexo> getDocumentoAnexos()
 	{
 		return documentoAnexos;
@@ -86,9 +93,8 @@ public class DocumentoAnexoListAction extends MyActionSupportList
 	public DocumentoAnexo getDocumentoAnexo()
 	{
 		if(documentoAnexo == null)
-		{
 			documentoAnexo = new DocumentoAnexo();
-		}
+		
 		return documentoAnexo;
 	}
 
@@ -105,16 +111,6 @@ public class DocumentoAnexoListAction extends MyActionSupportList
 	public void setDocumentoAnexos(Collection<DocumentoAnexo> documentoAnexos)
 	{
 		this.documentoAnexos = documentoAnexos;
-	}
-
-	public String getNome()
-	{
-		return nome;
-	}
-
-	public void setNome(String nome)
-	{
-		this.nome = nome;
 	}
 
 	public Long getSolicitacaoId()
@@ -147,11 +143,27 @@ public class DocumentoAnexoListAction extends MyActionSupportList
 		this.visualizar = visualizar;
 	}
 
-	public void setOrigem(Character origem) {
-		this.origem = origem;
+	public String getVoltar() {
+		return voltar;
 	}
 
-	public void setOrigemId(Long origemId) {
-		this.origemId = origemId;
+	public String getTitulo() {
+		return titulo;
+	}
+
+	public Long getColaboradorId() {
+		return colaboradorId;
+	}
+
+	public void setColaboradorId(Long colaboradorId) {
+		this.colaboradorId = colaboradorId;
+	}
+
+	public Character getOrigem() {
+		return origem;
+	}
+
+	public void setOrigem(Character origem) {
+		this.origem = origem;
 	}
 }

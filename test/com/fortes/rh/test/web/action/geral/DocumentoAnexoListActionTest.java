@@ -1,77 +1,93 @@
 package com.fortes.rh.test.web.action.geral;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import mockit.Mockit;
 
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import com.fortes.rh.business.geral.DocumentoAnexoManager;
 import com.fortes.rh.model.geral.DocumentoAnexo;
-import com.fortes.rh.test.util.mockObjects.MockArquivoUtil;
-import com.fortes.rh.util.ArquivoUtil;
+import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.test.util.mockObjects.MockActionContext;
+import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.web.action.geral.DocumentoAnexoListAction;
+import com.opensymphony.xwork.ActionContext;
 
-public class DocumentoAnexoListActionTest extends MockObjectTestCase
+public class DocumentoAnexoListActionTest
 {
 	private DocumentoAnexoListAction action;
-	private Mock manager;
+	private DocumentoAnexoManager manager;
 
-    protected void setUp() throws Exception
+	@Before
+    public void setUp() throws Exception
     {
-        super.setUp();
         action = new DocumentoAnexoListAction();
-        manager = new Mock(DocumentoAnexoManager.class);
-        action.setDocumentoAnexoManager((DocumentoAnexoManager) manager.proxy());
+        manager = mock(DocumentoAnexoManager.class);
+        action.setDocumentoAnexoManager(manager);
 
-        Mockit.redefineMethods(ArquivoUtil.class, MockArquivoUtil.class);
+    	Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
+		Mockit.redefineMethods(ActionContext.class, MockActionContext.class);
     }
 
-    protected void tearDown() throws Exception
+	@After
+    public void tearDown() throws Exception
     {
         manager = null;
         action = null;
-        super.tearDown();
     }
+	
+	private void validaRoleSecurity() {
+		Map<String, String> roles = new HashMap<>();
+		roles.put("ACEGI_SECURITY_CONTEXT", "ROLE_COLAB_LIST_DOCUMENTOANEXO");
+		MockActionContext.getContext().setSession(roles);
+		MockSecurityUtil.verifyRole = true;
+	}
 
-    public void testExecute() throws Exception
-    {
-    	assertEquals("success", action.execute());
-    }
-
+    @Test
     public void testList() throws Exception
     {
     	DocumentoAnexo documentoAnexo = new DocumentoAnexo();
     	documentoAnexo.setOrigem('C');
     	documentoAnexo.setOrigemId(1L);
     	action.setDocumentoAnexo(documentoAnexo);
+    	
+    	action.setColaboradorId(1L);
 
-    	manager.expects(once()).method("getDocumentoAnexoByOrigemId").with(eq(null), eq('C'), eq(1L)).will(returnValue(new ArrayList<DocumentoAnexo>()));
-    	manager.expects(once()).method("getNome").with(eq('C'), eq(1L)).will(returnValue("bruno"));
+    	validaRoleSecurity();
+    	when(manager.getDocumentoAnexoByOrigemId('C', 1L)).thenReturn(new ArrayList<DocumentoAnexo>());
 
     	assertEquals("success", action.list());
     }
 
-    public void testDeleteCandidato() throws Exception
+    @Test
+    public void testDelete() throws Exception
     {
     	DocumentoAnexo documentoAnexo = new DocumentoAnexo();
     	documentoAnexo.setId(1L);
     	documentoAnexo.setUrl("url");
-    	documentoAnexo.setOrigem('Y');
+    	documentoAnexo.setOrigem('D');
     	documentoAnexo.setOrigemId(1L);
-
     	action.setDocumentoAnexo(documentoAnexo);
-
-    	manager.expects(once()).method("findByIdProjection").with(eq(documentoAnexo.getId())).will(returnValue(documentoAnexo));
-    	manager.expects(once()).method("deletarDocumentoAnexo").with(eq("documentosCandidatos"), eq(documentoAnexo));
-    	manager.expects(once()).method("getDocumentoAnexoByOrigemId").with(eq(null), eq('Y'), eq(1L)).will(returnValue(new ArrayList<DocumentoAnexo>()));
-    	manager.expects(once()).method("getNome").with(eq('Y'), eq(1L)).will(returnValue("bruno"));
     	
-    	assertEquals("success", action.deleteCandidato());
+    	validaRoleSecurity();
+    	when(manager.findByIdProjection(documentoAnexo.getId())).thenReturn(documentoAnexo);
+    	when(manager.getDocumentoAnexoByOrigemId('Y', 1L)).thenReturn(new ArrayList<DocumentoAnexo>());
+    	
+    	assertEquals("success", action.delete());
     }
 
-    public void testDeleteCandidatoExcecao() throws Exception
+    @Test
+    public void testDeleteExcecao() throws Exception
     {
     	DocumentoAnexo documentoAnexo = new DocumentoAnexo();
     	documentoAnexo.setId(1L);
@@ -81,41 +97,28 @@ public class DocumentoAnexoListActionTest extends MockObjectTestCase
 
     	action.setDocumentoAnexo(documentoAnexo);
 
-    	manager.expects(once()).method("findByIdProjection").with(eq(documentoAnexo.getId())).will(returnValue(documentoAnexo));
-    	manager.expects(once()).method("deletarDocumentoAnexo").with(eq("documentosCandidatos"),eq(documentoAnexo)).will(throwException(new Exception()));
-    	manager.expects(once()).method("getDocumentoAnexoByOrigemId").with(eq(null), eq('Y'), eq(1L)).will(returnValue(new ArrayList<DocumentoAnexo>()));
-    	manager.expects(once()).method("getNome").with(eq('Y'), eq(1L)).will(returnValue("bruno"));
+    	when(manager.findByIdProjection(documentoAnexo.getId())).thenReturn(documentoAnexo);
+    	doThrow(Exception.class).when(manager).deletarDocumentoAnexo("documentosCandidatos", documentoAnexo);
+    	when(manager.getDocumentoAnexoByOrigemId('Y', 1L)).thenReturn(new ArrayList<DocumentoAnexo>());
 
-    	assertEquals("success", action.deleteCandidato());
+    	assertEquals("success", action.delete());
     }
 
-    public void testDeleteColaborador() throws Exception
-    {
-    	DocumentoAnexo documentoAnexo = new DocumentoAnexo();
-    	documentoAnexo.setId(1L);
-    	documentoAnexo.setUrl("url");
-    	documentoAnexo.setOrigem('Y');
-    	documentoAnexo.setOrigemId(1L);
-
-    	action.setDocumentoAnexo(documentoAnexo);
-
-    	manager.expects(once()).method("findByIdProjection").with(eq(documentoAnexo.getId())).will(returnValue(documentoAnexo));
-    	manager.expects(once()).method("deletarDocumentoAnexo").with(eq("documentosColaboradores"),eq(documentoAnexo));
-    	manager.expects(once()).method("getDocumentoAnexoByOrigemId").with(eq(null), eq('Y'), eq(1L)).will(returnValue(new ArrayList<DocumentoAnexo>()));
-    	manager.expects(once()).method("getNome").with(eq('Y'), eq(1L)).will(returnValue("bruno"));
-
-    	assertEquals("success", action.deleteColaborador());
-    }
-
+    @Test
     public void testGetsSets()
     {
     	action.getDocumentoAnexos();
     	action.getDocumentoAnexo();
     	action.setDocumentoAnexos(new ArrayList<DocumentoAnexo>());
-    	action.setNome("nome");
-    	action.getNome();
     	action.setSolicitacaoId(1L);
 		action.getSolicitacaoId();
+		action.setColaboradorId(1L);
+		action.getColaboradorId();
+		action.getTitulo();
+		action.setVisualizar('C');
+		action.getVisualizar();
+		action.setEtapaSeletivaId(1L);
+		action.getEtapaSeletivaId();
+		action.getVoltar();
     }
-
 }

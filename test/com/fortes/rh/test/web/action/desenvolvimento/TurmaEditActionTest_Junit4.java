@@ -230,7 +230,7 @@ public class TurmaEditActionTest_Junit4
     	when(cursoManager.findAllByEmpresasParticipantes(1L)).thenReturn(cursos);
     	when(cursoManager.existeEmpresasNoCurso(empresa.getId(), curso.getId())).thenReturn(true);
     	when(turmaTipoDespesaManager.findTipoDespesaTurma(turma.getId())).thenReturn(new ArrayList<TurmaTipoDespesa>());
-    	when(documentoAnexoManager.getDocumentoAnexoByOrigemId(null, 'U', 1L)).thenReturn(documentoAnexos);
+    	when(documentoAnexoManager.getDocumentoAnexoByOrigemId('U', 1L)).thenReturn(documentoAnexos);
     	when(documentoAnexoManager.findByTurma(turma.getId())).thenReturn(documentoAnexos);
 
     	assertEquals("success", action.prepareUpdate());
@@ -268,7 +268,7 @@ public class TurmaEditActionTest_Junit4
     	when(cursoManager.findAllByEmpresasParticipantes(1L)).thenReturn(cursos);
     	when(cursoManager.existeEmpresasNoCurso(empresa.getId(), curso.getId())).thenReturn(true);
     	when(turmaTipoDespesaManager.findTipoDespesaTurma(turma.getId())).thenReturn(new ArrayList<TurmaTipoDespesa>());
-    	when(documentoAnexoManager.getDocumentoAnexoByOrigemId(null, 'U', 1L)).thenReturn(documentoAnexos);
+    	when(documentoAnexoManager.getDocumentoAnexoByOrigemId('U', 1L)).thenReturn(documentoAnexos);
     	when(documentoAnexoManager.findByTurma(turma.getId())).thenReturn(documentoAnexos);
     	when(colaboradorCertificacaoManager.existeColaboradorCertificadoEmUmaTurmaPosterior(turma.getId(), null)).thenReturn(false);
     	
@@ -294,7 +294,7 @@ public class TurmaEditActionTest_Junit4
     	when(turmaManager.findByIdProjection(turma.getId())).thenReturn(turma);
     	when(cursoManager.findAllByEmpresasParticipantes(1L)).thenReturn(cursos);
     	when(tipoDespesaManager.find(new String[]{"empresa.id"}, new Object[]{1L}, new String[]{"descricao"})).thenReturn(new ArrayList<TipoDespesa>());
-    	when(documentoAnexoManager.getDocumentoAnexoByOrigemId(null, 'U', 1L)).thenReturn(documentoAnexos);
+    	when(documentoAnexoManager.getDocumentoAnexoByOrigemId('U', 1L)).thenReturn(documentoAnexos);
     	when(cursoManager.existeEmpresasNoCurso(empresa.getId(), curso.getId())).thenReturn(false);
 
     	assertEquals("error", action.prepareUpdate());
@@ -333,7 +333,7 @@ public class TurmaEditActionTest_Junit4
     	when(cursoManager.findAllByEmpresasParticipantes(1L)).thenReturn(cursos);
     	when(cursoManager.existeEmpresasNoCurso(empresaLogada.getId(), curso.getId())).thenReturn(true);
     	when(turmaTipoDespesaManager.findTipoDespesaTurma(turma.getId())).thenReturn(tipoDespesas);
-    	when(documentoAnexoManager.getDocumentoAnexoByOrigemId(null, 'U', 1L)).thenReturn(documentoAnexos);
+    	when(documentoAnexoManager.getDocumentoAnexoByOrigemId('U', 1L)).thenReturn(documentoAnexos);
     	when(documentoAnexoManager.findByTurma(turma.getId())).thenReturn(documentoAnexos);
     	when(colaboradorCertificacaoManager.existeColaboradorCertificadoEmUmaTurmaPosterior(turma.getId(), null)).thenReturn(true);
 

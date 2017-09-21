@@ -120,7 +120,7 @@
 					<ul>
 						<li><a href="prepareListAnuncio.action">Vagas Abertas</a></li>
 						<li><a href="prepareUpdate.action?moduloExterno=true&empresaId=${SESSION_EMPRESA}&candidato.id=${SESSION_CANDIDATO_ID}">Editar Currículo</a></li>
-						<li><a href="listDocumentosAnexos.action?moduloExterno=true">Anexar Documentos</a></li>
+						<li><a href="listDocumentosAnexos.action?documentoAnexo.origem=E&documentoAnexo.origemId=${SESSION_CANDIDATO_ID}">Anexar Documentos</a></li>
 						<li><a href="prepareUpdateSenha.action?moduloExterno=true&empresaId=${SESSION_EMPRESA}&candidato.id=${SESSION_CANDIDATO_ID}">Alterar Senha</a></li>
 						<li><a href="logoutExterno.action?empresaId=${SESSION_EMPRESA}">Sair</a></li>
 					</ul>

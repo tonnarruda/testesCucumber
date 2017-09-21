@@ -53,7 +53,7 @@ public class DocumentoAnexoDaoHibernateTest extends GenericDaoHibernateTest<Docu
 		documentoAnexo2.setOrigem(origem);
 		documentoAnexo2 = documentoAnexoDao.save(documentoAnexo2);
 
-		Collection<DocumentoAnexo> retorno = documentoAnexoDao.getDocumentoAnexoByOrigemId(null,origem, origemId, null);
+		Collection<DocumentoAnexo> retorno = documentoAnexoDao.getDocumentoAnexoByOrigemId(origem,origemId, null);
 
 		assertEquals(1, retorno.size());
 	}

@@ -1094,12 +1094,12 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			experiencias = experienciaManager.findByColaborador(colaborador.getId());
 			
 			if(SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VISUALIZAR_ANEXO_COLAB_LOGADO"}))
-				documentoAnexosColaborador = documentoAnexoManager.getDocumentoAnexoByOrigemId(null, OrigemAnexo.AnexoColaborador, colaborador.getId());
+				documentoAnexosColaborador = documentoAnexoManager.getDocumentoAnexoByOrigemId(OrigemAnexo.AnexoColaborador, colaborador.getId());
 
 			if(colaborador.getCandidato() != null && colaborador.getCandidato().getId() != null)
 			{
 				if(SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VISUALIZAR_ANEXO_COLAB_LOGADO"}))
-					documentoAnexosCandidato = documentoAnexoManager.getDocumentoAnexoByOrigemId(null, OrigemAnexo.AnexoCandidato, colaborador.getCandidato().getId());
+					documentoAnexosCandidato = documentoAnexoManager.getDocumentoAnexoByOrigemId(OrigemAnexo.AnexoCandidato, colaborador.getCandidato().getId());
 				historicosCandidatoByColaborador = historicoCandidatoManager.findByCandidato(colaborador.getCandidato());
 			}
 			

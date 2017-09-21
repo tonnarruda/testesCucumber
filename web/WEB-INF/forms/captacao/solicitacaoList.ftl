@@ -230,7 +230,7 @@
 			<#assign imgEncerra="flag_red.gif"/>
 			<#assign actionEncerra="encerrarSolicitacao.action"/>
 		</#if>
-		<@display.column title="Ações" media="html" class="acao" style="width: 170px; text-align:left;">
+		<@display.column title="Ações" media="html" class="acao" style="width: 105px; text-align:left;">
 			<@frt.link verifyRole="ROLE_MOV_SOLICITACAO_IMPRIMIR" href="imprimirSolicitacaoPessoal.action?solicitacao.id=${solicitacao.id}" imgTitle="Imprimir" imgName="printer.gif"/>
 			<@frt.link verifyRole="ROLE_MOV_SOLICITACAO_EDITAR" href="prepareUpdate.action?solicitacao.id=${solicitacao.id}" imgTitleDisabled="Não é possível editar a solicitação. Esta já foi aprovada ou encerrada." imgTitle="Editar" imgName="edit.gif" opacity=solicitacao.encerrada disabled=solicitacao.encerrada/>
 			<@frt.link verifyRole="ROLE_MOV_SOLICITACAO_EXCLUIR" href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?solicitacao.id=${solicitacao.id}'});" imgTitleDisabled="Não é possível excluir a solicitação. Esta já foi aprovada ou encerrada." imgTitle="Excluir" imgName="delete.gif" opacity=solicitacao.encerrada disabled=solicitacao.encerrada/>
@@ -286,7 +286,8 @@
 			</#if>
 			
 			<@frt.link verifyRole="ROLE_LIBERA_SOLICITACAO" href="javascript:;" onclick="javascript:aprovarSolicitacao(${solicitacao.id},'${solicitacao.status}','${dtStatus}')" imgTitle="Alterar status (${solicitacao.statusFormatado})" imgName="${imgStatus}"/>
-			
+
+			<@frt.link verifyRole="ROLE_MOV_SOLICITACAO_ANEXAR" href="../../geral/documentoAnexo/list.action?documentoAnexo.origem=S&documentoAnexo.origemId=${solicitacao.id}" imgTitle="Inserir Anexos" imgName="anexos.gif"/>
 		</@display.column>
 	
 		<@display.column title="Código" property="id" class="${classe}"/>

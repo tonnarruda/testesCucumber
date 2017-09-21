@@ -38,8 +38,6 @@ public class DocumentoAnexo extends AbstractModel implements Serializable
 	private char origem;
 	private Long origemId;
 	
-	private boolean moduloExterno = false;
-	
 	public void setProjectionEtapaSeletivaId(Long etapaSeletivaId)
 	{
 		if (this.etapaSeletiva == null)
@@ -138,13 +136,5 @@ public class DocumentoAnexo extends AbstractModel implements Serializable
 
 	public void setTipoDocumento(TipoDocumento tipoDocumento) {
 		this.tipoDocumento = tipoDocumento;
-	}
-
-	public boolean isModuloExterno() {
-		return moduloExterno;
-	}
-
-	public void setModuloExterno(boolean moduloExterno) {
-		this.moduloExterno = moduloExterno;
 	}
 }

@@ -425,7 +425,7 @@ public class ColaboradorEditActionTest_JUnit4
 		when(experienciaManager.findByColaborador(eq(colaborador.getId()))).thenReturn(new ArrayList<Experiencia>());
 		when(catManager.findByColaborador(eq(colaborador))).thenReturn(new ArrayList<Cat>());
 		when(comissaoManager.getParticipacoesDeColaboradorNaCipa(eq(colaborador.getId()))).thenReturn(new ArrayList<ParticipacaoColaboradorCipa>());
-		when(documentoAnexoManager.getDocumentoAnexoByOrigemId(eq(moduloExterno), anyChar(), eq(colaborador.getId()))).thenReturn(documentoAnexosColaborador);
+		when(documentoAnexoManager.getDocumentoAnexoByOrigemId(anyChar(), eq(colaborador.getId()))).thenReturn(documentoAnexosColaborador);
 		when(colaboradorManager.findByUsuario(any(Usuario.class), eq(action.getEmpresaSistema().getId()))).thenReturn(colaborador);
 		when(usuarioManager.isResponsavelOrCoResponsavel(anyLong())).thenReturn(true);
 		when(usuarioEmpresaManager.containsRole(anyLong(), eq(action.getEmpresaSistema().getId()), eq("ROLE_MOV_GESTOR_VISUALIZAR_PROPRIA_OCORRENCIA_PROVIDENCIA"))).thenReturn(true); 

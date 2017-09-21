@@ -211,7 +211,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	
 		tipoDespesas = tipoDespesaManager.find(new String[]{"empresa.id"}, new Object[]{getEmpresaSistema().getId()}, new String[]{"descricao"});
 		
-		Collection<DocumentoAnexo> documentoAnexos = documentoAnexoManager.getDocumentoAnexoByOrigemId(null, 'U', cursoId);
+		Collection<DocumentoAnexo> documentoAnexos = documentoAnexoManager.getDocumentoAnexoByOrigemId('U', cursoId);
 		documentoAnexoCheckList = CheckListBoxUtil.populaCheckListBox(documentoAnexos, "getId", "getDescricao", null);
 	}
 

@@ -252,7 +252,7 @@
 			
 			<@frt.link verifyRole="ROLE_CAND_SOLICITACAO_EXCLUIR" href="javascript:;" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?solicitacao.id=${solicitacao.id}&candidatoSolicitacao.id=${candidatoSolicitacao.id}'});" imgTitle="Excluir" imgName="delete.gif" imgTitleDisabled=msgDisabledExcluir disabled=disabledExcluir/>
 			
-			<@frt.link verifyRole="ROLE_CAND_SOLICITACAO_DOCUMENTOANEXO" href="../../geral/documentoAnexo/listCandidato.action?documentoAnexo.origem=C&documentoAnexo.origemId=${candidatoSolicitacao.candidato.id}&solicitacaoId=${solicitacao.id}" imgTitle="Documentos Anexos" imgName="anexos.gif" imgTitleDisabled=titleDisabled disabled=solicitacao.encerrada || !autorizadoPeloGestor/>
+			<@frt.link verifyRole="ROLE_CAND_SOLICITACAO_DOCUMENTOANEXO" href="../../geral/documentoAnexo/list.action?documentoAnexo.origem=C&documentoAnexo.origemId=${candidatoSolicitacao.candidato.id}&solicitacaoId=${solicitacao.id}" imgTitle="Documentos Anexos" imgName="anexos.gif" imgTitleDisabled=titleDisabled disabled=solicitacao.encerrada || !autorizadoPeloGestor/>
 			
 			<@frt.link verifyRole="ROLE_CAND_SOLICITACAO_AVALIACOES" href="javascript:;" onclick="getMenuAvaliacoes(event, ${solicitacao.id}, ${candidatoSolicitacao.candidato.id})" imgTitle="Avaliações da Solicitação" imgName="form.gif" imgTitleDisabled=titleDisabledAnexo disabled=!(solicitacaoAvaliacaos?exists && (solicitacaoAvaliacaos?size > 0)) || !autorizadoPeloGestor/>
 		

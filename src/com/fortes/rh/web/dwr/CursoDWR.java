@@ -78,7 +78,7 @@ public class CursoDWR
 	@SuppressWarnings("unchecked")
 	public Map<Long,String> getDocumentoAnexos(Long cursoId) 
 	{
-		Collection<DocumentoAnexo> documentoAnexos = documentoAnexoManager.getDocumentoAnexoByOrigemId(null, 'U', cursoId);
+		Collection<DocumentoAnexo> documentoAnexos = documentoAnexoManager.getDocumentoAnexoByOrigemId('U', cursoId);
 		return new CollectionUtil<DocumentoAnexo>().convertCollectionToMap(documentoAnexos,"getId","getDescricao");
 	}
 	

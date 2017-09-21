@@ -37,7 +37,7 @@
 	<#if documentoAnexo.id?exists>
 		<br />
 		Documento atual:
-		<a href="showDocumentoAnexo.action?documentoAnexo.id=${documentoAnexo.id}" target="_blank">${documentoAnexo.descricao}</a>
+		<a href="showDocumentoAnexo.action?documentoAnexo.id=${documentoAnexo.id}&documentoAnexo.origem=${documentoAnexo.origem}" target="_blank">${documentoAnexo.descricao}</a>
 		<br /><br />
 	</#if>
 
@@ -53,12 +53,11 @@
 	<@ww.hidden name="documentoAnexo.origemId" />
 	<@ww.hidden name="documentoAnexo.url" />
 	<@ww.hidden name="documentoAnexo.data" />
-	<@ww.hidden name="documentoAnexo.moduloExterno" />
 </@ww.form>
 
 <div class="buttonGroup">
 	<button onclick="${validarCampos};" class="btnGravar"></button>
-	<button onclick="window.location='listDocumentosAnexos.action'" class="btnCancelar"></button>
+	<button onclick="window.location='listDocumentosAnexos.action?documentoAnexo.origem=${documentoAnexo.origem}&documentoAnexo.origemId=${documentoAnexo.origemId}'" class="btnCancelar"></button>
 </button>
 
 <script type="text/javascript">

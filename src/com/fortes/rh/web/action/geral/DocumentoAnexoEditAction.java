@@ -1,13 +1,16 @@
 package com.fortes.rh.web.action.geral;
 
 import java.util.Collection;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletResponse;
 
 import com.fortes.model.type.FileUtil;
 import com.fortes.rh.business.captacao.EtapaSeletivaManager;
 import com.fortes.rh.business.geral.DocumentoAnexoManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.geral.TipoDocumentoManager;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.captacao.EtapaSeletiva;
 import com.fortes.rh.model.dicionario.OrigemAnexo;
 import com.fortes.rh.model.geral.DocumentoAnexo;
@@ -16,6 +19,7 @@ import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork.ActionContext;
 
 @SuppressWarnings({"serial"})
 public class DocumentoAnexoEditAction extends MyActionSupportEdit
@@ -23,172 +27,96 @@ public class DocumentoAnexoEditAction extends MyActionSupportEdit
 	private DocumentoAnexoManager documentoAnexoManager;
 	private EtapaSeletivaManager etapaSeletivaManager;
 	private TipoDocumentoManager tipoDocumentoManager;
+	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 
+	private OrigemAnexo origemAnexo = new OrigemAnexo();
 	private DocumentoAnexo documentoAnexo;
 	private Collection<EtapaSeletiva> etapaSeletivas;
 	private com.fortes.model.type.File documento;
 
-	private String diretorio;
-
-	private char origemTmp;
-	private Long origemIdTmp;
-	private String nome;
+	private String titulo;
 	private Long solicitacaoId;
-	private Character origemDocumento;
-	private Long origemIdDocumento;
+	private Long colaboradorId;
 
-	//	Usados pela listagem de Candidatos para manter dados do filtro
 	private int page;
 	private Long etapaSeletivaId;
 	private char visualizar;
 	private Collection<TipoDocumento> tipoDocumentos;
+	private Integer max_file_size;
+	private Character origem; 
 
-	public String execute() throws Exception
+	public String prepare() throws Exception
 	{
-		return Action.SUCCESS;
-	}
-
-	private void prepare() throws Exception
-	{
-		tipoDocumentos = tipoDocumentoManager.findAll();
-		
-		if(documentoAnexo != null && documentoAnexo.getId() != null)
-		{	
-			documentoAnexo = (DocumentoAnexo) documentoAnexoManager.findById(documentoAnexo.getId());
-			origemIdTmp = documentoAnexo.getOrigemId();
-			origemTmp = documentoAnexo.getOrigem();
-		}
-		else
-		{
-			documentoAnexo = new DocumentoAnexo();
-			documentoAnexo.setOrigem(origemTmp);
-			documentoAnexo.setOrigemId(origemIdTmp);
-		}
-		nome = documentoAnexoManager.getNome(documentoAnexo.getOrigem(), documentoAnexo.getOrigemId());
-	}
-
-	public String prepareInsertCandidato() throws Exception
-	{
-		prepare();
-		etapaSeletivas = etapaSeletivaManager.findAllSelect(getEmpresaSistema().getId());
-		return Action.SUCCESS;
-	}
-
-	public String prepareInsertColaborador() throws Exception
-	{
-		prepare();
-		return Action.SUCCESS;
-	}
-	
-	public String prepareInsertCurso() throws Exception
-	{
-		prepare();
-		return Action.SUCCESS;
-	}	
-
-	public String prepareUpdateCandidato() throws Exception
-	{
-		prepare();
-		etapaSeletivas = etapaSeletivaManager.findAllSelect(getEmpresaSistema().getId());
-		return Action.SUCCESS;
-	}
-
-	public String prepareUpdateColaborador() throws Exception
-	{
-		prepare();
-		return Action.SUCCESS;
-	}
-	
-	public String prepareUpdateCurso() throws Exception {
-		prepare();
-		return Action.SUCCESS;
-	}
-
-	private String insert() throws Exception
-	{
-		try
-		{
-			documentoAnexoManager.inserirDocumentoAnexo(diretorio, documentoAnexo, documento);
+		if(documentoAnexo.getOrigemId() == null || !origemAnexo.possuiPermissao(documentoAnexo.getOrigem(), solicitacaoId, ActionContext.getContext().getSession())){
+			addActionMessage("Usuário sem permissão de acesso.");
 			return Action.SUCCESS;
 		}
-		catch (Exception e)
-		{
+
+		if(documentoAnexo.getOrigem() == OrigemAnexo.AnexoCandidatoExterno){
+			max_file_size  = parametrosDoSistemaManager.findByIdProjection(1L).getTamanhoMaximoUpload();
+			documentoAnexo.setData(new Date());
+		}else{
+			etapaSeletivas = etapaSeletivaManager.findAllSelect(getEmpresaSistema().getId());
+			tipoDocumentos = tipoDocumentoManager.findAll();
+		}
+
+		boolean isEdicao = documentoAnexo != null && documentoAnexo.getId() != null;
+		
+		if(isEdicao)
+			documentoAnexo = documentoAnexoManager.findById(documentoAnexo.getId());
+		
+		titulo = documentoAnexoManager.getTituloEdit(documentoAnexo.getOrigem(), documentoAnexo.getOrigemId(), isEdicao);
+
+		return Action.SUCCESS;
+	}
+
+	public String insert() throws Exception
+	{
+		try{
+			if(!origemAnexo.possuiPermissao(documentoAnexo.getOrigem(), solicitacaoId, ActionContext.getContext().getSession()))
+				throw new Exception();
+			
+			documentoAnexoManager.inserirDocumentoAnexo(origemAnexo.diretorioOrigemAnexo(documentoAnexo.getOrigem()), documentoAnexo, documento);
+			return Action.SUCCESS;
+		}catch (Exception e){
 			addActionError("Não foi possível inserir o documento/anexo.");
 			return Action.INPUT;
 		}
 	}
 
-	public String insertCandidato() throws Exception
+	public String update()
 	{
-		diretorio = "documentosCandidatos";
-		return insert();
-	}
-
-	public String insertColaborador() throws Exception
-	{
-		diretorio = "documentosColaboradores";
-		return insert();
-	}
-	
-	public String insertCurso() throws Exception{
-		diretorio = "anexosCursos";
-		return insert();
-	}
-
-	public String update() throws Exception
-	{
-		try
-		{
-			documentoAnexoManager.atualizarDocumentoAnexo(diretorio, documentoAnexo, documento);
+		try{
+			if(!origemAnexo.possuiPermissao(documentoAnexo.getOrigem(), solicitacaoId, ActionContext.getContext().getSession()))
+				throw new Exception();
+			
+			checkCandidatoExterno();
+			documentoAnexoManager.atualizarDocumentoAnexo(origemAnexo.diretorioOrigemAnexo(documentoAnexo.getOrigem()), documentoAnexo, documento);
 			return Action.SUCCESS;
-		}
-		catch (Exception e)
-		{
-			addActionError("Não foi possível inserir o documento/anexo.");
+		}catch (FortesException e){
+			e.printStackTrace();
+			addActionWarning(e.getMessage());
+			return Action.INPUT;
+		}catch (Exception e){
+			addActionError("Não foi possível atualizar o documento/anexo.");
 			return Action.INPUT;
 		}
 	}
 
-	public String updateCandidato() throws Exception
+	public String showDocumento()
 	{
-		diretorio = "documentosCandidatos";
-		String retorno = update();
-
-		if (origemDocumento != null && origemDocumento == OrigemAnexo.AnexoColaborador)
-			return "successColaborador"; 
-		
-		return retorno; 
-	}
-
-	public String updateColaborador() throws Exception
-	{
-		diretorio = "documentosColaboradores";
-		return update();
-	}
-	
-	public String updateCurso() throws Exception {
-		diretorio = "anexosCursos";
-		return update();
-	}
-
-	public String showDocumento() throws Exception
-	{
-		documentoAnexo = documentoAnexoManager.findById(documentoAnexo.getId());
-		java.io.File file = null;
-		if (documentoAnexo.getUrl() != null && !documentoAnexo.getUrl().equals(""))
-		{
-			if(documentoAnexo.getOrigem() == 'D'){
-				file = ArquivoUtil.getArquivo(documentoAnexo.getUrl(),"documentosColaboradores");
-			}
-			else if(documentoAnexo.getOrigem() == 'C'){
-				file = ArquivoUtil.getArquivo(documentoAnexo.getUrl(),"documentosCandidatos");
-			}
-			else if(documentoAnexo.getOrigem() == 'U'){
-				file = ArquivoUtil.getArquivo(documentoAnexo.getUrl(),"anexosCursos");
+		try {
+			if(!origemAnexo.possuiPermissao(documentoAnexo.getOrigem(), solicitacaoId, ActionContext.getContext().getSession())){
+				addActionMessage("Sem permissão de acesso.");
+				return Action.SUCCESS;
 			}
 			
-			if(file != null)
-			{
+			checkCandidatoExterno();
+			documentoAnexo = documentoAnexoManager.findById(documentoAnexo.getId());
+			java.io.File file = null;
+			if (documentoAnexo.getUrl() != null && !documentoAnexo.getUrl().equals("") && origemAnexo.containsKey(documentoAnexo.getOrigem())){
+				file = ArquivoUtil.getArquivo(documentoAnexo.getUrl(),origemAnexo.diretorioOrigemAnexo(documentoAnexo.getOrigem()));
+	
 				com.fortes.model.type.File arquivo = new com.fortes.model.type.File();
 				arquivo.setBytes(FileUtil.getFileBytes(file));
 				arquivo.setName(file.getName());
@@ -196,23 +124,39 @@ public class DocumentoAnexoEditAction extends MyActionSupportEdit
 				int pos = arquivo.getName().indexOf(".");
 				if(pos > 0)
 					arquivo.setContentType(arquivo.getName().substring(pos));
-				
-				if (arquivo != null && arquivo.getBytes() != null)
-				{
+	
+				if (arquivo != null && arquivo.getBytes() != null){
 					HttpServletResponse response = ServletActionContext.getResponse();
-
+	
 					response.addHeader("Expires", "0");
 					response.addHeader("Pragma", "no-cache");
 					response.addHeader("Content-type", arquivo.getContentType());
 					response.addHeader("Content-Disposition", "attachment; filename=" + documentoAnexo.getDescricao() + arquivo.getContentType());
 					response.addHeader("Content-Transfer-Encoding", "binary");
-
+	
 					response.getOutputStream().write(arquivo.getBytes());
 				}
 			}
+		}catch (FortesException e){
+			e.printStackTrace();
+			addActionWarning(e.getMessage());
+		}catch (Exception e){
+			e.printStackTrace();
+			addActionError("Ocorreu uma inconsistência ao exibir documento.");
 		}
 
 		return Action.SUCCESS;
+	}
+	
+	private void checkCandidatoExterno() throws FortesException{
+		if(origem == null)
+			origem = documentoAnexo.getOrigem();
+		
+		if(origem == OrigemAnexo.AnexoCandidatoExterno){
+			DocumentoAnexo documentoAnexoTmp = documentoAnexoManager.findByIdProjection(documentoAnexo.getId());
+			if (!ActionContext.getContext().getSession().get("SESSION_CANDIDATO_ID").equals(documentoAnexoTmp.getOrigemId()))
+				throw new FortesException("O documento selecionado não consta na sua lista.");
+		}
 	}
 
 	public DocumentoAnexo getDocumentoAnexo()
@@ -257,26 +201,6 @@ public class DocumentoAnexoEditAction extends MyActionSupportEdit
 		this.documento = documento;
 	}
 
-	public Long getOrigemIdTmp()
-	{
-		return origemIdTmp;
-	}
-
-	public void setOrigemIdTmp(Long origemIdTmp)
-	{
-		this.origemIdTmp = origemIdTmp;
-	}
-
-	public char getOrigemTmp()
-	{
-		return origemTmp;
-	}
-
-	public void setOrigemTmp(char origemTmp)
-	{
-		this.origemTmp = origemTmp;
-	}
-
 	public Long getSolicitacaoId()
 	{
 		return solicitacaoId;
@@ -316,14 +240,6 @@ public class DocumentoAnexoEditAction extends MyActionSupportEdit
 		this.visualizar = visualizar;
 	}
 
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
 	public Collection<TipoDocumento> getTipoDocumentos() {
 		return tipoDocumentos;
 	}
@@ -336,20 +252,35 @@ public class DocumentoAnexoEditAction extends MyActionSupportEdit
 		this.tipoDocumentoManager = tipoDocumentoManager;
 	}
 
-	public void setOrigemDocumento(Character origemDocumento) {
-		this.origemDocumento = origemDocumento;
+	public String getTitulo() {
+		return titulo;
 	}
 
-	public Character getOrigemDocumento() {
-		return origemDocumento;
+	public Long getColaboradorId() {
+		return colaboradorId;
 	}
 
-	public Long getOrigemIdDocumento() {
-		return origemIdDocumento;
+	public void setColaboradorId(Long colaboradorId) {
+		this.colaboradorId = colaboradorId;
 	}
 
-	public void setOrigemIdDocumento(Long origemIdDocumento) {
-		this.origemIdDocumento = origemIdDocumento;
+	public Integer getMax_file_size() {
+		if (max_file_size == null)
+			return 0;
+		else
+			return max_file_size;
 	}
 
+	public void setParametrosDoSistemaManager(
+			ParametrosDoSistemaManager parametrosDoSistemaManager) {
+		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
+	}
+
+	public Character getOrigem() {
+		return origem;
+	}
+
+	public void setOrigem(Character origem) {
+		this.origem = origem;
+	}
 }

@@ -615,6 +615,9 @@
     <property name="cursoManager">
       <ref bean="cursoManager" />
     </property>
+    <property name="solicitacaoManager">
+      <ref bean="solicitacaoManager" />
+    </property>
   </bean>
   <bean id="documentoAnexoManager" parent="parentManager">
     <property name="proxyInterfaces">

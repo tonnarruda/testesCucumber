@@ -159,7 +159,7 @@ public class TurmaEditActionTest extends MockObjectTestCase
 
     	cursoManager.expects(once()).method("findAllByEmpresasParticipantes").with(ANYTHING).will(returnValue(cursos));
     	avaliacaoTurmaManager.expects(once()).method("findAllSelect").with(eq(true),ANYTHING).will(returnValue(avaliacaoTurmas));
-    	documentoAnexoManager.expects(once()).method("getDocumentoAnexoByOrigemId").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(documentoAnexos));
+    	documentoAnexoManager.expects(once()).method("getDocumentoAnexoByOrigemId").with(ANYTHING, ANYTHING).will(returnValue(documentoAnexos));
     	tipoDespesaManager.expects(once()).method("find");
 
     	assertEquals("success", action.prepareInsert());

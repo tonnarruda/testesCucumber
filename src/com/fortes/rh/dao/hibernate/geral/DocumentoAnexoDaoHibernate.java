@@ -19,7 +19,7 @@ public class DocumentoAnexoDaoHibernate extends GenericDaoHibernate<DocumentoAne
 {
 
 	@SuppressWarnings("unchecked")
-	public Collection<DocumentoAnexo> getDocumentoAnexoByOrigemId(Boolean moduloExterno, char origem, Long origemId, Long origemCandidatoId)
+	public Collection<DocumentoAnexo> getDocumentoAnexoByOrigemId(char origem, Long origemId, Long origemCandidatoId)
 	{
 		Criteria criteria = getSession().createCriteria(DocumentoAnexo.class, "da");
 		criteria.createCriteria("da.etapaSeletiva","es",Criteria.LEFT_JOIN);
@@ -37,19 +37,23 @@ public class DocumentoAnexoDaoHibernate extends GenericDaoHibernate<DocumentoAne
 		p.add(Projections.property("es.nome"), "projectionEtapaSeletivaNome");
 		criteria.setProjection(p);
 
-		if (moduloExterno != null)
-			criteria.add(Expression.eq("da.moduloExterno", moduloExterno));
-		
 		if (origem == OrigemAnexo.AnexoColaborador && origemCandidatoId != null)
 			criteria.add(Expression.or(
 							Expression.and(Expression.eq("da.origem", OrigemAnexo.AnexoColaborador), Expression.eq("da.origemId", origemId)), 
-							Expression.and(Expression.eq("da.origem", OrigemAnexo.AnexoCandidato), Expression.eq("da.origemId", origemCandidatoId))
+							Expression.or(
+									Expression.and(Expression.eq("da.origem", OrigemAnexo.AnexoCandidato), Expression.eq("da.origemId", origemCandidatoId)), 
+									Expression.and(Expression.eq("da.origem", OrigemAnexo.AnexoCandidatoExterno), Expression.eq("da.origemId", origemCandidatoId))
+							)
+						));
+		else if (origem == OrigemAnexo.AnexoCandidato)
+			criteria.add(Expression.or(
+							Expression.and(Expression.eq("da.origem", OrigemAnexo.AnexoCandidato), Expression.eq("da.origemId", origemId)), 
+							Expression.and(Expression.eq("da.origem", OrigemAnexo.AnexoCandidatoExterno), Expression.eq("da.origemId", origemId))
 						));
 		else
 			criteria.add(Expression.and(Expression.eq("da.origem", origem), Expression.eq("da.origemId", origemId)));
 		
 		criteria.addOrder(Order.asc("da.data"));
-
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(DocumentoAnexo.class));
 

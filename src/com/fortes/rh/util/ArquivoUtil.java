@@ -32,7 +32,6 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.util.JRLoader;
 
-import org.apache.commons.lang.StringUtils;
 import org.mozilla.universalchardet.UniversalDetector;
 
 import com.fortes.model.type.File;

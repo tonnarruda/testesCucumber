@@ -356,25 +356,7 @@
 				/geral/estabelecimento/*/**=ROLE_CAD_ESTABELECIMENTO
 				/geral/bairro/*/**=ROLE_CAD_BAIRRO
 
-				/geral/documentoAnexo/prepareInsertColaborador*/**=ROLE_COLAB_LIST_DOCUMENTOANEXO
-				/geral/documentoAnexo/prepareUpdateColaborador*/**=ROLE_COLAB_LIST_DOCUMENTOANEXO
-				/geral/documentoAnexo/deleteColaborador*/**=ROLE_COLAB_LIST_DOCUMENTOANEXO
-				/geral/documentoAnexo/insertColaborador*/**=ROLE_COLAB_LIST_DOCUMENTOANEXO
-				/geral/documentoAnexo/updateColaborador*/**=ROLE_COLAB_LIST_DOCUMENTOANEXO
-				/geral/documentoAnexo/prepareInsertCandidato*/**=ROLE_CAND_LIST_DOCUMENTOANEXO,ROLE_CAND_SOLICITACAO_DOCUMENTOANEXO
-				/geral/documentoAnexo/prepareUpdateCandidato*/**=ROLE_CAND_LIST_DOCUMENTOANEXO,ROLE_CAND_SOLICITACAO_DOCUMENTOANEXO
-				/geral/documentoAnexo/deleteCandidato*/**=ROLE_CAND_LIST_DOCUMENTOANEXO,ROLE_CAND_SOLICITACAO_DOCUMENTOANEXO
-				/geral/documentoAnexo/insertCandidato*/**=ROLE_CAND_LIST_DOCUMENTOANEXO,ROLE_CAND_SOLICITACAO_DOCUMENTOANEXO
-				/geral/documentoAnexo/updateCandidato*/**=ROLE_CAND_LIST_DOCUMENTOANEXO,ROLE_CAND_SOLICITACAO_DOCUMENTOANEXO
-				/geral/documentoAnexo/listCandidato.action*=ROLE_CAND_LIST_DOCUMENTOANEXO,ROLE_CAND_SOLICITACAO_DOCUMENTOANEXO
-				/geral/documentoAnexo/listColaborador.action*=ROLE_COLAB_LIST_DOCUMENTOANEXO
-				
-				/geral/documentoAnexo/listCurso.action*=ROLE_MOV_CURSO
-				/geral/documentoAnexo/deleteCurso*/**=ROLE_MOV_CURSO
-				/geral/documentoAnexo/prepareInsertCurso*/**=ROLE_MOV_CURSO
-				/geral/documentoAnexo/prepareUpdateCurso*/**=ROLE_MOV_CURSO
-				/geral/documentoAnexo/insertCurso*/**=ROLE_MOV_CURSO
-				/geral/documentoAnexo/updateCurso*/**=ROLE_MOV_CURSO
+				/geral/documentoAnexo/*/**=ROLE_COLAB_LIST_DOCUMENTOANEXO,ROLE_CAND_LIST_DOCUMENTOANEXO,ROLE_CAND_SOLICITACAO_DOCUMENTOANEXO,ROLE_MOV_CURSO,ROLE_MOV_SOLICITACAO_ANEXAR
 
 				/geral/areaFormacao/*/**=ROLE_AREAFORMACAO
 				/geral/configuracaoCampoExtra/*/**=ROLE_CAMPO_EXTRA
