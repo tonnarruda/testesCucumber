@@ -359,11 +359,13 @@
 		
 		function configurarObrigatoriedadeDoPis()
 		{
-			var lblAntigo = $('label[for="pis"]');
-			lblAntigo.text(lblAntigo.text().replace('*', ''));
-			if($("#vinculo").val() != "S"){
-				lblAntigo.text(lblAntigo.text().replace(/\s$/, '') + "*");
-			}
+			<#if !desabilitarEdicaoCamposIntegrados>
+				var lblAntigo = $('label[for="pis"]');
+				lblAntigo.text(lblAntigo.text().replace('*', ''));
+				if($("#vinculo").val() != "S"){
+					lblAntigo.text(lblAntigo.text().replace(/\s$/, '') + "*");
+				}
+			</#if>
 		}
 		
 		function populaAmbiente(estabelecimentoId, ambienteId)
@@ -534,8 +536,10 @@
 				</#if>
 			</@authz.authorize>
 			
-			if($("#vinculo").val() != "S")
-				arrayValidacao.push('pis');
+			<#if !desabilitarEdicaoCamposIntegrados>
+				if($("#vinculo").val() != "S")
+					arrayValidacao.push('pis');
+			</#if>
 			
 			$('.campo-integrado-select').removeAttr('disabled');
 			
@@ -837,8 +841,10 @@
 				<@ww.textfield label="DDD" name="colaborador.contato.ddd" id="ddd" onkeypress = "return(somenteNumeros(event,''));" liClass="liLeft campoAdd" cssClass="campo-integrado" maxLength="2" cssStyle="width:25px;"/>
 				<@ww.textfield label="Telefone"  name="colaborador.contato.foneFixo" id="fone" onkeypress = "return(somenteNumeros(event,''));" maxLength="9" liClass="liLeft campoAdd" cssClass="campo-integrado" cssStyle="width:80px;"/>
 			</@ww.div>
-			<@ww.textfield label="DDD" name="colaborador.contato.dddCelular" id="dddCelular" onkeypress = "return(somenteNumeros(event,''));" liClass="liLeft campoAdd" cssClass="campo-integrado" maxLength="2" cssStyle="width:25px;"/>
-			<@ww.textfield label="Celular"   name="colaborador.contato.foneCelular"  liClass="campo campoAdd" cssClass="campo-integrado" onkeypress = "return(somenteNumeros(event,''));" id="celular" maxLength="9" cssStyle="width:80px;"/>
+			<@ww.div id="wwgrp_celular"  cssClass="campo">
+				<@ww.textfield label="DDD" name="colaborador.contato.dddCelular" id="dddCelular" onkeypress = "return(somenteNumeros(event,''));" liClass="liLeft campoAdd" cssClass="campo-integrado" maxLength="2" cssStyle="width:25px;"/>
+				<@ww.textfield label="Celular"   name="colaborador.contato.foneCelular"  liClass="campo campoAdd" cssClass="campo-integrado" onkeypress = "return(somenteNumeros(event,''));" id="celular" maxLength="9" cssStyle="width:80px;"/>
+			</@ww.div>
 			<@ww.select label="Escolaridade" name="colaborador.pessoal.escolaridade" id="escolaridade" list="escolaridades" cssStyle="width: 303px;" liClass="liLeft campo campoAdd" cssClass="campo-integrado-select" headerKey="" headerValue="Selecione..."/>
 			<@ww.select label="Estado Civil" name="colaborador.pessoal.estadoCivil" id="estadoCivil" list="estadosCivis" cssStyle="width: 210px;" liClass="liLeft campo campoAdd" cssClass="campo-integrado-select"/>
 			<@ww.select label="Deficiência" name="colaborador.pessoal.deficiencia" id="deficiencia" list="deficiencias" cssStyle="width: 160px;" liClass="campo campoAdd" cssClass="campo-integrado-select"/>
@@ -1012,7 +1018,7 @@
 						<#else>
 					      	<@ww.datepicker label="Vencimento" name="colaborador.habilitacao.vencimento" id="vencimento" liClass="liLeft campoAdd" cssClass="mascaraData campo-integrado" value="${dataVenc}"/>
 						</#if>
-						<@ww.select label="Estado" name="colaborador.habilitacao.ufHab.id" id="ufHab" list="estados" liClass="liLeft campoAdd" cssClass="campo-integrado-select" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue=""/>
+						<@ww.select label="Estado" name="colaborador.habilitacao.ufHab.id" id="ufHabilitacao" list="estados" liClass="liLeft campoAdd" cssClass="campo-integrado-select" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue=""/>
 				       	<@ww.textfield label="Categoria(s)" name="colaborador.habilitacao.categoria" id="chCategoria" liClass="campoAdd" cssClass="campo-integrado" cssStyle="width:25px" maxLength="3"/>
 				       	<li><hr style="border-top: 1px solid #CCCCCC; border-bottom:0;"/></li>
 		       		</ul>

@@ -597,9 +597,12 @@
 					</ul>
 				</@ww.div>
 			</li>			
-			
-			<@ww.textfield label="DDD" name="candidato.contato.dddCelular" id="dddCelular" onkeypress="return(somenteNumeros(event,''));" cssStyle="width: 25px;" maxLength="2"  liClass="liLeft"/>
-			<@ww.textfield label="Celular" id="celular" name="candidato.contato.foneCelular" onkeypress = "return(somenteNumeros(event,''));" cssStyle="width: 80px;" maxLength="9" liClass="liLeft , campo"/>
+			<@ww.div id="wwgrp_celular"  cssClass="campo">
+				<ul>
+					<@ww.textfield label="DDD" name="candidato.contato.dddCelular" id="dddCelular" onkeypress="return(somenteNumeros(event,''));" cssStyle="width: 25px;" maxLength="2"  liClass="liLeft"/>
+					<@ww.textfield label="Celular" id="celular" name="candidato.contato.foneCelular" onkeypress = "return(somenteNumeros(event,''));" cssStyle="width: 80px;" maxLength="9" liClass="liLeft , campo"/>
+				</ul>
+			</@ww.div>
 			<@ww.textfield label="Contato" name="candidato.contato.nomeContato" id="nomeContato" cssStyle="width: 180px;" maxLength="30" liClass="liLeft , campo" onblur="${capitalizar}"/>
 
 			<@ww.textfield label="Parentes/Amigos na empresa" name="candidato.pessoal.parentesAmigos" id="parentes" cssStyle="width: 300px;" maxLength="100" liClass="liLeft , campo" onblur="${capitalizar}"/>
@@ -714,7 +717,7 @@
 			      	<@ww.textfield label="Prontuário" name="candidato.habilitacao.registro"  cssStyle="width: 120px;" maxLength="15" liClass="liLeft"/>
 			      	<@ww.datepicker label="Emissão" name="candidato.habilitacao.emissao" id="emissao" liClass="liLeft" cssClass="mascaraData validaDataIni" value="${habEmissao}"/>
 			      	<@ww.datepicker label="Vencimento" name="candidato.habilitacao.vencimento" id="vencimento" liClass="liLeft" cssClass="mascaraData validaDataFim" value="${dataVenc}"/>
-			      	<@ww.select label="Estado" name="candidato.habilitacao.ufHab.id" id="ufHab" list="ufs" liClass="liLeft" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue=""/>
+			      	<@ww.select label="Estado" name="candidato.habilitacao.ufHab.id" id="ufHabilitacao" list="ufs" liClass="liLeft" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue=""/>
 			       	<@ww.textfield label="Categoria(s)" name="candidato.habilitacao.categoria" id="chCategoria" cssStyle="width:25px" maxLength="3" />
 			        <li><hr style="border-top: 1px solid #CCCCCC; border-bottom:0;"/></li>
       			</ul>

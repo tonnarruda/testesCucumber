@@ -437,7 +437,7 @@
 				      	<#else>
 				      		<@ww.datepicker label="Vencimento" name="colaborador.habilitacao.vencimento" id="vencimento" liClass="liLeft campoAdd" cssClass="mascaraData" value="${dataVenc}"/>
 				      	</#if>
-				      	<@ww.select label="Estado" name="colaborador.habilitacao.ufHab.id" id="ufHab" list="estados" liClass="liLeft campoAdd" cssClass="campo-integrado-select" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue=""/>
+				      	<@ww.select label="Estado" name="colaborador.habilitacao.ufHab.id" id="ufHabilitacao" list="estados" liClass="liLeft campoAdd" cssClass="campo-integrado-select" cssStyle="width: 45px;" listKey="id" listValue="sigla" headerKey="" headerValue=""/>
 				       	<@ww.textfield label="Categoria(s)" name="colaborador.habilitacao.categoria" id="chCategoria" liClass="campoAdd" cssClass="campo-integrado" cssStyle="width:25px" maxLength="3"/>
 				       	<li><hr style="border-top: 1px solid #CCCCCC; border-bottom:0;"/></li>
 	        		</ul>

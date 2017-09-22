@@ -3267,14 +3267,15 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	
 	public String configuraCamposObrigatorios(ParametrosDoSistema parametrosDoSistema){
 		String[] camposIntegradosEQuePodemSerConfiguradosComoObrigatorios = new String[]{"nome","nomeComercial","nascimento","sexo","cpf","escolaridade","cep","ende","num","complemento","bairroNome",
-				"cidade","email","fone","celular","estadoCivil","nomeConjuge","nomePai","nomeMae","deficiencia","identidade","carteiraHabilitacao","tituloEleitoral","certificadoMilitar","ctps"};
+				"cidade","uf","email","ddd","fone","dddCelular","celular","estadoCivil","nomeConjuge","nomePai","nomeMae","deficiencia","identidade","rgOrgaoEmissor",
+				"carteiraHabilitacao","vencimento","chCategoria","tituloEleitoral","titEleitZona","titEleitSecao","certificadoMilitar","certMilTipo","certMilSerie","ctps","ctpsSerie","ctpsUf"};
 		
 		Collection<String> collectCamposIntegradosEQuePodemSerConfiguradosComoObrigatorios = new CollectionUtil<String>().convertArrayToCollection(camposIntegradosEQuePodemSerConfiguradosComoObrigatorios);
 		Collection<String> camposObrigatoriosParametrosDoSistema = new CollectionUtil<String>().convertArrayToCollection(parametrosDoSistema.getCamposColaboradorObrigatorio().split(","));
 		
 		return StringUtil.converteCollectionToString(CollectionUtils.disjunction(camposObrigatoriosParametrosDoSistema, collectCamposIntegradosEQuePodemSerConfiguradosComoObrigatorios));
 	} 
-	
+		
 	public void setColaboradorPeriodoExperienciaAvaliacaoManager(ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager) 
 	{
 		this.colaboradorPeriodoExperienciaAvaliacaoManager = colaboradorPeriodoExperienciaAvaliacaoManager;

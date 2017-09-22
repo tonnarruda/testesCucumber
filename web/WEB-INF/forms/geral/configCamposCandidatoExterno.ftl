@@ -202,7 +202,10 @@
     				<label for="visivel-candidatoExterno-fone" class="label-visivel"></label>
 				</td>
 				<td class="campo">Telefone</td>
-				<td><input type="checkbox" value="fone" name="camposObrigatorios" /></td>
+				<td>
+					<input type="checkbox" class="checkCampoComposto" value="fone" name="camposObrigatorios" onchange="validaCampoCompostoObrigatorio(this)"/>
+					<input type="hidden" class="campo-hidden" value="ddd"/>
+				</td>
 			</tr>
 			<tr>
 				<td>
@@ -210,7 +213,10 @@
     				<label for="visivel-candidatoExterno-celular" class="label-visivel"></label>
 				</td>
 				<td class="campo">Celular</td>
-				<td><input type="checkbox" value="celular" name="camposObrigatorios" /></td>
+				<td>
+					<input type="checkbox" class="checkCampoComposto" value="celular" name="camposObrigatorios" onchange="validaCampoCompostoObrigatorio(this)"/>
+					<input type="hidden" class="campo-hidden" value="dddCelular"/>
+				</td>
 			</tr>
 			<tr>
 				<td>
@@ -499,6 +505,7 @@
 					<input id="checkCarteiraHabilitacao" class='checkCampoComposto' type="checkbox" name="camposObrigatorios" value="carteiraHabilitacao" onchange="validaCampoCompostoObrigatorio(this)" />
 					<input type="hidden"  class="campo-hidden" value="vencimento"  />
 					<input type="hidden"  class="campo-hidden" value="chCategoria"/>
+					<input type="hidden"  class="campo-hidden" value="ufHabilitacao"/>
 				</td>
 			</tr>
 			<tr>

@@ -48,3 +48,12 @@ ALTER TABLE candidato ALTER COLUMN numerohab TYPE character varying(12);--.go
 ALTER TABLE candidato ALTER COLUMN logradouro TYPE character varying(80);--.go
 ALTER TABLE candidato ALTER COLUMN complemento TYPE character varying(30);--.go
 ALTER TABLE candidato ALTER COLUMN bairro TYPE character varying(60);--.go
+
+
+update parametrosdosistema set camposcolaboradorobrigatorio= replace(camposcolaboradorobrigatorio,'fone','fone,ddd');--.go
+update parametrosdosistema set camposcandidatoobrigatorio= replace(camposcandidatoobrigatorio,'fone','fone,ddd');--.go
+update parametrosdosistema set camposcandidatoexternoobrigatorio= replace(camposcandidatoexternoobrigatorio,'fone','fone,ddd');--.go
+
+update parametrosdosistema set camposcolaboradorobrigatorio= replace(camposcolaboradorobrigatorio,'celular','celular,dddCelular');--.go
+update parametrosdosistema set camposcandidatoobrigatorio= replace(camposcandidatoobrigatorio,'celular','celular,dddCelular');--.go
+update parametrosdosistema set camposcandidatoexternoobrigatorio= replace(camposcandidatoexternoobrigatorio,'celular','celular,dddCelular');--.go
