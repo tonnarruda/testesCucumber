@@ -88,6 +88,8 @@ public class FaturamentoMensalDaoHibernateTest extends GenericDaoHibernateTest_J
 		Date fim = DateUtil.criarDataMesAno(1, 11, 2000);
 		
 		Estabelecimento estabelecimento= EstabelecimentoFactory.getEntity(1l);
+		estabelecimentoDao.save(estabelecimento);
+		
 
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		
