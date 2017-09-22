@@ -62,6 +62,7 @@ public class ReportColumn implements Serializable, Cloneable
 		columns.add(new ReportColumn("Emissão da Habilitação", "habilitacao.emissaoFormatada", "co.habilitacao.emissao", 50, false));
 		columns.add(new ReportColumn("Vencimento da Habilit.", "habilitacao.vencimentoFormatada", "co.habilitacao.vencimento", 50, false));
 		columns.add(new ReportColumn("Categoria da Habilit.", "habilitacao.categoria", "co.habilitacao.categoria", 60, false));
+		columns.add(new ReportColumn("UF da Habilitação", "habilitacao.ufHab.sigla", "co.habilitacao.ufHab.sigla", 20, false));
 		columns.add(new ReportColumn("CTPS/Série-DV", "pessoal.ctps.numeroCompleto", "co.pessoal.ctps.numeroCompleto", 15, true));
 		columns.add(new ReportColumn("Logradouro", "endereco.enderecoFormatado", "co.endereco.enderecoFormatado", 200, true));
 		columns.add(new ReportColumn("Bairro", "endereco.bairro", "co.endereco.bairro", 100, false));

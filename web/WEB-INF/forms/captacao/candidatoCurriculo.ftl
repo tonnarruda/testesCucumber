@@ -162,6 +162,9 @@
 			<li style="width: 100px;"><span>Categoria:</span>
 				<#if candidato.habilitacao?exists && candidato.habilitacao.categoria?exists> ${candidato.habilitacao.categoria}</#if>
 			</li>
+			<li style="width: 100px;"><span>UF:</span>
+				<#if candidato.habilitacao?exists && candidato.habilitacao.ufHab?exists && candidato.habilitacao.ufHab.sigla?exists> ${candidato.habilitacao.ufHab.sigla}</#if>
+			</li>
 		</ul>
 		</td>
 	</tr>

@@ -246,6 +246,13 @@ public class Candidato extends AbstractModel implements Serializable, Cloneable
 		habilitacao.setIdUFHabilitacao(habilitacaoUFId);
 	}
 
+	public void setHabilitacaoUFSigla(String habilitacaoUFSigla)
+	{
+		if (habilitacao == null)
+			habilitacao = new Habilitacao();
+
+		habilitacao.setSiglaUFHabilitacao(habilitacaoUFSigla);
+	}
 
 	//SocioEconomica
 	public void setSocioEconomicaPagaPensao(boolean socioEconomicaPagaPensao)

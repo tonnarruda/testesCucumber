@@ -117,7 +117,8 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		criteria = criteria.createCriteria("c.empresa", "e", Criteria.LEFT_JOIN);
 		criteria = criteria.createCriteria("c.endereco.cidade", "cd", Criteria.LEFT_JOIN);
 		criteria = criteria.createCriteria("c.endereco.uf", "uf", Criteria.LEFT_JOIN);
-
+		criteria = criteria.createCriteria("c.habilitacao.ufHab", "ufHabilitacao", Criteria.LEFT_JOIN);
+		
 		ProjectionList p = Projections.projectionList().create();
 
 		projectionFindById(p);
@@ -135,6 +136,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		p.add(Projections.property("c.pessoal.cpf"),"pessoalCpf");
 		p.add(Projections.property("c.candidatoCurriculos"),"candidatoCurriculos");
 		p.add(Projections.property("e.id"), "empresaId");
+		p.add(Projections.property("ufHabilitacao.sigla"), "habilitacaoUFSigla");
 
 		criteria.setProjection(p);
 

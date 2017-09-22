@@ -1053,7 +1053,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 				"co.pessoal.estadoCivil, co.pessoal.escolaridade, co.pessoal.mae, co.pessoal.pai, co.pessoal.cpf, co.pessoal.pis, co.pessoal.rg,  " +
 				"co.pessoal.rgOrgaoEmissor, rgUf.sigla, co.pessoal.deficiencia, co.pessoal.rgDataExpedicao, co.pessoal.sexo,  " +
 				"co.pessoal.dataNascimento, co.pessoal.conjuge, co.pessoal.qtdFilhos, co.pessoal.ctps.ctpsNumero, co.pessoal.ctps.ctpsSerie, co.pessoal.ctps.ctpsDv,  " +
-				"co.habilitacao.numeroHab, co.habilitacao.emissao, co.habilitacao.vencimento, co.habilitacao.categoria, co.endereco.logradouro, co.endereco.complemento,  " +
+				"co.habilitacao.numeroHab, co.habilitacao.emissao, co.habilitacao.vencimento, co.habilitacao.categoria, ufHab.sigla, co.endereco.logradouro, co.endereco.complemento,  " +
 				"co.endereco.numero, co.endereco.bairro, co.endereco.cep, co.contato.email, co.contato.dddCelular, co.contato.foneCelular, co.contato.ddd, co.contato.foneFixo, fun.nome, amb.nome, " +
 				"cidade.nome, uf.sigla, caf.inicio, caf.fim, cand.pessoal.indicadoPor, hc1.salario, hc1.tipoSalario, hc1.quantidadeIndice, i, fs, fsh, ih, ifs, ifsh " );
 				
@@ -1078,6 +1078,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("left join co.endereco.cidade as cidade ");
 		hql.append("left join co.endereco.uf as uf ");
 		hql.append("left join co.pessoal.rgUf as rgUf ");
+		hql.append("left join co.habilitacao.ufHab as ufHab ");
 		hql.append("left join co.colaboradorAfastamento as caf ");
 		hql.append("left join co.candidato as cand ");
 		hql.append("left join hc1.faixaSalarial as fs ");

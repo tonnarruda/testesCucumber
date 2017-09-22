@@ -281,8 +281,8 @@
     <property name="targetMethod" value="enviaAvisoLntAutomatico"/>
   </bean>
   
- <!--   <bean name="updateDddCelularAndUFHabilitacaoJob" class="com.fortes.rh.business.geral.ColaboradorManagerImpl">
-    <property name="dao" ref="colaboradorDaoTarget" />
+ <bean name="updateDddCelularAndUFHabilitacaoJob" class="com.fortes.rh.business.geral.ColaboradorManagerImpl">
+	 <property name="dao" ref="colaboradorDaoTarget" />
 	<property name="empresaManager" ref="empresaManager" />
 	<property name="acPessoalClientColaborador" ref="acPessoalClientColaborador" />
   </bean>
@@ -291,11 +291,11 @@
     <property name="targetObject" ref="updateDddCelularAndUFHabilitacaoJob"/>
     <property name="targetMethod" value="updateDddCelularAndUFHabilitacao"/>
   </bean>
-  <bean id="cronTriggerUpdateDddCelularAndUFHabilitacao" class="org.springframework.scheduling.quartz.CronTriggerBean">
-    <property name="jobDetail" ref="updateDddCelularAndUFHabilitacaoJob" />
-    <property name="cronExpression" value="0 15 3 * * ?" /> Todo os dias as 03:15h am
-  </bean> -->
-
+   <bean id="cronTriggerUpdateDddCelularAndUFHabilitacao" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    <property name="jobDetail" ref="updateDddCelularAndUFHabilitacao" />
+    <property name="cronExpression" value="0 15 3 * * ?" /> <!-- Todo os dias as 03:15h am -->
+  </bean>
+  
   <bean id="cronTriggerBackup" class="org.springframework.scheduling.quartz.CronTriggerBean">
     <property name="jobDetail" ref="backupJob" />
     <property name="cronExpression" value="0 0 0/1 * * ?"/> <!-- A cada 1 hora --> 
@@ -389,7 +389,7 @@
 		<ref bean="cronTriggerImportarUltimasNoticias" />
 		<ref bean="cronTriggerenviarNotificacaoCursosOuCertificacoesAVencer" />
 		<ref bean="cronTriggerenviaAvisoLntAutomatico" />
-		<!-- <ref bean="cronTriggerUpdateDddCelularAndUFHabilitacao" /> -->
+		<ref bean="cronTriggerUpdateDddCelularAndUFHabilitacao" /> 
       </list>
     </property>
   </bean>
