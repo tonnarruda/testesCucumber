@@ -614,13 +614,19 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 			StringBuilder token = new StringBuilder();
 			GrupoAC grupoAC = new GrupoAC();
 			Call call = acPessoalClient.createCall(empresa, token, grupoAC, "AtualizaDDDAlternativoEHabilitacaoUFEmpregado");
+	
+			QName qname = new QName("urn:UnTypesPessoalWebService", "TEmpregado");
+			QName qnameArr = new QName("urn:UnTypesPessoalWebService", "TEmpregados");
+		
+			call.registerTypeMapping(TEmpregado.class, qname , new org.apache.axis.encoding.ser.BeanSerializerFactory(TEmpregado.class, qname ), new org.apache.axis.encoding.ser.BeanDeserializerFactory(TEmpregado.class, qname));
+			call.registerTypeMapping(TEmpregado[].class, qnameArr,new org.apache.axis.encoding.ser.ArraySerializerFactory(),new org.apache.axis.encoding.ser.ArrayDeserializerFactory());
 			
 			QName xmlstring = new QName("xs:string");
-
+			
 			call.addParameter("Token", xmlstring, ParameterMode.IN);
 			call.addParameter("Emp_Codigo", xmlstring, ParameterMode.IN);
 
-			call.setReturnType(xmlstring);
+			call.setReturnType(qnameArr);
 			
 			Object[] param = new Object[] { token.toString(), empresa.getCodigoAC()};
 			TEmpregado[] result = (TEmpregado[]) call.invoke(param);

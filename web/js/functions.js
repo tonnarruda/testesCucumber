@@ -222,15 +222,15 @@ function validaCampos(campos)
 				validacao = validaDate(campo);
 			else if(campoClass == "mascaraCnpj" && campo.value != valueCnpj)
 				validacao = validaCpfCnpj(campo);
-			else if(campoClass == "mascaraCpf" && campo.value != valueCpf)
+			else if(campoClass.substring(0, 10) == "mascaraCpf" && campo.value != valueCpf)
 				validacao = validaCpfCnpj(campo);
-			else if(campoClass == "mascaraCep" && campo.value != valueCep)
+			else if(campoClass.substring(0, 10) == "mascaraCep" && campo.value != valueCep)
 				validacao = true;
 			else if(campoClass == "mascaraHora" && campo.value != valueHora)
 				validacao = validaHora(campo.value);
-			else if(campoClass == "mascaraPis")
+			else if(campoClass.substring(0, 10) == "mascaraPis")
 				validacao = validaPIS(campo);
-			else if (campoClass == "mascaraEmail" && campo.value != "")
+			else if (campoClass.substring(0, 12) == "mascaraEmail" && campo.value != "")
 				validacao = validaEmail(campo.value, campo.id);
 			else if (campoClass == "currency" && campo.value != "")
 				validacao = validaCurrency(campo.value);
@@ -251,7 +251,6 @@ function validaCampos(campos)
 			}
 		}
 	}
-
 	if(erro > 0)
 	{
 		jAlert("Campos inválidos.");

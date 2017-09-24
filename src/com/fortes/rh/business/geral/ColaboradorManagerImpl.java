@@ -3362,7 +3362,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	
 	public void updateDddCelularAndUFHabilitacao(){
 		try {
-			Collection<Empresa> empresas = empresaManager.findComCodigoAC();
+			Collection<Empresa> empresas = empresaManager.findEmpresasComCodigoACAndAtualizouDddCelularAndUFHabilitacao();
 			
 			for (Empresa empresa : empresas) {
 				TEmpregado[] empregados = acPessoalClientColaborador.getDddCelularAndUFHabilitacao(empresa);
