@@ -94,7 +94,7 @@ public class Cargo extends AbstractModel implements Serializable
 	private Boolean exibirModuloExterno = false;
 	
 	@Transient
-	private boolean possuiFaixaSalarial = true;
+	private boolean possuiFaixaSalarial = false;
 	
 	public Cargo()
 	{
