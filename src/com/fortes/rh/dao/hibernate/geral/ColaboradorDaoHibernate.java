@@ -3324,36 +3324,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 	public Collection<Colaborador> findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(Long avaliacaoDesempenhoId, boolean isAvaliados, Long empresaId, Long[] areasIds, Long[] cargosIds)
 	{
-		// subQuery
-		DetachedCriteria subQuery = montaSubQueryHistoricoColaborador(new Date(), StatusRetornoAC.CONFIRMADO);
-		
-		// Query
-		Criteria criteria = getSession().createCriteria(ColaboradorQuestionario.class, "cq");
-
-		if(isAvaliados)
-			criteria.createCriteria("cq.colaborador", "c");
-		else
-			criteria.createCriteria("cq.avaliador", "c");
-
-		criteria.createCriteria("c.historicoColaboradors", "hc", Criteria.LEFT_JOIN);
-		criteria.createCriteria("hc.areaOrganizacional", "ao", Criteria.LEFT_JOIN);
-		criteria.createCriteria("hc.faixaSalarial", "fs", Criteria.LEFT_JOIN);
-		criteria.createCriteria("fs.cargo", "ca", Criteria.LEFT_JOIN);
-
-		ProjectionList p = Projections.projectionList().create();
-
-		p.add(Projections.distinct(Projections.property("c.id")), "id");
-		p.add(Projections.property("c.nome"), "nome");
-		p.add(Projections.property("c.nomeComercial"), "nomeComercial");
-		p.add(Projections.property("ao.nome"), "areaOrganizacionalNome");
-		p.add(Projections.property("fs.nome"), "faixaSalarialNomeProjection");
-		p.add(Projections.property("ca.nome"), "cargoNomeProjection");
-
-		criteria.setProjection(p);
-
-		criteria.add(Subqueries.propertyEq("hc.data", subQuery));
-		subQuery.add(Expression.eq("hc.status", StatusRetornoAC.CONFIRMADO));
-		criteria.add(Expression.eq("cq.avaliacaoDesempenho.id", avaliacaoDesempenhoId));
+		Criteria criteria = montaCriteriaParticipantesAvaliacaoDesempenho(avaliacaoDesempenhoId, isAvaliados);
 		
 		if(empresaId != null)
 			criteria.add(Expression.eq("c.empresa.id", empresaId));
@@ -3368,6 +3339,26 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 
+		return criteria.list();
+	}
+	
+	public Collection<Colaborador> findParticipantesDistinctComHistoricoByAvaliacaoDesempenhoTodasEmpresas(Long avaliacaoDesempenhoId, boolean isAvaliados, Long[] empresasIds, Long[] areasIds, Long[] cargosIds)
+	{
+		Criteria criteria = montaCriteriaParticipantesAvaliacaoDesempenho(avaliacaoDesempenhoId, isAvaliados);
+		
+		if(empresasIds != null && empresasIds.length>0)
+			criteria.add(Expression.in("c.empresa.id", empresasIds));
+		
+		if(areasIds != null && areasIds.length > 0)
+			criteria.add(Expression.in("ao.id", areasIds));
+		
+		if(cargosIds != null && cargosIds.length > 0)
+			criteria.add(Expression.in("ca.id", cargosIds));
+		
+		criteria.addOrder(Order.asc("c.nome"));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+		
 		return criteria.list();
 	}
 
@@ -5795,5 +5786,39 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.setString("codigoAC", codigoAC);
 		query.setLong("empresaId", empresaId);
 		query.executeUpdate();
+	}
+	
+	private Criteria montaCriteriaParticipantesAvaliacaoDesempenho(Long avaliacaoDesempenhoId, boolean isAvaliados) {
+		// subQuery
+		DetachedCriteria subQuery = montaSubQueryHistoricoColaborador(new Date(), StatusRetornoAC.CONFIRMADO);
+		
+		// Query
+		Criteria criteria = getSession().createCriteria(ColaboradorQuestionario.class, "cq");
+
+		if(isAvaliados)
+			criteria.createCriteria("cq.colaborador", "c");
+		else
+			criteria.createCriteria("cq.avaliador", "c");
+
+		criteria.createCriteria("c.historicoColaboradors", "hc", Criteria.LEFT_JOIN);
+		criteria.createCriteria("hc.areaOrganizacional", "ao", Criteria.LEFT_JOIN);
+		criteria.createCriteria("hc.faixaSalarial", "fs", Criteria.LEFT_JOIN);
+		criteria.createCriteria("fs.cargo", "ca", Criteria.LEFT_JOIN);
+
+		ProjectionList p = Projections.projectionList().create();
+
+		p.add(Projections.distinct(Projections.property("c.id")), "id");
+		p.add(Projections.property("c.nome"), "nome");
+		p.add(Projections.property("c.nomeComercial"), "nomeComercial");
+		p.add(Projections.property("ao.nome"), "areaOrganizacionalNome");
+		p.add(Projections.property("fs.nome"), "faixaSalarialNomeProjection");
+		p.add(Projections.property("ca.nome"), "cargoNomeProjection");
+
+		criteria.setProjection(p);
+
+		criteria.add(Subqueries.propertyEq("hc.data", subQuery));
+		subQuery.add(Expression.eq("hc.status", StatusRetornoAC.CONFIRMADO));
+		criteria.add(Expression.eq("cq.avaliacaoDesempenho.id", avaliacaoDesempenhoId));
+		return criteria;
 	}
 }

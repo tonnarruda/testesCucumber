@@ -321,6 +321,7 @@ import com.fortes.rh.test.dao.hibernate.geral.ConfiguracaoPerformanceDaoHibernat
 import com.fortes.rh.test.dao.hibernate.geral.ConfiguracaoRelatorioDinamicoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.DependenteDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.DocumentoAnexoDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.geral.EmpresaDaoHIbernateTest_JUnit4;
 import com.fortes.rh.test.dao.hibernate.geral.EmpresaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.EstabelecimentoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.EstadoDaoHibernateTest;
@@ -731,6 +732,7 @@ import com.fortes.rh.test.web.dwr.ConfiguracaoPerformanceDWRTest;
 import com.fortes.rh.test.web.dwr.ConhecimentoDWRTest;
 import com.fortes.rh.test.web.dwr.DiaTurmaDWRTest;
 import com.fortes.rh.test.web.dwr.DntDWRTest;
+import com.fortes.rh.test.web.dwr.EmpresaDWRTest;
 import com.fortes.rh.test.web.dwr.EstabelecimentoDWRTest;
 import com.fortes.rh.test.web.dwr.ExtintorDWRTest;
 import com.fortes.rh.test.web.dwr.FaixaSalarialDWRTest;
@@ -1127,6 +1129,7 @@ import com.fortes.test.web.tags.LinkTagTest;
     //contatoTest embedded Colaborador
 	DependenteDaoHibernateTest.class,
 	EmpresaDaoHibernateTest.class,
+	EmpresaDaoHIbernateTest_JUnit4.class,
     //endereçoTest embedded Colaborador
 	GrupoGastoDaoHibernateTest.class,
 	GrupoGastoManagerTest.class,
@@ -1616,6 +1619,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	MorroDWRTest.class,
 	lntDWRTest.class,
 	ParticipanteCursoLntDWRTest.class,
+	EmpresaDWRTest.class,
 
     //MODEL
 	HistoricoColaboradorTest.class,

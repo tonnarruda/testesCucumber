@@ -113,13 +113,13 @@ public class AvaliacaoDesempenhoDWR
 		return "";
 	}
 
-	public Collection<Option> getAvaliados(Long avaliacaoDesempenhoId, Long empresaId, Long[] areasIds, Long[] cargosIds)
+	public Collection<Option> getAvaliados(Long avaliacaoDesempenhoId, Long[] empresaIds, Long[] areasIds, Long[] cargosIds)
 	{
 		Collection<Option> options = new ArrayList<Option>();
 		Collection<Colaborador> participantes = new ArrayList<Colaborador>();
 		
 		if(avaliacaoDesempenhoId != null && !avaliacaoDesempenhoId.equals(-1L))
-			participantes = colaboradorManager.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenhoId, true, empresaId, areasIds, cargosIds);
+			participantes = colaboradorManager.findParticipantesDistinctComHistoricoByAvaliacaoDesempenhoTodasEmpresas(avaliacaoDesempenhoId, true, empresaIds, areasIds, cargosIds);
 		
 		Option option = null;
 		for (Colaborador avaliado : participantes) {

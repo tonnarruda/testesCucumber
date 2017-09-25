@@ -886,6 +886,9 @@ public class ColaboradorManagerTest_Junit4
     	Collection<TurnOver> turnOversRetornoAreaB = ((TurnOverCollection) turnOverCollectionsArea.toArray()[1]).getTurnOvers();
     	assertEquals(new Double(68.33), ((TurnOver) turnOversRetornoAreaB.toArray()[0]).getTurnOver());
     }
+    public void testFindParticipantesDistinctComHistoricoByAvaliacaoDesempenhoTodasEmpresas(){
+    	
+    }
 	private TurnOver montaAdmitido(Date data, double qtdAdmitidos,Long idAreaOuCargo) 
 	{
 		TurnOver admitido = new TurnOver();

@@ -662,8 +662,9 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
         
         if(exibirSomenteCargosVinculadosAsAreasSeleciondas && areaOrganizacionaisIds != null && areaOrganizacionaisIds.length > 0)
             criteria.add(Expression.in("ao.id", areaOrganizacionaisIds));
+        if(empresasIds!=null & empresasIds.length>0)
+        	criteria.add(Expression.in("e.id", empresasIds));
         
-        criteria.add(Expression.in("e.id", empresasIds));
         criteria.setProjection(Projections.distinct(p));
         criteria.addOrder(Order.asc("c.nomeMercado"));
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
