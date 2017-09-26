@@ -263,7 +263,7 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 		}
 	}
 
-	public ResultadoAvaliacaoDesempenho getResultadoAvaliacaoDesempenho(AvaliacaoDesempenho avaliacaoDesempenho, Long avaliadoId, Long empresaId) 
+	public ResultadoAvaliacaoDesempenho getResultadoAvaliacaoDesempenho(AvaliacaoDesempenho avaliacaoDesempenho, Long avaliadoId) 
 	{
 		Collection<ConfiguracaoNivelCompetencia> configNiveisCompetenciasDoColaborador = configuracaoNivelCompetenciaManager.findCompetenciasAndPesos(avaliacaoDesempenho.getId(), avaliadoId);
 		ResultadoAvaliacaoDesempenho resultadoAvaliacaoDesempenho = new ResultadoAvaliacaoDesempenho();
@@ -279,7 +279,7 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 		Collection<ConfiguracaoNivelCompetencia> configNiveisCompetenciasDaFaixaSalarial = configuracaoNivelCompetenciaManager.findByConfiguracaoNivelCompetenciaFaixaSalarial(nivelCompetenciaFaixaSalarial.getId());
 		Double ordemMaxima = nivelCompetenciaManager.getOrdemMaximaByNivelCompetenciaHistoricoId(nivelCompetenciaFaixaSalarial.getNivelCompetenciaHistorico().getId()); 
 		
-		Collection<NivelCompetencia> niveisCompetencias = nivelCompetenciaManager.findAllSelect(empresaId, nivelCompetenciaFaixaSalarial.getNivelCompetenciaHistorico().getId(), null);
+		Collection<NivelCompetencia> niveisCompetencias = nivelCompetenciaManager.findAllSelect(resultadoAvaliacaoDesempenho.getColaborador().getEmpresa().getId(), nivelCompetenciaFaixaSalarial.getNivelCompetenciaHistorico().getId(), null);
 		
 		Competencia competencia;
 		Integer pesoAvaliador, somaPesoAvaliadores;

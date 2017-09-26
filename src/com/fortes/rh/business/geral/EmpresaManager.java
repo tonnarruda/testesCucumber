@@ -64,5 +64,5 @@ public interface EmpresaManager extends GenericManager<Empresa>
 	Collection<Empresa> findByLntId(Long lntId);
 	public Collection<Empresa> findEmpresasComCodigoACAndAtualizouDddCelularAndUFHabilitacao();
 	public void setDddCelularAndUFHabilitacaoAtualizados(Long empresaId);
-	Collection<Empresa> findDistinctEmpresasByAvaliacaoDesempenho(Long avaliacaoDesempenhoId);
+	Collection<Empresa> findDistinctEmpresasByAvaliacaoDesempenho(Long avaliacaoDesempenhoId, Long... empresasIds);
 }

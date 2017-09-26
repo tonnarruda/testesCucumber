@@ -33,9 +33,9 @@ public class EmpresaDWRTest
 		Collection<Empresa> empresas= EmpresaFactory.getEmpresas(2l);
 		Long avaliacaoDesempenhoId=1l;
 		
-		when(empresaManager.findDistinctEmpresasByAvaliacaoDesempenho(avaliacaoDesempenhoId)).thenReturn(empresas);	
+		when(empresaManager.findDistinctEmpresasByAvaliacaoDesempenho(avaliacaoDesempenhoId, null)).thenReturn(empresas);	
 		
-		Collection<Empresa> resultado = empresaDWR.findDistinctEmpresasByAvaliacaoDesempenho(avaliacaoDesempenhoId);
+		Collection<Empresa> resultado = empresaDWR.findDistinctEmpresasByAvaliacaoDesempenho(avaliacaoDesempenhoId, null);
 		
 		assertEquals(2,resultado.size());
 	}

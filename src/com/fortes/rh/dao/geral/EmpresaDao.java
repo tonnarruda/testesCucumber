@@ -36,5 +36,5 @@ public interface EmpresaDao extends GenericDao<Empresa>
 	Collection<Empresa> findByLntId(Long lntId);
 	Collection<Empresa> findEmpresasComCodigoACAndAtualizouDddCelularAndUFHabilitacao();
 	public void setDddCelularAndUFHabilitacaoAtualizados(Long empresaId);
-	Collection<Empresa> findDistinctEmpresasByAvaliacaoDesempenho(Long avaliacaoDesempenhoId);
+	Collection<Empresa> findDistinctEmpresasByAvaliacaoDesempenho(Long avaliacaoDesempenhoId, Long... empresasIds);
 }

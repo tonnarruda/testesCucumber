@@ -5121,32 +5121,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<
 		assertEquals(1, colaboradorDao.findByQuestionarioNaoRespondido(questionario.getId()).size());
 	}
 
-	@Test public void testFindParticipantesDistinctByAvaliacaoDesempenho() {
-		Colaborador avaliado = ColaboradorFactory.getEntity();
-		avaliado.setNome("Avaliado");
-		colaboradorDao.save(avaliado);
-
-		HistoricoColaborador historicoColaboradorAtual1 = HistoricoColaboradorFactory.getEntity();
-		historicoColaboradorAtual1.setData(DateUtil.criarDataMesAno(1, 1, 2008));
-		historicoColaboradorAtual1.setColaborador(avaliado);
-		historicoColaboradorDao.save(historicoColaboradorAtual1);
-
-		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity();
-		avaliacaoDesempenhoDao.save(avaliacaoDesempenho);
-
-		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
-		colaboradorQuestionario.setColaborador(avaliado);
-		colaboradorQuestionario.setAvaliacaoDesempenho(avaliacaoDesempenho);
-		colaboradorQuestionarioDao.save(colaboradorQuestionario);
-
-		ColaboradorQuestionario colaboradorQuestionario2 = ColaboradorQuestionarioFactory.getEntity();
-		colaboradorQuestionario2.setColaborador(avaliado);
-		colaboradorQuestionario2.setAvaliacaoDesempenho(avaliacaoDesempenho);
-		colaboradorQuestionarioDao.save(colaboradorQuestionario2);
-
-		assertEquals(1, colaboradorDao.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), true, null, null, null).size());
-	}
-	@Test public void testFindParticipantesDistinctComHistoricoByAvaliacaoDesempenhoTodasEmpresas() {
+	@Test public void testFindParticipantesDistinctComHistoricoByAvaliacaoDesempenho() {
 		Empresa empresa = EmpresaFactory.getEmpresa(1l);
 		empresaDao.save(empresa);
 		
@@ -5173,7 +5148,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<
 		colaboradorQuestionario2.setAvaliacaoDesempenho(avaliacaoDesempenho);
 		colaboradorQuestionarioDao.save(colaboradorQuestionario2);
 		
-		colaboradorDao.findParticipantesDistinctComHistoricoByAvaliacaoDesempenhoTodasEmpresas(avaliacaoDesempenho.getId(), true, new Long[]{empresa.getId()}, null, null);
+		colaboradorDao.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), true, null, null, false, new Long[]{empresa.getId()});
 	}
 	
 	@Test public void testQtdDemitidosEm90Dias() 

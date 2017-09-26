@@ -236,10 +236,7 @@ public class EmpresaManagerTest_JUnit4
     @Test
     public void testFindDistinctEmpresasByAvaliacaoDesempenho() 
     {
-    	empresaManager.findDistinctEmpresasByAvaliacaoDesempenho(1l);
-    	
-    	verify(empresaDao, times(1)).findDistinctEmpresasByAvaliacaoDesempenho(1l);
-    
-    	
+    	empresaManager.findDistinctEmpresasByAvaliacaoDesempenho(1l, null);
+    	verify(empresaDao, times(1)).findDistinctEmpresasByAvaliacaoDesempenho(1l, null);
     }
 }

@@ -15,11 +15,12 @@ public class EmpresaDWR
 		return empresaManager.checkEmpresaIntegradaAc(empresaId);
 	}
 	
+	public Collection<Empresa> findDistinctEmpresasByAvaliacaoDesempenho(Long avaliacaoDesempenhoId, Long[] empresasPermitidasIds){
+		return empresaManager.findDistinctEmpresasByAvaliacaoDesempenho(avaliacaoDesempenhoId, empresasPermitidasIds);
+	}
+
 	public void setEmpresaManager(EmpresaManager empresaManager) 
 	{
 		this.empresaManager = empresaManager;
-	}
-	public Collection<Empresa> findDistinctEmpresasByAvaliacaoDesempenho(Long avaliacaoDesempenhoId){
-		return empresaManager.findDistinctEmpresasByAvaliacaoDesempenho(avaliacaoDesempenhoId);
 	}
 }

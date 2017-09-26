@@ -60,7 +60,7 @@ public class AvaliacaoDesempenhoDWR
 	{
 		empresaId = (empresaId == null || empresaId == -1 || empresaId == 0) ? null : empresaId;
 		
-		Collection<Colaborador> participantes = colaboradorManager.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenhoId, true, empresaId, areasIds, cargosIds);
+		Collection<Colaborador> participantes = colaboradorManager.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenhoId, true, areasIds, cargosIds, false, empresaId);
 		return new CollectionUtil<Colaborador>().convertCollectionToMap(participantes, "getId", "getNome");
 	}
 	
@@ -119,7 +119,7 @@ public class AvaliacaoDesempenhoDWR
 		Collection<Colaborador> participantes = new ArrayList<Colaborador>();
 		
 		if(avaliacaoDesempenhoId != null && !avaliacaoDesempenhoId.equals(-1L))
-			participantes = colaboradorManager.findParticipantesDistinctComHistoricoByAvaliacaoDesempenhoTodasEmpresas(avaliacaoDesempenhoId, true, empresaIds, areasIds, cargosIds);
+			participantes = colaboradorManager.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenhoId, true, areasIds, cargosIds, true, empresaIds);
 		
 		Option option = null;
 		for (Colaborador avaliado : participantes) {

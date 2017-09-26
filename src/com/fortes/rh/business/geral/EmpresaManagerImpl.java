@@ -183,9 +183,9 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 	{
 		return getDao().findDistinctEmpresaByQuestionario(questionarioId);
 	}
-	public Collection<Empresa> findDistinctEmpresasByAvaliacaoDesempenho(Long avaliacaoDesempenhoId)
+	public Collection<Empresa> findDistinctEmpresasByAvaliacaoDesempenho(Long avaliacaoDesempenhoId, Long... empresasIds)
 	{
-		return getDao().findDistinctEmpresasByAvaliacaoDesempenho(avaliacaoDesempenhoId);
+		return getDao().findDistinctEmpresasByAvaliacaoDesempenho(avaliacaoDesempenhoId, empresasIds);
 	}
 
 	public Collection<CheckBox> populaCadastrosCheckBox()

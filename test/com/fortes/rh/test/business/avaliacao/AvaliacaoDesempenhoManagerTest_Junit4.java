@@ -475,7 +475,7 @@ public class AvaliacaoDesempenhoManagerTest_Junit4
 		
 		mockTestGetResultadoAvaliacaoDesempenho(nivelCompetenciaHistorico, cncf, cncColab1, cncColab2, configNiveisCompetenciasDoColaborador, configNiveisCompetenciasDaFaixa, cncCriterios, avaliacaoDesempenho, avaliadoId, empresa);
 		
-		ResultadoAvaliacaoDesempenho resultado = avaliacaoDesempenhoManager.getResultadoAvaliacaoDesempenho(avaliacaoDesempenho,avaliadoId, empresa.getId());
+		ResultadoAvaliacaoDesempenho resultado = avaliacaoDesempenhoManager.getResultadoAvaliacaoDesempenho(avaliacaoDesempenho,avaliadoId);
 		assertEquals(1, resultado.getCompetencias().size());
 		assertEquals(new Double(70.0), resultado.getPerformanceAutoAvaliacao());
 		assertEquals(new Double(50.0), resultado.getProdutividade());
