@@ -276,6 +276,10 @@ Quando(/^eu marco o checkbox com name "([^"]*)"$/) do |field|
   page.execute_script("$(\"input[name='#{field}']\").attr('checked',true)")
 end
 
+Então /^eu clico no captcha$/ do
+  page.execute_script("$('.recaptcha-checkbox-checkmark').click()")
+end
+
 Quando(/^eu desmarco o checkbox com id "([^"]*)"$/) do |field|
   field = find_field(field)
   page.execute_script("$('##{field[:id]}').attr('checked',false)")
@@ -653,12 +657,15 @@ end
 Dado(/^que exista um usuario "([^"]*)"$/) do |usuario_nome|
    insert :usuario do
      nome usuario_nome
+     login usuario_nome
      acessosistema true
      superadmin false
+     senha 'MTIzNA=='
      caixasmensagens '{"caixasDireita":["T","C","F","U"],"caixasEsquerda":["P","D","A","S"],"caixasMinimizadas":[]}'
    end
    insert :usuarioempresa do
      usuario :nome => usuario_nome
+     perfil_id 1
      empresa :id => 1
    end
 end
@@ -1204,4 +1211,8 @@ Dado(/^que eu insira a providencia "([^"]*)" na ocorrencia "([^"]*)" para o cola
       ocorrencia :descricao => nome_ocorrencia
       providencia :descricao => nome_providencia
     end
+end
+
+Dado(/^que a configuração do captcha esteja ativa$/) do
+  exec_sql "update parametrosdosistema set utilizarcaptchanologin = true"
 end

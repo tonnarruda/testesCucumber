@@ -22,6 +22,7 @@ Funcionalidade: Emissão de Relatório de Turnover
     Quando eu acesso o menu "Info. Funcionais > Relatórios > Turnover (rotatividade)"
          E eu preencho "dataDe" com "01/2017"
          E eu preencho "dataAte" com "05/2017"
+         E eu seleciono "Área Organizacional" de "Agrupar Por"
          E eu marco "Estabelecimento Padrão" 
          E eu clico no botão de class "btnRelatorio"
     

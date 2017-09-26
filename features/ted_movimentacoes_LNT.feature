@@ -129,7 +129,6 @@ Funcionalidade: Levantamento de Necessidade de Treinamento (LNT)
     E eu clico no botão novo "Gravar"
 
     Então eu clico no icone "Visualizar" da linha contendo "Curso Lnt 1"
-    E eu devo ver o título "Curso - Curso Lnt 1"
     E eu clico no icone de visualizar participantes do curso da LNT
     E eu devo ver "Turma Lnt 1"
     E eu devo ver "Turma Lnt 2"

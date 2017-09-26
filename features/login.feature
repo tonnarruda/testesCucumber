@@ -29,10 +29,31 @@ Funcionalidade: Logar no sistema
 
 #------------------------------------------------------------------------------------------------------------------------
 
-  Cenário: Logar com usuário e senha embranco
+  Cenário: Logar com usuário e senha em branco
     Dado que eu esteja deslogado
        E eu preencho "username" com ""
        E eu preencho "password" com ""
        E eu clico em "Entrar"
    Então eu devo ver "Usuário sem permissão de acesso"
        E eu devo deslogar do sistema
+
+#------------------------------------------------------------------------------------------------------------------------
+
+  Cenário: Logar Validando o Captcha
+    Dado que exista um usuario "admin"    
+    Dado que a configuração do captcha esteja ativa
+    Dado que eu esteja deslogado
+       E eu preencho "username" com "admin"
+       E eu preencho "password" com "1234"
+       E eu clico em "Entrar"
+       Então eu devo ver "Usuário sem permissão de acesso"
+       E eu devo deslogar do sistema
+  
+#------------------------------------------------------------------------------------------------------------------------
+  @teste
+  Cenário: Logar com usuário SOS e captcha ativo 
+    Dado que a configuração do captcha esteja ativa
+       E eu preencho "username" com "SOS"
+       E eu preencho "password" com "1234"
+       E eu clico em "Entrar"
+    Dado que eu esteja deslogado 
