@@ -62,5 +62,5 @@ public interface EmpresaManager extends GenericManager<Empresa>
 	@Audita(operacao="Remoção", auditor=EmpresaAuditorCallbackImpl.class)
 	void remove(Empresa empresa);
 	Collection<Empresa> findByLntId(Long lntId);
-	Collection<Empresa> findDistinctEmpresasByAvaliacaoDesempenho(Long avaliacaoDesempenhoId);
+	Collection<Empresa> findDistinctEmpresasByAvaliacaoDesempenho(Long avaliacaoDesempenhoId, Long... empresasIds);
 }

@@ -43,8 +43,7 @@ public class EmpresaDaoHIbernateTest_JUnit4  extends GenericDaoHibernateTest_JUn
 	}
 	
 	@Test
-	public void testFindDistinctEmpresasByAvaliacaoDesempenho() {
-		
+	public void testFindDistinctEmpresasByAvaliacaoDesempenho(){
 	Empresa empresa = EmpresaFactory.getEmpresa();
 	Empresa empresa2 = EmpresaFactory.getEmpresa();
 	
@@ -52,7 +51,7 @@ public class EmpresaDaoHIbernateTest_JUnit4  extends GenericDaoHibernateTest_JUn
 	empresaDao.save(empresa2);
 
 	Colaborador colaborador = ColaboradorFactory.getEntity(1l, empresa);
-	Colaborador colaborador2 = ColaboradorFactory.getEntity(2l, empresa);
+	Colaborador colaborador2 = ColaboradorFactory.getEntity(2l, empresa2);
 	
 	colaboradorDao.save(colaborador);
 	colaboradorDao.save(colaborador2);
@@ -66,8 +65,10 @@ public class EmpresaDaoHIbernateTest_JUnit4  extends GenericDaoHibernateTest_JUn
 	ColaboradorQuestionario colaboradorQuestionario2 =ColaboradorQuestionarioFactory.getEntity(colaborador2,colaborador,null,avaliacaoDesempenho,Boolean.TRUE);
 	colaboradorQuestionarioDao.save(colaboradorQuestionario2);
 	
-	Collection<Empresa> resultado = empresaDao.findDistinctEmpresasByAvaliacaoDesempenho(avaliacaoDesempenho.getId());
+	Collection<Empresa> resultado = empresaDao.findDistinctEmpresasByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), new Long[]{empresa.getId(), empresa2.getId()});
+	assertEquals(2, resultado.size());
 	
+	resultado = empresaDao.findDistinctEmpresasByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), new Long[]{empresa.getId()});
 	assertEquals(1, resultado.size());
 	}
 }

@@ -2974,7 +2974,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	{
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, co.matricula, ");
-		hql.append("ao.id, ao.nome, fs.nome, ca.nome, co.dataAdmissao, e.nome, co.contato.ddd, co.contato.foneFixo, co.contato.foneCelular) ");
+		hql.append("ao.id, ao.nome, fs.nome, ca.nome, co.dataAdmissao, e.nome, co.contato.ddd, co.contato.foneFixo, co.contato.foneCelular, co.empresa.id ) ");
 		hql.append("from HistoricoColaborador as hc ");
 		hql.append("left join hc.colaborador as co ");
 		hql.append("left join hc.estabelecimento as e ");
@@ -3309,43 +3309,23 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return criteria.list();
 	}
 
-	public Collection<Colaborador> findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(Long avaliacaoDesempenhoId, boolean isAvaliados, Long empresaId, Long[] areasIds, Long[] cargosIds)
+	public Collection<Colaborador> findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(Long avaliacaoDesempenhoId, boolean isAvaliados, Long[] areasIds, Long[] cargosIds, boolean contendoConfigNivelCompetenciaColaborador, Long... empresasIds)
 	{
-		Criteria criteria = montaCriteriaParticipantesAvaliacaoDesempenho(avaliacaoDesempenhoId, isAvaliados);
-		
-		if(empresaId != null)
-			criteria.add(Expression.eq("c.empresa.id", empresaId));
-		
-		if(areasIds != null && areasIds.length > 0)
-			criteria.add(Expression.in("ao.id", areasIds));
-
-		if(cargosIds != null && cargosIds.length > 0)
-			criteria.add(Expression.in("ca.id", cargosIds));
-		
-		criteria.addOrder(Order.asc("c.nome"));
-		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
-
-		return criteria.list();
-	}
-	
-	public Collection<Colaborador> findParticipantesDistinctComHistoricoByAvaliacaoDesempenhoTodasEmpresas(Long avaliacaoDesempenhoId, boolean isAvaliados, Long[] empresasIds, Long[] areasIds, Long[] cargosIds)
-	{
-		Criteria criteria = montaCriteriaParticipantesAvaliacaoDesempenho(avaliacaoDesempenhoId, isAvaliados);
+		Criteria criteria = montaCriteriaParticipantesAvaliacaoDesempenho(avaliacaoDesempenhoId, isAvaliados, contendoConfigNivelCompetenciaColaborador);
 		
 		if(empresasIds != null && empresasIds.length>0)
 			criteria.add(Expression.in("c.empresa.id", empresasIds));
 		
 		if(areasIds != null && areasIds.length > 0)
 			criteria.add(Expression.in("ao.id", areasIds));
-		
+
 		if(cargosIds != null && cargosIds.length > 0)
 			criteria.add(Expression.in("ca.id", cargosIds));
 		
 		criteria.addOrder(Order.asc("c.nome"));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
-		
+
 		return criteria.list();
 	}
 
@@ -5755,7 +5735,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		}
 	}
 	
-	private Criteria montaCriteriaParticipantesAvaliacaoDesempenho(Long avaliacaoDesempenhoId, boolean isAvaliados) {
+	private Criteria montaCriteriaParticipantesAvaliacaoDesempenho(Long avaliacaoDesempenhoId, boolean isAvaliados, boolean contendoConfigNivelCompetenciaColaborador) {
 		// subQuery
 		DetachedCriteria subQuery = montaSubQueryHistoricoColaborador(new Date(), StatusRetornoAC.CONFIRMADO);
 		
@@ -5766,6 +5746,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			criteria.createCriteria("cq.colaborador", "c");
 		else
 			criteria.createCriteria("cq.avaliador", "c");
+		
+		if(contendoConfigNivelCompetenciaColaborador)
+			criteria.createCriteria("c.configuracaoNivelCompetenciaColaboradors", "cncc", Criteria.INNER_JOIN);
 
 		criteria.createCriteria("c.historicoColaboradors", "hc", Criteria.LEFT_JOIN);
 		criteria.createCriteria("hc.areaOrganizacional", "ao", Criteria.LEFT_JOIN);

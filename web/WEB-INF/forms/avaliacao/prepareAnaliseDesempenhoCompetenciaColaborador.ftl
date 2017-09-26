@@ -173,6 +173,11 @@
 	
 	<script type="text/javascript">
 		var empresaIds = new Array();
+		
+		var empresasPermitidasIds = new Array();
+		<#list empresasPermitidasIds as empresaPermitidaId>
+			empresasPermitidasIds.push(${empresaPermitidaId});	
+		</#list>
 				
 		$(function(){
 			$(".box-type").click(function(){
@@ -220,7 +225,7 @@
 			
 			if($('#avaliacao').val() !==""){
 			
-				EmpresaDWR.findDistinctEmpresasByAvaliacaoDesempenho($('#avaliacao').val(),populaEmpresaPorAvaliacaoDesempenho);
+				EmpresaDWR.findDistinctEmpresasByAvaliacaoDesempenho($('#avaliacao').val(), empresasPermitidasIds, populaEmpresaPorAvaliacaoDesempenho);
 				
 				populaArea();
 				populaCargosByAreaVinculados();
@@ -232,13 +237,10 @@
 		}
 		
 		function populaEmpresaPorAvaliacaoDesempenho(data){
-			if(empresaIds.length===0){
-				addOptionsByCollection('empresa', data, 'Todas');
-				for(var empresa in data){
-					empresaIds.push(data[empresa].id);
-				}
-			}else if ($('#empresa').children().length<=1) {
-				addOptionsByCollection('empresa', data, 'Todas');
+			empresaIds = new Array();
+			addOptionsByCollection('empresa', data, 'Todas');
+			for(var empresa in data){
+				empresaIds.push(data[empresa].id);
 			}
 		}	
 		
@@ -516,8 +518,6 @@
 				<div>Resumido</div>
 			</div>
 		</div>
-		
-		<!--<@ww.hidden name="relatorioDetalhado" id="relatorioDetalhado" value="false" />-->
 		<@ww.select label="Avaliação de desempenho que avaliam competência" required="true" name="avaliacaoDesempenho.id" id="avaliacao" list="avaliacaoDesempenhos" listKey="id" listValue="titulo" cssStyle="width: 600px;" headerKey="" headerValue="Selecione..." onchange="populaAvaliados();"/>
 		<@ww.select label="Empresa" name="empresa.id" id="empresa" list="empresas" listKey="id" listValue="nome" headerValue="Selecione uma avaliação de desempenho" headerKey="" cssStyle="width: 600px;" onchange="populaChecks();"/>
 		<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList" width="600" onClick="populaCargosByAreaVinculados();" filtro="true" selectAtivoInativo="true"/>

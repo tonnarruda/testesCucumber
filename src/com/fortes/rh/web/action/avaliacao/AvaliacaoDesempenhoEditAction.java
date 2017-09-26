@@ -84,6 +84,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	
 	private Empresa empresa;
 	private Collection<Empresa> empresas;
+	private Long[] empresasPermitidasIds;
 	
 	private Collection<CheckBox> empresasCheckList = new ArrayList<CheckBox>();
 	private Collection<CheckBox> cargosCheckList = new ArrayList<CheckBox>();
@@ -233,7 +234,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 			compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
 			empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores, empresaId, SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()));
 			avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
-			participantes = colaboradorManager.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), true, null, null, null);
+			participantes = colaboradorManager.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), true, null, null, false, null);
 			
 			colaboradorsCheckList = populaCheckListBox(participantes, "getId", "getNome", null);
 			colaboradorsCheckList = CheckListBoxUtil.marcaCheckListBox(colaboradorsCheckList, colaboradorsCheck);
@@ -315,7 +316,8 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	{
 		try {
 			compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
-			empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores, empresaId, SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()));
+			empresasPermitidasIds = new CollectionUtil<Empresa>().convertCollectionToArrayIds(empresaManager.findEmpresasPermitidas(compartilharColaboradores, empresaId, SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession())));
+			
 			avaliacaoDesempenhos = avaliacaoDesempenhoManager.findComCompetencia(getEmpresaSistema().getId());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -336,7 +338,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	{
 		try {
 			AvaliacaoDesempenho avaliacao = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
-			ResultadoAvaliacaoDesempenho resultadoAvaliacaoDesempenho = avaliacaoDesempenhoManager.getResultadoAvaliacaoDesempenho(avaliacao, avaliado.getId(), getEmpresaSistema().getId());
+			ResultadoAvaliacaoDesempenho resultadoAvaliacaoDesempenho = avaliacaoDesempenhoManager.getResultadoAvaliacaoDesempenho(avaliacao, avaliado.getId());
 			
 			if(resultadoAvaliacaoDesempenho.getCompetencias().size() == 0){
 				addActionMessage("Não existem competências para o avaliado informado.");
@@ -601,7 +603,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		
 		if(avaliacaoDesempenho != null){
 			if(SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_RESPONDER_AVALIACAO_DESEMP_POR_OUTRO_USUARIO"}))
-				avaliadors = colaboradorManager.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), false, null, null, null);
+				avaliadors = colaboradorManager.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), false, null, null, false, null);
 
 			colaboradorQuestionarios = colaboradorQuestionarioManager.findAvaliadosByAvaliador(avaliacaoDesempenho.getId(), avaliador.getId(), respondida, false, true, false);
 			existeColaboradorQuestionarioRespondidoParcialmente();
@@ -1090,5 +1092,13 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 
 	public void setParticipantesAvaliadoresRemovidos(Long[] participantesAvaliadoresRemovidos) {
 		this.participantesAvaliadoresRemovidos = participantesAvaliadoresRemovidos;
+	}
+
+	public Long[] getEmpresasPermitidasIds() {
+		return empresasPermitidasIds;
+	}
+
+	public void setEmpresasPermitidasIds(Long[] empresasPermitidasIds) {
+		this.empresasPermitidasIds = empresasPermitidasIds;
 	}
 }

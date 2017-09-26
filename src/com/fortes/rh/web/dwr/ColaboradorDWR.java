@@ -290,7 +290,7 @@ public class ColaboradorDWR
     {
     	Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
     	colaboradores.add(new Colaborador( -1L, "Selecione..."));
-    	colaboradores.addAll(colaboradorManager.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenhoId, false, null, null, null));
+    	colaboradores.addAll(colaboradorManager.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenhoId, false, null, null, false, null));
     	
     	return CollectionUtil.convertCollectionToMap(colaboradores, "getId", "getNomeMaisNomeComercial", Colaborador.class);
     }

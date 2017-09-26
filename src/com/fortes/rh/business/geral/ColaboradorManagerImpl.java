@@ -1949,15 +1949,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	}
 
 	@TesteAutomatico
-	public Collection<Colaborador> findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(Long avaliacaoDesempenhoId, boolean isAvaliados, Long empresaId, Long[] areasIds, Long[] cargosIds) 
+	public Collection<Colaborador> findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(Long avaliacaoDesempenhoId, boolean isAvaliados, Long[] areasIds, Long[] cargosIds, boolean contendoConfigNivelCompetenciaColaborador, Long... empresasIds) 
 	{
-		return getDao().findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenhoId, isAvaliados, empresaId, areasIds, cargosIds);
-	}
-	
-	@TesteAutomatico
-	public Collection<Colaborador> findParticipantesDistinctComHistoricoByAvaliacaoDesempenhoTodasEmpresas(Long avaliacaoDesempenhoId, boolean isAvaliados, Long[] empresaIds, Long[] areasIds, Long[] cargosIds) 
-	{
-		return getDao().findParticipantesDistinctComHistoricoByAvaliacaoDesempenhoTodasEmpresas(avaliacaoDesempenhoId, isAvaliados, empresaIds, areasIds, cargosIds);
+		return getDao().findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenhoId, isAvaliados, areasIds, cargosIds, contendoConfigNivelCompetenciaColaborador, empresasIds);
 	}
 
 	@TesteAutomatico

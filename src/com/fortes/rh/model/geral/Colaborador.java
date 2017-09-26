@@ -920,8 +920,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	}
 	
 	//usado por findByIdHistoricoAtual 
-	public Colaborador(Long id, String nome, String nomeComercial, String matricula, Long areaOrganizacionalId, String areaOrganizacionalNome, String faixaSalarialNome, String cargoNome, Date dataAdmissao, String estabelecimentoNome, String ddd, String foneFixo, String celular)
-	{
+	public Colaborador(Long id, String nome, String nomeComercial, String matricula, Long areaOrganizacionalId, String areaOrganizacionalNome, String faixaSalarialNome, String cargoNome, 
+			Date dataAdmissao, String estabelecimentoNome, String ddd, String foneFixo, String celular, Long empresaId){
 		this.setId(id);
 		this.nome = nome;
 		this.nomeComercial = nomeComercial;
@@ -935,6 +935,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.setContatoDdd(ddd);
 		this.setContatoFoneFixo(foneFixo);
 		this.setContatoCelular(celular);
+		this.setEmpresaId(empresaId);
 	}
 	
 	//Construtor usado pela consulta de aniversariantes
