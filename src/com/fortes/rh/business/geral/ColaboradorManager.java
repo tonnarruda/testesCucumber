@@ -257,4 +257,5 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Colaborador> getNaturalidadesAndNacionalidades(Collection<Colaborador> colaboradores, Long... empresasIds);
 	public boolean excedeuContratacao(Long empresaId);
 	public Collection<Colaborador> findDadosBasicosNotIds(Set<Long> notColabIds, Long[] colabIds, Long[] areasIds, Long[] estabelecimentosIds, String situacaoColaborador, Long empresaId);
+	public Collection<Colaborador> findParticipantesDistinctComHistoricoByAvaliacaoDesempenhoTodasEmpresas(Long avaliacaoDesempenhoId, boolean isAvaliados, Long[] empresaIds, Long[] areasIds, Long[] cargosIds);
 }

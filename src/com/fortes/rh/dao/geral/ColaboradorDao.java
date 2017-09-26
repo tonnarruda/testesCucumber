@@ -163,4 +163,5 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Collection<Colaborador> findColaboradoresQueNuncaRealizaramTreinamento(Long[] empresasIds, Long[] areasIds, Long[] estabelecimentosIds);
 	public Collection<Colaborador> findByAdmitidos(Date data);
 	public Collection<Colaborador> findDadosBasicosNotIds(Set<Long> notColabIds, Long[] colabIds, Long[] areasIds, Long[] estabelecimentosIds, String situacaoColaborador, Long empresaId);
+	public Collection<Colaborador> findParticipantesDistinctComHistoricoByAvaliacaoDesempenhoTodasEmpresas(Long avaliacaoDesempenhoId, boolean isAvaliados, Long[] empresaIds, Long[] areasIds, Long[] cargosIds);
 }

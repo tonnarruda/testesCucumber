@@ -199,4 +199,12 @@ public class EmpresaManagerTest_JUnit4
     	verify(configuracaoCampoExtraVisivelObrigadotorioManager).saveOrUpdateConfCamposExtras(empresa.getId(), camposVisivesisColaborador, new String[]{TipoConfiguracaoCampoExtra.COLABORADOR.getTipo()});
     	verify(configuracaoCampoExtraVisivelObrigadotorioManager).saveOrUpdateConfCamposExtras(empresa.getId(), camposVisivesisCandidato, new String[]{TipoConfiguracaoCampoExtra.CANDIDATO_EXTERNO.getTipo(), TipoConfiguracaoCampoExtra.CANDIDATO.getTipo()});
 	}
+    
+    @Test
+    public void testFindDistinctEmpresasByAvaliacaoDesempenho() 
+    {
+    	empresaManager.findDistinctEmpresasByAvaliacaoDesempenho(1l);
+    	
+    	verify(empresaDao, times(1)).findDistinctEmpresasByAvaliacaoDesempenho(1l);
+    }
 }

@@ -46,6 +46,7 @@ import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
+import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.avaliacao.relatorio.AcompanhamentoExperienciaColaborador;
 import com.fortes.rh.model.cargosalario.Cargo;
@@ -66,6 +67,7 @@ import com.fortes.rh.model.json.ColaboradorJson;
 import com.fortes.rh.model.ws.TEmpregado;
 import com.fortes.rh.model.ws.TNaturalidadeAndNacionalidade;
 import com.fortes.rh.model.ws.TSituacao;
+import com.fortes.rh.test.factory.avaliacao.AvaliacaoDesempenhoFactory;
 import com.fortes.rh.test.factory.avaliacao.PeriodoExperienciaFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
@@ -75,7 +77,6 @@ import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.geral.CidadeFactory;
 import com.fortes.rh.test.factory.geral.EstadoFactory;
 import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
-import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientColaborador;
@@ -900,6 +901,21 @@ public class ColaboradorManagerTest_Junit4
     	Collection<TurnOver> turnOversRetornoAreaB = ((TurnOverCollection) turnOverCollectionsArea.toArray()[1]).getTurnOvers();
     	assertEquals(new Double(68.33), ((TurnOver) turnOversRetornoAreaB.toArray()[0]).getTurnOver());
     }
+    
+    @Test
+    public void testFindParticipantesDistinctComHistoricoByAvaliacaoDesempenhoTodasEmpresas()
+    {
+    	AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(1l);
+    	Long[] empresaIds = new Long[]{1l,2l};
+    	Collection<Colaborador> participantes = ColaboradorFactory.getCollection();
+		
+    	when(colaboradorDao.findParticipantesDistinctComHistoricoByAvaliacaoDesempenhoTodasEmpresas(avaliacaoDesempenho.getId(), Boolean.TRUE, empresaIds, null,null)).thenReturn(participantes);
+    	
+    	Collection<Colaborador> resultadoParticipantes = colaboradorManager.findParticipantesDistinctComHistoricoByAvaliacaoDesempenhoTodasEmpresas(avaliacaoDesempenho.getId(), Boolean.TRUE, empresaIds, null, null);
+    	
+    	assertEquals(1, resultadoParticipantes.size());
+    }
+    
 	private TurnOver montaAdmitido(Date data, double qtdAdmitidos,Long idAreaOuCargo) 
 	{
 		TurnOver admitido = new TurnOver();
@@ -908,6 +924,7 @@ public class ColaboradorManagerTest_Junit4
     	
 		return admitido;
 	}
+	
 	private TurnOver montaDemitido(Date data, double qtdDemitidos, Long idAreaOuCargo) 
 	{
 		TurnOver demitido = new TurnOver();

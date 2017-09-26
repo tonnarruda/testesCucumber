@@ -1,5 +1,8 @@
 package com.fortes.rh.test.factory.captacao;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import com.fortes.rh.model.geral.Empresa;
 
 public class EmpresaFactory
@@ -32,12 +35,23 @@ public class EmpresaFactory
 		return empresa;
 	}
 
-	public static Empresa getEmpresa(String nome, String cnpj, String razaoSocial) {
+	public static Empresa getEmpresa(String nome, String cnpj, String razaoSocial) 
+	{
 		Empresa empresa = new Empresa();
 		empresa.setNome(nome);
 		empresa.setCnpj(cnpj);
 		empresa.setRazaoSocial(razaoSocial);
 
 		return empresa;
+	}
+	
+	public static Collection<Empresa> getEmpresas(Long quantidade)
+	{
+		Collection<Empresa> empresas = new ArrayList<Empresa>();
+		
+		for(int i=1;i<=quantidade;i++)
+			empresas.add(getEmpresa());
+		
+		return empresas;
 	}
 }

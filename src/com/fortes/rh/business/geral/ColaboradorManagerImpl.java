@@ -1953,6 +1953,12 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	{
 		return getDao().findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenhoId, isAvaliados, empresaId, areasIds, cargosIds);
 	}
+	
+	@TesteAutomatico
+	public Collection<Colaborador> findParticipantesDistinctComHistoricoByAvaliacaoDesempenhoTodasEmpresas(Long avaliacaoDesempenhoId, boolean isAvaliados, Long[] empresaIds, Long[] areasIds, Long[] cargosIds) 
+	{
+		return getDao().findParticipantesDistinctComHistoricoByAvaliacaoDesempenhoTodasEmpresas(avaliacaoDesempenhoId, isAvaliados, empresaIds, areasIds, cargosIds);
+	}
 
 	@TesteAutomatico
 	public Collection<Colaborador> findColaboradorDeAvaliacaoDesempenhoNaoRespondida() 

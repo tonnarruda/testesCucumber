@@ -9,6 +9,7 @@
 	</style>
 	
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AvaliacaoDesempenhoDWR.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EmpresaDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/NivelCompetenciaDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CargoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js?version=${versao}"/>'></script>
@@ -172,12 +173,7 @@
 	
 	<script type="text/javascript">
 		var empresaIds = new Array();
-		<#if empresas?exists>
-			<#list empresas as empresa>
-				empresaIds.push(${empresa.id});
-			</#list>
-		</#if>
-		
+				
 		$(function(){
 			$(".box-type").click(function(){
 				selectPrintType(this);
@@ -188,26 +184,10 @@
 			$('#tooltipHelp').qtip({
 				content: 'Ao selecionar a nota mínima, o gráfico de "Média Geral das Competências" apresentará as competências avaliadas de acordo com o nível selecionado.'
 			});
-		})
-		
-		function selectPrintType(box) {
-			$(".box-type").removeClass("selected");
-			$(box).addClass("selected");
-			$(box).find("input").attr("checked", "checked").change();
-		}
-		
-		$(document).ready(function($){
-			var empresa = ${empresaSistema.id};
-	
-			populaArea(empresa);
-			populaCargosByAreaVinculados();
-			populaCargosAvaliado();
+			
 			exibeOuOcultaFiltros();
 			populaOrdensNivelCompetencia();
 			mudaLabelMultCheckBoxAvaliadores();
-			
-			if($('#avaliacao').val())
-			 	populaAvaliados();
 			
 			$('#cargosVinculadosAreas').click(function() {
 				populaCargosByAreaVinculados();
@@ -216,20 +196,52 @@
 			$('#cargosVinculadosAreas').attr('checked', true);
 			
 			$('#wwctrl_avaliadores * span').eq(0).removeAttr('onclick').css('color', '#6E7B8B').css('cursor', 'default');
-		});
+			
+			$('#listCheckBoxareasCheck').append('<div class="info"> <ul> <li>Selecione uma avaliação de desempenho para para popular as áreas.</li> </ul> </div>');
+			$('#listCheckBoxcargosCheck').append('<div class="info"> <ul> <li>Selecione uma avaliação de desempenho para popular os cargos.</li> </ul> </div>');
+			
+			populaAvaliados();
+		})
+		
+		function selectPrintType(box) {
+			$(".box-type").removeClass("selected");
+			$(box).addClass("selected");
+			$(box).find("input").attr("checked", "checked").change();
+		}
 		
 		function populaAvaliados()
 		{
 			limpaOrdensNivelCompetencia();
-			
 			var areasIds   = getArrayCheckeds(document.form, 'areasCheck');
 			var cargosIds  = getArrayCheckeds(document.form, 'cargosCheck');
 			
-			DWREngine.setAsync(true);
+			DWREngine.setAsync(false);
 			DWRUtil.useLoadingMessage('Carregando...');
-			AvaliacaoDesempenhoDWR.getAvaliados(populaSelectAvaliados, $('#avaliacao').val(), ${empresaSistema.id}, areasIds, cargosIds);
-		}
 			
+			if($('#avaliacao').val() !==""){
+			
+				EmpresaDWR.findDistinctEmpresasByAvaliacaoDesempenho($('#avaliacao').val(),populaEmpresaPorAvaliacaoDesempenho);
+				
+				populaArea();
+				populaCargosByAreaVinculados();
+				populaAvaliadores();
+			}
+			else{
+				limpaCamposPorAvaliacao();
+			}
+		}
+		
+		function populaEmpresaPorAvaliacaoDesempenho(data){
+			if(empresaIds.length===0){
+				addOptionsByCollection('empresa', data, 'Todas');
+				for(var empresa in data){
+					empresaIds.push(data[empresa].id);
+				}
+			}else if ($('#empresa').children().length<=1) {
+				addOptionsByCollection('empresa', data, 'Todas');
+			}
+		}	
+		
 		function populaSelectAvaliados(data)
 		{
 			$('#avaliados').find('option').remove().end();
@@ -238,48 +250,50 @@
 			else
 				$('#avaliados').append('<option value="" selected="selected">Não existem avaliados para o filtro informado.</option>');
 				
-			populaCargosAvaliado();
+			populaAvaliadores();
 		}
 		
-		function populaArea(empresaId)
+		function populaArea()
 		{
 			DWREngine.setAsync(true);
 			DWRUtil.useLoadingMessage('Carregando...');
-			AreaOrganizacionalDWR.getByEmpresas(createListArea, empresaId, empresaIds, null);
+			
+			AreaOrganizacionalDWR.getByEmpresas(createListArea, $('#empresa').val(), empresaIds, null);
+			
 		}
 		
 		function createListArea(data)
 		{
-			addChecks('areasCheck',data, 'populaCargosByAreaVinculados();populaAvaliados();');
+			addChecks('areasCheck',data, 'populaCargosByAreaVinculados();');
 		}
 	
 		function populaCargosByAreaVinculados()
 		{
-			DWREngine.setAsync(true);
-			DWRUtil.useLoadingMessage('Carregando...');
 			var areasIds = getArrayCheckeds(document.forms[0],'areasCheck');
-			var empresaId = ${empresaSistema.id};
+			var exibirSomenteCargoVinculadoComAreasSelecionadas = $('#cargosVinculadosAreas').is(":checked");
 			
-			if ($('#cargosVinculadosAreas').is(":checked") && areasIds.length != 0)
-				CargoDWR.getCargoByArea(createListCargosByArea, areasIds, "getNomeMercadoComEmpresaEStatus", empresaId);
+			if($('#empresa').val()!=='')
+				CargoDWR.getByEmpresasEArea(empresaIds, new Array($('#empresa').val()), areasIds, exibirSomenteCargoVinculadoComAreasSelecionadas, createListCargosByArea);
 			else
-				CargoDWR.getByEmpresas(createListCargosByArea, empresaId, empresaIds);
+				CargoDWR.getByEmpresasEArea(empresaIds,null, areasIds, exibirSomenteCargoVinculadoComAreasSelecionadas, createListCargosByArea);
+			
+			populaAvaliadosPorAreaCargoEmpresa();
 		}
 		
 		function createListCargosByArea(data)
 		{
-			addChecks('cargosCheck',data, 'populaAvaliados()');
+			addChecks('cargosCheck',data,'populaAvaliadosPorAreaCargoEmpresa()');
 		}
 	
 		function exibeOuOcultaFiltros(){
 			if($('input[name=relatorioDetalhado]:checked').val() == 'true') {
-				populaCargosAvaliado();
+				populaAvaliadores();
 				$('#paraRelatorioDetalhado').show();
 			} else
 				$('#paraRelatorioDetalhado').hide();
 		}
 		
-		function populaCargosAvaliado()
+		function populaAvaliadores()
 		{
 			if(($('input[name=relatorioDetalhado]:checked').val() == 'true') && ($('#avaliados').val() != 0) && ($('#avaliados').val() != -1)){
 				DWREngine.setAsync(true);
@@ -394,6 +408,54 @@
 				$('#wwlbl_avaliadores > .desc').text('Avaliadores (máx. 4 Avaliadores):');
 		}
 		
+		function populaChecks()
+		{
+			$('#listCheckBoxareasCheck [type="checkbox"]').attr('checked', false);
+			$('#listCheckBoxcargosCheck [type="checkbox"]').attr('checked', false);
+			
+			var empresaId = $('#empresa').val() == 0 ? null : $('#empresa').val() ;
+			
+			DWREngine.setAsync(false);
+			
+			populaArea(empresaId);
+			populaCargosByAreaVinculados();
+			limpaOrdensNivelCompetencia();
+		}
+		
+		function limpaCamposPorAvaliacao()
+		{
+			var existeMsgDefaultArea = !!$('#listCheckBoxareasCheck').find('.info').length;
+			var existeMsgDefaultCargo = !!$('#listCheckBoxcargosCheck').find('.info').length;
+			
+			if($('#avaliacao').val() ==="" && (existeMsgDefaultArea || existeMsgDefaultCargo)){
+				return false;
+			}else{
+				$('#listCheckBoxareasCheck').empty();
+				$('#listCheckBoxcargosCheck').empty();
+				$('#listCheckBoxavaliadores').empty();
+				$('#empresa').empty();
+				$('#avaliados').empty();
+				
+				$('#listCheckBoxareasCheck').append('<div class="info"> <ul> <li>Selecione uma avaliação de desempenho para para popular as áreas.</li> </ul> </div>');
+				$('#listCheckBoxcargosCheck').append('<div class="info"> <ul> <li>Selecione uma avaliação de desempenho para popular os cargos.</li> </ul> </div>');
+				$('#listCheckBoxavaliadores').append('<div class="info"> <ul> <li>Selecione um avaliado para popular os avaliadores.</li> </ul> </div>');
+				
+				$('#avaliados').append('<option value="" selected="selected">Não existem avaliados para o filtro informado.</option>');
+				$('#empresa').append('<option value="" 	 selected="selected">Selecione uma avaliação de desempenho.</option>');
+			}
+		}
+		function populaAvaliadosPorAreaCargoEmpresa()
+		{
+			var areasIds   = getArrayCheckeds(document.form, 'areasCheck');
+			var cargosIds  = getArrayCheckeds(document.form, 'cargosCheck');
+			
+			if($('#empresa').val() !==''){
+				AvaliacaoDesempenhoDWR.getAvaliados(populaSelectAvaliados, $('#avaliacao').val(), new Array($('#empresa').val()), areasIds, cargosIds);
+			}else{
+				AvaliacaoDesempenhoDWR.getAvaliados(populaSelectAvaliados, $('#avaliacao').val(), empresaIds, areasIds, cargosIds);
+			}
+		}
+		
 	</script>
 </head>
 <body>
@@ -457,10 +519,11 @@
 		
 		<!--<@ww.hidden name="relatorioDetalhado" id="relatorioDetalhado" value="false" />-->
 		<@ww.select label="Avaliação de desempenho que avaliam competência" required="true" name="avaliacaoDesempenho.id" id="avaliacao" list="avaliacaoDesempenhos" listKey="id" listValue="titulo" cssStyle="width: 600px;" headerKey="" headerValue="Selecione..." onchange="populaAvaliados();"/>
-		<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList" width="600" onClick="populaCargosByAreaVinculados();populaAvaliados();" filtro="true" selectAtivoInativo="true"/>
+		<@ww.select label="Empresa" name="empresa.id" id="empresa" list="empresas" listKey="id" listValue="nome" headerValue="Selecione uma avaliação de desempenho" headerKey="" cssStyle="width: 600px;" onchange="populaChecks();"/>
+		<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList" width="600" onClick="populaCargosByAreaVinculados();" filtro="true" selectAtivoInativo="true"/>
 		<@ww.checkbox label="Exibir somente os cargos vinculados às áreas organizacionais acima." id="cargosVinculadosAreas" name="" labelPosition="left"/>
-		<@frt.checkListBox label="Cargos" name="cargosCheck" id="cargosCheck" list="cargosCheckList"  width="600" onClick="populaAvaliados();" filtro="true" selectAtivoInativo="true"/>
-		<@ww.select label="Avaliado" required="true" name="avaliado.id" id="avaliados" list="participantesAvaliadores" listKey="id" listValue="nome" cssStyle="width: 600px;" headerKey="-1" headerValue="Selecione uma avaliação de desempenho"  onchange="populaCargosAvaliado();populaOrdensNivelCompetencia();"/>
+		<@frt.checkListBox label="Cargos" name="cargosCheck" id="cargosCheck" list="cargosCheckList"  width="600" onClick="populaAvaliadosPorAreaCargoEmpresa();" filtro="true" selectAtivoInativo="true"/>
+		<@ww.select label="Avaliado" required="true" name="avaliado.id" id="avaliados" list="participantesAvaliadores" listKey="id" listValue="nome" cssStyle="width: 600px;" headerKey="-1" headerValue="Selecione uma avaliação de desempenho"  onchange="populaAvaliadores();populaOrdensNivelCompetencia();"/>
 		
 		<div id="paraRelatorioDetalhado">
 			<@ww.checkbox label="Agrupar avaliadores por cargo." id="agruparPorCargo" name="agruparPorCargo" labelPosition="left" onchange="verificaQtdMarcados();mudaLabelMultCheckBoxAvaliadores();"/>

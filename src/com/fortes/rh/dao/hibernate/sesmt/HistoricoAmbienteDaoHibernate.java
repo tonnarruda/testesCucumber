@@ -71,8 +71,6 @@ public class HistoricoAmbienteDaoHibernate extends GenericDaoHibernate<Historico
 		hql.append("and ha.data >= (select max(ha2.data) from HistoricoAmbiente ha2 where ha2.ambiente.id = :ambienteId and ha2.data <= :dataMaxima) ");
 		hql.append("order by ha.data ");
 		
-		// Se resolver usar projectionList, incluir os riscos do ambiente, pois estão sendo utilizados na validação para impressão do PPP
-		
 		Query query = getSession().createQuery(hql.toString());
 		query.setLong("ambienteId", ambienteId);
 		query.setDate("dataMaxima", dataMaxima);

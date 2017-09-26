@@ -100,6 +100,25 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 		return criteria.list();
 	}
+	public Collection<Empresa> findDistinctEmpresasByAvaliacaoDesempenho(Long avaliacaoDesempenhoId)
+	{
+		Criteria criteria = getSession().createCriteria(ColaboradorQuestionario.class, "cq");
+		criteria.createCriteria("cq.colaborador", "c");
+		criteria.createCriteria("c.empresa", "emp");
+		
+		ProjectionList p = Projections.projectionList().create();
+		
+		p.add(Projections.property("emp.id"),"id");
+		p.add(Projections.property("emp.nome"),"nome");
+
+		criteria.add(Expression.eq("cq.avaliacaoDesempenho.id", avaliacaoDesempenhoId));
+		
+		criteria.setProjection(Projections.distinct(p));
+		criteria.addOrder(Order.asc("emp.nome"));
+
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+		return criteria.list();
+	}
 
 	public Empresa findByIdProjection(Long id) 
 	{

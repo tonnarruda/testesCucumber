@@ -201,6 +201,9 @@
 		<convert converter="bean" match="com.fortes.rh.model.geral.AreaOrganizacional">
 			<param name="include" value="id, nome, descricao"/>
 		</convert>
+		<convert converter="bean" match="com.fortes.rh.model.geral.Empresa">
+			<param name="include" value="id, nome"/>
+		</convert>
 		
 		<!-- CARGO E SALARIO -->
 		<convert converter="bean" match="com.fortes.rh.model.cargosalario.Cargo"/>
