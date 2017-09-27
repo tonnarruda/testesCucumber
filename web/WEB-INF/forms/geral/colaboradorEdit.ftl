@@ -274,7 +274,7 @@
 				});
 			</#if>
 			
-			addBuscaCEP('cep', 'endereco', 'bairroNome', 'cidade', 'uf');
+			addBuscaCEP('cep', 'ende', 'bairroNome', 'cidade', 'uf');
 
 			<#if avaliacoes?exists>
 				<#list avaliacoes as avaliacao>

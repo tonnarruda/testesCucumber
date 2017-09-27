@@ -984,7 +984,7 @@ ALTER TABLE avaliacaoturma_sequence OWNER TO postgres;
 
 CREATE TABLE bairro (
     id bigint NOT NULL,
-    nome character varying(85),
+    nome character varying(60),
     cidade_id bigint
 );
 
@@ -1079,16 +1079,16 @@ ALTER TABLE camposextras_sequence OWNER TO postgres;
 
 CREATE TABLE candidato (
     id bigint NOT NULL,
-    nome character varying(60) NOT NULL,
+    nome character varying(70) NOT NULL,
     senha character varying(30),
     name character varying(255),
     contenttype character varying(255),
     bytes bytea,
     size bigint,
-    logradouro character varying(40),
+    logradouro character varying(80),
     numero character varying(10),
-    complemento character varying(20),
-    bairro character varying(85),
+    complemento character varying(30),
+    bairro character varying(60),
     cep character varying(10),
     ddd character varying(5),
     fonefixo character varying(10),
@@ -1098,9 +1098,9 @@ CREATE TABLE candidato (
     pis character varying(11),
     rg character varying(15),
     naturalidade character varying(100),
-    pai character varying(60),
-    mae character varying(60),
-    conjuge character varying(40),
+    pai character varying(70),
+    mae character varying(70),
+    conjuge character varying(70),
     profissaopai character varying(100),
     profissaomae character varying(100),
     profissaoconjuge character varying(100),
@@ -1115,7 +1115,7 @@ CREATE TABLE candidato (
     quantidade integer NOT NULL,
     valor double precision,
     possuiveiculo boolean NOT NULL,
-    numerohab character varying(11),
+    numerohab character varying(12),
     registro character varying(30),
     emissao date,
     vencimento date,
@@ -1135,7 +1135,7 @@ CREATE TABLE candidato (
     cidade_id bigint,
     observacaorh text,
     deficiencia character(1) NOT NULL,
-    rgorgaoemissor character varying(10),
+    rgorgaoemissor character varying(20),
     rguf_id bigint,
     rgdataexpedicao date,
     titeleitnumero character varying(13),
@@ -1144,7 +1144,7 @@ CREATE TABLE candidato (
     certmilnumero character varying(12),
     certmiltipo character varying(5),
     certmilserie character varying(12),
-    ctpsnumero character varying(8),
+    ctpsnumero character varying(11),
     ctpsserie character varying(6),
     ctpsdv character(1),
     ctpsuf_id bigint,
@@ -1157,7 +1157,9 @@ CREATE TABLE candidato (
     comoficousabendovaga_id bigint,
     comoficousabendovagaqual character varying(100),
     camposextras_id bigint,
-    examepalografico text
+    examepalografico text,
+    dddcelular character varying(5),
+    ufhab_id bigint
 );
 
 
@@ -1743,24 +1745,24 @@ ALTER TABLE codigocbo OWNER TO postgres;
 CREATE TABLE colaborador (
     id bigint NOT NULL,
     matricula character varying(20),
-    nome character varying(60),
+    nome character varying(70),
     nomecomercial character varying(30),
     desligado boolean NOT NULL,
     datadesligamento date,
     observacao text,
     dataadmissao date NOT NULL,
-    logradouro character varying(40),
+    logradouro character varying(80),
     numero character varying(10),
-    complemento character varying(20),
-    bairro character varying(85),
+    complemento character varying(30),
+    bairro character varying(60),
     cep character varying(10),
     cpf character varying(11),
     pis character varying(11),
     rg character varying(15),
     naturalidade character varying(100),
-    pai character varying(60),
-    mae character varying(60),
-    conjuge character varying(40),
+    pai character varying(70),
+    mae character varying(70),
+    conjuge character varying(70),
     profissaopai character varying(100),
     profissaomae character varying(100),
     profissaoconjuge character varying(100),
@@ -1787,10 +1789,10 @@ CREATE TABLE colaborador (
     candidato_id bigint,
     motivodemissao_id bigint,
     deficiencia character(1) NOT NULL,
-    rgorgaoemissor character varying(10),
+    rgorgaoemissor character varying(20),
     rguf_id bigint,
     rgdataexpedicao date,
-    numerohab character varying(11),
+    numerohab character varying(12),
     registro character varying(30),
     emissao date,
     vencimento date,
@@ -1801,7 +1803,7 @@ CREATE TABLE colaborador (
     certmilnumero character varying(12),
     certmiltipo character varying(5),
     certmilserie character varying(12),
-    ctpsnumero character varying(8),
+    ctpsnumero character varying(11),
     ctpsserie character varying(6),
     ctpsdv character(1),
     ctpsuf_id bigint,
@@ -1821,6 +1823,8 @@ CREATE TABLE colaborador (
     datasolicitacaodesligamento date,
     solicitantedemissao_id bigint,
     demissaogerousubstituicao character(1),
+    dddcelular character varying(5),
+    ufhab_id bigint,
     CONSTRAINT no_blank_codigoac_colaborador CHECK ((btrim((codigoac)::text) <> ''::text))
 );
 
@@ -3265,6 +3269,8 @@ CREATE TABLE empresa (
     criarusuarioautomaticamente boolean DEFAULT false NOT NULL,
     senhapadrao character varying(30),
     campoextraatualizarmeusdados boolean DEFAULT false,
+    aderiuaoesocial boolean DEFAULT false,
+    dddcelularandufhabilitacaoatualizados boolean DEFAULT false,
     CONSTRAINT no_blank_codigoac_empresa CHECK (((codigoac)::text <> ''::text)),
     CONSTRAINT no_blank_grupoac_empresa CHECK (((grupoac)::text <> ''::text))
 );
@@ -4080,7 +4086,8 @@ CREATE TABLE faturamentomensal (
     id bigint NOT NULL,
     mesano date,
     valor double precision,
-    empresa_id bigint
+    empresa_id bigint,
+    estabelecimento_id bigint
 );
 
 
@@ -27846,6 +27853,7 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('717005', 'Demolidor de edific
 INSERT INTO codigocbo (codigo, descricao) VALUES ('521120', 'Demonstrador de mercadorias');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('111115', 'Deputado estadual e distrital');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('111110', 'Deputado federal');
+INSERT INTO codigocbo (codigo, descricao) VALUES ('251610', 'Economista doméstico');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('762110', 'Descarnador de couros e peles, à maquina');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('318010', 'Desenhista copista');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('318015', 'Desenhista detalhista');
@@ -27955,7 +27963,6 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('262820', 'Dramaturgo de danç
 INSERT INTO codigocbo (codigo, descricao) VALUES ('251205', 'Economista');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('251210', 'Economista agroindustrial');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('251230', 'Economista ambiental');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('251610', 'Economista doméstico');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('251225', 'Economista do setor público');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('251215', 'Economista financeiro');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('251220', 'Economista industrial');
@@ -29409,6 +29416,7 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('910120', 'Supervisor de manut
 INSERT INTO codigocbo (codigo, descricao) VALUES ('910125', 'Supervisor de manutençao de máquinas industriais têxteis');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('910130', 'Supervisor de manutençao de máquinas operatrizes e de usinagem');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('910910', 'Supervisor de manutençao de vias férreas');
+INSERT INTO codigocbo (codigo, descricao) VALUES ('353230', 'Tesoureiro de banco');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('950105', 'Supervisor de manutençao elétrica de alta tensao industrial');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('950305', 'Supervisor de manutençao eletromecânica');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('950110', 'Supervisor de manutençao eletromecânica industrial, comercial e predial');
@@ -29627,7 +29635,6 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('030115', 'Tenente-coronel bom
 INSERT INTO codigocbo (codigo, descricao) VALUES ('020110', 'Tenente-coronel da polícia militar');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('030305', 'Tenente do corpo de bombeiros militar');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('263115', 'Teólogo');
-INSERT INTO codigocbo (codigo, descricao) VALUES ('353230', 'Tesoureiro de banco');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('311725', 'Tingidor de couros e peles');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('516330', 'Tingidor de roupas');
 INSERT INTO codigocbo (codigo, descricao) VALUES ('768605', 'Tipógrafo');
@@ -30398,7 +30405,7 @@ SELECT pg_catalog.setval('eleicao_sequence', 1, false);
 -- Data for Name: empresa; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO empresa (id, nome, cnpj, razaosocial, codigoac, emailremetente, emailrespsetorpessoal, emailresprh, cnae, grauderisco, representantelegal, nitrepresentantelegal, horariotrabalho, endereco, acintegra, maxcandidatacargo, logourl, exibirsalario, uf_id, cidade_id, atividade, mensagemmoduloexterno, logocertificadourl, grupoac, campoextracolaborador, campoextracandidato, mailnaoaptos, emailresplimitecontrato, turnoverporsolicitacao, obrigarambientefuncao, verificaparentesco, controlariscopor, solpessoalexibircolabsubstituido, codigotrucurso, exibirlogoempresappraltcat, solpessoalexibirsalario, solpessoalobrigardadoscomplementares, formulaturnover, solicitarconfirmacaodesligamento, cnae2, considerarsabadonoabsenteismo, solpessoalreabrirsolicitacao, considerardomingonoabsenteismo, processoexportacaoac, controlarvencimentocertificacaopor, telefone, ddd, mostrarperformanceavaldesempenho, notificarsomenteperiodosconfigurados, procedimentoemcasodeacidente, termoderesponsabilidade, criarusuarioautomaticamente, senhapadrao, campoextraatualizarmeusdados) VALUES (1, 'Empresa Padrão', '00000000', 'Empresa Padrão', NULL, 'rh@empresapadrao.com.br', 'sp@empresapadrao.com.br', NULL, NULL, NULL, NULL, NULL, NULL, NULL, false, 5, 'fortes.gif', true, NULL, NULL, NULL, 'Se você não é registrado, cadastre já seu currículo e tenha acesso às vagas disponíveis em nossa empresa.', NULL, '001', false, false, NULL, '', false, false, 'N', 'A', false, false, false, true, false, 1, false, NULL, false, false, false, false, 1, NULL, NULL, false, false, NULL, NULL, false, NULL, false);
+INSERT INTO empresa (id, nome, cnpj, razaosocial, codigoac, emailremetente, emailrespsetorpessoal, emailresprh, cnae, grauderisco, representantelegal, nitrepresentantelegal, horariotrabalho, endereco, acintegra, maxcandidatacargo, logourl, exibirsalario, uf_id, cidade_id, atividade, mensagemmoduloexterno, logocertificadourl, grupoac, campoextracolaborador, campoextracandidato, mailnaoaptos, emailresplimitecontrato, turnoverporsolicitacao, obrigarambientefuncao, verificaparentesco, controlariscopor, solpessoalexibircolabsubstituido, codigotrucurso, exibirlogoempresappraltcat, solpessoalexibirsalario, solpessoalobrigardadoscomplementares, formulaturnover, solicitarconfirmacaodesligamento, cnae2, considerarsabadonoabsenteismo, solpessoalreabrirsolicitacao, considerardomingonoabsenteismo, processoexportacaoac, controlarvencimentocertificacaopor, telefone, ddd, mostrarperformanceavaldesempenho, notificarsomenteperiodosconfigurados, procedimentoemcasodeacidente, termoderesponsabilidade, criarusuarioautomaticamente, senhapadrao, campoextraatualizarmeusdados, aderiuaoesocial, dddcelularandufhabilitacaoatualizados) VALUES (1, 'Empresa Padrão', '00000000', 'Empresa Padrão', NULL, 'rh@empresapadrao.com.br', 'sp@empresapadrao.com.br', NULL, NULL, NULL, NULL, NULL, NULL, NULL, false, 5, 'fortes.gif', true, NULL, NULL, NULL, 'Se você não é registrado, cadastre já seu currículo e tenha acesso às vagas disponíveis em nossa empresa.', NULL, '001', false, false, NULL, '', false, false, 'N', 'A', false, false, false, true, false, 1, false, NULL, false, false, false, false, 1, NULL, NULL, false, false, NULL, NULL, false, NULL, false, false, false);
 
 
 --
@@ -31778,6 +31785,12 @@ INSERT INTO migrations (name) VALUES ('20170816085132');
 INSERT INTO migrations (name) VALUES ('20170822135135');
 INSERT INTO migrations (name) VALUES ('20170823165742');
 INSERT INTO migrations (name) VALUES ('20170827154958');
+INSERT INTO migrations (name) VALUES ('20170901150845');
+INSERT INTO migrations (name) VALUES ('20170908090140');
+INSERT INTO migrations (name) VALUES ('20170918132806');
+INSERT INTO migrations (name) VALUES ('20170920111713');
+INSERT INTO migrations (name) VALUES ('20170920113353');
+INSERT INTO migrations (name) VALUES ('20170926073828');
 
 
 --
@@ -32021,7 +32034,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (531, 'ROLE_SESMT_PAINEL_IND', 'Painel de Indicadores', '/sesmt/indicadores/painel.action', 6, true, NULL, 75, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (386, 'ROLE_SESMT', 'Movimentações', '#', 3, true, NULL, 75, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (426, 'ROLE_CAD_SOLICITACAOEXAME', 'Solicitações/Atendimentos Médicos', '/sesmt/solicitacaoExame/list.action', 5, true, NULL, 386, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (477, 'ROLE_AMBIENTE', 'Ambientes e Funções do Colaborador', '/cargosalario/historicoColaborador/prepareUpdateAmbientesEFuncoes.action', 5, true, NULL, 386, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (425, 'ROLE_CAD_PRONTUARIO', 'Registro de Prontuário', '/sesmt/prontuario/list.action', 6, true, NULL, 386, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (441, 'ROLE_CAD_AFASTAMENTO', 'Afastamentos', '/sesmt/colaboradorAfastamento/list.action', 8, true, NULL, 386, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (443, 'ROLE_CAT', 'Ficha de Investigação de Acidente(CAT)', '/sesmt/cat/list.action', 9, true, NULL, 386, NULL);
@@ -32255,7 +32267,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (634, 'ROLE_UTI', 'Inserir Nono Dígito em Celulares', '/geral/insereNonoDigito/prepareInsert.action', 3, true, NULL, 673, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (676, 'ROLE_CAD_MEDICAORISCO_AMBIENTE', 'Ambiente', '/sesmt/medicaoRisco/list.action?controlaRiscoPor=A', 1, true, NULL, 450, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (677, 'ROLE_CAD_MEDICAORISCO_FUNCAO', 'Função', '/sesmt/medicaoRisco/list.action?controlaRiscoPor=F', 2, true, NULL, 450, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (503, 'ROLE_CONFIG_CAMPOS', 'Configurar Cadastro de Colaborador e Candidato', '/geral/parametrosDoSistema/listCampos.action', 3, true, NULL, 41, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (450, 'ROLE_CAD_MEDICAORISCO', 'Medição dos Riscos', '#', 1, true, NULL, 386, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (93, 'ROLE_REL_OCORRENCIA', 'Ocorrências', '/geral/ocorrencia/prepareRelatorioOcorrencia.action', 4, true, NULL, 377, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (400, 'ROLE_REL_MOTIVO_DEMISSAO', 'Desligamentos', '/geral/motivoDemissao/prepareRelatorioMotivoDemissao.action', 5, true, NULL, 377, NULL);
@@ -32299,6 +32310,8 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (703, 'ROLE_AV_GESTOR_RECEBER_NOTIFICACAO_PROPRIA_AVALIACAO_ACOMP_DE_EXPERIENCIA', 'Permitir que o gestor e o co-gestor recebam notificações, visualizem e respondam suas proprias avaliações vinculadas ao seu gestor imediato.', '#', 5, false, NULL, 382, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (704, 'ROLE_REL_COLABORADORES_SEM_CURSO_CERTIFICACOES', 'Colaboradores sem Cursos em Certificações', '/desenvolvimento/certificacao/prepareRelatorioColaboradoresSemCertificacoes.action', 19, true, NULL, 368, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (705, 'ROLE_FORMULARIO_SOLICITACAO_EXTERNO', 'Formulário de Solicitação para o Sistema FortesRH', 'https://portaldocliente.fortestecnologia.com.br/portal_autentica_portal.php?location=/portal_solicitacao.php', 18, true, NULL, 37, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (477, 'ROLE_AMBIENTE_FUNCAO_COLABORADOR', 'Ambientes e Funções do Colaborador', '/cargosalario/historicoColaborador/prepareUpdateAmbientesEFuncoes.action', 5, true, NULL, 386, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (503, 'ROLE_CONFIG_CAMPOS', 'Configurar Cadastro de Colaborador e Candidato', '#', 3, true, NULL, 41, NULL);
 
 
 --
@@ -32312,7 +32325,7 @@ SELECT pg_catalog.setval('papel_sequence', 706, false);
 -- Data for Name: parametrosdosistema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatoexternovisivel, camposcandidatoexternoobrigatorio, camposcandidatoexternotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima, quantidadeconstraints, tamanhomaximoupload, modulospermitidossomatorio, versaoacademica, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, camposcolaboradorvisivel, camposcolaboradorobrigatorio, camposcolaboradortabs, autorizacaogestornasolicitacaopessoal, smtpremetente, utilizarcaptchanologin) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.183.215', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.65.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', '2', false, 1, 417, NULL, 63, false, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,comoFicouSabendoVaga,comfirmaSenha,senha,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,carteiraHabilitacao,tituloEleitoral,certificadoMilitar,ctps,pis', 'nome,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais', 'nome,nomeComercial,nascimento,sexo,cpf,escolaridade,endereco,email,fone,celular,estadoCivil,qtdFilhos,nomeConjuge,nomePai,nomeMae,deficiencia,matricula,dt_admissao,vinculo,dt_encerramentoContrato,regimeRevezamento,formacao,idioma,desCursos,expProfissional,infoAdicionais,identidade,carteiraHabilitacao,tituloEleitoral,certificadoMilitar,ctps,pis,modelosAvaliacao', 'nome,nomeComercial,nascimento,cpf,escolaridade,ende,num,cidade,email,fone,dt_admissao', 'abaDocumentos,abaExperiencias,abaDadosFuncionais,abaFormacaoEscolar,abaDadosPessoais,abaModelosAvaliacao', false, false, false);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatoexternovisivel, camposcandidatoexternoobrigatorio, camposcandidatoexternotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima, quantidadeconstraints, tamanhomaximoupload, modulospermitidossomatorio, versaoacademica, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, camposcolaboradorvisivel, camposcolaboradorobrigatorio, camposcolaboradortabs, autorizacaogestornasolicitacaopessoal, smtpremetente, utilizarcaptchanologin) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.184.216', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.65.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,uf,fone,ddd', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', '2', false, 1, 418, NULL, 63, false, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,comoFicouSabendoVaga,comfirmaSenha,senha,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,carteiraHabilitacao,tituloEleitoral,certificadoMilitar,ctps,pis', 'nome,escolaridade,ende,num,cidade,uf,fone,ddd', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais', 'nome,nomeComercial,nascimento,sexo,cpf,escolaridade,endereco,email,fone,celular,estadoCivil,qtdFilhos,nomeConjuge,nomePai,nomeMae,deficiencia,matricula,dt_admissao,dt_encerramentoContrato,regimeRevezamento,formacao,idioma,desCursos,expProfissional,infoAdicionais,identidade,carteiraHabilitacao,tituloEleitoral,certificadoMilitar,ctps,modelosAvaliacao,pis,vinculo', 'nome,nomeComercial,nascimento,cpf,escolaridade,ende,num,cidade,uf,email,fone,ddd,dt_admissao,vinculo', 'abaDocumentos,abaExperiencias,abaDadosFuncionais,abaFormacaoEscolar,abaDadosPessoais,abaModelosAvaliacao', false, false, false);
 
 
 --
@@ -37136,6 +37149,14 @@ ALTER TABLE ONLY fasepcmat
 
 ALTER TABLE ONLY faturamentomensal
     ADD CONSTRAINT faturamentomensal_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
+
+
+--
+-- Name: faturamentomensal_estabelecimento_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY faturamentomensal
+    ADD CONSTRAINT faturamentomensal_estabelecimento_fk FOREIGN KEY (estabelecimento_id) REFERENCES estabelecimento(id);
 
 
 --

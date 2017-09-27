@@ -95,7 +95,7 @@
 		var arrayObrigatorios = new Array();
 		
 		$(function() {
-			addBuscaCEP('cep', 'endereco', 'bairroNome', 'cidade', 'uf');
+			addBuscaCEP('cep', 'ende', 'bairroNome', 'cidade', 'uf');
 			
 			$(".campo").each(function(){
 				var campos = camposCandidatoVisivel.split(',');

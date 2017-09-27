@@ -27869,3 +27869,105 @@ END;
 $$ LANGUAGE plpgsql;--.go 
 insert into migrations values('20170827154958');--.go
 update parametrosdosistema set appversao = '1.1.183.215', quantidadeConstraints = 417;--.go
+-- versao 1.1.184.216
+
+delete from candidato_conhecimento where candidato_id in (select id from candidato where nome ='.'); --.go
+delete from candidato_areainteresse where candidato_id in (select id from candidato where nome ='.'); --.go
+delete from candidato_cargo where candidato_id in (select id from candidato where nome ='.'); --.go
+delete from candidato where nome ='.'; --.go
+
+insert into migrations values('20170901150845');--.go
+update papel set codigo = 'ROLE_AMBIENTE_FUNCAO_COLABORADOR' where id=477;--.go
+insert into migrations values('20170908090140');--.go
+ALTER TABLE faturamentomensal ADD COLUMN estabelecimento_id bigint;--.go
+ALTER TABLE ONLY faturamentomensal ADD CONSTRAINT faturamentomensal_estabelecimento_fk FOREIGN KEY (estabelecimento_id) REFERENCES estabelecimento(id);--.go
+insert into migrations values('20170918132806');--.go
+
+update parametrosdosistema set camposcolaboradorobrigatorio= replace(camposcolaboradorobrigatorio,'cidade','cidade,uf');--.go
+update parametrosdosistema set camposcandidatoobrigatorio= replace(camposcandidatoobrigatorio,'cidade','cidade,uf');--.go
+update parametrosdosistema set camposcandidatoexternoobrigatorio= replace(camposcandidatoexternoobrigatorio,'cidade','cidade,uf');--.go
+
+update parametrosdosistema set camposcolaboradorobrigatorio= replace(camposcolaboradorobrigatorio,'tituloEleitoral','tituloEleitoral,titEleitZona,titEleitSecao');--.go
+update parametrosdosistema set camposcandidatoobrigatorio= replace(camposcandidatoobrigatorio,'tituloEleitoral','tituloEleitoral,titEleitZona,titEleitSecao');--.go
+update parametrosdosistema set camposcandidatoexternoobrigatorio= replace(camposcandidatoexternoobrigatorio,'tituloEleitoral','tituloEleitoral,titEleitZona,titEleitSecao');--.go
+
+update parametrosdosistema set camposcolaboradorobrigatorio= replace(camposcolaboradorobrigatorio,'certificadoMilitar','certificadoMilitar,certMilTipo,certMilSerie');--.go
+update parametrosdosistema set camposcandidatoobrigatorio= replace(camposcandidatoobrigatorio,'certificadoMilitar','certificadoMilitar,certMilTipo,certMilSerie');--.go
+update parametrosdosistema set camposcandidatoexternoobrigatorio= replace(camposcandidatoexternoobrigatorio,'certificadoMilitar','certificadoMilitar,certMilTipo,certMilSerie');--.go
+
+update parametrosdosistema set camposcolaboradorobrigatorio= replace(camposcolaboradorobrigatorio,'ctps','ctps,ctpsSerie,ctpsUf');--.go
+update parametrosdosistema set camposcandidatoobrigatorio= replace(camposcandidatoobrigatorio,'ctps','ctps,ctpsSerie,ctpsUf');--.go
+update parametrosdosistema set camposcandidatoexternoobrigatorio= replace(camposcandidatoexternoobrigatorio,'ctps','ctps,ctpsSerie,ctpsUf');--.go
+
+update parametrosdosistema set camposcolaboradorobrigatorio= replace(camposcolaboradorobrigatorio,'identidade','identidade,rgOrgaoEmissor');--.go
+update parametrosdosistema set camposcandidatoobrigatorio= replace(camposcandidatoobrigatorio,'identidade','identidade,rgOrgaoEmissor');--.go
+update parametrosdosistema set camposcandidatoexternoobrigatorio= replace(camposcandidatoexternoobrigatorio,'identidade','identidade,rgOrgaoEmissor');--.go
+
+update parametrosdosistema set camposcolaboradorobrigatorio= replace(camposcolaboradorobrigatorio,'carteiraHabilitacao','carteiraHabilitacao,vencimento,chCategoria');--.go
+update parametrosdosistema set camposcandidatoobrigatorio= replace(camposcandidatoobrigatorio,'carteiraHabilitacao','carteiraHabilitacao,vencimento,chCategoria');--.go
+update parametrosdosistema set camposcandidatoexternoobrigatorio= replace(camposcandidatoexternoobrigatorio,'carteiraHabilitacao','carteiraHabilitacao,vencimento,chCategoria');--.go
+insert into migrations values('20170920111713');--.go
+
+update papel set url = '#' where id = 503;--.go
+insert into migrations values('20170920113353');--.go
+
+alter table empresa add column aderiuaoesocial boolean default false;--.go
+alter table empresa add column dddCelularAndUFHabilitacaoAtualizados boolean default false;--.go
+
+
+update parametrosdosistema set camposcolaboradorobrigatorio = (select regexp_replace(camposcolaboradorobrigatorio, 'pis,|,pis','') from  parametrosdosistema);--.go
+update parametrosdosistema set camposColaboradorVisivel = (select regexp_replace(camposColaboradorVisivel, 'pis,|,pis','') from  parametrosdosistema);--.go
+update parametrosdosistema set camposColaboradorVisivel = camposColaboradorVisivel || ',pis';--.go
+
+update parametrosdosistema set camposColaboradorVisivel = (select regexp_replace(camposColaboradorVisivel, 'vinculo,|,vinculo','') from  parametrosdosistema);--.go
+update parametrosdosistema set camposColaboradorVisivel = camposColaboradorVisivel || ',vinculo';--.go
+
+update parametrosdosistema set camposcolaboradorobrigatorio = (select regexp_replace(camposcolaboradorobrigatorio, 'vinculo,|,vinculo','') from  parametrosdosistema);--.go
+update parametrosdosistema set camposcolaboradorobrigatorio = camposcolaboradorobrigatorio || ',vinculo';--.go
+
+
+alter table colaborador add column dddCelular character varying(5); --.go
+alter table candidato add column dddCelular character varying(5); --.go
+
+alter table colaborador add column ufHab_id bigint; --.go
+alter table candidato add column ufHab_id bigint; --.go
+
+--Bairro
+ALTER TABLE bairro ALTER COLUMN nome TYPE character varying(60) USING SUBSTR(nome, 1, 60);--.go;
+
+--Colaborador
+UPDATE pg_attribute SET atttypmod = 70+4 WHERE attrelid = 'colaborador'::regclass AND attname = 'nome'; --.go
+
+ALTER TABLE colaborador ALTER COLUMN pai TYPE character varying(70);--.go
+ALTER TABLE colaborador ALTER COLUMN mae TYPE character varying(70);--.go
+ALTER TABLE colaborador ALTER COLUMN conjuge TYPE character varying(70);--.go
+ALTER TABLE colaborador ALTER COLUMN ctpsnumero TYPE character varying(11);--.go
+ALTER TABLE colaborador ALTER COLUMN rgorgaoemissor TYPE character varying(20);--.go
+ALTER TABLE colaborador ALTER COLUMN numerohab TYPE character varying(12);--.go
+ALTER TABLE colaborador ALTER COLUMN logradouro TYPE character varying(80);--.go
+ALTER TABLE colaborador ALTER COLUMN complemento TYPE character varying(30);--.go
+ALTER TABLE colaborador ALTER COLUMN bairro TYPE character varying(60) USING SUBSTR(bairro, 1, 60);--.go;
+
+
+--Candidato
+ALTER TABLE candidato ALTER COLUMN nome TYPE character varying(70);--.go
+ALTER TABLE candidato ALTER COLUMN pai TYPE character varying(70);--.go
+ALTER TABLE candidato ALTER COLUMN mae TYPE character varying(70);--.go
+ALTER TABLE candidato ALTER COLUMN conjuge TYPE character varying(70);--.go
+ALTER TABLE candidato ALTER COLUMN ctpsnumero TYPE character varying(11);--.go
+ALTER TABLE candidato ALTER COLUMN rgorgaoemissor TYPE character varying(20);--.go
+ALTER TABLE candidato ALTER COLUMN numerohab TYPE character varying(12);--.go
+ALTER TABLE candidato ALTER COLUMN logradouro TYPE character varying(80);--.go
+ALTER TABLE candidato ALTER COLUMN complemento TYPE character varying(30);--.go
+ALTER TABLE candidato ALTER COLUMN bairro TYPE character varying(60);--.go
+
+
+update parametrosdosistema set camposcolaboradorobrigatorio= replace(camposcolaboradorobrigatorio,'fone','fone,ddd');--.go
+update parametrosdosistema set camposcandidatoobrigatorio= replace(camposcandidatoobrigatorio,'fone','fone,ddd');--.go
+update parametrosdosistema set camposcandidatoexternoobrigatorio= replace(camposcandidatoexternoobrigatorio,'fone','fone,ddd');--.go
+
+update parametrosdosistema set camposcolaboradorobrigatorio= replace(camposcolaboradorobrigatorio,'celular','celular,dddCelular');--.go
+update parametrosdosistema set camposcandidatoobrigatorio= replace(camposcandidatoobrigatorio,'celular','celular,dddCelular');--.go
+update parametrosdosistema set camposcandidatoexternoobrigatorio= replace(camposcandidatoexternoobrigatorio,'celular','celular,dddCelular');--.go
+insert into migrations values('20170926073828');--.go
+update parametrosdosistema set appversao = '1.1.184.216', quantidadeConstraints = 418;--.go

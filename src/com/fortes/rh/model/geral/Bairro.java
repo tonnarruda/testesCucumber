@@ -13,7 +13,7 @@ import com.fortes.model.AbstractModel;
 @SequenceGenerator(name="sequence", sequenceName="bairro_sequence", allocationSize=1)
 public class Bairro extends AbstractModel implements Serializable
 {
-    @Column(length=85)
+    @Column(length=60)
     private String nome;
 	@ManyToOne
 	private Cidade cidade;

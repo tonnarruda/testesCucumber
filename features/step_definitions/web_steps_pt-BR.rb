@@ -874,11 +874,13 @@ Dado(/^que exista um colaborador "([^"]*)", da area "([^"]*)", com o cargo "([^"
     respondeuentrevista true
     empresa :nome => 'Empresa Padrão'
     email 'samuelpinheiroce@gmail.com'
+    ddd '99'
     foneFixo '99998888'
     escolaridade '12'
     estadocivil '03'
     vinculo 'E'
     uf_id 1
+    pis '12345678919'
   end
 
   insert :historicocolaborador do

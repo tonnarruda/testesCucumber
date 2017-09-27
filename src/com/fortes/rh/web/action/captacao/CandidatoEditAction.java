@@ -453,6 +453,8 @@ public class CandidatoEditAction extends MyActionSupportEdit
 			candidatoAux.getPessoal().setRgUf(null);
 		if (candidatoAux.getComoFicouSabendoVaga()!=null && candidatoAux.getComoFicouSabendoVaga().getId()==null)
 			candidatoAux.setComoFicouSabendoVaga(null);
+		if(ModelUtil.hasNull("getHabilitacao().getUfHab().getId()", candidato))
+			candidato.getHabilitacao().setUfHab(null);
 	}
 
 	private boolean fotoValida(com.fortes.model.type.File foto)
@@ -860,7 +862,6 @@ public class CandidatoEditAction extends MyActionSupportEdit
 		Bairro bairro = new Bairro();
 		bairro.setNome(candidato.getEndereco().getBairro());
 		bairro.setCidade(candidato.getEndereco().getCidade());
-
 
 		if((bairro.getNome() != null && !bairro.getNome().isEmpty()) && (bairro.getCidade()!=null && bairro.getCidade().getId() != null))
 		{

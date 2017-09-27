@@ -17,8 +17,7 @@ Funcionalidade: Login no modulo externo
             E eu preencho "CEP" com "60811-690"
             E eu saio do campo "CEP"
             E eu espero 2 segundos
-            E o campo "Logradouro" não deve conter "Rua Desembargador Floriano Benevides Magalhães"
-            E o campo "Logradouro" deve conter "Rua Desembargador Floriano Benevides Mag"
+            E o campo "Logradouro" deve conter "Rua Desembargador Floriano Benevides Magalhães"
             E eu preencho "CEP" com ""
             E eu preencho "Logradouro" com "Avenida João Pessoa"
             E eu preencho "num" com "4901"

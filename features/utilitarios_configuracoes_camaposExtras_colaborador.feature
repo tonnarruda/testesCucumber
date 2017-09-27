@@ -37,6 +37,8 @@ Funcionalidade: Campos Extras para Colaborador
     E eu preencho "DDD" com "85"
     E eu preencho "Telefone" com "88438383"
     E eu seleciono "Analfabeto, inclusive o que, embora tenha recebido instrução, não se alfabetizou" de "Escolaridade"
+    E eu clico "Documentos"
+ 	E eu preencho o campo (JS) "pis" com "12345678919"
     E eu clico na aba "DADOS FUNCIONAIS"
     E eu preencho o campo (JS) "Admissão" com "21/12/2010"
     E eu saio do campo "Admissão"

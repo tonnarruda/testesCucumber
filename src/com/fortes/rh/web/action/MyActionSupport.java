@@ -212,15 +212,17 @@ public abstract class MyActionSupport extends ActionSupport
 	}
 	
 	public boolean isEmpresaIntegradaEAderiuAoESocial(){
+		if(!getEmpresaSistema().isAcIntegra())
+			return false;
 	    ParametrosDoSistemaManager parametrosDoSistemaManager = (ParametrosDoSistemaManager) SpringUtil.getBean("parametrosDoSistemaManager");
 	    boolean aderiuAoESocial = true;
 	    try {
 			aderiuAoESocial = parametrosDoSistemaManager.isAderiuAoESocial(getEmpresaSistema());
 		} catch (Exception e) {
 			e.printStackTrace();
-			if(empresaSistema.isAcIntegra())
+			if(getEmpresaSistema().isAcIntegra())
 				addActionWarning("Não foi possível verificar se a empresa aderiu ao eSocial. Por motivo de segurança consideramos que tenha aderido.");
 		}
-	    return aderiuAoESocial && empresaSistema.isAcIntegra();
+	    return aderiuAoESocial && getEmpresaSistema().isAcIntegra();
 	}
 }
