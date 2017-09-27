@@ -7,6 +7,7 @@ import java.util.Date;
 import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+import org.jmock.core.Constraint;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
 import com.fortes.rh.business.cargosalario.CargoManager;
@@ -17,6 +18,7 @@ import com.fortes.rh.business.sesmt.MedicaoRiscoManager;
 import com.fortes.rh.business.sesmt.RiscoAmbienteManager;
 import com.fortes.rh.business.sesmt.RiscoFuncaoManager;
 import com.fortes.rh.business.sesmt.RiscoMedicaoRiscoManager;
+import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Funcao;
@@ -133,7 +135,7 @@ public class MedicaoRiscoEditActionTest extends MockObjectTestCase
 	
 	public void testPrepareInsertByFuncao() throws Exception 
 	{
-		Empresa empresa = EmpresaFactory.getEmpresa();
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		empresa.setControlaRiscoPor('F');
 		action.setControlaRiscoPor('F');
 		action.setEmpresaSistema(empresa);
@@ -146,7 +148,8 @@ public class MedicaoRiscoEditActionTest extends MockObjectTestCase
 		action.setMedicaoRisco(medicaoRisco);
 		
 		manager.expects(once()).method("getTecnicasUtilizadas").with(eq(empresa.getId()));
-		cargoManager.expects(once()).method("findCargos");
+		cargoManager.expects(once()).method("findCargos").with(new Constraint[]{eq(0), eq(0), eq(action.getEmpresaSistema().getId()), eq(null), eq(null), eq(null), eq(false)}).will(returnValue(new ArrayList<Cargo>()));
+		
 		manager.expects(once()).method("getFuncaoByMedicaoRisco").with(eq(medicaoRisco.getId())).will(returnValue(medicaoRisco));
 		manager.expects(once()).method("findRiscoMedicaoRiscos").with(eq(medicaoRisco.getId()));
 		

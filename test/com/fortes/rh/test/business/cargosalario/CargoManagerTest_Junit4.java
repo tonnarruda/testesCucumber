@@ -134,7 +134,7 @@ public class CargoManagerTest_Junit4
         Collection<Cargo> cargos = new ArrayList<Cargo>();
         Long empresaId = 1L;
 
-        when(cargoDao.findCargos(eq(1), eq(15), eq(empresaId), anyLong(), anyString(), anyBoolean(), anyBoolean())).thenReturn(cargos); 
+        when(cargoDao.findCargos(eq(1), eq(15), eq(empresaId), anyLong(), anyString(), anyBoolean(), eq(false))).thenReturn(cargos); 
 
         assertEquals(cargos, cargoManager.findCargos(1, 15, empresaId, null, null, null, false));
     }
