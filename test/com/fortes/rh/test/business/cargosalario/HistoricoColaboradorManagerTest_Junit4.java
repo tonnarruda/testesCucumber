@@ -39,6 +39,7 @@ import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
+import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
@@ -49,13 +50,18 @@ import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.model.sesmt.Ambiente;
+import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoSolicitacaoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.cargosalario.AmbienteFactory;
+import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialHistoricoFactory;
+import com.fortes.rh.test.factory.cargosalario.FuncaoFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.cargosalario.ReajusteColaboradorFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
@@ -421,5 +427,33 @@ public class HistoricoColaboradorManagerTest_Junit4
 		}
 
 		assertNotNull(exception);
+	}
+	
+	@Test
+	public void testFiltraHistoricoColaboradorParaPPP() throws Exception{
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(1L);
+		Cargo cargo = CargoFactory.getEntity(1L);
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L, "F1", cargo);
+		Ambiente ambiente = AmbienteFactory.getEntity(1L);
+		Funcao funcao = FuncaoFactory.getEntity(1L);
+		
+		HistoricoColaborador historicoColaboradorComAmbienteNulo = HistoricoColaboradorFactory.getEntity(colaborador, faixaSalarial, new Date(), StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorComAmbienteNulo.setEstabelecimento(estabelecimento);
+		
+		HistoricoColaborador historicoColaboradorComFuncaoNula = HistoricoColaboradorFactory.getEntity(colaborador, faixaSalarial, new Date(), StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorComFuncaoNula.setAmbiente(ambiente);
+		historicoColaboradorComFuncaoNula.setEstabelecimento(estabelecimento);
+		
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(colaborador, faixaSalarial, new Date(), StatusRetornoAC.CONFIRMADO);
+		historicoColaborador.setEstabelecimento(estabelecimento);
+		historicoColaborador.setAmbiente(ambiente);
+		historicoColaborador.setFuncao(funcao);
+		
+		Collection<HistoricoColaborador> historicos = Arrays.asList(historicoColaborador, historicoColaboradorComAmbienteNulo, historicoColaboradorComFuncaoNula);
+		
+		Collection<HistoricoColaborador> retorno = historicoColaboradorManagerImpl.filtraHistoricoColaboradorParaPPP(historicos);
+		
+		assertEquals(1, retorno.size());
 	}
 }
