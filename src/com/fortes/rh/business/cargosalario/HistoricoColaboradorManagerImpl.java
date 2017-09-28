@@ -1543,8 +1543,8 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		for (HistoricoColaborador historicoColaborador : todosHistoricos) {
 			if( !(historicoColaborador.getEstabelecimento().getId().equals(ultimoHistoricoValido.getEstabelecimento().getId())) 
 					|| !(historicoColaborador.getFaixaSalarial().getCargo().getId().equals(ultimoHistoricoValido.getFaixaSalarial().getCargo().getId()))
-					|| !(!ModelUtil.hasNull("getAmbiente().getId()", historicoColaborador) && !(historicoColaborador.getAmbiente().getId().equals(ModelUtil.getValor(ultimoHistoricoValido, "getAmbiente().getId()", true)))
-					|| !(!ModelUtil.hasNull("getFuncao().getId()", historicoColaborador) && !(historicoColaborador.getFuncao().getId().equals(ModelUtil.getValor(ultimoHistoricoValido, "getFuncao().getId()", true)))))){
+					|| (!ModelUtil.hasNull("getAmbiente().getId()", historicoColaborador) && !(historicoColaborador.getAmbiente().getId().equals(ModelUtil.getValor(ultimoHistoricoValido, "getAmbiente().getId()", true)))
+					|| (!ModelUtil.hasNull("getFuncao().getId()", historicoColaborador) && !(historicoColaborador.getFuncao().getId().equals(ModelUtil.getValor(ultimoHistoricoValido, "getFuncao().getId()", true)))))){
 				
 				historicosFiltrados.add(historicoColaborador);
 				ultimoHistoricoValido = historicoColaborador;
