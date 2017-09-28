@@ -7,29 +7,29 @@ import com.fortes.rh.business.sesmt.SolicitacaoEpiItemManager;
 import com.fortes.rh.business.sesmt.SolicitacaoEpiManager;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.util.DateUtil;
-import com.fortes.web.tags.Option;
+import com.fortes.web.tags.CheckBox;
 
 public class SolicitacaoEpiDWR {
 
 	private SolicitacaoEpiManager solicitacaoEpiManager;
 	private SolicitacaoEpiItemManager solicitacaoEpiItemManager;
 	
-	public Collection<Option> getByColaboradorId(Long colaboradorId)
+	public Collection<CheckBox> getByColaboradorId(Long colaboradorId)
 	{
-		Collection<Option> options = new ArrayList<Option>();
+		Collection<CheckBox> solicitacoesEpiCheck = new ArrayList<CheckBox>();
 		Collection<SolicitacaoEpi> solicitacoesEpi = solicitacaoEpiManager.findByColaboradorId(colaboradorId); 
-		Option option = null;
+		CheckBox check = null;
 
 		for (SolicitacaoEpi solicitacaoEpi : solicitacoesEpi) {
 			
-			option = new Option();
-			option.setId(solicitacaoEpi.getId());
-			option.setNome(solicitacaoEpi.getDataFormatada());
+			check = new CheckBox();
+			check.setId(solicitacaoEpi.getId());
+			check.setNome(solicitacaoEpi.getDataFormatada());
 			
-			options.add(option);
+			solicitacoesEpiCheck.add(check);
 		}
 
-		return options;
+		return solicitacoesEpiCheck;
 	}
 
 	public String validaDataDevolucao(String data, Long solicitacaoEpiItemId, Long solicitacaoEpiItemDevolucaoId, Integer qtdASerDevolvida, Long solicitacaoEpiId){

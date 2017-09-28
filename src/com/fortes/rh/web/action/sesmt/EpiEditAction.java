@@ -51,6 +51,7 @@ public class EpiEditAction extends MyActionSupportEdit
 	private Map<String,Object> parametros = new HashMap<String, Object>();
 	private FichaEpiRelatorio fichaEpiRelatorio;
 	private boolean imprimirVerso;
+	private Long solicitacoesEpiCheck [];
 
 	public Date getDataHoje()
 	{
@@ -169,17 +170,19 @@ public class EpiEditAction extends MyActionSupportEdit
 		
 		dataSourceFichaEpi = new ArrayList<SolicitacaoEpiItemEntrega>();
 		int numLinhasAdicionaisParaRelatorio  = baseNumDeLinhas;
-		
-		if(solicitacaoEpi != null && solicitacaoEpi.getId() != null)
-		{
-			Collection<SolicitacaoEpiItem> solicitacaoEpiItems = solicitacaoEpiItemManager.findBySolicitacaoEpi(solicitacaoEpi.getId()); 
-			
-			for (SolicitacaoEpiItem solicitacaoEpiItem : solicitacaoEpiItems) 
-				dataSourceFichaEpi.addAll(solicitacaoEpiItemEntregaManager.findBySolicitacaoEpiItem(solicitacaoEpiItem.getId()));
 
-			numLinhasAdicionaisParaRelatorio  = baseNumDeLinhas - dataSourceFichaEpi.size()%baseNumDeLinhas;
+		if(solicitacoesEpiCheck!=null){
+			for(Long solicitacao : solicitacoesEpiCheck){
+				
+				Collection<SolicitacaoEpiItem> solicitacaoEpiItems = solicitacaoEpiItemManager.findBySolicitacaoEpi(solicitacao); 
+				
+				for (SolicitacaoEpiItem solicitacaoEpiItem : solicitacaoEpiItems) 
+					dataSourceFichaEpi.addAll(solicitacaoEpiItemEntregaManager.findBySolicitacaoEpiItem(solicitacaoEpiItem.getId()));
+				
+				numLinhasAdicionaisParaRelatorio  = baseNumDeLinhas - dataSourceFichaEpi.size()%baseNumDeLinhas;
+			}
 		}
-		
+
 		for(int i=1; i <= numLinhasAdicionaisParaRelatorio; i++)
 			dataSourceFichaEpi.add(new SolicitacaoEpiItemEntrega());
 	}
@@ -287,5 +290,13 @@ public class EpiEditAction extends MyActionSupportEdit
 
 	public void setSolicitacaoEpiItemEntregaManager(SolicitacaoEpiItemEntregaManager solicitacaoEpiItemEntregaManager) {
 		this.solicitacaoEpiItemEntregaManager = solicitacaoEpiItemEntregaManager;
+	}
+
+	public Long[] getSolicitacoesEpiCheck() {
+		return solicitacoesEpiCheck;
+	}
+
+	public void setSolicitacoesEpiCheck(Long solicitacoesEpiCheck[]) {
+		this.solicitacoesEpiCheck = solicitacoesEpiCheck;
 	}
 }

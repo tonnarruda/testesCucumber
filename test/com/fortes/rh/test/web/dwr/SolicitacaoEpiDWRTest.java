@@ -1,9 +1,12 @@
 package com.fortes.rh.test.web.dwr;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
 import org.junit.Before;
@@ -11,10 +14,13 @@ import org.junit.Test;
 
 import com.fortes.rh.business.sesmt.SolicitacaoEpiItemManager;
 import com.fortes.rh.business.sesmt.SolicitacaoEpiManager;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
+import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.sesmt.SolicitacaoEpiFactory;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.web.dwr.SolicitacaoEpiDWR;
+import com.fortes.web.tags.CheckBox;
 
 public class SolicitacaoEpiDWRTest
 {
@@ -35,7 +41,8 @@ public class SolicitacaoEpiDWRTest
 	}
 	
 	@Test
-	public void testValidaDataDevolucao(){
+	public void testValidaDataDevolucao()
+	{
 		String data = DateUtil.formataDiaMesAno(new Date());
 		Long solicitacaoEpiItemId = 1L;
 		Long solicitacaoEpiItemDevolucaoId = 2L;
@@ -51,7 +58,8 @@ public class SolicitacaoEpiDWRTest
 	}
 	
 	@Test
-	public void testValidaDataDevolucaoDataInvalida(){
+	public void testValidaDataDevolucaoDataInvalida()
+	{
 		String data = " /  /  ";
 		Long solicitacaoEpiItemId = 1L;
 		Long solicitacaoEpiItemDevolucaoId = 2L;
@@ -59,6 +67,23 @@ public class SolicitacaoEpiDWRTest
 		Long solicitacaoEpiId = 2L;
 		
 		assertNull(solicitacaoEpiDWR.validaDataDevolucao(data, solicitacaoEpiItemId, solicitacaoEpiItemDevolucaoId, qtdASerDevolvida, solicitacaoEpiId));
+	}
+
+	@Test
+	public void testGetByColaboradorId()
+	{
+		Colaborador colaborador = ColaboradorFactory.getEntity(1l);
+		Collection<SolicitacaoEpi> solicitacoesEpis = new ArrayList<SolicitacaoEpi>();
+		
+		SolicitacaoEpi solicitacaoEpi= SolicitacaoEpiFactory.getEntity();
+		solicitacaoEpi.setColaborador(colaborador);
+		solicitacoesEpis.add(solicitacaoEpi);
+		
+		when(solicitacaoEpiManager.findByColaboradorId(colaborador.getId())).thenReturn(solicitacoesEpis);
+
+		Collection<CheckBox> solicitacoesEpisResultado = solicitacaoEpiDWR.getByColaboradorId(colaborador.getId());
+		
+		assertEquals(solicitacoesEpis.size(),solicitacoesEpisResultado.size());
 	}
 }
 	
