@@ -2,60 +2,68 @@
 
 Funcionalidade: Cadastrar Índices
 
-  Cenário: Cadastro de Índices
-    Dado que eu esteja logado com o usuário "SOS"
+  Cenário: Cadastro de Índices | Valida Campos Obrigatórios
+      Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "C&S > Cadastros > Índices"
-    Então eu devo ver o título "Índices"
-    E eu clico no botão "Inserir"
-    Então eu devo ver o título "Inserir Índice"
-    E eu clico no botão "Gravar"
-    Então eu devo ver o alert do valida campos e clico no ok
-    E eu clico no botão "Cancelar"
-    Então eu devo ver o título "Índices"
+         E eu clico no botão "Inserir"
+         E eu clico no botão "Gravar"
+     Então eu devo ver o alert do valida campos e clico no ok
+         E eu preencho "Nome" com "Índice Salário Mínimo"
+         E eu clico no botão "Gravar"
+     Então eu devo ver o alert do valida campos e clico no ok
+         E eu preencho o campo (JS) "A partir de" com "01/01/2017"
+         E eu clico no botão "Gravar"
+     Então eu devo ver o alert do valida campos e clico no ok
+         E eu preencho "Valor" com "1000"
+         E eu clico no botão "Gravar"
 
-    Então eu clico no botão "Inserir"
-    E eu devo ver o título "Inserir Índice"
-    E eu preencho "Nome" com "_Diretor"
-    E eu preencho o campo (JS) "A partir de" com "01/01/2011"
-    E eu preencho "Valor" com "17000"
-    E eu clico no botão "Gravar"
+#----------------------------------------------------------------------------------------------------------------------------------         
 
-    E eu devo ver o título "Índices"
-    E eu clico em editar "_Diretor"
-    E eu devo ver o título "Editar Índice"
-    E o campo "Nome" deve conter "_Diretor"
-    
-    E eu clico em editar "01/01/2011"
-    E eu devo ver o título "Editar Histórico do Índice"
-    E o campo "Valor" deve conter "17.000"
-    E eu preencho "Valor" com "20000"
-    E eu clico no botão "Gravar"
+  Cenário: Cadastro de Índices 
+      Dado que eu esteja logado com o usuário "SOS"
+    Quando eu acesso o menu "C&S > Cadastros > Índices"
+         E eu clico no botão "Inserir"
+         E eu preencho "Nome" com "Índice Salário Mínimo"
+         E eu preencho o campo (JS) "A partir de" com "01/01/2017"
+         E eu preencho "Valor" com "1000"
+         E eu clico no botão "Gravar"
 
-    Então eu devo ver o título "Editar Índice"
-    E o campo "Nome" deve conter "_Diretor"
-    E eu preencho "Nome" com "_Consultor"
-    E eu clico no botão "Gravar"
+#----------------------------------------------------------------------------------------------------------------------------------
 
-    E eu devo ver o título "Índices"
-    E eu devo ver "_Consultor"
-    E eu clico em editar "_Consultor"
+   Cenário: Cadastro de Índices | Edição do histórico
+      Dado que exista um indice "Salário Mínimo do Brasil" com historico na data "01/10/2000" e valor "3000"
+      Dado que eu esteja logado com o usuário "SOS"
+    Quando eu acesso o menu "C&S > Cadastros > Índices"
+         E eu clico em editar "Salário Mínimo do Brasil"
+         E eu clico em editar "01/10/2000"
+        E eu clico no botão "Gravar"
 
-    E eu devo ver o título "Editar Índice"
-    Então eu clico no botão "Inserir"
+#----------------------------------------------------------------------------------------------------------------------------------
 
-    Então eu devo ver o título "Novo Histórico do Índice"
-    E eu preencho o campo (JS) "A partir de" com "01/03/2011"
-    E eu preencho "Valor" com "25000"
-    Então eu clico no botão "Gravar"
+  Cenário: Cadastro de Índices | Edição
+      Dado que exista um indice "Salário Mínimo do Brasil" com historico na data "01/10/2000" e valor "3000"
+      Dado que eu esteja logado com o usuário "SOS"
+    Quando eu acesso o menu "C&S > Cadastros > Índices"
+         E eu clico em editar "Salário Mínimo do Brasil"
+         E eu preencho "Nome" com "Salário Mínimo"
+         E eu clico no botão "Gravar"
 
-    Então eu clico em excluir "01/01/2011"
-    E eu devo ver o alert do confirmar exclusão e clico no ok
-    E eu não devo ver "01/01/2011"
-    Então eu clico no botão "Gravar"
+#----------------------------------------------------------------------------------------------------------------------------------
 
-    Então eu devo ver o título "Índices"
-    E eu clico em excluir "_Consultor"
-    E eu devo ver o alert do confirmar exclusão e clico no ok
+   Cenário: Cadastro de Índices | Exclusão do índice
+      Dado que exista um indice "Salário Mínimo do Brasil" com historico na data "01/10/2000" e valor "3000"
+      Dado que eu esteja logado com o usuário "SOS"
+    Quando eu acesso o menu "C&S > Cadastros > Índices"
+         E eu clico em excluir "Salário Mínimo do Brasil"
+         E eu devo ver o alert do confirmar exclusão e clico no ok
+     Então eu devo ver "Índice excluído com sucesso." 
+         E eu devo deslogar do sistema
 
-    Então eu devo ver "Índice excluído com sucesso."
-    E eu não devo ver "_Consultor"
+#----------------------------------------------------------------------------------------------------------------------------------
+
+  Cenário: Cadastro de Índices | Integrado com o Pessoal
+      Dado que a empresa esteja integrada com o Pessoal 
+      Dado que eu esteja logado com o usuário "SOS"
+    Quando eu acesso o menu "C&S > Cadastros > Índices"
+     Então eu devo ver "A manutenção do Cadastro de Índices deve ser realizada no Fortes Pessoal."
+         E eu devo deslogar do sistema    

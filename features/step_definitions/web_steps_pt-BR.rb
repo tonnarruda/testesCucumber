@@ -21,6 +21,10 @@ Dado(/^que eu esteja logado com o usuário "([^"]*)"$/) do |nome|
   end
 end
 
+Dado(/^que a empresa esteja integrada com o Pessoal$/) do
+  exec_sql "update empresa set acintegra = true;"
+end
+
 Dado(/^que eu esteja deslogado$/) do
   exec_sql "update parametrosdosistema set servidorremprot = 'FORTESAG'"
   page.execute_script("window.location = 'http://localhost:8080/fortesrh/logout.action'")
@@ -372,6 +376,11 @@ Então(/^eu devo ver o alert "([^"]*)" e clico no sim$/) do |msg_alert|
   When %{I press "Sim"}
 end
 
+Então(/^eu devo ver o alert "([^"]*)" e clico no não$/) do |msg_alert|
+  Then %{I should see "#{msg_alert}"}
+  When %{I press "Não"}
+end
+
 Então(/^eu devo ver o alert "([^"]*)" e clico no Imprimir$/) do |msg_alert|
   Then %{I should see "#{msg_alert}"}
   When %{I press "Imprimir"}
@@ -414,13 +423,22 @@ Então(/^o campo "([^"]*)" deve ter "([^"]*)" selecionado$/) do |field, value|
   Então %{o campo "#{field[:id]}" deve conter "#{value}"}
 end
 
-Então(/^eu clico na aba candidato de campo extra$/) do
+Então(/^eu clico na aba candidato de campo extra$/) do 
   page.execute_script("showBox('candidato')")
 end
 
 Então(/^eu marco texto 1 da aba candidato$/) do
   page.execute_script("$('#visivel-candidato-texto1').click()")
 end
+
+Então(/^eu marco "([^"]*)" da aba "([^"]*)"$/) do |nome, aba|
+  page.execute_script("$('#visivel-#{aba}-#{nome}').click()")
+end
+
+Então(/^eu marco todos os itens padrões$/) do 
+  page.execute_script("$('#marcarTodosCandidato1').click()")
+end
+
 
 Dado(/^que exista o evento "([^"]*)"$/) do |nome_evento|
    insert :evento do
@@ -722,6 +740,7 @@ Dado(/^que exista uma empresa "([^"]*)"$/) do |empresa_nome|
    end
 end
 
+
 Dado(/^que exista um ambiente "([^"]*)" com o risco "([^"]*)"$/) do |ambiente_nome, risco_descricao|
    insert :ambiente do
       nome ambiente_nome
@@ -790,6 +809,28 @@ Dado(/^que exista um candidato "([^"]*)"$/) do |candidato_nome|
     quantidade 0
     escolaridade '10'
     empresa :nome => 'Empresa Padrão'
+  end
+end
+
+Dado(/^que exista um candidato "([^"]*)" na empresa "([^"]*)"$/) do |candidato_nome, empresa_nome|
+  insert :candidato do
+    nome candidato_nome
+    cpf '06060722334'
+    senha 'MTIzNA=='
+    conjugetrabalha true
+    sexo 'M'
+    blacklist false
+    colocacao 'E'
+    contratado false
+    deficiencia 0
+    disponivel true
+    origem 'C'
+    pagapensao false
+    possuiveiculo true
+    qtdfilhos 1
+    quantidade 0
+    escolaridade '10'
+    empresa :nome => empresa_nome
   end
 end
 

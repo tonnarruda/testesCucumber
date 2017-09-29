@@ -2,7 +2,7 @@
 
 Funcionalidade: Login no modulo externo
  
-  @dev
+  
   Cenário: Cadastro de Candidato - Preenchimento de Todos os Campos
          Dado que exista um conhecimento "Cucumber"
          Dado que exista a área organizacional "DEV"
@@ -84,7 +84,7 @@ Funcionalidade: Login no modulo externo
            E eu devo ver o alert "Dados cadastrados com sucesso." e clico no ok
 
 #------------------------------------------------------------------------------------------------------------------------
-
+@dev
   Cenário: Cadastro de Candidato - Validar Campos Obrigatórios
        Quando eu acesso "externo/prepareLogin.action?empresaId=1"
             E eu clico "Quero me cadastrar"
@@ -104,6 +104,8 @@ Funcionalidade: Login no modulo externo
             E eu clico na aba "DADOS PESSOAIS"
         Então eu preencho "Nome" com "Boris Johnson"
             E eu preencho o campo (JS) "CPF" com "123.213.623-91"
+            E eu preencho "Logradouro" com "Avenida João Pessoa"
+            E eu preencho "DDD" com "85"
             E eu clico na aba "CURRÍCULO"
             E eu clico no botão "Gravar"
             E eu devo ver o alert "Preencha os campos indicados:" e clico no ok
@@ -116,6 +118,7 @@ Funcionalidade: Login no modulo externo
         Então eu clico na aba "CURRÍCULO"
             E eu clico no botão "Gravar"
             E eu devo ver o alert "Dados cadastrados com sucesso." e clico no ok
+            E eu espero 5 segundos
 
 #------------------------------------------------------------------------------------------------------------------------
 
@@ -192,9 +195,11 @@ Funcionalidade: Login no modulo externo
         Então eu devo ver "Bem vindo(a)"
        Quando eu clico "Editar Currículo"
             E eu seleciono "Doutorado completo" de "Escolaridade"
+            E eu preencho "Logradouro" com "Avenida João Pessoa"
             E eu preencho "num" com "4901"
             E eu seleciono "CE" de "Estado"
             E eu seleciono "Fortaleza" de "Cidade"
+            E eu preencho "DDD" com "85"
             E eu preencho "Telefone" com "88438383"
             E eu preencho "E-mail" com "email@teste.com.br"
         Então eu clico na aba "CURRÍCULO"
@@ -203,10 +208,10 @@ Funcionalidade: Login no modulo externo
             E eu clico "Esqueci minha senha" 
             E eu preencho "cpf" com "060.607.223-34"
              E eu clico no botão "Enviar"  
-        Então eu devo ver "Nova Senha enviada por e-mail (email@teste.com.br)."      
-
+        Então eu devo ver "Nova Senha enviada por e-mail (email@teste.com.br)."
+        
 #------------------------------------------------------------------------------------------------------------------------
-@teste
+
   Cenário: Acessar modulo externo com login e senha com 2 candidatos com mesmo CPF
          Dado que exista um candidato "Ellen Pompeo"
          Dado que exista um candidato "Sandra Oh"
