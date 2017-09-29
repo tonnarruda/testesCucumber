@@ -27970,4 +27970,11 @@ update parametrosdosistema set camposcolaboradorobrigatorio= replace(camposcolab
 update parametrosdosistema set camposcandidatoobrigatorio= replace(camposcandidatoobrigatorio,'celular','celular,dddCelular');--.go
 update parametrosdosistema set camposcandidatoexternoobrigatorio= replace(camposcandidatoexternoobrigatorio,'celular','celular,dddCelular');--.go
 insert into migrations values('20170926073828');--.go
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (706, 'ROLE_REL_ANALISE_COMPETENCIAS_ORGANIZACAO', 'Análise de Desempenho das Competências da Organização', '/avaliacao/desempenho/prepareAnaliseDesempenhoCompetenciaOrganizacao.action', 8, true, 486);--.go
+INSERT INTO perfil_papel(perfil_id, papeis_id) VALUES(1, 706);--.go
+
+ALTER SEQUENCE papel_sequence RESTART WITH 707;--.go
+insert into migrations values('20170927153641');--.go
+update parametrosdosistema set acversaowebservicecompativel='1.1.66.1';--.go
+insert into migrations values('20170929152030');--.go
 update parametrosdosistema set appversao = '1.1.184.216', quantidadeConstraints = 418;--.go
