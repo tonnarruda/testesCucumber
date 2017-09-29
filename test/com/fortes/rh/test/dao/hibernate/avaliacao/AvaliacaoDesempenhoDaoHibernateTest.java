@@ -532,6 +532,7 @@ public class AvaliacaoDesempenhoDaoHibernateTest extends GenericDaoHibernateTest
 		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity(avaliacaoDesempenho, Boolean.FALSE);
 		colaboradorQuestionario.setColaborador(colaborador);
 		colaboradorQuestionario.setPesoAvaliador(2);
+		colaboradorQuestionario.setRespondida(true);
 		colaboradorQuestionarioDao.save(colaboradorQuestionario);
 		
 		Habilidade habilidade = HabilidadeFactory.getEntity(null, "Habilidade I", empresa);

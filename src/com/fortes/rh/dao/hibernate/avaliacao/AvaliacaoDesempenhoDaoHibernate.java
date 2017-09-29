@@ -371,14 +371,14 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 		sql.append("	round (((cast(sum(conf.pesoavaliador_ordem) as numeric) / (count(conf.avaliador_id) * "); 
 		sql.append("	(select max(ordem) from confighistoriconivel chn2 where chn2.nivelcompetenciahistorico_id = conf.nivelcompetenciahistorico_id)))*100), 2) as performance ");
 		sql.append("from ( ");
-		sql.append("	select cncc.colaborador_id, cnc.competencia_id as compId, comp.nome as compNome, agrupador.id as agrupadorId, agrupador.nome as agrupadorNome, ");
+		sql.append("	select ad.id, cncc.colaborador_id, cnc.competencia_id as compId, comp.nome as compNome, agrupador.id as agrupadorId, agrupador.nome as agrupadorNome, ");
 		sql.append("	    cncc.avaliador_id, chn.nivelcompetenciahistorico_id, (cq.pesoavaliador*chn.ordem) as pesoavaliador_ordem ");
 		sql.append("	from configuracaonivelcompetenciacolaborador cncc ");
 		sql.append("	inner join configuracaonivelcompetencia cnc on cnc.configuracaonivelcompetenciacolaborador_id = cncc.id ");
 		sql.append("	inner join competencia comp on comp.id = cnc.competencia_id ");
 		sql.append("	inner join configuracaonivelcompetenciafaixasalarial cncf on cncf.id = cncc.configuracaonivelcompetenciafaixasalarial_id ");
 		sql.append("	left join confighistoriconivel chn on cncf.nivelcompetenciahistorico_id = chn.nivelcompetenciahistorico_id and chn.nivelcompetencia_id = cnc.nivelcompetencia_id ");
-		sql.append("	inner join colaboradorquestionario cq on cq.id = cncc.colaboradorquestionario_id ");
+		sql.append("	inner join colaboradorquestionario cq on cq.id = cncc.colaboradorquestionario_id and cq.respondida ");
 		sql.append("	inner join avaliacaodesempenho ad on ad.id = cq.avaliacaodesempenho_id ");
 		sql.append("	inner join historicocolaborador hc on cncc.colaborador_id = hc.colaborador_id "); 
 		sql.append("		  and hc.data = (select max(hc2.data) from historicocolaborador hc2 where hc2.colaborador_id = hc.colaborador_id and hc2.status = 1 and hc2.data <= ad.inicio) ");
@@ -399,7 +399,7 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 	    if(!agrupamentoDasCompetencias.equals(AnaliseDesempenhoOrganizacao.POR_EMPRESA))
 	    	sql.append("	and agrupador.id in (:agrupadorIds) ");
 		
-	    sql.append("	group by cncc.colaborador_id, cnc.competencia_id, comp.nome, agrupador.id, agrupador.nome, cncc.avaliador_id, chn.nivelcompetenciahistorico_id, cq.pesoavaliador, chn.ordem ");
+	    sql.append("	group by ad.id, cncc.colaborador_id, cnc.competencia_id, comp.nome, agrupador.id, agrupador.nome, cncc.avaliador_id, chn.nivelcompetenciahistorico_id, cq.pesoavaliador, chn.ordem ");
 		sql.append("	order by  cncc.colaborador_id, cnc.competencia_id, agrupador.id ");
 		sql.append(") as conf ");
 		sql.append("group by  conf.compId, conf.compNome, conf.agrupadorId, conf.agrupadorNome, conf.nivelcompetenciahistorico_id ");
