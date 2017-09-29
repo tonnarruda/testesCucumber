@@ -54,4 +54,8 @@ public class AnaliseDesempenhoOrganizacao
 		
 		return lista;
 	}
+	
+	public String getAgrupamento(String agrupamento) {
+		return this.getListaAgrupamentoDasCompetencias().get(agrupamento);
+	}
 }

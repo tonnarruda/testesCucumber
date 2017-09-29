@@ -451,7 +451,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 			
 			reportTitle = "Análise de Desempenho das Competências da Organização";
 			
-			parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), "");
+			parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), "Agrupado por " + new AnaliseDesempenhoOrganizacao().getAgrupamento(agrupamentoDasCompetencias));
 
 		} catch (Exception e) {
 			addActionError("Não foi possível gerar o relatório.");
