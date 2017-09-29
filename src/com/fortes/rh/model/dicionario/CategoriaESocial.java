@@ -54,6 +54,9 @@ public enum CategoriaESocial {
 	}
 	
 	public static String getCategoriaESocial(String codigo){
+		if(codigo == null)
+			return Vinculo.EMPREGO;
+			
 		return CategoriaESocial.valueOf("CATEGORIA_"+codigo).getColocacao();        
 	}
 }

@@ -66,9 +66,19 @@ public class AcPessoalClientHistoricoColaboradorTest extends AcPessoalClientTest
 		historicoPorValor1.setEstabelecimento(estabelecimento);
 		historicoPorValor1.setTipoSalario(TipoAplicacaoIndice.VALOR);
 		historicoPorValor1.setSalario(321.21);
+		
+		HistoricoColaborador historicoPorValor2 = HistoricoColaboradorFactory.getEntity(2L);
+		historicoPorValor2.setData(DateUtil.montaDataByString("01/01/2010"));
+		historicoPorValor2.setFaixaSalarial(faixaSalarial);
+		historicoPorValor2.setColaborador(amanda);
+		historicoPorValor2.setAreaOrganizacional(area);
+		historicoPorValor2.setEstabelecimento(estabelecimento);
+		historicoPorValor2.setTipoSalario(TipoAplicacaoIndice.VALOR);
+		historicoPorValor2.setSalario(900.0);
 
 		Collection<HistoricoColaborador> historicos = new ArrayList<HistoricoColaborador>();
 		historicos.add(historicoPorValor1);
+		historicos.add(historicoPorValor2);
 		
 		acPessoalClientTabelaReajuste.saveHistoricoColaborador(historicos, empresa, null, false);
 		String sql = "select data,valor,sal_tipo from rhsep where epg_codigo='000029'";
@@ -83,18 +93,24 @@ public class AcPessoalClientHistoricoColaboradorTest extends AcPessoalClientTest
 			fail("Consulta não retornou nada...");
 		
 		TSituacao situacao = new TSituacao();
-		situacao.setId(1);
-		situacao.setData("01/01/2000");
+		situacao.setId(2);
+		situacao.setData("01/01/2010");
 		situacao.setValor(0.0);
 		situacao.setTipoSalario(TipoAplicacaoIndice.VALOR + "");
 		situacao.setIndiceQtd(0.0);
 		situacao.setValorAnterior(0.0);
+		situacao.setEmpresaCodigoAC("0006");
+		situacao.setEmpregadoCodigoAC(amanda.getCodigoAC());
 		
 		acPessoalClientTabelaReajuste.deleteHistoricoColaboradorAC(empresa, situacao);
 
 		result = query(sql);
 		if (result.next())
-			fail("Consulta não RETORNOU algo...");
+		{
+			assertEquals("2000-01-01 00:00:00.0", result.getString("data"));
+			assertEquals(321.21, result.getDouble("valor"));
+			assertEquals("V", result.getString("sal_tipo"));
+		}
 	}
 
 	
@@ -160,6 +176,8 @@ public class AcPessoalClientHistoricoColaboradorTest extends AcPessoalClientTest
 		situacao1.setTipoSalario(TipoAplicacaoIndice.VALOR + "");
 		situacao1.setIndiceQtd(0.0);
 		situacao1.setValorAnterior(0.0);
+		situacao1.setEmpresaCodigoAC("0006");
+		situacao1.setEmpregadoCodigoAC(amanda.getCodigoAC());
 
 		TSituacao situacao2 = new TSituacao();
 		situacao2.setId(2);
@@ -168,6 +186,8 @@ public class AcPessoalClientHistoricoColaboradorTest extends AcPessoalClientTest
 		situacao2.setTipoSalario(TipoAplicacaoIndice.VALOR + "");
 		situacao2.setIndiceQtd(0.0);
 		situacao2.setValorAnterior(0.0);
+		situacao2.setEmpresaCodigoAC("0006");
+		situacao2.setEmpregadoCodigoAC(amanda.getCodigoAC());
 		
 		acPessoalClientTabelaReajuste.deleteHistoricoColaboradorAC(empresa, new TSituacao[]{situacao1, situacao2});
 
