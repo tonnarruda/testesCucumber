@@ -152,6 +152,9 @@ public class AvaliacaoDesempenhoDWR
 	
 	public Map<Long, String> getEstabelecimentosDosParticipantes(Long[] avaliacoesDesempenhoIds)
 	{
+		if(avaliacoesDesempenhoIds == null || avaliacoesDesempenhoIds.length == 0)
+			return new HashMap<Long, String>();
+		
 		Collection<Estabelecimento> estabelecimentos = avaliacaoDesempenhoManager.findEstabelecimentosDosParticipantes(avaliacoesDesempenhoIds);
 		
 		return new CollectionUtil<Estabelecimento>().convertCollectionToMap(estabelecimentos, "getId", "getNome");
@@ -159,6 +162,9 @@ public class AvaliacaoDesempenhoDWR
 	
 	public Map<Long, String> getAreasOrganizacionaisDosParticipantes(Long[] avaliacoesDesempenhoIds)
 	{
+		if(avaliacoesDesempenhoIds == null || avaliacoesDesempenhoIds.length == 0)
+			return new HashMap<Long, String>();
+		
 		Collection<AreaOrganizacional> areaOrganizacionais = avaliacaoDesempenhoManager.findAreasOrganizacionaisDosParticipantes(avaliacoesDesempenhoIds);
 		
 		return new CollectionUtil<AreaOrganizacional>().convertCollectionToMap(areaOrganizacionais, "getId", "getDescricaoStatusAtivo");
@@ -166,6 +172,9 @@ public class AvaliacaoDesempenhoDWR
 	
 	public Map<Long, String> getCargosDosParticipantes(Long[] avaliacoesDesempenhoIds)
 	{
+		if(avaliacoesDesempenhoIds == null || avaliacoesDesempenhoIds.length == 0)
+			return new HashMap<Long, String>();
+		
 		Collection<Cargo> cargo = avaliacaoDesempenhoManager.findCargosDosParticipantes(avaliacoesDesempenhoIds);
 		
 		return new CollectionUtil<Cargo>().convertCollectionToMap(cargo, "getId", "getNomeMercadoComStatus");
