@@ -239,6 +239,7 @@
 	<@ww.hidden name="parametrosDoSistema.camposColaboradorVisivel" />
 	<@ww.hidden name="parametrosDoSistema.camposColaboradorObrigatorio" />
 	<@ww.hidden name="parametrosDoSistema.camposColaboradorTabs" />
+	<@ww.hidden name="parametrosDoSistema.versaoImportador" />
 	
 	<li>
 		<@ww.div cssClass="divInfo">

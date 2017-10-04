@@ -98,6 +98,9 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
     private boolean autorizacaoGestorNaSolicitacaoPessoal;
     private boolean smtpRemetente;
     
+    @Column(length=20)
+    private String versaoImportador;
+    
 	public String getAppContext()
 	{
 		return appContext;
@@ -489,5 +492,11 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
 	}
 	public void setUtilizarCaptchaNoLogin(boolean utilizarCaptchaNoLogin) {
 		this.utilizarCaptchaNoLogin = utilizarCaptchaNoLogin;
+	}
+	public String getVersaoImportador() {
+		return versaoImportador;
+	}
+	public void setVersaoImportador(String versaoImportador) {
+		this.versaoImportador = versaoImportador;
 	}
 }

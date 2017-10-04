@@ -203,7 +203,7 @@
 				</td>
 				<td class="campo">Telefone</td>
 				<td>
-					<input type="checkbox" class="checkCampoComposto" value="fone" name="camposObrigatorios" onchange="validaCampoCompostoObrigatorio(this)"/>
+					<input id="checkFone" type="checkbox" class="checkCampoComposto" value="fone" name="camposObrigatorios" onchange="validaCampoCompostoObrigatorio(this)"/>
 					<input type="hidden" class="campo-hidden" value="ddd"/>
 				</td>
 			</tr>
@@ -214,7 +214,7 @@
 				</td>
 				<td class="campo">Celular</td>
 				<td>
-					<input type="checkbox" class="checkCampoComposto" value="celular" name="camposObrigatorios" onchange="validaCampoCompostoObrigatorio(this)"/>
+					<input id="checkCelular" type="checkbox" class="checkCampoComposto" value="celular" name="camposObrigatorios" onchange="validaCampoCompostoObrigatorio(this)"/>
 					<input type="hidden" class="campo-hidden" value="dddCelular"/>
 				</td>
 			</tr>
