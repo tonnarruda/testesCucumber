@@ -15,7 +15,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.fortes.model.AbstractModel;
-import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.Estabelecimento;
 
 @SuppressWarnings("serial")
@@ -76,43 +75,29 @@ public class MedicaoRisco extends AbstractModel implements Serializable
 	
 	public void setProjectionFuncaoId(Long funcaoId)
 	{
-		if (funcao == null)
-			funcao = new Funcao();
+		incializaFuncao();
 		
 		funcao.setId(funcaoId);
 	}
 	
 	public void setProjectionFuncaoNome(String funcaoNome)
 	{
-		if (funcao == null)
-			funcao = new Funcao();
+		incializaFuncao();
 		
 		funcao.setNome(funcaoNome);
 	}
 	
-	public void setProjectionCargoNome(String cargoNome)
+	public void setProjectionEmpresaId(Long empresaId)
 	{
+		incializaFuncao();
+		funcao.setEmpresaId(empresaId);
+	}
+
+	private void incializaFuncao() {
 		if (funcao == null)
 			funcao = new Funcao();
-		
-		if(funcao.getCargo() == null)
-			this.funcao.setCargo(new Cargo());
-		
-		this.funcao.getCargo().setNome(cargoNome);
 	}
-	
-	
-	public void setProjectionCargoId(Long cargoId)
-	{
-		if (funcao == null)
-			funcao = new Funcao();
 		
-		if(funcao.getCargo() == null)
-			this.funcao.setCargo(new Cargo());
-		
-		this.funcao.getCargo().setId(cargoId);
-	}
-	
 	public Date getData() {
 		return data;
 	}

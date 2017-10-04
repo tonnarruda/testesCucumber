@@ -23,7 +23,6 @@ import com.fortes.rh.business.geral.AreaFormacaoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.QuantidadeLimiteColaboradoresPorCargoManager;
-import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.exception.IntegraACException;
@@ -269,9 +268,6 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 
 	private void removeDependencias(Long cargoId)
 	{
-		FuncaoManager funcaoManager = (FuncaoManager) SpringUtil.getBean("funcaoManager");
-		funcaoManager.removeFuncaoAndHistoricosByCargo(cargoId);
-		
 		Cargo cargo = findByIdProjection(cargoId);
 		experienciaManager.desvinculaCargo(cargo.getId(), cargo.getNomeMercado());
 		

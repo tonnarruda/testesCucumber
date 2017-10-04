@@ -9,7 +9,6 @@
 	<#include "tipoSalarioInclude.ftl" />
 	<#include "calculaSalarioInclude.ftl" />
 
-	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/interface/FuncaoDWR.js?version=${versao}"/>"></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/interface/ReajusteDWR.js?version=${versao}"/>"></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>"></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/interface/AmbienteDWR.js?version=${versao}"/>"></script>
@@ -103,16 +102,16 @@
 			document.getElementById('salarioProposto').value = salarioAtualMascara;
 
 			<@authz.authorize ifAllGranted="ROLE_COMPROU_SESMT">
-				if(data.funcaoAtualId != undefined)
+				if(data.funcaoAtualId != undefined){
 					document.getElementById('funcaoAtual').value = data.funcaoAtualId;
-			
+					document.getElementById('funcaoProposta').value = funcaoId;	
+				}
 				if(data.ambienteAtualId != undefined)
 					document.getElementById('ambienteAtual').value = data.ambienteAtualId;
 			
 				if (data.estabelecimentoAtualId != "" && data.estabelecimentoAtualId != null && data.estabelecimentoAtualId != "null")
 					populaAmbiente(data.estabelecimentoAtualId, data.ambienteAtualId);	
 					
-				populaFuncao(document.getElementById('faixa').value, data.funcaoAtualId);
 			</@authz.authorize>
 			
 			alteraTipoSalario(data.tipoSalarioAtual);
@@ -203,26 +202,6 @@
 
 		function set(name, valor){
 			document.getElementById(name).innerHTML = valor;
-		}
-
-		function populaFuncao(faixaId, funcaoId)
-		{
-			funcId = funcaoId;
-			if(faixaId != "null" && faixaId != "")
-			{
-				DWRUtil.useLoadingMessage('Carregando...');
-				FuncaoDWR.getFuncaoByFaixaSalarial(function(data){createListFuncao(data, funcaoId);
-											}, faixaId, funcaoId);
-			}
-		}
-
-		function createListFuncao(data, funcaoId)
-		{
-			DWRUtil.removeAllOptions("funcaoProposta");
-			DWRUtil.addOptions("funcaoProposta", data);
-			
-			if(funcaoId != null)
-				document.getElementById('funcaoProposta').value = funcaoId;		
 		}
 
 		function populaAmbiente(estabelecimentoId, ambienteId)
@@ -332,8 +311,8 @@
 						
 						<@authz.authorize ifAllGranted="ROLE_COMPROU_SESMT">
 							<@ww.select label="Ambiente" name="reajusteColaborador.ambienteProposto.id" id="ambienteProposto" required="${obrigarAmbienteFuncao?string}" list="ambientes" listKey="id" listValue="nome" headerValue="Selecione..." headerKey="-1"/>
-							<@ww.select label="Cargo/Faixa" name="reajusteColaborador.faixaSalarialProposta.id" required="true" id="faixa" list="faixaSalarials" listKey="id" listValue="descricao" headerValue="Selecione..." headerKey="" onchange="calculaSalario();populaFuncao(this.value);"/>
-							<@ww.select label="Função" name="reajusteColaborador.funcaoProposta.id" id="funcaoProposta" required="${obrigarAmbienteFuncao?string}" headerValue="Selecione..." headerKey="-1" list="funcoes" listKey="id" listValue="nome"/>
+							<@ww.select label="Cargo/Faixa" name="reajusteColaborador.faixaSalarialProposta.id" required="true" id="faixa" list="faixaSalarials" listKey="id" listValue="descricao" headerValue="Selecione..." headerKey="" onchange="calculaSalario();"/>
+							<@ww.select label="Função" name="reajusteColaborador.funcaoProposta.id" id="funcaoProposta" required="${obrigarAmbienteFuncao?string}" headerValue="Selecione..." headerKey="-1" list="funcaos" listKey="id" listValue="nome"/>
 						</@authz.authorize>
 						<@authz.authorize ifNotGranted="ROLE_COMPROU_SESMT">
 							<@ww.select label="Cargo/Faixa" name="reajusteColaborador.faixaSalarialProposta.id" required="true" id="faixa" list="faixaSalarials" listKey="id" listValue="descricao" headerValue="Selecione..." headerKey="" onchange="calculaSalario();"/>

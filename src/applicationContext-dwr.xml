@@ -39,9 +39,6 @@
 		<property name="candidatoSolicitacaoManager" ref="candidatoSolicitacaoManager"/>
 		<property name="historicoCandidatoManager" ref="historicoCandidatoManager"/>
 	</bean>
-	<bean id="funcaoDWR" class="com.fortes.rh.web.dwr.FuncaoDWR">
-		<property name="funcaoManager" ref="funcaoManager"/>
-	</bean>
 	<bean id="ambienteDWR" class="com.fortes.rh.web.dwr.AmbienteDWR">
 		<property name="ambienteManager" ref="ambienteManager"/>
 	</bean>

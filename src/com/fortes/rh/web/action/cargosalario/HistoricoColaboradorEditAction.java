@@ -104,14 +104,13 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 		integraAc = getEmpresaSistema().isAcIntegra();
 		estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
 		indices = indiceManager.findAll(getEmpresaSistema());
+		funcaos = funcaoManager.findByEmpresa(getEmpresaSistema().getId());
 
 		Long faixaInativaId = null;
 		Long areaInativaId = null;
 		CollectionUtil<FaixaSalarial> faixaSalarialUtil = new CollectionUtil<FaixaSalarial>();
 
 		if (historicoColaborador != null) {
-			if(historicoColaborador.getFaixaSalarial() != null && historicoColaborador.getFaixaSalarial().getCargo() != null && historicoColaborador.getFaixaSalarial().getCargo().getId() != null)
-				funcaos = funcaoManager.findByCargo(historicoColaborador.getFaixaSalarial().getCargo().getId());
 
 			if(historicoColaborador.getEstabelecimento() != null && historicoColaborador.getEstabelecimento().getId() != null)
 				ambientes = ambienteManager.findByEstabelecimento(historicoColaborador.getEstabelecimento().getId());
@@ -129,7 +128,6 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 			historicoColaborador.setData(new Date());
 			historicoColaborador.setMotivo(MotivoHistoricoColaborador.SEM_MOTIVO);
 			ambientes = ambienteManager.findByEstabelecimento(historicoColaborador.getEstabelecimento().getId());
-			funcaos = funcaoManager.findByCargo(historicoColaborador.getFaixaSalarial().getCargo().getId());
 		}
 
 		faixaSalarials = faixaSalarialUtil.sortCollectionStringIgnoreCase(faixaSalarialManager.findFaixas(getEmpresaSistema(), Cargo.ATIVO, faixaInativaId), "cargo.nome");
@@ -420,7 +418,7 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 			if(colaborador.getId() != null)
 			{
 				colaboradorNome = colaboradorManager.getNome(colaborador.getId());
-				historicoColaboradors = historicoColaboradorManager.getHistoricosComAmbienteEFuncao(colaborador.getId());
+				historicoColaboradors = historicoColaboradorManager.getHistoricosComAmbienteEFuncao(colaborador.getId(), getEmpresaSistema().getId());
 			}
 		}
 

@@ -12,7 +12,6 @@
 	<field name="nomeColaborador" class="java.lang.String"/>
 	<field name="nomeFuncao" class="java.lang.String"/>
 	<field name="dataAdmisaoColaboradorFormatada" class="java.lang.String"/>
-	<field name="codigoCBO" class="java.lang.String"/>
 	<field name="dataFormatada" class="java.lang.String"/>
 	<field name="revisao" class="java.lang.Integer"/>
 	<field name="atividades" class="java.lang.String"/>
@@ -29,6 +28,8 @@
 	<field name="cnpjFormatado" class="java.lang.String"/>
 	<field name="nomeEstabelecimento" class="java.lang.String"/>
 	<field name="estabelecimentoEndereco" class="java.lang.String"/>
+	<field name="codigoCBOCargo" class="java.lang.String"/>
+	<field name="codigoCBOFuncao" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -77,15 +78,20 @@
 		<band splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="70" splitType="Stretch">
+		<band height="94" splitType="Stretch">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<rectangle>
-				<reportElement stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="34" width="555" height="36" uuid="02227f42-07e7-4f3b-b9c6-b0edaffd727d"/>
+				<reportElement stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="34" width="555" height="60" uuid="02227f42-07e7-4f3b-b9c6-b0edaffd727d">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
 				<graphicElement>
 					<pen lineWidth="0.75"/>
 				</graphicElement>
 			</rectangle>
 			<staticText>
-				<reportElement x="464" y="56" width="26" height="12" uuid="4ed36cb3-78a7-4793-812e-a6294af8ffd8"/>
+				<reportElement x="424" y="60" width="26" height="12" uuid="4ed36cb3-78a7-4793-812e-a6294af8ffd8"/>
 				<textElement verticalAlignment="Top">
 					<font size="9" isBold="true" isUnderline="false" isStrikeThrough="false"/>
 				</textElement>
@@ -99,13 +105,6 @@
 				<text><![CDATA[Data Admisão:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="497" y="56" width="58" height="12" uuid="e7f62954-9221-48c5-b777-e36a79590e54"/>
-				<textElement>
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{codigoCBO}]]></textFieldExpression>
-			</textField>
-			<textField>
 				<reportElement x="497" y="40" width="58" height="12" uuid="ce35db4f-a0d3-48e9-81cc-ba29a7808df8"/>
 				<textElement textAlignment="Left">
 					<font size="9"/>
@@ -113,42 +112,42 @@
 				<textFieldExpression><![CDATA[$F{dataAdmisaoColaboradorFormatada}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="4" y="40" width="34" height="12" uuid="e5b663cf-3815-4609-bd54-449e2688d60d"/>
+				<reportElement x="4" y="40" width="42" height="12" uuid="e5b663cf-3815-4609-bd54-449e2688d60d"/>
 				<textElement verticalAlignment="Top">
 					<font size="9" isBold="true" isUnderline="false" isStrikeThrough="false"/>
 				</textElement>
 				<text><![CDATA[Nome:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="178" y="56" width="42" height="12" uuid="0ce39d30-4fed-40bc-bff1-3460de78a4a8"/>
+				<reportElement x="4" y="80" width="42" height="12" uuid="0ce39d30-4fed-40bc-bff1-3460de78a4a8"/>
 				<textElement verticalAlignment="Top">
 					<font size="9" isBold="true" isUnderline="false" isStrikeThrough="false"/>
 				</textElement>
 				<text><![CDATA[Função:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="38" y="40" width="383" height="12" uuid="b7b2f819-4270-44ba-bc77-9014a5cb9165"/>
+				<reportElement x="46" y="40" width="375" height="12" uuid="b7b2f819-4270-44ba-bc77-9014a5cb9165"/>
 				<textElement>
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nomeColaborador}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToBandHeight" x="218" y="56" width="246" height="12" uuid="59894c11-e743-4edd-bfb1-681dc2468e9c"/>
+				<reportElement stretchType="RelativeToBandHeight" x="46" y="80" width="375" height="12" uuid="59894c11-e743-4edd-bfb1-681dc2468e9c"/>
 				<textElement>
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nomeFuncao}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="38" y="56" width="140" height="12" uuid="97ae6e89-1722-4e64-ad06-d3a0b9090f2e"/>
+				<reportElement x="46" y="60" width="375" height="12" uuid="97ae6e89-1722-4e64-ad06-d3a0b9090f2e"/>
 				<textElement>
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nomeCargo}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="4" y="56" width="34" height="12" uuid="e2c56777-9f09-4af0-9618-f8d16c189f4b"/>
+				<reportElement x="4" y="60" width="42" height="12" uuid="e2c56777-9f09-4af0-9618-f8d16c189f4b"/>
 				<textElement verticalAlignment="Top">
 					<font size="9" isBold="true" isUnderline="false" isStrikeThrough="false"/>
 				</textElement>
@@ -167,6 +166,27 @@
 				</textElement>
 				<text><![CDATA[ORDEM DE SERVIÇO]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="424" y="80" width="26" height="12" uuid="4f3094f9-d2ca-4356-8bc8-400c5fc9976f">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{codigoCBOFuncao}!=null && !$F{codigoCBOFuncao}.isEmpty()]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CBO:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="450" y="60" width="105" height="12" uuid="24c07bf7-c2cd-47fa-b800-206fdea2497d"/>
+				<textFieldExpression><![CDATA[$F{codigoCBOCargo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="450" y="80" width="105" height="12" uuid="1ba5988e-98c8-4f1b-a493-a982e6f4bc42">
+					<printWhenExpression><![CDATA[$F{codigoCBOFuncao}!=null && !$F{codigoCBOFuncao}.isEmpty()]]></printWhenExpression>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{codigoCBOFuncao}]]></textFieldExpression>
+			</textField>
 		</band>
 		<band height="35" splitType="Stretch">
 			<rectangle>

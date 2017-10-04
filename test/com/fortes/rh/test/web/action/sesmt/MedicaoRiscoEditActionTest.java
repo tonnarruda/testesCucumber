@@ -1,16 +1,24 @@
 package com.fortes.rh.test.web.action.sesmt;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyCollection;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
 import org.hibernate.ObjectNotFoundException;
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
-import org.jmock.core.Constraint;
-import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
+import org.junit.Before;
+import org.junit.Test;
 
-import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
@@ -18,72 +26,63 @@ import com.fortes.rh.business.sesmt.MedicaoRiscoManager;
 import com.fortes.rh.business.sesmt.RiscoAmbienteManager;
 import com.fortes.rh.business.sesmt.RiscoFuncaoManager;
 import com.fortes.rh.business.sesmt.RiscoMedicaoRiscoManager;
-import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.MedicaoRisco;
+import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.model.sesmt.RiscoMedicaoRisco;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.AmbienteFactory;
-import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FuncaoFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.sesmt.MedicaoRiscoFactory;
 import com.fortes.rh.test.factory.sesmt.RiscoMedicaoRiscoFactory;
 import com.fortes.rh.web.action.sesmt.MedicaoRiscoEditAction;
 
-public class MedicaoRiscoEditActionTest extends MockObjectTestCase
+@SuppressWarnings("unchecked")
+public class MedicaoRiscoEditActionTest 
 {
 	private MedicaoRiscoEditAction action;
-	private Mock manager;
-	private Mock ambienteManager;
-	private Mock funcaoManager;
-	private Mock riscoAmbienteManager;
-	private Mock riscoFuncaoManager;
-	private Mock estabelecimentoManager;
-	private Mock cargoManager;
-	private Mock riscoMedicaoRiscoManager;
+	private MedicaoRiscoManager manager;
+	private AmbienteManager ambienteManager;
+	private FuncaoManager funcaoManager;
+	private RiscoAmbienteManager riscoAmbienteManager;
+	private RiscoFuncaoManager riscoFuncaoManager;
+	private EstabelecimentoManager estabelecimentoManager;
+	private RiscoMedicaoRiscoManager riscoMedicaoRiscoManager;
 
-	protected void setUp() throws Exception
+	@Before
+	public void setUp() throws Exception
 	{
-		super.setUp();
-		manager = new Mock(MedicaoRiscoManager.class);
+		manager = mock(MedicaoRiscoManager.class);
 		action = new MedicaoRiscoEditAction();
-		action.setMedicaoRiscoManager((MedicaoRiscoManager) manager.proxy());
+		action.setMedicaoRiscoManager(manager);
 		
 		ambienteManager = mock(AmbienteManager.class);
-		action.setAmbienteManager((AmbienteManager) ambienteManager.proxy());
+		action.setAmbienteManager(ambienteManager);
 		
 		funcaoManager = mock(FuncaoManager.class);
-		action.setFuncaoManager((FuncaoManager) funcaoManager.proxy());
+		action.setFuncaoManager(funcaoManager);
 		
-		estabelecimentoManager = new Mock(EstabelecimentoManager.class);
-		action.setEstabelecimentoManager((EstabelecimentoManager) estabelecimentoManager.proxy());
-		
-		cargoManager = new Mock(CargoManager.class);
-		action.setCargoManager((CargoManager) cargoManager.proxy());
+		estabelecimentoManager = mock(EstabelecimentoManager.class);
+		action.setEstabelecimentoManager(estabelecimentoManager);
 		
 		riscoAmbienteManager = mock(RiscoAmbienteManager.class);
-		action.setRiscoAmbienteManager((RiscoAmbienteManager) riscoAmbienteManager.proxy());
+		action.setRiscoAmbienteManager(riscoAmbienteManager);
         
 		riscoFuncaoManager = mock(RiscoFuncaoManager.class);
-		action.setRiscoFuncaoManager((RiscoFuncaoManager) riscoFuncaoManager.proxy());
+		action.setRiscoFuncaoManager(riscoFuncaoManager);
 
 		riscoMedicaoRiscoManager = mock(RiscoMedicaoRiscoManager.class);
-		action.setRiscoMedicaoRiscoManager((RiscoMedicaoRiscoManager) riscoMedicaoRiscoManager.proxy());
+		action.setRiscoMedicaoRiscoManager(riscoMedicaoRiscoManager);
 		
 		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));		
         action.setMedicaoRisco(new MedicaoRisco());
 	}
 
-	protected void tearDown() throws Exception
-	{
-		manager = null;
-		action = null;
-		super.tearDown();
-	}
-
+	@Test
 	public void testListByAmbiente() throws Exception
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -91,13 +90,14 @@ public class MedicaoRiscoEditActionTest extends MockObjectTestCase
 		action.setControlaRiscoPor('A');
 		action.setEmpresaSistema(empresa);
 		
-		ambienteManager.expects(once()).method("findAmbientes");
-		manager.expects(once()).method("findAllSelectByAmbiente").will(returnValue(new ArrayList<MedicaoRisco>()));
+		when(ambienteManager.findAmbientes(action.getEmpresaSistema().getId())).thenReturn(new ArrayList<Ambiente>());
+		when(manager.findAllSelectByAmbiente(eq(action.getEmpresaSistema().getId()), anyLong())).thenReturn(new ArrayList<MedicaoRisco>());
 		
 		assertEquals(action.list(), "success");
 		assertNotNull(action.getMedicaoRiscos());
 	}
 
+	@Test
 	public void testListByFuncao() throws Exception
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -105,13 +105,14 @@ public class MedicaoRiscoEditActionTest extends MockObjectTestCase
 		action.setControlaRiscoPor('F');
 		action.setEmpresaSistema(empresa);
 		
-		funcaoManager.expects(once()).method("findByEmpresa").with(eq(empresa.getId()));
-		manager.expects(once()).method("findAllSelectByFuncao").will(returnValue(new ArrayList<MedicaoRisco>()));
+		when(funcaoManager.findByEmpresa(eq(empresa.getId()))).thenReturn(new ArrayList<Funcao>());
+		when(manager.findAllSelectByFuncao(eq(action.getEmpresaSistema().getId()), anyLong())).thenReturn(new ArrayList<MedicaoRisco>());
 		
 		assertEquals(action.list(), "success");
 		assertNotNull(action.getMedicaoRiscos());
 	}
 	
+	@Test
 	public void testPrepareInsertByAmbiente() throws Exception 
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -126,13 +127,14 @@ public class MedicaoRiscoEditActionTest extends MockObjectTestCase
 		medicaoRisco.setAmbiente(ambiente);
 		action.setMedicaoRisco(medicaoRisco);
 		
-		manager.expects(once()).method("getTecnicasUtilizadas").with(eq(empresa.getId()));
-		estabelecimentoManager.expects(once()).method("findAllSelect").with(eq(empresa.getId()));
-		manager.expects(once()).method("findById").with(eq(medicaoRisco.getId())).will(returnValue(medicaoRisco));
+		when(manager.getTecnicasUtilizadas(action.getEmpresaSistema().getId())).thenReturn("");
+		when(estabelecimentoManager.findAllSelect(action.getEmpresaSistema().getId())).thenReturn(new ArrayList<Estabelecimento>());
+		when(manager.findById(eq(medicaoRisco.getId()))).thenReturn(medicaoRisco);
 		
 		assertEquals("success", action.prepareInsert());
 	}
 	
+	@Test
 	public void testPrepareInsertByFuncao() throws Exception 
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
@@ -141,21 +143,20 @@ public class MedicaoRiscoEditActionTest extends MockObjectTestCase
 		action.setEmpresaSistema(empresa);
 		
 		Funcao funcao  = FuncaoFactory.getEntity(2L);
-		funcao.setCargo(CargoFactory.getEntity(1L));
+		funcao.setEmpresa(empresa);
 		
 		MedicaoRisco medicaoRisco = MedicaoRiscoFactory.getEntity(1L);
 		medicaoRisco.setFuncao(funcao);
 		action.setMedicaoRisco(medicaoRisco);
 		
-		manager.expects(once()).method("getTecnicasUtilizadas").with(eq(empresa.getId()));
-		cargoManager.expects(once()).method("findCargos").with(new Constraint[]{eq(0), eq(0), eq(action.getEmpresaSistema().getId()), eq(null), eq(null), eq(null), eq(false)}).will(returnValue(new ArrayList<Cargo>()));
+		when(manager.getTecnicasUtilizadas(eq(empresa.getId()))).thenReturn("");
 		
-		manager.expects(once()).method("getFuncaoByMedicaoRisco").with(eq(medicaoRisco.getId())).will(returnValue(medicaoRisco));
-		manager.expects(once()).method("findRiscoMedicaoRiscos").with(eq(medicaoRisco.getId()));
-		
+		when(manager.getMedicaoRiscoMedicaoPorFuncao(eq(medicaoRisco.getId()))).thenReturn(medicaoRisco);
+		when(manager.findRiscoMedicaoRiscos(eq(medicaoRisco.getId()))).thenReturn(new ArrayList<RiscoMedicaoRisco>());
 		assertEquals("success", action.prepareInsert());
 	}
 	
+	@Test
 	public void testPrepareUpdateByAmbiente() throws Exception 
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -172,16 +173,17 @@ public class MedicaoRiscoEditActionTest extends MockObjectTestCase
 		medicaoRisco.setAmbiente(ambiente);
 		action.setMedicaoRisco(medicaoRisco);
 		
-		manager.expects(once()).method("getTecnicasUtilizadas").with(eq(empresa.getId()));
-		estabelecimentoManager.expects(once()).method("findAllSelect").with(eq(empresa.getId()));
-		manager.expects(once()).method("findById").with(eq(medicaoRisco.getId())).will(returnValue(medicaoRisco));
-		ambienteManager.expects(once()).method("findByEstabelecimento");
-		riscoAmbienteManager.expects(once()).method("findRiscosByAmbienteData");
-		manager.expects(once()).method("preparaRiscosDaMedicao");
+		when(manager.getTecnicasUtilizadas(eq(action.getEmpresaSistema().getId()))).thenReturn("");
+		when(estabelecimentoManager.findAllSelect(eq(empresa.getId()))).thenReturn(new ArrayList<Estabelecimento>());
+		when(manager.findById(eq(medicaoRisco.getId()))).thenReturn(medicaoRisco);
+		when(ambienteManager.findByEstabelecimento(any(Long[].class))).thenReturn(new ArrayList<Ambiente>());
+		when(riscoAmbienteManager.findRiscosByAmbienteData(eq(ambiente.getId()), any(Date.class))).thenReturn(new ArrayList<Risco>());
+		when(manager.preparaRiscosDaMedicao(eq(medicaoRisco),anyCollection())).thenReturn(new ArrayList<RiscoMedicaoRisco>());
 		
 		assertEquals("success", action.prepareUpdate());
 	}
 	
+	@Test
 	public void testPrepareUpdateByFuncao() throws Exception 
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -190,32 +192,31 @@ public class MedicaoRiscoEditActionTest extends MockObjectTestCase
 		action.setEmpresaSistema(empresa);
 		
 		Funcao funcao  = FuncaoFactory.getEntity(2L);
-		funcao.setCargo(CargoFactory.getEntity(1L));
 		
 		MedicaoRisco medicaoRisco = MedicaoRiscoFactory.getEntity(1L);
 		medicaoRisco.setFuncao(funcao);
 		action.setMedicaoRisco(medicaoRisco);
 		
-		manager.expects(once()).method("getTecnicasUtilizadas").with(eq(empresa.getId()));
-		cargoManager.expects(once()).method("findCargos");
-		manager.expects(once()).method("getFuncaoByMedicaoRisco").with(eq(medicaoRisco.getId())).will(returnValue(medicaoRisco));
-		manager.expects(once()).method("findRiscoMedicaoRiscos").with(eq(medicaoRisco.getId()));
-		funcaoManager.expects(once()).method("findByCargo");
-		riscoFuncaoManager.expects(once()).method("findRiscosByFuncaoData");
-		manager.expects(once()).method("preparaRiscosDaMedicao");
+		when(manager.getTecnicasUtilizadas(eq(empresa.getId()))).thenReturn("");
+		when(manager.getMedicaoRiscoMedicaoPorFuncao(eq(medicaoRisco.getId()))).thenReturn(medicaoRisco);
+		when(manager.findRiscoMedicaoRiscos(eq(medicaoRisco.getId()))).thenReturn(new ArrayList<RiscoMedicaoRisco>());
+		when(funcaoManager.findByEmpresa(action.getEmpresaSistema().getId())).thenReturn(new ArrayList<Funcao>());
+		when(riscoFuncaoManager.findRiscosByFuncaoData(eq(action.getMedicaoRisco().getFuncao().getId()), any(Date.class))).thenReturn(new ArrayList<Risco>());
+		when(manager.preparaRiscosDaMedicao(eq(medicaoRisco), anyCollection())).thenReturn(new ArrayList<RiscoMedicaoRisco>());
 		
 		assertEquals("success", action.prepareUpdate());
 	}
 	
+	@Test
 	public void testDelete() throws Exception
 	{
 		MedicaoRisco medicaoRisco = MedicaoRiscoFactory.getEntity(1L);
 		action.setMedicaoRisco(medicaoRisco);
 
-		manager.expects(once()).method("removeCascade");
 		assertEquals(action.delete(), "success");
 	}
 	
+	@Test
 	public void testCarregarRiscosByAmbiente() throws Exception
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -230,16 +231,17 @@ public class MedicaoRiscoEditActionTest extends MockObjectTestCase
 		action.setEstabelecimento(EstabelecimentoFactory.getEntity(2L));
 		action.setAmbiente(ambiente);
 		
-		manager.expects(once()).method("getTecnicasUtilizadas");
-		estabelecimentoManager.expects(once()).method("findAllSelect");
+		when(manager.getTecnicasUtilizadas(action.getEmpresaSistema().getId())).thenReturn("");
+		when(estabelecimentoManager.findAllSelect(action.getEmpresaSistema().getId())).thenReturn(new ArrayList<Estabelecimento>());
 		
-		ambienteManager.expects(once()).method("findByEstabelecimento");
-		riscoAmbienteManager.expects(once()).method("findRiscosByAmbienteData");
-		manager.expects(once()).method("preparaRiscosDaMedicao");
+		when(ambienteManager.findByEstabelecimento(action.getEstabelecimento().getId())).thenReturn(new ArrayList<Ambiente>());
+		when(riscoAmbienteManager.findRiscosByAmbienteData(eq(action.getEmpresaSistema().getId()), any(Date.class))).thenReturn(new ArrayList<Risco>());
+		when(manager.preparaRiscosDaMedicao(eq(medicaoRisco), anyCollection())).thenReturn(new ArrayList<RiscoMedicaoRisco>());
 		
 		assertEquals("success", action.carregarRiscos());
 	}
 	
+	@Test
 	public void testCarregarRiscosMedicaoByAmbiente() throws Exception
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -258,18 +260,19 @@ public class MedicaoRiscoEditActionTest extends MockObjectTestCase
 		Collection<RiscoMedicaoRisco> riscoMedicaoRiscos = new ArrayList<RiscoMedicaoRisco>();
 		riscoMedicaoRiscos.add(riscoMedicaoRisco);
 		
-		manager.expects(once()).method("getTecnicasUtilizadas");
-		riscoMedicaoRiscoManager.expects(once()).method("findMedicoesDeRiscosDoAmbiente").with(eq(ambiente.getId()), ANYTHING).will(returnValue(riscoMedicaoRiscos));
-		estabelecimentoManager.expects(once()).method("findAllSelect");
+		when(manager.getTecnicasUtilizadas(action.getEmpresaSistema().getId())).thenReturn("");
+		when(riscoMedicaoRiscoManager.findMedicoesDeRiscosDoAmbiente(eq(ambiente.getId()), any(Date.class))).thenReturn(riscoMedicaoRiscos);
+		when(estabelecimentoManager.findAllSelect(action.getEmpresaSistema().getId())).thenReturn(new ArrayList<Estabelecimento>());
 		
-		ambienteManager.expects(once()).method("findByEstabelecimento");
-		riscoAmbienteManager.expects(once()).method("findRiscosByAmbienteData");
-		manager.expects(once()).method("preparaRiscosDaMedicao");
+		when(ambienteManager.findByEstabelecimento(any(Long[].class))).thenReturn(new ArrayList<Ambiente>());
+		when(riscoAmbienteManager.findRiscosByAmbienteData(eq(ambiente.getId()), any(Date.class))).thenReturn(new ArrayList<Risco>());
+		when(manager.preparaRiscosDaMedicao(eq(medicaoRisco), anyCollection())).thenReturn(riscoMedicaoRiscos);
 		
 		assertEquals("success", action.carregarRiscosComMedicao());
 		assertTrue(action.getActionMessages().size() == 0);
 	}
 	
+	@Test
 	public void testCarregarRiscosMedicaoByFuncao() throws Exception
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -277,11 +280,10 @@ public class MedicaoRiscoEditActionTest extends MockObjectTestCase
 		action.setControlaRiscoPor('F');
 		action.setEmpresaSistema(empresa);
 		
-		action.setCargo(CargoFactory.getEntity(1L));
-		
 		Funcao funcao = FuncaoFactory.getEntity(15L);
 		MedicaoRisco medicaoRisco = MedicaoRiscoFactory.getEntity();
 		medicaoRisco.setFuncao(funcao);
+		action.setMedicaoRisco(medicaoRisco);
 		
 		action.setEstabelecimento(EstabelecimentoFactory.getEntity(2L));
 		action.setFuncao(funcao);
@@ -290,18 +292,18 @@ public class MedicaoRiscoEditActionTest extends MockObjectTestCase
 		Collection<RiscoMedicaoRisco> riscoMedicaoRiscos = new ArrayList<RiscoMedicaoRisco>();
 		riscoMedicaoRiscos.add(riscoMedicaoRisco);
 		
-		manager.expects(once()).method("getTecnicasUtilizadas");
-		riscoMedicaoRiscoManager.expects(once()).method("findMedicoesDeRiscosDaFuncao").with(eq(funcao.getId()), ANYTHING).will(returnValue(riscoMedicaoRiscos));
-		cargoManager.expects(once()).method("findCargos");
+		when(manager.getTecnicasUtilizadas(action.getEmpresaSistema().getId())).thenReturn("");
+		when(riscoMedicaoRiscoManager.findMedicoesDeRiscosDaFuncao(eq(action.getMedicaoRisco().getFuncao().getId()), any(Date.class))).thenReturn(riscoMedicaoRiscos);
 		
-		funcaoManager.expects(once()).method("findByCargo");
-		riscoFuncaoManager.expects(once()).method("findRiscosByFuncaoData");
-		manager.expects(once()).method("preparaRiscosDaMedicao");
+		when(funcaoManager.findByEmpresa(action.getEmpresaSistema().getId())).thenReturn(new ArrayList<Funcao>());
+		when(riscoFuncaoManager.findRiscosByFuncaoData(eq(action.getFuncao().getId()), any(Date.class))).thenReturn(new ArrayList<Risco>());
+		when(manager.preparaRiscosDaMedicao(eq(medicaoRisco), anyCollection())).thenReturn(riscoMedicaoRiscos);
 		
 		assertEquals("success", action.carregarRiscosComMedicao());
 		assertTrue(action.getActionMessages().size() == 0);
 	}
 
+	@Test
 	public void testCarregarRiscosMedicaosemRicosASerCarregado() throws Exception
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -309,29 +311,28 @@ public class MedicaoRiscoEditActionTest extends MockObjectTestCase
 		action.setControlaRiscoPor('F');
 		action.setEmpresaSistema(empresa);
 		
-		action.setCargo(CargoFactory.getEntity(1L));
 		
 		Funcao funcao = FuncaoFactory.getEntity(15L);
 		MedicaoRisco medicaoRisco = MedicaoRiscoFactory.getEntity();
 		medicaoRisco.setFuncao(funcao);
+		action.setMedicaoRisco(medicaoRisco);
 		
 		action.setEstabelecimento(EstabelecimentoFactory.getEntity(2L));
 		action.setFuncao(funcao);
 		Collection<RiscoMedicaoRisco> riscoMedicaoRiscos = new ArrayList<RiscoMedicaoRisco>();
 		
-		manager.expects(once()).method("getTecnicasUtilizadas");
-		riscoMedicaoRiscoManager.expects(once()).method("findMedicoesDeRiscosDaFuncao").with(eq(funcao.getId()), ANYTHING).will(returnValue(riscoMedicaoRiscos));
-		cargoManager.expects(once()).method("findCargos");
+		when(manager.getTecnicasUtilizadas(action.getEmpresaSistema().getId())).thenReturn("");
+		when(riscoMedicaoRiscoManager.findMedicoesDeRiscosDaFuncao(eq(action.getMedicaoRisco().getFuncao().getId()), any(Date.class))).thenReturn(riscoMedicaoRiscos);
 		
-		funcaoManager.expects(once()).method("findByCargo");
-		riscoFuncaoManager.expects(once()).method("findRiscosByFuncaoData");
-		manager.expects(once()).method("preparaRiscosDaMedicao");
+		when(funcaoManager.findByEmpresa(action.getEmpresaSistema().getId())).thenReturn(new ArrayList<Funcao>());
+		when(riscoFuncaoManager.findRiscosByFuncaoData(eq(funcao.getId()), any(Date.class))).thenReturn(new ArrayList<Risco>());
+		when(manager.preparaRiscosDaMedicao(eq(medicaoRisco), anyCollection())).thenReturn(riscoMedicaoRiscos);
 		
 		assertEquals("success", action.carregarRiscosComMedicao());
 		assertEquals("Não há medição anterior para esta Função",action.getActionMessages().toArray()[0]);
 	}
 	
-	
+	@Test
 	public void testCarregarRiscosByFuncao() throws Exception
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -339,7 +340,6 @@ public class MedicaoRiscoEditActionTest extends MockObjectTestCase
 		action.setControlaRiscoPor('F');
 		action.setEmpresaSistema(empresa);
 		
-		action.setCargo(CargoFactory.getEntity(1L));
 		
 		Ambiente ambiente = AmbienteFactory.getEntity(15L);
 		MedicaoRisco medicaoRisco = MedicaoRiscoFactory.getEntity();
@@ -348,16 +348,15 @@ public class MedicaoRiscoEditActionTest extends MockObjectTestCase
 		action.setEstabelecimento(EstabelecimentoFactory.getEntity(2L));
 		action.setAmbiente(ambiente);
 		
-		manager.expects(once()).method("getTecnicasUtilizadas");
-		cargoManager.expects(once()).method("findCargos");
+		when(manager.getTecnicasUtilizadas(action.getEmpresaSistema().getId())).thenReturn("");
 		
-		funcaoManager.expects(once()).method("findByCargo");
-		riscoFuncaoManager.expects(once()).method("findRiscosByFuncaoData");
-		manager.expects(once()).method("preparaRiscosDaMedicao");
-		
+		when(funcaoManager.findByEmpresa(action.getEmpresaSistema().getId())).thenReturn(new ArrayList<Funcao>());
+		when(riscoFuncaoManager.findRiscosByFuncaoData(anyLong(), any(Date.class))).thenReturn(new ArrayList<Risco>());
+		when(manager.preparaRiscosDaMedicao(eq(medicaoRisco), anyCollection())).thenReturn(new ArrayList<RiscoMedicaoRisco>());
 		assertEquals("success", action.carregarRiscos());
 	}
 	
+	@Test
 	public void testCarregarRiscosBy() throws Exception
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -365,7 +364,6 @@ public class MedicaoRiscoEditActionTest extends MockObjectTestCase
 		action.setControlaRiscoPor('F');
 		action.setEmpresaSistema(empresa);
 		
-		action.setCargo(CargoFactory.getEntity(1L));
 		
 		Ambiente ambiente = AmbienteFactory.getEntity(15L);
 		MedicaoRisco medicaoRisco = MedicaoRiscoFactory.getEntity();
@@ -374,12 +372,11 @@ public class MedicaoRiscoEditActionTest extends MockObjectTestCase
 		action.setEstabelecimento(EstabelecimentoFactory.getEntity(2L));
 		action.setAmbiente(ambiente);
 		
-		manager.expects(once()).method("getTecnicasUtilizadas");
-		cargoManager.expects(once()).method("findCargos");
+		when(manager.getTecnicasUtilizadas(action.getEmpresaSistema().getId())).thenReturn("");
 		
-		funcaoManager.expects(once()).method("findByCargo");
-		riscoFuncaoManager.expects(once()).method("findRiscosByFuncaoData");
-		manager.expects(once()).method("preparaRiscosDaMedicao");
+		when(funcaoManager.findByEmpresa(action.getEmpresaSistema().getId())).thenReturn(new ArrayList<Funcao>());
+		when(riscoFuncaoManager.findRiscosByFuncaoData(anyLong(), any(Date.class))).thenReturn(new ArrayList<Risco>());
+		when(manager.preparaRiscosDaMedicao(eq(medicaoRisco), anyCollection())).thenReturn(new ArrayList<RiscoMedicaoRisco>());
 		
 		assertEquals("success", action.carregarRiscos());
 	}
@@ -390,6 +387,7 @@ public class MedicaoRiscoEditActionTest extends MockObjectTestCase
 	private String[] intensidadeValues = new String[]{"120 graus"};
 	private String[] riscoIds = new String[]{"1"};
 
+	@Test
 	public void testInsertByAmbiente() throws Exception
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -405,26 +403,28 @@ public class MedicaoRiscoEditActionTest extends MockObjectTestCase
 		action.setTecnicaValues(tecnicaValues);
 		action.setRiscoIds(riscoIds);
 
-		manager.expects(once()).method("save");
-		
 		assertEquals("success", action.insert());
 	}
 
+	@Test
 	public void testInsertException() throws Exception
 	{
-		action.setControlaRiscoPor('A');
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa.setControlaRiscoPor('A');
+		action.setEmpresaSistema(empresa);
+		MedicaoRisco medicaoRisco = MedicaoRiscoFactory.getEntity(1L);
+		action.setMedicaoRisco(medicaoRisco);
 		
-		manager.expects(once()).method("save").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
-		manager.expects(once()).method("getTecnicasUtilizadas");
-		estabelecimentoManager.expects(once()).method("findAllSelect");
+		doThrow(new ObjectNotFoundException("","")).when(manager).save(eq(action.getMedicaoRisco()), any(String[].class), any(String[].class), any(String[].class), any(String[].class),
+				any(String[].class));
+		
+		when(manager.getTecnicasUtilizadas(action.getEmpresaSistema().getId())).thenReturn("");
+		when(estabelecimentoManager.findAllSelect(action.getEmpresaSistema().getId())).thenReturn(new ArrayList<Estabelecimento>());
 		assertEquals("input", action.insert());
+		assertEquals("Não foi possível gravar esta medição de risco.", action.getActionErrors().iterator().next());
 	}
 
-	public void testPrepareUpdate() throws Exception
-	{
-		
-	}
-	
+	@Test
 	public void testUpdate() throws Exception
 	{
 		MedicaoRisco medicaoRisco = MedicaoRiscoFactory.getEntity(1L);
@@ -436,11 +436,10 @@ public class MedicaoRiscoEditActionTest extends MockObjectTestCase
 		action.setTecnicaValues(tecnicaValues);
 		action.setRiscoIds(riscoIds);
 
-		manager.expects(once()).method("save");
-
 		assertEquals("success", action.update());
 	}
 
+	@Test
 	public void testUpdateException() throws Exception
 	{
 		Ambiente ambiente = AmbienteFactory.getEntity(15L);
@@ -450,28 +449,32 @@ public class MedicaoRiscoEditActionTest extends MockObjectTestCase
 		action.setData(new Date());
 		
 		MedicaoRisco medicaoRisco = MedicaoRiscoFactory.getEntity(1L);
-		medicaoRisco.setAmbiente(null);
+		medicaoRisco.setAmbiente(ambiente);
 		
-		action.setControlaRiscoPor('A');
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		action.setEmpresaSistema(empresa);
+
+		empresa.setControlaRiscoPor('A');
 		action.setMedicaoRisco(medicaoRisco);
 		
-		manager.expects(once()).method("save").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
-		manager.expects(once()).method("getTecnicasUtilizadas");
-		estabelecimentoManager.expects(once()).method("findAllSelect");
-		manager.expects(once()).method("findById").with(eq(medicaoRisco.getId())).will(returnValue(medicaoRisco));
+
+		doThrow(new ObjectNotFoundException("","")).when(manager).save(eq(action.getMedicaoRisco()), any(String[].class), any(String[].class), any(String[].class), any(String[].class),
+				any(String[].class));
+	
+		when(manager.getTecnicasUtilizadas(action.getEmpresaSistema().getId())).thenReturn("");
+		when(estabelecimentoManager.findAllSelect(action.getEmpresaSistema().getId())).thenReturn(new ArrayList<Estabelecimento>());
+		when(manager.findById(eq(medicaoRisco.getId()))).thenReturn(medicaoRisco);
 		
-		ambienteManager.expects(once()).method("findByEstabelecimento");
-		riscoAmbienteManager.expects(once()).method("findRiscosByAmbienteData");
-		manager.expects(once()).method("preparaRiscosDaMedicao");
+		when(ambienteManager.findByEstabelecimento(any(Long[].class))).thenReturn(new ArrayList<Ambiente>());
+		when(riscoAmbienteManager.findRiscosByAmbienteData(eq(ambiente.getId()), any(Date.class))).thenReturn(new ArrayList<Risco>());
+		when(manager.preparaRiscosDaMedicao(eq(medicaoRisco), anyCollection())).thenReturn(new ArrayList<RiscoMedicaoRisco>());
 
 		assertEquals("input", action.update());
-		assertEquals(Long.valueOf(2L), action.getEstabelecimento().getId());
 	}
 
+	@Test
 	public void testGetSet() throws Exception
 	{
-		MedicaoRisco medicaoRisco = MedicaoRiscoFactory.getEntity();
-		
 		action.setMedicaoRisco(null);
 
 		assertNotNull(action.getMedicaoRisco());

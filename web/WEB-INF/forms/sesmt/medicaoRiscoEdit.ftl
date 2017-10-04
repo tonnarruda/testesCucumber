@@ -20,7 +20,6 @@
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AmbienteDWR.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/FuncaoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.autocomplete.js"/>"></script>
@@ -69,9 +68,8 @@
 				<#if atualizacao>
 					<#assign headerValue="Selecione..." />
 				<#else>
-					<#assign headerValue="Selecione o cargo" />
+					<#assign headerValue="Selecione uma função" />
 				</#if>
-				<@ww.select label="Cargo" id="cargo" name="cargo.id" required="true" list="cargos" listKey="id" listValue="nome" headerValue="Selecione..." headerKey="" onchange="javascript:populaFuncoes();" cssStyle="width:240px;"/>
 				<@ww.select label="Função" id="funcao" required="true" name="funcao.id" list="funcoes" listKey="id" listValue="nome" headerValue="${headerValue}" headerKey="" cssStyle="width:240px;" onchange="setGravarDesabilitado('true');"/>
 			</#if>
 			
@@ -113,7 +111,6 @@
 			
 			<@ww.hidden name="medicaoRisco.id" />
 			<@ww.hidden name="controlaRiscoPor" />
-			
 			<@ww.token/>
 		</@ww.form>
 	
@@ -153,21 +150,6 @@
 	      DWRUtil.addOptions("ambiente", data);
 	    }
 
-		function populaFuncoes()
-	    {
-	      var cargoId = document.getElementById("cargo").value;
-
-	      DWRUtil.useLoadingMessage('Carregando...');
-	      FuncaoDWR.getByCargo(createListCargos, cargoId);
-	    }
-
-	    function createListCargos(data)
-	    {
-	      DWRUtil.removeAllOptions("funcao");
-	      DWRUtil.addOptions("funcao", [{id: -1, nome:'Nenhuma'}], "id", "nome");
-	      DWRUtil.addOptions("funcao", data);
-	    }
-	    
 	    var desabilitarGravar ="${desabilitarGravar?string}";
 	    
 	    function getDesabilitado()

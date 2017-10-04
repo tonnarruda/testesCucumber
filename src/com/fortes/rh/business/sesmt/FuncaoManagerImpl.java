@@ -14,25 +14,19 @@ import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
 import com.fortes.rh.model.sesmt.relatorio.QtdPorFuncaoRelatorio;
 import com.fortes.rh.util.CheckListBoxUtil;
-import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.web.tags.CheckBox;
 
 public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> implements FuncaoManager
 {
-	public Integer getCount(Long cargoId)
+	public Integer getCount(Long empresaId, String funcaoNome)
 	{
-		return getDao().getCount(cargoId);
+		return getDao().getCount(empresaId, funcaoNome);
 	}
 
-	public Collection<Funcao> findByCargo(Long cargoId)
+	public Collection<Funcao> findByEmpresa(int page, int pagingSize, Long empresaId, String funcaoNome)
 	{
-		return getDao().findByCargo(0, 0, cargoId);
-	}
-
-	public Collection<Funcao> findByCargo(int page, int pagingSize, Long cargoId)
-	{
-		return getDao().findByCargo(page, pagingSize, cargoId);
+		return getDao().findByEmpresa(page, pagingSize, empresaId, funcaoNome);
 	}
 
 	public Collection<Funcao> findByEmpresa(Long empresaId)
@@ -40,21 +34,6 @@ public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> imp
 		return getDao().findByEmpresa(empresaId);
 	}
 
-	public void removeFuncaoAndHistoricosByCargo(Long cargoId)
-	{
-		Collection<Funcao> funcaos = findByCargo(cargoId);
-
-		if(funcaos.size() > 0)
-		{
-			HistoricoFuncaoManager historicoFuncaoManager = (HistoricoFuncaoManager) SpringUtil.getBean("historicoFuncaoManager");
-
-			CollectionUtil<Funcao> funcaoUtil = new CollectionUtil<Funcao>();
-			Long[] funcaoIds = funcaoUtil.convertCollectionToArrayIds(funcaos);
-			historicoFuncaoManager.removeByFuncoes(funcaoIds);
-			remove(funcaoIds);
-		}
-	}
-	
 	public void removeFuncao(Funcao funcao)
 	{
 		RiscoFuncaoManager riscoFuncaoManager = (RiscoFuncaoManager) SpringUtil.getBean("riscoFuncaoManager");
@@ -79,11 +58,6 @@ public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> imp
 		}
 
 		return idFuncaos;
-	}
-
-	public Collection<Funcao> findFuncaoByFaixa(Long faixaId)
-	{
-		return getDao().findFuncaoByFaixa(faixaId);
 	}
 
 	public Funcao findByIdProjection(Long funcaoId)

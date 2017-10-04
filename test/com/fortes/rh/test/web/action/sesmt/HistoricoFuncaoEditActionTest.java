@@ -10,21 +10,18 @@ import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.business.sesmt.ExameManager;
 import com.fortes.rh.business.sesmt.HistoricoFuncaoManager;
 import com.fortes.rh.business.sesmt.RiscoManager;
 import com.fortes.rh.exception.FortesException;
-import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
 import com.fortes.rh.model.sesmt.RiscoFuncao;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
-import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.sesmt.RiscoFuncaoFactory;
 import com.fortes.rh.web.action.sesmt.HistoricoFuncaoEditAction;
 import com.fortes.web.tags.CheckBox;
@@ -37,7 +34,6 @@ public class HistoricoFuncaoEditActionTest
 	private RiscoManager riscoManager;
 	private CursoManager cursoManager;
 	private EpiManager epiManager;
-	private CargoManager cargoManager;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -57,9 +53,6 @@ public class HistoricoFuncaoEditActionTest
 		
 		cursoManager = mock(CursoManager.class);
 		action.setCursoManager(cursoManager);
-		
-		cargoManager = mock(CargoManager.class);
-		action.setCargoManager(cargoManager);
 	}
 	
 	@Before
@@ -81,10 +74,6 @@ public class HistoricoFuncaoEditActionTest
 	@Test
     public void prepareInsert() throws Exception
     {
-		Cargo cargo = CargoFactory.getEntity(1L);
-		action.setCargoTmp(cargo);
-		
-		when(cargoManager.findByIdProjection(cargo.getId())).thenReturn(cargo);
 		when(exameManager.findByEmpresaComAsoPadrao(action.getEmpresaSistema().getId())).thenReturn(new ArrayList<Exame>());
     	when(epiManager.populaCheckToEpi(action.getEmpresaSistema().getId(), true)).thenReturn(new ArrayList<CheckBox>());
     	when(historicoFuncaManager.findById(action.getHistoricoFuncao().getId())).thenReturn(action.getHistoricoFuncao());
@@ -98,10 +87,6 @@ public class HistoricoFuncaoEditActionTest
 	@Test
     public void prepareUpdate() throws Exception
     {
-		Cargo cargo = CargoFactory.getEntity(1L);
-		action.setCargoTmp(cargo);
-		
-		when(cargoManager.findByIdProjection(cargo.getId())).thenReturn(cargo);
     	when(exameManager.findByEmpresaComAsoPadrao(action.getEmpresaSistema().getId())).thenReturn(new ArrayList<Exame>());
     	when(epiManager.populaCheckToEpi(action.getEmpresaSistema().getId(), true)).thenReturn(new ArrayList<CheckBox>());
     	when(historicoFuncaManager.findById(action.getHistoricoFuncao().getId())).thenReturn(action.getHistoricoFuncao());
@@ -119,18 +104,7 @@ public class HistoricoFuncaoEditActionTest
     }
 	
 	@Test
-    public void insertVeioDoSESMT() throws Exception
-    {
-		action.setVeioDoSESMT(true);
-    	assertEquals(action.insert(), "SUCESSO_VEIO_SESMT");
-    }
-	
-	@Test
 	public void insertException() throws Exception{
-		Cargo cargo = CargoFactory.getEntity(1L);
-		action.setCargoTmp(cargo);
-		
-		when(cargoManager.findByIdProjection(cargo.getId())).thenReturn(cargo);
 		doThrow(new Exception()).when(historicoFuncaManager).saveHistorico(action.getHistoricoFuncao(), action.getExamesChecked(), action.getEpisChecked(), action.getRiscoChecks(), action.getCursosChecked(), action.getRiscosFuncoes());
 		when(exameManager.findByEmpresaComAsoPadrao(action.getEmpresaSistema().getId())).thenReturn(new ArrayList<Exame>());
     	when(epiManager.populaCheckToEpi(action.getEmpresaSistema().getId(), true)).thenReturn(new ArrayList<CheckBox>());
@@ -146,10 +120,6 @@ public class HistoricoFuncaoEditActionTest
 	public void insertFortesException() throws Exception{
 		FortesException fortesException = new FortesException("Ocorreu um erro");
 		setDadosParaSalvarHistorico();
-		Cargo cargo = CargoFactory.getEntity(1L);
-		action.setCargoTmp(cargo);
-		
-		when(cargoManager.findByIdProjection(cargo.getId())).thenReturn(cargo);
 		doThrow(fortesException).when(historicoFuncaManager).saveHistorico(action.getHistoricoFuncao(), action.getExamesChecked(), action.getEpisChecked(), action.getRiscoChecks(), action.getCursosChecked(), action.getRiscosFuncoes());
 		when(exameManager.findByEmpresaComAsoPadrao(action.getEmpresaSistema().getId())).thenReturn(new ArrayList<Exame>());
     	when(epiManager.populaCheckToEpi(action.getEmpresaSistema().getId(), true)).thenReturn(new ArrayList<CheckBox>());
@@ -184,18 +154,7 @@ public class HistoricoFuncaoEditActionTest
     }
 	
 	@Test
-    public void updateVeioDoSESMT() throws Exception
-    {
-		action.setVeioDoSESMT(true);
-    	assertEquals(action.update(), "SUCESSO_VEIO_SESMT");
-    }
-	
-	@Test
 	public void updateException() throws Exception{
-		Cargo cargo = CargoFactory.getEntity(1L);
-		action.setCargoTmp(cargo);
-		
-		when(cargoManager.findByIdProjection(cargo.getId())).thenReturn(cargo);
 		doThrow(new Exception()).when(historicoFuncaManager).saveHistorico(action.getHistoricoFuncao(), action.getExamesChecked(), action.getEpisChecked(), action.getRiscoChecks(), action.getCursosChecked(), action.getRiscosFuncoes());
 		when(exameManager.findByEmpresaComAsoPadrao(action.getEmpresaSistema().getId())).thenReturn(new ArrayList<Exame>());
     	when(epiManager.populaCheckToEpi(action.getEmpresaSistema().getId(), true)).thenReturn(new ArrayList<CheckBox>());
@@ -212,17 +171,13 @@ public class HistoricoFuncaoEditActionTest
 		FortesException fortesException = new FortesException("Ocorreu um erro");
 		setDadosParaSalvarHistorico();
     	
-		Cargo cargo = CargoFactory.getEntity(1L);
-		action.setCargoTmp(cargo);
-		
-		when(cargoManager.findByIdProjection(cargo.getId())).thenReturn(cargo);
-		doThrow(fortesException).when(historicoFuncaManager).saveHistorico(action.getHistoricoFuncao(), action.getExamesChecked(), action.getEpisChecked(), action.getRiscoChecks(), action.getCursosChecked(), action.getRiscosFuncoes());
 		when(exameManager.findByEmpresaComAsoPadrao(action.getEmpresaSistema().getId())).thenReturn(new ArrayList<Exame>());
     	when(epiManager.populaCheckToEpi(action.getEmpresaSistema().getId(), true)).thenReturn(new ArrayList<CheckBox>());
     	when(historicoFuncaManager.findById(action.getHistoricoFuncao().getId())).thenReturn(action.getHistoricoFuncao());
     	when(riscoManager.findRiscosFuncoesByEmpresa(action.getEmpresaSistema().getId())).thenReturn(new ArrayList<RiscoFuncao>());
     	when(cursoManager.populaCheckListCurso(action.getEmpresaSistema().getId())).thenReturn(new ArrayList<CheckBox>());
-    	
+    	doThrow(fortesException).when(historicoFuncaManager).saveHistorico(action.getHistoricoFuncao(), action.getExamesChecked(), action.getEpisChecked(), action.getRiscoChecks(), action.getCursosChecked(), action.getRiscosFuncoes());
+     	
  		assertEquals("input", action.update());
  		assertEquals(fortesException.getMessage(), action.getActionErrors().iterator().next());
 	}
@@ -240,14 +195,8 @@ public class HistoricoFuncaoEditActionTest
 
     	action.setFuncao(funcao);
 
-    	Cargo cargo = new Cargo();
-    	cargo.setId(1L);
-
-    	action.setCargoTmp(cargo);
-
     	assertEquals(action.getHistoricoFuncao(), historicoFuncao);
     	assertEquals(action.getFuncao(), funcao);
-    	assertEquals(action.getCargoTmp(), cargo);
 
     	action.getExamesChecked();
     	action.getExamesCheckList();

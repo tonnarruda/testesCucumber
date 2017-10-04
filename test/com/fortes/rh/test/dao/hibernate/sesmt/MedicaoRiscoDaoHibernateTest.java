@@ -101,9 +101,9 @@ public class MedicaoRiscoDaoHibernateTest extends GenericDaoHibernateTest<Medica
 		empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
-		saveDadosMedicaoFuncao();
-		saveDadosMedicaoFuncao();
-		saveDadosMedicaoFuncao();
+		saveDadosMedicaoFuncao(empresa);
+		saveDadosMedicaoFuncao(empresa);
+		saveDadosMedicaoFuncao(empresa);
 		
 		Collection<MedicaoRisco> colecao = medicaoRiscoDao.findAllSelectByFuncao(empresa.getId(), funcao.getId());
 		
@@ -121,21 +121,16 @@ public class MedicaoRiscoDaoHibernateTest extends GenericDaoHibernateTest<Medica
 		assertEquals(1, medicaoRiscoDao.findTecnicasUtilizadasDistinct(empresa.getId()).size());
 	}
 	
-	public void testGetFuncaoByMedicaoRisco() 
+	public void testGetMedicaoRiscoMedicaoPorFuncao() 
 	{
-		Cargo cargo = CargoFactory.getEntity();
-		cargo.setNome("Cargo");
-		cargoDao.save(cargo);
-		
 		funcao = new Funcao();
-		funcao.setCargo(cargo);
 		funcaoDao.save(funcao);
 		
 		medicaoRisco = MedicaoRiscoFactory.getEntity();
 		medicaoRisco.setFuncao(funcao);
 		medicaoRiscoDao.save(medicaoRisco);
 		
-		assertEquals(medicaoRisco.getFuncao().getCargo().getId(), ((MedicaoRisco) medicaoRiscoDao.getFuncaoByMedicaoRisco(medicaoRisco.getId())).getFuncao().getCargo().getId());
+		assertEquals(medicaoRisco.getFuncao().getId(), ((MedicaoRisco) medicaoRiscoDao.getMedicaoRiscoMedicaoPorFuncao(medicaoRisco.getId())).getFuncao().getId());
 	}
 	
 	public void testFindRiscoMedicaoRiscos() 
@@ -143,18 +138,12 @@ public class MedicaoRiscoDaoHibernateTest extends GenericDaoHibernateTest<Medica
 		Risco risco = RiscoFactory.getEntity();
 		riscoDao.save(risco);
 		
-		Cargo cargo = CargoFactory.getEntity();
-		cargo.setNome("Cargo");
-		cargoDao.save(cargo);
-		
 		funcao = new Funcao();
-		funcao.setCargo(cargo);
 		funcaoDao.save(funcao);
 		
 		medicaoRisco = MedicaoRiscoFactory.getEntity();
 		medicaoRisco.setFuncao(funcao);
 		medicaoRiscoDao.save(medicaoRisco);
-		
 		
 		RiscoMedicaoRisco riscoMedicaoRisco = new RiscoMedicaoRisco();
 		riscoMedicaoRisco.setRisco(risco);
@@ -191,14 +180,14 @@ public class MedicaoRiscoDaoHibernateTest extends GenericDaoHibernateTest<Medica
 		riscoMedicaoRiscoDao.save(riscoMedicaoRisco);
 	}
 	
-	private void saveDadosMedicaoFuncao() {
+	private void saveDadosMedicaoFuncao(Empresa empresa) {
 		Cargo cargo = CargoFactory.getEntity();
 		cargo.setNome("Cargo");
 		cargo.setEmpresa(empresa);
 		cargoDao.save(cargo);
 		
 		funcao = new Funcao();
-		funcao.setCargo(cargo);
+		funcao.setEmpresa(empresa);
 		funcaoDao.save(funcao);
 		
 		medicaoRisco = MedicaoRiscoFactory.getEntity();

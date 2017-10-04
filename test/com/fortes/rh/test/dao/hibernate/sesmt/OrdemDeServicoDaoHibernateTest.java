@@ -71,7 +71,7 @@ public class OrdemDeServicoDaoHibernateTest extends GenericDaoHibernateTest<Orde
 		ordemDeServico.setNomeColaborador(colaborador.getNome());
 		ordemDeServico.setDataAdmisaoColaborador(colaborador.getDataAdmissao());
 		ordemDeServico.setNomeFuncao("Desenvolvedor");
-		ordemDeServico.setCodigoCBO("000000");
+		ordemDeServico.setCodigoCBOCargo("000000");
 		ordemDeServico.setData(dataOS);
 		ordemDeServico.setRevisao(revisao);
 		ordemDeServico.setAtividades("atividades");

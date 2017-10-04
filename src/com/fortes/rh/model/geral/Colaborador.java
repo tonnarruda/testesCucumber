@@ -2441,9 +2441,15 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		inicializaFuncao();
 		funcao.setId(funcaoId);
 	}
+	
 	public void setFuncaoNome(String funcaoNome){
 		inicializaFuncao();
 		funcao.setNome(funcaoNome);
+	}
+	
+	public void setFuncaoCodigoCbo(String funcaoCodigoCbo){
+		inicializaFuncao();
+		funcao.setCodigoCbo(funcaoCodigoCbo);
 	}
 	
 	public void setFuncaoHistoricoFuncaoAtualId(Long historicoFuncaoId){
@@ -2807,15 +2813,6 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		return "";
 	}
 	
-//	@NaoAudita
-//	public Solicitacao getSolicitacao() {
-//		return solicitacao;
-//	}
-//
-//	public void setSolicitacao(Solicitacao solicitacao) {
-//		this.solicitacao = solicitacao;
-//	}
-
 	@NaoAudita
 	public Collection<ColaboradorAfastamento> getColaboradorAfastamento() {
 		return colaboradorAfastamento;

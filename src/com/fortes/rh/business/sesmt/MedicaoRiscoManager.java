@@ -15,6 +15,6 @@ public interface MedicaoRiscoManager extends GenericManager<MedicaoRisco>
 	String getTecnicasUtilizadas(Long empresaId);
 	Collection<RiscoMedicaoRisco> preparaRiscosDaMedicao(MedicaoRisco medicaoRisco, Collection<Risco> riscos);
 	void removeCascade(Long id);
-	public MedicaoRisco getFuncaoByMedicaoRisco(Long medicaoRiscoId);
+	public MedicaoRisco getMedicaoRiscoMedicaoPorFuncao(Long medicaoRiscoId);
 	Collection<RiscoMedicaoRisco> findRiscoMedicaoRiscos(Long medicaoRiscoId);
 }

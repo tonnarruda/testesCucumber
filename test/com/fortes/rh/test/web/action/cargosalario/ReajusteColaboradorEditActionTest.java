@@ -1,14 +1,28 @@
 package com.fortes.rh.test.web.action.cargosalario;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.anyCollection;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
-import mockit.Mockit;
-
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.cargosalario.IndiceManager;
@@ -33,6 +47,7 @@ import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -40,72 +55,66 @@ import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.ReajusteColaboradorFactory;
 import com.fortes.rh.test.factory.cargosalario.TabelaReajusteColaboradorFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
-import com.fortes.rh.test.util.mockObjects.MockActionContext;
-import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.web.action.cargosalario.ReajusteColaboradorEditAction;
 import com.opensymphony.xwork.ActionContext;
 
-public class ReajusteColaboradorEditActionTest extends MockObjectTestCase 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({SecurityUtil.class,ActionContext.class})
+@SuppressWarnings("unchecked")
+public class ReajusteColaboradorEditActionTest
 {
 	private ReajusteColaboradorEditAction action;
-	private Mock manager;
-	private Mock ambienteManager;
+	private ReajusteColaboradorManager manager;
+	private AmbienteManager ambienteManager;
 	
-	private Mock indiceManager;
-	private Mock areaOrganizacionalManager;
-	private Mock colaboradorManager;
-	private Mock tabelaReajusteColaboradorManager;
-	private Mock estabelecimentoManager;
-	private Mock faixaSalarialManager;
-	private Mock funcaoManager;
+	private IndiceManager indiceManager;
+	private AreaOrganizacionalManager areaOrganizacionalManager;
+	private ColaboradorManager colaboradorManager;
+	private TabelaReajusteColaboradorManager tabelaReajusteColaboradorManager;
+	private EstabelecimentoManager estabelecimentoManager;
+	private FaixaSalarialManager faixaSalarialManager;
+	private FuncaoManager funcaoManager;
 	
-	@Override
-	protected void setUp() throws Exception 
+	@Before
+	public void setUp() 
 	{
 		action = new ReajusteColaboradorEditAction();
 		
 		manager = mock(ReajusteColaboradorManager.class);
-		action.setReajusteColaboradorManager((ReajusteColaboradorManager) manager.proxy());
+		action.setReajusteColaboradorManager(manager);
 		
 		ambienteManager = mock(AmbienteManager.class);
-		action.setAmbienteManager((AmbienteManager) ambienteManager.proxy());
+		action.setAmbienteManager(ambienteManager);
 		
 		indiceManager = mock(IndiceManager.class);
-		action.setIndiceManager((IndiceManager) indiceManager.proxy());
+		action.setIndiceManager(indiceManager);
 		
 		areaOrganizacionalManager = mock(AreaOrganizacionalManager.class);
-		action.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
+		action.setAreaOrganizacionalManager(areaOrganizacionalManager);
 		
 		colaboradorManager = mock(ColaboradorManager.class);
-		action.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
+		action.setColaboradorManager(colaboradorManager);
 		
 		tabelaReajusteColaboradorManager = mock(TabelaReajusteColaboradorManager.class);
-		action.setTabelaReajusteColaboradorManager((TabelaReajusteColaboradorManager) tabelaReajusteColaboradorManager.proxy());
+		action.setTabelaReajusteColaboradorManager(tabelaReajusteColaboradorManager);
 		
 		estabelecimentoManager = mock(EstabelecimentoManager.class);
-		action.setEstabelecimentoManager((EstabelecimentoManager) estabelecimentoManager.proxy());
+		action.setEstabelecimentoManager(estabelecimentoManager);
 		
 		faixaSalarialManager = mock(FaixaSalarialManager.class);
-		action.setFaixaSalarialManager((FaixaSalarialManager) faixaSalarialManager.proxy());
+		action.setFaixaSalarialManager(faixaSalarialManager);
 		
 		funcaoManager = mock(FuncaoManager.class);
-		action.setFuncaoManager((FuncaoManager) funcaoManager.proxy());
+		action.setFuncaoManager(funcaoManager);
 		
-		Mockit.redefineMethods(ActionContext.class, MockActionContext.class);
-		Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
-		
+        PowerMockito.mockStatic(SecurityUtil.class);
+        PowerMockito.mockStatic(ActionContext.class);
+        
 		action.setEmpresaSistema(EmpresaFactory.getEmpresa(5L));
 	}
 	
-	@Override
-	protected void tearDown() throws Exception 
-	{
-		action = null;
-		manager = null;
-		MockSecurityUtil.verifyRole = false;
-	}
-	
+	@Test
 	public void testInsertSolicitacaoReajuste() throws Exception
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
@@ -138,35 +147,38 @@ public class ReajusteColaboradorEditActionTest extends MockObjectTestCase
 		action.setColaborador(colaborador);
 		action.setEmpresaSistema(empresa);
 		
-		tabelaReajusteColaboradorManager.expects(once()).method("findByIdProjection").with(eq(tabelaReajusteColaborador.getId())).will(returnValue(tabelaReajusteColaborador));
-		colaboradorManager.expects(once()).method("findByIdDadosBasicos").with(eq(colaborador.getId()), ANYTHING).will(returnValue(colaborador));
-		manager.expects(once()).method("validaSolicitacaoReajuste").isVoid();
-		manager.expects(once()).method("insertSolicitacaoReajuste").with(eq(reajusteColaborador), eq(empresa.getId()), eq(colaborador)).isVoid();
+		Integer statusRetornoAC = null;
 		
+		when(tabelaReajusteColaboradorManager.findByIdProjection(eq(tabelaReajusteColaborador.getId()))).thenReturn(tabelaReajusteColaborador);
+		when(colaboradorManager.findByIdDadosBasicos(eq(colaborador.getId()), eq(statusRetornoAC))).thenReturn(colaborador);
+		doNothing().when(manager).validaSolicitacaoReajuste(reajusteColaborador);
+		doNothing().when(manager).insertSolicitacaoReajuste(eq(reajusteColaborador), eq(empresa.getId()), eq(colaborador));
+
 		mocksPrepareSolicitacaoReajuste(empresasPermitidas);
 		
 		assertEquals("success", action.insertSolicitacaoReajuste());
 		assertEquals("Solicitação de realinhamento incluída com sucesso", action.getActionSuccess().toArray()[0]);
 	}
 	
-	private void mocksPrepareSolicitacaoReajuste(Long[] empresasPermitidas)
+	private void mocksPrepareSolicitacaoReajuste(Long[] empresasPermitidas) throws Exception
 	{
 		Collection<AreaOrganizacional> areaOrganizacionalsPropostas = new ArrayList<AreaOrganizacional>();
 		areaOrganizacionalsPropostas.add(AreaOrganizacionalFactory.getEntity(1L));
 		areaOrganizacionalsPropostas.add(AreaOrganizacionalFactory.getEntity(2L));
 		
-		indiceManager.expects(once()).method("findAll").with(ANYTHING).will(returnValue(new ArrayList<Indice>()));
+		when(indiceManager.findAll(action.getEmpresaSistema())).thenReturn(new ArrayList<Indice>());
 		
-		areaOrganizacionalManager.expects(once()).method("findAllListAndInativas").with(eq(AreaOrganizacional.TODAS), ANYTHING, eq(empresasPermitidas)).will(returnValue(new ArrayList<AreaOrganizacional>()));
+		when(areaOrganizacionalManager.findAllListAndInativas(eq(AreaOrganizacional.TODAS), anyCollection(), eq(empresasPermitidas))).thenReturn(new ArrayList<AreaOrganizacional>());
 		
-		areaOrganizacionalManager.expects(once()).method("montaFamilia").will(returnValue(areaOrganizacionalsPropostas));
+		when(areaOrganizacionalManager.montaFamilia(areaOrganizacionalsPropostas)).thenReturn(areaOrganizacionalsPropostas);
 		
-		tabelaReajusteColaboradorManager.expects(once()).method("findAllSelectByNaoAprovada").with(eq(action.getEmpresaSistema().getId()), eq(TipoReajuste.COLABORADOR)).will(returnValue(new ArrayList<TabelaReajusteColaborador>()));
-		estabelecimentoManager.expects(once()).method("findAllSelect").with(eq(action.getEmpresaSistema().getId())).will(returnValue(new ArrayList<Estabelecimento>()));
-		faixaSalarialManager.expects(once()).method("findFaixas").with(eq(action.getEmpresaSistema()),eq(Cargo.ATIVO), ANYTHING).will(returnValue(new ArrayList<Estabelecimento>()));
+		when(tabelaReajusteColaboradorManager.findAllSelectByNaoAprovada(eq(action.getEmpresaSistema().getId()), eq(TipoReajuste.COLABORADOR))).thenReturn(new ArrayList<TabelaReajusteColaborador>());
+		when(estabelecimentoManager.findAllSelect(eq(action.getEmpresaSistema().getId()))).thenReturn(new ArrayList<Estabelecimento>());
+		when(faixaSalarialManager.findFaixas(eq(action.getEmpresaSistema()),eq(Cargo.ATIVO), anyLong())).thenReturn(new ArrayList<FaixaSalarial>());
+		when(SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession())).thenReturn(UsuarioFactory.getEntity(1L));
 	}
 
-	
+	@Test
 	public void testPrepareSolicitacaoReajuste() throws Exception
 	{
 		Long[] empresasPermitidas = new Long[]{action.getEmpresaSistema().getId()};
@@ -175,11 +187,21 @@ public class ReajusteColaboradorEditActionTest extends MockObjectTestCase
 		assertEquals("success",action.prepareSolicitacaoReajuste());
 	}
 	
+	@Test
 	public void testPrepareInsert() throws Exception
 	{
 		assertEquals("success", action.prepareInsert());
 	}
 	
+	@Before
+	public void prepareSession(){
+		Map<Object, Object> map = new HashMap<Object, Object>();
+		when(ActionContext.getContext()).thenReturn(mock(ActionContext.class));
+		when(ActionContext.getContext().getSession()).thenReturn(map);
+	}
+	
+	@SuppressWarnings("rawtypes")
+	@Test
 	public void testPrepareUpdate() throws Exception
 	{
 		ReajusteColaborador reajusteColaborador = ReajusteColaboradorFactory.getReajusteColaborador(1L);
@@ -193,30 +215,31 @@ public class ReajusteColaboradorEditActionTest extends MockObjectTestCase
 		reajusteColaborador.setAmbienteAtual(new Ambiente());
 		reajusteColaborador.setFuncaoAtual(new Funcao());
 		
+		Map session = ActionContext.getContext().getSession();
 		action.setReajusteColaborador(reajusteColaborador);
 		
-		manager.expects(once()).method("getSituacaoReajusteColaborador").with(eq(1L)).will(returnValue(reajusteColaborador));
-		indiceManager.expects(once()).method("findAll").with(ANYTHING).will(returnValue(new ArrayList<Indice>()));
-		estabelecimentoManager.expects(once()).method("findAllSelect").with(eq(action.getEmpresaSistema().getId())).will(returnValue(new ArrayList<Estabelecimento>()));
+		when(manager.getSituacaoReajusteColaborador(eq(1L))).thenReturn(reajusteColaborador);
+		when(indiceManager.findAll(action.getEmpresaSistema())).thenReturn(new ArrayList<Indice>());
+		when(estabelecimentoManager.findAllSelect(eq(action.getEmpresaSistema().getId()))).thenReturn(new ArrayList<Estabelecimento>());
 		
 		Colaborador colaboradorLogado = ColaboradorFactory.getEntity(10L);
-		colaboradorManager.expects(once()).method("findByUsuario").will(returnValue(colaboradorLogado));
+		when(colaboradorManager.findByUsuario(anyLong())).thenReturn(colaboradorLogado.getId());
 		
-		areaOrganizacionalManager.expects(once()).method("findAllList")
-						.with(eq(colaboradorLogado.getId()), eq(action.getEmpresaSistema().getId()),eq(AreaOrganizacional.ATIVA), ANYTHING).will(returnValue(new ArrayList<AreaOrganizacional>()));
+		when(areaOrganizacionalManager.findAllList(eq(colaboradorLogado.getId()), eq(action.getEmpresaSistema().getId()),eq(AreaOrganizacional.ATIVA), anyLong())).thenReturn(new ArrayList<AreaOrganizacional>());
 		
-		areaOrganizacionalManager.expects(once()).method("montaFamilia").will(returnValue(new ArrayList<AreaOrganizacional>()));
+		when(areaOrganizacionalManager.montaFamilia(anyCollection())).thenReturn(new ArrayList<AreaOrganizacional>());
 		
-		areaOrganizacionalManager.expects(once()).method("getAreaOrganizacional").will(returnValue(new AreaOrganizacional()));
+		when(areaOrganizacionalManager.getAreaOrganizacional(anyCollection(), anyLong())).thenReturn(new AreaOrganizacional());
 		
-		funcaoManager.expects(once()).method("findFuncaoByFaixa").will(returnValue(new ArrayList<Funcao>()));
-		ambienteManager.expects(once()).method("findByEstabelecimento").will(returnValue(new ArrayList<Ambiente>()));
-		faixaSalarialManager.expects(once()).method("findFaixas").with(eq(action.getEmpresaSistema()),eq(Cargo.ATIVO), ANYTHING).will(returnValue(new ArrayList<Estabelecimento>()));
-		manager.expects(once()).method("calculaSalarioProposto").with(eq(reajusteColaborador));
+		when(funcaoManager.findByEmpresa(anyLong())).thenReturn(new ArrayList<Funcao>());
+		when(ambienteManager.findByEstabelecimento(any(Long[].class))).thenReturn(new ArrayList<Ambiente>());
+		when(faixaSalarialManager.findFaixas(eq(action.getEmpresaSistema()),eq(Cargo.ATIVO), anyLong())).thenReturn(new ArrayList<FaixaSalarial>());
+		when(manager.calculaSalarioProposto(eq(reajusteColaborador))).thenReturn(1000.0);
 		
-		assertEquals("success", action.prepareUpdate());
+		when(SecurityUtil.getIdUsuarioLoged(session)).thenReturn(1l);
 	}
 	
+	@Test
 	public void testUpdate() throws Exception
 	{
 		ReajusteColaborador reajusteColaborador = ReajusteColaboradorFactory.getReajusteColaborador(1L);
@@ -224,12 +247,15 @@ public class ReajusteColaboradorEditActionTest extends MockObjectTestCase
 		reajusteColaborador.setAreaOrganizacionalProposta(AreaOrganizacionalFactory.getEntity(2L));
 		action.setReajusteColaborador(reajusteColaborador);
 		
-		areaOrganizacionalManager.expects(once()).method("verificaMaternidade").will(returnValue(false));
-		manager.expects(once()).method("updateReajusteColaborador").with(eq(reajusteColaborador));
+		Boolean ativa = null;
+		
+		when(areaOrganizacionalManager.verificaMaternidade(eq(reajusteColaborador.getAreaOrganizacionalProposta().getId()), eq(ativa))).thenReturn(false);
+		doNothing().when(manager).updateReajusteColaborador(eq(reajusteColaborador));
 		
 		assertEquals("success", action.update());
 	}
 	
+	@Test
 	public void testUpdateException() throws Exception
 	{
 		ReajusteColaborador reajusteColaborador = ReajusteColaboradorFactory.getReajusteColaborador(1L);
@@ -244,26 +270,27 @@ public class ReajusteColaboradorEditActionTest extends MockObjectTestCase
 		reajusteColaborador.setFuncaoAtual(new Funcao());
 		action.setReajusteColaborador(reajusteColaborador);
 		
-		areaOrganizacionalManager.expects(once()).method("verificaMaternidade").will(returnValue(true));
+		when(areaOrganizacionalManager.verificaMaternidade(anyLong(), anyBoolean())).thenReturn(true);
 		
-		manager.expects(once()).method("getSituacaoReajusteColaborador").with(eq(1L)).will(returnValue(reajusteColaborador));
-		indiceManager.expects(once()).method("findAll").with(ANYTHING).will(returnValue(new ArrayList<Indice>()));
-		estabelecimentoManager.expects(once()).method("findAllSelect").with(eq(action.getEmpresaSistema().getId())).will(returnValue(new ArrayList<Estabelecimento>()));
+		when(manager.getSituacaoReajusteColaborador(eq(1L))).thenReturn(reajusteColaborador);
+		when(indiceManager.findAll(action.getEmpresaSistema())).thenReturn(new ArrayList<Indice>());
+		when(estabelecimentoManager.findAllSelect(eq(action.getEmpresaSistema().getId()))).thenReturn(new ArrayList<Estabelecimento>());
 		
 		Colaborador colaboradorLogado = ColaboradorFactory.getEntity(10L);
-		colaboradorManager.expects(once()).method("findByUsuario").will(returnValue(colaboradorLogado));
-		areaOrganizacionalManager.expects(once()).method("findAllList").with(eq(colaboradorLogado.getId()), eq(action.getEmpresaSistema().getId()),eq(AreaOrganizacional.ATIVA), ANYTHING).will(returnValue(new ArrayList<AreaOrganizacional>()));
-		areaOrganizacionalManager.expects(once()).method("montaFamilia").will(returnValue(new ArrayList<AreaOrganizacional>()));
-		areaOrganizacionalManager.expects(once()).method("getAreaOrganizacional").will(returnValue(new AreaOrganizacional()));
-		funcaoManager.expects(once()).method("findFuncaoByFaixa").will(returnValue(new ArrayList<Funcao>()));
-		ambienteManager.expects(once()).method("findByEstabelecimento").will(returnValue(new ArrayList<Ambiente>()));
-		faixaSalarialManager.expects(once()).method("findFaixas").with(eq(action.getEmpresaSistema()),eq(Cargo.ATIVO), ANYTHING).will(returnValue(new ArrayList<Estabelecimento>()));
-		manager.expects(once()).method("calculaSalarioProposto").with(eq(reajusteColaborador));
+		when(colaboradorManager.findByUsuario(anyLong())).thenReturn(colaboradorLogado.getId());
+		when(areaOrganizacionalManager.findAllList(eq(colaboradorLogado.getId()), eq(action.getEmpresaSistema().getId()),eq(AreaOrganizacional.ATIVA), anyLong())).thenReturn(new ArrayList<AreaOrganizacional>());
+		when(areaOrganizacionalManager.montaFamilia(anyCollection())).thenReturn(new ArrayList<AreaOrganizacional>());
+		when(areaOrganizacionalManager.getAreaOrganizacional(anyCollection(), anyLong())).thenReturn(new AreaOrganizacional());
+		when(funcaoManager.findByEmpresa(anyLong())).thenReturn(new ArrayList<Funcao>());
+		when(ambienteManager.findByEstabelecimento(any(Long[].class))).thenReturn(new ArrayList<Ambiente>());
+		when(faixaSalarialManager.findFaixas(eq(action.getEmpresaSistema()),eq(Cargo.ATIVO), anyLong())).thenReturn(new ArrayList<FaixaSalarial>());
+		when(manager.calculaSalarioProposto(eq(reajusteColaborador))).thenReturn(1500.0);
 		
 		assertEquals("input", action.update());
 		assertEquals("Não é possível fazer solicitações para áreas que possuem sub-áreas.", action.getActionErrors().toArray()[0]);
 	}
 	
+	@Test
 	public void testGetSets()
 	{
 		action.setReajusteColaborador(null);

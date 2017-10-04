@@ -3,12 +3,15 @@ package com.fortes.rh.dao.hibernate.sesmt;
 import java.util.Collection;
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
@@ -19,17 +22,17 @@ import com.fortes.rh.model.sesmt.Funcao;
 @SuppressWarnings("unchecked")
 public class FuncaoDaoHibernate extends GenericDaoHibernate<Funcao> implements FuncaoDao
 {
-	public Integer getCount(Long cargoId)
+	public Integer getCount(Long empresaId, String funcaoNome)
 	{
 		Criteria criteria = getSession().createCriteria(Funcao.class, "f");
 		criteria.setProjection(Projections.rowCount());
 
-		montaConsulta(criteria, cargoId);
+		montaConsulta(criteria, empresaId, funcaoNome);
 
 		return (Integer) criteria.list().get(0);
 	}
 
-	public Collection<Funcao> findByCargo(int page, int pagingSize, Long cargoId)
+	public Collection<Funcao> findByEmpresa(int page, int pagingSize, Long empresaId, String funcaoNome)
 	{
 		Criteria criteria = getSession().createCriteria(Funcao.class, "f");
 
@@ -38,7 +41,7 @@ public class FuncaoDaoHibernate extends GenericDaoHibernate<Funcao> implements F
 		p.add(Projections.property("f.nome"), "nome");
 		criteria.setProjection(p);
 
-		montaConsulta(criteria, cargoId);
+		montaConsulta(criteria, empresaId, funcaoNome);
 
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Funcao.class));
 
@@ -53,9 +56,12 @@ public class FuncaoDaoHibernate extends GenericDaoHibernate<Funcao> implements F
 		return criteria.list();
 	}
 
-	private void montaConsulta(Criteria criteria, Long cargoId)
+	private void montaConsulta(Criteria criteria, Long empresaId, String funcaoNome)
 	{
-		criteria.add(Expression.eq("f.cargo.id", cargoId));
+		criteria.add(Expression.eq("f.empresa.id", empresaId));
+		
+		if(StringUtils.isNotBlank(funcaoNome))
+			criteria.add(Restrictions.ilike("f.nome", funcaoNome, MatchMode.ANYWHERE));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 	}
@@ -63,8 +69,6 @@ public class FuncaoDaoHibernate extends GenericDaoHibernate<Funcao> implements F
 	public Collection<Funcao> findByEmpresa(Long empresaId)
 	{
 		Criteria criteria = getSession().createCriteria(Funcao.class, "f");
-		criteria.createCriteria("cargo", "c");
-
 		ProjectionList p = Projections.projectionList().create();
 
 		p.add(Projections.property("f.id"), "id");
@@ -72,27 +76,8 @@ public class FuncaoDaoHibernate extends GenericDaoHibernate<Funcao> implements F
 
 		criteria.setProjection(p);
 
-		criteria.add(Expression.eq("c.empresa.id", empresaId));
+		criteria.add(Expression.eq("f.empresa.id", empresaId));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(Funcao.class));
-
-		return criteria.list();
-	}
-
-	public Collection<Funcao> findFuncaoByFaixa(Long faixaId)
-	{
-		Criteria criteria = getSession().createCriteria(Funcao.class, "f");
-		criteria.createCriteria("f.cargo", "c", Criteria.LEFT_JOIN);
-		criteria.createCriteria("c.faixaSalarials", "fs", Criteria.LEFT_JOIN);
-
-		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("f.id"), "id");
-		p.add(Projections.property("f.nome"), "nome");
-		criteria.setProjection(Projections.distinct(p));
-
-		criteria.add(Expression.eq("fs.id", faixaId));
-		criteria.addOrder(Order.asc("f.nome"));
-
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Funcao.class));
 
 		return criteria.list();
@@ -105,7 +90,7 @@ public class FuncaoDaoHibernate extends GenericDaoHibernate<Funcao> implements F
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("f.id"), "id");
 		p.add(Projections.property("f.nome"), "nome");
-		p.add(Projections.property("f.cargo.id"), "projectionCargoId");
+		p.add(Projections.property("f.codigoCbo"), "codigoCbo");
 		criteria.setProjection(Projections.distinct(p));
 
 		criteria.add(Expression.eq("f.id", funcaoId));
@@ -194,9 +179,8 @@ public class FuncaoDaoHibernate extends GenericDaoHibernate<Funcao> implements F
 		hql.append("(case when c.pessoal.sexo = 'F' then count(c.pessoal.sexo) else 0 end) ");
 		hql.append("from HistoricoColaborador hc ");
 		hql.append("    inner join hc.funcao f ");
-		hql.append("    inner join f.cargo ca ");
 		hql.append("    inner join hc.colaborador c ");
-		hql.append("where ca.empresa.id = :empresaId ");
+		hql.append("where f.empresa.id = :empresaId ");
 
 		if(tipoAtivo == 'A') // Ativo
 			hql.append("    and (c.dataDesligamento is null or c.dataDesligamento > :data) ");

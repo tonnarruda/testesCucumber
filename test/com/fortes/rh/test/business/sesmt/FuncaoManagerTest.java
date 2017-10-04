@@ -1,24 +1,33 @@
 package com.fortes.rh.test.business.sesmt;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
-import mockit.Mockit;
-
 import org.hibernate.ObjectNotFoundException;
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
-import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.BDDMockito;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.sesmt.FuncaoManagerImpl;
 import com.fortes.rh.business.sesmt.HistoricoFuncaoManager;
 import com.fortes.rh.business.sesmt.RiscoFuncaoManager;
 import com.fortes.rh.dao.sesmt.FuncaoDao;
-import com.fortes.rh.model.cargosalario.Cargo;
-import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
@@ -27,100 +36,87 @@ import com.fortes.rh.model.sesmt.HistoricoFuncao;
 import com.fortes.rh.model.sesmt.relatorio.QtdPorFuncaoRelatorio;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
-import com.fortes.rh.test.factory.cargosalario.CargoFactory;
-import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.FuncaoFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
-import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
-import com.fortes.rh.test.util.mockObjects.MockSpringUtil;
 import com.fortes.rh.util.SpringUtil;
 
-public class FuncaoManagerTest extends MockObjectTestCase
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({SecurityUtil.class,SpringUtil.class})
+public class FuncaoManagerTest 
 {
 	private FuncaoManagerImpl funcaoManager = new FuncaoManagerImpl();
-	private Mock funcaoDao = null;
-	private Mock historicoColaboradorManager;
-	private Mock historicoFuncaoManager;
-	private Mock riscoFuncaoManager;
+	private FuncaoDao funcaoDao;
+	private HistoricoColaboradorManager historicoColaboradorManager;
+	private HistoricoFuncaoManager historicoFuncaoManager;
+	private RiscoFuncaoManager riscoFuncaoManager;
 
-    protected void setUp() throws Exception
+	@Before
+    public void setUp() throws Exception
     {
-        super.setUp();
-        funcaoDao = new Mock(FuncaoDao.class);
-        funcaoManager.setDao((FuncaoDao) funcaoDao.proxy());
+        funcaoDao = mock(FuncaoDao.class);
+        funcaoManager.setDao(funcaoDao);
         
         historicoColaboradorManager = mock(HistoricoColaboradorManager.class);
         historicoFuncaoManager = mock(HistoricoFuncaoManager.class);
         riscoFuncaoManager = mock(RiscoFuncaoManager.class);
         
-        Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
-        Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
-        MockSpringUtil.mocks.put("historicoFuncaoManager", historicoFuncaoManager);
-        MockSpringUtil.mocks.put("historicoColaboradorManager", historicoColaboradorManager);
-        MockSpringUtil.mocks.put("riscoFuncaoManager", riscoFuncaoManager);
+        PowerMockito.mockStatic(SpringUtil.class);
+        PowerMockito.mockStatic(SecurityUtil.class);
+        
+        BDDMockito.given(SpringUtil.getBean("historicoFuncaoManager")).willReturn(historicoFuncaoManager);
+        BDDMockito.given(SpringUtil.getBean("historicoColaboradorManager")).willReturn(historicoColaboradorManager);
+        BDDMockito.given(SpringUtil.getBean("riscoFuncaoManager")).willReturn(riscoFuncaoManager);
     }
     
-    @Override
-    protected void tearDown() throws Exception {
-    	MockSecurityUtil.verifyRole = false;
-    	Mockit.restoreAllOriginalDefinitions();
-    }
-
+	@Test
     public void testGetCount()
 	{
     	Collection<Funcao> funcaos = new ArrayList<Funcao>();
-
-    	funcaoDao.expects(once()).method("getCount").with(ANYTHING).will(returnValue(funcaos.size()));
-
-    	assertEquals(funcaoManager.getCount(1L).intValue(), funcaos.size());
+    	Long empresaId = 1L;
+    	when(funcaoDao.getCount(empresaId, "")).thenReturn(funcaos.size());
+    	assertEquals(funcaoManager.getCount(empresaId, "").intValue(), funcaos.size());
 	}
 
-	public void testFindByCargo()throws Exception
+	@Test
+	public void testFindByEmpresaComPaginacao()throws Exception
 	{
+		Long empresaId = 1L;
 		Collection<Funcao> funcaos = new ArrayList<Funcao>();
-
-		Cargo cargo = new Cargo();
-		cargo.setId(2L);
-
 		Funcao f1 = new Funcao();
 		f1.setId(1L);
-		f1.setCargo(cargo);
 
 		Funcao f2 = new Funcao();
 		f2.setId(2L);
-		f2.setCargo(cargo);
 
 		funcaos.add(f1);
 		funcaos.add(f2);
 
-		funcaoDao.expects(once()).method("findByCargo").with(eq(0), eq(0), eq(cargo.getId())).will(returnValue(funcaos));
-		Collection<Funcao> retorno1 = funcaoManager.findByCargo(cargo.getId());
-
-		assertEquals(funcaos, retorno1);
-
-		funcaoDao.expects(once()).method("findByCargo").with(eq(1), eq(15), eq(cargo.getId())).will(returnValue(funcaos));
-		Collection<Funcao> retorno2 = funcaoManager.findByCargo(1, 15, cargo.getId());
+		when(funcaoDao.findByEmpresa(eq(1), eq(15), eq(empresaId), eq(""))).thenReturn(funcaos);
+		Collection<Funcao> retorno2 = funcaoManager.findByEmpresa(1, 15, empresaId, "");
 
 		assertEquals(funcaos, retorno2);
 	}
 
+	@Test
 	public void testFindByEmpresa()throws Exception
 	{
 		Collection<Funcao> funcaos = new ArrayList<Funcao>();
-		funcaoDao.expects(once()).method("findByEmpresa").with(eq(1L)).will(returnValue(funcaos));
+		when(funcaoDao.findByEmpresa(eq(1L))).thenReturn(funcaos);
 		Collection<Funcao> funcaoRetorno = funcaoManager.findByEmpresa(1L);
 		assertEquals(funcaos, funcaoRetorno);
 	}
 	
+	@Test
 	public void testFindByIdProjection()
 	{
 		Funcao funcao = FuncaoFactory.getEntity(1L);
 		
-		funcaoDao.expects(once()).method("findByIdProjection").with(eq(funcao.getId())).will(returnValue(funcao));
+		when(funcaoDao.findByIdProjection(eq(funcao.getId()))).thenReturn(funcao);
 
 		assertEquals(funcao, funcaoManager.findByIdProjection(funcao.getId()));
 	}
 
+	@Test
 	public void testGetIdsFuncoes()throws Exception
 	{
 		Funcao f1 = new Funcao();
@@ -155,33 +151,8 @@ public class FuncaoManagerTest extends MockObjectTestCase
 		Collection<Long> idsRetorno = funcaoManager.getIdsFuncoes(colhc);
 		assertEquals(colLong.size(),idsRetorno.size());
 	}
-
-	public void testFindFuncaoByFaixa()
-	{
-		Cargo cargo = CargoFactory.getEntity(1L);
-
-		FaixaSalarial faixa = FaixaSalarialFactory.getEntity(1L);
-		faixa.setCargo(cargo);
-
-		Funcao funcao1 = FuncaoFactory.getEntity(1L);
-		funcao1.setNome("Programador");
-		funcao1.setCargo(cargo);
-
-		Funcao funcao2 = FuncaoFactory.getEntity(2L);
-		funcao2.setNome("Arquiteto");
-		funcao2.setCargo(cargo);
-
-		Collection<Funcao> funcaos = new ArrayList<Funcao>();
-		funcaos.add(funcao1);
-		funcaos.add(funcao2);
-
-		funcaoDao.expects(once()).method("findFuncaoByFaixa").with(ANYTHING).will(returnValue(funcaos));
-
-		Collection<Funcao> retorno = funcaoManager.findFuncaoByFaixa(faixa.getId());
-
-		assertEquals(funcaos.size(), retorno.size());
-	}
 	
+	@Test
 	public void testGetQtdColaboradorByFuncao()
 	{
 		Funcao funcao1 = FuncaoFactory.getEntity(1L);
@@ -200,11 +171,11 @@ public class FuncaoManagerTest extends MockObjectTestCase
 		retorno.add(new Object[]{1L, "Motorista", null, 1});
 		retorno.add(new Object[]{2L, "Manobrista", null, 1});
 		
-		funcaoDao.expects(atLeastOnce()).method("getQtdColaboradorByFuncao").with(ANYTHING, ANYTHING, eq(data), eq('T')).will(returnValue(retorno));
 		
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(3L);
 		
+		when(funcaoDao.getQtdColaboradorByFuncao(eq(empresa.getId()), anyLong(), eq(data), eq('T'))).thenReturn(retorno);
 		Collection<QtdPorFuncaoRelatorio> funcoesComTotalHomens_E_Mulheres = funcaoManager.getQtdColaboradorByFuncao(empresa.getId(), estabelecimento.getId(), data, 'T');
 		assertEquals(2, funcoesComTotalHomens_E_Mulheres.size());
 		
@@ -219,21 +190,25 @@ public class FuncaoManagerTest extends MockObjectTestCase
 		assertEquals((Integer)1, qtdPorFuncaoRelatorio2.getQtdMulheres());
 	}
 	
+	@Test
     public void testPopulaCheckBox()
     {
     	Funcao fun1 = FuncaoFactory.getEntity(1L);
     	Funcao fun2 = FuncaoFactory.getEntity(2L);
     	
-    	funcaoDao.expects(once()).method("findAll").will(returnValue(Arrays.asList(fun1, fun2)));
+    	when(funcaoDao.findAll()).thenReturn(Arrays.asList(fun1, fun2));
     	assertEquals(2, funcaoManager.populaCheckBox().size());
     	
     }
+	
+	@Test
     public void testPopulaCheckBoxException()
     {
-    	funcaoDao.expects(once()).method("findAll").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
+		doThrow(new ObjectNotFoundException("","")).when(funcaoDao).findAll();
     	assertEquals(0, funcaoManager.populaCheckBox().size());
     }
 	
+	@Test
 	public void testRemoveFuncao() throws Exception
 	{
 		Funcao funcao = FuncaoFactory.getEntity(32L);
@@ -244,15 +219,12 @@ public class FuncaoManagerTest extends MockObjectTestCase
 		HistoricoFuncao hist2 = new HistoricoFuncao();
 		hist2.setId(2L);
 		
-		riscoFuncaoManager.expects(once()).method("removeByFuncao");
-		historicoFuncaoManager.expects(once()).method("findByFuncao").will(returnValue(Arrays.asList(hist1, hist2)));
-		historicoFuncaoManager.expects(atLeastOnce()).method("remove");
-		
-		funcaoDao.expects(once()).method("remove").isVoid();
+		when(historicoFuncaoManager.findByFuncao(funcao.getId())).thenReturn(Arrays.asList(hist1, hist2));
 		
 		funcaoManager.removeFuncao(funcao);
 	}
 	
+	@Test
 	public void testRemoveFuncaoException() 
 	{
 		Funcao funcao = FuncaoFactory.getEntity(32L);
@@ -263,8 +235,7 @@ public class FuncaoManagerTest extends MockObjectTestCase
 		HistoricoFuncao hist2 = new HistoricoFuncao();
 		hist2.setId(2L);
 		
-		riscoFuncaoManager.expects(once()).method("removeByFuncao");
-		historicoFuncaoManager.expects(once()).method("findByFuncao").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
+		doThrow(new ObjectNotFoundException("","")).when(historicoFuncaoManager).findByFuncao(funcao.getId());
 		
 		Exception ex= null;
 		

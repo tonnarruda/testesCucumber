@@ -137,7 +137,7 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 	//@Audita(operacao="Atualização do Ambiente e Função")
 	public boolean updateAmbienteEFuncao(HistoricoColaborador historicoColaborador) throws Exception;
 
-	public Collection<HistoricoColaborador> getHistoricosComAmbienteEFuncao(Long colaboradorId);
+	public Collection<HistoricoColaborador> getHistoricosComAmbienteEFuncao(Long colaboradorId, Long empresaId);
 
 	public Double getValorTotalFolha(Long empresaId, Date data);
 

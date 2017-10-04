@@ -19,7 +19,7 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/lntEdit.ftl</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.desenvolvimento.LntEditAction" method="insert">
-			<interceptor-ref name="defaultUpdateStack" />
+			<interceptor-ref name="defaultUpdateStack"/>
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/lntEdit.ftl</result>
 		</action>

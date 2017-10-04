@@ -2090,22 +2090,6 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCaseManager<H
 		assertEquals(2, manager.findAllByColaborador(1L).size());
 	}
 	
-	public void testGetHistoricosComAmbienteEFuncao()
-	{
-		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity(1L);
-		historicoColaborador1.setEstabelecimento(EstabelecimentoFactory.getEntity(1L));
-		historicoColaborador1.setCargoId(1L);
-		
-		Collection<HistoricoColaborador> historicoColaboradors = Arrays.asList(historicoColaborador1);
-
-		
-		historicoColaboradorDao.expects(once()).method("findAllByColaborador").with(eq(1L)).will(returnValue(historicoColaboradors));
-		ambienteManager.expects(once()).method("findByEstabelecimento").with(eq(new Long[]{1L})).will(returnValue(new ArrayList<Ambiente>()));
-		funcaoManager.expects(once()).method("findByCargo").with(eq(1L)).will(returnValue(new ArrayList<Funcao>()));
-		
-		assertEquals(1, manager.getHistoricosComAmbienteEFuncao(1L).size());
-	}
-	
 	public void testUpdateAmbientesEFuncoes() throws Exception
 	{
 		Colaborador colaborador1 = ColaboradorFactory.getEntity(1L);

@@ -13,7 +13,6 @@
 	
 <style> :disabled { background: #EFEFEF; } </style>	
 
-	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/interface/FuncaoDWR.js?version=${versao}"/>"></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/interface/AmbienteDWR.js?version=${versao}"/>"></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ReajusteDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>'></script>
@@ -26,26 +25,6 @@
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/areaOrganizacional.js?version=${versao}"/>"></script>
 	
 	<script type="text/javascript">
-		function populaFuncao(faixaId, funcaoId)
-		{
-			funcId = funcaoId;
-			if(faixaId != "null" && faixaId != "")
-			{
-				DWRUtil.useLoadingMessage('Carregando...');
-				FuncaoDWR.getFuncaoByFaixaSalarial(function(data){createListFuncao(data, funcaoId);
-											}, faixaId, funcaoId);
-			}
-		}
-
-		function createListFuncao(data, funcaoId)
-		{
-			DWRUtil.removeAllOptions("funcao");
-			DWRUtil.addOptions("funcao", data);
-
-			if(funcaoId != null)
-				document.getElementById('funcao').value = funcaoId;
-		}
-
 		function populaAmbiente(estabelecimentoId, ambienteId)
 		{
 			if(estabelecimentoId != "null")
@@ -212,7 +191,7 @@
 		<@ww.select label="Área Organizacional" name="historicoColaborador.areaOrganizacional.id" id="areaOrganizacional" list="areaOrganizacionals" required="true" listKey="id" listValue="descricaoComCodigoAC" headerKey="" headerValue="Selecione..." cssStyle="width: 355px;" onchange="verificaMaternidade(this.value, 'areaOrganizacional');" disabled="${somenteLeitura}"/>
 
 		<@authz.authorize ifAllGranted="ROLE_COMPROU_SESMT">
-			<@ww.select label="Cargo/Faixa" name="historicoColaborador.faixaSalarial.id" id="faixa" list="faixaSalarials" listKey="id" listValue="descricao" required="true" headerKey="" headerValue="Selecione..." onchange="populaFuncao(this.value);calculaSalario();" cssStyle="width: 355px;" disabled="${somenteLeitura}"/>
+			<@ww.select label="Cargo/Faixa" name="historicoColaborador.faixaSalarial.id" id="faixa" list="faixaSalarials" listKey="id" listValue="descricao" required="true" headerKey="" headerValue="Selecione..." cssStyle="width: 355px;" disabled="${somenteLeitura}"/>
 			<@ww.select label="Ambiente" name="historicoColaborador.ambiente.id" id="ambiente" required="${obrigarAmbienteFuncao?string}" list="ambientes" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." cssStyle="width: 355px;"/>
 			<@ww.select label="Função" name="historicoColaborador.funcao.id" id="funcao" required="${obrigarAmbienteFuncao?string}" list="funcaos" listKey="id" listValue="nome" headerValue="Selecione..." headerKey="" cssStyle="width: 355px;"/>
 		</@authz.authorize>

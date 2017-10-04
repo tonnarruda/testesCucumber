@@ -34,7 +34,6 @@ import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
-import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.Indice;
@@ -1354,12 +1353,12 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return getDao().findAllByColaborador(colaboradorId);
 	}
 	
-	public Collection<HistoricoColaborador> getHistoricosComAmbienteEFuncao(Long colaboradorId) {
+	public Collection<HistoricoColaborador> getHistoricosComAmbienteEFuncao(Long colaboradorId, Long empresaId) {
 		
 		Collection<HistoricoColaborador> historicoColaboradors = findAllByColaborador(colaboradorId);
 		
 		prepareAmbientes(historicoColaboradors);
-		prepareFuncoes(historicoColaboradors);
+		prepareFuncoes(historicoColaboradors, empresaId);
 		
 		return historicoColaboradors;
 	}
@@ -1382,20 +1381,13 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 			historicoColaborador.setAmbientes(mapEstabelecimentoAmbiente.get(estabelecimento.getId()));
 		}
 	}
-	private void prepareFuncoes(Collection<HistoricoColaborador> historicoColaboradors) {
+	private void prepareFuncoes(Collection<HistoricoColaborador> historicoColaboradors, Long empresaId) {
 		
 		FuncaoManager funcaoManager = (FuncaoManager) SpringUtil.getBean("funcaoManager");
-		
-		HashMap<Long, Collection<Funcao>> mapCargoFuncao = new HashMap<Long, Collection<Funcao>>();
+		Collection<Funcao> funcoes = funcaoManager.findByEmpresa(empresaId);
 		
 		for (HistoricoColaborador historicoColaborador : historicoColaboradors) {
-			
-			Cargo cargo = historicoColaborador.getFaixaSalarial().getCargo();
-			
-			if (mapCargoFuncao.get(cargo.getId()) == null)
-				mapCargoFuncao.put(cargo.getId(), funcaoManager.findByCargo(cargo.getId()));
-			
-			historicoColaborador.setFuncoes(mapCargoFuncao.get(cargo.getId()));
+			historicoColaborador.setFuncoes(funcoes);
 		}
 	}
 	

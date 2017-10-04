@@ -152,7 +152,7 @@ public class HistoricoColaboradorEditActionTest
 		verify(indiceManager).findAll(empresaDoSistema);
 		verify(faixaSalarialManager).findFaixas(eq(empresaDoSistema), eq(Cargo.ATIVO), anyLong());
 		verify(areaOrganizacionalManager).findAllSelectOrderDescricao(eq(empresaDoSistema.getId()), eq(AreaOrganizacional.ATIVA), anyLong(), anyBoolean());
-		verify(funcaoManager).findByCargo(eq(historicoColaborador.getFaixaSalarial().getCargo().getId()));
+		verify(funcaoManager).findByEmpresa(eq(action.getEmpresaSistema().getId()));
 		verify(ambienteManager).findByEstabelecimento(historicoColaborador.getEstabelecimento().getId());
 	}
 	
@@ -165,7 +165,7 @@ public class HistoricoColaboradorEditActionTest
 		faixaSalarial.setCargo(cargo);
 		historicoColaborador.setEstabelecimento(estabelecimento);
 		historicoColaborador.setFaixaSalarial(faixaSalarial);
-		when(funcaoManager.findByCargo(anyLong())).thenReturn(new ArrayList<Funcao>());
+		when(funcaoManager.findByEmpresa(action.getEmpresaSistema().getId())).thenReturn(new ArrayList<Funcao>());
 		when(ambienteManager.findByEstabelecimento(any(Long[].class))).thenReturn(new ArrayList<Ambiente>());
 		when(historicoColaboradorManager.findByColaboradorProjection(anyLong(), eq(StatusRetornoAC.AGUARDANDO))).thenReturn(new ArrayList<HistoricoColaborador>());
 		when(faixaSalarialManager.findById(anyLong())).thenReturn(faixaSalarial);
@@ -284,7 +284,7 @@ public class HistoricoColaboradorEditActionTest
 		when(estabelecimentoManager.findAllSelect(eq(empresa.getId()))).thenReturn(new ArrayList<Estabelecimento>());
 		when(indiceManager.findAll(eq(empresa))).thenReturn(new ArrayList<Indice>());
 		
-		when(funcaoManager.findByCargo(eq(historicoColaboradorAguagandoConfirmacao.getFaixaSalarial().getCargo().getId()))).thenReturn(new ArrayList<Funcao>());
+		when(funcaoManager.findByEmpresa(eq(empresa.getId()))).thenReturn(new ArrayList<Funcao>());
 		when(ambienteManager.findByEstabelecimento(eq(new Long[]{historicoColaboradorAguagandoConfirmacao.getEstabelecimento().getId()}))).thenReturn(new ArrayList<Ambiente>());
 		
 		when(faixaSalarialManager.findFaixas(eq(empresa), eq(true), anyLong())).thenReturn(new ArrayList<FaixaSalarial>());
@@ -567,7 +567,7 @@ public class HistoricoColaboradorEditActionTest
 		verify(indiceManager).findAll(empresaDoSistema);
 		verify(faixaSalarialManager).findFaixas(eq(empresaDoSistema), eq(Cargo.ATIVO), anyLong());
 		verify(areaOrganizacionalManager).findAllSelectOrderDescricao(eq(empresaDoSistema.getId()), eq(AreaOrganizacional.ATIVA), anyLong(), anyBoolean());
-		verify(funcaoManager).findByCargo(eq(historicoColaborador.getFaixaSalarial().getCargo().getId()));
+		verify(funcaoManager).findByEmpresa(eq(action.getEmpresaSistema().getId()));
 		verify(ambienteManager).findByEstabelecimento(historicoColaborador.getEstabelecimento().getId());
 	}
 	
@@ -576,7 +576,7 @@ public class HistoricoColaboradorEditActionTest
 		verify(indiceManager).findAll(empresaDoSistema);
 		verify(faixaSalarialManager).findFaixas(eq(empresaDoSistema), eq(Cargo.ATIVO), anyLong());
 		verify(areaOrganizacionalManager).findAllSelectOrderDescricao(eq(empresaDoSistema.getId()), eq(AreaOrganizacional.ATIVA), anyLong(), anyBoolean());
-		verify(funcaoManager).findByCargo(eq(historicoColaborador.getFaixaSalarial().getCargo().getId()));
+		verify(funcaoManager).findByEmpresa(eq(action.getEmpresaSistema().getId()));
 	}
 	
 	private void simulaComportamentoDoPrepare() {
@@ -637,7 +637,7 @@ public class HistoricoColaboradorEditActionTest
 	}
 	
 	private void dadoQueExistemFuncoesCadastradas() {
-		when(funcaoManager.findByCargo(eq(historicoColaborador.getFaixaSalarial().getCargo().getId()))).thenReturn(Collections.EMPTY_LIST);
+		when(funcaoManager.findByEmpresa(eq(action.getEmpresaSistema().getId()))).thenReturn(Collections.EMPTY_LIST);
 	}
 
 	private void dadoQueHistoricoDoColaboradorPossuiUmCargoArea() {

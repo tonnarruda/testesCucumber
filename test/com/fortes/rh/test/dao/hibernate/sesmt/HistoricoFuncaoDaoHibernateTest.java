@@ -208,14 +208,9 @@ public class HistoricoFuncaoDaoHibernateTest extends GenericDaoHibernateTest_JUn
 		cargo.setNomeMercado("nomeMercado");
 		cargo = cargoDao.save(cargo);
 
-		Funcao f1 = new Funcao();
-		f1.setNome("FA");
-		f1.setCargo(cargo);
+		Funcao f1 = FuncaoFactory.getEntity("FA", empresa);
 
-		Funcao f2 = new Funcao();
-		f2.setNome("FB");
-		f2.setCargo(cargo);
-
+		Funcao f2 = FuncaoFactory.getEntity("FB", empresa);
 		f1 = funcaoDao.save(f1);
 		f2 = funcaoDao.save(f2);
 

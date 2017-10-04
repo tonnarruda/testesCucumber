@@ -3,6 +3,7 @@ package com.fortes.rh.test.factory.cargosalario;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.Funcao;
 
 public class FuncaoFactory
@@ -31,6 +32,15 @@ public class FuncaoFactory
 		Funcao.setNome(nome);
 		
 		return Funcao;
+	}
+	
+	public static Funcao getEntity(String nome, Empresa empresa)
+	{
+		Funcao funcao = new Funcao();
+		funcao.setNome(nome);
+		funcao.setEmpresa(empresa);
+		
+		return funcao;
 	}
 
 	public static Collection<Funcao> getCollection()

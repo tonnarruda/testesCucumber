@@ -29,7 +29,9 @@ public class OrdemDeServico extends AbstractModel implements Serializable
 	
 	private Date dataAdmisaoColaborador;
 	
-	private String codigoCBO;
+	private String codigoCBOCargo;
+	
+	private String codigoCBOFuncao;
 	
 	private String nomeFuncao;
 	
@@ -101,12 +103,12 @@ public class OrdemDeServico extends AbstractModel implements Serializable
 		this.dataAdmisaoColaborador = dataAdmisaoColaborador;
 	}
 	
-	public String getCodigoCBO() {
-		return codigoCBO;
+	public String getCodigoCBOCargo() {
+		return codigoCBOCargo;
 	}
 	
-	public void setCodigoCBO(String codigoCBO) {
-		this.codigoCBO = codigoCBO;
+	public void setCodigoCBOCargo(String codigoCBOCargo) {
+		this.codigoCBOCargo = codigoCBOCargo;
 	}
 	
 	public String getNomeFuncao() {
@@ -279,5 +281,13 @@ public class OrdemDeServico extends AbstractModel implements Serializable
 
 	public void setNomeCargo(String nomeCargo) {
 		this.nomeCargo = nomeCargo;
+	}
+
+	public String getCodigoCBOFuncao() {
+		return codigoCBOFuncao;
+	}
+
+	public void setCodigoCBOFuncao(String codigoCBOFuncao) {
+		this.codigoCBOFuncao = codigoCBOFuncao;
 	}
 }

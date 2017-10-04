@@ -8,72 +8,31 @@
 		</action>
 		
 		<action name="list" class="com.fortes.rh.web.action.sesmt.FuncaoListAction" method="list">
-			<interceptor-ref name="defaultListStack">
-	    		<param name="scope.session">cargoTmp</param>
-	    	</interceptor-ref>
+			<interceptor-ref name="defaultListStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/funcaoList.ftl</result>
 			<result name="error" type="freemarker">/WEB-INF/forms/sesmt/funcaoList.ftl</result>
 		</action>
-		<action name="listFiltro" class="com.fortes.rh.web.action.sesmt.FuncaoListAction" method="listFiltro">
-			<interceptor-ref name="defaultListStack">
-	    		<param name="scope.session">cargoTmp</param>
-	    	</interceptor-ref>
-			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/funcaoListFiltro.ftl</result>
-			<result name="error" type="freemarker">/WEB-INF/forms/sesmt/funcaoListFiltro.ftl</result>
-		</action>
 		<action name="delete" class="com.fortes.rh.web.action.sesmt.FuncaoListAction" method="delete">
-			<interceptor-ref name="defaultDeleteStack">
-				<param name="scope.session">cargoTmp</param>
-			</interceptor-ref>
+			<interceptor-ref name="defaultDeleteStack"/>
 			<result name="success" type="redirect">list.action</result>
 			<result name="error" type="redirect">list.action</result>
 		</action>
-		<action name="deleteFiltro" class="com.fortes.rh.web.action.sesmt.FuncaoListAction" method="deleteFiltro">
-			<interceptor-ref name="defaultDeleteStack">
-				<param name="scope.session">cargoTmp</param>
-			</interceptor-ref>
-			<result name="success" type="redirect">listFiltro.action</result>
-			<result name="error" type="redirect">listFiltro.action</result>
-		</action>
-		
 		<action name="prepareInsert" class="com.fortes.rh.web.action.sesmt.FuncaoEditAction" method="prepareInsert">
-			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/funcaoEdit.ftl</result>
-		</action>
-		<action name="prepareInsertFiltro" class="com.fortes.rh.web.action.sesmt.FuncaoEditAction" method="prepareInsertFiltro">
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/funcaoEdit.ftl</result>
 		</action>
 		<action name="prepareUpdate" class="com.fortes.rh.web.action.sesmt.FuncaoEditAction" method="prepareUpdate">
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/funcaoEdit.ftl</result>
 		</action>
-		<action name="prepareUpdateFiltro" class="com.fortes.rh.web.action.sesmt.FuncaoEditAction" method="prepareUpdateFiltro">
-			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/funcaoEdit.ftl</result>
-		</action>
 		<action name="insert" class="com.fortes.rh.web.action.sesmt.FuncaoEditAction" method="insert">
-			<result name="success" type="redirect">list.action?cargoTmp.id=${cargoTmp.id}</result>
-			<result name="SUCESSO_VEIO_SESMT" type="redirect">listFiltro.action?cargoTmp.id=${cargoTmp.id}</result>
+			<interceptor-ref name="defaultUpdateStack"/>
+			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/funcaoEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.sesmt.FuncaoEditAction" method="update">
-			<result name="success" type="redirect">list.action?cargoTmp.id=${cargoTmp.id}</result>
-			<result name="SUCESSO_VEIO_SESMT" type="redirect">listFiltro.action?cargoTmp.id=${cargoTmp.id}</result>
+			<interceptor-ref name="defaultUpdateStack" />
+			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/funcaoEdit.ftl</result>
 		</action>
-
-		<action name="mudancaFuncaoFiltro" class="com.fortes.rh.web.action.sesmt.FuncaoListAction" method="mudancaFuncaoFiltro">
-			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/mudancaFuncaoFiltro.ftl</result>
-			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/mudancaFuncaoFiltro.ftl</result>
-		</action>
-		<action name="prepareMudancaFuncao" class="com.fortes.rh.web.action.sesmt.FuncaoEditAction" method="prepareMudancaFuncao">
-			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/mudancaFuncaoEdit.ftl</result>
-			<result name="error" type="redirect">mudancaFuncaoFiltro.action</result>
-			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/mudancaFuncaoEdit.ftl</result>
-		</action>
-		<action name="mudaFuncao" class="com.fortes.rh.web.action.sesmt.FuncaoEditAction" method="mudaFuncao">
-			<result name="success" type="redirect"><![CDATA[mudancaFuncaoFiltro.action?colaborador.id=${colaborador.id}&areaBusca.id=${areaBusca.id}&nomeBusca=${nomeBusca}&page=${page}]]></result>
-			<result name="error" type="freemarker">/WEB-INF/forms/sesmt/mudancaFuncaoEdit.ftl</result>
-			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/mudancaFuncaoEdit.ftl</result>
-		</action>
-
 		<action name="prepareRelatorioQtdPorFuncao" class="com.fortes.rh.web.action.sesmt.FuncaoListAction" method="prepareRelatorioQtdPorFuncao">
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/relatorioQtdPorFuncao.ftl</result>
 		</action>

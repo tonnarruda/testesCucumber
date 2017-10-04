@@ -1,22 +1,30 @@
 package com.fortes.rh.test.web.action.sesmt;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyChar;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
-import mockit.Mockit;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
-
-import com.fortes.rh.business.cargosalario.CargoManager;
-import com.fortes.rh.business.geral.AreaOrganizacionalManager;
-import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.business.sesmt.HistoricoFuncaoManager;
-import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
@@ -28,131 +36,70 @@ import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.FuncaoFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
-import com.fortes.rh.test.util.mockObjects.MockRelatorioUtil;
-import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.sesmt.FuncaoListAction;
 import com.fortes.web.tags.CheckBox;
 
-public class FuncaoListActionTest extends MockObjectTestCase
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({SecurityUtil.class,RelatorioUtil.class})
+public class FuncaoListActionTest 
 {
 	private FuncaoListAction action;
-	private Mock manager;
-	private Mock cargoManager;
-	private Mock colaboradorManager;
-	private Mock areaOrganizacionalManager;
-	private Mock estabelecimentoManager;
-	private Mock historicoFuncaoManager;
+	private FuncaoManager manager;
+	private EstabelecimentoManager estabelecimentoManager;
+	private HistoricoFuncaoManager historicoFuncaoManager;
 
-    protected void setUp() throws Exception
+	@Before
+    public void setUp()
     {
         action = new FuncaoListAction();
-        manager = new Mock(FuncaoManager.class);
-        cargoManager = new Mock(CargoManager.class);
-        colaboradorManager = new Mock(ColaboradorManager.class);
-        areaOrganizacionalManager = new Mock(AreaOrganizacionalManager.class);
+        manager = mock(FuncaoManager.class);
         estabelecimentoManager = mock(EstabelecimentoManager.class);
         historicoFuncaoManager = mock(HistoricoFuncaoManager.class);
 
-        action.setFuncaoManager((FuncaoManager) manager.proxy());
-        action.setCargoManager((CargoManager) cargoManager.proxy());
-        action.setColaboradorManager((ColaboradorManager)colaboradorManager.proxy());
-        action.setAreaOrganizacionalManager((AreaOrganizacionalManager)areaOrganizacionalManager.proxy());
-        action.setEstabelecimentoManager((EstabelecimentoManager) estabelecimentoManager.proxy());
-        action.setHistoricoFuncaoManager((HistoricoFuncaoManager) historicoFuncaoManager.proxy());
+        action.setFuncaoManager(manager);
+        action.setEstabelecimentoManager(estabelecimentoManager);
+        action.setHistoricoFuncaoManager(historicoFuncaoManager);
 
-        Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
-        Mockit.redefineMethods(RelatorioUtil.class, MockRelatorioUtil.class);
+        PowerMockito.mockStatic(SecurityUtil.class);
+        PowerMockito.mockStatic(RelatorioUtil.class);
         
         action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
     }
 
-    protected void tearDown() throws Exception
-    {
-        manager = null;
-        cargoManager = null;
-        action = null;
-        colaboradorManager=null;
-        areaOrganizacionalManager = null;
-        MockSecurityUtil.verifyRole = false;
-        Mockit.restoreAllOriginalDefinitions();
-    }
-
+    @Test
     public void testDelete() throws Exception
     {
     	Funcao funcao = new Funcao();
     	funcao.setId(1L);
     	action.setFuncao(funcao);
 
-    	manager.expects(once()).method("removeFuncao").with(ANYTHING);
-
-    	Cargo cargoTmp = new Cargo();
-    	cargoTmp.setId(1L);
-
-    	action.setCargoTmp(cargoTmp);
-
     	assertEquals(action.delete(), "success");
     }
 
+    @Test
     public void testList() throws Exception
     {
-		Collection<Funcao> funcaos = new ArrayList<Funcao>();
+		Funcao f1 = FuncaoFactory.getEntity(1L);
+		Funcao f2 = FuncaoFactory.getEntity(2L);
 
-		Cargo cargo = new Cargo();
-		cargo.setId(2L);
-
-		action.setCargoTmp(cargo);
-
-		Funcao f1 = new Funcao();
-		f1.setId(1L);
-		f1.setCargo(cargo);
-
-		Funcao f2 = new Funcao();
-		f2.setId(2L);
-		f2.setCargo(cargo);
-
-		funcaos.add(f1);
-		funcaos.add(f2);
-
-		manager.expects(once()).method("getCount").with(ANYTHING).will(returnValue(funcaos.size()));
-		manager.expects(once()).method("findByCargo").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(funcaos));
-		cargoManager.expects(once()).method("findByIdProjection").with(eq(cargo.getId())).will(returnValue(cargo));
+		Collection<Funcao> funcaos = Arrays.asList(f1, f2);
+		when(manager.getCount(action.getEmpresaSistema().getId(), action.getFuncao().getNome())).thenReturn(funcaos.size());
+		when(manager.findByEmpresa(action.getPage(), action.getPagingSize(), action.getEmpresaSistema().getId(), action.getFuncao().getNome())).thenReturn(funcaos);
 
     	assertEquals(action.list(), "success");
     	assertEquals(action.getFuncaos(), funcaos);
-    	assertEquals(action.getCargoTmp(), cargo);
-
-    	manager.verify();
     }
 
-    public void testMudancaFuncao() throws Exception
-    {
-    	int totalSize = 1;
-    	Colaborador colaborador = new Colaborador();
-    	colaborador.setNome("Nome de teste");
-    	Collection<Colaborador> colaboradores = new ArrayList<Colaborador>(1);
-    	colaboradores.add(colaborador);
-
-    	AreaOrganizacional areaOrganizacional = new AreaOrganizacional();
-    	areaOrganizacional.setDescricao("Descrição de teste");
-    	Collection<AreaOrganizacional> areas = new ArrayList<AreaOrganizacional>(1);
-    	areas.add(areaOrganizacional);
-
-    	colaboradorManager.expects(once()).method("getCount").with(ANYTHING).will(returnValue(totalSize));
-    	colaboradorManager.expects(once()).method("findList").with( ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaboradores));
-
-    	areaOrganizacionalManager.expects(once()).method("findAllListAndInativas").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(areas));
-
-    	assertEquals(action.mudancaFuncaoFiltro(), "success");
-    }
-
+    @Test
     public void testPrepareRelatorioQtd()
     {
-    	estabelecimentoManager.expects(once()).method("findAllSelect").with(eq(action.getEmpresaSistema().getId())).will(returnValue(new ArrayList<Estabelecimento>()));
+    	when(estabelecimentoManager.findAllSelect(eq(action.getEmpresaSistema().getId()))).thenReturn(new ArrayList<Estabelecimento>());
     	assertEquals("success",action.prepareRelatorioQtdPorFuncao());
     	assertEquals(0, action.getEstabelecimentos().size());
     }
     
+    @Test
     public void testGerarRelatorioQtdPorFuncao()
     {
     	Collection<QtdPorFuncaoRelatorio> qtdPorFuncaos = new ArrayList<QtdPorFuncaoRelatorio>();
@@ -165,50 +112,55 @@ public class FuncaoListActionTest extends MockObjectTestCase
     	action.setData(new Date());
     	action.setTipoAtivo('T');
     	
-		manager.expects(once()).method("getQtdColaboradorByFuncao").with(eq(action.getEmpresaSistema().getId()), eq(action.getEstabelecimento().getId()), eq(action.getData()), eq('T')).will(returnValue(qtdPorFuncaos));
+		when(manager.getQtdColaboradorByFuncao(eq(action.getEmpresaSistema().getId()), eq(action.getEstabelecimento().getId()), eq(action.getData()), eq('T'))).thenReturn(qtdPorFuncaos);
     	
     	assertEquals("success", action.gerarRelatorioQtdPorFuncao());
     }
     
+    @Test
     public void testGerarRelatorioQtdPorFuncaoException()
     {
     	action.setEstabelecimento(EstabelecimentoFactory.getEntity(2L));
     	
-    	manager.expects(once()).method("getQtdColaboradorByFuncao").will(throwException(new NullPointerException()));
-    	estabelecimentoManager.expects(once()).method("findAllSelect").with(eq(action.getEmpresaSistema().getId())).will(returnValue(new ArrayList<Estabelecimento>()));
+    	doThrow(new NullPointerException()).when(manager).getQtdColaboradorByFuncao(anyLong(), anyLong(), any(Date.class), anyChar());
+    	when(estabelecimentoManager.findAllSelect(eq(action.getEmpresaSistema().getId()))).thenReturn(new ArrayList<Estabelecimento>());
     	
     	assertEquals("input", action.gerarRelatorioQtdPorFuncao());
     }
     
+    @Test
 	public void testPrepareRelatorioExamesPorFuncao()
 	{
-		manager.expects(once()).method("populaCheckBox").will(returnValue(new ArrayList<CheckBox>()));
+		when(manager.populaCheckBox()).thenReturn(new ArrayList<CheckBox>());
 		assertEquals("success", action.prepareRelatorioExamesPorFuncao());
 	}
     
 	public void testRelatorioExamesPorFuncaoColecaoVazia()
     {
-    	historicoFuncaoManager.expects(once()).method("findByFuncoes").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<Funcao>()));
-    	manager.expects(once()).method("populaCheckBox").will(returnValue(new ArrayList<CheckBox>()));
+		when(historicoFuncaoManager.findByFuncoes(any(Date.class), any(Long[].class))).thenReturn(new ArrayList<Funcao>());
+    	when(manager.populaCheckBox()).thenReturn(new ArrayList<CheckBox>());
     	assertEquals("input", action.relatorioExamesPorFuncao());
     	assertEquals("Não existem dados para o relatório", action.getActionMessages().iterator().next());
     }
     
+	@Test
     public void testRelatorioExamesPorFuncaoException()
     {
-    	historicoFuncaoManager.expects(once()).method("findByFuncoes").with(ANYTHING, ANYTHING).will(returnValue(null));
-    	manager.expects(once()).method("populaCheckBox").will(returnValue(new ArrayList<CheckBox>()));
+		when(historicoFuncaoManager.findByFuncoes(any(Date.class), any(Long[].class))).thenReturn(null);
+    	when(manager.populaCheckBox()).thenReturn(new ArrayList<CheckBox>());
     	assertEquals("input", action.relatorioExamesPorFuncao());
     	assertEquals("Erro ao gerar relatório.", action.getActionErrors().iterator().next());
     }
     
+	@Test
     public void testRelatorioExamesPorFuncao()
     {
     	Collection<Funcao> funcoes = Arrays.asList(FuncaoFactory.getEntity(1L));
-    	historicoFuncaoManager.expects(once()).method("findByFuncoes").with(ANYTHING, ANYTHING).will(returnValue(funcoes));
+    	when(historicoFuncaoManager.findByFuncoes(any(Date.class), any(Long[].class))).thenReturn(funcoes);
     	assertEquals("success", action.relatorioExamesPorFuncao());
     }
     
+	@Test
     public void testGetSet() throws Exception
     {
     	Funcao funcao = new Funcao();

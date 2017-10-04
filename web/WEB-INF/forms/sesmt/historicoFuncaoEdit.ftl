@@ -6,11 +6,11 @@
 <@ww.head/>
 
 <#if historicoFuncao.id?exists>
-	<title>Editar Histórico da Função - ${cargoTmp.nome} / ${funcao.nome}</title>
+	<title>Editar Histórico da Função - ${funcao.nome}</title>
 	<#assign formAction="update.action"/>
 	<#assign accessKey="A"/>
 <#else>
-	<title>Inserir Histórico da Função - ${cargoTmp.nome} / ${funcao.nome}</title>
+	<title>Inserir Histórico da Função - ${funcao.nome}</title>
 	<#assign formAction="insert.action"/>
 	<#assign accessKey="I"/>
 </#if>
@@ -77,14 +77,11 @@
 		<@ww.hidden name="funcao.nome" />
 		<@ww.hidden name="historicoFuncao.id" />
 		<@ww.hidden name="historicoFuncao.funcao.id" />
-		<@ww.hidden name="cargoTmp.id" />
-		<@ww.hidden name="cargoTmp.nome" />
-		<@ww.hidden name="veioDoSESMT" />
 	</@ww.form>
 
 	<div class="buttonGroup">
 		<button onclick="${validarCampos};" class="btnGravar"></button>
-		<button onclick="window.location='../funcao/prepareUpdate.action?funcao.id=${funcao.id}&cargoTmp.id=${cargoTmp.id}&veioDoSESMT=${veioDoSESMT?string}'" class="btnCancelar"></button>
+		<button onclick="window.location='../funcao/prepareUpdate.action?funcao.id=${funcao.id}'" class="btnCancelar"></button>
 	</div>
 </body>
 </html>

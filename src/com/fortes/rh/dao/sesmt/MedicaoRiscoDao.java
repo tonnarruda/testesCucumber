@@ -12,6 +12,6 @@ public interface MedicaoRiscoDao extends GenericDao<MedicaoRisco>
 	Collection<MedicaoRisco> findAllSelectByAmbiente(Long empresaId, Long ambienteId);
 	Collection<MedicaoRisco> findAllSelectByFuncao(Long empresaId, Long funcaoId);
 	Collection<String> findTecnicasUtilizadasDistinct(Long empresaId);
-	MedicaoRisco getFuncaoByMedicaoRisco(Long medicaoRiscoId);
+	MedicaoRisco getMedicaoRiscoMedicaoPorFuncao(Long medicaoRiscoId);
 	Collection<RiscoMedicaoRisco> findRiscoMedicaoRiscos(Long medicaoRiscoId);
 }

@@ -22,9 +22,6 @@
 		<create creator="spring" javascript="HistoricoCandidatoDWR">
 			<param name="beanName" value="historicoCandidatoDWR"/>
 		</create>
-		<create creator="spring" javascript="FuncaoDWR">
-			<param name="beanName" value="funcaoDWR"/>
-		</create>
 		<create creator="spring" javascript="AmbienteDWR">
 			<param name="beanName" value="ambienteDWR"/>
 		</create>

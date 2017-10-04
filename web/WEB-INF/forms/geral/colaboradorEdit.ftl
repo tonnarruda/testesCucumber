@@ -37,7 +37,6 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ReajusteDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CidadeDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/BairroDWR.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/FuncaoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AmbienteDWR.js?version=${versao}"/>'></script>
 	<script type="text/javascript" src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
@@ -313,13 +312,6 @@
 				</@authz.authorize>
 			</#if>
 			
-			<@authz.authorize ifAllGranted="ROLE_COMPROU_SESMT">
-				<#if historicoColaborador?exists &&  historicoColaborador.faixaSalarial?exists && historicoColaborador.faixaSalarial.id?exists 
-				&& (!historicoColaborador.funcao?exists || (historicoColaborador.funcao?exists && !historicoColaborador.funcao.id?exists))> 
-					populaFuncao(${historicoColaborador.faixaSalarial.id});
-				</#if>
-			</@authz.authorize>
-			
 			$("#naoIntegraAc").change(function(){
 				$('#matricula').toggleDisabled();
 				$('#wwgrp_obsACPessoal').toggle(!this.checked);
@@ -393,18 +385,6 @@
 			  o.value = arr[i].v;
 			  $(o).text(arr[i].t);
 			});
-		}
-
-		function populaFuncao(faixaId)
-		{
-			DWRUtil.useLoadingMessage('Carregando...');
-			FuncaoDWR.getFuncaoByFaixaSalarial(createListFuncao, faixaId);
-		}
-		function createListFuncao(data)
-		{
-			DWRUtil.removeAllOptions("funcao");
-			DWRUtil.addOptions("funcao", data);
-			orderSelectByNome("funcao");
 		}
 
 		function setaCampos()
@@ -928,7 +908,7 @@
 							<label for="ambiente">Ambiente:</label><#if obrigarAmbienteFuncao>*</#if> <img id="ambienteTooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" /><br>
 							<@ww.select name="historicoColaborador.ambiente.id" theme="simple" id="ambiente" list="ambientes" listKey="id" listValue="nome" headerKey="" headerValue="Nenhum" cssStyle="width: 355px;" disabled="${somenteLeitura}"/>
 							
-							<@ww.select label="Cargo/Faixa" name="historicoColaborador.faixaSalarial.id" id="faixa" list="faixas" listKey="id" listValue="descricao" required="true" headerKey="" headerValue="Selecione..." onchange="populaFuncao(this.value);calculaSalario();" disabled= "${somenteLeitura}" cssStyle="width: 355px;"/>
+							<@ww.select label="Cargo/Faixa" name="historicoColaborador.faixaSalarial.id" id="faixa" list="faixas" listKey="id" listValue="descricao" required="true" headerKey="" headerValue="Selecione..." onchange="calculaSalario();" disabled= "${somenteLeitura}" cssStyle="width: 355px;"/>
 							
 							<label for="funcao">Função:</label><#if obrigarAmbienteFuncao>*</#if> <img id="funcaoTooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" /><br>
 							<@ww.select name="historicoColaborador.funcao.id" id="funcao" theme="simple" list="funcoes" listKey="id" listValue="nome" headerKey="" headerValue="Nenhuma" disabled= "${somenteLeitura}" cssStyle="width: 355px;" disabled="${somenteLeitura}"/>

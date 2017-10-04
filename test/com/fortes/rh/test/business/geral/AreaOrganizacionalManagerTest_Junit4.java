@@ -23,14 +23,12 @@ import org.springframework.mock.web.MockHttpServletRequest;
 
 import com.fortes.rh.business.geral.AreaOrganizacionalManagerImpl;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
-import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.desenvolvimento.Lnt;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
-import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.LntFactory;
 import com.fortes.rh.util.CollectionUtil;
 import com.opensymphony.webwork.dispatcher.SessionMap;

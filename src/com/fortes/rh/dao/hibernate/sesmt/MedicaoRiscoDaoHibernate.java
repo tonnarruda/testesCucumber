@@ -60,17 +60,15 @@ public class MedicaoRiscoDaoHibernate extends GenericDaoHibernate<MedicaoRisco> 
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "medicao");
 		criteria.createCriteria("medicao.funcao", "funcao");
-		criteria.createCriteria("funcao.cargo", "cargo");
 		
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("medicao.id"), "id");
 		p.add(Projections.property("medicao.data"), "data");
 		p.add(Projections.property("funcao.id"), "projectionFuncaoId");
 		p.add(Projections.property("funcao.nome"), "projectionFuncaoNome");
-		p.add(Projections.property("cargo.nome"), "projectionCargoNome");
 		
 		criteria.setProjection(p);
-		criteria.add(Expression.eq("cargo.empresa.id", empresaId));
+		criteria.add(Expression.eq("funcao.empresa.id", empresaId));
 		
 		if (funcaoId != null)
 			criteria.add(Expression.eq("funcao.id", funcaoId));
@@ -100,19 +98,16 @@ public class MedicaoRiscoDaoHibernate extends GenericDaoHibernate<MedicaoRisco> 
 		return criteria.list();
 	}
 
-	public MedicaoRisco getFuncaoByMedicaoRisco(Long medicaoRiscoId) 
+	public MedicaoRisco getMedicaoRiscoMedicaoPorFuncao(Long medicaoRiscoId) 
 	{
 		Criteria criteria = getSession().createCriteria(MedicaoRisco.class, "mr");
 		criteria.createCriteria("mr.funcao", "f");
-		criteria.createCriteria("f.cargo", "c");
 		
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("mr.id"), "id");
 		p.add(Projections.property("mr.data"), "data");
 		p.add(Projections.property("f.id"), "projectionFuncaoId");
 		p.add(Projections.property("f.nome"), "projectionFuncaoNome");
-		p.add(Projections.property("c.id"), "projectionCargoId");
-		p.add(Projections.property("c.nome"), "projectionCargoNome");
 		
 		criteria.setProjection(p);
 		criteria.add(Expression.eq("mr.id", medicaoRiscoId));

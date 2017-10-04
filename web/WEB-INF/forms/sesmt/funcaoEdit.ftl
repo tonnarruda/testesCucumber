@@ -7,14 +7,28 @@
 	<#include "../ftl/mascarasImports.ftl" />
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
+		@import url('<@ww.url includeParams="none" value="/css/fortes.css?version=${versao}"/>');
+	    @import url('<@ww.url includeParams="none" value="/css/cssYui/fonts-min.css"/>');
+	    
+	    #wwgrp_descricaoCBO
+	    {
+			float: left;
+	    	background-color: #E9E9E9;
+			width: 420px;
+			padding-left: 4px;
+		}
 	</style>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/autoCompleteFortes.js?version=${versao}"/>'></script>
+	<script src='<@ww.url includeParams="none" value="/js/fortes.js?version=${versao}"/>'></script>
+	<script src='<@ww.url includeParams="none" value="/js/functions.js?version=${versao}"/>'></script>
+
 	<#if funcao.id?exists>
-		<title>Editar Função - ${cargoTmp.nome}</title>
+		<title>Editar Função - ${funcao.nome}</title>
 		<#assign formAction="update.action"/>
 		<#assign accessKey="A"/>
 		<#assign validarCampos="return validaFormulario('form', new Array('nome'), null)"/>
 	<#else>
-		<title>Inserir Função - ${cargoTmp.nome}</title>
+		<title>Inserir Função</title>
 		<#assign formAction="insert.action"/>
 		<#assign accessKey="I"/>
 		<#assign validarCampos="return validaFormulario('form', new Array('dataHist','nome','descricao'), new Array('dataHist'))"/>
@@ -25,7 +39,7 @@
 	<#else>
 		<#assign data = "">
 	</#if>
-	
+
 	<script type="text/javascript">
 		$(function() {
 			$('#md').click(function() {
@@ -36,6 +50,21 @@
 			$('input[name="riscoChecks"]').click(function() {
 				habilitarDesabilitarCamposLinha(this);
 			});
+			
+			var urlFind = "<@ww.url includeParams="none" value="/geral/codigoCBO/find.action"/>";
+				
+			$("#descricaoCBO").autocomplete({
+				source: ajaxData(urlFind),				 
+				minLength: 2,
+				select: function( event, ui ) { 
+					$("#codigoCBO").val(ui.item.id);
+				}
+			}).data( "autocomplete" )._renderItem = renderData;
+
+			$('#descricaoCBO').focus(function() {
+			    $(this).select();
+			});
+			
 		});
 		
 		function habilitarDesabilitarCamposLinha(campoRisco)
@@ -51,6 +80,12 @@
 
 		<@ww.textfield label="Nome da Função" name="funcao.nome" id="nome"  cssClass="inputNome" maxLength="100" required="true" />
 
+		<@ww.textfield label="Cód. CBO" name="funcao.codigoCbo" id="codigoCBO" onkeypress="return(somenteNumeros(event,''));" cssStyle="margin-top: 1px" size="6"  maxLength="6" liClass="liLeft"/>
+		<@ww.textfield label="Busca CBO (Código ou Descrição)" name="descricaoCBO" id="descricaoCBO" cssStyle="width: 414px;"/>
+		<div style="clear:both"></div>
+
+
+
 		<#if !funcao.id?exists>
 			<li>
 				<fieldset>
@@ -62,10 +97,7 @@
 			</li>
 		</#if>
 
-
-		<@ww.hidden name="cargoTmp.id" value="${cargoTmp.id}"/>
 		<@ww.hidden name="funcao.id" />
-		<@ww.hidden name="veioDoSESMT" />
 	</@ww.form>
 
 	<div class="buttonGroup">
@@ -76,9 +108,9 @@
 		<br>
 		<@display.table name="historicoFuncaos" id="historicoFuncao" pagesize=10 class="dados">
 			<@display.column title="Ações" class="acao">
-				<a href="../historicoFuncao/prepareUpdate.action?historicoFuncao.id=${historicoFuncao.id}&funcao.id=${funcao.id}&funcao.nome=${funcao.nome}&cargoTmp.id=${cargoTmp.id}&veioDoSESMT=${veioDoSESMT?string}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+				<a href="../historicoFuncao/prepareUpdate.action?historicoFuncao.id=${historicoFuncao.id}&funcao.id=${funcao.id}&funcao.nome=${funcao.nome}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 				<#if 1 < historicoFuncaos?size>
-					<a href="javascript:;" onclick="newConfirm('Confirma exclusão?', function(){window.location='../historicoFuncao/delete.action?historicoFuncao.id=${historicoFuncao.id}&funcao.id=${funcao.id}&cargoTmp.id=${cargoTmp.id}&veioDoSESMT=${veioDoSESMT?string}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+					<a href="javascript:;" onclick="newConfirm('Confirma exclusão?', function(){window.location='../historicoFuncao/delete.action?historicoFuncao.id=${historicoFuncao.id}&funcao.id=${funcao.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 				<#else>
 					<a href="javascript:;"><img border="0" title="Não é possível remover o único histórico da função" src="<@ww.url value="/imgs/delete.gif"/>"  style="opacity:0.2;filter:alpha(opacity=20);"></a>
 				</#if>
@@ -89,14 +121,10 @@
 
 
 		<div class="buttonGroup">
-			<button onclick="window.location='../historicoFuncao/prepareInsert.action?funcao.id=${funcao.id}&funcao.nome=${funcao.nome}&cargoTmp.id=${cargoTmp.id}&veioDoSESMT=${veioDoSESMT?string}'" class="btnInserir"></button>
+			<button onclick="window.location='../historicoFuncao/prepareInsert.action?funcao.id=${funcao.id}&funcao.nome=${funcao.nome}'" class="btnInserir"></button>
 	</#if>
 
-		<#if veioDoSESMT?exists && veioDoSESMT>
-			<button onclick="window.location='listFiltro.action?cargoTmp.id=${cargoTmp.id}'" class="btnVoltar"></button>
-		<#else>
-			<button onclick="window.location='list.action?cargoTmp.id=${cargoTmp.id}'" class="btnVoltar"></button>
-		</#if>
+		<button onclick="window.location='list.action'" class="btnVoltar"></button>
 	</div>
 
 

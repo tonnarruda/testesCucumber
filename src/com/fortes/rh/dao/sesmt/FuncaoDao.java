@@ -8,10 +8,9 @@ import com.fortes.rh.model.sesmt.Funcao;
 
 public interface FuncaoDao extends GenericDao<Funcao>
 {
-	Integer getCount(Long cargoId);
-	Collection<Funcao> findByCargo(int page, int pagingSize, Long cargoId);
+	Integer getCount(Long empresaId, String funcaoNome);
+	Collection<Funcao> findByEmpresa(int page, int pagingSize, Long empresaId, String funcaoNome);
 	Collection<Funcao> findByEmpresa(Long empresaId);
-	Collection<Funcao> findFuncaoByFaixa(Long faixaId);
 	Funcao findByIdProjection(Long funcaoId);
 	Collection<Funcao> findFuncoesDoAmbiente(Long ambienteId, Date data);
 	Collection<Long> findFuncaoAtualDosColaboradores(Date data, Long estabelecimentoId);

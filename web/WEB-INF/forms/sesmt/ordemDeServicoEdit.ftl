@@ -22,7 +22,14 @@
 				border-color: #D9D9D9;
 				width: 966px;
 			}
-			#wwgrp_descricaoCBO
+			#wwgrp_descricaoCBOCargo
+		    {
+				float: left;
+		    	background-color: #E9E9E9;
+				width: 310px;
+				padding-left: 4px;
+			}
+			#wwgrp_descricaoCBOFuncao
 		    {
 				float: left;
 		    	background-color: #E9E9E9;
@@ -53,7 +60,11 @@
 			$(function(){
 				ultimaDataValida = $('#dataOS').val();
 				
-				$('#descricaoCBO').focus(function() {
+				$('#descricaoCBOCargo').focus(function() {
+				    $(this).select();
+				});
+				
+				$('#descricaoCBOFuncao').focus(function() {
 				    $(this).select();
 				});
 			});
@@ -86,38 +97,8 @@
 				$('input[name=ordemDeServico.estabelecimentoComplementoCnpj]').val(dados["estabelecimentoComplementoCnpj"]);
 				$('input[name=ordemDeServico.estabelecimentoEndereco]').val(dados["estabelecimentoEndereco"]);
 				
-				$("#cbo").html("");
-				if ( dados["codigoCBO"] == "" || dados["codigoCBO"] == null ) {
-					$("#cbo").html('<li id="wwgrp_codigoCBO" class="liLeft">'+  
-										'<div id="wwlbl_codigoCBO" class="wwlbl">'+
-											'<label for="codigoCBO" class="desc" style="font-weight: bold"> Cód. CBO:<span class="req">* </span></label>'+
-										'</div>'+ 
-										'<div id="wwctrl_codigoCBO" class="wwctrl">'+
-											'<input type="text" name="ordemDeServico.codigoCBO" size="6" maxlength="6" value="" id="codigoCBOOS" onkeypress="return(somenteNumeros(event,\'\'));">'+
-										'</div>'+ 
-									'</li>'+
-									'<li id="wwgrp_descricaoCBO" class="wwgrp">'+  
-										'<div id="wwlbl_descricaoCBO" class="wwlbl">'+
-											'<label for="descricaoCBO" class="desc" style="font-weight: bold"> Busca CBO (Código ou Descrição):</label>'+       
-										'</div>'+
-										'<div id="wwctrl_descricaoCBO" class="wwctrl">'+
-											'<input type="text" name="descricaoCBO" value="" id="descricaoCBO" style="width: 300px;">'+
-										'</div>'+
-										'<div style="clear:both"></div>'+ 
-									'</li>');
-						
-					$("#descricaoCBO").autocomplete({
-						source: ajaxData(urlFind),				 
-						minLength: 2,
-						select: function( event, ui ) { 
-							$("#codigoCBOOS").val(ui.item.id);
-						}
-					}).data( "autocomplete" )._renderItem = renderData;
-				} else {
-					$("#cbo").html("");
-					$("#cbo").html('<span style="font-weight: bold;">Código CBO:</span><span>'+dados["codigoCBO"]+'</span>'+
-								   '<input type="hidden" name="ordemDeServico.codigoCBO" value="'+dados["codigoCBO"]+'" id="codigoCBOOS">');
-				}
+				montaCampoCBO(dados["codigoCBOCargo"],$("#cboCargo"), "Cargo");
+				montaCampoCBO(dados["codigoCBOFuncao"],$("#cboFuncao"), "Funcao");
 			}
 			
 			function repopularDadosFormulario(dados) {
@@ -142,20 +123,71 @@
 				OrdemDeServicoDWR.carregaUltimaOrdemDeServicoByColaborador(repopularDadosFormulario, ${ordemDeServico.colaborador.id});
 			}
 			
+			function montaCampoCBO(valorCBO, elementCBO, tipoElement){
+				$(elementCBO).html("");
+				if ( valorCBO == "" || valorCBO == null ) {
+					$(elementCBO).html('<li id="wwgrp_codigoCBO'+tipoElement+'" class="liLeft">'+  
+										'<div id="wwlbl_codigoCBO'+tipoElement+'" class="wwlbl">'+
+											'<label for="codigoCBO'+tipoElement+'" class="desc" style="font-weight: bold"> Cód. CBO:<span class="req">* </span></label>'+
+										'</div>'+ 
+										'<div id="wwctrl_codigoCBO'+tipoElement+'" class="wwctrl">'+
+											'<input type="text" name="ordemDeServico.codigoCBO'+tipoElement+'" size="6" maxlength="6" value="" id="codigoCBO'+tipoElement+'OS" onkeypress="return(somenteNumeros(event,\'\'));">'+
+										'</div>'+ 
+									'</li>'+
+									'<li id="wwgrp_descricaoCBO'+tipoElement+'" class="wwgrp">'+  
+										'<div id="wwlbl_descricaoCBO'+tipoElement+'" class="wwlbl">'+
+											'<label for="descricaoCBO'+tipoElement+'" class="desc" style="font-weight: bold"> Busca CBO (Código ou Descrição):</label>'+       
+										'</div>'+
+										'<div id="wwctrl_descricaoCBO'+tipoElement+'" class="wwctrl">'+
+											'<input type="text" name="descricaoCBO'+tipoElement+'" value="" id="descricaoCBO'+tipoElement+'" style="width: 300px;">'+
+										'</div>'+
+										'<div style="clear:both"></div>'+ 
+									'</li>');
+						
+					$("#descricaoCBO"+tipoElement).autocomplete({
+						source: ajaxData(urlFind),				 
+						minLength: 2,
+						select: function( event, ui ) { 
+							$("#codigoCBO"+tipoElement+"OS").val(ui.item.id);
+						}
+					}).data( "autocomplete" )._renderItem = renderData;
+				} else {
+					$(elementCBO).html("");
+					$(elementCBO).html('<span style="font-weight: bold;">Código CBO:</span><span>'+valorCBO+'</span>'+
+								   '<input type="hidden" name="ordemDeServico.codigoCBO'+tipoElement+'" value="'+valorCBO+'" id="codigoCBO'+tipoElement+'OS">');
+				}
+			}
+			
 			function submit_form(){
 				var array =  new Array('dataOS', 'atividadesOS','riscosOS','episOS','medidasPreventivasOS','treinamentosOS','normasInternasOS','procedimentoEmCasoDeAcidenteOS','termoDeResponsabilidadeOS');
 				
-				var validateCBO = true;
-				if ( $("#codigoCBOOS").length == 1 && ($("#codigoCBOOS").val() == "" || $("#codigoCBOOS").val() == null)) {
-					validateCBO = false;
-					$("#codigoCBOOS").css("background", "rgb(255, 238, 194)");
-					jAlert('Preencha o campo CBO');
-					return false;
-				} else
-					$("#codigoCBOOS").css("background", "white");
+				var validateCBOCargo = validaCBO($("#codigoCBOCargoOS"));
+				var validateCBOFuncao = validaCBO($("#codigoCBOFuncaoOS"));
 				
-				return validaFormulario('form', array, new Array('dataOS'), true) && validateCBO;
+				if(!validateCBOCargo && !validateCBOFuncao){
+					jAlert('Preencha o CBO do cargo e o CBO da função');
+				}
+				else if(!validateCBOCargo){
+					jAlert('Preencha o CBO do cargo');
+				}
+				else if(!validateCBOFuncao){
+					jAlert('Preencha o CBO da função');
+				}
+				return validaFormulario('form', array, new Array('dataOS'), true) && validateCBOCargo && validateCBOFuncao;
 			}
+			
+			function validaCBO(campoCBO){
+				var validado = true;
+				if ( $(campoCBO).length == 1 && ($(campoCBO).val() == "" || $(campoCBO).val() == null)) {
+					validado = false;
+					$(campoCBO).css("background", "rgb(255, 238, 194)");
+				} else{
+					$(campoCBO).css("background", "white");
+					validado = true;
+				}
+				return validado;
+			}
+			
 		</script>	
 			
 		<#if ordemDeServico.id?exists>
@@ -164,14 +196,16 @@
 			<#assign dataOS = ordemDeServico.data?date/>
 			<#assign nomeCargo = ordemDeServico.nomeCargo>
 			<#assign nomeFuncao = ordemDeServico.nomeFuncao>
-			<#assign codigoCBO = ordemDeServico.codigoCBO>
+			<#assign codigoCBOCargo = ordemDeServico.codigoCBOCargo>
+			<#assign codigoCBOFuncao = ordemDeServico.codigoCBOFuncao>
 		<#else>
 			<title>Inserir Ordem de Serviço</title>
 			<#assign formAction="insert.action"/>
 			<#assign dataOS = "">
 			<#assign nomeCargo = "<span class='no-data'>[Preencha a data para carregar essa informação]</span>">
 			<#assign nomeFuncao = "<span class='no-data'>[Preencha a data para carregar essa informação]</span>">
-			<#assign codigoCBO = "<span class='no-data'>[Preencha a data para carregar essa informação]</span>">
+			<#assign codigoCBOCargo = "<span class='no-data'>[Preencha a data para carregar essa informação]</span>">
+			<#assign codigoCBOFuncao = "<span class='no-data'>[Preencha a data para carregar essa informação]</span>">
 		</#if>
 	</head>
 	<body>
@@ -207,12 +241,16 @@
 				</tr>
 				<tr>
 					<td> <span style="font-weight: bold;">Cargo:</span> <span id="nomeCargoOS">${nomeCargo}</span> </td>
-					<td> <span style="font-weight: bold;">Função:</span> <span id="nomeFuncaoOS">${nomeFuncao}</span> </td>
+					<td width="480" id="cboCargo"> 
+							<span style="font-weight: bold;">Código CBO:</span><span>${codigoCBOCargo}</span>
+							<@ww.hidden name="ordemDeServico.codigoCBOCargo"/> 
+					</td>
 				</tr>
 				<tr>
-					<td width="480" id="cbo"> 
-							<span style="font-weight: bold;">Código CBO:</span><span>${codigoCBO}</span>
-							<@ww.hidden name="ordemDeServico.codigoCBO"/> 
+					<td> <span style="font-weight: bold;">Função:</span> <span id="nomeFuncaoOS">${nomeFuncao}</span> </td>
+					<td width="480" id="cboFuncao"> 
+							<span style="font-weight: bold;">Código CBO:</span><span>${codigoCBOFuncao}</span>
+							<@ww.hidden name="ordemDeServico.codigoCBOFuncao"/> 
 					</td>
 				</tr>
 			</table>

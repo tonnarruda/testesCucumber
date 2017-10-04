@@ -23,6 +23,15 @@
 			    width: 960px;
 			    height: 19px;
 			}
+			.dados_pessoais {
+				float: left;
+				margin-top: 5px;	
+			}
+			.dados_pessoais_field {
+				width: 470px;
+				padding: 2px 4px;
+				float: left;
+			}	
 		</style>
 		
 	</head>
@@ -46,16 +55,28 @@
 			</tr>
 			<tr>
 				<td>
-					<span style="font-weight: bold;">Colaborador: </span> <span id="nomeColaboradorOS">${ordemDeServico.nomeColaborador}</span>
-					<span style="font-weight: bold; margin-left: 5%;">Data de Admissão: </span> <span id="dataAdmissaoFormatadaOS">${ordemDeServico.dataAdmisaoColaboradorFormatada}</span>
-					</br>
-					<span style="font-weight: bold;">Cargo: </span> <span id="nomeFuncaoOS">${ordemDeServico.nomeCargo}</span>
-					<span style="font-weight: bold; margin-left: 113px;">Função: </span> <span id="nomeFuncaoOS">${ordemDeServico.nomeFuncao}</span>
-					<#if ordemDeServico.codigoCBO?exists>
-						<span style="font-weight: bold; margin-left: 5%;">Código CBO: </span> <span id="codigoCBOOS">${ordemDeServico.codigoCBO}</span>
-					<#else>
-						<span style="font-weight: bold; margin-left: 5%;">Código CBO: </span> <span id="codigoCBOOS">Cargo sem código CBO</span>
-					</#if>
+					<div class='dados_pessoais' style="border-bottom: #D9D9D9 solid 1px;">
+						<div class='dados_pessoais_field'><strong>Colaborador:</strong> ${ordemDeServico.nomeColaborador}</div>
+						<div class='dados_pessoais_field'><strong>Data de Admissão:</strong> ${ordemDeServico.dataAdmisaoColaboradorFormatada}</div>
+					</div>
+					
+					<div class='dados_pessoais' style="border-bottom: #D9D9D9 solid 1px;">
+						<div class='dados_pessoais_field'><strong>Cargo:</strong> ${ordemDeServico.nomeCargo}</div>
+						<#if ordemDeServico.codigoCBOCargo?exists>
+							<div class='dados_pessoais_field'><strong>CBO:</strong> ${ordemDeServico.codigoCBOCargo}</div>
+						<#else>
+							<div class='dados_pessoais_field'><strong>CBO:</strong> Cargo sem código CBO</div>
+						</#if>
+					</div>
+					
+					<div class='dados_pessoais'">
+						<div class='dados_pessoais_field'><strong>Função:</strong> ${ordemDeServico.nomeFuncao}</div>
+						<#if ordemDeServico.codigoCBOFuncao?exists>
+							<div class='dados_pessoais_field'><strong>CBO:</strong> ${ordemDeServico.codigoCBOFuncao}</div>
+						<#else>
+							<div class='dados_pessoais_field'><strong>CBO:</strong> Função sem código CBO</div>
+						</#if>
+					</div>
 				</td>
 			</tr>
 		</table>
@@ -201,10 +222,10 @@
 		<table class="bordas" border="1px">
 			<tr>
 				<td border="1px" style ="width: 480px;">
-					<span style="font-weight: bold;">Revisão: </span> <span id="codigoCBOOS">${ordemDeServico.revisao}</span>
+					<span style="font-weight: bold;">Revisão: </span> <span id="revisaoOS">${ordemDeServico.revisao}</span>
 				</td>
 				<td border="1px" style ="width: 480px;">
-					<span style="font-weight: bold;">Data: </span> <span id="codigoCBOOS">${ordemDeServico.dataFormatada}</span>
+					<span style="font-weight: bold;">Data: </span> <span id="dataOS">${ordemDeServico.dataFormatada}</span>
 				</td>
 			</tr>
 		</table>		

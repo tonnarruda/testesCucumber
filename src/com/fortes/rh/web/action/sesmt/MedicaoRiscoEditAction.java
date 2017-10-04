@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
-import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
@@ -13,7 +12,6 @@ import com.fortes.rh.business.sesmt.MedicaoRiscoManager;
 import com.fortes.rh.business.sesmt.RiscoAmbienteManager;
 import com.fortes.rh.business.sesmt.RiscoFuncaoManager;
 import com.fortes.rh.business.sesmt.RiscoMedicaoRiscoManager;
-import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Funcao;
@@ -30,7 +28,6 @@ public class MedicaoRiscoEditAction extends MyActionSupportList
 	private AmbienteManager ambienteManager;
 	private FuncaoManager funcaoManager;
 	private EstabelecimentoManager estabelecimentoManager;
-	private CargoManager cargoManager;
 	private RiscoAmbienteManager riscoAmbienteManager;
 	private RiscoFuncaoManager riscoFuncaoManager;
 	private RiscoMedicaoRiscoManager riscoMedicaoRiscoManager;
@@ -40,7 +37,6 @@ public class MedicaoRiscoEditAction extends MyActionSupportList
 	private MedicaoRisco medicaoRisco = new MedicaoRisco();
 	private Risco risco;
 	private Estabelecimento estabelecimento;
-	private Cargo cargo;
 	
 	private char controlaRiscoPor;
 	
@@ -60,7 +56,6 @@ public class MedicaoRiscoEditAction extends MyActionSupportList
 	private Collection<Funcao> funcoes;
 	private Collection<MedicaoRisco> medicaoRiscos;
 	private Collection<Estabelecimento> estabelecimentos;
-	private Collection<Cargo> cargos;
 	private Collection<Risco> riscos;
 	private Collection<RiscoMedicaoRisco> riscoMedicaoRiscos = new ArrayList<RiscoMedicaoRisco>();
 
@@ -70,9 +65,10 @@ public class MedicaoRiscoEditAction extends MyActionSupportList
 		
 		if (controlaRiscoPor == 'A')
 			estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
-		else  if (controlaRiscoPor == 'F')
-			cargos = cargoManager.findCargos(0, 0, getEmpresaSistema().getId(), null, null, null, false);
 		
+		else if (controlaRiscoPor == 'F')
+			funcoes = funcaoManager.findByEmpresa(getEmpresaSistema().getId());
+			
 		if (medicaoRisco.getId() != null)
 		{
 			if (controlaRiscoPor == 'A')
@@ -81,11 +77,10 @@ public class MedicaoRiscoEditAction extends MyActionSupportList
 				estabelecimento = medicaoRisco.getAmbiente().getEstabelecimento();
 			}else  if (controlaRiscoPor == 'F')
 			{
-				medicaoRisco = medicaoRiscoManager.getFuncaoByMedicaoRisco(medicaoRisco.getId());
+				medicaoRisco = medicaoRiscoManager.getMedicaoRiscoMedicaoPorFuncao(medicaoRisco.getId());
 				medicaoRisco.setRiscoMedicaoRiscos(medicaoRiscoManager.findRiscoMedicaoRiscos(medicaoRisco.getId()));
-				data = medicaoRisco.getData();
-				cargo = medicaoRisco.getFuncao().getCargo();
 			}
+			
 		}
 	}
 
@@ -113,7 +108,6 @@ public class MedicaoRiscoEditAction extends MyActionSupportList
 		} 
 		else  if (controlaRiscoPor == 'F')
 		{
-			funcoes = funcaoManager.findByCargo(cargo.getId());
 			riscos = riscoFuncaoManager.findRiscosByFuncaoData(funcao.getId(), data);
 		}
 	}
@@ -156,7 +150,6 @@ public class MedicaoRiscoEditAction extends MyActionSupportList
 		else  if (controlaRiscoPor == 'F')
 		{
 			funcao = medicaoRisco.getFuncao();
-			funcoes = funcaoManager.findByCargo(cargo.getId());
 			riscos = riscoFuncaoManager.findRiscosByFuncaoData(medicaoRisco.getFuncao().getId(), medicaoRisco.getData());
 		}
 		
@@ -384,14 +377,6 @@ public class MedicaoRiscoEditAction extends MyActionSupportList
 		this.desabilitarGravar = desabilitarGravar;
 	}
 
-	public Cargo getCargo() {
-		return cargo;
-	}
-
-	public void setCargo(Cargo cargo) {
-		this.cargo = cargo;
-	}
-
 	public Collection<Funcao> getFuncoes() {
 		return funcoes;
 	}
@@ -407,20 +392,12 @@ public class MedicaoRiscoEditAction extends MyActionSupportList
 		this.funcao = funcao;
 	}
 
-	public Collection<Cargo> getCargos() {
-		return cargos;
-	}
-	
 	public char getControlaRiscoPor() {
 		return controlaRiscoPor;
 	}
 	
 	public void setControlaRiscoPor(char controlaRiscoPor) {
 		this.controlaRiscoPor = controlaRiscoPor;
-	}
-
-	public void setCargoManager(CargoManager cargoManager) {
-		this.cargoManager = cargoManager;
 	}
 
 	public void setFuncaoManager(FuncaoManager funcaoManager) {

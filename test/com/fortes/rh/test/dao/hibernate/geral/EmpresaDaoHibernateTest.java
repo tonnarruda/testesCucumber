@@ -263,7 +263,7 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<Empr
 		
 		String qtdTabelasComEmpresa = JDBCConnection.executeQuery("select count(table_name) from information_schema.columns as col where col.column_name = 'empresa_id' and col.table_schema = 'public';");
 		//se esse quebrar, provavelmente tem que inserir uma linha de delete com removeEmpresaPadrao
-		assertEquals("Se esse quebrar, provavelmente tem que inserir uma linha de delete em EmpresaDaoHibernate.removeEmpresaPadrao", "63", qtdTabelasComEmpresa);
+		assertEquals("Se esse quebrar, provavelmente tem que inserir uma linha de delete em EmpresaDaoHibernate.removeEmpresaPadrao", "64", qtdTabelasComEmpresa);
 	}
 	
 	@Test

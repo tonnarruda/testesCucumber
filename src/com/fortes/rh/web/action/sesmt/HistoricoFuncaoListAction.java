@@ -18,8 +18,6 @@ public class HistoricoFuncaoListAction extends MyActionSupportList
 	private Funcao funcao;
 	private Cargo cargoTmp;
 
-	private boolean veioDoSESMT;
-	
 	public String execute() throws Exception {
 		return Action.SUCCESS;
 	}
@@ -29,10 +27,7 @@ public class HistoricoFuncaoListAction extends MyActionSupportList
 		riscoFuncaoManager.removeByHistoricoFuncao(historicoFuncao.getId());
 		historicoFuncaoManager.remove(new Long[]{historicoFuncao.getId()});
 
-		if(veioDoSESMT)
-			return "SUCESSO_VEIO_SESMT";
-		else
-			return Action.SUCCESS;
+		return Action.SUCCESS;
 	}
 
 	public void setHistoricoFuncaoManager(HistoricoFuncaoManager historicoFuncaoManager)
@@ -68,16 +63,6 @@ public class HistoricoFuncaoListAction extends MyActionSupportList
 	public void setFuncao(Funcao funcao)
 	{
 		this.funcao = funcao;
-	}
-
-	public boolean isVeioDoSESMT()
-	{
-		return veioDoSESMT;
-	}
-
-	public void setVeioDoSESMT(boolean veioDoSESMT)
-	{
-		this.veioDoSESMT = veioDoSESMT;
 	}
 
 	public void setRiscoFuncaoManager(RiscoFuncaoManager riscoFuncaoManager) {

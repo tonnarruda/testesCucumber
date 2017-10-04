@@ -3,15 +3,11 @@ package com.fortes.rh.web.action.sesmt;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 
-import com.fortes.rh.business.cargosalario.CargoManager;
-import com.fortes.rh.business.geral.AreaOrganizacionalManager;
-import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.business.sesmt.HistoricoFuncaoManager;
@@ -22,7 +18,6 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.relatorio.QtdPorFuncaoRelatorio;
-import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.StringUtil;
@@ -35,9 +30,6 @@ public class FuncaoListAction extends MyActionSupportList
 	private static final long serialVersionUID = 1L;
 
 	private FuncaoManager funcaoManager;
-	private CargoManager cargoManager;
-	private ColaboradorManager colaboradorManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private EstabelecimentoManager estabelecimentoManager;
 	private HistoricoFuncaoManager historicoFuncaoManager;
 	
@@ -54,7 +46,7 @@ public class FuncaoListAction extends MyActionSupportList
 	private String nomeBusca;
 
 	private Cargo cargoTmp;
-	private Funcao funcao;
+	private Funcao funcao = new Funcao();
 	private AreaOrganizacional areaBusca;
 	private Colaborador colaborador;
 	private HistoricoColaborador historicoColaborador;
@@ -72,57 +64,17 @@ public class FuncaoListAction extends MyActionSupportList
 	
 	public String list() throws Exception
 	{
-		setTotalSize(funcaoManager.getCount(cargoTmp.getId()));
-		funcaos = funcaoManager.findByCargo(getPage(), getPagingSize(), cargoTmp.getId());
-		cargoTmp = (Cargo) cargoManager.findByIdProjection(cargoTmp.getId());
+		setTotalSize(funcaoManager.getCount(getEmpresaSistema().getId(), funcao.getNome()));
+		funcaos = funcaoManager.findByEmpresa(getPage(), getPagingSize(), getEmpresaSistema().getId(), funcao.getNome());
 
 		return Action.SUCCESS;
 	}
 	
-	public String listFiltro() throws Exception
-	{
-		if(cargoTmp != null && cargoTmp.getId() != null)
-			list();
-			
-		cargos = cargoManager.findAllSelect("nomeMercado", null, Cargo.TODOS, getEmpresaSistema().getId());
-		
-		return Action.SUCCESS;
-	}
-
-	@SuppressWarnings("unchecked")
-	public String mudancaFuncaoFiltro() throws Exception
-	{
-		if(areaBusca == null)
-			areaBusca = new AreaOrganizacional();
-
-		Map parametros = new HashMap();
-		parametros.put("nomeBusca", nomeBusca);
-		parametros.put("cpfBusca", cpfBusca);
-		parametros.put("empresaId", getEmpresaSistema().getId());
-		parametros.put("areaId", areaBusca.getId());
-
-		setTotalSize(colaboradorManager.getCount(parametros));
-		colaboradors = colaboradorManager.findList(getPage(), getPagingSize(), parametros);
-
-		if(colaboradors == null || colaboradors.isEmpty())
-			addActionMessage("Não existem mudanças de função a serem listadas!");
-
-		areas = areaOrganizacionalManager.findAllListAndInativas(AreaOrganizacional.TODAS, null, getEmpresaSistema().getId());
-
-		if(!areas.isEmpty())
-		{
-			CollectionUtil<AreaOrganizacional> areasOrdenadas = new CollectionUtil<AreaOrganizacional>();
-			areas = areasOrdenadas.sortCollectionStringIgnoreCase(areas, "descricao");
-		}
-
-		return Action.SUCCESS;
-	}
-
 	public String delete() throws Exception
 	{
 		try {
 			funcaoManager.removeFuncao(funcao);
-			addActionMessage("Função excluída com sucesso.");
+			addActionSuccess("Função excluída com sucesso.");
 
 		} catch (DataIntegrityViolationException e) {
 			addActionError("Não é possível excluir a Função, pois esta possui dependências.");
@@ -140,12 +92,6 @@ public class FuncaoListAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 
-	public String deleteFiltro() throws Exception
-	{
-		delete();
-		return Action.SUCCESS;
-	}
-	
 	public String prepareRelatorioQtdPorFuncao()
 	{
 		estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
@@ -252,16 +198,6 @@ public class FuncaoListAction extends MyActionSupportList
 		this.funcaos = funcaos;
 	}
 
-	public void setCargoManager(CargoManager cargoManager)
-	{
-		this.cargoManager = cargoManager;
-	}
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
-	}
-
 	public Collection<Colaborador> getColaboradors()
 	{
 		return colaboradors;
@@ -310,11 +246,6 @@ public class FuncaoListAction extends MyActionSupportList
 	public void setAreaBusca(AreaOrganizacional areaBusca)
 	{
 		this.areaBusca = areaBusca;
-	}
-
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
-	{
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 
 	public Colaborador getColaborador()

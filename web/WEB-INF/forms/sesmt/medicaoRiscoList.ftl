@@ -51,7 +51,6 @@
 			<@display.column title="Estabelecimento" property="ambiente.estabelecimento.nome" />
 		<#else>
 			<@display.column title="Função" property="funcao.nome" />
-			<@display.column title="Cargo" property="funcao.cargo.nome" />
 		</#if>
 	</@display.table>
 	

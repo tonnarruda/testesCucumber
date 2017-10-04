@@ -181,7 +181,8 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 		
 		avaliacoes = avaliacaoManager.findAllSelect(null, null, getEmpresaSistema().getId(), true, TipoModeloAvaliacao.SOLICITACAO, null);
         avaliacoesCheckList = CheckListBoxUtil.populaCheckListBox(avaliacoes, "getId", "getTitulo", null);
-		
+        funcoes = funcaoManager.findByEmpresa(getEmpresaSistema().getId());
+        
     	if (solicitacao != null && solicitacao.getId() != null)
         {
             solicitacao = solicitacaoManager.findByIdProjectionForUpdate(solicitacao.getId());
@@ -205,9 +206,6 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
             if (candidatoSolicitacaoManager.getCount(new String[] {"solicitacao.id"}, new Object[]{solicitacao.getId()}) > 0)
             	possuiCandidatoSolicitacao = true;
             
-			if(solicitacao.getFaixaSalarial() != null && solicitacao.getFaixaSalarial().getCargo() != null && solicitacao.getFaixaSalarial().getCargo().getId() != null)
-				funcoes = funcaoManager.findByCargo(solicitacao.getFaixaSalarial().getCargo().getId());
-
 			if(solicitacao.getEstabelecimento() != null && solicitacao.getEstabelecimento().getId() != null)
 				ambientes = ambienteManager.findByEstabelecimento(solicitacao.getEstabelecimento().getId());
             

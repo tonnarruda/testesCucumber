@@ -12,7 +12,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
 import com.fortes.model.AbstractModel;
-import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.security.auditoria.ChaveDaAuditoria;
 
 @SuppressWarnings("serial")
@@ -23,14 +23,17 @@ public class Funcao extends AbstractModel implements Serializable
 	@Column(length=100)
     private String nome;
 	
-    @ManyToOne
-    private Cargo cargo;
-
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="funcao")
 	private Collection<HistoricoFuncao> historicoFuncaos;
 	
 	@OneToMany(mappedBy="funcao")
 	private Collection<MedicaoRisco> medicaoRiscos;
+	
+	@ManyToOne
+	private Empresa empresa;
+	
+	@Column(length=6)
+	private String codigoCbo;
 	
 	@Transient
 	private HistoricoFuncao historicoAtual;
@@ -64,24 +67,6 @@ public class Funcao extends AbstractModel implements Serializable
 		this.nome = nome;
 	}
 
-	public void setProjectionCargoId(Long cargoId)
-	{
-		if(this.cargo == null)
-			this.cargo = new Cargo();
-		
-		this.cargo.setId(cargoId);
-	}
-	
-	public Cargo getCargo()
-	{
-		return cargo;
-	}
-	
-	public void setCargo(Cargo cargo)
-	{
-		this.cargo = cargo;
-	}
-	
 	@ChaveDaAuditoria
 	public String getNome()
 	{
@@ -144,5 +129,28 @@ public class Funcao extends AbstractModel implements Serializable
 
 	public void setExameNome(String exameNome) {
 		this.exameNome = exameNome;
+	}
+
+	public Empresa getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
+	}
+	
+	public void setEmpresaId(Long empresaId){
+		if(this.empresa == null)
+			this.empresa = new Empresa();
+		
+		this.empresa.setId(empresaId);
+	}
+
+	public String getCodigoCbo() {
+		return codigoCbo;
+	}
+
+	public void setCodigoCbo(String codigoCbo) {
+		this.codigoCbo = codigoCbo;
 	}
 }

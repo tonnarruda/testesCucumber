@@ -736,7 +736,6 @@ import com.fortes.rh.test.web.dwr.EmpresaDWRTest;
 import com.fortes.rh.test.web.dwr.EstabelecimentoDWRTest;
 import com.fortes.rh.test.web.dwr.ExtintorDWRTest;
 import com.fortes.rh.test.web.dwr.FaixaSalarialDWRTest;
-import com.fortes.rh.test.web.dwr.FuncaoDWRTest;
 import com.fortes.rh.test.web.dwr.GrupoOcupacionalDWRTest;
 import com.fortes.rh.test.web.dwr.HistoricoCandidatoDWRTest;
 import com.fortes.rh.test.web.dwr.ListaPresencaDWRTest;
@@ -1604,7 +1603,6 @@ import com.fortes.test.web.tags.LinkTagTest;
 	DntDWRTest.class,
 	EstabelecimentoDWRTest.class,
 	GrupoOcupacionalDWRTest.class,
-	FuncaoDWRTest.class,
 	ReajusteDWRTest.class,
 	HistoricoCandidatoDWRTest.class,
 	ListaPresencaDWRTest.class,

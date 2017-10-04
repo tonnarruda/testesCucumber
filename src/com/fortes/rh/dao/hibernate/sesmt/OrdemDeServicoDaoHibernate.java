@@ -30,8 +30,9 @@ public class OrdemDeServicoDaoHibernate extends GenericDaoHibernate<OrdemDeServi
 		p.add(Projections.property("os.id"), "id");
 		p.add(Projections.property("os.nomeColaborador"), "nomeColaborador");
 		p.add(Projections.property("os.dataAdmisaoColaborador"), "dataAdmisaoColaborador");
-		p.add(Projections.property("os.codigoCBO"), "codigoCBO");
+		p.add(Projections.property("os.codigoCBOCargo"), "codigoCBOCargo");
 		p.add(Projections.property("os.nomeFuncao"), "nomeFuncao");
+		p.add(Projections.property("os.codigoCBOFuncao"), "codigoCBOFuncao");
 		p.add(Projections.property("os.data"), "data");
 		p.add(Projections.property("os.revisao"), "revisao");
 		p.add(Projections.property("os.atividades"), "atividades");

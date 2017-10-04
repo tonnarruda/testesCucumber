@@ -8,7 +8,6 @@ import mockit.Mockit;
 
 import org.jmock.Mock;
 import org.jmock.cglib.MockObjectTestCase;
-import org.jmock.core.Constraint;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.transaction.PlatformTransactionManager;
 
@@ -288,7 +287,6 @@ public class CargoManagerTest extends MockObjectTestCase
 		faixasSalariais.add(faixaSalarial);
 
 		faixaSalarialManager.expects(once()).method("findFaixaSalarialByCargo").withAnyArguments().will(returnValue(faixasSalariais));
-		funcaoManager.expects(once()).method("removeFuncaoAndHistoricosByCargo").withAnyArguments();
 		faixaSalarialManager.expects(once()).method("removeFaixaAndHistoricos").withAnyArguments();
 		cargoDao.expects(once()).method("findByIdProjection").withAnyArguments().will(returnValue(cargo));;
 		experienciaManager.expects(once()).method("desvinculaCargo").withAnyArguments();

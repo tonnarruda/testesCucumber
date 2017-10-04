@@ -13,6 +13,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
@@ -37,6 +38,8 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
+import com.fortes.rh.business.sesmt.AmbienteManager;
+import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
@@ -74,7 +77,7 @@ import com.fortes.rh.web.ws.AcPessoalClientTabelaReajuste;
 @PrepareForTest({SpringUtil.class})
 public class HistoricoColaboradorManagerTest_Junit4
 {
-	private HistoricoColaboradorManagerImpl historicoColaboradorManagerImpl = new HistoricoColaboradorManagerImpl();
+	private HistoricoColaboradorManagerImpl historicoColaboradorManager = new HistoricoColaboradorManagerImpl();
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	private AcPessoalClientTabelaReajuste acPessoalClientTabelaReajuste;
 	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
@@ -87,53 +90,59 @@ public class HistoricoColaboradorManagerTest_Junit4
 	private SolicitacaoManager solicitacaoManager;
 	private ColaboradorManager colaboradorManager;
 	private HibernateTemplate hibernateTemplate;
+	private AmbienteManager ambienteManager;
 	private EmpresaManager empresaManager;
+	private FuncaoManager funcaoManager;
 	
 	@Before
 	public void setUp() throws Exception {
 		
         historicoColaboradorDao = mock(HistoricoColaboradorDao.class);
-        historicoColaboradorManagerImpl.setDao(historicoColaboradorDao);
+        historicoColaboradorManager.setDao(historicoColaboradorDao);
 
 		areaOrganizacionalManager = mock(AreaOrganizacionalManager.class);
-		historicoColaboradorManagerImpl.setAreaOrganizacionalManager(areaOrganizacionalManager);
+		historicoColaboradorManager.setAreaOrganizacionalManager(areaOrganizacionalManager);
 
 		faixaSalarialManager = mock(FaixaSalarialManager.class);
-		historicoColaboradorManagerImpl.setFaixaSalarialManager(faixaSalarialManager);
+		historicoColaboradorManager.setFaixaSalarialManager(faixaSalarialManager);
 
 		candidatoSolicitacaoManager = mock(CandidatoSolicitacaoManager.class);
-		historicoColaboradorManagerImpl.setCandidatoSolicitacaoManager(candidatoSolicitacaoManager);
+		historicoColaboradorManager.setCandidatoSolicitacaoManager(candidatoSolicitacaoManager);
 
 		gerenciadorComunicacaoManager = mock(GerenciadorComunicacaoManager.class);
-		historicoColaboradorManagerImpl.setGerenciadorComunicacaoManager(gerenciadorComunicacaoManager);
+		historicoColaboradorManager.setGerenciadorComunicacaoManager(gerenciadorComunicacaoManager);
 
 		acPessoalClientColaborador = mock(AcPessoalClientColaborador.class);
-		historicoColaboradorManagerImpl.setAcPessoalClientColaborador(acPessoalClientColaborador);
+		historicoColaboradorManager.setAcPessoalClientColaborador(acPessoalClientColaborador);
 
 		reajusteColaboradorManager = mock(ReajusteColaboradorManager.class);
-		historicoColaboradorManagerImpl.setReajusteColaboradorManager(reajusteColaboradorManager);
+		historicoColaboradorManager.setReajusteColaboradorManager(reajusteColaboradorManager);
 		
 		estabelecimentoManager = mock(EstabelecimentoManager.class);
-		historicoColaboradorManagerImpl.setEstabelecimentoManager(estabelecimentoManager);
+		historicoColaboradorManager.setEstabelecimentoManager(estabelecimentoManager);
 
 		solicitacaoManager = mock(SolicitacaoManager.class);
-		historicoColaboradorManagerImpl.setSolicitacaoManager(solicitacaoManager);
-
-		colaboradorManager = mock(ColaboradorManager.class);
+		historicoColaboradorManager.setSolicitacaoManager(solicitacaoManager);
 		
 		empresaManager = mock(EmpresaManager.class);
-		historicoColaboradorManagerImpl.setEmpresaManager(empresaManager);
+		historicoColaboradorManager.setEmpresaManager(empresaManager);
 
 		acPessoalClientTabelaReajuste = mock(AcPessoalClientTabelaReajuste.class);
-		historicoColaboradorManagerImpl.setAcPessoalClientTabelaReajuste(acPessoalClientTabelaReajuste);
+		historicoColaboradorManager.setAcPessoalClientTabelaReajuste(acPessoalClientTabelaReajuste);
 		
 		PowerMockito.mockStatic(SpringUtil.class);
+		
+		colaboradorManager = mock(ColaboradorManager.class);
+		ambienteManager = mock(AmbienteManager.class);
+		funcaoManager = mock(FuncaoManager.class);
 		
 		hibernateTemplate = mock(HibernateTemplate.class);
 		SessionFactory sessionFactory  = PowerMockito.mock(SessionFactory.class);
 		hibernateTemplate.setSessionFactory(sessionFactory);
 		
 		BDDMockito.given(SpringUtil.getBean("colaboradorManager")).willReturn(colaboradorManager);
+		BDDMockito.given(SpringUtil.getBean("ambienteManager")).willReturn(ambienteManager);
+		BDDMockito.given(SpringUtil.getBean("funcaoManager")).willReturn(funcaoManager);
 	}
 
 	@Test
@@ -154,7 +163,7 @@ public class HistoricoColaboradorManagerTest_Junit4
 		when(historicoColaboradorDao.findByIdProjectionHistorico(historicoColaborador.getId())).thenReturn(historicoColaborador);
 		when(historicoColaboradorDao.setStatus(historicoColaborador.getId(), false)).thenReturn(true);
 		
-		HistoricoColaborador historicoColaboradorRetorno = historicoColaboradorManagerImpl.cancelarSituacao(situacao, mensagem);
+		HistoricoColaborador historicoColaboradorRetorno = historicoColaboradorManager.cancelarSituacao(situacao, mensagem);
 
 		assertEquals(historicoColaborador, historicoColaboradorRetorno);
 	}
@@ -200,7 +209,7 @@ public class HistoricoColaboradorManagerTest_Junit4
 		when(empresaManager.findByIdProjection(historicoColaborador.getColaborador().getEmpresa().getId())).thenReturn(empresa);
 		when(candidatoSolicitacaoManager.findByCandidatoSolicitacao(historicoColaborador.getCandidatoSolicitacao())).thenReturn(candidatoSolicitacao);
 
-		HistoricoColaborador historicoColaboradorRetorno = historicoColaboradorManagerImpl.cancelarSituacao(situacao, mensagem);
+		HistoricoColaborador historicoColaboradorRetorno = historicoColaboradorManager.cancelarSituacao(situacao, mensagem);
 		assertEquals(historicoColaborador, historicoColaboradorRetorno);
 	}
 	
@@ -216,7 +225,7 @@ public class HistoricoColaboradorManagerTest_Junit4
 
         String msg = "";
         try {
-            historicoColaboradorManagerImpl.atualizarHistoricoContratacao(situacao);
+            historicoColaboradorManager.atualizarHistoricoContratacao(situacao);
         } catch (Exception e) {
             msg = e.getMessage();
         }
@@ -237,7 +246,7 @@ public class HistoricoColaboradorManagerTest_Junit4
 
         String msg = "";
         try {
-            historicoColaboradorManagerImpl.atualizarHistoricoContratacao(situacao);
+            historicoColaboradorManager.atualizarHistoricoContratacao(situacao);
         } catch (Exception e) {
             msg = e.getMessage();
         }
@@ -261,7 +270,7 @@ public class HistoricoColaboradorManagerTest_Junit4
 
         String msg = "";
         try {
-            historicoColaboradorManagerImpl.atualizarHistoricoContratacao(situacao);
+            historicoColaboradorManager.atualizarHistoricoContratacao(situacao);
         } catch (Exception e) {
             msg = e.getMessage();
         }
@@ -287,7 +296,7 @@ public class HistoricoColaboradorManagerTest_Junit4
 
         String msg = "";
         try {
-            historicoColaboradorManagerImpl.atualizarHistoricoContratacao(situacao);
+            historicoColaboradorManager.atualizarHistoricoContratacao(situacao);
         } catch (Exception e) {
             msg = e.getMessage();
         }
@@ -313,7 +322,7 @@ public class HistoricoColaboradorManagerTest_Junit4
 
         Exception exception = null;
         try {
-            historicoColaboradorManagerImpl.atualizarHistoricoContratacao(situacao);
+            historicoColaboradorManager.atualizarHistoricoContratacao(situacao);
         } catch (Exception e) {
             exception = e;
         }
@@ -337,7 +346,7 @@ public class HistoricoColaboradorManagerTest_Junit4
 		Long tabelaReajusteColaboradorId = 2L;
 		when(historicoColaboradorDao.existeHistoricoConfirmadoByTabelaReajusteColaborador(tabelaReajusteColaboradorId)).thenReturn(false);
 		
-		boolean retorno = historicoColaboradorManagerImpl.existeHistoricoConfirmadoByTabelaReajusteColaborador(tabelaReajusteColaboradorId);
+		boolean retorno = historicoColaboradorManager.existeHistoricoConfirmadoByTabelaReajusteColaborador(tabelaReajusteColaboradorId);
 		verify(historicoColaboradorDao, times(1)).existeHistoricoConfirmadoByTabelaReajusteColaborador(tabelaReajusteColaboradorId);
 		assertFalse(retorno);
     }
@@ -350,7 +359,7 @@ public class HistoricoColaboradorManagerTest_Junit4
 		Date data = new Date(); 
 		
 		when(historicoColaboradorDao.isUltimoHistoricoOrPosteriorAoUltimo(data, empregadoCodigoAC, empresa.getCodigoAC(), empresa.getGrupoAC())).thenReturn(true);
-		assertTrue(historicoColaboradorManagerImpl.isUltimoHistoricoOrPosteriorAoUltimo(data, empregadoCodigoAC, empresa.getCodigoAC(), empresa.getGrupoAC()));
+		assertTrue(historicoColaboradorManager.isUltimoHistoricoOrPosteriorAoUltimo(data, empregadoCodigoAC, empresa.getCodigoAC(), empresa.getGrupoAC()));
 	}
 	
 	@Test
@@ -387,7 +396,7 @@ public class HistoricoColaboradorManagerTest_Junit4
 		Exception exception = null;
 		try
 		{
-			historicoColaboradorManagerImpl.removeHistoricoAndReajuste(historicoColaborador.getId(), colaborador.getId(), empresa, true);
+			historicoColaboradorManager.removeHistoricoAndReajuste(historicoColaborador.getId(), colaborador.getId(), empresa, true);
 		}
 		catch (Exception e)
 		{
@@ -418,7 +427,7 @@ public class HistoricoColaboradorManagerTest_Junit4
 		Exception exception = null;
 		try
 		{
-			historicoColaboradorManagerImpl.removeHistoricoAndReajuste(historicoColaborador.getId(), colaborador.getId(), empresa, true);
+			historicoColaboradorManager.removeHistoricoAndReajuste(historicoColaborador.getId(), colaborador.getId(), empresa, true);
 		}
 		catch (Exception e)
 		{
@@ -452,8 +461,26 @@ public class HistoricoColaboradorManagerTest_Junit4
 		
 		Collection<HistoricoColaborador> historicos = Arrays.asList(historicoColaborador, historicoColaboradorComAmbienteNulo, historicoColaboradorComFuncaoNula);
 		
-		Collection<HistoricoColaborador> retorno = historicoColaboradorManagerImpl.filtraHistoricoColaboradorParaPPP(historicos);
+		Collection<HistoricoColaborador> retorno = historicoColaboradorManager.filtraHistoricoColaboradorParaPPP(historicos);
 		
 		assertEquals(1, retorno.size());
+	}
+	
+	@Test
+	public void testGetHistoricosComAmbienteEFuncao()
+	{
+		Long empresaId = 1L;
+		
+		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity(1L);
+		historicoColaborador1.setEstabelecimento(EstabelecimentoFactory.getEntity(1L));
+		historicoColaborador1.setCargoId(1L);
+		
+		Collection<HistoricoColaborador> historicoColaboradors = Arrays.asList(historicoColaborador1);
+		
+		when(historicoColaboradorDao.findAllByColaborador(eq(1L))).thenReturn(historicoColaboradors);
+		when(ambienteManager.findByEstabelecimento(eq(new Long[]{1L}))).thenReturn(new ArrayList<Ambiente>());
+		when(funcaoManager.findByEmpresa(eq(empresaId))).thenReturn(new ArrayList<Funcao>());
+		
+		assertEquals(1, historicoColaboradorManager.getHistoricosComAmbienteEFuncao(1L, empresaId).size());
 	}
 }

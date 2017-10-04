@@ -1,9 +1,16 @@
 package com.fortes.rh.test.dao.hibernate.sesmt;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+
+import org.junit.Test;
+import org.kohsuke.rngom.digested.DUnaryPattern;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
@@ -27,7 +34,7 @@ import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
-import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.dao.GenericDaoHibernateTest_JUnit4;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.AmbienteFactory;
@@ -39,21 +46,20 @@ import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.util.DateUtil;
 
 @SuppressWarnings("unused")
-public class FuncaoDaoHibernateTest extends GenericDaoHibernateTest<Funcao>
+public class FuncaoDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<Funcao>
 {
-	private FuncaoDao funcaoDao;
-	private CargoDao cargoDao;
-	private EmpresaDao empresaDao;
-	private FaixaSalarialDao faixaSalarialDao;
-	private EstabelecimentoDao estabelecimentoDao;
+	@Autowired private FuncaoDao funcaoDao;
+	@Autowired private EmpresaDao empresaDao;
+	@Autowired private FaixaSalarialDao faixaSalarialDao;
+	@Autowired private EstabelecimentoDao estabelecimentoDao;
 	
-	ColaboradorDao colaboradorDao;
-	HistoricoColaboradorDao historicoColaboradorDao;
-	AmbienteDao ambienteDao;
-	HistoricoFuncaoDao historicoFuncaoDao;
-	MedicaoRiscoDao medicaoRiscoDao;
-	RiscoMedicaoRiscoDao riscoMedicaoRiscoDao;
-	EpcDao epcDao;
+	@Autowired private ColaboradorDao colaboradorDao;
+	@Autowired private HistoricoColaboradorDao historicoColaboradorDao;
+	@Autowired private AmbienteDao ambienteDao;
+	@Autowired private HistoricoFuncaoDao historicoFuncaoDao;
+	@Autowired private MedicaoRiscoDao medicaoRiscoDao;
+	@Autowired private RiscoMedicaoRiscoDao riscoMedicaoRiscoDao;
+	@Autowired private EpcDao epcDao;
 
 	public Funcao getEntity()
 	{
@@ -61,139 +67,75 @@ public class FuncaoDaoHibernateTest extends GenericDaoHibernateTest<Funcao>
 
 		funcao.setId(1L);
 		funcao.setNome("funcao");
-		funcao.setCargo(null);
 
 		return funcao;
 	}
 
-	public void testFindByCargo()
+	@Test
+	public void testFindByEmpresaComPaginacao()
 	{
-		Cargo cargo = new Cargo();
-		cargo.setId(2L);
-		cargo.setNomeMercado("nomeMercado");
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
 
-		Funcao f1 = new Funcao();
-		f1.setId(1L);
-		f1.setNome("a");
-		f1.setCargo(cargo);
+		Funcao f1 = saveFuncao("a", empresa);
+		Funcao f2 = saveFuncao("b", empresa);
 
-		Funcao f2 = new Funcao();
-		f2.setId(2L);
-		f2.setNome("b");
-		f2.setCargo(cargo);
+		Collection<Funcao> funcoesTest = new ArrayList<Funcao>();
+		funcoesTest.add(f1);
+		funcoesTest.add(f2);
 
-		Collection<Funcao> funcaoTest = new ArrayList<Funcao>();
-		funcaoTest.add(f1);
-		funcaoTest.add(f2);
 
-		cargo = cargoDao.save(cargo);
-		funcaoDao.save(f1);
-		funcaoDao.save(f2);
-
-		Collection<Funcao> funcaos = funcaoDao.findByCargo(1, 15, cargo.getId());
-
-		assertEquals(funcaoTest, funcaos);
+		Collection<Funcao> funcaos = funcaoDao.findByEmpresa(1, 15, empresa.getId(), null);
+		assertEquals(funcoesTest, funcaos);
 		
-		int count = funcaoDao.getCount(cargo.getId()); 
+		funcaos = funcaoDao.findByEmpresa(1, 15, empresa.getId(), "");
+		assertEquals(funcoesTest, funcaos);
+		
+		funcaos = funcaoDao.findByEmpresa(1, 15, empresa.getId(), f1.getNome());
+		assertEquals(1, funcaos.size());
+		assertEquals(f1.getNome(), funcaos.iterator().next().getNome());
+		
+		int count = funcaoDao.getCount(empresa.getId(), null); 
 		assertEquals(2, count);
 	}
 
+	@Test
 	public void testFindByEmpresa()
 	{
-		Empresa empresa = new Empresa();
-		empresa.setCnpj("21212121212");
-		empresa.setRazaoSocial("empresa");
-		empresa.setNome("empresa");
+		Empresa empresa = EmpresaFactory.getEmpresa("Empresa 1", "21212121212", "empresa");
+		empresaDao.save(empresa);
+		
+		Empresa empresa2 = EmpresaFactory.getEmpresa("Empresa 2", "21212121212", "empresa2");
+		empresaDao.save(empresa2);
 
-		Empresa empresa2 = new Empresa();
-		empresa2.setCnpj("21212121212");
-		empresa2.setRazaoSocial("empresa2");
-		empresa2.setNome("empresa2");
-
-		empresa = empresaDao.save(empresa);
-		empresa2 = empresaDao.save(empresa2);
-
-		Cargo c1 = new Cargo();
-		c1.setNomeMercado("nomeMercado");
-		c1.setEmpresa(empresa);
-
-		Cargo c2 = new Cargo();
-		c2.setNomeMercado("nomeMercado");
-		c2.setEmpresa(empresa);
-
-		Cargo c3 = new Cargo();
-		c3.setNomeMercado("nomeMercado");
-		c3.setEmpresa(empresa2);
-
-		c1 = cargoDao.save(c1);
-		c2 = cargoDao.save(c2);
-		c3 = cargoDao.save(c3);
-
-		Funcao f1 = new Funcao();
-		f1.setCargo(c1);
-
-		Funcao f2 = new Funcao();
-		f2.setCargo(c1);
-
-		Funcao f3 = new Funcao();
-		f3.setCargo(c2);
-
-		Funcao f4 = new Funcao();
-		f4.setCargo(c3);
-
-		f1 = funcaoDao.save(f1);
-		f2 = funcaoDao.save(f2);
-		f3 = funcaoDao.save(f3);
-		f4 = funcaoDao.save(f4);
-
+		Funcao f1 = saveFuncao("F1", empresa);
+		Funcao f2 = saveFuncao("F2", empresa);
+		Funcao f3 = saveFuncao("F3", empresa2);
+		
 		Collection<Funcao> funcaos = funcaoDao.findByEmpresa(empresa.getId());
 
-		assertEquals("Test 1", 3, funcaos.size());
+		assertEquals("Test 1", 2, funcaos.size());
 		assertTrue("Test 2", funcaos.contains(f1));
 		assertTrue("Test 3", funcaos.contains(f2));
-		assertTrue("Test 4", funcaos.contains(f3));
+		assertTrue("Test 4", !funcaos.contains(f3));
 
 		funcaos = funcaoDao.findByEmpresa(empresa2.getId());
 
 		assertEquals("Test 5", 1, funcaos.size());
-		assertTrue("Test 6", funcaos.contains(f4));
+		assertTrue("Test 6", funcaos.contains(f3));
 
 	}
 
-	public void testFindFuncaoByFaixa()
-	{
-		Cargo cargo = CargoFactory.getEntity();
-		cargo = cargoDao.save(cargo);
-
-		FaixaSalarial faixa = FaixaSalarialFactory.getEntity();
-		faixa.setCargo(cargo);
-		faixa = faixaSalarialDao.save(faixa);
-
-		Funcao funcao1 = new Funcao();
-		funcao1.setCargo(cargo);
-		funcao1 = funcaoDao.save(funcao1);
-
-		Funcao funcao2 = new Funcao();
-		funcao2.setCargo(cargo);
-		funcao2 = funcaoDao.save(funcao2);
-
-		Collection<Funcao> funcaos = funcaoDao.findFuncaoByFaixa(faixa.getId());
-
-		assertEquals(2, funcaos.size());
-	}
-	
+	@Test
 	public void testFindByIdProjection()
 	{
-		Cargo cargo = CargoFactory.getEntity();
-		cargo = cargoDao.save(cargo);
-		
 		Funcao funcao = new Funcao();
-		funcao.setCargo(cargo);
 		funcao = funcaoDao.save(funcao);
 		
 		assertEquals(funcao, funcaoDao.findByIdProjection(funcao.getId()));
 	}
 	
+	@Test
 	public void testFindColaboradoresSemFuncao()
 	{
 		Date hoje = new Date();
@@ -241,6 +183,7 @@ public class FuncaoDaoHibernateTest extends GenericDaoHibernateTest<Funcao>
 		assertEquals(2, nomes.size());
 	}
 	
+	@Test
 	public void testFindFuncaoAtualDosColaboradores()
 	{
 		Date hoje = Calendar.getInstance().getTime();
@@ -306,6 +249,7 @@ public class FuncaoDaoHibernateTest extends GenericDaoHibernateTest<Funcao>
 		return historicoColaborador;
 	}
 
+	@Test
 	public void testGetFuncoesDoAmbiente()
 	{
 		Date hoje = Calendar.getInstance().getTime();
@@ -385,6 +329,7 @@ public class FuncaoDaoHibernateTest extends GenericDaoHibernateTest<Funcao>
 				((Funcao)colecao.toArray()[0]).getHistoricoAtual().getDescricao());
 	}
 	
+	@Test
 	public void testGetQtdColaboradorByFuncao()
 	{
 		Date hoje = Calendar.getInstance().getTime();
@@ -402,30 +347,10 @@ public class FuncaoDaoHibernateTest extends GenericDaoHibernateTest<Funcao>
 		Empresa empresa2 = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa2);
 		
-		Cargo cargo1 = CargoFactory.getEntity();
-		cargo1.setEmpresa(empresa1);
-		cargoDao.save(cargo1);
-		
-		Cargo cargo2 = CargoFactory.getEntity();
-		cargo2.setEmpresa(empresa2);
-		cargoDao.save(cargo2);
-		
-		Funcao funcao1 = FuncaoFactory.getEntity();
-		funcao1.setNome("F1");
-		funcao1.setCargo(cargo1);
-		funcaoDao.save(funcao1);
-		Funcao funcao2 = FuncaoFactory.getEntity();
-		funcao2.setNome("F2");
-		funcao2.setCargo(cargo2);
-		funcaoDao.save(funcao2);
-		Funcao funcao3 = FuncaoFactory.getEntity();
-		funcao3.setNome("F3");
-		funcao3.setCargo(cargo2);
-		funcaoDao.save(funcao3);
-		Funcao funcao4 = FuncaoFactory.getEntity();
-		funcao4.setNome("F4");
-		funcao4.setCargo(cargo1);
-		funcaoDao.save(funcao4);
+		Funcao funcao1 = saveFuncao("F1", empresa1);
+		Funcao funcao2 = saveFuncao("F2", empresa2);
+		Funcao funcao3 = saveFuncao("F3", empresa2);
+		Funcao funcao4 = saveFuncao("F4", empresa1);
 		
 		Ambiente ambiente = AmbienteFactory.getEntity();
 		ambienteDao.save(ambiente);
@@ -482,58 +407,10 @@ public class FuncaoDaoHibernateTest extends GenericDaoHibernateTest<Funcao>
 	{
 		return funcaoDao;
 	}
-
-	public void setFuncaoDao(FuncaoDao funcaoDao)
-	{
-		this.funcaoDao = funcaoDao;
-	}
-
-	public void setCargoDao(CargoDao cargoDao)
-	{
-		this.cargoDao = cargoDao;
-	}
-
-	public void setEmpresaDao(EmpresaDao empresaDao)
-	{
-		this.empresaDao = empresaDao;
-	}
-
-	public void setFaixaSalarialDao(FaixaSalarialDao faixaSalarialDao)
-	{
-		this.faixaSalarialDao = faixaSalarialDao;
-	}
-
-	public void setColaboradorDao(ColaboradorDao colaboradorDao) {
-		this.colaboradorDao = colaboradorDao;
-	}
-
-	public void setHistoricoColaboradorDao(
-			HistoricoColaboradorDao historicoColaboradorDao) {
-		this.historicoColaboradorDao = historicoColaboradorDao;
-	}
-
-	public void setAmbienteDao(AmbienteDao ambienteDao) {
-		this.ambienteDao = ambienteDao;
-	}
-
-	public void setHistoricoFuncaoDao(HistoricoFuncaoDao historicoFuncaoDao) {
-		this.historicoFuncaoDao = historicoFuncaoDao;
-	}
-
-	public void setMedicaoRiscoDao(MedicaoRiscoDao medicaoRiscoDao) {
-		this.medicaoRiscoDao = medicaoRiscoDao;
-	}
-
-	public void setRiscoMedicaoRiscoDao(RiscoMedicaoRiscoDao riscoMedicaoRiscoDao) {
-		this.riscoMedicaoRiscoDao = riscoMedicaoRiscoDao;
-	}
-
-	public void setEpcDao(EpcDao epcDao) {
-		this.epcDao = epcDao;
-	}
-
-	public void setEstabelecimentoDao(EstabelecimentoDao estabelecimentoDao)
-	{
-		this.estabelecimentoDao = estabelecimentoDao;
+	
+	private Funcao saveFuncao(String nome, Empresa empresa){
+		Funcao funcao = FuncaoFactory.getEntity(nome, empresa);
+		funcaoDao.save(funcao);
+		return funcao;
 	}
 }

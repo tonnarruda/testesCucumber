@@ -10,7 +10,6 @@
 <#include "tipoSalarioInclude.ftl" />
 <#include "calculaSalarioInclude.ftl" />
 
-<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/FuncaoDWR.js?version=${versao}"/>'></script>
 <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ReajusteDWR.js?version=${versao}"/>'></script>
 <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>'></script>
 <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AmbienteDWR.js?version=${versao}"/>'></script>
@@ -22,21 +21,6 @@
 <script type="text/javascript" src="<@ww.url includeParams="none" value="/js/areaOrganizacional.js?version=${versao}"/>"></script>
 
 <script language='javascript'>
-	function populaFuncao(faixaId)
-	{
-		if(faixaId != "null" && faixaId != "")
-		{
-			DWRUtil.useLoadingMessage('Carregando...');
-			FuncaoDWR.getFuncaoByFaixaSalarial(createListFuncao, faixaId);
-		}
-	}
-
-	function createListFuncao(data)
-	{
-		DWRUtil.removeAllOptions("funcaoProposta");
-		DWRUtil.addOptions("funcaoProposta", data);
-	}
-
 	function populaAmbiente(estabelecimentoId)
 	{
 		if(estabelecimentoId != "null")
@@ -130,8 +114,8 @@
 		
 						<@authz.authorize ifAllGranted="ROLE_COMPROU_SESMT">
 							<@ww.select label="Ambiente" name="reajusteColaborador.ambienteProposto.id" id="ambienteProposto" required="${obrigarAmbienteFuncao?string}" list="ambientes" listKey="id" listValue="nome" headerValue="Nenhum" headerKey="-1"/>
-							<@ww.select label="Cargo/Faixa" name="reajusteColaborador.faixaSalarialProposta.id" id="faixa" required="true" onchange="calculaSalario();populaFuncao(this.value);" list="faixaSalarials" listKey="id" listValue="descricao"/>
-							<@ww.select label="Função" name="reajusteColaborador.funcaoProposta.id" id="funcaoProposta" required="${obrigarAmbienteFuncao?string}" list="funcaos" listKey="id" listValue="nome" headerValue="Nenhum" headerKey="-1" />
+							<@ww.select label="Cargo/Faixa" name="reajusteColaborador.faixaSalarialProposta.id" id="faixa" required="true" onchange="calculaSalario();" list="faixaSalarials" listKey="id" listValue="descricao"/>
+							<@ww.select label="Função" name="reajusteColaborador.funcaoProposta.id" id="funcaoProposta" required="${obrigarAmbienteFuncao?string}" list="funcaos" listKey="id" listValue="nome" headerValue="Nenhuma" headerKey="-1" />
 						</@authz.authorize>
 						<@authz.authorize ifNotGranted="ROLE_COMPROU_SESMT">
 							<@ww.select label="Cargo/Faixa" name="reajusteColaborador.faixaSalarialProposta.id" id="faixa" required="true" onchange="calculaSalario();" list="faixaSalarials" listKey="id" listValue="descricao"/>

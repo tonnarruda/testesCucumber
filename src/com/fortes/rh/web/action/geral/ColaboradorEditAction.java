@@ -338,7 +338,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			if(historicoColaborador.getSalarioCalculado() != null)
 				salarioColaborador = historicoColaborador.getSalarioCalculado();
 
-			funcoes = funcaoManager.findByCargo(historicoColaborador.getFaixaSalarial().getCargo().getId());
 			
 			ambientes = ambienteManager.findByEstabelecimento(historicoColaborador.getEstabelecimento().getId());
 			
@@ -372,6 +371,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			}
 		}
 		
+		funcoes = funcaoManager.findByEmpresa(getEmpresaSistema().getId());
 		estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
 	}
 	
@@ -652,8 +652,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		historicoColaborador.setAmbiente(ambiente);
 		historicoColaborador.setFuncao(funcao);
 		
-		if(historicoColaborador.getFaixaSalarial() != null && historicoColaborador.getFaixaSalarial().getCargo() != null && historicoColaborador.getFaixaSalarial().getCargo().getId() != null)
-			funcoes = funcaoManager.findByCargo(historicoColaborador.getFaixaSalarial().getCargo().getId());
 		if(historicoColaborador.getEstabelecimento() != null && historicoColaborador.getEstabelecimento().getId() != null)
 			ambientes = ambienteManager.findByEstabelecimento(historicoColaborador.getEstabelecimento().getId());
 		

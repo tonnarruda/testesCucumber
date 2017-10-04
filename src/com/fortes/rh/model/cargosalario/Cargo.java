@@ -29,7 +29,6 @@ import com.fortes.rh.model.dicionario.Escolaridade;
 import com.fortes.rh.model.geral.AreaFormacao;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.security.auditoria.NaoAudita;
 
 @SuppressWarnings("serial")
@@ -86,9 +85,6 @@ public class Cargo extends AbstractModel implements Serializable
 	private Empresa empresa;
     @OneToMany(fetch=FetchType.LAZY)
     private Collection<EtapaSeletiva> etapaSeletivas;
-	
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="cargo")
-	private Collection<Funcao> funcaos;
 	
 	private boolean ativo = ATIVO;
 	private Boolean exibirModuloExterno = false;
@@ -469,14 +465,6 @@ public class Cargo extends AbstractModel implements Serializable
 	public void setAtivo(boolean ativo)
 	{
 		this.ativo = ativo;
-	}
-
-	public Collection<Funcao> getFuncaos() {
-		return funcaos;
-	}
-
-	public void setFuncaos(Collection<Funcao> funcaos) {
-		this.funcaos = funcaos;
 	}
 
 	public String getAtitude() {

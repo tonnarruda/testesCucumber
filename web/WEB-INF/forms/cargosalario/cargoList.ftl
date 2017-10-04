@@ -56,12 +56,6 @@
 				<a href="prepareTransferirFaixasCargo.action?cargo.id=${cargo.id}"><img border="0" title="Transferir Faixas para este cargo" src="<@ww.url includeParams="none" value="/imgs/faixas.gif"/>"></a>
 			</@authz.authorize>
 		
-			<#if possuiSESMT>
-				<@authz.authorize ifAllGranted="ROLE_CAD_CARGO_FUNCOES">
-					<a href="../../sesmt/funcao/list.action?cargoTmp.id=${cargo.id}"><img border="0" title="Funções" src="<@ww.url includeParams="none" value="/imgs/db_add.gif"/>"></a>
-				</@authz.authorize>
-			</#if>
-		
 			<@authz.authorize ifAllGranted="ROLE_CAD_FAIXA_SALARIAL">
 				<a href="../faixaSalarial/list.action?cargo.id=${cargo.id}"><img border="0" title="Faixas Salariais" src="<@ww.url includeParams="none" value="/imgs/insertCell.gif"/>"></a>
 			</@authz.authorize>

@@ -163,15 +163,9 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 		areaOrganizacionals = areasOrganizacionaisUtil.sortCollectionStringIgnoreCase(areaOrganizacionals, "descricao");
 
 		reajusteColaborador.setAreaOrganizacionalAtual(areaOrganizacionalManager.getAreaOrganizacional(areaOrganizacionals, reajusteColaborador.getAreaOrganizacionalAtual().getId()));
-
-		Funcao funcaoVazio = new Funcao();
-		funcaoVazio.setId(-1L);
-		funcaoVazio.setNome("Nenhuma");
-
-		funcaos.add(funcaoVazio);
+		funcaos = funcaoManager.findByEmpresa(getEmpresaSistema().getId());
 
 		if(reajusteColaborador.getFaixaSalarialProposta() != null && reajusteColaborador.getFaixaSalarialProposta().getId() != null)
-			funcaos = funcaoManager.findFuncaoByFaixa(reajusteColaborador.getFaixaSalarialProposta().getId());
 
 		if(reajusteColaborador.getEstabelecimentoProposto() != null && reajusteColaborador.getEstabelecimentoProposto().getId() != null)
 			ambientes = ambienteManager.findByEstabelecimento(reajusteColaborador.getEstabelecimentoProposto().getId());
@@ -252,14 +246,6 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 		
 		reajusteColaborador.setColaborador(colaborador);
 		reajusteColaborador.setTabelaReajusteColaborador(tabelaReajusteColaborador);
-		
-		// Situacao atual
-//		reajusteColaborador.setFuncaoAtual(funcaoAtual);
-//		reajusteColaborador.setAmbienteAtual(ambienteAtual);
-		
-		// Situacao proposta
-//		reajusteColaborador.setFuncaoProposta(funcaoProposta);
-//		reajusteColaborador.setAmbienteProposto(ambienteProposto);
 	}
 
 	// Está sendo usado em ftl, não apague.
@@ -322,6 +308,7 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 
 		CollectionUtil<FaixaSalarial> faixaSalarialUtil = new CollectionUtil<FaixaSalarial>();
 		faixaSalarials = faixaSalarialUtil.sortCollectionStringIgnoreCase(faixaSalarialManager.findFaixas(getEmpresaSistema(), Cargo.ATIVO, null), "cargo.nome");
+		funcaos = funcaoManager.findByEmpresa(getEmpresaSistema().getId());
 
 		return Action.SUCCESS;
 	}
