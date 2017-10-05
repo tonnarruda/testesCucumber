@@ -103,6 +103,17 @@
 			<@display.column property="id" title="ID" style="width: 30px;text-align: right;"/>
 			<@display.column property="nome" title="Índices"/>
 		</@display.table>
+		
+		Funções
+		<@display.table name="funcoes" id="funcao" class="dados" >
+			<@display.column title="<input type='checkbox' id='md' onclick='atualizaChecks(\"checkFuncao\", this.checked);' />" style="width: 30px; text-align: center;">
+				<input type="checkbox" class="checkFuncao" value="${funcao.id}" name="funcoesIds" />
+			</@display.column>
+			
+			<@display.column property="id" title="ID" style="width: 30px;text-align: right;"/>
+			<@display.column property="empresa.nome" title="Empresa"/>
+			<@display.column property="nome" title="Função"/>
+		</@display.table>
 	
 	</@ww.form>
 	

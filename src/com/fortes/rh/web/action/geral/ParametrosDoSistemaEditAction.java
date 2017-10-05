@@ -30,6 +30,7 @@ import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.OcorrenciaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
+import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.model.acesso.Perfil;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
@@ -45,6 +46,7 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
+import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.Autenticador;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -62,15 +64,16 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 	private static final long serialVersionUID = 1L;
 	private static final long PERFIL_AUTORIZAR_PARTICIPACAO_COLAB_EM_SOLICITACAO_DE_PESSOAL = 684L;
 	
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private PerfilManager perfilManager;
-	private ColaboradorManager colaboradorManager;
-	private EstabelecimentoManager estabelecimentoManager ;
-	private FaixaSalarialManager faixaSalarialManager;
 	private IndiceManager indiceManager;
-	private OcorrenciaManager ocorrenciaManager;
+	private FuncaoManager funcaoManager;
 	private EmpresaManager empresaManager;
+	private OcorrenciaManager ocorrenciaManager;
+	private ColaboradorManager colaboradorManager;
+	private FaixaSalarialManager faixaSalarialManager;
+	private EstabelecimentoManager estabelecimentoManager ;
+	private AreaOrganizacionalManager areaOrganizacionalManager;
+	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private ColaboradorOcorrenciaManager colaboradorOcorrenciaManager;
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	private ConfiguracaoCampoExtraVisivelObrigadotorioManager configuracaoCampoExtraVisivelObrigadotorioManager;
@@ -83,6 +86,7 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 	private Collection<Ocorrencia> ocorrencias ;
 	private Collection<Perfil> perfils;
 	private Collection<Empresa> empresas;
+	private Collection<Funcao> funcoes;
 	private ConfiguracaoCampoExtraVisivelObrigadotorio campoExtraVisivelObrigadotorio;
 	
 	private Empresa empresa;
@@ -108,6 +112,7 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 	private Long[] faixaSalarialIds;
 	private Long[] indiceIds;
 	private Long[] ocorrenciaIds;
+	private Long[] funcoesIds;
 	
 	private String logErro;
 	
@@ -287,12 +292,13 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 		faixaSalarials = faixaSalarialManager.findSemCodigoAC(empresa.getId());
 		indices = indiceManager.findSemCodigoAC(empresa);
 		ocorrencias = ocorrenciaManager.findSemCodigoAC(empresa.getId(), true);
+		funcoes = funcaoManager.findByEmpresaAndCodigoACIsNull(empresa.getId());
 
 		Collection<String> msgs = empresaManager.verificaIntegracaoAC(empresa);
 		if (msgs.size() > 1)
 			setActionMessages(msgs);
 		
-		if(!estabelecimentos.isEmpty() || !areaOrganizacionals.isEmpty() || !colaboradors.isEmpty() || !faixaSalarials.isEmpty() || !indices.isEmpty() || !ocorrencias.isEmpty())
+		if(!estabelecimentos.isEmpty() || !areaOrganizacionals.isEmpty() || !colaboradors.isEmpty() || !faixaSalarials.isEmpty() || !indices.isEmpty() || !ocorrencias.isEmpty() || !funcoes.isEmpty())
 			addActionMessage("- Existem entidades sem código AC");
 		
 		return Action.SUCCESS;
@@ -307,6 +313,7 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 			areaOrganizacionalManager.deleteAreaOrganizacional(areaIds);
 			faixaSalarialManager.deleteFaixaSalarial(faixaSalarialIds);
 			indiceManager.deleteIndice(indiceIds);
+			funcaoManager.deleteFuncaoByIds(funcoesIds);
 			
 		} catch (DataIntegrityViolationException e) {
 			SQLException ex = ((BatchUpdateException)e.getCause()).getNextException();
@@ -570,6 +577,22 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 	public String[] getModulosSistemaCheck() {
 		return modulosSistemaCheck;
 	}
+	
+	public Collection<Funcao> getFuncoes() {
+		return funcoes;
+	}
+
+	public void setFuncoes(Collection<Funcao> funcoes) {
+		this.funcoes = funcoes;
+	}
+	
+	public Long[] getFuncoesIds() {
+		return funcoesIds;
+	}
+
+	public void setFuncoesIds(Long[] funcoesIds) {
+		this.funcoesIds = funcoesIds;
+	}
 
 	public void setGerenciadorComunicacaoManager( GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
 		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
@@ -590,5 +613,9 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 	public void setConfiguracaoCampoExtraVisivelObrigadotorioManager(
 			ConfiguracaoCampoExtraVisivelObrigadotorioManager configuracaoCampoExtraVisivelObrigadotorioManager) {
 		this.configuracaoCampoExtraVisivelObrigadotorioManager = configuracaoCampoExtraVisivelObrigadotorioManager;
+	}
+
+	public void setFuncaoManager(FuncaoManager funcaoManager) {
+		this.funcaoManager = funcaoManager;
 	}
 }

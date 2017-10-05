@@ -29,5 +29,5 @@ INSERT INTO perfil_papel(perfil_id, papeis_id) VALUES(1, 800);--.go
 
 ALTER SEQUENCE papel_sequence RESTART WITH 801;--.go
 
-ALTER TABLE funcao ADD COLUMN codigofp character varying(12);--.go
-ALTER TABLE funcao ADD CONSTRAINT unique_empresaId_codigofp UNIQUE(empresa_id,codigofp);--.go
+ALTER TABLE funcao ADD COLUMN codigoac character varying(12);--.go
+ALTER TABLE funcao ADD CONSTRAINT unique_empresaId_codigoac UNIQUE(empresa_id,codigoac);--.go

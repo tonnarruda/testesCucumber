@@ -30,4 +30,8 @@ public class RiscoFuncaoManagerImpl extends GenericManagerImpl<RiscoFuncao, Risc
 	public List<RiscoFuncao> riscosByHistoricoFuncao( HistoricoFuncao historicoFuncao) {
 		return getDao().riscosByHistoricoFuncao(historicoFuncao);
 	}
+
+	public void removeByFuncoes(Long[] funcoesIds) {
+		getDao().removeByFuncoes(funcoesIds);
+	}
 }

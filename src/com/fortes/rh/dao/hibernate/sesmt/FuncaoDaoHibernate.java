@@ -74,20 +74,23 @@ public class FuncaoDaoHibernate extends GenericDaoHibernate<Funcao> implements F
 		return criteria.list();
 	}
 	
-	public Collection<Funcao> findByEmpresaAndCodigoFPIsNull(Long empresaId)
+	public Collection<Funcao> findByEmpresaAndCodigoACIsNull(Long empresaId)
 	{
 		Criteria criteria = CriaCriteriaByEmpresaId(empresaId);
-		criteria.add(Expression.isNull("f.codigoFP"));
+		criteria.add(Expression.isNull("f.codigoAC"));
 
 		return criteria.list();
 	}
 
 	private Criteria CriaCriteriaByEmpresaId(Long empresaId) throws DataAccessResourceFailureException, IllegalStateException {
 		Criteria criteria = getSession().createCriteria(Funcao.class, "f");
+		criteria.createCriteria("f.empresa", "e");
+		
 		ProjectionList p = Projections.projectionList().create();
-
 		p.add(Projections.property("f.id"), "id");
 		p.add(Projections.property("f.nome"), "nome");
+		p.add(Projections.property("e.id"), "empresaId");
+		p.add(Projections.property("e.nome"), "empresaNome");
 
 		criteria.setProjection(p);
 

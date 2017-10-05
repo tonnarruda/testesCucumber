@@ -127,7 +127,6 @@ public class IndiceManagerImpl extends GenericManagerImpl<Indice, IndiceDao> imp
 			
 			getDao().remove(indiceIds);
 		}
-		
 	}
 
 	public Collection<Indice> findComHistoricoAtual(Empresa empresa) 

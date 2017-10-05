@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
@@ -54,7 +55,7 @@ public class RiscoFuncaoDaoHibernate extends GenericDaoHibernate<RiscoFuncao> im
 		
 		query.executeUpdate();
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	public List<RiscoFuncao> riscosByHistoricoFuncao(HistoricoFuncao historicoFuncao) {
 		ProjectionList p = Projections.projectionList().create();
@@ -71,7 +72,14 @@ public class RiscoFuncaoDaoHibernate extends GenericDaoHibernate<RiscoFuncao> im
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(RiscoFuncao.class));
 		return criteria.list();
-				
+	}
+	
+	public void removeByFuncoes(Long[] funcoesIds) 
+	{
+		String hql = "delete from RiscoFuncao rf where rf.historicoFuncao.id in (select id from HistoricoFuncao where funcao_id in (:funcoesIds)) ";
+		Query query = getSession().createQuery(hql);
+		query.setParameterList("funcoesIds", funcoesIds, Hibernate.LONG);
 		
+		query.executeUpdate();
 	}
 }

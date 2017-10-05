@@ -22,5 +22,6 @@ public interface FuncaoManager extends GenericManager<Funcao>
 	void removeFuncao(Funcao funcao);
 	Collection<CheckBox> populaCheckBox();
 	void atualizaNomeUltimoHistorico(Long funcaoId);
-	Collection<Funcao> findByEmpresaAndCodigoFPIsNull(Long empresaId);
+	Collection<Funcao> findByEmpresaAndCodigoACIsNull(Long empresaId);
+	void deleteFuncaoByIds(Long[] funcoesIds);
 }

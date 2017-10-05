@@ -109,8 +109,8 @@ public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> imp
 		getDao().atualizaNomeUltimoHistorico(funcaoId);
 	}
 
-	public Collection<Funcao> findByEmpresaAndCodigoFPIsNull(Long empresaId) {
-		return getDao().findByEmpresaAndCodigoFPIsNull(empresaId);
+	public Collection<Funcao> findByEmpresaAndCodigoACIsNull(Long empresaId) {
+		return getDao().findByEmpresaAndCodigoACIsNull(empresaId);
 	}
 	
 	public Collection<Long> findFuncaoAtualDosColaboradores(Date data, Long estabelecimentoId)
@@ -123,4 +123,15 @@ public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> imp
 		return getDao().findColaboradoresSemFuncao(data, estabelecimentoId);
 	}
 
+	public void deleteFuncaoByIds(Long[] funcoesIds) {
+		if(funcoesIds != null && funcoesIds.length > 0){
+			RiscoFuncaoManager riscoFuncaoManager = (RiscoFuncaoManager) SpringUtil.getBean("riscoFuncaoManager");
+			riscoFuncaoManager.removeByFuncoes(funcoesIds);
+			
+			HistoricoFuncaoManager historicoFuncaoManager = (HistoricoFuncaoManager) SpringUtil.getBean("historicoFuncaoManager");
+			historicoFuncaoManager.removeByFuncoes(funcoesIds);
+			
+			getDao().remove(funcoesIds);
+		}
+	}
 }

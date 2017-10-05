@@ -36,7 +36,7 @@ public class Funcao extends AbstractModel implements Serializable
 	private String codigoCbo;
 	
 	@Column(length=12)
-	private String codigoFP;
+	private String codigoAC;
 	
 	@Transient
 	private HistoricoFuncao historicoAtual;
@@ -149,10 +149,18 @@ public class Funcao extends AbstractModel implements Serializable
 	}
 	
 	public void setEmpresaId(Long empresaId){
+		inicializaEmpresa();
+		this.empresa.setId(empresaId);
+	}
+	
+	public void setEmpresaNome(String empresaNome){
+		inicializaEmpresa();
+		this.empresa.setNome(empresaNome);
+	}
+
+	private void inicializaEmpresa() {
 		if(this.empresa == null)
 			this.empresa = new Empresa();
-		
-		this.empresa.setId(empresaId);
 	}
 
 	public void setHistoricoFuncaoCodigoCbo(String historicoFuncaoCodigoCbo) {
@@ -162,11 +170,11 @@ public class Funcao extends AbstractModel implements Serializable
 		this.historicoAtual.setCodigoCbo(historicoFuncaoCodigoCbo);
 	}
 
-	public String getCodigoFP() {
-		return codigoFP;
+	public String getCodigoAC() {
+		return codigoAC;
 	}
 
-	public void setCodigoFP(String codigoFP) {
-		this.codigoFP = codigoFP;
+	public void setCodigoAC(String codigoAC) {
+		this.codigoAC = codigoAC;
 	}
 }

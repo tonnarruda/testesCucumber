@@ -163,8 +163,8 @@ public class FuncaoListAction extends MyActionSupportList
 
 	public String prepareRelacionarFuncaoFP()
 	{
-		funcaos = funcaoManager.findByEmpresaAndCodigoFPIsNull(getEmpresaSistema().getId());
-		funcaosFPessoal = funcaoManager.findByEmpresaAndCodigoFPIsNull(getEmpresaSistema().getId());
+		funcaos = funcaoManager.findByEmpresaAndCodigoACIsNull(getEmpresaSistema().getId());
+		funcaosFPessoal = funcaoManager.findByEmpresaAndCodigoACIsNull(getEmpresaSistema().getId());
 		
 		return SUCCESS;
 	}

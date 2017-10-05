@@ -15,4 +15,5 @@ public interface RiscoFuncaoManager extends GenericManager<RiscoFuncao>
 	Collection<Risco> findRiscosByFuncaoData(Long funcaoId, Date data);
 	void removeByFuncao(Long funcaoId);
 	List<RiscoFuncao> riscosByHistoricoFuncao(HistoricoFuncao historicoFuncao);
+	void removeByFuncoes(Long[] funcoesIds);
 }
