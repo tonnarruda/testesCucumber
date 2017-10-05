@@ -32,6 +32,12 @@ public class Funcao extends AbstractModel implements Serializable
 	@ManyToOne
 	private Empresa empresa;
 	
+	@Column(length=6)
+	private String codigoCbo;
+	
+	@Column(length=12)
+	private String codigoFP;
+	
 	@Transient
 	private HistoricoFuncao historicoAtual;
 	
@@ -154,5 +160,13 @@ public class Funcao extends AbstractModel implements Serializable
 			this.historicoAtual = new HistoricoFuncao();
 		
 		this.historicoAtual.setCodigoCbo(historicoFuncaoCodigoCbo);
+	}
+
+	public String getCodigoFP() {
+		return codigoFP;
+	}
+
+	public void setCodigoFP(String codigoFP) {
+		this.codigoFP = codigoFP;
 	}
 }

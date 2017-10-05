@@ -34,6 +34,7 @@ public class FuncaoListAction extends MyActionSupportList
 	private HistoricoFuncaoManager historicoFuncaoManager;
 	
 	private Collection<Funcao> funcaos = new ArrayList<Funcao>();
+	private Collection<Funcao> funcaosFPessoal = new ArrayList<Funcao>();
 	private Collection<AreaOrganizacional> areas;
 	private Collection<Colaborador> colaboradors;
 	private Collection<Estabelecimento> estabelecimentos;
@@ -53,14 +54,15 @@ public class FuncaoListAction extends MyActionSupportList
 
 	// relatorio
 	private Date data;
-
 	private Collection<QtdPorFuncaoRelatorio> dataSource;
-
 	private Map<String, Object> parametros;
-
 	private Estabelecimento estabelecimento;
-
 	private char tipoAtivo;
+	
+	private Collection<Long> funcoesASeremRemovidasRH;
+	private Collection<Long> funcoesASeremCriadasNoFPessoal;
+	private Collection<Long> funcoesASeremCriadasNoRH;
+	private Collection<String> funcoesASeremRelacionadas;
 	
 	public String list() throws Exception
 	{
@@ -159,6 +161,22 @@ public class FuncaoListAction extends MyActionSupportList
 		return SUCCESS;
 	}
 
+	public String prepareRelacionarFuncaoFP()
+	{
+		funcaos = funcaoManager.findByEmpresaAndCodigoFPIsNull(getEmpresaSistema().getId());
+		funcaosFPessoal = funcaoManager.findByEmpresaAndCodigoFPIsNull(getEmpresaSistema().getId());
+		
+		return SUCCESS;
+	}
+
+	public String relacionarFuncaoFP()
+	{
+		addActionMessage("OK");
+		
+		return SUCCESS;
+	}
+	
+	
 	public Collection<Funcao> getFuncaos()
 	{
 		return funcaos;
@@ -339,4 +357,43 @@ public class FuncaoListAction extends MyActionSupportList
 		this.tipoAtivo = tipoAtivo;
 	}
 
+	public Collection<Funcao> getFuncaosFPessoal() {
+		return funcaosFPessoal;
+	}
+
+	public void setFuncoesASeremRemovidasRH(
+			Collection<Long> funcoesASeremRemovidasRH) {
+		this.funcoesASeremRemovidasRH = funcoesASeremRemovidasRH;
+	}
+
+	public void setFuncoesASeremCriadasNoFPessoal(
+			Collection<Long> funcoesASeremCriadasNoFPessoal) {
+		this.funcoesASeremCriadasNoFPessoal = funcoesASeremCriadasNoFPessoal;
+	}
+
+	public void setFuncoesASeremCriadasNoRH(
+			Collection<Long> funcoesASeremCriadasNoRH) {
+		this.funcoesASeremCriadasNoRH = funcoesASeremCriadasNoRH;
+	}
+
+	public void setFuncoesASeremRelacionadas(
+			Collection<String> funcoesASeremRelacionadas) {
+		this.funcoesASeremRelacionadas = funcoesASeremRelacionadas;
+	}
+
+	public Collection<Long> getFuncoesASeremRemovidasRH() {
+		return funcoesASeremRemovidasRH;
+	}
+
+	public Collection<Long> getFuncoesASeremCriadasNoFPessoal() {
+		return funcoesASeremCriadasNoFPessoal;
+	}
+
+	public Collection<Long> getFuncoesASeremCriadasNoRH() {
+		return funcoesASeremCriadasNoRH;
+	}
+
+	public Collection<String> getFuncoesASeremRelacionadas() {
+		return funcoesASeremRelacionadas;
+	}
 }

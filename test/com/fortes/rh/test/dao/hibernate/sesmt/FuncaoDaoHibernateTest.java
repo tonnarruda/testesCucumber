@@ -125,7 +125,29 @@ public class FuncaoDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<Funca
 		assertTrue("Test 6", funcaos.contains(f3));
 
 	}
+	
+	@Test
+	public void testFindByEmpresaAndCodigoFPIsNull()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa("Empresa 1", "21212121212", "empresa");
+		empresaDao.save(empresa);
+		
+		Empresa empresa2 = EmpresaFactory.getEmpresa("Empresa 2", "21212121212", "empresa2");
+		empresaDao.save(empresa2);
 
+		Funcao f1 = FuncaoFactory.getEntity("F1", empresa);
+		f1.setCodigoFP("123456");
+		funcaoDao.save(f1);
+
+		Funcao f2 = saveFuncao("F2", empresa);
+		Funcao f3 = saveFuncao("F3", empresa2);
+		
+		Collection<Funcao> funcaos = funcaoDao.findByEmpresaAndCodigoFPIsNull(empresa.getId());
+
+		assertEquals(1, funcaos.size());
+		assertTrue(funcaos.contains(f2));
+	}
+	
 	@Test
 	public void testFindByIdProjection()
 	{

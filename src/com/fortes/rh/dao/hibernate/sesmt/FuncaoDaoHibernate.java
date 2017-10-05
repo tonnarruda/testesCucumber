@@ -13,6 +13,7 @@ import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.springframework.dao.DataAccessResourceFailureException;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.FuncaoDao;
@@ -68,6 +69,20 @@ public class FuncaoDaoHibernate extends GenericDaoHibernate<Funcao> implements F
 
 	public Collection<Funcao> findByEmpresa(Long empresaId)
 	{
+		Criteria criteria = CriaCriteriaByEmpresaId(empresaId);
+
+		return criteria.list();
+	}
+	
+	public Collection<Funcao> findByEmpresaAndCodigoFPIsNull(Long empresaId)
+	{
+		Criteria criteria = CriaCriteriaByEmpresaId(empresaId);
+		criteria.add(Expression.isNull("f.codigoFP"));
+
+		return criteria.list();
+	}
+
+	private Criteria CriaCriteriaByEmpresaId(Long empresaId) throws DataAccessResourceFailureException, IllegalStateException {
 		Criteria criteria = getSession().createCriteria(Funcao.class, "f");
 		ProjectionList p = Projections.projectionList().create();
 
@@ -77,10 +92,11 @@ public class FuncaoDaoHibernate extends GenericDaoHibernate<Funcao> implements F
 		criteria.setProjection(p);
 
 		criteria.add(Expression.eq("f.empresa.id", empresaId));
+		criteria.addOrder(Order.asc("f.nome"));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Funcao.class));
-
-		return criteria.list();
+		
+		return criteria;
 	}
 
 	public Funcao findByIdProjection(Long funcaoId)

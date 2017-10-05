@@ -54,5 +54,13 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/relatorioExamesPorFuncao.ftl</result>
 		</action>
 		
+		<action name="prepareRelacionarFuncaoFP" class="com.fortes.rh.web.action.sesmt.FuncaoListAction" method="prepareRelacionarFuncaoFP">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/prepareRelacionarFuncaoFP.ftl</result>
+		</action>
+		
+		<action name="relacionarFuncaoFP" class="com.fortes.rh.web.action.sesmt.FuncaoListAction" method="relacionarFuncaoFP">
+			<result name="success" type="redirect">prepareRelacionarFuncaoFP.action</result>
+		</action>
+		
 	</package>
 </xwork>

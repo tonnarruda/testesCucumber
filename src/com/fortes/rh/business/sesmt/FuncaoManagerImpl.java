@@ -109,6 +109,10 @@ public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> imp
 		getDao().atualizaNomeUltimoHistorico(funcaoId);
 	}
 
+	public Collection<Funcao> findByEmpresaAndCodigoFPIsNull(Long empresaId) {
+		return getDao().findByEmpresaAndCodigoFPIsNull(empresaId);
+	}
+	
 	public Collection<Long> findFuncaoAtualDosColaboradores(Date data, Long estabelecimentoId)
 	{
 		return getDao().findFuncaoAtualDosColaboradores(data, estabelecimentoId);
@@ -118,4 +122,5 @@ public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> imp
 	{
 		return getDao().findColaboradoresSemFuncao(data, estabelecimentoId);
 	}
+
 }

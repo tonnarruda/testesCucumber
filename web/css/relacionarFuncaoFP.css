@@ -1,0 +1,147 @@
+#funcoesRH, #funcoesFPessoal {
+	float: left;
+	width: 380px;
+	margin: 10px;
+}
+
+#acoesFuncoes {
+	float: left;
+	width: 950px;
+	margin: 10px;
+}
+
+#funcoesRH h1, #funcoesFPessoal h1, #acoes h1, #acoesFuncoes h1{
+	background: none;
+	border: 1px solid #e7e7e7;
+	border-bottom: 2px solid #5292C0;
+	padding: 7px 15px;
+	text-align: center;
+	color: #5C5C5A;
+	border-radius: 0;
+	font-size: 12px;
+	font-weight: normal;
+	margin: 0;
+}
+
+.column {
+	padding: 5px 10px;
+	height: 300px;
+	overflow-x: hidden;
+	border: 1px solid #e7e7e7;
+}
+
+.columnAcoes {
+	padding: 5px 10px;
+	height: 200px;
+	overflow-x: hidden;
+	border: 1px solid #e7e7e7;
+}
+
+#funcoesRH-list .ui-selecting, #funcoesFPessoal-list .ui-selecting  { background: #7BB5DF; }
+#funcoesRH-list .ui-selected, #funcoesFPessoal-list .ui-selected { background: #5292C0; color: white; }
+#funcoesRH-list, #funcoesFPessoal-list, #acoesFuncoes-list { list-style-type: none; margin: 0; padding: 0;}
+#funcoesRH-list li, #funcoesFPessoal-list li, #acoesFuncoes-list table tr td { margin: 3px; padding: 7px; }
+
+#acoes {
+	height: 10px;
+	overflow-x: hidden;
+	border: 1px solid #e7e7e7;
+	float: left;
+	width: 145px;
+	margin: 10px;
+	height: 374px;
+}
+
+.buttonSimples {
+	border: 0;
+	padding: 0 0px;
+	height: 24px;
+	margin: 15px 30px 10px 8px;
+	cursor: pointer;
+	background: #448cbe;
+	border-radius: 3px;
+	color: white;
+	width: 130px;
+}
+
+.buttonDuplo {
+	border: 0;
+	padding: 0 0px;
+	height: 60px;
+	margin: 40px 30px 10px 8px;
+	cursor: pointer;
+	background: #448cbe;
+	border-radius: 3px;
+	color: white;
+	width: 130px;
+}
+
+.buttonFinalizar {
+	border: 0;
+	padding: 0 15px;
+	height: 40px;
+	margin: 15px 30px 10px 12px;
+	cursor: pointer;
+	background: #448cbe;
+	border-radius: 3px;
+	color: white;
+}
+
+table {
+    border-spacing: 5px;
+    border: 1px solid black;
+  		border-collapse: collapse;
+}
+td, th {
+    border: 1px solid black;
+  	border-collapse: collapse;
+}
+
+td {
+   text-align: center;  
+}
+
+th {
+	padding: 10px 10px 10px 10px;
+	background: none;
+	text-align: center;
+	font-size: 12px;
+	font-weight: normal;
+	margin: 0;
+}
+
+.box-search {
+   	padding: 5px;
+   	display: none;
+   	color: #A1A1A1;
+	background: #F9F9F9;
+	border-left: 1px solid #e7e7e7;
+	border-right: 1px solid #e7e7e7;
+}
+
+.box-search .searchRH, .box-search .searchFP {
+   	width: 90%;
+	border-radius: 3px;
+	padding: 3px 2%;
+	margin: 0 3%;
+   	font-family: sans-serif !important;
+	border-color: #C8C8C8;
+}
+
+.searchAcao {
+	border-radius: 3px;
+	padding: 0px 80px 0px 0px;
+	margin-top: -25px;
+	margin-right: 10px;
+   	font-family: sans-serif !important;
+	border-color: #C8C8C8;
+	float: right;
+	width: 200px;
+}
+
+.fa-trash {
+	float: left;
+	height: 100%;
+	margin-top: 25px;
+	margin-left: 15px;
+}
