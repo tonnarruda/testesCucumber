@@ -12,6 +12,7 @@ import com.fortes.rh.model.dicionario.OrigemAnexo;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.DocumentoAnexo;
 import com.fortes.rh.util.ArquivoUtil;
+import com.fortes.rh.util.ModelUtil;
 
 public class DocumentoAnexoManagerImpl extends GenericManagerImpl<DocumentoAnexo, DocumentoAnexoDao> implements DocumentoAnexoManager
 {
@@ -22,7 +23,7 @@ public class DocumentoAnexoManagerImpl extends GenericManagerImpl<DocumentoAnexo
 	
 	public Collection<DocumentoAnexo> getDocumentoAnexoByOrigemId(char origem, Long origemId)
 	{
-		if (origem == OrigemAnexo.AnexoColaborador){
+		if (origem == OrigemAnexo.COLABORADOR){
 			Colaborador colab = (Colaborador) colaboradorManager.findByIdProjectionEmpresa(origemId);
 			return getDao().getDocumentoAnexoByOrigemId(origem, origemId, colab.getCandidato().getId());
 		}
@@ -34,7 +35,6 @@ public class DocumentoAnexoManagerImpl extends GenericManagerImpl<DocumentoAnexo
 	{
 		try
 		{
-			setEtapaSeletivaETipoDocumento(documentoAnexo);
 			removeEntidadesComIdNulo(documentoAnexo);
 			
 			if(documento != null)
@@ -57,7 +57,6 @@ public class DocumentoAnexoManagerImpl extends GenericManagerImpl<DocumentoAnexo
 	{
 		try
 		{
-			setEtapaSeletivaETipoDocumento(documentoAnexo);
 			removeEntidadesComIdNulo(documentoAnexo);
 
 			File file = ArquivoUtil.salvaArquivo(diretorio, documento, true);
@@ -73,19 +72,19 @@ public class DocumentoAnexoManagerImpl extends GenericManagerImpl<DocumentoAnexo
 	}
 	
 	private void removeEntidadesComIdNulo(DocumentoAnexo documentoAnexo){
-		if(documentoAnexo.getTipoDocumento() != null && documentoAnexo.getTipoDocumento().getId() == null)
+		if(ModelUtil.hasNull("getTipoDocumento().getId()", documentoAnexo))
 			documentoAnexo.setTipoDocumento(null);
 		
-		if(documentoAnexo.getEtapaSeletiva() != null && documentoAnexo.getEtapaSeletiva().getId() == null)
+		if(ModelUtil.hasNull("getEtapaSeletiva().getId()", documentoAnexo))
 			documentoAnexo.setEtapaSeletiva(null);
-		
 	}
 
 	public void deletarDocumentoAnexo(String diretorio,DocumentoAnexo documentoAnexo) throws Exception
 	{
 		try{
 			String documentoAnexoUrl = documentoAnexo.getUrl();
-			setEtapaSeletivaETipoDocumento(documentoAnexo);
+			removeEntidadesComIdNulo(documentoAnexo);
+
 			getDao().remove(documentoAnexo);
 			ArquivoUtil.deletaArquivos(diretorio, new String[]{documentoAnexoUrl});
 		}catch (Exception e){
@@ -96,14 +95,6 @@ public class DocumentoAnexoManagerImpl extends GenericManagerImpl<DocumentoAnexo
 	
 	public Collection<DocumentoAnexo> findByTurma(Long turmaId) {
 		return getDao().findByTurma(turmaId);
-	}
-
-	private void setEtapaSeletivaETipoDocumento(DocumentoAnexo documentoAnexo) {
-		if(documentoAnexo.getEtapaSeletiva() != null && documentoAnexo.getEtapaSeletiva().getId() == null)
-				documentoAnexo.setEtapaSeletiva(null);
-
-		if(documentoAnexo.getTipoDocumento() != null && documentoAnexo.getTipoDocumento().getId() == null)
-				documentoAnexo.setTipoDocumento(null);
 	}
 
 	public DocumentoAnexo findByIdProjection(Long documentoAnexoId)
@@ -120,14 +111,14 @@ public class DocumentoAnexoManagerImpl extends GenericManagerImpl<DocumentoAnexo
 	}
 
 	private String getTitulo(char origem, Long id, String nome) {
-		if(origem == OrigemAnexo.AnexoCandidato || origem == OrigemAnexo.AnexoCandidatoExterno)
+		if(origem == OrigemAnexo.CANDIDATO || origem == OrigemAnexo.CANDIDATOEXTERNO)
 			nome += "do Candidato: " + candidatoManager.findByCandidatoId(id).getNome();
-		else if(origem == OrigemAnexo.AnexoColaborador)
+		else if(origem == OrigemAnexo.COLABORADOR)
 			nome += "do Colaborador: " + colaboradorManager.findColaboradorByIdProjection(id).getNome();
-		else if(origem == OrigemAnexo.Curso)
-			nome += "do Curso: " + cursoManager.findById(id).getNome();
-		else if(origem == OrigemAnexo.SolicitacaoPessoal)
-			nome += "da Solicitacao de Pessoal: " + solicitacaoManager.findById(id).getCodigoMaisDescricaoFormatada();
+		else if(origem == OrigemAnexo.CURSO)
+			nome += "do Curso: " + cursoManager.findEntidadeComAtributosSimplesById(id).getNome();
+		else if(origem == OrigemAnexo.SOLICITACAOPESSOAL)
+			nome += "da Solicitação de Pessoal: " + solicitacaoManager.findEntidadeComAtributosSimplesById(id).getCodigoMaisDescricaoFormatada();
 		return nome;
 	}
 

@@ -52,7 +52,7 @@ public class DocumentoAnexoEditAction extends MyActionSupportEdit
 			return Action.SUCCESS;
 		}
 
-		if(documentoAnexo.getOrigem() == OrigemAnexo.AnexoCandidatoExterno){
+		if(documentoAnexo.getOrigem() == OrigemAnexo.CANDIDATOEXTERNO){
 			max_file_size  = parametrosDoSistemaManager.findByIdProjection(1L).getTamanhoMaximoUpload();
 			documentoAnexo.setData(new Date());
 		}else{
@@ -152,7 +152,7 @@ public class DocumentoAnexoEditAction extends MyActionSupportEdit
 		if(origem == null)
 			origem = documentoAnexo.getOrigem();
 		
-		if(origem == OrigemAnexo.AnexoCandidatoExterno){
+		if(origem == OrigemAnexo.CANDIDATOEXTERNO){
 			DocumentoAnexo documentoAnexoTmp = documentoAnexoManager.findByIdProjection(documentoAnexo.getId());
 			if (!ActionContext.getContext().getSession().get("SESSION_CANDIDATO_ID").equals(documentoAnexoTmp.getOrigemId()))
 				throw new FortesException("O documento selecionado não consta na sua lista.");
@@ -271,8 +271,7 @@ public class DocumentoAnexoEditAction extends MyActionSupportEdit
 			return max_file_size;
 	}
 
-	public void setParametrosDoSistemaManager(
-			ParametrosDoSistemaManager parametrosDoSistemaManager) {
+	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
 		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 

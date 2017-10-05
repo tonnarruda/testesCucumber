@@ -28,7 +28,7 @@
 	
 	<!--Tem que ser aqui para pegar dados do documentoAnexo da URL, pois a listagem é de candidato + colaborador-->
 	<#assign insert="prepareInsert.action?${addSolicitacaoId}${addOrigem}documentoAnexo.origem=${documentoAnexo.origem}&documentoAnexo.origemId=${documentoAnexo.origemId}"/>
-	
+	<#assign origemDocumentoCandidato = origemAnexoCandidato/>
 </head>
 <body>
 	<@ww.actionerror/>
@@ -42,7 +42,7 @@
 		</@display.column>
 		<@display.column property="descricao" style="width: 270px" title="Descrição"/>
 		
-		<#if documentoAnexo.origem == "C">
+		<#if documentoAnexo.origem == origemDocumentoCandidato>
 			<@display.column property="etapaSeletiva.nome" style="width: 200px" title="Etapa Seletiva"/>
 		</#if>
 		

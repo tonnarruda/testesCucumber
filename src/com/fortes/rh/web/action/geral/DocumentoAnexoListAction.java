@@ -36,7 +36,7 @@ public class DocumentoAnexoListAction extends MyActionSupportList
 		}
 		
 		if(colaboradorId != null){
-			documentoAnexo.setOrigem(OrigemAnexo.AnexoColaborador);
+			documentoAnexo.setOrigem(OrigemAnexo.COLABORADOR);
 			documentoAnexo.setOrigemId(colaboradorId);
 		}
 		
@@ -78,7 +78,7 @@ public class DocumentoAnexoListAction extends MyActionSupportList
 		if(origem == null)
 			origem = documentoAnexo.getOrigem();
 		
-		if(origem == OrigemAnexo.AnexoCandidatoExterno){
+		if(origem == OrigemAnexo.CANDIDATOEXTERNO){
 			DocumentoAnexo documentoAnexoTmp = documentoAnexoManager.findByIdProjection(documentoAnexo.getId());
 			if (!ActionContext.getContext().getSession().get("SESSION_CANDIDATO_ID").equals(documentoAnexoTmp.getOrigemId()))
 				throw new FortesException("O documento selecionado não consta na sua lista.");
@@ -166,4 +166,9 @@ public class DocumentoAnexoListAction extends MyActionSupportList
 	public void setOrigem(Character origem) {
 		this.origem = origem;
 	}
+	
+	public char getOrigemAnexoCandidato() {
+		return OrigemAnexo.CANDIDATO;
+	}
+
 }

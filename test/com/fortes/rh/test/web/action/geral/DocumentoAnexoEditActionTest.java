@@ -116,7 +116,7 @@ public class DocumentoAnexoEditActionTest
 	private DocumentoAnexo criaDocumentoAnexo() {
 		DocumentoAnexo documentoAnexo = new DocumentoAnexo();
 		documentoAnexo.setId(1L);
-		documentoAnexo.setOrigem(OrigemAnexo.AnexoColaborador);
+		documentoAnexo.setOrigem(OrigemAnexo.COLABORADOR);
 		documentoAnexo.setOrigemId(1L);
 		action.setDocumentoAnexo(documentoAnexo);
 		return documentoAnexo;

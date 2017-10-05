@@ -21,7 +21,7 @@ public class Anexo extends AbstractModel implements Serializable
 	@Column(length=120)
 	private String url;
 	//Dicionario OrigemAnexo
-	private char origem = OrigemAnexo.AnexoCandidato;
+	private char origem = OrigemAnexo.CANDIDATO;
 	private Long origemId;
 
 	public String getUrlPath()

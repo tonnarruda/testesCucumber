@@ -36,6 +36,7 @@ import com.fortes.rh.model.captacao.HistoricoCandidato;
 import com.fortes.rh.model.captacao.MotivoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.dicionario.OrigemAnexo;
 import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
@@ -616,6 +617,10 @@ public class SolicitacaoListAction extends MyActionSupportList
 		return codigoBusca;
 	}
 
+	public char getOrigemAnexo() {
+		return OrigemAnexo.SOLICITACAOPESSOAL;
+	}
+	
 	public void setCodigoBusca(String codigoBusca) {
 		this.codigoBusca = codigoBusca;
 	}
@@ -624,18 +629,15 @@ public class SolicitacaoListAction extends MyActionSupportList
 		this.transactionManager = transactionManager;
 	}
 
-	public void setEstabelecimentoManager(
-			EstabelecimentoManager estabelecimentoManager) {
+	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager) {
 		this.estabelecimentoManager = estabelecimentoManager;
 	}
 
-	public void setAreaOrganizacionalManager(
-			AreaOrganizacionalManager areaOrganizacionalManager) {
+	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
 		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
-	
-	public void setMotivoSolicitacaoManager(
-			MotivoSolicitacaoManager motivoSolicitacaoManager) {
+
+	public void setMotivoSolicitacaoManager(MotivoSolicitacaoManager motivoSolicitacaoManager) {
 		this.motivoSolicitacaoManager = motivoSolicitacaoManager;
 	}
 

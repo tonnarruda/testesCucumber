@@ -14,6 +14,7 @@ import com.fortes.rh.model.captacao.Anuncio;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.dicionario.OrigemAnexo;
 import com.fortes.rh.model.geral.DocumentoAnexo;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
@@ -484,5 +485,9 @@ public class ExternoAction extends MyActionSupport
 
 	public void setCandidatos(Collection<Candidato> candidatos) {
 		this.candidatos = candidatos;
+	}
+	
+	public char getOrigemAnexo() {
+		return OrigemAnexo.CANDIDATOEXTERNO;
 	}
 }

@@ -7,6 +7,7 @@ import com.fortes.rh.business.desenvolvimento.CursoLntManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.model.desenvolvimento.Curso;
+import com.fortes.rh.model.dicionario.OrigemAnexo;
 import com.fortes.rh.model.geral.AutoCompleteVO;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -154,5 +155,9 @@ public class CursoListAction extends MyActionSupportList
 
 	public void setCursoLntManager(CursoLntManager cursoLntManager) {
 		this.cursoLntManager = cursoLntManager;
+	}
+	
+	public char getOrigemAnexo() {
+		return OrigemAnexo.CURSO;
 	}
 }

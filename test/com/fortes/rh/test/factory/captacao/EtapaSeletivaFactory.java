@@ -13,4 +13,11 @@ public class EtapaSeletivaFactory
 		etapaSeletiva.setOrdem(1);
 		return etapaSeletiva;
 	}
+
+	public static EtapaSeletiva getEntity(long id) {
+		EtapaSeletiva etapaSeletiva = getEntity();
+		etapaSeletiva.setId(id);
+		
+		return etapaSeletiva;
+	}
 }

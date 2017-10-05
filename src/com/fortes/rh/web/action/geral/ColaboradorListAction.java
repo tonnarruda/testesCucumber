@@ -15,33 +15,8 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.sf.jasperreports.engine.JRDataSource;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
-
-import ar.com.fdvs.dj.core.DynamicJasperHelper;
-import ar.com.fdvs.dj.core.layout.ClassicLayoutManager;
-import ar.com.fdvs.dj.domain.DynamicReport;
-import ar.com.fdvs.dj.domain.Style;
-import ar.com.fdvs.dj.domain.builders.ColumnBuilder;
-import ar.com.fdvs.dj.domain.builders.DynamicReportBuilder;
-import ar.com.fdvs.dj.domain.builders.GroupBuilder;
-import ar.com.fdvs.dj.domain.constants.Border;
-import ar.com.fdvs.dj.domain.constants.Font;
-import ar.com.fdvs.dj.domain.constants.GroupLayout;
-import ar.com.fdvs.dj.domain.constants.HorizontalAlign;
-import ar.com.fdvs.dj.domain.constants.Page;
-import ar.com.fdvs.dj.domain.constants.VerticalAlign;
-import ar.com.fdvs.dj.domain.entities.DJGroup;
-import ar.com.fdvs.dj.domain.entities.columns.AbstractColumn;
-import ar.com.fdvs.dj.domain.entities.columns.PropertyColumn;
 
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
@@ -57,6 +32,7 @@ import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.dicionario.OrigemAnexo;
 import com.fortes.rh.model.dicionario.Sexo;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.SituacaoColaboradorIntegraAC;
@@ -90,6 +66,30 @@ import com.ibm.icu.util.Calendar;
 import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionContext;
+
+import ar.com.fdvs.dj.core.DynamicJasperHelper;
+import ar.com.fdvs.dj.core.layout.ClassicLayoutManager;
+import ar.com.fdvs.dj.domain.DynamicReport;
+import ar.com.fdvs.dj.domain.Style;
+import ar.com.fdvs.dj.domain.builders.ColumnBuilder;
+import ar.com.fdvs.dj.domain.builders.DynamicReportBuilder;
+import ar.com.fdvs.dj.domain.builders.GroupBuilder;
+import ar.com.fdvs.dj.domain.constants.Border;
+import ar.com.fdvs.dj.domain.constants.Font;
+import ar.com.fdvs.dj.domain.constants.GroupLayout;
+import ar.com.fdvs.dj.domain.constants.HorizontalAlign;
+import ar.com.fdvs.dj.domain.constants.Page;
+import ar.com.fdvs.dj.domain.constants.VerticalAlign;
+import ar.com.fdvs.dj.domain.entities.DJGroup;
+import ar.com.fdvs.dj.domain.entities.columns.AbstractColumn;
+import ar.com.fdvs.dj.domain.entities.columns.PropertyColumn;
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 public class ColaboradorListAction extends MyActionSupportList
 {
@@ -1917,5 +1917,9 @@ public class ColaboradorListAction extends MyActionSupportList
 
 	public void setColaboradorMatricula(String colaboradorMatricula) {
 		this.colaboradorMatricula = colaboradorMatricula;
+	}
+	
+	public char getOrigemAnexo() {
+		return OrigemAnexo.COLABORADOR;
 	}
 }

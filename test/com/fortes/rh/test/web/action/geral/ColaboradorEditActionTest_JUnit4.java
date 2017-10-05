@@ -405,7 +405,7 @@ public class ColaboradorEditActionTest_JUnit4
 
 		Ocorrencia ocorrencia = OcorrenciaFactory.getEntity(empresa, "Abandono do local de trabalho", 10);
 		Collection<ColaboradorOcorrencia> ocorrenciasColaborador =  Arrays.asList(ColaboradorOcorrenciaFactory.getEntity(colaborador, ocorrencia, new Date(), null));
-		Collection<DocumentoAnexo> documentoAnexosColaborador = Arrays.asList(DocumentoAnexoFactory.getEntity(1L, colaborador.getId(), OrigemAnexo.AnexoCandidato));
+		Collection<DocumentoAnexo> documentoAnexosColaborador = Arrays.asList(DocumentoAnexoFactory.getEntity(1L, colaborador.getId(), OrigemAnexo.CANDIDATO, null, null));
 		Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras = Arrays.asList(ConfiguracaoCampoExtraFactory.getEntity(1L, "", true, false));
 
 		MockSecurityUtil.roles = new String[]{"ROLE_VISUALIZAR_ANEXO_COLAB_LOGADO"};

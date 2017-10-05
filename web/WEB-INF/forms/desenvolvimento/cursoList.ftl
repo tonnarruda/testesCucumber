@@ -17,7 +17,8 @@
 
 	<#include "../ftl/showFilterImports.ftl" />
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
-
+	<#assign origemDocumento = origemAnexo/>
+	
 	<script type='text/javascript'>
 		var novoTitulo="";
 		
@@ -68,7 +69,7 @@
 		<@display.column title="Ações" class="acao" style = "width:95px";>
 			<a href="prepareUpdate.action?curso.id=${curso.id}&curso.empresa.id=${curso.empresa.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 			<a href="../turma/list.action?curso.id=${curso.id}"><img border="0" title="Turmas" src="<@ww.url value="/imgs/db_add.gif"/>"></a>
-			<a href="../../geral/documentoAnexo/list.action?documentoAnexo.origem=U&documentoAnexo.origemId=${curso.id}"><img border="0" title="Inserir Anexos" src="<@ww.url includeParams="none" value="/imgs/anexos.gif"/>"></a>
+			<a href="../../geral/documentoAnexo/list.action?documentoAnexo.origem=${origemDocumento}&documentoAnexo.origemId=${curso.id}"><img border="0" title="Inserir Anexos" src="<@ww.url includeParams="none" value="/imgs/anexos.gif"/>"></a>
 			<a href="javascript:;" onclick="javascript:clonar(${curso.id}, '${curso.nome?html?replace("'","\\'")}')"><img border="0" title="Clonar" src="<@ww.url includeParams="none" value="/imgs/clonar.gif"/>"></a>
 			<#if curso.empresa.id == empresaSistema.id>
 				<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?curso.id=${curso.id}&curso.empresa.id=${curso.empresa.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>

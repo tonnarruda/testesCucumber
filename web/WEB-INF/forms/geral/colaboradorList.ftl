@@ -136,6 +136,8 @@
 		<#assign empresaEstaIntegradaEAderiuAoESocial=false/>
 	</#if>
 
+	<#assign origemDocumento = origemAnexo/>
+	
 	<title>Colaboradores</title>
 </head>
 <body>
@@ -316,14 +318,14 @@
 			<@frt.link verifyRole="ROLE_COLAB_LIST_SOLICITACAO" href="prepareColaboradorSolicitacao.action?colaborador.id=${colaborador.id}&statusCandSol=${statusSolicitacao}&voltarPara=../../geral/colaborador/list.action" imgTitle="Incluir em Solicitação" imgName="db_add.gif" disabled=colaborador.statusAcPessoalAguardandoConfirmacao />
 			
 			<@authz.authorize ifAllGranted="ROLE_VISUALIZAR_ANEXO_COLAB_LOGADO">
-				<@frt.link verifyRole="ROLE_COLAB_LIST_DOCUMENTOANEXO" href="../documentoAnexo/list.action?documentoAnexo.origem=D&documentoAnexo.origemId=${colaborador.id}&colaboradorId=${colaborador.id}" imgTitle="Documentos do Colaborador" imgName="anexos.gif"/>
+				<@frt.link verifyRole="ROLE_COLAB_LIST_DOCUMENTOANEXO" href="../documentoAnexo/list.action?documentoAnexo.origem=${origemDocumento}&documentoAnexo.origemId=${colaborador.id}&colaboradorId=${colaborador.id}" imgTitle="Documentos do Colaborador" imgName="anexos.gif"/>
 			</@authz.authorize>
 
 			<@authz.authorize ifNotGranted="ROLE_VISUALIZAR_ANEXO_COLAB_LOGADO">
 				<#if colaborador.id == colaboradorLogadoId>
 					<@frt.link verifyRole="ROLE_COLAB_LIST_DOCUMENTOANEXO" href="#" imgTitle="Você não ter permissão de visualizar seus documentos em anexo." imgName="anexos.gif" opacity=true/>
 				<#else>
-					<@frt.link verifyRole="ROLE_COLAB_LIST_DOCUMENTOANEXO" href="../documentoAnexo/list.action?documentoAnexo.origem=D&documentoAnexo.origemId=${colaborador.id}&colaboradorId=${colaborador.id}" imgTitle="Documentos do Colaborador" imgName="anexos.gif"/>
+					<@frt.link verifyRole="ROLE_COLAB_LIST_DOCUMENTOANEXO" href="../documentoAnexo/list.action?documentoAnexo.origem=${origemDocumento}&documentoAnexo.origemId=${colaborador.id}&colaboradorId=${colaborador.id}" imgTitle="Documentos do Colaborador" imgName="anexos.gif"/>
 				</#if>
 			</@authz.authorize>	
 

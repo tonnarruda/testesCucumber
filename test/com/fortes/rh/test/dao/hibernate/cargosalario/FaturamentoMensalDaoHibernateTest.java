@@ -87,12 +87,10 @@ public class FaturamentoMensalDaoHibernateTest extends GenericDaoHibernateTest_J
 		Date inicio = DateUtil.criarDataMesAno(1, 2, 2000);
 		Date fim = DateUtil.criarDataMesAno(1, 11, 2000);
 		
-		Estabelecimento estabelecimento= EstabelecimentoFactory.getEntity(1l);
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
 		estabelecimentoDao.save(estabelecimento);
-		
 
 		Empresa empresa = EmpresaFactory.getEmpresa();
-		
 		empresaDao.save(empresa);
 		
 		FaturamentoMensal janeiro = new FaturamentoMensal();
@@ -100,7 +98,6 @@ public class FaturamentoMensalDaoHibernateTest extends GenericDaoHibernateTest_J
 		janeiro.setValor(200.0);
 		janeiro.setEmpresa(empresa);
 		janeiro.setEstabelecimento(estabelecimento);
-		
 		faturamentoMensalDao.save(janeiro);
 		
 		FaturamentoMensal novembro = new FaturamentoMensal();
@@ -108,7 +105,6 @@ public class FaturamentoMensalDaoHibernateTest extends GenericDaoHibernateTest_J
 		novembro.setValor(200.0);
 		novembro.setEmpresa(empresa);
 		novembro.setEstabelecimento(estabelecimento);
-		
 		faturamentoMensalDao.save(novembro);
 		
 		Collection<FaturamentoMensal> faturamentos = faturamentoMensalDao.findByPeriodo(inicio, fim, empresa.getId(), new Long[]{estabelecimento.getId()});

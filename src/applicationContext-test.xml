@@ -585,4 +585,16 @@
 		<ref bean="sessionFactory" />
 	</property>
   </bean>
+  
+  <bean id="documentoAnexoDao" class="com.fortes.rh.dao.hibernate.geral.DocumentoAnexoDaoHibernate">
+	<property name="sessionFactory">
+		<ref bean="sessionFactory" />
+	</property>
+  </bean>    
+  
+  <bean id="turmaDocumentoAnexoDao" class="com.fortes.rh.dao.hibernate.desenvolvimento.TurmaDocumentoAnexoDaoHibernate">
+	<property name="sessionFactory">
+		<ref bean="sessionFactory" />
+	</property>
+  </bean>    
 </beans>

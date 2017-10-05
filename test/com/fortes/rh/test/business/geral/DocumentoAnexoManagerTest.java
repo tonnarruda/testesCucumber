@@ -3,8 +3,6 @@ package com.fortes.rh.test.business.geral;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import mockit.Mockit;
-
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
@@ -14,9 +12,12 @@ import com.fortes.rh.dao.geral.DocumentoAnexoDao;
 import com.fortes.rh.model.captacao.EtapaSeletiva;
 import com.fortes.rh.model.geral.DocumentoAnexo;
 import com.fortes.rh.model.geral.TipoDocumento;
+import com.fortes.rh.test.factory.captacao.EtapaSeletivaFactory;
 import com.fortes.rh.test.factory.geral.TipoDocumentoFactory;
 import com.fortes.rh.test.util.mockObjects.MockArquivoUtil;
 import com.fortes.rh.util.ArquivoUtil;
+
+import mockit.Mockit;
 
 public class DocumentoAnexoManagerTest extends MockObjectTestCase
 {
@@ -118,7 +119,7 @@ public class DocumentoAnexoManagerTest extends MockObjectTestCase
 		File documento = new File();
 		
 		DocumentoAnexo documentoAnexo = new DocumentoAnexo();
-		documentoAnexo.setEtapaSeletiva(new EtapaSeletiva());
+		documentoAnexo.setEtapaSeletiva(EtapaSeletivaFactory.getEntity());
 		documentoAnexo.setTipoDocumento(tipoDocumento);
 
 		Exception excecao = null;

@@ -12,6 +12,7 @@ import com.fortes.rh.business.geral.DocumentoAnexoManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.Curso;
+import com.fortes.rh.model.dicionario.OrigemAnexo;
 import com.fortes.rh.model.geral.DocumentoAnexo;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.security.SecurityUtil;
@@ -78,7 +79,7 @@ public class CursoDWR
 	@SuppressWarnings("unchecked")
 	public Map<Long,String> getDocumentoAnexos(Long cursoId) 
 	{
-		Collection<DocumentoAnexo> documentoAnexos = documentoAnexoManager.getDocumentoAnexoByOrigemId('U', cursoId);
+		Collection<DocumentoAnexo> documentoAnexos = documentoAnexoManager.getDocumentoAnexoByOrigemId(OrigemAnexo.CURSO, cursoId);
 		return new CollectionUtil<DocumentoAnexo>().convertCollectionToMap(documentoAnexos,"getId","getDescricao");
 	}
 	

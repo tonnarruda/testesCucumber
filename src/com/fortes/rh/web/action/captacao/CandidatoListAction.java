@@ -53,6 +53,7 @@ import com.fortes.rh.model.dicionario.Deficiencia;
 import com.fortes.rh.model.dicionario.Escolaridade;
 import com.fortes.rh.model.dicionario.Estado;
 import com.fortes.rh.model.dicionario.NivelIdioma;
+import com.fortes.rh.model.dicionario.OrigemAnexo;
 import com.fortes.rh.model.dicionario.PesosTriagemAutomatica;
 import com.fortes.rh.model.dicionario.Sexo;
 import com.fortes.rh.model.dicionario.SolicitacaoHistoricoColaborador;
@@ -1997,5 +1998,9 @@ public class CandidatoListAction extends MyActionSupportList
 
 	public void setCandidatoDTO(CandidatoDTO candidatoDTO) {
 		this.candidatoDTO = candidatoDTO;
+	}
+	
+	public char getOrigemAnexo() {
+		return OrigemAnexo.CANDIDATO;
 	}
 }

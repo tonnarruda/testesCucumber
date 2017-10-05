@@ -50,8 +50,8 @@
 		<#assign dataEncerramentoFim = dataEncerramentoFim?date/>
 	<#else>
 		<#assign dataEncerramentoFim = ""/>
+	<#assign origemDocumento = origemAnexo/>
 	</#if>
-	
 	<script type='text/javascript'>
 		$(function() {
 			var obj = document.getElementById("legendas");
@@ -287,7 +287,7 @@
 			
 			<@frt.link verifyRole="ROLE_LIBERA_SOLICITACAO" href="javascript:;" onclick="javascript:aprovarSolicitacao(${solicitacao.id},'${solicitacao.status}','${dtStatus}')" imgTitle="Alterar status (${solicitacao.statusFormatado})" imgName="${imgStatus}"/>
 
-			<@frt.link verifyRole="ROLE_MOV_SOLICITACAO_ANEXAR" href="../../geral/documentoAnexo/list.action?documentoAnexo.origem=S&documentoAnexo.origemId=${solicitacao.id}" imgTitle="Inserir Anexos" imgName="anexos.gif"/>
+			<@frt.link verifyRole="ROLE_MOV_SOLICITACAO_DOCUMENTOS" href="../../geral/documentoAnexo/list.action?documentoAnexo.origem=${origemDocumento}&documentoAnexo.origemId=${solicitacao.id}" imgTitle="Documentos da Solicitação de Pessoal" imgName="anexos.gif"/>
 		</@display.column>
 	
 		<@display.column title="Código" property="id" class="${classe}"/>

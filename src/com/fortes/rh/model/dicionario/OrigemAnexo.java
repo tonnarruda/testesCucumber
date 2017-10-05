@@ -10,11 +10,11 @@ public class OrigemAnexo extends LinkedHashMap
 {
 	public static final char LTCAT = 'A';
 	public static final char PPRA = 'B';
-	public static final char AnexoCandidato = 'C';
-	public static final char AnexoCandidatoExterno = 'E';
-	public static final char AnexoColaborador = 'D';
-	public static final char Curso = 'U';
-	public static final char SolicitacaoPessoal = 'S';
+	public static final char CANDIDATO = 'C';
+	public static final char CANDIDATOEXTERNO = 'E';
+	public static final char COLABORADOR = 'D';
+	public static final char CURSO = 'U';
+	public static final char SOLICITACAOPESSOAL = 'S';
 
 	@SuppressWarnings("unchecked")
 	public OrigemAnexo()
@@ -22,26 +22,26 @@ public class OrigemAnexo extends LinkedHashMap
 		super();
 		put(LTCAT, "LTCAT");
 		put(PPRA, "PPRA");
-		put(AnexoCandidato, "AnexoCandidato");
-		put(AnexoCandidatoExterno, "CandidatoExterno");
-		put(AnexoColaborador, "AnexoColaborador");
-		put(Curso, "Curso");
-		put(SolicitacaoPessoal, "SolicitacaoPessoal");
+		put(CANDIDATO, "AnexoCandidato");
+		put(CANDIDATOEXTERNO, "CandidatoExterno");
+		put(COLABORADOR, "AnexoColaborador");
+		put(CURSO, "Curso");
+		put(SOLICITACAOPESSOAL, "SolicitacaoPessoal");
 		
 	}
 	
 	public String diretorioOrigemAnexo(char origem)
 	{
 		switch (origem){
-			case AnexoCandidato:
+			case CANDIDATO:
 				return "documentosCandidatos";
-			case AnexoCandidatoExterno:
+			case CANDIDATOEXTERNO:
 				return "documentosCandidatos";
-			case AnexoColaborador:
+			case COLABORADOR:
 				return "documentosColaboradores";
-			case Curso:
+			case CURSO:
 				return "anexosCursos";
-			case SolicitacaoPessoal:
+			case SOLICITACAOPESSOAL:
 				return "anexosSolicitacoesPessoais";
 		}
 		
@@ -53,15 +53,15 @@ public class OrigemAnexo extends LinkedHashMap
 			return "../../captacao/candidatoSolicitacao/list.action?solicitacao.id=" + solicitacaoId;
 		
 		switch (origem){
-			case AnexoCandidato:
+			case CANDIDATO:
 				return "../../captacao/candidato/list.action";
-			case AnexoCandidatoExterno:
+			case CANDIDATOEXTERNO:
 				return "../externo/prepareListAnuncio.action";	
-			case AnexoColaborador:
+			case COLABORADOR:
 				return "../colaborador/list.action";
-			case Curso:
+			case CURSO:
 				return "../../desenvolvimento/curso/list.action";
-			case SolicitacaoPessoal:
+			case SOLICITACAOPESSOAL:
 				return "../../captacao/solicitacao/list.action";
 		}
 		
@@ -75,19 +75,19 @@ public class OrigemAnexo extends LinkedHashMap
 			role = "ROLE_CAND_SOLICITACAO_DOCUMENTOANEXO";
 		else{
 			switch (origem){
-				case AnexoCandidato:
+				case CANDIDATO:
 					role =  "ROLE_CAND_LIST_DOCUMENTOANEXO";
 					break;
-				case AnexoColaborador:
+				case COLABORADOR:
 					role =  "ROLE_COLAB_LIST_DOCUMENTOANEXO";
 					break;
-				case Curso:
+				case CURSO:
 					role =  "ROLE_MOV_CURSO";
 					break;
-				case SolicitacaoPessoal:
-					role =  "ROLE_MOV_SOLICITACAO_ANEXAR";
+				case SOLICITACAOPESSOAL:
+					role =  "ROLE_MOV_SOLICITACAO_DOCUMENTOS";
 					break;
-				case AnexoCandidatoExterno:
+				case CANDIDATOEXTERNO:
 					return true;
 			}
 		}

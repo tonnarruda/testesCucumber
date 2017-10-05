@@ -24,7 +24,8 @@
 	
 	<#assign topDivImg = "${urlServlet}menu1" />
 	<#assign userDivImg = "${urlServlet}menu2" />
-
+	<#assign origemDocumento = origemAnexo/>
+	
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-1.4.4.min.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.alerts.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.numberformatter-1.1.0.js"/>'></script>
@@ -120,7 +121,7 @@
 					<ul>
 						<li><a href="prepareListAnuncio.action">Vagas Abertas</a></li>
 						<li><a href="prepareUpdate.action?moduloExterno=true&empresaId=${SESSION_EMPRESA}&candidato.id=${SESSION_CANDIDATO_ID}">Editar Currículo</a></li>
-						<li><a href="listDocumentosAnexos.action?documentoAnexo.origem=E&documentoAnexo.origemId=${SESSION_CANDIDATO_ID}">Anexar Documentos</a></li>
+						<li><a href="listDocumentosAnexos.action?documentoAnexo.origem=${origemDocumento}&documentoAnexo.origemId=${SESSION_CANDIDATO_ID}">Anexar Documentos</a></li>
 						<li><a href="prepareUpdateSenha.action?moduloExterno=true&empresaId=${SESSION_EMPRESA}&candidato.id=${SESSION_CANDIDATO_ID}">Alterar Senha</a></li>
 						<li><a href="logoutExterno.action?empresaId=${SESSION_EMPRESA}">Sair</a></li>
 					</ul>

@@ -37,18 +37,18 @@ public class DocumentoAnexoDaoHibernate extends GenericDaoHibernate<DocumentoAne
 		p.add(Projections.property("es.nome"), "projectionEtapaSeletivaNome");
 		criteria.setProjection(p);
 
-		if (origem == OrigemAnexo.AnexoColaborador && origemCandidatoId != null)
+		if (origem == OrigemAnexo.COLABORADOR && origemCandidatoId != null)
 			criteria.add(Expression.or(
-							Expression.and(Expression.eq("da.origem", OrigemAnexo.AnexoColaborador), Expression.eq("da.origemId", origemId)), 
+							Expression.and(Expression.eq("da.origem", OrigemAnexo.COLABORADOR), Expression.eq("da.origemId", origemId)), 
 							Expression.or(
-									Expression.and(Expression.eq("da.origem", OrigemAnexo.AnexoCandidato), Expression.eq("da.origemId", origemCandidatoId)), 
-									Expression.and(Expression.eq("da.origem", OrigemAnexo.AnexoCandidatoExterno), Expression.eq("da.origemId", origemCandidatoId))
+									Expression.and(Expression.eq("da.origem", OrigemAnexo.CANDIDATO), Expression.eq("da.origemId", origemCandidatoId)), 
+									Expression.and(Expression.eq("da.origem", OrigemAnexo.CANDIDATOEXTERNO), Expression.eq("da.origemId", origemCandidatoId))
 							)
 						));
-		else if (origem == OrigemAnexo.AnexoCandidato)
+		else if (origem == OrigemAnexo.CANDIDATO)
 			criteria.add(Expression.or(
-							Expression.and(Expression.eq("da.origem", OrigemAnexo.AnexoCandidato), Expression.eq("da.origemId", origemId)), 
-							Expression.and(Expression.eq("da.origem", OrigemAnexo.AnexoCandidatoExterno), Expression.eq("da.origemId", origemId))
+							Expression.and(Expression.eq("da.origem", OrigemAnexo.CANDIDATO), Expression.eq("da.origemId", origemId)), 
+							Expression.and(Expression.eq("da.origem", OrigemAnexo.CANDIDATOEXTERNO), Expression.eq("da.origemId", origemId))
 						));
 		else
 			criteria.add(Expression.and(Expression.eq("da.origem", origem), Expression.eq("da.origemId", origemId)));

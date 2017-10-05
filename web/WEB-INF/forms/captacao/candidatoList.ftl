@@ -78,6 +78,7 @@
 
 	<#assign validarCampos="return validaFormulario('formBusca', null, new Array('dataIni','dataFim'), true)"/>
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
+	<#assign origemDocumento = origemAnexo/>
 	
 	<#assign visualizarDocumentos=false/>
 	<@authz.authorize ifAllGranted="ROLE_CAND_LIST_DOCUMENTOANEXO">
@@ -152,7 +153,7 @@
 			<a href="javascript:checaDependenciasExclusao(${candidato.id}, ${candidato.empresa.id}, '${candidato.nome}');"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
 			<a href="prepareUpdateCurriculo.action?candidato.id=${candidato.id}"><img border="0" title="Currículo Escaneado" src="<@ww.url includeParams="none" value="/imgs/cliper.gif"/>"></a>
 			<#if visualizarDocumentos = true>
-				<a href="../../geral/documentoAnexo/list.action?documentoAnexo.origem=C&documentoAnexo.origemId=${candidato.id}"><img border="0" title="Documentos do Candidato" src="<@ww.url includeParams="none" value="/imgs/anexos.gif"/>"></a>
+				<a href="../../geral/documentoAnexo/list.action?documentoAnexo.origem=${origemDocumento}&documentoAnexo.origemId=${candidato.id}"><img border="0" title="Documentos do Candidato" src="<@ww.url includeParams="none" value="/imgs/anexos.gif"/>"></a>
 			</#if>
 			<@authz.authorize ifAllGranted="ROLE_MOV_SOLICITACAO">
 				<a href="../../captacao/solicitacao/verSolicitacoes.action?candidato.id=${candidato.id}&statusCandSol=I"><img border="0" title="Incluir em Solicitação" src="<@ww.url includeParams="none" value="/imgs/usuarios.gif"/>"></a>

@@ -28,6 +28,7 @@ import com.fortes.rh.model.captacao.EtapaSeletiva;
 import com.fortes.rh.model.captacao.HistoricoCandidato;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.SolicitacaoAvaliacao;
+import com.fortes.rh.model.dicionario.OrigemAnexo;
 import com.fortes.rh.model.dicionario.SolicitacaoHistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
 import com.fortes.rh.model.dicionario.StatusAutorizacaoGestor;
@@ -577,5 +578,9 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 
 	public boolean isQtdLimiteColaboradorPorCargo() {
 		return qtdLimiteColaboradorPorCargo;
+	}
+	
+	public char getOrigemAnexo() {
+		return OrigemAnexo.CANDIDATO;
 	}
 }

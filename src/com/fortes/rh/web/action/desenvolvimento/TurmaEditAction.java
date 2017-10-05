@@ -51,6 +51,7 @@ import com.fortes.rh.model.desenvolvimento.TurmaAvaliacaoTurma;
 import com.fortes.rh.model.desenvolvimento.relatorio.CertificacaoTreinamentosRelatorio;
 import com.fortes.rh.model.desenvolvimento.relatorio.ColaboradorCursoMatriz;
 import com.fortes.rh.model.desenvolvimento.relatorio.SomatorioCursoMatriz;
+import com.fortes.rh.model.dicionario.OrigemAnexo;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.DocumentoAnexo;
 import com.fortes.rh.model.geral.Empresa;
@@ -211,7 +212,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	
 		tipoDespesas = tipoDespesaManager.find(new String[]{"empresa.id"}, new Object[]{getEmpresaSistema().getId()}, new String[]{"descricao"});
 		
-		Collection<DocumentoAnexo> documentoAnexos = documentoAnexoManager.getDocumentoAnexoByOrigemId('U', cursoId);
+		Collection<DocumentoAnexo> documentoAnexos = documentoAnexoManager.getDocumentoAnexoByOrigemId(OrigemAnexo.CURSO, cursoId);
 		documentoAnexoCheckList = CheckListBoxUtil.populaCheckListBox(documentoAnexos, "getId", "getDescricao", null);
 	}
 
