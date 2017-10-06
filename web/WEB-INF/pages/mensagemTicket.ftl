@@ -43,7 +43,7 @@
 		</tr>
 		<tr>
 			<td colspan="2" align="center">
-				<a href="login.action">Editar dados da lincença de uso</a>
+				<a href="login.action">Editar dados da licença de uso</a>
 			</td>
 		</tr>
 	</table>
