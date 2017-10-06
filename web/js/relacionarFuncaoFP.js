@@ -4,10 +4,10 @@ var countFuncoesASeremRemovidasRH = 0;
 var countFuncoesASeremRelacionadas = 0;
 
 $(function(){
-	atualizeSelectables('funcoesFPessoal');
-	atualizeSelectables('funcoesRH');
+	atualizeSelectablesRH();
+	atualizeSelectablesFP();
 	
-	caseIgnore();
+	constroiContainsIgnoreAccents();
 	
 	$(".searchRH").keyup(function(e){
 		$(this).parent().parent().find(".funcoesRHLi:[removido!='true']").hide();
@@ -26,7 +26,7 @@ $(function(){
 	});
 });
 
-function caseIgnore() {
+function constroiContainsIgnoreAccents() {
 	var accent_map = {
             'á':'a',
             'à':'a',
@@ -94,85 +94,134 @@ var colorArray = new Array() ;
 contadorRH = 0;
 contadorFP = 0;
 
-function atualizeSelectables(tipo) {
-	id = "#" + tipo + "-list li";
-	$("." + tipo + "Li").click(function(){
+function recalculaContadores(){
+	if($('.funcoesFPessoalLi[associacao]').length == 0 && $('.funcoesRHLi[associacao]').length == 0){
+		contadorRH = 0;
+		contadorFP = 0;
+		colorArray = new Array() ;
+	}else if(contadorFP > 0 && $('.funcoesRHLi[associacao]').length == 0 && $('.funcoesFPessoalLi[associacao]').length == 1){
+		contadorRH = 0;
+		contadorFP = 1;
+		colorArray = new Array() ;
+		colorArray[0] = $(".funcoesFPessoalLi[associacao]").css("background");;
+		$('.funcoesFPessoalLi[associacao]').attr('associacao',0);
+	}else if(contadorRH > 0 && $('.funcoesFPessoalLi[associacao]').length == 0 && $('.funcoesRHLi[associacao]').length == 1){
+		contadorRH = 1;
+		contadorFP = 0;
+		colorArray = new Array() ;
+		colorArray[0] = $(".funcoesRHLi[associacao]").css("background");
+		$('.funcoesRHLi[associacao]').attr('associacao',0);
+	}
+}
+
+function atualizeSelectablesRH() {
+	$(".funcoesRHLi").click(function(){
 		
-		if(tipo == "funcoesFPessoal" && $('.funcoesRHLi[associado]').length > 1 && $('.funcoesFPessoalLi[associado]').length == 0){
-			jAlert('Não é mais posspivel relacionar pois existem mais de uma opção selecionada na coluna "funções do RH"');
-			return false;
-		}
-	
-		if(tipo == "funcoesRH" && $('.funcoesFPessoalLi[associado]').length > 1 && $('.funcoesRHLi[associado]').length ==0){
-			jAlert('Não é mais posspivel relacionar pois existem mais deuma opção selecionada na coluna "funções do Fortes Pessoal"');
+		if($('.funcoesFPessoalLi[associacao]').length > 1 && $('.funcoesRHLi[associacao]').length ==0){
+			jAlert('Não é mais possível selecionar essa função, pois existem mais de uma opção selecionada na coluna "funções do Fortes Pessoal"');
 			return false;
 		}
 		
 		if(!$(this).hasClass("ui-selected")){ 
-			if(tipo == "funcoesFPessoal" && contadorRH != 0 && (contadorFP - contadorRH) > 0){
-				jAlert('Marque uma das opções na coluna "funções do RH"');
-				return false;
-			}
-			if(tipo == "funcoesRH" && contadorFP != 0 && (contadorRH - contadorFP) > 0){
+			if(contadorFP != 0 && (contadorRH - contadorFP) > 0){
 				jAlert('Marque uma das opções na coluna "funções do Fortes Pessoal"');
 				return false;
 			}
-			
+		
 			if(contadorFP == contadorRH){
 				backGroudColor = getRandomColor();
 				colorArray[contadorRH] = backGroudColor;
 			}else{
-
 				if(contadorRH > contadorFP){
-					if(colorArray[contadorFP])
+					if(colorArray[contadorFP]){
 						backGroudColor = colorArray[contadorFP];
-					else{
+					}else{
 						backGroudColor = getRandomColor();
 						colorArray[contadorRH] = backGroudColor;
 					}	
 				}else{
-					if(colorArray[contadorRH])
+					if(colorArray[contadorRH]){
 						backGroudColor = colorArray[contadorRH];
-					else{
+					}else{
 						backGroudColor = getRandomColor();
 						colorArray[contadorFP] = backGroudColor;
 					}	
 				}
 			}
 			
-			if(tipo == "funcoesFPessoal")
-				associacao = contadorFP++; 
-			
-			if(tipo == "funcoesRH")
-				associacao = contadorRH++;
-			
-			$(this).addClass("ui-selected").attr('associacao', associacao).css("background", backGroudColor);
+			$(this).addClass("ui-selected").attr('associacao', contadorRH++).css("background", backGroudColor);
 		}else{
 			associacao = $(this).attr('associacao');
 			$(this).removeClass("ui-selected").removeAttr('associacao').css("background", "white");
 
-			if(tipo == "funcoesRH"){
-				if($(".funcoesFPessoalLi[associacao='" + associacao + "']").length == 0){
-					colorArray.splice(associacao, 1);
-					contadorRH--;
-			}else
-					$(".funcoesFPessoalLi[associacao='" + associacao + "']").removeClass("ui-selected").removeAttr('associacao').css("background", "white");
-			}
-			
-			if(tipo == "funcoesFPessoal"){
-				if($(".funcoesRHLi[associacao='" + associacao + "']").length == 0){
-					colorArray.splice(associacao, 1);
-					contadorFP--;
-				}else
-					$(".funcoesRHLi[associacao='" + associacao + "']").removeClass("ui-selected").removeAttr('associacao').css("background", "white");
-			}
+			if($(".funcoesFPessoalLi[associacao='" + associacao + "']").length == 0)
+				contadorRH--;
+			else
+				$(".funcoesFPessoalLi[associacao='" + associacao + "']").removeClass("ui-selected").removeAttr('associacao').css("background", "white");
 		}
 		
 		botoes();
 	});
 }
 
+function atualizeSelectablesFP() {
+	$(".funcoesFPessoalLi").click(function(){
+		
+		if($('.funcoesRHLi[associacao]').length > 1 && $('.funcoesFPessoalLi[associacao]').length == 0){
+			jAlert('Não é mais possível selecionar essa função, pois existem mais de uma opção selecionada na coluna "funções do RH"');
+			return false;
+		}
+		
+		if(!$(this).hasClass("ui-selected")){ 
+			if(contadorRH != 0 && (contadorFP - contadorRH) > 0){
+				jAlert('Marque uma das opções na coluna "funções do RH"');
+				return false;
+			}
+		
+			if(contadorFP == contadorRH){
+				backGroudColor = getRandomColor();
+				colorArray[contadorFP] = backGroudColor;
+			}else{
+
+				if(contadorRH > contadorFP){
+					if(colorArray[contadorFP]){
+						backGroudColor = colorArray[contadorFP];
+					}else{
+						backGroudColor = getRandomColor();
+						colorArray[contadorRH] = backGroudColor;
+					}	
+				}else{
+					if(colorArray[contadorRH]){
+						backGroudColor = colorArray[contadorRH];
+					}else{
+						backGroudColor = getRandomColor();
+						colorArray[contadorFP] = backGroudColor;
+					}	
+				}
+			}
+			
+			$(this).addClass("ui-selected").attr('associacao', contadorFP++).css("background", backGroudColor);
+		}else{
+			associacao = $(this).attr('associacao');
+			$(this).removeClass("ui-selected").removeAttr('associacao').css("background", "white");
+
+			if($(".funcoesRHLi[associacao='" + associacao + "']").length == 0)
+				contadorFP--;
+			else
+				$(".funcoesRHLi[associacao='" + associacao + "']").removeClass("ui-selected").removeAttr('associacao').css("background", "white");
+		}
+		
+		botoes();
+	});
+}
+
+function removeselecao(){
+	$(".funcoesRHLi[associacao]").removeClass("ui-selected").removeAttr('associacao').css("background", "white");
+	$(".funcoesFPessoalLi[associacao]").removeClass("ui-selected").removeAttr('associacao').css("background", "white");
+}
+
 function botoes(){
+	recalculaContadores();
 	funcoesFPessoalSelecionado = $('#funcoesFPessoal-list li').hasClass("ui-selected");
 	funcoesRHSelecionado = $('#funcoesRH-list li').hasClass("ui-selected");
 	
@@ -228,7 +277,7 @@ function addAcaoRelacionarAutomaticamente(){
 			}
 		});
 	});
-	
+	removeselecao();
 	botoes();
 }
 
@@ -259,7 +308,7 @@ function addAcaoRelacionar(){
 			}
 		});
 	});
-		
+	removeselecao();	
 	botoes();
 }
 
@@ -279,7 +328,7 @@ function addAcaoExcluirRH(){
 		
 		countFuncoesASeremRemovidasRH++;
 	});
-	
+	removeselecao();
 	botoes();
 }
 
@@ -299,7 +348,7 @@ function addAcaoCriarPessoal(){
 		
 		countFuncoesASeremCriadasNoFPessoal++;
 	});
-	
+	removeselecao();
 	botoes();
 }
 
@@ -319,7 +368,7 @@ function addAcaoCriarRH(){
 		
 		countFuncoesASeremCriadasNoRH++;
 	});
-
+	removeselecao();
 	botoes();
 }
 
@@ -373,7 +422,7 @@ function removerAcao(acao){
 
 function removerTodasAcoes(){
 	$('#acoesFuncoes-list').find('table').find('tr').remove();
-	$('.funcoesFPessoalLi:hidden').removeAttr('removido').show();
-	$('.funcoesRHLi:hidden').removeAttr('removido').show();
+	$('.funcoesFPessoalLi:hidden, .funcoesRHLi:hidden').removeAttr('removido').removeAttr('associacao').css("background", "white").show();
 	$('#acoesFuncoes-list').find('table').append('<tr><th width="4%">Ações</th><th width="48%">Funções no RH</th><th width="48%">Funções do Fortes Pessoal</th></tr>');
+	botoes();
 }

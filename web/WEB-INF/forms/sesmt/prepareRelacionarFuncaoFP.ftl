@@ -74,9 +74,9 @@
 			    <ol id="acoesFuncoes-list">
 			    	<table style="width:100%">
 						<tr>
-							<th width="4%">Ações</th>
+							<th width="4%">Remover</th>
 							<th width="48%">Funções no RH</th>
-							<th width="48%">Funções do Fortes Pessoal</th>
+							<th width="48%">Funções no Fortes Pessoal</th>
 						</tr>
 			    	</table>
 			    </ol>
