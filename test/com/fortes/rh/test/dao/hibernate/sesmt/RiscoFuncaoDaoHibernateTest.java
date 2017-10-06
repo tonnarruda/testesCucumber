@@ -1,7 +1,14 @@
 package com.fortes.rh.test.dao.hibernate.sesmt;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.Collection;
 import java.util.Date;
+
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
@@ -14,19 +21,19 @@ import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
 import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.model.sesmt.RiscoFuncao;
-import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.dao.GenericDaoHibernateTest_JUnit4;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.sesmt.RiscoFactory;
 import com.fortes.rh.test.factory.sesmt.RiscoFuncaoFactory;
 import com.fortes.rh.util.DateUtil;
 
-public class RiscoFuncaoDaoHibernateTest extends GenericDaoHibernateTest<RiscoFuncao>
+public class RiscoFuncaoDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<RiscoFuncao>
 {
-	private RiscoFuncaoDao riscoFuncaoDao;
-	private HistoricoFuncaoDao historicoFuncaoDao;
-	private FuncaoDao funcaoDao;
-	private EmpresaDao empresaDao;
-	private RiscoDao riscoDao;
+	@Autowired private RiscoFuncaoDao riscoFuncaoDao;
+	@Autowired private HistoricoFuncaoDao historicoFuncaoDao;
+	@Autowired private FuncaoDao funcaoDao;
+	@Autowired private EmpresaDao empresaDao;
+	@Autowired private RiscoDao riscoDao;
 
 	@Override
 	public RiscoFuncao getEntity()
@@ -39,7 +46,8 @@ public class RiscoFuncaoDaoHibernateTest extends GenericDaoHibernateTest<RiscoFu
 	{
 		return riscoFuncaoDao;
 	}
-
+	
+	@Test
 	public void testRemoveByHistoricoFuncao()
 	{
 		HistoricoFuncao historicoFuncao = new HistoricoFuncao();
@@ -52,6 +60,7 @@ public class RiscoFuncaoDaoHibernateTest extends GenericDaoHibernateTest<RiscoFu
 		assertTrue(riscoFuncaoDao.removeByHistoricoFuncao(historicoFuncao.getId()));
 	}
 
+	@Test
 	public void testRemoveByFuncao()
 	{
 		Funcao funcao = new Funcao();
@@ -75,7 +84,8 @@ public class RiscoFuncaoDaoHibernateTest extends GenericDaoHibernateTest<RiscoFu
 		assertNull(exception);
 	}
 
-	public void testFindRiscosByCargo()
+	@Test
+	public void testFindRiscosByFuncaoEData()
 	{
 		Date hoje = DateUtil.criarDataMesAno(29, 3, 2012);
 		Date doisMesesAtras = DateUtil.incrementaAno(hoje, -2);
@@ -130,23 +140,25 @@ public class RiscoFuncaoDaoHibernateTest extends GenericDaoHibernateTest<RiscoFu
 		assertEquals(risco1, (Risco)riscos.toArray()[0]);
 	}
 	
-	public void setRiscoFuncaoDao(RiscoFuncaoDao riscoFuncaoDao) {
-		this.riscoFuncaoDao = riscoFuncaoDao;
-	}
-
-	public void setHistoricoFuncaoDao(HistoricoFuncaoDao historicoFuncaoDao) {
-		this.historicoFuncaoDao = historicoFuncaoDao;
-	}
-
-	public void setEmpresaDao(EmpresaDao empresaDao) {
-		this.empresaDao = empresaDao;
-	}
-
-	public void setRiscoDao(RiscoDao riscoDao) {
-		this.riscoDao = riscoDao;
-	}
-
-	public void setFuncaoDao(FuncaoDao funcaoDao) {
-		this.funcaoDao = funcaoDao;
+	@Test
+	public void testRemoveByFuncoes()
+	{
+		Funcao funcao = new Funcao();
+		funcaoDao.save(funcao);
+		
+		HistoricoFuncao historicoFuncao = new HistoricoFuncao();
+		historicoFuncao.setFuncao(funcao);
+		historicoFuncaoDao.save(historicoFuncao);
+		
+		Risco risco = RiscoFactory.getEntity();
+		riscoDao.save(risco);
+		
+		RiscoFuncao riscoFuncao = RiscoFuncaoFactory.getEntity();
+		riscoFuncao.setRisco(risco);
+		riscoFuncao.setHistoricoFuncao(historicoFuncao);
+		riscoFuncaoDao.save(riscoFuncao);
+		assertEquals(1, riscoFuncaoDao.riscosByHistoricoFuncao(historicoFuncao).size());
+		riscoFuncaoDao.removeByFuncoes(new Long[]{funcao.getId()});
+		assertEquals(0, riscoFuncaoDao.riscosByHistoricoFuncao(historicoFuncao).size());
 	}
 }

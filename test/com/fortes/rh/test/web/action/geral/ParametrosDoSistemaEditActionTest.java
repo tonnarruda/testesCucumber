@@ -30,6 +30,7 @@ import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.OcorrenciaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
+import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.model.acesso.Perfil;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.dicionario.TipoConfiguracaoCampoExtra;
@@ -44,6 +45,7 @@ import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.ConfiguracaoCampoExtraVisivelObrigadotorioFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
+import com.fortes.rh.test.factory.cargosalario.FuncaoFactory;
 import com.fortes.rh.test.factory.cargosalario.IndiceFactory;
 import com.fortes.rh.test.factory.geral.ConfiguracaoCampoExtraFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
@@ -67,6 +69,7 @@ public class ParametrosDoSistemaEditActionTest
 	private ColaboradorManager colaboradorManager;
 	private FaixaSalarialManager faixaSalarialManager;
 	private IndiceManager indiceManager;
+	private FuncaoManager funcaoManager; 
 	private OcorrenciaManager ocorrenciaManager;
 	private ColaboradorOcorrenciaManager colaboradorOcorrenciaManager;
 	private ConfiguracaoCampoExtraVisivelObrigadotorioManager configuracaoCampoExtraVisivelObrigadotorioManager;
@@ -84,6 +87,7 @@ public class ParametrosDoSistemaEditActionTest
 		colaboradorManager = mock(ColaboradorManager.class);
 		faixaSalarialManager = mock(FaixaSalarialManager.class);
 		indiceManager = mock(IndiceManager.class);
+		funcaoManager = mock(FuncaoManager.class);
 		ocorrenciaManager = mock(OcorrenciaManager.class);
 		colaboradorOcorrenciaManager = mock(ColaboradorOcorrenciaManager.class);
 		configuracaoCampoExtraVisivelObrigadotorioManager = mock(ConfiguracaoCampoExtraVisivelObrigadotorioManager.class);
@@ -97,6 +101,7 @@ public class ParametrosDoSistemaEditActionTest
 		action.setColaboradorManager(colaboradorManager);
 		action.setFaixaSalarialManager(faixaSalarialManager);
 		action.setIndiceManager(indiceManager);
+		action.setFuncaoManager(funcaoManager);
 		action.setOcorrenciaManager(ocorrenciaManager);
 		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
 		action.setColaboradorOcorrenciaManager(colaboradorOcorrenciaManager);
@@ -201,6 +206,7 @@ public class ParametrosDoSistemaEditActionTest
 		when(indiceManager.findSemCodigoAC(empresa)).thenReturn(Arrays.asList(IndiceFactory.getEntity()));
 		when(ocorrenciaManager.findSemCodigoAC(empresa.getId(), true)).thenReturn(Arrays.asList(OcorrenciaFactory.getEntity()));
 		when(empresaManager.verificaIntegracaoAC(action.getEmpresaSistema())).thenReturn(Arrays.asList("msg"));
+		when(funcaoManager.findByEmpresaAndCodigoACIsNull(empresa.getId())).thenReturn(Arrays.asList(FuncaoFactory.getEntity()));
 		
 		assertEquals(Action.SUCCESS, action.prepareDeleteSemCodigoAC());
 		assertEquals("- Existem entidades sem código AC", ((String) action.getActionMessages().toArray()[0]));
@@ -218,6 +224,7 @@ public class ParametrosDoSistemaEditActionTest
 		when(indiceManager.findSemCodigoAC(empresa)).thenReturn(Arrays.asList(IndiceFactory.getEntity()));
 		when(ocorrenciaManager.findSemCodigoAC(empresa.getId(), true)).thenReturn(Arrays.asList(OcorrenciaFactory.getEntity()));
 		when(empresaManager.verificaIntegracaoAC(action.getEmpresaSistema())).thenReturn(Arrays.asList("msg"));
+		when(funcaoManager.findByEmpresaAndCodigoACIsNull(empresa.getId())).thenReturn(Arrays.asList(FuncaoFactory.getEntity()));
 		
 		assertEquals(Action.SUCCESS, action.deleteSemCodigoAC());
 		assertEquals("- Existem entidades sem código AC", ((String) action.getActionMessages().toArray()[0]));

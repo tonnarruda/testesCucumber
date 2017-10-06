@@ -7,6 +7,8 @@ import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -246,5 +248,35 @@ public class FuncaoManagerTest
 		}
 		
 		assertNotNull(ex);
+	}
+	
+	@Test
+	public void testDeleteFuncaoByIdsComArrayNulo() {
+		Long[] funcoesIds = null;
+		
+		funcaoManager.deleteFuncaoByIds(funcoesIds);
+		verify(riscoFuncaoManager, times(0)).removeByFuncoes(funcoesIds);
+		verify(historicoFuncaoManager, times(0)).removeByFuncoes(funcoesIds);
+		verify(funcaoDao, times(0)).remove(funcoesIds);
+	}
+	
+	@Test
+	public void testDeleteFuncaoByIdsComArrayVazio() {
+		Long[] funcoesIds = new Long[]{};
+		
+		funcaoManager.deleteFuncaoByIds(funcoesIds);
+		verify(riscoFuncaoManager, times(0)).removeByFuncoes(funcoesIds);
+		verify(historicoFuncaoManager, times(0)).removeByFuncoes(funcoesIds);
+		verify(funcaoDao, times(0)).remove(funcoesIds);
+	}
+	
+	@Test
+	public void testDeleteFuncaoByIds() {
+		Long[] funcoesIds = new Long[]{1L};
+		
+		funcaoManager.deleteFuncaoByIds(funcoesIds);
+		verify(riscoFuncaoManager, times(1)).removeByFuncoes(funcoesIds);
+		verify(historicoFuncaoManager, times(1)).removeByFuncoes(funcoesIds);
+		verify(funcaoDao, times(1)).remove(funcoesIds);
 	}
 }
