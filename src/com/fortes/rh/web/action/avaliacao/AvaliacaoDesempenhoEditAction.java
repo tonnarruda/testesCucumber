@@ -8,8 +8,6 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-
 import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenhoManager;
@@ -53,6 +51,8 @@ import com.fortes.web.tags.CheckBox;
 import com.opensymphony.webwork.dispatcher.SessionMap;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionContext;
+
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 {
@@ -155,6 +155,8 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	private Long avaliacaoId;
 	private String reportTitle;
 	private CompetenciasConsideradas competenciasConsideradas = new CompetenciasConsideradas();
+	private String primeiraAssinatura;
+	private String segundaAssinatura;
 	
 	private Long limiteQtdCompetenciaPorPagina = 1L;
 	
@@ -372,7 +374,9 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 			
 			resultados.add(resultadoAvaliacaoDesempenho);
 			parametros = RelatorioUtil.getParametrosRelatorio("Análise de Desempenho das Competências do Colaborador", getEmpresaSistema(), avaliacao.getTitulo());
-
+			parametros.put("PRIMEIRAASSINATURA", primeiraAssinatura);
+			parametros.put("SEGUNDAASSINATURA", segundaAssinatura);
+			
 		} catch (Exception e) {
 			addActionError("Problema ao gerar relatório.");
 			e.printStackTrace();
@@ -412,6 +416,8 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 			parametros.put("NIVEISCOMPETENCIADESCRICAO", relatorioAnaliseDesempenhoColaborador.getNiveisCompetenciasDescricao());
 			parametros.put("NIVEISCOMPETENCIAORDEM", relatorioAnaliseDesempenhoColaborador.getNiveisCompetenciasOrdem());
 			parametros.put("LEGENDA", relatorioAnaliseDesempenhoColaborador.getLegenda());
+			parametros.put("PRIMEIRAASSINATURA", primeiraAssinatura);
+			parametros.put("SEGUNDAASSINATURA", segundaAssinatura);
 
 		} catch (Exception e) {
 			addActionError("Problema ao gerar relatório.");
@@ -1318,5 +1324,21 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 
 	public Long[] getCompetenciasCheck() {
 		return competenciasCheck;
+	}
+	
+	public String getPrimeiraAssinatura() {
+		return primeiraAssinatura;
+	}
+
+	public void setPrimeiraAssinatura(String primeiraAssinatura) {
+		this.primeiraAssinatura = primeiraAssinatura;
+	}
+
+	public String getSegundaAssinatura() {
+		return segundaAssinatura;
+	}
+
+	public void setSegundaAssinatura(String segundaAssinatura) {
+		this.segundaAssinatura = segundaAssinatura;
 	}
 }

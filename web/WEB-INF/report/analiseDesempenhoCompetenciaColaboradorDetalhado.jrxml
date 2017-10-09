@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.4.0.final using JasperReports Library version 6.4.1  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="admitidos" columnCount="2" printOrder="Horizontal" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="280" leftMargin="17" rightMargin="18" topMargin="30" bottomMargin="30" isSummaryWithPageHeaderAndFooter="true" isFloatColumnFooter="true" uuid="24767a6b-f9cf-40db-9a88-9000fc09d8a3">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
@@ -23,6 +24,8 @@
 	<parameter name="NIVEISCOMPETENCIADESCRICAO" class="java.lang.String"/>
 	<parameter name="NIVEISCOMPETENCIAORDEM" class="java.lang.String"/>
 	<parameter name="LEGENDA" class="java.lang.String"/>
+	<parameter name="PRIMEIRAASSINATURA" class="java.lang.String"/>
+	<parameter name="SEGUNDAASSINATURA" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -210,6 +213,31 @@
 			</textField>
 		</band>
 	</pageFooter>
+	<lastPageFooter>
+		<band height="67">
+			<line>
+				<reportElement x="14" y="27" width="206" height="1" uuid="4132909d-9d05-454f-a2c0-a4973a4c3673">
+					<printWhenExpression><![CDATA[!$P{PRIMEIRAASSINATURA}.isEmpty()]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="324" y="27" width="206" height="1" uuid="44c3ee17-28ff-4912-9871-76a994eb8a70">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<printWhenExpression><![CDATA[!$P{SEGUNDAASSINATURA}.isEmpty()]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<textField>
+				<reportElement x="14" y="30" width="206" height="13" uuid="d7e1dbbd-4ff2-4d3a-bfbd-2743825bd266"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{PRIMEIRAASSINATURA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="324" y="30" width="205" height="13" uuid="36eaba5a-0a49-4e95-8691-c07e431f8ef8"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{SEGUNDAASSINATURA}]]></textFieldExpression>
+			</textField>
+		</band>
+	</lastPageFooter>
 	<summary>
 		<band height="197" splitType="Stretch">
 			<subreport isUsingCache="true">

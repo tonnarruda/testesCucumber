@@ -525,6 +525,13 @@
 		<@ww.checkbox label="Exibir somente os cargos vinculados às áreas organizacionais acima." id="cargosVinculadosAreas" name="" labelPosition="left"/>
 		<@frt.checkListBox label="Cargos" name="cargosCheck" id="cargosCheck" list="cargosCheckList"  width="600" onClick="populaAvaliadosPorAreaCargoEmpresa();" filtro="true" selectAtivoInativo="true"/>
 		<@ww.select label="Avaliado" required="true" name="avaliado.id" id="avaliados" list="participantesAvaliadores" listKey="id" listValue="nome" cssStyle="width: 600px;" headerKey="-1" headerValue="Selecione uma avaliação de desempenho"  onchange="populaAvaliadores();populaOrdensNivelCompetencia();"/>
+	 	<div id="divAssinaturas">
+			<fieldset style="padding: 5px 0px 5px 5px; width: 595px;">
+				<legend>Assinaturas</legend>
+				<@ww.textarea label="Assinatura 1" name="primeiraAssinatura" cssStyle="width: 296px;height: 30px;"/>
+				<@ww.textarea label="Assinatura 2" name="segundaAssinatura"  cssStyle="width: 296px;height: 30px;"/>
+			</fieldset>
+		</div>
 		
 		<div id="paraRelatorioDetalhado">
 			<@ww.checkbox label="Agrupar avaliadores por cargo." id="agruparPorCargo" name="agruparPorCargo" labelPosition="left" onchange="verificaQtdMarcados();mudaLabelMultCheckBoxAvaliadores();"/>
@@ -534,6 +541,7 @@
 			</br>
 			<div id="ordensNivelCompetencia"/>
 		</div>
+		
 	</@ww.form>
 
 	<div class="buttonGroup">
