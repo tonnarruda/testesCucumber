@@ -23,25 +23,34 @@
 
 	<script type='text/javascript'>
 		
+		function mensagemSemEpis()
+	    {
+			if($("#colaborador").find(":selected").val() == "0"){
+				return "Selecione um colaborador para popular as solicitações de EPI.";
+			} else {
+				return "O colaborador selecionado não possui solicitação de EPI.";
+			}
+	    }
+		    
 		$(document).ready(function(){
 			$('#listCheckBoxsolicitacoesEpiCheck').append('<div class="info"> <ul> <li>Selecione um colaborador para popular as solicitações de EPI.</li> </ul> </div>');
 		});
 		
-		function busaSolicitacao(colaboradorId)
+		function buscaSolicitacao(colaboradorId)
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
 			SolicitacaoEpiDWR.getByColaboradorId(listSolicitacoes, colaboradorId);
 		}
 
-		function listSolicitacoes(data)
+		function listSolicitacoes(solicitacoesEpi)
 		{
 			$('#listCheckBoxsolicitacoesEpiCheck').empty();
 			$("#listCheckBoxsolicitacoesEpiCheck > .info").remove();
 
-			if(data != "")
-				addChecksByCollection('solicitacoesEpiCheck',data);
-			else{
-				$('#listCheckBoxsolicitacoesEpiCheck').append('<div class="info"> <ul> <li>Selecione um colaborador para popular as solicitações de EPI.</li> </ul> </div>');
+			if(solicitacoesEpi.length == 0){
+				$('#listCheckBoxsolicitacoesEpiCheck').append('<div class="info"> <ul> <li>'+mensagemSemEpis()+'</li> </ul> </div>');
+			}else{
+				addChecksByCollection('solicitacoesEpiCheck',solicitacoesEpi);
 			}
 		}
 		
@@ -74,7 +83,7 @@
 
 	<@ww.form id="formRelatorio" name="formRelatorio" action="${formAction}" method="post">
 		<br/>
-		<@ww.select label="Colaborador" name="colaborador.id" id="colaborador" list="colaboradors" required="true" listKey="id" listValue="nomeCpf" headerKey="" headerValue="${headerValue}" onchange="busaSolicitacao(this.value);" cssStyle="width: 605px;"/>
+		<@ww.select label="Colaborador" name="colaborador.id" id="colaborador" list="colaboradors" required="true" listKey="id" listValue="nomeCpf" headerKey="0" headerValue="${headerValue}" onchange="buscaSolicitacao(this.value);" cssStyle="width: 605px;"/>
 		
 		<@frt.checkListBox name="solicitacoesEpiCheck" id="solicitacoesEpiCheck" label="Solicitações de EPI" list="solicitacoesEpiCheckList" width="600" form="document.getElementById('formRelatorio')" filtro="true" required="true"/>	
 

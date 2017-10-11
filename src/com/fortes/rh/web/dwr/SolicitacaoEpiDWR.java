@@ -6,6 +6,7 @@ import java.util.Collection;
 import com.fortes.rh.business.sesmt.SolicitacaoEpiItemManager;
 import com.fortes.rh.business.sesmt.SolicitacaoEpiManager;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
+import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.web.tags.CheckBox;
 
@@ -17,18 +18,15 @@ public class SolicitacaoEpiDWR {
 	public Collection<CheckBox> getByColaboradorId(Long colaboradorId)
 	{
 		Collection<CheckBox> solicitacoesEpiCheck = new ArrayList<CheckBox>();
-		Collection<SolicitacaoEpi> solicitacoesEpi = solicitacaoEpiManager.findByColaboradorId(colaboradorId); 
-		CheckBox check = null;
+		
+		try {
+			Collection<SolicitacaoEpi> solicitacoesEpi = solicitacaoEpiManager.findByColaboradorId(colaboradorId);
 
-		for (SolicitacaoEpi solicitacaoEpi : solicitacoesEpi) {
-			
-			check = new CheckBox();
-			check.setId(solicitacaoEpi.getId());
-			check.setNome(solicitacaoEpi.getDataFormatada());
-			
-			solicitacoesEpiCheck.add(check);
+			solicitacoesEpiCheck = CheckListBoxUtil.populaCheckListBox(solicitacoesEpi, "getId", "getDataFormatada", null);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-
+		
 		return solicitacoesEpiCheck;
 	}
 

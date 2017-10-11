@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.sesmt.EpiHistoricoManager;
 import com.fortes.rh.business.sesmt.EpiManager;
@@ -15,7 +17,6 @@ import com.fortes.rh.business.sesmt.TipoEPIManager;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.EpiHistorico;
-import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
 import com.fortes.rh.model.sesmt.TipoEPI;
@@ -38,7 +39,6 @@ public class EpiEditAction extends MyActionSupportEdit
 
 	private Epi epi;
 	private EpiHistorico epiHistorico;
-	private SolicitacaoEpi solicitacaoEpi;
 
 	private Collection<TipoEPI> tipos;
 	private Collection<EpiHistorico> epiHistoricos;
@@ -152,7 +152,7 @@ public class EpiEditAction extends MyActionSupportEdit
 	public String imprimirFicha()
 	{
 		parametros = RelatorioUtil.getParametrosRelatorio("FICHA DE CONTROLE DE EPI", getEmpresaSistema(), "");
-		fichaEpiRelatorio =  epiManager.findImprimirFicha(getEmpresaSistema(), colaborador);
+		fichaEpiRelatorio = epiManager.findImprimirFicha(getEmpresaSistema(), colaborador);
 		fichaEpiRelatorio.setImprimirVerso(imprimirVerso);
 		
 		montaRelatorioFichaEpi();
@@ -163,23 +163,21 @@ public class EpiEditAction extends MyActionSupportEdit
 
 	private void montaRelatorioFichaEpi() 
 	{
-		int baseNumDeLinhas = 10;
+		int baseNumDeLinhas = (imprimirVerso ? 34 : 10);
 
-		if(imprimirVerso)
-			baseNumDeLinhas = 34;
-		
 		dataSourceFichaEpi = new ArrayList<SolicitacaoEpiItemEntrega>();
 		int numLinhasAdicionaisParaRelatorio  = baseNumDeLinhas;
-
-		if(solicitacoesEpiCheck!=null){
-			for(Long solicitacao : solicitacoesEpiCheck){
+		
+		
+		if(ArrayUtils.isNotEmpty(solicitacoesEpiCheck)){
+			for(Long solicitacaoId : solicitacoesEpiCheck){
 				
-				Collection<SolicitacaoEpiItem> solicitacaoEpiItems = solicitacaoEpiItemManager.findBySolicitacaoEpi(solicitacao); 
+				Collection<SolicitacaoEpiItem> solicitacaoEpiItems = solicitacaoEpiItemManager.findBySolicitacaoEpi(solicitacaoId); 
 				
 				for (SolicitacaoEpiItem solicitacaoEpiItem : solicitacaoEpiItems) 
 					dataSourceFichaEpi.addAll(solicitacaoEpiItemEntregaManager.findBySolicitacaoEpiItem(solicitacaoEpiItem.getId()));
 				
-				numLinhasAdicionaisParaRelatorio  = baseNumDeLinhas - dataSourceFichaEpi.size()%baseNumDeLinhas;
+				numLinhasAdicionaisParaRelatorio = baseNumDeLinhas - (dataSourceFichaEpi.size() % baseNumDeLinhas);
 			}
 		}
 
@@ -282,10 +280,6 @@ public class EpiEditAction extends MyActionSupportEdit
 
 	public void setSolicitacaoEpiItemManager(SolicitacaoEpiItemManager solicitacaoEpiItemManager) {
 		this.solicitacaoEpiItemManager = solicitacaoEpiItemManager;
-	}
-
-	public void setSolicitacaoEpi(SolicitacaoEpi solicitacaoEpi) {
-		this.solicitacaoEpi = solicitacaoEpi;
 	}
 
 	public void setSolicitacaoEpiItemEntregaManager(SolicitacaoEpiItemEntregaManager solicitacaoEpiItemEntregaManager) {

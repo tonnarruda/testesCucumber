@@ -5,7 +5,7 @@ import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
@@ -73,17 +73,22 @@ public class SolicitacaoEpiDWRTest
 	public void testGetByColaboradorId()
 	{
 		Colaborador colaborador = ColaboradorFactory.getEntity(1l);
-		Collection<SolicitacaoEpi> solicitacoesEpis = new ArrayList<SolicitacaoEpi>();
 		
-		SolicitacaoEpi solicitacaoEpi= SolicitacaoEpiFactory.getEntity();
-		solicitacaoEpi.setColaborador(colaborador);
-		solicitacoesEpis.add(solicitacaoEpi);
+		SolicitacaoEpi solicitacaoEpi1 = SolicitacaoEpiFactory.getEntity(2l);
+		solicitacaoEpi1.setColaborador(colaborador);
+		
+		SolicitacaoEpi solicitacaoEpi2 = SolicitacaoEpiFactory.getEntity(2l);
+		solicitacaoEpi2.setColaborador(colaborador);
+		
+		Collection<SolicitacaoEpi> solicitacoesEpis = Arrays.asList(solicitacaoEpi1, solicitacaoEpi2);
 		
 		when(solicitacaoEpiManager.findByColaboradorId(colaborador.getId())).thenReturn(solicitacoesEpis);
 
-		Collection<CheckBox> solicitacoesEpisResultado = solicitacaoEpiDWR.getByColaboradorId(colaborador.getId());
+		Collection<CheckBox> checkBoxSolicitacoesEpis = solicitacaoEpiDWR.getByColaboradorId(colaborador.getId());
 		
-		assertEquals(solicitacoesEpis.size(),solicitacoesEpisResultado.size());
+		assertEquals(solicitacoesEpis.size(),checkBoxSolicitacoesEpis.size());
+		assertEquals(solicitacaoEpi1.getId().toString(),((CheckBox)checkBoxSolicitacoesEpis.toArray()[0]).getId());
+		assertEquals(solicitacaoEpi2.getId().toString(),((CheckBox)checkBoxSolicitacoesEpis.toArray()[1]).getId());
 	}
 }
 	
