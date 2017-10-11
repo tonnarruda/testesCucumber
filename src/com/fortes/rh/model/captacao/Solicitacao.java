@@ -146,7 +146,7 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 		setId(id);
 	}
 
-	public Solicitacao(Long id, int quantidade, Date data, boolean encerrada, Long empresaId, Double valorDoHistoricoDaFaixaSalarial, Long faixaSalarialId, Long idCargo, String nomeCargo, Long idArea, String nomeAreaOrganizacional, String nomeSolicitante, Integer qtdVagasPreenchidas, Long motivoSolicitacaoId, boolean motivoSolicitacaoConsiderarQtdColaboradoresPorCargo)
+	public Solicitacao(Long id, int quantidade, Date data, boolean encerrada, Long empresaId, Double valorDoHistoricoDaFaixaSalarial, Long faixaSalarialId, Long idCargo, String nomeCargo, Long idArea, String nomeAreaOrganizacional, String nomeSolicitante, Integer qtdVagasPreenchidas, Long motivoSolicitacaoId, Boolean motivoSolicitacaoConsiderarQtdColaboradoresPorCargo)
 	{
 		setId(id);
 		setQuantidade(quantidade);
@@ -158,7 +158,7 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 		this.encerrada = encerrada;
 		this.qtdVagasPreenchidas = qtdVagasPreenchidas;
 		setMotivoSolicitacaoId(motivoSolicitacaoId);
-		setMotivoSolicitacaoConsiderarQtdColaboradoresPorCargo(motivoSolicitacaoConsiderarQtdColaboradoresPorCargo);
+		setMotivoSolicitacaoConsiderarQtdColaboradoresPorCargo(motivoSolicitacaoConsiderarQtdColaboradoresPorCargo == null ? false : motivoSolicitacaoConsiderarQtdColaboradoresPorCargo);
 		
 		setProjectionFaixaSalarialId(faixaSalarialId);
 		getFaixaSalarial().setFaixaSalarialHistoricoAtual(new FaixaSalarialHistorico());

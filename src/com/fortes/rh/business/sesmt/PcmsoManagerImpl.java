@@ -1,9 +1,13 @@
 package com.fortes.rh.business.sesmt;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Locale;
 
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EmpresaManager;
@@ -183,7 +187,7 @@ public class PcmsoManagerImpl implements PcmsoManager
 		return collectionUtil.sortCollectionStringIgnoreCase(areasComFamilia, "descricao");
 	}
 	
-	public String montaAgenda(PCMSO pcmso, Date dataIni, Date dataFim, Estabelecimento estabelecimento, boolean exibirAgenda) throws ColecaoVaziaException
+	public String montaAgenda(PCMSO pcmso, Date dataIni, Date dataFim, Estabelecimento estabelecimento, boolean exibirAgenda) throws ColecaoVaziaException, ParseException
 	{
 		if (exibirAgenda)
 		{
@@ -191,26 +195,7 @@ public class PcmsoManagerImpl implements PcmsoManager
 			
 			if(agendas.isEmpty())
 				return "Não existem dados da agenda para o período informado.<br>";
-				
-			Evento eventoTodosMeses = new Evento();
-			eventoTodosMeses.setNome("naoMeApague");
-			
-			int difEntreDatas = DateUtil.mesesEntreDatas(dataIni, dataFim); 
-			
-			for (int i = 0; i <= difEntreDatas; i++)
-			{
-				Agenda agenda = new Agenda();
-				if(i == 0)
-					agenda.setData(dataIni);
-				else
-					agenda.setData(DateUtil.incrementaMes(dataIni, 1));
-					
-				agenda.setEvento(eventoTodosMeses);
-				agendas.add(agenda);
-				
-				dataIni = agenda.getData();
-			}
-			
+
 			pcmso.setAgendas(agendas);
 		}
 		return "";

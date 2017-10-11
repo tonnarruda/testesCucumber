@@ -21,4 +21,5 @@ public interface FuncaoManager extends GenericManager<Funcao>
 	Collection<QtdPorFuncaoRelatorio> getQtdColaboradorByFuncao(Long empresaId, Long estabelecimentoId, Date data, char tipoAtivo);
 	void removeFuncao(Funcao funcao);
 	Collection<CheckBox> populaCheckBox();
+	void atualizaNomeUltimoHistorico(Long funcaoId);
 }

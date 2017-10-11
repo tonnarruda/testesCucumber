@@ -54,7 +54,8 @@ Funcionalidade: Gerenciamento Cadastral da Etapa Seletiva
 
       Dado que exista o cargo "QA Engineer"                                                                       
       Dado que haja uma faixa salarial com id 1, nome "I", cargo_id 1                                             
-      Dado que exista um candidato "Tony Blair"                                                                   
+      Dado que exista um candidato "Tony Blair"        
+      Dado que exista a área organizacional "Desenvolvimento"                                                           
       Dado que exista uma solicitacao "Vaga para o Desenvolvimento" para área "Desenvolvimento" na faixa "I"
       Dado que exista a etapa seletiva "Entrevista com a Chefia Imediata"                                         
       Dado que eu esteja logado com o usuário "SOS"                                                               
@@ -76,7 +77,4 @@ Funcionalidade: Gerenciamento Cadastral da Etapa Seletiva
      Entao eu acesso o menu "R&S > Cadastros > Etapas Seletivas"                                             
          E eu clico em excluir "Entrevista com a Chefia Imediata"                                                    
          E eu devo ver o alert do confirmar exclusão e clico no ok
-     Então eu devo ver "Entidade etapa seletiva possui dependências em etapas seletivas do candidato."
-         E eu espero 10 segundos
-
-
+     Então eu devo ver "Entidade etapa seletiva possui dependências em etapas seletivas do candidato."         

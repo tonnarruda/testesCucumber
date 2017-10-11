@@ -821,6 +821,17 @@ Dado(/^que exista um candidato "([^"]*)" com a área de interesse "([^"]*)"$/) d
 end
 
 Dado(/^que exista um colaborador "([^"]*)", da area "([^"]*)", com o cargo "([^"]*)" e a faixa salarial "([^"]*)"$/) do |colaborador_nome, areaorganizacional_nome, cargo_nome, faixasalarial_nome|
+ insert :funcao do
+    nome cargo_nome
+    empresa :nome => 'Empresa Padrão'
+  end
+  
+  insert :historicoFuncao do
+    data '01/07/2010'
+    funcaoNome cargo_nome
+    funcao :nome => cargo_nome
+  end
+
   insert :areaorganizacional do
     nome areaorganizacional_nome
     empresa :nome => 'Empresa Padrão'
@@ -882,12 +893,13 @@ Dado(/^que exista um colaborador "([^"]*)", da area "([^"]*)", com o cargo "([^"
     uf_id 1
     pis '12345678919'
   end
-
+  
   insert :historicocolaborador do
     data '01/07/2011'
     colaborador :nome => colaborador_nome
     faixasalarial :nome => faixasalarial_nome
     areaorganizacional :nome => areaorganizacional_nome
+    funcao :nome => cargo_nome
     estabelecimento :id => 1
     motivo 'C'
     tiposalario 3
@@ -949,10 +961,16 @@ Dado(/^que exista um medico coordenador "([^"]*)"$/) do |medico_nome|
   end
 end
 
-Dado(/^que exista uma funcao "([^"]*)" no cargo "([^"]*)"$/) do |funcao_nome, cargo_nome|
+Dado(/^que exista uma funcao "([^"]*)"$/) do |funcao_nome|
   insert :funcao do
     nome funcao_nome
-    cargo :nome => cargo_nome
+    empresa :nome => 'Empresa Padrão'
+  end
+    
+  insert :historicoFuncao do
+    data '01/07/2010'
+    funcaoNome funcao_nome
+    funcao :nome => funcao_nome
   end
 end
 

@@ -2447,9 +2447,9 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		funcao.setNome(funcaoNome);
 	}
 	
-	public void setFuncaoCodigoCbo(String funcaoCodigoCbo){
+	public void setHistoricoFuncaoCodigoCbo(String historicoFuncaoCodigoCbo){
 		inicializaFuncao();
-		funcao.setCodigoCbo(funcaoCodigoCbo);
+		funcao.setHistoricoFuncaoCodigoCbo(historicoFuncaoCodigoCbo);
 	}
 	
 	public void setFuncaoHistoricoFuncaoAtualId(Long historicoFuncaoId){

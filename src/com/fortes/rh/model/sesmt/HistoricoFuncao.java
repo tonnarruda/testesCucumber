@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Lob;
@@ -26,7 +27,13 @@ import com.fortes.rh.util.DateUtil;
 @SequenceGenerator(name="sequence", sequenceName="historicofuncao_sequence", allocationSize=1)
 public class HistoricoFuncao extends AbstractModel implements Serializable
 {
-    @Temporal(TemporalType.DATE)
+	@Column(length=100)
+	private String funcaoNome;
+	
+	@Column(length=6)
+	private String codigoCbo;
+
+	@Temporal(TemporalType.DATE)
     private Date data;
 	@Transient
 	private Date dataProximoHistorico;
@@ -233,5 +240,21 @@ public class HistoricoFuncao extends AbstractModel implements Serializable
 			this.riscoFuncaos = new ArrayList<RiscoFuncao>();
 		
 		this.riscoFuncaos.add(new RiscoFuncao(riscoFuncaoId));
+	}
+
+	public String getFuncaoNome() {
+		return funcaoNome;
+	}
+
+	public void setFuncaoNome(String funcaoNome) {
+		this.funcaoNome = funcaoNome;
+	}
+
+	public String getCodigoCbo() {
+		return codigoCbo;
+	}
+
+	public void setCodigoCbo(String codigoCbo) {
+		this.codigoCbo = codigoCbo;
 	}
 }

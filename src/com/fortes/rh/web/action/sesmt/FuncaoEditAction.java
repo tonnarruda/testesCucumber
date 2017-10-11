@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import com.fortes.rh.business.desenvolvimento.CursoManager;
-import com.fortes.rh.business.geral.CodigoCBOManager;
 import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.business.sesmt.ExameManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
@@ -34,19 +33,14 @@ public class FuncaoEditAction extends MyActionSupportEdit
 	private EpiManager epiManager;
 	private RiscoManager riscoManager;
 	private CursoManager cursoManager;
-	private CodigoCBOManager codigoCBOManager;
 
 	private Funcao funcao;
 	private HistoricoFuncao historicoFuncao;
 
 	private Collection<HistoricoFuncao> historicoFuncaos = new ArrayList<HistoricoFuncao>();
-
     private Collection<Ambiente> ambientes;
-
 	private Collection<RiscoFuncao> riscosFuncoes;
-
 	private String[] riscoChecks;
-
     
     private Colaborador colaborador;
     private HistoricoColaborador historicoColaborador;
@@ -83,7 +77,6 @@ public class FuncaoEditAction extends MyActionSupportEdit
 	public String prepareInsert() throws Exception
 	{
 		prepare();
-		
 		riscosFuncoes = riscoManager.findRiscosFuncoesByEmpresa(getEmpresaSistema().getId());
 
 		return Action.SUCCESS;
@@ -92,26 +85,17 @@ public class FuncaoEditAction extends MyActionSupportEdit
 	public String prepareUpdate() throws Exception
 	{
 		prepare();
-		descricaoCBO = codigoCBOManager.findDescricaoByCodigo(funcao.getCodigoCbo());
-		historicoFuncaos = historicoFuncaoManager.findToList(new String[]{"id","descricao","data"}, new String[]{"id","descricao","data"}, new String[]{"funcao.id"}, new Object[]{funcao.getId()}, new String[]{"data desc"});
+		historicoFuncaos = historicoFuncaoManager.findToList(new String[]{"id","descricao","data", "codigoCbo", "funcaoNome"}, new String[]{"id","descricao","data", "codigoCbo", "funcaoNome"}, new String[]{"funcao.id"}, new Object[]{funcao.getId()}, new String[]{"data desc"});
 
 		return Action.SUCCESS;
 	}
 
 	public String insert() throws Exception
 	{
-		funcao.setEmpresa(getEmpresaSistema());
+		funcao = new Funcao(historicoFuncao.getFuncaoNome(), getEmpresaSistema().getId()); 
 		historicoFuncaoManager.saveFuncaoHistorico(funcao, historicoFuncao, examesChecked, episChecked, cursosChecked, riscoChecks, riscosFuncoes);
 		addActionSuccess("Função " + funcao.getNome() + " cadastrada com sucesso.");
 		
-		return Action.SUCCESS;
-	}
-
-	public String update() throws Exception
-	{
-		funcao.setEmpresa(getEmpresaSistema());
-		funcaoManager.update(funcao);
-		addActionSuccess("Função " + funcao.getNome() + "  atualizada com sucesso.");
 		return Action.SUCCESS;
 	}
 
@@ -287,10 +271,6 @@ public class FuncaoEditAction extends MyActionSupportEdit
 	public void setRiscosFuncoes(Collection<RiscoFuncao> riscosFuncoes) {
 		this.riscosFuncoes = riscosFuncoes;
 	}
-	
-	public String getDescricaoCBO() {
-		return descricaoCBO;
-    }
 
 	public void setRiscoManager(RiscoManager riscoManager) {
 		this.riscoManager = riscoManager;
@@ -299,8 +279,12 @@ public class FuncaoEditAction extends MyActionSupportEdit
 	public void setCursoManager(CursoManager cursoManager) {
 		this.cursoManager = cursoManager;
 	}
-	
-	public void setCodigoCBOManager(CodigoCBOManager codigoCBOManager) {
-		this.codigoCBOManager = codigoCBOManager;
+
+	public String getDescricaoCBO() {
+		return descricaoCBO;
+	}
+
+	public void setDescricaoCBO(String descricaoCBO) {
+		this.descricaoCBO = descricaoCBO;
 	}
 }

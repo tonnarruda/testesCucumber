@@ -16,4 +16,5 @@ public interface FuncaoDao extends GenericDao<Funcao>
 	Collection<Long> findFuncaoAtualDosColaboradores(Date data, Long estabelecimentoId);
 	Collection<String> findColaboradoresSemFuncao(Date data, Long estabelecimentoId);
 	Collection<Object[]> getQtdColaboradorByFuncao(Long empresaId, Long estabelecimentoId, Date data, char tipoAtivo);
+	void atualizaNomeUltimoHistorico(Long funcaoId);
 }

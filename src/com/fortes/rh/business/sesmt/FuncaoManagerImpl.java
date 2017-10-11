@@ -86,7 +86,6 @@ public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> imp
 				mapQtdPorFuncaoRelatorio.put(qtdPorFuncaoRelatorioTmp.getFuncaoId(), qtdPorFuncaoRelatorioTmp);
 				qtdPorFuncaoRelatorios.add(qtdPorFuncaoRelatorioTmp);
 			}
-				
 		}
 		
 		return qtdPorFuncaoRelatorios;
@@ -104,6 +103,10 @@ public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> imp
 		}
 
 		return new ArrayList<CheckBox>();
+	}
+
+	public void atualizaNomeUltimoHistorico(Long funcaoId) {
+		getDao().atualizaNomeUltimoHistorico(funcaoId);
 	}
 
 	public Collection<Long> findFuncaoAtualDosColaboradores(Date data, Long estabelecimentoId)

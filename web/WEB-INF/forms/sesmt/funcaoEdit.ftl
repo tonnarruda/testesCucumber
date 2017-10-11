@@ -18,75 +18,30 @@
 			padding-left: 4px;
 		}
 	</style>
+	
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/autoCompleteFortes.js?version=${versao}"/>'></script>
 	<script src='<@ww.url includeParams="none" value="/js/fortes.js?version=${versao}"/>'></script>
 	<script src='<@ww.url includeParams="none" value="/js/functions.js?version=${versao}"/>'></script>
 
 	<#if funcao.id?exists>
-		<title>Editar Função - ${funcao.nome}</title>
-		<#assign formAction="update.action"/>
+		<title>Históricos da Função ${funcao.nome}</title>
 		<#assign accessKey="A"/>
-		<#assign validarCampos="return validaFormulario('form', new Array('nome'), null)"/>
+		<#assign validarCampos=""/>
 	<#else>
 		<title>Inserir Função</title>
 		<#assign formAction="insert.action"/>
 		<#assign accessKey="I"/>
-		<#assign validarCampos="return validaFormulario('form', new Array('dataHist','nome','descricao'), new Array('dataHist'))"/>
+		<#assign validarCampos="return validaFormulario('form', new Array('dataHist','funcaoNome','descricao'), new Array('dataHist'))"/>
 	</#if>
-
-	<#if funcao.data?exists>
-		<#assign data = historicoFuncao.data?date>
-	<#else>
-		<#assign data = "">
-	</#if>
-
-	<script type="text/javascript">
-		$(function() {
-			$('#md').click(function() {
-				var checked = $(this).attr('checked');
-				$('input[name="riscoChecks"]').each(function() { $(this).attr('checked', checked); habilitarDesabilitarCamposLinha(this); });
-			});
-			
-			$('input[name="riscoChecks"]').click(function() {
-				habilitarDesabilitarCamposLinha(this);
-			});
-			
-			var urlFind = "<@ww.url includeParams="none" value="/geral/codigoCBO/find.action"/>";
-				
-			$("#descricaoCBO").autocomplete({
-				source: ajaxData(urlFind),				 
-				minLength: 2,
-				select: function( event, ui ) { 
-					$("#codigoCBO").val(ui.item.id);
-				}
-			}).data( "autocomplete" )._renderItem = renderData;
-
-			$('#descricaoCBO').focus(function() {
-			    $(this).select();
-			});
-			
-		});
-		
-		function habilitarDesabilitarCamposLinha(campoRisco)
-		{
-			$(campoRisco).parent().parent().find('input, select, textarea').not(campoRisco).attr('disabled', !campoRisco.checked);
-		}
-	</script>
 </head>
 <body>
 	<@ww.actionmessage />
 	<@ww.actionerror />
-	<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" validate="true" method="POST">
-
-		<@ww.textfield label="Nome da Função" name="funcao.nome" id="nome"  cssClass="inputNome" maxLength="100" required="true" />
-
-		<@ww.textfield label="Cód. CBO" name="funcao.codigoCbo" id="codigoCBO" onkeypress="return(somenteNumeros(event,''));" cssStyle="margin-top: 1px" size="6"  maxLength="6" liClass="liLeft"/>
-		<@ww.textfield label="Busca CBO (Código ou Descrição)" name="descricaoCBO" id="descricaoCBO" cssStyle="width: 414px;"/>
-		<div style="clear:both"></div>
-
-
-
-		<#if !funcao.id?exists>
+	
+	<@ww.form name="form" action="insert.action" onsubmit="${validarCampos}" validate="true" method="POST">
+		<#if funcao.id?exists>
+			<@ww.hidden name="funcao.id" />
+		<#else>
 			<li>
 				<fieldset>
 					<legend>Dados do Primeiro Histórico da Função</legend>
@@ -96,15 +51,9 @@
 				</fieldset>
 			</li>
 		</#if>
-
-		<@ww.hidden name="funcao.id" />
 	</@ww.form>
-
-	<div class="buttonGroup">
-		<button onclick="${validarCampos};"  class="btnGravar"></button>
-
+	
 	<#if funcao.id?exists && historicoFuncaos?exists>
-		</div>
 		<br>
 		<@display.table name="historicoFuncaos" id="historicoFuncao" pagesize=10 class="dados">
 			<@display.column title="Ações" class="acao">
@@ -116,17 +65,20 @@
 				</#if>
 			</@display.column>
 			<@display.column property="data" title="Data" format="{0,date,dd/MM/yyyy}" style="text-align: center;width:80px;"/>
-			<@display.column property="descricao" title="Histórico - Descrição"/>
+			<@display.column property="funcaoNome" title="Nome da Funação" style="text-align: center;width:100px;"/>
+			<@display.column property="codigoCbo" title="CBO" style="text-align: center;width:50px;"/>
+			<@display.column property="descricao" title="Descrição das Atividades Executadas"/>
 		</@display.table>
-
-
+	
 		<div class="buttonGroup">
 			<button onclick="window.location='../historicoFuncao/prepareInsert.action?funcao.id=${funcao.id}&funcao.nome=${funcao.nome}'" class="btnInserir"></button>
+			<button onclick="window.location='list.action'" class="btnVoltar"></button>
+		</div>
+	<#else>
+		<div class="buttonGroup">
+			<button onclick="${validarCampos};"  class="btnGravar"></button>
+			<button onclick="window.location='list.action'" class="btnVoltar"></button>
+		</div>
 	</#if>
-
-		<button onclick="window.location='list.action'" class="btnVoltar"></button>
-	</div>
-
-
 </body>
 </html>

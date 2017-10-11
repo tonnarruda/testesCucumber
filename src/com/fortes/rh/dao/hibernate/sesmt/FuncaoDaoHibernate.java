@@ -90,7 +90,6 @@ public class FuncaoDaoHibernate extends GenericDaoHibernate<Funcao> implements F
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("f.id"), "id");
 		p.add(Projections.property("f.nome"), "nome");
-		p.add(Projections.property("f.codigoCbo"), "codigoCbo");
 		criteria.setProjection(Projections.distinct(p));
 
 		criteria.add(Expression.eq("f.id", funcaoId));
@@ -103,17 +102,16 @@ public class FuncaoDaoHibernate extends GenericDaoHibernate<Funcao> implements F
 	public Collection<Funcao> findFuncoesDoAmbiente(Long ambienteId, Date data) 
 	{
 		StringBuilder hql = new StringBuilder();
-		
-		hql.append("select distinct new Funcao(f.id, f.nome, hf.id, hf.descricao) ");
+		hql.append("select distinct new Funcao(f.id, hf.funcaoNome, hf.id, hf.descricao) ");
 		hql.append("from HistoricoColaborador hc ");
 		hql.append("	join hc.colaborador c ");
 		hql.append("	join hc.ambiente a ");
 		hql.append("	join hc.funcao f ");
 		hql.append("	join f.historicoFuncaos hf ");
 		hql.append("where   hc.data = (select max(hc2.data) from HistoricoColaborador hc2 where hc2.data <=:data  and hc2.status = :status and hc2.colaborador.id = hc.colaborador.id) ");
-		hql.append("	and hf.data =   ( select max(hf2.data) from HistoricoFuncao hf2 where hf2.data <= :data and hf2.funcao.id = hf.funcao.id) ");
+		hql.append("	and hf.data =  (select max(hf2.data) from HistoricoFuncao hf2 where hf2.data <= :data and hf2.funcao.id = hf.funcao.id) ");
 		hql.append("	and a.id = :ambienteId ");
-		hql.append("	order by f.nome ");
+		hql.append("	order by hf.funcaoNome ");
 		
 		Query query = getSession().createQuery(hql.toString());
 		query.setDate("data", data);
@@ -209,5 +207,12 @@ public class FuncaoDaoHibernate extends GenericDaoHibernate<Funcao> implements F
 			query.setLong("estabelecimentoId", estabelecimentoId);
 
 		return query.list();
+	}
+
+	public void atualizaNomeUltimoHistorico(Long funcaoId) {
+		String hql = "update Funcao set nome = (select hf.funcaoNome from HistoricoFuncao hf where hf.funcao.id = :id and hf.data = (select max(hf2.data) from HistoricoFuncao hf2 where hf2.funcao.id = :id)) where id = :id";
+		Query query = getSession().createQuery(hql);
+		query.setLong("id", funcaoId);
+		query.executeUpdate();
 	}
 }

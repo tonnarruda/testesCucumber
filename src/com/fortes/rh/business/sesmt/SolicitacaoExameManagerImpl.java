@@ -23,6 +23,7 @@ import com.fortes.rh.model.dicionario.TipoPessoa;
 import com.fortes.rh.model.dicionario.TipoRiscoSistema;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.Exame;
+import com.fortes.rh.model.sesmt.HistoricoFuncao;
 import com.fortes.rh.model.sesmt.MedicoCoordenador;
 import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.model.sesmt.SolicitacaoExame;
@@ -30,6 +31,7 @@ import com.fortes.rh.model.sesmt.relatorio.AsoRelatorio;
 import com.fortes.rh.model.sesmt.relatorio.SolicitacaoExameRelatorio;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
+import com.fortes.rh.util.SpringUtil;
 
 public class SolicitacaoExameManagerImpl extends GenericManagerImpl<SolicitacaoExame, SolicitacaoExameDao> implements SolicitacaoExameManager
 {
@@ -158,7 +160,6 @@ public class SolicitacaoExameManagerImpl extends GenericManagerImpl<SolicitacaoE
 		return resultado;
 	}
 
-	@SuppressWarnings("unchecked")
 	public AsoRelatorio montaRelatorioAso(Empresa empresa, SolicitacaoExame solicitacaoExame, String considerarRiscoPor) throws ColecaoVaziaException 
 	{
 		if (solicitacaoExame == null || solicitacaoExame.getId() == null)
@@ -177,8 +178,14 @@ public class SolicitacaoExameManagerImpl extends GenericManagerImpl<SolicitacaoE
 				historicoColaborador = historicoColaboradorManager.getHistoricoAtualOuFuturo(solicitacaoExame.getColaborador().getId());
 			}
 
-			if (historicoColaborador != null && historicoColaborador.getFuncao() != null && asoRelatorio != null && asoRelatorio.getColaborador() != null)
+			if (historicoColaborador != null && historicoColaborador.getFuncao() != null && asoRelatorio != null && asoRelatorio.getColaborador() != null){
+				HistoricoFuncaoManager historicoFuncaoManager = (HistoricoFuncaoManager) SpringUtil.getBean("historicoFuncaoManager");
+				HistoricoFuncao historicoFuncao = historicoFuncaoManager.findByFuncaoAndData(historicoColaborador.getFuncao().getId(), historicoColaborador.getData());
+				if(historicoFuncao != null && historicoFuncao.getFuncaoNome() != null && !"".equals(historicoFuncao.getFuncaoNome()))
+					historicoColaborador.getFuncao().setNome(historicoFuncao.getFuncaoNome());
+				
 				asoRelatorio.getColaborador().setFuncao(historicoColaborador.getFuncao());
+			}
 
 			configuraRiscos(empresa, solicitacaoExame, considerarRiscoPor, asoRelatorio, historicoColaborador);
 		}

@@ -815,9 +815,6 @@
     <property name="dao">
       <ref bean="agendaDao" />
     </property>
-    <property name="transactionManager">
-      <ref bean="transactionManager" />
-    </property>
   </bean>
   <bean id="agendaManager" parent="parentManager">
     <property name="proxyInterfaces">

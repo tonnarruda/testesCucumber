@@ -1,57 +1,73 @@
 package com.fortes.rh.test.web.action.sesmt;
 
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.business.sesmt.HistoricoFuncaoManager;
 import com.fortes.rh.business.sesmt.RiscoFuncaoManager;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
+import com.fortes.rh.test.factory.cargosalario.FuncaoFactory;
 import com.fortes.rh.web.action.sesmt.HistoricoFuncaoListAction;
 
-public class HistoricoFuncaoListActionTest extends MockObjectTestCase
+public class HistoricoFuncaoListActionTest
 {
 	private HistoricoFuncaoListAction action;
-	private Mock manager;
-	private Mock riscoFuncaoManager;
-
-    protected void setUp() throws Exception
+	private HistoricoFuncaoManager manager;
+	private RiscoFuncaoManager riscoFuncaoManager;
+	private FuncaoManager funcaoManager;
+	
+	@Before
+    public void setUp() throws Exception
     {
-        super.setUp();
         action = new HistoricoFuncaoListAction();
         
-        manager = new Mock(HistoricoFuncaoManager.class);
-        action.setHistoricoFuncaoManager((HistoricoFuncaoManager) manager.proxy());
+        manager = mock(HistoricoFuncaoManager.class);
+        action.setHistoricoFuncaoManager(manager);
 
-        riscoFuncaoManager = new Mock(RiscoFuncaoManager.class);
-        action.setRiscoFuncaoManager((RiscoFuncaoManager) riscoFuncaoManager.proxy());
+        riscoFuncaoManager = mock(RiscoFuncaoManager.class);
+        action.setRiscoFuncaoManager(riscoFuncaoManager);
+        
+        funcaoManager = mock(FuncaoManager.class);
+        action.setFuncaoManager(funcaoManager);
     }
 
-    protected void tearDown() throws Exception
+	@After
+    public void tearDown() throws Exception
     {
         action = null;
         manager = null;
-        super.tearDown();
     }
 
+	@Test
     public void testExecute() throws Exception
     {
     	assertEquals(action.execute(), "success");
     }
 
+	@Test
     public void testDelete() throws Exception
     {
-    	HistoricoFuncao historicoFuncao = new HistoricoFuncao();
+    	Funcao funcao = FuncaoFactory.getEntity(1L);
+    	action.setFuncao(funcao);
+		
+		HistoricoFuncao historicoFuncao = new HistoricoFuncao();
     	historicoFuncao.setId(1L);
     	action.setHistoricoFuncao(historicoFuncao);
 
-    	riscoFuncaoManager.expects(once()).method("removeByHistoricoFuncao").with(ANYTHING).will(returnValue(true));
-    	manager.expects(once()).method("remove").with(ANYTHING);
+    	when(riscoFuncaoManager.removeByHistoricoFuncao(historicoFuncao.getId())).thenReturn(true);
     	
     	assertEquals(action.delete(), "success");
     }
 
+	@Test
     public void testGetSet() throws Exception
     {
     	HistoricoFuncao historicoFuncao = new HistoricoFuncao();

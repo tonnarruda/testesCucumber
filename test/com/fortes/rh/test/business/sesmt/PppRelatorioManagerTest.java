@@ -135,6 +135,25 @@ public class PppRelatorioManagerTest
 		Funcao funcao = FuncaoFactory.getEntity(3L);
 		Colaborador colaborador = ColaboradorFactory.getEntity(1000L);
 		
+		Risco riscoFisico = new Risco(1L, "Risco Fisico", TipoRisco.FISICO);
+		Risco riscoBiologico = new Risco(2L, "Risco Biologico", TipoRisco.BIOLOGICO);
+		
+		RiscoAmbiente riscoAmbienteFisico = RiscoAmbienteFactory.getEntity();
+		riscoAmbienteFisico.setRisco(riscoFisico);
+		RiscoAmbiente riscoAmbienteBiologico = RiscoAmbienteFactory.getEntity();
+		riscoAmbienteBiologico.setRisco(riscoBiologico);
+		
+		RiscoFuncao riscoFuncaoFisico = RiscoFuncaoFactory.getEntity();
+		riscoFuncaoFisico.setRisco(riscoFisico);
+		RiscoFuncao riscoFuncaoBiologico = RiscoFuncaoFactory.getEntity();
+		riscoFuncaoBiologico.setRisco(riscoBiologico);
+		
+		HistoricoFuncao historicoFuncao = new HistoricoFuncao();
+		historicoFuncao.setData(dataAmbienteFuncao);
+		historicoFuncao.setFuncao(funcao);
+		historicoFuncao.setRiscoFuncaos(Arrays.asList(riscoFuncaoFisico, riscoFuncaoBiologico));
+		funcao.setHistoricoFuncaos(Arrays.asList(historicoFuncao));
+		
 		Cargo cargo = CargoFactory.getEntity(1L);
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
 		faixaSalarial.setCargo(cargo);
@@ -160,28 +179,10 @@ public class PppRelatorioManagerTest
 		historicoColaborador3.setColaborador(colaborador);
 		historicoColaborador3.setFaixaSalarial(faixaSalarial);
 		
-		Risco riscoFisico = new Risco(1L, "Risco Fisico", TipoRisco.FISICO);
-		Risco riscoBiologico = new Risco(2L, "Risco Biologico", TipoRisco.BIOLOGICO);
-		
-		RiscoAmbiente riscoAmbienteFisico = RiscoAmbienteFactory.getEntity();
-		riscoAmbienteFisico.setRisco(riscoFisico);
-		RiscoAmbiente riscoAmbienteBiologico = RiscoAmbienteFactory.getEntity();
-		riscoAmbienteBiologico.setRisco(riscoBiologico);
-		
-		RiscoFuncao riscoFuncaoFisico = RiscoFuncaoFactory.getEntity();
-		riscoFuncaoFisico.setRisco(riscoFisico);
-		RiscoFuncao riscoFuncaoBiologico = RiscoFuncaoFactory.getEntity();
-		riscoFuncaoBiologico.setRisco(riscoBiologico);
-		
 		HistoricoAmbiente historicoAmbiente = new HistoricoAmbiente();
 		historicoAmbiente.setData(dataAmbienteFuncao);
 		historicoAmbiente.setAmbiente(ambiente);
 		historicoAmbiente.setRiscoAmbientes(Arrays.asList(riscoAmbienteFisico, riscoAmbienteBiologico));
-		
-		HistoricoFuncao historicoFuncao = new HistoricoFuncao();
-		historicoFuncao.setData(dataAmbienteFuncao);
-		historicoFuncao.setFuncao(funcao);
-		historicoFuncao.setRiscoFuncaos(Arrays.asList(riscoFuncaoFisico, riscoFuncaoBiologico));
 		
 		Collection<HistoricoColaborador> historicoColaboradors = new ArrayList<HistoricoColaborador>();
 		historicoColaboradors.add(historicoColaborador1);
@@ -299,6 +300,12 @@ public class PppRelatorioManagerTest
 		Ambiente ambiente2 = AmbienteFactory.getEntity(12L);
 		Funcao funcao = FuncaoFactory.getEntity(3L);
 		Colaborador colaborador = ColaboradorFactory.getEntity(1000L);
+
+		HistoricoFuncao historicoFuncao = new HistoricoFuncao();
+		historicoFuncao.setData(DateUtil.criarAnoMesDia(2005, 4, 19));
+		historicoFuncao.setFuncaoNome("funcaoNome");
+		historicoFuncao.setFuncao(funcao);
+		funcao.setHistoricoFuncaos(Arrays.asList(historicoFuncao));
 		
 		Cargo cargo = CargoFactory.getEntity(1L);
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
@@ -325,10 +332,6 @@ public class PppRelatorioManagerTest
 		HistoricoAmbiente historicoAmbiente = new HistoricoAmbiente();
 		historicoAmbiente.setData(DateUtil.criarAnoMesDia(2009, 4, 19));
 		historicoAmbiente.setAmbiente(ambiente2);
-		
-		HistoricoFuncao historicoFuncao = new HistoricoFuncao();
-		historicoFuncao.setData(DateUtil.criarAnoMesDia(2005, 4, 19));
-		historicoFuncao.setFuncao(funcao);
 		
 		HistoricoColaborador historicoColaboradorComHistoricoAmbienteSemMedicao = HistoricoColaboradorFactory.getEntity(15L);
 		historicoColaboradorComHistoricoAmbienteSemMedicao.setData(DateUtil.criarAnoMesDia(2009, 4, 20));

@@ -1,5 +1,6 @@
 package com.fortes.rh.web.action.sesmt;
 
+import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.business.sesmt.HistoricoFuncaoManager;
 import com.fortes.rh.business.sesmt.RiscoFuncaoManager;
 import com.fortes.rh.model.cargosalario.Cargo;
@@ -13,6 +14,7 @@ public class HistoricoFuncaoListAction extends MyActionSupportList
 {
 	private HistoricoFuncaoManager historicoFuncaoManager;
 	private RiscoFuncaoManager riscoFuncaoManager;
+	private FuncaoManager funcaoManager;
 
 	private HistoricoFuncao historicoFuncao;
 	private Funcao funcao;
@@ -26,6 +28,7 @@ public class HistoricoFuncaoListAction extends MyActionSupportList
 	{
 		riscoFuncaoManager.removeByHistoricoFuncao(historicoFuncao.getId());
 		historicoFuncaoManager.remove(new Long[]{historicoFuncao.getId()});
+		funcaoManager.atualizaNomeUltimoHistorico(funcao.getId());
 
 		return Action.SUCCESS;
 	}
@@ -69,4 +72,7 @@ public class HistoricoFuncaoListAction extends MyActionSupportList
 		this.riscoFuncaoManager = riscoFuncaoManager;
 	}
 
+	public void setFuncaoManager(FuncaoManager funcaoManager) {
+		this.funcaoManager = funcaoManager;
+	}
 }

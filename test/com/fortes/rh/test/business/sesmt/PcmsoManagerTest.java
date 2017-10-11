@@ -1,5 +1,6 @@
 package com.fortes.rh.test.business.sesmt;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -178,7 +179,7 @@ public class PcmsoManagerTest extends MockObjectTestCase
 		assertNotNull(excep);
     }
     
-    public void testMontaAgendaVazia() throws ColecaoVaziaException
+    public void testMontaAgendaVazia() throws ColecaoVaziaException, ParseException
     {
     	Exception excep = null;
     	Collection<Agenda> agendas = new ArrayList<Agenda>();
@@ -211,7 +212,7 @@ public class PcmsoManagerTest extends MockObjectTestCase
     	}
     	
     	assertNull(excep);
-    	assertEquals(3, pcmso.getAgendas().size());
+    	assertEquals(1, pcmso.getAgendas().size());
     }
     
     public void testMontaColaboradoresPorSetor() throws Exception

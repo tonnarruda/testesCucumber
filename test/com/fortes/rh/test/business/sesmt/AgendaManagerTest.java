@@ -6,7 +6,6 @@ import java.util.Date;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
-import org.springframework.transaction.PlatformTransactionManager;
 
 import com.fortes.rh.business.sesmt.AgendaManagerImpl;
 import com.fortes.rh.dao.sesmt.AgendaDao;
@@ -21,16 +20,12 @@ public class AgendaManagerTest extends MockObjectTestCase
 {
 	private AgendaManagerImpl agendaManager = new AgendaManagerImpl();
 	private Mock agendaDao;
-	private Mock transactionManager;
 	
 	protected void setUp() throws Exception
     {
         super.setUp();
         agendaDao = new Mock(AgendaDao.class);
         agendaManager.setDao((AgendaDao) agendaDao.proxy());
-        
-        transactionManager = mock(PlatformTransactionManager.class);
-		agendaManager.setTransactionManager((PlatformTransactionManager) transactionManager.proxy());
     }
 
 	public void testFindByPeriodo()

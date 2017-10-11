@@ -28,11 +28,6 @@
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/funcaoEdit.ftl</result>
 		</action>
-		<action name="update" class="com.fortes.rh.web.action.sesmt.FuncaoEditAction" method="update">
-			<interceptor-ref name="defaultUpdateStack" />
-			<result name="success" type="redirect">list.action</result>
-			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/funcaoEdit.ftl</result>
-		</action>
 		<action name="prepareRelatorioQtdPorFuncao" class="com.fortes.rh.web.action.sesmt.FuncaoListAction" method="prepareRelatorioQtdPorFuncao">
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/relatorioQtdPorFuncao.ftl</result>
 		</action>

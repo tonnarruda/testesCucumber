@@ -244,10 +244,10 @@ Funcionalidade: Movimentação Solicitações de Pessoal
 
     Então eu devo ver o título "Candidatos da Seleção"
     E eu clico na linha "Nikita" da imagem "Documentos Anexos"
-    E eu devo ver o título "Documentos do Candidato - Nikita"
+    E eu devo ver o título "Documentos do Candidato: Nikita"
     E eu clico no botão "Inserir"
 
-    Então eu devo ver o título "Novo Documento do Candidato - Nikita"
+    Então eu devo ver o título "Novo Documento do Candidato: Nikita"
     E eu preencho "Descrição" com "Documento"
     E eu preencho "Observação" com "Documento para fazer amor"
     E eu preencho o campo (JS) "data" com "01/10/2013"
@@ -255,7 +255,7 @@ Funcionalidade: Movimentação Solicitações de Pessoal
     E eu clico no botão "Gravar"
     E eu devo ver o alert "Preencha os campos indicados" e clico no ok
     E eu clico no botão "Cancelar"
-    E eu devo ver o título "Documentos do Candidato - Nikita"
+    E eu devo ver o título "Documentos do Candidato: Nikita"
     E eu clico no botão "Cancelar"
     E eu devo ver o título "Candidatos da Seleção"
 

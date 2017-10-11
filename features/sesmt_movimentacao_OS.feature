@@ -3,8 +3,8 @@
 Funcionalidade: CATs (Acidentes de Trabalho)
 
   Cenário: Cadastro de CATs
+    Dado que exista uma funcao "desenvolver"
     Dado que exista um colaborador "Geraldo", da area "administracao", com o cargo "desenvolvedor" e a faixa salarial "I"
-    Dado que exista uma funcao "desenvolver" no cargo "desenvolvedor"
     Dado que exista um novo historico para o colaborador "Geraldo", na area "administracao", na faixa salarial "I", na funcao "desenvolver"
 
     Dado que eu esteja logado com o usuário "SOS"
@@ -37,7 +37,8 @@ Funcionalidade: CATs (Acidentes de Trabalho)
     E eu preencho o campo (JS) "dataOS" com "01/08/2016"
     E eu saio do campo "dataOS"
     E eu espero 2 segundo
-    E eu preencho o campo (JS) "codigoCBOOS" com "808090"
+    E eu preencho o campo (JS) "codigoCBOCargoOS" com "808090"
+    E eu preencho o campo (JS) "codigoCBOFuncaoOS" com "808090"
     E eu preencho o campo (JS) "atividadesOS" com "ATIVIDADES DESENVOLVIDAS"
     E eu preencho o campo (JS) "riscosOS" com "RISCO DA OPERAÇÃO"
     E eu preencho o campo (JS) "episOS" com "EQUIPAMENTOS DE PROTEÇAO INDIVIDUAL"

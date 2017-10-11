@@ -3,7 +3,15 @@
 	<Versao id="1.1.18x.21x" db="" data="xx/xx/2017">
 		<Item visivel="S" motivo="S17070000106"><![CDATA[R&S > Cadastros > Motivo de Solicitação de Pessoal > Inserir/Editar: Novo campo que possibilita alertar sobre a quantidade limite de colaboradores ativos por cargo ao inserir/editar uma solicitação de pessoal.]]></Item>
 		<Item visivel="S" motivo="S17030000004"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Documentos da Solicitação de Pessoal: Nova funcionalidade para anexar documentos.]]></Item>
+		<Item visivel="S" motivo="S17060000306"><![CDATA[SESMT > Cadastros > Funções: Remoção do vínculo com cargo.(Adequação ao eSocial)]]></Item>
+		<Item visivel="S" motivo="S17060000306"><![CDATA[SESMT > Cadastros > Funções: Mudança do campo 'nome' para dentro do cadastro do histórico da função.(Adequação ao eSocial)]]></Item>
+		<Item visivel="S" motivo="S17060000306"><![CDATA[SESMT > Cadastros > Funções > Históricos da Função: Novo campo para inserir código CBO.(Adequação ao eSocial)]]></Item>
+		<Item visivel="S" motivo="S17060000306"><![CDATA[SESMT > Movimentações > Solicitações/Atendimentos Médicos > Imprimir ASO: O nome da função apresentado no relatório faz referência ao histórico da função anterior a data preenchida na tela.(Adequação ao eSocial)]]></Item>
+		<Item visivel="S" motivo="S17060000306"><![CDATA[SESMT > Movimentações > Gerenciamento de Ordem de Serviço: O nome da função apresentado faz referência ao histórico da função anterior a data preenchida na tela.(Adequação ao eSocial)]]></Item>
+		<Item visivel="S" motivo="S17060000306"><![CDATA[SESMT > Relatórios > PPRA e LTCAT: Os nomes das funções apresentados no relatório faz referência ao histórico da função anterior a data preenchida na tela.(Adequação ao eSocial)]]></Item>
+		<Item visivel="S" motivo="S17060000306"><![CDATA[SESMT > Relatórios > PPP: O nome da função apresentado no relatório faz referência ao histórico da função anterior a data preenchida na tela.(Adequação ao eSocial)]]></Item>
 		<Item visivel="S" motivo="S17090000301"><![CDATA[SESMT > Relatórios > EPI > Ficha de EPI: Possibilidade de selecionar várias solicitações de EPI por colaborador para gerar uma ficha de EPI.]]></Item>
+		<Item visivel="S" motivo="S17060000306"><![CDATA[SESMT > Relatórios > PCMSO: Os nomes das funções apresentados no relatório faz referência ao histórico da função anterior a data preenchida na tela.(Adequação ao eSocial)]]></Item>
 	</Versao>
 	<Versao id="1.1.184.216" db="" data="02/10/2017">
 		<Item visivel="N" motivo="P17080000225"><![CDATA[R&S > Cadastros > Candidatos: Script para remover candidatos com nome contendo somente o caractere ".".]]></Item>

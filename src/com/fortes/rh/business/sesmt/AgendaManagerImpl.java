@@ -3,8 +3,6 @@ package com.fortes.rh.business.sesmt;
 import java.util.Collection;
 import java.util.Date;
 
-import org.springframework.transaction.PlatformTransactionManager;
-
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.AgendaDao;
 import com.fortes.rh.model.geral.Estabelecimento;
@@ -14,8 +12,6 @@ import com.fortes.rh.util.DateUtil;
 
 public class AgendaManagerImpl extends GenericManagerImpl<Agenda, AgendaDao> implements AgendaManager
 {
-	private PlatformTransactionManager transactionManager;
-
 	public Collection<Agenda> findByPeriodo(Date dataIni, Date dataFim, Long empresaId, Estabelecimento estabelecimento)
 	{
 		return getDao().findByPeriodo(dataIni, dataFim, empresaId, estabelecimento);
@@ -60,11 +56,6 @@ public class AgendaManagerImpl extends GenericManagerImpl<Agenda, AgendaDao> imp
 	public Collection<Agenda> findByPeriodoEvento(Date dataIni, Date dataFim, Estabelecimento estabelecimento, Evento evento)
 	{
 		return getDao().findByPeriodoEvento(dataIni, dataFim, estabelecimento, evento);
-	}
-
-	public void setTransactionManager(PlatformTransactionManager transactionManager)
-	{
-		this.transactionManager = transactionManager;
 	}
 
 	public void deleteByEstabelecimento(Long[] estabelecimentoIds) throws Exception {

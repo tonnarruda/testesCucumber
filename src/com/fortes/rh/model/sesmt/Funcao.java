@@ -32,9 +32,6 @@ public class Funcao extends AbstractModel implements Serializable
 	@ManyToOne
 	private Empresa empresa;
 	
-	@Column(length=6)
-	private String codigoCbo;
-	
 	@Transient
 	private HistoricoFuncao historicoAtual;
 	
@@ -65,6 +62,12 @@ public class Funcao extends AbstractModel implements Serializable
 	{
 		setId(id);
 		this.nome = nome;
+	}
+	
+	public Funcao(String nome, Long empresaId) 
+	{
+		this.nome = nome;
+		setEmpresaId(empresaId);
 	}
 
 	@ChaveDaAuditoria
@@ -146,11 +149,10 @@ public class Funcao extends AbstractModel implements Serializable
 		this.empresa.setId(empresaId);
 	}
 
-	public String getCodigoCbo() {
-		return codigoCbo;
-	}
-
-	public void setCodigoCbo(String codigoCbo) {
-		this.codigoCbo = codigoCbo;
+	public void setHistoricoFuncaoCodigoCbo(String historicoFuncaoCodigoCbo) {
+		if(this.historicoAtual == null)
+			this.historicoAtual = new HistoricoFuncao();
+		
+		this.historicoAtual.setCodigoCbo(historicoFuncaoCodigoCbo);
 	}
 }

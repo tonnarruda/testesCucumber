@@ -15,18 +15,26 @@
 	<#assign accessKey="I"/>
 </#if>
 
-<#if historicoFuncao.data?exists>
-		<#assign data = historicoFuncao.data?date>
-	<#else>
-		<#assign data = "">
-</#if>
-	<#include "../ftl/mascarasImports.ftl" />
-
+<#include "../ftl/mascarasImports.ftl" />
 <#assign validarCampos="return validaFormulario('form', new Array('dataHist','descricao'), new Array('dataHist'))"/>
 
 <style type="text/css">
 	@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
+	@import url('<@ww.url includeParams="none" value="/css/fortes.css?version=${versao}"/>');
+	@import url('<@ww.url includeParams="none" value="/css/cssYui/fonts-min.css"/>');
+	    
+    #wwgrp_descricaoCBO
+    {
+		float: left;
+    	background-color: #E9E9E9;
+		width: 420px;
+		padding-left: 4px;
+	}
 </style>
+
+<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/autoCompleteFortes.js?version=${versao}"/>'></script>
+<script src='<@ww.url includeParams="none" value="/js/fortes.js?version=${versao}"/>'></script>
+<script src='<@ww.url includeParams="none" value="/js/functions.js?version=${versao}"/>'></script>
 
 <script type="text/javascript">
 	$(function() {
@@ -48,21 +56,7 @@
 		$('.tooltipHelp').qtip({
 			content: 'Os dados informados neste campo serão utilizados no cadastro da Ordem de Serviço.'
 		});
-		
-		$('#md').click(function() {
-			var checked = $(this).attr('checked');
-			$('input[name="riscoChecks"]').each(function() { $(this).attr('checked', checked); habilitarDesabilitarCamposLinha(this); });
-		});
-		
-		$('input[name="riscoChecks"]').click(function() {
-			habilitarDesabilitarCamposLinha(this);
-		});
 	});
-	
-	function habilitarDesabilitarCamposLinha(campoRisco)
-	{
-		$(campoRisco).parent().parent().find('input, select, textarea').not(campoRisco).attr('disabled', !campoRisco.checked);
-	}
 </script>
 
 </head>

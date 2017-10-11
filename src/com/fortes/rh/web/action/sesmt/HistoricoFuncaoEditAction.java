@@ -4,8 +4,10 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import com.fortes.rh.business.desenvolvimento.CursoManager;
+import com.fortes.rh.business.geral.CodigoCBOManager;
 import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.business.sesmt.ExameManager;
+import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.business.sesmt.HistoricoFuncaoManager;
 import com.fortes.rh.business.sesmt.RiscoManager;
 import com.fortes.rh.exception.FortesException;
@@ -23,10 +25,12 @@ import com.opensymphony.xwork.Action;
 public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 {
 	private HistoricoFuncaoManager historicoFuncaoManager;
+	private FuncaoManager funcaoManager;
 	private ExameManager exameManager;
 	private EpiManager epiManager;
 	private RiscoManager riscoManager;
 	private CursoManager cursoManager;
+	private CodigoCBOManager codigoCBOManager;
 
 	private HistoricoFuncao historicoFuncao = new HistoricoFuncao();
 	private Funcao funcao;
@@ -41,6 +45,7 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 
 	private Collection<Risco> riscos;
 	private Collection<RiscoFuncao> riscosFuncoes;
+	private String descricaoCBO;
 	
 	public String execute() throws Exception
 	{
@@ -55,6 +60,7 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 		{
 			historicoFuncao = historicoFuncaoManager.findById(historicoFuncao.getId());
 			epiAtivo = null;
+			descricaoCBO = codigoCBOManager.findDescricaoByCodigo(historicoFuncao.getCodigoCbo());
 		}
 
 		Collection<Exame> exames = exameManager.findByEmpresaComAsoPadrao(getEmpresaSistema().getId());
@@ -67,7 +73,13 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 	public String prepareInsert() throws Exception
 	{
 		prepare();
-
+		
+		if(funcao != null){
+			historicoFuncao.setFuncaoNome(funcao.getNome());
+			historicoFuncao.setCodigoCbo(historicoFuncaoManager.findUltimoHistoricoAteData(funcao.getId(), null).getCodigoCbo());
+			descricaoCBO = codigoCBOManager.findDescricaoByCodigo(historicoFuncao.getCodigoCbo());
+		}
+		
 		return Action.SUCCESS;
 	}
 
@@ -77,6 +89,7 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 		examesCheckList = CheckListBoxUtil.marcaCheckListBox(examesCheckList, historicoFuncao.getExames(), "getId");
 		episCheckList = CheckListBoxUtil.marcaCheckListBox(episCheckList, historicoFuncao.getEpis(), "getId");
 		cursosCheckList = CheckListBoxUtil.marcaCheckListBox(cursosCheckList, historicoFuncao.getCursos(), "getId");
+		
 		return Action.SUCCESS;
 	}
 
@@ -85,7 +98,7 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 		try {
 			historicoFuncao.setFuncao(funcao);
 			historicoFuncaoManager.saveHistorico(historicoFuncao, examesChecked, episChecked, riscoChecks, cursosChecked, riscosFuncoes);
-	
+			funcaoManager.atualizaNomeUltimoHistorico(funcao.getId());
 			return Action.SUCCESS;
 		
 		} catch (FortesException e) {
@@ -104,7 +117,7 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 	{
 		try {
 			historicoFuncaoManager.saveHistorico(historicoFuncao, examesChecked, episChecked, riscoChecks, cursosChecked, riscosFuncoes);
-	
+			funcaoManager.atualizaNomeUltimoHistorico(funcao.getId());
 			return Action.SUCCESS;
 
 		} catch (FortesException e) {
@@ -225,5 +238,21 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 
 	public void setCursoManager(CursoManager cursoManager) {
 		this.cursoManager = cursoManager;
+	}
+
+	public String getDescricaoCBO() {
+		return descricaoCBO;
+	}
+
+	public void setDescricaoCBO(String descricaoCBO) {
+		this.descricaoCBO = descricaoCBO;
+	}
+
+	public void setCodigoCBOManager(CodigoCBOManager codigoCBOManager) {
+		this.codigoCBOManager = codigoCBOManager;
+	}
+
+	public void setFuncaoManager(FuncaoManager funcaoManager) {
+		this.funcaoManager = funcaoManager;
 	}
 }

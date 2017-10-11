@@ -108,8 +108,10 @@ public class HistoricoFuncaoDaoHibernate extends GenericDaoHibernate<HistoricoFu
 	{
 		DetachedCriteria subQuery = DetachedCriteria.forClass(HistoricoFuncao.class, "hf2")
 				.setProjection(Projections.max("hf2.data"))
-				.add(Restrictions.le("hf2.data", data))
 				.add(Restrictions.eqProperty("hf2.funcao.id", "f.id"));
+		
+		if(data != null)
+			subQuery.add(Restrictions.le("hf2.data", data));
 		
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "hf");
 		criteria.createCriteria("hf.funcao", "f", Criteria.INNER_JOIN);
@@ -117,6 +119,7 @@ public class HistoricoFuncaoDaoHibernate extends GenericDaoHibernate<HistoricoFu
 		
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("f.id"), "funcaoId");
+		p.add(Projections.property("hf.codigoCbo"), "codigoCbo");
 		p.add(Projections.property("rf.id"), "ricoFuncaoId");
 		criteria.setProjection(p);
 		
@@ -135,7 +138,7 @@ public class HistoricoFuncaoDaoHibernate extends GenericDaoHibernate<HistoricoFu
 		if(funcaoIds == null || funcaoIds.isEmpty())
 			return null;
 		
-		StringBuilder hql = new StringBuilder("select new HistoricoFuncao(f.id, f.nome, e.id, e.nome) ");
+		StringBuilder hql = new StringBuilder("select new HistoricoFuncao(f.id, hf.funcaoNome, e.id, e.nome) ");
 		hql.append("from HistoricoFuncao hf ");
 		hql.append("left join hf.funcao f ");
 		hql.append("left join hf.epis e ");
@@ -258,6 +261,7 @@ public class HistoricoFuncaoDaoHibernate extends GenericDaoHibernate<HistoricoFu
 		
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("id"), "id");
+		p.add(Projections.property("funcaoNome"), "funcaoNome");
 		p.add(Projections.property("descricao"), "descricao");
 		p.add(Projections.property("normasInternas"), "normasInternas");
 		criteria.setProjection(p);

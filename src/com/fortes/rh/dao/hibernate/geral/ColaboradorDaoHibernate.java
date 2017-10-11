@@ -5401,6 +5401,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	
 	public Colaborador findComDadosBasicosParaOrdemDeServico(Long colaboradorId, Date dataOrdemDeServico){
 		DetachedCriteria subQueryHc = montaSubQueryHistoricoColaborador(dataOrdemDeServico, StatusRetornoAC.CONFIRMADO);
+		DetachedCriteria subQueryHistFuncao = montaSubQueryHistoricoFuncao(dataOrdemDeServico);
 
 		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
 		criteria.createCriteria("hc.colaborador", "c", Criteria.INNER_JOIN);
@@ -5412,12 +5413,21 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		criteria.createCriteria("hc.funcao", "f", Criteria.LEFT_JOIN);
 		criteria.createCriteria("f.historicoFuncaos", "hf", Criteria.LEFT_JOIN);
 		
-		criteria.add(Property.forName("hc.data").eq(subQueryHc));	
+		criteria.add(Property.forName("hc.data").eq(subQueryHc));
+		criteria.add(Expression.or(Property.forName("hf.data").eq(subQueryHistFuncao), Expression.isNull("hf.data")));
 		criteria.add(Expression.eq("c.id", colaboradorId));
 		
 		criteria.setProjection(Projections.distinct(montaProjectionOrdemDeServico()));
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
 		return (Colaborador) criteria.uniqueResult();
+	}
+	
+	private DetachedCriteria montaSubQueryHistoricoFuncao(Date data)
+	{
+		return DetachedCriteria.forClass(HistoricoFuncao.class, "hf2")
+				.setProjection(Projections.max("hf2.data"))
+				.add(Restrictions.eqProperty("hf2.funcao.id", "f.id"))
+				.add(Restrictions.le("hf2.data", data));
 	}
 
 	private ProjectionList montaProjectionOrdemDeServico() {
@@ -5427,9 +5437,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("c.dataAdmissao"), "dataAdmissao");
 		p.add(Projections.property("c.desligado"), "desligado");
 		p.add(Projections.property("c.dataDesligamento"), "dataDesligamento");
-		p.add(Projections.property("f.nome"), "funcaoNome");
-		p.add(Projections.property("f.codigoCbo"), "funcaoCodigoCbo");
 		p.add(Projections.property("f.id"), "funcaoId");
+		p.add(Projections.property("hf.funcaoNome"), "funcaoNome");
+		p.add(Projections.property("hf.codigoCbo"), "historicoFuncaoCodigoCbo");
 		p.add(Projections.property("fs.codigoCbo"), "faixaSalarialCodigoCbo");
 		p.add(Projections.property("ca.nome"), "cargoNomeProjection");
 		p.add(Projections.property("est.nome"), "estabelecimentoNomeProjection");

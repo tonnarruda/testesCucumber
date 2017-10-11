@@ -18,7 +18,6 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.fortes.rh.business.desenvolvimento.CursoManager;
-import com.fortes.rh.business.geral.CodigoCBOManager;
 import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.business.sesmt.ExameManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
@@ -48,7 +47,6 @@ public class FuncaoEditActionTest
 	private EpiManager epiManager;
 	private RiscoManager riscoManager;
 	private CursoManager cursoManager;
-	private CodigoCBOManager codigoCBOManager;
 
 	@Before
     public void setUp()
@@ -59,7 +57,6 @@ public class FuncaoEditActionTest
         epiManager = mock(EpiManager.class);
         riscoManager = mock(RiscoManager.class);
         cursoManager = mock(CursoManager.class);
-        codigoCBOManager = mock(CodigoCBOManager.class);
 
         action = new FuncaoEditAction();
         action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
@@ -69,7 +66,6 @@ public class FuncaoEditActionTest
         action.setEpiManager(epiManager);
         action.setRiscoManager(riscoManager);
         action.setCursoManager(cursoManager);
-        action.setCodigoCBOManager(codigoCBOManager);
 
         PowerMockito.mockStatic(SecurityUtil.class);
         PowerMockito.mockStatic(CheckListBoxUtil.class);
@@ -119,7 +115,7 @@ public class FuncaoEditActionTest
     	when(epiManager.populaCheckToEpi(eq(empresa.getId()), eq(true))).thenReturn(new ArrayList<CheckBox>());
     	when(funcaoManager.findByIdProjection(eq(funcaoRetorno.getId()))).thenReturn(funcaoRetorno);
     	when(cursoManager.populaCheckListCurso(eq(action.getEmpresaSistema().getId()))).thenReturn(new ArrayList<CheckBox>());
-    	when(historicoFuncaoManager.findToList(new String[]{"id","descricao","data"}, new String[]{"id","descricao","data"}, new String[]{"funcao.id"}, new Object[]{action.getFuncao().getId()}, new String[]{"data desc"})).thenReturn(historicoFuncaos);
+    	when(historicoFuncaoManager.findToList(new String[]{"id","descricao","data", "codigoCbo", "funcaoNome"}, new String[]{"id","descricao","data", "codigoCbo", "funcaoNome"}, new String[]{"funcao.id"}, new Object[]{funcaoRetorno.getId()}, new String[]{"data desc"})).thenReturn(historicoFuncaos);
 
     	assertEquals(action.prepareUpdate(), "success");
     	assertEquals(action.getFuncao(), funcaoRetorno);
@@ -160,18 +156,6 @@ public class FuncaoEditActionTest
 		action.setRiscosFuncoes(riscosFuncoes);
 
     	assertEquals(action.insert(), "success");
-    }
-
-    @Test
-    public void testUpdate() throws Exception
-    {
-    	Funcao funcaoRetorno = new Funcao();
-    	funcaoRetorno.setId(1L);
-
-    	action.setFuncao(funcaoRetorno);
-
-    	assertEquals(action.update(), "success");
-    	assertEquals(action.getFuncao(), funcaoRetorno);
     }
   
     @Test
