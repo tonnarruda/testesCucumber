@@ -195,7 +195,7 @@
 		<ul>
 			<li>
 				Versão <strong><span id="versaoPortal"></span></strong> disponível. 
-				<a title="Acessar o Portal do Cliente" href="http://www.grupofortes.com.br/portaldocliente" target="_blank">Clique aqui</a> para acessar o Portal do Cliente e realizar o download.
+				<a title="Acessar o Portal do Cliente" href="https://portaldocliente.fortestecnologia.com.br" target="_blank">Clique aqui</a> para acessar o Portal do Cliente e realizar o download.
 			</li>
 		</ul>
 	</div>
