@@ -12,6 +12,7 @@
 		<Item visivel="S" motivo="S17060000306"><![CDATA[SESMT > Relatórios > PPP: O nome da função apresentado no relatório faz referência ao histórico da função anterior a data preenchida na tela.(Adequação ao eSocial)]]></Item>
 		<Item visivel="S" motivo="S17090000301"><![CDATA[SESMT > Relatórios > EPI > Ficha de EPI: Possibilidade de selecionar várias solicitações de EPI por colaborador para gerar uma ficha de EPI.]]></Item>
 		<Item visivel="S" motivo="S17060000306"><![CDATA[SESMT > Relatórios > PCMSO: Os nomes das funções apresentados no relatório faz referência ao histórico da função anterior a data preenchida na tela.(Adequação ao eSocial)]]></Item>
+		<Item visivel="N" motivo="S17090000302"><![CDATA[Importador: Nova validação para checar a compatibilidade do Importador com o FortesRH.]]></Item>
 	</Versao>
 	<Versao id="1.1.184.216" db="" data="02/10/2017">
 		<Item visivel="N" motivo="P17080000225"><![CDATA[R&S > Cadastros > Candidatos: Script para remover candidatos com nome contendo somente o caractere ".".]]></Item>
