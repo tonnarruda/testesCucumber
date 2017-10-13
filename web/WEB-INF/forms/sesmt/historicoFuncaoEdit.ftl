@@ -6,11 +6,11 @@
 <@ww.head/>
 
 <#if historicoFuncao.id?exists>
-	<title>Editar Histórico da Função - ${funcao.nome}</title>
+	<title>Editar Histórico da Função ${funcao.nome}</title>
 	<#assign formAction="update.action"/>
 	<#assign accessKey="A"/>
 <#else>
-	<title>Inserir Histórico da Função - ${funcao.nome}</title>
+	<title>Inserir Histórico da Função ${funcao.nome}</title>
 	<#assign formAction="insert.action"/>
 	<#assign accessKey="I"/>
 </#if>
@@ -22,6 +22,8 @@
 	@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
 	@import url('<@ww.url includeParams="none" value="/css/fortes.css?version=${versao}"/>');
 	@import url('<@ww.url includeParams="none" value="/css/cssYui/fonts-min.css"/>');
+	@import url('<@ww.url value="/css/font-awesome.min.css?version=${versao}"/>');
+	@import url('<@ww.url value="/css/font-awesome_buttons.css"/>');
 	    
     #wwgrp_descricaoCBO
     {
@@ -74,8 +76,8 @@
 	</@ww.form>
 
 	<div class="buttonGroup">
-		<button onclick="${validarCampos};" class="btnGravar"></button>
-		<button onclick="window.location='../funcao/prepareUpdate.action?funcao.id=${funcao.id}'" class="btnCancelar"></button>
+		<button onclick="${validarCampos};">Gravar</button>
+		<button onclick="window.location='../funcao/prepareUpdate.action?funcao.id=${funcao.id}'">Cancelar</button>
 	</div>
 </body>
 </html>

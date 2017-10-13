@@ -82,9 +82,5 @@ Riscos existentes:<br>
 	<@display.column title="Medida de Segurança">
 		<@ww.textarea theme="simple" id="medidaDeSeguranca${riscoFuncao.risco.id}" name="riscosFuncoes[${i}].medidaDeSeguranca" cssStyle="width: 260px;height: 50px;" disabled="true"/>
 	</@display.column>
-
-
-
-	
 	<#assign i = i + 1/>
 </@display.table>

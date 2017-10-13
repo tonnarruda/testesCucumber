@@ -9,6 +9,8 @@
 		@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
 		@import url('<@ww.url includeParams="none" value="/css/fortes.css?version=${versao}"/>');
 	    @import url('<@ww.url includeParams="none" value="/css/cssYui/fonts-min.css"/>');
+	    @import url('<@ww.url value="/css/font-awesome.min.css?version=${versao}"/>');
+		@import url('<@ww.url value="/css/font-awesome_buttons.css"/>');
 	    
 	    #wwgrp_descricaoCBO
 	    {
@@ -57,11 +59,11 @@
 		<br>
 		<@display.table name="historicoFuncaos" id="historicoFuncao" pagesize=10 class="dados">
 			<@display.column title="Ações" class="acao">
-				<a href="../historicoFuncao/prepareUpdate.action?historicoFuncao.id=${historicoFuncao.id}&funcao.id=${funcao.id}&funcao.nome=${funcao.nome}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+				<@frt.link href="../historicoFuncao/prepareUpdate.action?historicoFuncao.id=${historicoFuncao.id}&funcao.id=${funcao.id}&funcao.nome=${funcao.nome}" imgTitle="Editar" iconeClass="fa-edit"/>
 				<#if 1 < historicoFuncaos?size>
-					<a href="javascript:;" onclick="newConfirm('Confirma exclusão?', function(){window.location='../historicoFuncao/delete.action?historicoFuncao.id=${historicoFuncao.id}&funcao.id=${funcao.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+					<@frt.link href="javascript:;" onclick="newConfirm('Confirma exclusão?', function(){window.location='../historicoFuncao/delete.action?historicoFuncao.id=${historicoFuncao.id}&funcao.id=${funcao.id}'});" imgTitle="Excluir" iconeClass="fa-times"/>
 				<#else>
-					<a href="javascript:;"><img border="0" title="Não é possível remover o único histórico da função" src="<@ww.url value="/imgs/delete.gif"/>"  style="opacity:0.2;filter:alpha(opacity=20);"></a>
+					<@frt.link href="javascript:;" imgTitle="Não é possível remover o único histórico da função" iconeClass="fa-times" opacity=true/>
 				</#if>
 			</@display.column>
 			<@display.column property="data" title="Data" format="{0,date,dd/MM/yyyy}" style="text-align: center;width:80px;"/>
@@ -71,13 +73,13 @@
 		</@display.table>
 	
 		<div class="buttonGroup">
-			<button onclick="window.location='../historicoFuncao/prepareInsert.action?funcao.id=${funcao.id}&funcao.nome=${funcao.nome}'" class="btnInserir"></button>
-			<button onclick="window.location='list.action'" class="btnVoltar"></button>
+			<button onclick="window.location='../historicoFuncao/prepareInsert.action?funcao.id=${funcao.id}&funcao.nome=${funcao.nome}'">Inserir</button>
+			<button onclick="window.location='list.action'">Voltar</button>
 		</div>
 	<#else>
 		<div class="buttonGroup">
-			<button onclick="${validarCampos};"  class="btnGravar"></button>
-			<button onclick="window.location='list.action'" class="btnVoltar"></button>
+			<button onclick="${validarCampos};">Gravar</button>
+			<button onclick="window.location='list.action'">Voltar</button>
 		</div>
 	</#if>
 </body>

@@ -5,6 +5,8 @@
 <@ww.head/>
 <style type="text/css">
 	@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
+	@import url('<@ww.url value="/css/font-awesome.min.css?version=${versao}"/>');
+	@import url('<@ww.url value="/css/font-awesome_buttons.css"/>');
 </style>
 	<#include "../ftl/showFilterImports.ftl" />
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
@@ -29,15 +31,17 @@
 			
 			<@ww.hidden id="pagina" name="page"/>
 			<@ww.hidden id="showFilter" name="showFilter"/>
-			<input type="submit" value="" class="btnPesquisar grayBGE" onclick="pesquisar();">
+			
+			<button type="submit" value="" onclick="pesquisar();">Pesquisar</button>
+		
 		</@ww.form>
 	<#include "../util/bottomFiltro.ftl" />
 	<br>
 	
 	<@display.table name="funcaos" id="funcao" class="dados" sort="list">
 		<@display.column title="Ações" class="acao">
-			<a href="prepareUpdate.action?funcao.id=${funcao.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
-			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?funcao.id=${funcao.id}&page=${page}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+			<@frt.link href="prepareUpdate.action?funcao.id=${funcao.id}" imgTitle="Editar" iconeClass="fa-edit"/>
+			<@frt.link href="javascript:;" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?funcao.id=${funcao.id}&page=${page}'});" imgTitle="Excluir" iconeClass="fa-times"/>
 		</@display.column>
 		<@display.column property="nome" title="Nome"/>
 	</@display.table>
@@ -46,10 +50,7 @@
 	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="list.action?" page='${page}'/>
 
 	<div class="buttonGroup">
-		<button class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="I">
-		</button>
-		<button onclick="window.location='../../cargosalario/cargo/list.action'" class="btnVoltar" accesskey="V">
-		</button>
+		<button onclick="window.location='prepareInsert.action'" accesskey="I">Inserir</button>
 	</div>
 </body>
 </html>
