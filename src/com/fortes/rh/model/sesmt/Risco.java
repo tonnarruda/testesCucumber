@@ -13,6 +13,7 @@ import javax.persistence.SequenceGenerator;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.dicionario.GrupoRisco;
+import com.fortes.rh.model.dicionario.GrupoRiscoESocial;
 import com.fortes.rh.model.geral.Empresa;
 
 @SuppressWarnings("serial")
@@ -26,6 +27,9 @@ public class Risco extends AbstractModel implements Serializable
 	@Column(length=5)
 	private String grupoRisco;
 	
+	@Column(length=5)
+	private String grupoRiscoESocial;
+	
 	@ManyToMany(fetch=FetchType.LAZY)
 	private Collection<Epi> epis;
 	
@@ -34,6 +38,9 @@ public class Risco extends AbstractModel implements Serializable
 	
 	@OneToMany(mappedBy="risco")
 	private Collection<RiscoMedicaoRisco> riscoMedicaoRiscos;
+	
+	@ManyToOne
+	private FatorDeRisco fatorDeRisco;
 	
 	public Risco() {	}
 	
@@ -59,6 +66,12 @@ public class Risco extends AbstractModel implements Serializable
 	{
 		return (String) GrupoRisco.getInstance().get(grupoRisco);
 	}
+	
+	public String getDescricaoGrupoRiscoESocial()
+	{
+		return (String) GrupoRiscoESocial.getInstance().get(grupoRiscoESocial);
+	}
+	
 	public Collection<Epi> getEpis()
 	{
 		return epis;
@@ -111,5 +124,36 @@ public class Risco extends AbstractModel implements Serializable
 	public void setRiscoMedicaoRiscos(
 			Collection<RiscoMedicaoRisco> riscoMedicaoRiscos) {
 		this.riscoMedicaoRiscos = riscoMedicaoRiscos;
+	}
+
+	public String getGrupoRiscoESocial() {
+		return grupoRiscoESocial;
+	}
+
+	public void setGrupoRiscoESocial(String grupoRiscoESocial) {
+		this.grupoRiscoESocial = grupoRiscoESocial;
+	}
+
+	public FatorDeRisco getFatorDeRisco() {
+		return fatorDeRisco;
+	}
+
+	public void setFatorDeRisco(FatorDeRisco fatorDeRisco) {
+		this.fatorDeRisco = fatorDeRisco;
+	}
+	
+	public void setFatorDeRiscoCodigo(String fatorDeRiscoCodigo){
+		inicializaFatorDeRisco();
+		this.fatorDeRisco.setCodigo(fatorDeRiscoCodigo);
+	}
+	
+	public void setFatorDeRiscoDescricao(String fatorDeRiscoDescricao){
+		inicializaFatorDeRisco();
+		this.fatorDeRisco.setDescricao(fatorDeRiscoDescricao);
+	}
+	
+	private void inicializaFatorDeRisco(){
+		if(this.fatorDeRisco == null)
+			this.fatorDeRisco = new FatorDeRisco();
 	}
 }

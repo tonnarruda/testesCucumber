@@ -1,5 +1,14 @@
 package com.fortes.rh.test.business.sesmt;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -7,8 +16,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.hibernate.ObjectNotFoundException;
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
+import org.junit.Before;
+import org.junit.Test;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
 import com.fortes.rh.business.sesmt.RiscoManagerImpl;
@@ -17,36 +26,33 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.sesmt.EpiFactory;
+import com.fortes.rh.test.factory.sesmt.RiscoFactory;
 
-public class RiscoManagerTest extends MockObjectTestCase
+public class RiscoManagerTest 
 {
 	private RiscoManagerImpl riscoManager = new RiscoManagerImpl();
-	private Mock riscoDao = null;
+	private RiscoDao riscoDao = null;
 
-    protected void setUp() throws Exception
+	@Before
+    public void setUp() throws Exception
     {
-        super.setUp();
-        riscoDao = new Mock(RiscoDao.class);
-        riscoManager.setDao((RiscoDao) riscoDao.proxy());
+        riscoDao = mock(RiscoDao.class);
+        riscoManager.setDao(riscoDao);
     }
 
+	@Test
 	public void testFindEpisByRisco()throws Exception
 	{
+		Empresa empresa = EmpresaFactory.getEmpresa(2L);
+		Epi f1 = EpiFactory.getEntity(1L, "nome1", empresa);
+		Epi f2 = EpiFactory.getEntity(2L, "nome2", empresa);
+
 		Collection<Epi> epis = new ArrayList<Epi>();
-
-		Epi f1 = new Epi();
-		f1.setId(1L);
-		f1.setNome("nome1");
-
-		Epi f2 = new Epi();
-		f2.setId(2L);
-		f1.setNome("nome2");
-
 		epis.add(f1);
 		epis.add(f2);
 
-		Risco risco = new Risco();
-		risco.setId(1L);
+		Risco risco = RiscoFactory.getEntity(1L);
 
 		List<Object> lista = new ArrayList<Object>();
 		Object[] ob1 = new Object[]{1L,"nome1"};
@@ -55,29 +61,22 @@ public class RiscoManagerTest extends MockObjectTestCase
 		lista.add(ob1);
 		lista.add(ob2);
 
-		riscoDao.expects(once()).method("findEpisByRisco").with(eq(risco.getId())).will(returnValue(lista));
+		when(riscoDao.findEpisByRisco(eq(risco.getId()))).thenReturn(lista);
 		Collection<Epi> episTmps = riscoManager.findEpisByRisco(risco.getId());
-
 		assertEquals(episTmps, epis);
 	}
 	
+	@Test
 	public void testSincronizar()throws Exception
 	{
-		Empresa empresaOrigem = EmpresaFactory.getEmpresa();
-		empresaOrigem.setId(1L);
-		Empresa empresaDestino = EmpresaFactory.getEmpresa();
-		empresaDestino.setId(2L);
+		Empresa empresaOrigem = EmpresaFactory.getEmpresa(1L);
+		Empresa empresaDestino = EmpresaFactory.getEmpresa(2L);
 		
+		Epi epi1 = EpiFactory.getEntity(1L, "Epi1");
+		Epi epi2 = EpiFactory.getEntity(2L, "Epi2");
+
 		Collection<Epi> epis = new ArrayList<Epi>();
-		
-		Epi epi1 = new Epi();
-		epi1.setId(1L);
-		epi1.setNome("Epi1");
 		epis.add(epi1);
-		
-		Epi epi2 = new Epi();
-		epi2.setId(2L);
-		epi1.setNome("Epi2");
 		epis.add(epi2);
 		
 		Risco risco = new Risco();
@@ -93,8 +92,7 @@ public class RiscoManagerTest extends MockObjectTestCase
 		Collection<Risco> riscos = new ArrayList<Risco>();
 		riscos.add(risco);
 		
-		riscoDao.expects(once()).method("findAllSelect").with(eq(empresaOrigem.getId())).will(returnValue(riscos));
-		riscoDao.expects(once()).method("save").isVoid();
+		when(riscoDao.findAllSelect(eq(empresaOrigem.getId()))).thenReturn(riscos);
 
 		Exception exception = null;
 		try {
@@ -105,9 +103,35 @@ public class RiscoManagerTest extends MockObjectTestCase
 		assertNull(exception);
 	}
 	
-	public void testFindEpisByRiscoException()throws Exception
+	@Test
+	public void testFindEpisByRiscoException()
 	{
-		riscoDao.expects(once()).method("findEpisByRisco").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
-		riscoManager.findEpisByRisco(1L);
+		Long riscoId = 1L;
+		doThrow(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))).when(riscoDao).findEpisByRisco(riscoId);
+		assertEquals(0,riscoManager.findEpisByRisco(1L).size());
+	}
+	
+	@Test
+	public void testListRiscos(){
+		int page = 0;
+		int pagingSize = 0;
+		Risco risco = RiscoFactory.getEntity(1L);
+		
+		when(riscoDao.listRiscos(page, pagingSize, risco)).thenReturn(new ArrayList<Risco>());
+		
+		Collection<Risco> riscos = riscoManager.listRiscos(page, pagingSize, risco);
+		verify(riscoDao, times(1)).listRiscos(page, pagingSize, risco);
+		assertEquals(0, riscos.size());
+	}
+	
+	@Test
+	public void testGetCount()
+	{
+		Risco risco = RiscoFactory.getEntity();
+		when(riscoDao.getCount(risco)).thenReturn(10);
+		
+		Integer total = riscoManager.getCount(risco);
+		verify(riscoDao).getCount(risco);
+		assertEquals(new Integer(10), total);
 	}
 }

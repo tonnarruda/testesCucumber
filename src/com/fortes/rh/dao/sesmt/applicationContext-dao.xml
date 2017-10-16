@@ -529,6 +529,14 @@
       <ref bean="ordemDeServicoDaoTarget" />
     </property>
   </bean>
+  <bean id="fatorDeRiscoDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.dao.sesmt.FatorDeRiscoDao</value>
+    </property>
+    <property name="target">
+      <ref bean="fatorDeRiscoDaoTarget" />
+    </property>
+  </bean>
 </beans>
 
 

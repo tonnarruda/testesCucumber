@@ -11,7 +11,6 @@ public class GrupoRisco extends LinkedHashMap<String, String>
 	public static final String BIOLOGICO = "03";
 	public static final String ERGONOMICO = "04";
 	public static final String ACIDENTE = "05";
-	//public static final String OCUPACIONAL = "06";
 	
 	private static GrupoRisco instance;
 	

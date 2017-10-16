@@ -16,4 +16,6 @@ public interface RiscoManager extends GenericManager<Risco>
 	Collection<RiscoFuncao> findRiscosFuncoesByEmpresa(Long empresaId);
 	Collection<RiscoAmbiente> findRiscosAmbientesByEmpresa(Long empresaId);
 	void sincronizar(Long empresaOrigemId, Long empresaDestinoId, Map<Long,Long> epiIds);
+	Collection<Risco> listRiscos(int page, int pagingSize, Risco risco);
+	Integer getCount(Risco risco);
 }

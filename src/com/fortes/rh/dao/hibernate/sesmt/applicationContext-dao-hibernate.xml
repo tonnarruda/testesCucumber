@@ -345,6 +345,11 @@
       <ref bean="sessionFactory" />
     </property>
   </bean>
+  <bean id="fatorDeRiscoDaoTarget" class="com.fortes.rh.dao.hibernate.sesmt.FatorDeRiscoDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
 </beans>
 
 

@@ -1198,4 +1198,17 @@
       <ref bean="pppRelatorioManagerTarget" />
     </property>
   </bean>
+  <bean id="fatorDeRiscoManagerTarget" class="com.fortes.rh.business.sesmt.FatorDeRiscoManagerImpl">
+    <property name="dao">
+      <ref bean="fatorDeRiscoDao" />
+    </property>
+  </bean>
+  <bean id="fatorDeRiscoManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.sesmt.FatorDeRiscoManager</value>
+    </property>
+    <property name="target">
+      <ref bean="fatorDeRiscoManagerTarget" />
+    </property>
+  </bean>
 </beans>

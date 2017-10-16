@@ -10,6 +10,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.business.sesmt.RiscoManager;
 import com.fortes.rh.model.dicionario.GrupoRisco;
+import com.fortes.rh.model.dicionario.GrupoRiscoESocial;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -27,8 +28,9 @@ public class RiscoEditAction extends MyActionSupportList
 	private Collection<CheckBox> episCheckList = new ArrayList<CheckBox>();
 
 	private String[] episCheck;
-	private Risco risco;
+	private Risco risco = new Risco();
 	private Map<String, String> grupoRiscos;
+	private Map<String, String> grupoRiscosESocial;
 	
 	private Collection<Risco> riscos;
 
@@ -39,6 +41,7 @@ public class RiscoEditAction extends MyActionSupportList
 			risco = riscoManager.findById(risco.getId());
 
 		grupoRiscos = GrupoRisco.getInstance();
+		grupoRiscosESocial = GrupoRiscoESocial.getInstance();
 	}
 
 	public String prepareInsert() throws Exception
@@ -52,7 +55,6 @@ public class RiscoEditAction extends MyActionSupportList
 	public String prepareUpdate() throws Exception
 	{
 		prepare();
-
 		if(getRisco().getEmpresa() == null || risco.getEmpresa().getId() == null || !risco.getEmpresa().getId().equals(getEmpresaSistema().getId()))
 		{
 			addErro("O risco solicitado não existe na empresa " + getEmpresaSistema().getNome() +".");
@@ -111,12 +113,10 @@ public class RiscoEditAction extends MyActionSupportList
 	
 	public String list() throws Exception
 	{
-		String[] keys = new String[]{"empresa"};
-		Object[] values = new Object[]{getEmpresaSistema()};
-		String[] orders = new String[]{"descricao"};
-
-		setTotalSize(riscoManager.getCount(keys, values));
-		riscos = riscoManager.find(getPage(), getPagingSize(), keys, values, orders);
+		risco.setEmpresa(getEmpresaSistema());
+		setTotalSize(riscoManager.getCount(risco));
+		
+		riscos = riscoManager.listRiscos(getPage(), getPagingSize(), risco);
 
 		addErro(msgAlert);
 
@@ -180,12 +180,21 @@ public class RiscoEditAction extends MyActionSupportList
 
 	public Map<String, String> getGrupoRiscos()
 	{
+		grupoRiscos = GrupoRisco.getInstance();
 		return grupoRiscos;
 	}
 
-	public void setGrupoRiscos(Map<String, String> grupoRiscos)
-	{
-		this.grupoRiscos = grupoRiscos;
+	public Map<String, String> getGrupoRiscosESocial() {
+		return grupoRiscosESocial;
+	}
+	
+	public Map<String, String> getGrupoRiscoESocialListagemDeRiscos() {
+		grupoRiscosESocial = GrupoRiscoESocial.getGrupoRiscoESocialListagemDeRiscos();
+		return grupoRiscosESocial;
+	}
+
+	public void setGrupoRiscosESocial(Map<String, String> grupoRiscosESocial) {
+		this.grupoRiscosESocial = grupoRiscosESocial;
 	}
 
 	public String[] getEpisCheck()

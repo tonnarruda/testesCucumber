@@ -22,7 +22,7 @@
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 		
 		<style type="text/css">
-			@import url('<@ww.url value="/css/lntList.css"/>');
+			@import url('<@ww.url value="/css/buttons.css"/>');
 		</style>
 		
 		<script type="text/javascript">

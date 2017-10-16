@@ -3,6 +3,9 @@
 
 <xwork>
 	<package name="risco" extends="default" namespace="/sesmt/risco">
+		<action name="updateFilter" class="com.fortes.rh.web.action.sesmt.RiscoEditAction" method="updateFilter">
+	      	<interceptor-ref name="showFilterStack" />			
+		</action>
 		<action name="list" class="com.fortes.rh.web.action.sesmt.RiscoEditAction" method="list">
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/riscoList.ftl</result>
 		</action>

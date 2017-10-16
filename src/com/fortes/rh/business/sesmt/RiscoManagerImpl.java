@@ -97,6 +97,16 @@ public class RiscoManagerImpl extends GenericManagerImpl<Risco, RiscoDao> implem
 		}
 	}
 	
+	public Collection<Risco> listRiscos(int page, int pagingSize, Risco risco){
+		return getDao().listRiscos(page, pagingSize, risco);
+	}
+	
+	public Integer getCount(Risco risco)
+	{
+		return getDao().getCount(risco);
+	}
+
+	
 	private Collection<Epi> popularEpisComIds(Map<Long, Long> epiIds, Risco riscoOrigem) 
 	{
 		Collection<Epi> epis = new ArrayList<Epi>();

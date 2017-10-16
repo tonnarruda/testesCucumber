@@ -1,20 +1,29 @@
 package com.fortes.rh.test.web.action.sesmt;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
-import mockit.Mockit;
 
 import org.hibernate.ObjectNotFoundException;
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
-import org.jmock.core.Constraint;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
 import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.business.sesmt.RiscoManager;
+import com.fortes.rh.model.dicionario.GrupoRisco;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.Risco;
@@ -27,55 +36,50 @@ import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.web.action.sesmt.RiscoEditAction;
 import com.fortes.web.tags.CheckBox;
 
-public class RiscoEditActionTest extends MockObjectTestCase
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({SecurityUtil.class, CheckListBoxUtil.class})
+public class RiscoEditActionTest
 {
 	private RiscoEditAction action;
-	private Mock manager;
-	private Mock epiManager;
+	private RiscoManager manager;
+	private EpiManager epiManager;
 
-	protected void setUp() throws Exception
+	@Before
+	public void setUp() throws Exception
 	{
-		super.setUp();
-		manager = new Mock(RiscoManager.class);
-		epiManager = new Mock(EpiManager.class);
+		manager = mock(RiscoManager.class);
+		epiManager = mock(EpiManager.class);
 
 		action = new RiscoEditAction();
-		action.setRiscoManager((RiscoManager) manager.proxy());
-		action.setEpiManager((EpiManager) epiManager.proxy());
+		action.setRiscoManager(manager);
+		action.setEpiManager(epiManager);
 
-		Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
-		Mockit.redefineMethods(CheckListBoxUtil.class, MockCheckListBoxUtil.class);
+		PowerMockito.mockStatic(SecurityUtil.class);
+		PowerMockito.mockStatic(CheckListBoxUtil.class);
 		
-		action.setEmpresaSistema(MockSecurityUtil.getEmpresaSession(null));
+		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
 	}
 
-	protected void tearDown() throws Exception
-	{
-		Mockit.restoreAllOriginalDefinitions();
-		manager = null;
-		epiManager = null;
-		action = null;
-        MockSecurityUtil.verifyRole = false;
-		super.tearDown();
-	}
-
+	@Test
 	public void testPrepareUpdate() throws Exception
 	{
+		Boolean epiAtivo = null;
 		Risco risco = RiscoFactory.getEntity(1L);
 		risco.setEmpresa(MockSecurityUtil.getEmpresaSession(null));
 		action.setRisco(risco);
 
 		Collection<CheckBox> episCheckList = new ArrayList<CheckBox>();
 
-		epiManager.expects(once()).method("populaCheckToEpi").with(eq(risco.getEmpresa().getId()),eq(null)).will(returnValue(episCheckList));
+		when(epiManager.populaCheckToEpi(eq(risco.getEmpresa().getId()),eq(epiAtivo))).thenReturn(episCheckList);
 
 		episCheckList = MockCheckListBoxUtil.marcaCheckListBox(null, null, null);
 
-		manager.expects(once()).method("findById").with(eq(risco.getId())).will(returnValue(risco));
-		manager.expects(once()).method("findEpisByRisco").with(eq(risco.getId())).will(returnValue(new ArrayList<Risco>()));
+		when(manager.findById(eq(risco.getId()))).thenReturn(risco);
+		when(manager.findEpisByRisco(eq(risco.getId()))).thenReturn(new ArrayList<Epi>());
 		assertEquals(action.prepareUpdate(), "success");
-	 }
+	}
 
+	@Test
 	public void testPrepareUpdateEmpresaErrada() throws Exception
 	{
 		Empresa empresa = new Empresa();
@@ -85,11 +89,12 @@ public class RiscoEditActionTest extends MockObjectTestCase
 		risco.setEmpresa(empresa);
 		action.setRisco(risco);
 
-		manager.expects(once()).method("findById").with(eq(risco.getId())).will(returnValue(risco));
+		when(manager.findById(eq(risco.getId()))).thenReturn(risco);
 		assertEquals(action.prepareUpdate(), "error");
 		assertTrue(action.getMsgAlert() != null && !action.getMsgAlert().equals(""));
-	 }
+	}
 
+	@Test
 	public void testUpdate() throws Exception
 	{
 		Risco risco = RiscoFactory.getEntity(1L);
@@ -98,47 +103,67 @@ public class RiscoEditActionTest extends MockObjectTestCase
 		String[] episCheck = new String[]{"3","33"};
 		action.setEpisCheck(episCheck);
 
-		manager.expects(once()).method("verifyExists").with(ANYTHING,ANYTHING).will(returnValue(true));
-		epiManager.expects(once()).method("populaEpi").with(eq(episCheck)).will(returnValue(new ArrayList<Epi>()));
-		manager.expects(once()).method("update").with(eq(risco));
+		when(manager.verifyExists(any(String[].class), any(Object[].class))).thenReturn(true);
+		when(epiManager.populaEpi(eq(episCheck))).thenReturn(new ArrayList<Epi>());
 
 		assertEquals("success", action.update());
 
-		manager.expects(once()).method("verifyExists").with(ANYTHING,ANYTHING).will(returnValue(false));
+		when(manager.verifyExists(any(String[].class), any(Object[].class))).thenReturn(false);
 
 		assertEquals("error", action.update());
 	}
 	
+	@Test
+	public void testUpdateComRiscoNulo() throws Exception
+	{
+		Risco risco = null;
+		action.setRisco(risco);
+		assertEquals("error", action.update());
+	}
+	
+	@Test
+	public void testUpdateRiscoComIdNulo() throws Exception
+	{
+		Risco risco = RiscoFactory.getEntity();
+		action.setRisco(risco);
+		assertEquals("error", action.update());
+	}
+	
+	@Test
 	public void testUpdateException() throws Exception
 	{
 		Risco risco = RiscoFactory.getEntity(1L);
+		risco.setEmpresa(action.getEmpresaSistema());
 		action.setRisco(risco);
 
 		String[] episCheck = new String[]{"3","33"};
 		action.setEpisCheck(episCheck);
 
-		manager.expects(once()).method("verifyExists").with(ANYTHING,ANYTHING).will(returnValue(true));
-		epiManager.expects(once()).method("populaEpi").with(eq(episCheck)).will(returnValue(new ArrayList<Epi>()));
-		manager.expects(once()).method("update").with(eq(risco)).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
+		when(manager.verifyExists(any(String[].class), any(Object[].class))).thenReturn(true);
+		when(epiManager.populaEpi(eq(episCheck))).thenReturn(new ArrayList<Epi>());
+		doThrow(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))).when(manager).update(eq(risco));
 		
-		epiManager.expects(once()).method("populaCheckToEpi");
-		manager.expects(once()).method("findById").with(eq(risco.getId())).will(returnValue(risco));
-		manager.expects(once()).method("findEpisByRisco").with(eq(risco.getId())).will(returnValue(new ArrayList<Risco>()));
+		Boolean epiAtivo = null;
+		when(epiManager.populaCheckToEpi(eq(risco.getEmpresa().getId()),eq(epiAtivo))).thenReturn(new ArrayList<CheckBox>());
+		when(manager.findById(eq(risco.getId()))).thenReturn(risco);
+		when(manager.findEpisByRisco(eq(risco.getId()))).thenReturn(new ArrayList<Epi>());
 		
 		assertEquals("input", action.update());
 		assertNotNull(action.getActionErrors());
 	}
 
+	@Test
 	public void testPrepareInsert() throws Exception
 	{
 		Risco risco = RiscoFactory.getEntity();
 		action.setRisco(risco);
 
-		epiManager.expects(once()).method("populaCheckToEpi").with(eq(1L),eq(true)).will(returnValue(new ArrayList<CheckBox>()));
+		when(epiManager.populaCheckToEpi(eq(1L),eq(true))).thenReturn(new ArrayList<CheckBox>());
 
 		assertEquals(action.prepareInsert(), "success");
 	}
 
+	@Test
 	public void testInsert() throws Exception
 	{
 		Risco risco = RiscoFactory.getEntity();
@@ -148,13 +173,13 @@ public class RiscoEditActionTest extends MockObjectTestCase
 		action.setEpisCheck(episCheck);
 
 		MockSecurityUtil.getEmpresaSession(null);
-		epiManager.expects(once()).method("populaEpi").with(eq(episCheck)).will(returnValue(new ArrayList<Epi>()));
-		manager.expects(once()).method("save").with(eq(risco));
+		when(epiManager.populaEpi(eq(episCheck))).thenReturn(new ArrayList<Epi>());
 
 		assertEquals(action.insert(), "success");
 		assertEquals(action.getRisco(), risco);
 	}
 	
+	@Test
 	public void testInsertException() throws Exception
 	{
 		Risco risco = RiscoFactory.getEntity();
@@ -164,14 +189,29 @@ public class RiscoEditActionTest extends MockObjectTestCase
 		action.setEpisCheck(episCheck);
 
 		MockSecurityUtil.getEmpresaSession(null);
-		epiManager.expects(once()).method("populaEpi").with(eq(episCheck)).will(returnValue(new ArrayList<Epi>()));
-		manager.expects(once()).method("save").with(eq(risco)).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
-		epiManager.expects(once()).method("populaCheckToEpi").with(eq(1L),eq(true)).will(returnValue(new ArrayList<CheckBox>()));
+		when(epiManager.populaEpi(eq(episCheck))).thenReturn(new ArrayList<Epi>());
+		doThrow(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))).when(manager).save(eq(risco));
+		when(epiManager.populaCheckToEpi(eq(1L),eq(true))).thenReturn(new ArrayList<CheckBox>());
 		
 		assertEquals(action.insert(), "input");
 		assertNotNull(action.getActionErrors());
 	}
+	
+	@Test
+	public void testDeleteRiscoComIdNulo() throws Exception
+    {
+    	Risco risco = new Risco();
+    	action.setRisco(risco);
 
+    	when(manager.getCount(any(Risco.class))).thenReturn(0);
+		when(manager.listRiscos(eq(action.getPage()), eq(action.getPagingSize()), any(Risco.class))).thenReturn(new ArrayList<Risco>());
+
+    	assertEquals("success", action.delete());
+    	String msgAlert = action.getMsgAlert().replaceAll("%20", " ");
+    	assertTrue(msgAlert.contains("O Risco solicitado não existe na empresa"));
+    }
+
+	@Test
 	public void testDelete() throws Exception
     {
     	Risco risco = new Risco();
@@ -179,30 +219,33 @@ public class RiscoEditActionTest extends MockObjectTestCase
     	risco.setEmpresa(MockSecurityUtil.getEmpresaSession(null));
     	action.setRisco(risco);
 
-    	manager.expects(once()).method("verifyExists").with(ANYTHING,ANYTHING).will(returnValue(true));
-    	manager.expects(once()).method("getCount").with(ANYTHING,ANYTHING).will(returnValue(1));
-    	manager.expects(once()).method("find").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).will(returnValue(new ArrayList<Risco>()));
-    	manager.expects(once()).method("remove").with(ANYTHING);
+    	when(manager.verifyExists(any(String[].class), any(Object[].class))).thenReturn(true);
+    	
+    	when(manager.getCount(any(Risco.class))).thenReturn(0);
+		when(manager.listRiscos(eq(action.getPage()), eq(action.getPagingSize()), any(Risco.class))).thenReturn(new ArrayList<Risco>());
+    	
     	action.setMsgAlert("deletado");
 
     	assertEquals("success", action.delete());
     	assertNotNull(action.getActionMessages());
     }
 	
+	@Test
 	public void testDeleteEmpresaErrada() throws Exception
 	{
 		Risco risco = RiscoFactory.getEntity(1L);
 		risco.setEmpresa(EmpresaFactory.getEmpresa(31231232L));
 		action.setRisco(risco);
 		
-		manager.expects(once()).method("verifyExists").with(ANYTHING,ANYTHING).will(returnValue(false));
-		manager.expects(once()).method("getCount").with(ANYTHING,ANYTHING).will(returnValue(1));
-    	manager.expects(once()).method("find").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).will(returnValue(new ArrayList<Risco>()));
-		
+		when(manager.verifyExists(any(String[].class), any(Object[].class))).thenReturn(false);
+		when(manager.getCount(any(Risco.class))).thenReturn(0);
+		when(manager.listRiscos(eq(action.getPage()), eq(action.getPagingSize()), any(Risco.class))).thenReturn(new ArrayList<Risco>());
+    		
 		assertEquals("success", action.delete());
     	assertNotNull(action.getActionErrors());
 	}
 
+	@Test
     public void testList() throws Exception
     {
 		Collection<Risco> riscos = new ArrayList<Risco>();
@@ -213,21 +256,20 @@ public class RiscoEditActionTest extends MockObjectTestCase
 
 		riscos.add(risco);
 
-		manager.expects(once()).method("getCount").with(ANYTHING, ANYTHING).will(returnValue(riscos.size()));
-		manager.expects(once()).method("find").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(riscos));
-
+		when(manager.getCount(any(Risco.class))).thenReturn(1);
+		when(manager.listRiscos(eq(action.getPage()), eq(action.getPagingSize()), any(Risco.class))).thenReturn(riscos);
+    
     	assertEquals("success", action.list());
     	assertEquals(riscos, action.getRiscos());
     }
     
+	@Test
     public void testGetSet() throws Exception
 	{
 		action.setRisco(null);
 		assertTrue(action.getRisco() instanceof Risco);
 
-		Map<String, String> grupoRiscos = new HashMap<String, String>();
-		action.setGrupoRiscos(grupoRiscos);
-		assertEquals(action.getGrupoRiscos(), grupoRiscos);
+		assertEquals(action.getGrupoRiscos(), GrupoRisco.getInstance());
 
 		String[] episCheck = new String[1];
 		action.setEpisCheck(episCheck);

@@ -175,6 +175,9 @@
 		<create creator="spring" javascript="AvaliacaoDWR">
 			<param name="beanName" value="avaliacaoDWR"/>
 		</create>
+		<create creator="spring" javascript="FatorDeRiscoDWR">
+			<param name="beanName" value="fatorDeRiscoDWR"/>
+		</create>
 		
 		<convert converter="bean" match="com.opensymphony.xwork.ValidationAwareSupport"/>
 		
@@ -247,6 +250,9 @@
 			<param name="exclude" value="colaborador"/>
 		</convert>
 		
+		<convert converter="bean" match="com.fortes.rh.model.sesmt.FatorDeRisco">
+			<param name="include" value="id, descricaoComCodigo"/>
+		</convert>
 		<!-- T&D -->
 		<convert converter="bean" match="com.fortes.rh.model.desenvolvimento.Lnt">
 			<param name="include" value="id, descricao, selected"/>

@@ -8,7 +8,7 @@
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css"/>');
-		@import url('<@ww.url value="/css/lntList.css"/>');
+		@import url('<@ww.url value="/css/buttons.css"/>');
 		@import url('<@ww.url value="/css/font-awesome.min.css?version=${versao}"/>');
 		
 		.waDivFormulario table tbody tr td a{

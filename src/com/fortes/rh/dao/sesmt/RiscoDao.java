@@ -10,4 +10,6 @@ public interface RiscoDao extends GenericDao<Risco>
 {
 	List findEpisByRisco(Long riscoId);
 	Collection<Risco> findAllSelect(Long empresaId);
+	Collection<Risco> listRiscos(int page, int pagingSize, Risco risco);
+	Integer getCount(Risco risco);
 }

@@ -1,5 +1,7 @@
 package com.fortes.rh.test.factory.sesmt;
 
+import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.sesmt.FatorDeRisco;
 import com.fortes.rh.model.sesmt.Risco;
 
 public class RiscoFactory 
@@ -31,6 +33,15 @@ public class RiscoFactory
 		risco.setDescricao(descricao);
 		risco.setGrupoRisco(grupoRisco);
 		
+		return risco;
+	}
+	
+	public static Risco getEntity(String descricao, String grupoRisco, String grupoRiscoESocial, Empresa empresa, FatorDeRisco fatorDeRisco)
+	{
+		Risco risco= getEntity(null, descricao, grupoRisco);
+		risco.setGrupoRiscoESocial(grupoRiscoESocial);
+		risco.setEmpresa(empresa);
+		risco.setFatorDeRisco(fatorDeRisco);
 		return risco;
 	}
 }

@@ -211,6 +211,7 @@
     <mapping class="com.fortes.rh.model.sesmt.TipoTamanhoEPI" />
     <mapping class="com.fortes.rh.model.sesmt.SolicitacaoEpiItemDevolucao" />
     <mapping class="com.fortes.rh.model.sesmt.OrdemDeServico" />
+    <mapping class="com.fortes.rh.model.sesmt.FatorDeRisco" />
 	<!-- AVALIAÇÃO -->
     <mapping class="com.fortes.rh.model.avaliacao.PeriodoExperiencia" />
     <mapping class="com.fortes.rh.model.avaliacao.Avaliacao" />

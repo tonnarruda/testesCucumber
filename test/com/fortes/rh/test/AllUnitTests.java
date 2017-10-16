@@ -389,6 +389,7 @@ import com.fortes.rh.test.dao.hibernate.sesmt.ExtintorDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.ExtintorInspecaoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.ExtintorManutencaoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.FaseDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.sesmt.FatorDeRiscoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.FuncaoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.HistoricoAmbienteDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.HistoricoExtintorDaoHibernateTest;
@@ -1256,6 +1257,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	RiscoDaoHibernateTest.class,
 	RiscoManagerTest.class,
 	RiscoEditActionTest.class,
+	FatorDeRiscoDaoHibernateTest.class,
 
 	AnexoListActionTest.class,
 	AnexoEditActionTest.class,

@@ -23,6 +23,13 @@ public class EpiFactory
 		return epi;
 	}
 	
+	public static Epi getEntity(Long id, String nome)
+	{
+		Epi epi = getEntity(id);
+		epi.setNome(nome);
+		return epi;
+	}
+	
 	public static Epi getEntity(Long id, String nome, Empresa empresa)
 	{
 		Epi epi = getEntity(id);

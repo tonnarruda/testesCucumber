@@ -229,4 +229,7 @@
 	<bean id="avaliacaoDWR" class="com.fortes.rh.web.dwr.AvaliacaoDWR">
 		<property name="avaliacaoManager" ref="avaliacaoManager"/>
 	</bean>	
+	<bean id="fatorDeRiscoDWR" class="com.fortes.rh.web.dwr.FatorDeRiscoDWR">
+		<property name="fatorDeRiscoManager" ref="fatorDeRiscoManager"/>
+	</bean>	
 </beans>
