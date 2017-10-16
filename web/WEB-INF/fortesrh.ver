@@ -3,6 +3,7 @@
 	<Versao id="1.1.18x.21x" db="" data="xx/xx/2017">
 		<Item visivel="S" motivo="S17070000106"><![CDATA[R&S > Cadastros > Motivo de Solicitação de Pessoal > Inserir/Editar: Novo campo que possibilita alertar sobre a quantidade limite de colaboradores ativos por cargo ao inserir/editar uma solicitação de pessoal.]]></Item>
 		<Item visivel="S" motivo="S17030000004"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Documentos da Solicitação de Pessoal: Nova funcionalidade para anexar documentos.]]></Item>
+		<Item visivel="S" motivo="P17100000149"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Inserir/Editar: Correção de erro ao gravar quando a verificação de parentesco está ativa.]]></Item>
 		<Item visivel="S" motivo="S17060000306"><![CDATA[SESMT > Cadastros > Riscos > Inserir/Editar: Adicionado dois novos campos: "Tipo de Risco eSocial" e "Fator de Risco". (Adequação ao eSocial)]]></Item>
 		<Item visivel="S" motivo="S17060000306"><![CDATA[SESMT > Cadastros > Funções: Remoção do vínculo com cargo.(Adequação ao eSocial)]]></Item>
 		<Item visivel="S" motivo="S17060000306"><![CDATA[SESMT > Cadastros > Funções: Mudança do campo 'nome' para dentro do cadastro do histórico da função.(Adequação ao eSocial)]]></Item>
