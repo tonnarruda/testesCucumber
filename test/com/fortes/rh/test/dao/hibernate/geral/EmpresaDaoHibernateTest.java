@@ -541,11 +541,15 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<Empr
 	
 	@Test
 	public void testFindEmpresasComCodigoACAndAtualizouDddCelularAndUFHabilitacao() {
-		Empresa empresa1 = EmpresaFactory.getEmpresa(null, "Empresa 1", "0002", "001");
+		GrupoAC grupoAC = GrupoACFactory.getEntity();
+		grupoAC.setCodigo("999");
+		grupoACDao.save(grupoAC);
+		
+		Empresa empresa1 = EmpresaFactory.getEmpresa(null, "Empresa 1", "9999", grupoAC.getCodigo());
 		empresa1.setDddCelularAndUFHabilitacaoAtualizados(true);
 		empresaDao.save(empresa1);
 		
-		Empresa empresa2 = EmpresaFactory.getEmpresa(null, "Empresa 2", "0003", "001");
+		Empresa empresa2 = EmpresaFactory.getEmpresa(null, "Empresa 2", "9998", grupoAC.getCodigo());
 		empresaDao.save(empresa2);
 		
 		Collection<Empresa> empresas = empresaDao.findEmpresasComCodigoACAndAtualizouDddCelularAndUFHabilitacao();
@@ -554,7 +558,11 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<Empr
 	
 	@Test
 	public void testSetDddCelularAndUFHabilitacaoAtualizados(){
-		Empresa empresa1 = EmpresaFactory.getEmpresa(null, "Empresa 1", "0002", "001");
+		GrupoAC grupoAC = GrupoACFactory.getEntity();
+		grupoAC.setCodigo("999");
+		grupoACDao.save(grupoAC);
+		
+		Empresa empresa1 = EmpresaFactory.getEmpresa(null, "Empresa 1", "9999", grupoAC.getCodigo());
 		empresaDao.save(empresa1);
 
 		empresaDao.setDddCelularAndUFHabilitacaoAtualizados(empresa1.getId());
