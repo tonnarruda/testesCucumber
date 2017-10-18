@@ -12,6 +12,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.MedicoCoordenadorDao;
+import com.fortes.rh.model.dicionario.TipoEstabelecimentoResponsavel;
 import com.fortes.rh.model.sesmt.MedicoCoordenador;
 
 @SuppressWarnings("unchecked")
@@ -42,10 +43,11 @@ public class MedicoCoordenadorDaoHibernate extends GenericDaoHibernate<MedicoCoo
 		return (MedicoCoordenador) criteria.uniqueResult();
 	}
 
-	public Collection<MedicoCoordenador> findByEmpresa(Long empresaId, Boolean ascendente)
+	public Collection<MedicoCoordenador> findResponsaveisPorEstabelecimento(Long empresaId, Long estabelecimentoId)
 	{
 		Date hoje = new Date();
 		Criteria criteria = getSession().createCriteria(MedicoCoordenador.class, "m");
+		criteria.createCriteria("m.estabelecimentos", "est", Criteria.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("m.id"), "id");
@@ -55,18 +57,15 @@ public class MedicoCoordenadorDaoHibernate extends GenericDaoHibernate<MedicoCoo
 		p.add(Projections.property("m.nome"), "nome");
 		p.add(Projections.property("m.crm"), "crm");
 		p.add(Projections.property("m.registro"), "registro");
+		p.add(Projections.property("m.estabelecimentoResponsavel"), "estabelecimentoResponsavel");
 
 		criteria.setProjection(p);
 
 		criteria.add(Expression.eq("m.empresa.id", empresaId));
 		criteria.add(Expression.le("m.inicio", hoje));
+		criteria.add(Expression.or(Expression.eq("m.estabelecimentoResponsavel", TipoEstabelecimentoResponsavel.TODOS), Expression.eq("est.id", estabelecimentoId)));
 		
-		if (ascendente != null) {
-			if (ascendente) 
-				criteria.addOrder(Order.asc("m.inicio"));
-			else
-				criteria.addOrder(Order.desc("m.inicio"));
-		}
+		criteria.addOrder(Order.asc("m.inicio"));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(MedicoCoordenador.class));
@@ -88,6 +87,7 @@ public class MedicoCoordenadorDaoHibernate extends GenericDaoHibernate<MedicoCoo
 		p.add(Projections.property("m.nit"), "nit");
 		p.add(Projections.property("m.registro"), "registro");
 		p.add(Projections.property("m.especialidade"), "especialidade");
+		p.add(Projections.property("m.estabelecimentoResponsavel"), "estabelecimentoResponsavel");
 		p.add(Projections.property("e.id"), "projectionEmpresaId");
 
 		criteria.setProjection(p);

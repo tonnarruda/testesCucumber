@@ -9,11 +9,15 @@ import org.mozilla.javascript.edu.emory.mathcs.backport.java.util.Arrays;
 
 import com.fortes.rh.business.sesmt.EngenheiroResponsavelManagerImpl;
 import com.fortes.rh.dao.sesmt.EngenheiroResponsavelDao;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.EngenheiroResponsavel;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
+import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.util.DateUtil;
 
 public class EngenheiroResponsavelManagerTest extends MockObjectTestCase
@@ -144,10 +148,15 @@ public class EngenheiroResponsavelManagerTest extends MockObjectTestCase
 		
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(1L);
+		
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(null, null, estabelecimento);
+		
 		Colaborador colaboradorDoPPP = ColaboradorFactory.getEntity();
 		colaboradorDoPPP.setEmpresa(empresa);
 		colaboradorDoPPP.setDataAdmissao(admissao);
 		colaboradorDoPPP.setDataDesligamento(desligamento);
+		colaboradorDoPPP.setHistoricoColaborador(historicoColaborador);
 		
 		EngenheiroResponsavel engenheiroResponsavel1 = new EngenheiroResponsavel();
 		engenheiroResponsavel1.setId(1L);
@@ -174,11 +183,10 @@ public class EngenheiroResponsavelManagerTest extends MockObjectTestCase
 		engenheiroResponsavel5.setInicio(inicio_2);
 		engenheiroResponsavel5.setFim(fim);
 		
-		
 		EngenheiroResponsavel[] engenheirosResponsaveis = new EngenheiroResponsavel[]{engenheiroResponsavel1, engenheiroResponsavel2, engenheiroResponsavel3, engenheiroResponsavel4, engenheiroResponsavel5};
-		engenheiroResponsavelDao.expects(once()).method("findAllByEmpresa").with(eq(1L)).will(returnValue(Arrays.asList(engenheirosResponsaveis)));
+		engenheiroResponsavelDao.expects(once()).method("findResponsaveisPorEstabelecimento").with(eq(empresa.getId()), eq(estabelecimento.getId())).will(returnValue(Arrays.asList(engenheirosResponsaveis)));
 		
-		Collection<EngenheiroResponsavel> resultado = engenheiroResponsavelManager.getEngenheirosAteData(colaboradorDoPPP, dataPPP);
+		Collection<EngenheiroResponsavel> resultado = engenheiroResponsavelManager.findResponsaveisPorEstabelecimento(colaboradorDoPPP, dataPPP);
 		
 		assertEquals(3, resultado.size());
 		assertEquals(engenheiroResponsavel1.getId(), ((EngenheiroResponsavel)resultado.toArray()[0]).getId());
@@ -190,18 +198,23 @@ public class EngenheiroResponsavelManagerTest extends MockObjectTestCase
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(1L);
+		
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(null, null, estabelecimento);
+
 		Colaborador colaboradorDoPPP = ColaboradorFactory.getEntity();
 		colaboradorDoPPP.setEmpresa(empresa);
+		colaboradorDoPPP.setHistoricoColaborador(historicoColaborador);
 		
 		EngenheiroResponsavel engenheiroResponsavel1 = new EngenheiroResponsavel();
 		engenheiroResponsavel1.setInicio(inicio);
 		engenheiroResponsavel1.setFim(fim);
 		
-		engenheiroResponsavelDao.expects(once()).method("findAllByEmpresa").with(eq(1L)).will(returnValue(Arrays.asList(new EngenheiroResponsavel[]{engenheiroResponsavel1})));
+		engenheiroResponsavelDao.expects(once()).method("findResponsaveisPorEstabelecimento").with(eq(empresa.getId()), eq(estabelecimento.getId())).will(returnValue(Arrays.asList(new EngenheiroResponsavel[]{engenheiroResponsavel1})));
 		
 		colaboradorDoPPP.setDataAdmissao(admissao);
 		colaboradorDoPPP.setDataDesligamento(desligamento);
-		Collection<EngenheiroResponsavel> resultado = engenheiroResponsavelManager.getEngenheirosAteData(colaboradorDoPPP, ppp);
+		Collection<EngenheiroResponsavel> resultado = engenheiroResponsavelManager.findResponsaveisPorEstabelecimento(colaboradorDoPPP, ppp);
 		
 		assertEquals(++contador+"o teste.",estaNaRelacao, resultado.size() == 1);
 	}

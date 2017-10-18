@@ -14,5 +14,7 @@ public interface MedicoCoordenadorManager extends GenericManager<MedicoCoordenad
 	MedicoCoordenador findByIdProjection(Long medicoCoordenadorId);
 	Collection<MedicoCoordenador> findByEmpresa(Long empresaId);
 	File getAssinaturaDigital(Long id) throws Exception;
-	Collection<MedicoCoordenador> getMedicosAteData(Date data, Colaborador colaborador);
+	Collection<MedicoCoordenador> findResponsaveisPorEstabelecimento(Date data, Colaborador colaborador);
+	void insere(MedicoCoordenador medicoCoordenador, Long[] estabelecimentosIds) throws Exception;
+	void atualiza(MedicoCoordenador medicoCoordenador, Long[] estabelecimentosIds, boolean manterAssinatura) throws Exception;
 }

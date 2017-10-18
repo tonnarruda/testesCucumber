@@ -1,11 +1,13 @@
 package com.fortes.rh.model.sesmt;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
@@ -17,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import com.fortes.model.AbstractModel;
 import com.fortes.model.type.File;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.util.DateUtil;
 
 @SuppressWarnings("serial")
@@ -41,11 +44,15 @@ public class MedicoCoordenador extends AbstractModel implements Serializable
 	
 	@Column(length=15)
 	private String nit;
+	@Column(length=6)
+	private String estabelecimentoResponsavel;
 
 	private File assinaturaDigital;
 
 	@ManyToOne(fetch=FetchType.EAGER)
 	private Empresa empresa;
+	@ManyToMany(fetch=FetchType.LAZY)
+	private Collection<Estabelecimento> estabelecimentos;
 	
 	//Utilizado no relatório de PPP
 	@Transient
@@ -174,5 +181,21 @@ public class MedicoCoordenador extends AbstractModel implements Serializable
 
 	public void setDataDesligamento(Date dataDesligamento) {
 		this.dataDesligamento = dataDesligamento;
+	}
+
+	public Collection<Estabelecimento> getEstabelecimentos() {
+		return estabelecimentos;
+	}
+
+	public void setEstabelecimentos(Collection<Estabelecimento> estabelecimentos) {
+		this.estabelecimentos = estabelecimentos;
+	}
+
+	public String getEstabelecimentoResponsavel() {
+		return estabelecimentoResponsavel;
+	}
+
+	public void setEstabelecimentoResponsavel(String estabelecimentoResponsavel) {
+		this.estabelecimentoResponsavel = estabelecimentoResponsavel;
 	}
 }

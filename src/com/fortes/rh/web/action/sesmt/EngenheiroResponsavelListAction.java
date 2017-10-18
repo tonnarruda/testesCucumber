@@ -33,11 +33,11 @@ public class EngenheiroResponsavelListAction extends MyActionSupportList
 		try
 		{
 			engenheiroResponsavelManager.remove(new Long[]{engenheiroResponsavel.getId()});
-			addActionMessage("Engenheiro Responsável excluído com sucesso.");
+			addActionSuccess("Engenheiro responsável excluído com sucesso.");
 		}
 		catch (Exception e)
 		{
-			addActionError("Não foi possível excluir este Engenheiro Responsável.");
+			addActionError("Não foi possível excluir este engenheiro responsável.");
 			e.printStackTrace();
 		}
 

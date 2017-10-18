@@ -254,6 +254,9 @@
     <property name="dao">
       <ref bean="medicoCoordenadorDao" />
     </property>
+    <property name="estabelecimentoManager">
+      <ref bean="estabelecimentoManager" />
+    </property>
   </bean>
   <bean id="medicoCoordenadorManager" parent="parentManager">
     <property name="proxyInterfaces">

@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.web.tags.CheckBox;
 
@@ -12,12 +14,16 @@ import junit.framework.TestCase;
 
 public class CheckListBoxUtilTest extends TestCase
 {
+	private CheckBox getEntity(Long id, String nome, Boolean selecionado){
+		CheckBox checkBox = new CheckBox();
+		checkBox.setId(id);
+		checkBox.setNome(nome);
+		checkBox.setSelecionado(selecionado);
 
-	protected void setUp(){
-		CheckListBoxUtil checkListBoxUtil = new CheckListBoxUtil();
+		return checkBox;
 	}
-
-	public void testMarcaCheckListBox(){
+	
+	public void testMarcaCheckListBoxComMarcadosString(){
 
 		CheckBox cb1 = new CheckBox();
 		cb1.setId(1L);
@@ -63,6 +69,94 @@ public class CheckListBoxUtilTest extends TestCase
 		assertFalse("Test 9",((CheckBox)(checksRetorno.toArray()[2])).isSelecionado());
 	}
 
+	public void testMarcaCheckListBoxCollection(){
+		CheckBox cb1 = getEntity(1L, "CI", Boolean.FALSE);
+		CheckBox cb2 = getEntity(2L, "CII", Boolean.FALSE);
+		CheckBox cb3 = getEntity(3L, "CIII", Boolean.FALSE);
+		
+		Collection<CheckBox> checks = Arrays.asList(cb1, cb2, cb3);
+		
+		AreaOrganizacional areaOrganizacional1 = AreaOrganizacionalFactory.getEntity(1L);
+		AreaOrganizacional areaOrganizacional2 = AreaOrganizacionalFactory.getEntity(2L);
+		
+		Collection<CheckBox> checksRetorno = CheckListBoxUtil.marcaCheckListBox(checks, Arrays.asList(areaOrganizacional1, areaOrganizacional2));
+		
+		assertTrue("Test 1", ((CheckBox)(checksRetorno.toArray()[0])).isSelecionado());
+		assertTrue("Test 2",((CheckBox)(checksRetorno.toArray()[1])).isSelecionado());
+		assertFalse("Test 3",((CheckBox)(checksRetorno.toArray()[2])).isSelecionado());
+	}
+	
+	public void testMarcaCheckListBoxComNenhumMarcado(){
+		
+		CheckBox cb1 = getEntity(1L, "CI", Boolean.FALSE);
+		CheckBox cb2 = getEntity(2L, "CII", Boolean.FALSE);
+		CheckBox cb3 = getEntity(3L, "CIII", Boolean.FALSE);
+		
+		Collection<CheckBox> checks = Arrays.asList(cb1, cb2, cb3);
+		
+		Long[] marcados = new Long[]{};
+		
+		Collection<CheckBox> checksRetorno = CheckListBoxUtil.marcaCheckListBox(checks, marcados);
+		
+		assertFalse("Test 1", ((CheckBox)(checksRetorno.toArray()[0])).isSelecionado());
+		assertFalse("Test 2",((CheckBox)(checksRetorno.toArray()[1])).isSelecionado());
+		assertFalse("Test 3",((CheckBox)(checksRetorno.toArray()[2])).isSelecionado());
+	}
+	
+	public void testMarcaCheckListBoxComTodosMarcado(){
+		
+		CheckBox cb1 = getEntity(1L, "CI", Boolean.FALSE);
+		CheckBox cb2 = getEntity(2L, "CII", Boolean.FALSE);
+		CheckBox cb3 = getEntity(3L, "CIII", Boolean.FALSE);
+		
+		Collection<CheckBox> checks = Arrays.asList(cb1, cb2, cb3);
+		
+		Long[] marcados = new Long[]{Long.parseLong(cb1.getId()),
+									 Long.parseLong(cb2.getId()),
+								 	 Long.parseLong(cb3.getId())};
+		
+		Collection<CheckBox> checksRetorno = CheckListBoxUtil.marcaCheckListBox(checks, marcados);
+		
+		assertTrue("Test 1", ((CheckBox)(checksRetorno.toArray()[0])).isSelecionado());
+		assertTrue("Test 2",((CheckBox)(checksRetorno.toArray()[1])).isSelecionado());
+		assertTrue("Test 3",((CheckBox)(checksRetorno.toArray()[2])).isSelecionado());
+	}
+	
+	public void testMarcaCheckListBoxComPrimeiroMarcado(){
+		
+		CheckBox cb1 = getEntity(1L, "CI", Boolean.FALSE);
+		CheckBox cb2 = getEntity(2L, "CII", Boolean.FALSE);
+		CheckBox cb3 = getEntity(3L, "CIII", Boolean.FALSE);
+		
+		Collection<CheckBox> checks = Arrays.asList(cb1, cb2, cb3);
+		
+		Long[] marcados = new Long[]{Long.parseLong(cb1.getId())};
+		
+		Collection<CheckBox> checksRetorno = CheckListBoxUtil.marcaCheckListBox(checks, marcados);
+		
+		assertTrue("Test 1", ((CheckBox)(checksRetorno.toArray()[0])).isSelecionado());
+		assertFalse("Test 2",((CheckBox)(checksRetorno.toArray()[1])).isSelecionado());
+		assertFalse("Test 3",((CheckBox)(checksRetorno.toArray()[2])).isSelecionado());
+	}
+	
+	public void testMarcaCheckListBoxComSoPrimeiroDesmarcado(){
+		
+		CheckBox cb1 = getEntity(1L, "CI", Boolean.FALSE);
+		CheckBox cb2 = getEntity(2L, "CII", Boolean.FALSE);
+		CheckBox cb3 = getEntity(3L, "CIII", Boolean.FALSE);
+		
+		Collection<CheckBox> checks = Arrays.asList(cb1, cb2, cb3);
+		
+		Long[] marcados = new Long[]{Long.parseLong(cb2.getId()),
+							 	 	 Long.parseLong(cb3.getId())};
+		
+		Collection<CheckBox> checksRetorno = CheckListBoxUtil.marcaCheckListBox(checks, marcados);
+		
+		assertFalse("Test 1", ((CheckBox)(checksRetorno.toArray()[0])).isSelecionado());
+		assertTrue("Test 2",((CheckBox)(checksRetorno.toArray()[1])).isSelecionado());
+		assertTrue("Test 3",((CheckBox)(checksRetorno.toArray()[2])).isSelecionado());
+	}
+	
 	public void testMarcaCheckListBox2() throws Exception{
 
 		CheckBox cb1 = new CheckBox();

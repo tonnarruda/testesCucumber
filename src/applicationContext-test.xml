@@ -609,4 +609,10 @@
 		<ref bean="sessionFactory" />
 	</property>
   </bean>
+
+  <bean id="engenheiroResponsavelDao" class="com.fortes.rh.dao.hibernate.sesmt.EngenheiroResponsavelDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
 </beans>

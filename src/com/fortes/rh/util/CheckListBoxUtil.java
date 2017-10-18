@@ -3,13 +3,16 @@ package com.fortes.rh.util;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.beanutils.BeanToPropertyValueTransformer;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.map.LinkedMap;
+import org.apache.commons.collections4.Closure;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.IterableUtils;
+import org.apache.commons.collections4.TransformerUtils;
+import org.apache.commons.lang3.ArrayUtils;
 
+import com.fortes.model.AbstractModel;
 import com.fortes.web.tags.CheckBox;
 
 /**
@@ -71,6 +74,32 @@ public final class CheckListBoxUtil
 		return listBoxMarcados;
 	}
 
+	public static Collection<CheckBox> marcaCheckListBox(Collection<CheckBox> listCheckBox, Collection<? extends AbstractModel> models)
+	{
+		Collection<Object> ids = CollectionUtils.collect(models, TransformerUtils.invokerTransformer("getId"));
+		Long[] marcados = (ids == null ? null : ids.toArray(new Long[]{}));
+		
+		return marcaCheckListBox(listCheckBox, marcados);
+	}
+	
+	public static Collection<CheckBox> marcaCheckListBox(Collection<CheckBox> listCheckBox, final Long[] marcados)
+	{
+		if (ArrayUtils.isEmpty(marcados))
+			return listCheckBox;
+		
+		Collection<CheckBox> listCheckBoxMarcados = new ArrayList<CheckBox>();
+		listCheckBoxMarcados.addAll(listCheckBox);
+		
+		IterableUtils.forEach(listCheckBoxMarcados, new Closure<CheckBox>() {
+			public void execute(CheckBox checkBox) {
+				if(ArrayUtils.contains(marcados, Long.parseLong(checkBox.getId())))
+					checkBox.setSelecionado(Boolean.TRUE);
+			}
+		});
+		
+		return listCheckBoxMarcados;
+	}
+	
 	public static Collection<CheckBox> marcaCheckListBox(Collection<CheckBox> listBox, Collection list, String methodKey) throws Exception
 	{
 		if (list == null || list.isEmpty())
@@ -189,11 +218,10 @@ public final class CheckListBoxUtil
 
 	public static Long[] retornaArrayLongId(Collection<CheckBox> listCheckBox)
 	{
-		@SuppressWarnings("unchecked")
-		List<String> a = (ArrayList<String>) CollectionUtils.collect(listCheckBox, new BeanToPropertyValueTransformer("id", true));
-		Long[] ids = LongUtil.collectionStringToArrayLong(a);
+		Collection<Object> ids =  CollectionUtils.collect(listCheckBox, TransformerUtils.invokerTransformer("getId"));
+		Long[] arrayIds = LongUtil.collectionStringToArrayLong(ids);
 		
-		return ids;
+		return arrayIds;
 	}
 
 }

@@ -13,11 +13,15 @@ import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureExcepti
 import com.fortes.model.type.File;
 import com.fortes.rh.business.sesmt.MedicoCoordenadorManagerImpl;
 import com.fortes.rh.dao.sesmt.MedicoCoordenadorDao;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.MedicoCoordenador;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
+import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.util.DateUtil;
 
 public class MedicoCoordenadorManagerTest extends MockObjectTestCase
@@ -104,7 +108,7 @@ public class MedicoCoordenadorManagerTest extends MockObjectTestCase
 	
 	public void testFindByEmpresa()
 	{
-		medicoCoordenadorDao.expects(once()).method("findByEmpresa").with(eq(1L),ANYTHING).will(returnValue(new ArrayList<MedicoCoordenador>()));
+		medicoCoordenadorDao.expects(once()).method("findResponsaveisPorEstabelecimento").with(eq(1L),ANYTHING).will(returnValue(new ArrayList<MedicoCoordenador>()));
 		assertNotNull(medicoCoordenadorManager.findByEmpresa(1L));
 	}
 	
@@ -112,7 +116,7 @@ public class MedicoCoordenadorManagerTest extends MockObjectTestCase
 	 * Este teste contempla apenas as regras individuais, sempre heverá 1(Um) ou 0(Zero) engenheiro
 	 * que fará parte dp PPP.
 	 */
-	public void testGetMedicosAteDataComUmOuZeroEngenheiro()
+	public void testResponsaveisPorEstabelecimentoComUmOuZeroEngenheiro()
 	{
 		Date data_1 = DateUtil.criarDataMesAno(01, 01, 2013);
 		Date data_2 = DateUtil.criarDataMesAno(01, 02, 2013);
@@ -198,7 +202,7 @@ public class MedicoCoordenadorManagerTest extends MockObjectTestCase
 		testaSeMedicoFazParteDoRelatorioPPP(data_1, data_3, data_4, data_2, null, naoEstaNaRelacao);
 	}
 
-	public void testGetMedicosAteDataComVariosMedicos()
+	public void testResponsaveisPorEstabelecimentoComVariosMedicos()
 	{
 		Date admissao = DateUtil.criarDataMesAno(01, 01, 2013);
 		Date desligamento = DateUtil.criarDataMesAno(01, 04, 2013);
@@ -211,10 +215,15 @@ public class MedicoCoordenadorManagerTest extends MockObjectTestCase
 		
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(1L);
+		
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(null, null, estabelecimento);
+
 		Colaborador colaboradorDoPPP = ColaboradorFactory.getEntity();
 		colaboradorDoPPP.setEmpresa(empresa);
 		colaboradorDoPPP.setDataAdmissao(admissao);
 		colaboradorDoPPP.setDataDesligamento(desligamento);
+		colaboradorDoPPP.setHistoricoColaborador(historicoColaborador);
 		
 		MedicoCoordenador medicoCoordenador1 = new MedicoCoordenador();
 		medicoCoordenador1.setId(1L);
@@ -242,9 +251,9 @@ public class MedicoCoordenadorManagerTest extends MockObjectTestCase
 		medicoCoordenador5.setFim(fim);
 		
 		MedicoCoordenador[] medicoCoordenadores = new MedicoCoordenador[]{medicoCoordenador1, medicoCoordenador2, medicoCoordenador3, medicoCoordenador4, medicoCoordenador5};
-		medicoCoordenadorDao.expects(once()).method("findByEmpresa").with(eq(1L), eq(true)).will(returnValue(Arrays.asList(medicoCoordenadores)));
+		medicoCoordenadorDao.expects(once()).method("findResponsaveisPorEstabelecimento").with(eq(1L), eq(1L)).will(returnValue(Arrays.asList(medicoCoordenadores)));
 		
-		Collection<MedicoCoordenador> resultado = medicoCoordenadorManager.getMedicosAteData(dataPPP, colaboradorDoPPP);
+		Collection<MedicoCoordenador> resultado = medicoCoordenadorManager.findResponsaveisPorEstabelecimento(dataPPP, colaboradorDoPPP);
 		
 		assertEquals(3, resultado.size());
 		assertEquals(medicoCoordenador1.getId(), ((MedicoCoordenador)resultado.toArray()[0]).getId());
@@ -256,20 +265,24 @@ public class MedicoCoordenadorManagerTest extends MockObjectTestCase
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(1L);
+		
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(null, null, estabelecimento);
+
 		Colaborador colaboradorDoPPP = ColaboradorFactory.getEntity();
 		colaboradorDoPPP.setEmpresa(empresa);
+		colaboradorDoPPP.setHistoricoColaborador(historicoColaborador);
 		
 		MedicoCoordenador medicoCoordenador1 = new MedicoCoordenador();
 		medicoCoordenador1.setInicio(inicio);
 		medicoCoordenador1.setFim(fim);
 		
-		medicoCoordenadorDao.expects(once()).method("findByEmpresa").with(eq(1L), eq(true)).will(returnValue(Arrays.asList(new MedicoCoordenador[]{medicoCoordenador1})));
+		medicoCoordenadorDao.expects(once()).method("findResponsaveisPorEstabelecimento").with(eq(empresa.getId()), eq(estabelecimento.getId())).will(returnValue(Arrays.asList(new MedicoCoordenador[]{medicoCoordenador1})));
 		
 		colaboradorDoPPP.setDataAdmissao(admissao);
 		colaboradorDoPPP.setDataDesligamento(desligamento);
-		Collection<MedicoCoordenador> resultado = medicoCoordenadorManager.getMedicosAteData(ppp, colaboradorDoPPP);
+		Collection<MedicoCoordenador> resultado = medicoCoordenadorManager.findResponsaveisPorEstabelecimento(ppp, colaboradorDoPPP);
 		
 		assertEquals(++contador+"o teste.",estaNaRelacao, resultado.size() == 1);
 	}
-
 }

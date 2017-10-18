@@ -113,6 +113,7 @@ public class EstabelecimentoManagerImpl extends GenericManagerImpl<Estabelecimen
 		return getDao().findSemCodigoAC(empresaId);
 	}
 
+	//TODO: SEM TESTE
 	public void deleteEstabelecimento(Long[] estabelecimentoIds) throws Exception {
 		
 		if (estabelecimentoIds != null && estabelecimentoIds.length > 0) {
@@ -131,6 +132,16 @@ public class EstabelecimentoManagerImpl extends GenericManagerImpl<Estabelecimen
 	public void updateCodigoAC(Long estabelecimentoId, String codigoAC) 
 	{
 		getDao().updateCodigoAC(estabelecimentoId, codigoAC);
+	}
+	
+	public Collection<Estabelecimento> findByMedicoCoordenador(Long medicoCoordenadorId, boolean nuloSeVazio) {
+		Collection<Estabelecimento> estabelecimentos = getDao().findByMedicoCoordenador(medicoCoordenadorId); 
+		return (nuloSeVazio && estabelecimentos.isEmpty() ? null : estabelecimentos);
+	}
+	
+	public Collection<Estabelecimento> findByEngenheiroResponsavel(Long engenheiroResponsavelId, boolean nuloSeVazio) {
+		Collection<Estabelecimento> estabelecimentos = getDao().findByEngenheiroResponsavel(engenheiroResponsavelId); 
+		return (nuloSeVazio && estabelecimentos.isEmpty() ? null : estabelecimentos);
 	}
 	
 	public void setAgendaManager(AgendaManager agendaManager) {

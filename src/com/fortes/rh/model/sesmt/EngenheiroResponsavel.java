@@ -1,11 +1,13 @@
 package com.fortes.rh.model.sesmt;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
@@ -13,6 +15,7 @@ import javax.persistence.TemporalType;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.util.DateUtil;
 
 @SuppressWarnings("serial")
@@ -27,16 +30,17 @@ public class EngenheiroResponsavel extends AbstractModel implements Serializable
 	private Date inicio;
 	@Temporal(TemporalType.DATE)
 	private Date fim;
-	
 	@Column(length=15)
 	private String nit;
-	
 	@Column(length=20)
 	private String crea;
+	@Column(length=6)
+	private String estabelecimentoResponsavel;
 
 	@ManyToOne(fetch=FetchType.EAGER)
 	private Empresa empresa;
-
+	@ManyToMany(fetch=FetchType.LAZY)
+	private Collection<Estabelecimento> estabelecimentos;
 
 	public void setEmpresaIdProjection(Long empresaIdProjection)
 	{
@@ -119,5 +123,21 @@ public class EngenheiroResponsavel extends AbstractModel implements Serializable
 	public void setNit(String nit) 
 	{
 		this.nit = nit;
+	}
+	
+	public String getEstabelecimentoResponsavel() {
+		return estabelecimentoResponsavel;
+	}
+	
+	public void setEstabelecimentoResponsavel(String estabelecimentoResponsavel) {
+		this.estabelecimentoResponsavel = estabelecimentoResponsavel;
+	}
+
+	public Collection<Estabelecimento> getEstabelecimentos() {
+		return estabelecimentos;
+	}
+
+	public void setEstabelecimentos(Collection<Estabelecimento> estabelecimentos) {
+		this.estabelecimentos = estabelecimentos;
 	}
 }

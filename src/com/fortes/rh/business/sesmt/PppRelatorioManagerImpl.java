@@ -68,14 +68,15 @@ public class PppRelatorioManagerImpl implements PppRelatorioManager
 		
 		HistoricoColaborador ultimoHistorico = ((HistoricoColaborador) historicosDoColaboradors.toArray()[historicosDoColaboradors.size()-1]);
 		Estabelecimento estabelecimento = ultimoHistorico.getEstabelecimento();
-
+		colaborador.setHistoricoColaborador(ultimoHistorico);
+		
 		historicosDoColaboradors = historicoColaboradorManager.inserirPeriodos(historicosDoColaboradors);
 
 		Collection<PppFatorRisco> pppFatorRiscos = this.populaFatoresDeRiscos(data, historicosDoColaboradors);
 		Collection<HistoricoColaborador> historicosColaboradorFuncao = historicoColaboradorManager.findDistinctFuncao(historicosDoColaboradors);
 		Collection<HistoricoFuncao> historicoFuncaos = historicoFuncaoManager.findHistoricoFuncaoColaborador(historicosColaboradorFuncao, data, colaborador.getDataDesligamento());
-		Collection<EngenheiroResponsavel> engenheirosResponsaveis = engenheiroResponsavelManager.getEngenheirosAteData(colaborador, data);
-		Collection<MedicoCoordenador> medicosCoordenadores = medicoCoordenadorManager.getMedicosAteData(data, colaborador);
+		Collection<EngenheiroResponsavel> engenheirosResponsaveis = engenheiroResponsavelManager.findResponsaveisPorEstabelecimento(colaborador, data);
+		Collection<MedicoCoordenador> medicosCoordenadores = medicoCoordenadorManager.findResponsaveisPorEstabelecimento(data, colaborador);
 		atualizaNomeFuncaoByData(historicosDoColaboradors, data);
 		
 		return Arrays.asList(new PppRelatorio(colaborador, estabelecimento, data, respostas, cats, historicosDoColaboradors,

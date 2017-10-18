@@ -13,6 +13,8 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.EstabelecimentoDao;
 import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.model.sesmt.EngenheiroResponsavel;
+import com.fortes.rh.model.sesmt.MedicoCoordenador;
 
 @SuppressWarnings("unchecked")
 public class EstabelecimentoDaoHibernate extends GenericDaoHibernate<Estabelecimento> implements EstabelecimentoDao
@@ -251,5 +253,39 @@ public class EstabelecimentoDaoHibernate extends GenericDaoHibernate<Estabelecim
 		query.setLong("estabelecimentoId", estabelecimentoId);
 
 		query.executeUpdate();
+	}
+
+	public Collection<Estabelecimento> findByMedicoCoordenador(Long medicoCoordenadorId) {
+		Criteria criteria = getSession().createCriteria(MedicoCoordenador.class, "mc");
+		criteria.createCriteria("mc.estabelecimentos", "es");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("es.id"), "id");
+		p.add(Projections.property("es.nome"), "nome");
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("mc.id", medicoCoordenadorId));
+		criteria.addOrder(Order.asc("es.nome"));
+
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+		
+		return criteria.list();
+	}
+
+	public Collection<Estabelecimento> findByEngenheiroResponsavel(Long engenheiroResponsavelId) {
+		Criteria criteria = getSession().createCriteria(EngenheiroResponsavel.class, "eng");
+		criteria.createCriteria("eng.estabelecimentos", "es");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("es.id"), "id");
+		p.add(Projections.property("es.nome"), "nome");
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("eng.id", engenheiroResponsavelId));
+		criteria.addOrder(Order.asc("es.nome"));
+
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+		
+		return criteria.list();
 	}
 }

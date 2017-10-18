@@ -35,7 +35,7 @@ public class Estabelecimento extends AbstractModel implements Serializable
 	private String codigoAC;
 	@Transient
 	private EstabelecimentoManager estabelecimentoManager;
-
+	
 	public String getEnderecoFormatado()
 	{
 		String enderecoFormatado = "";

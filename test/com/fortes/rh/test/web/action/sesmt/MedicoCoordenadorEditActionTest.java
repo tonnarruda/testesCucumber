@@ -1,163 +1,233 @@
 package com.fortes.rh.test.web.action.sesmt;
 
-import mockit.Mockit;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.fortes.model.type.File;
+import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.MedicoCoordenadorManager;
+import com.fortes.rh.exception.ValidacaoAssinaturaException;
+import com.fortes.rh.model.dicionario.TipoEstabelecimentoResponsavel;
+import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.MedicoCoordenador;
-import com.fortes.rh.security.SecurityUtil;
-import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
+import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
+import com.fortes.rh.test.factory.sesmt.MedicoCoordenadorFactory;
+import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.web.action.sesmt.MedicoCoordenadorEditAction;
+import com.opensymphony.webwork.ServletActionContext;
+import com.opensymphony.xwork.Action;
 
-public class MedicoCoordenadorEditActionTest extends MockObjectTestCase
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({CheckListBoxUtil.class, ServletActionContext.class})
+public class MedicoCoordenadorEditActionTest
 {
 	private MedicoCoordenadorEditAction action;
-	private Mock medicoCoordenadorManager;
+	private MedicoCoordenadorManager medicoCoordenadorManager;
+	private EstabelecimentoManager estabelecimentoManager;
 
-	protected void setUp() throws Exception
+	@Before
+	public void setUp() throws Exception
 	{
-		super.setUp();
-		medicoCoordenadorManager = new Mock(MedicoCoordenadorManager.class);
-
-//		response = new Mock(HttpServletResponse.class);
-
-		Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
-
 		action = new MedicoCoordenadorEditAction();
-		action.setMedicoCoordenadorManager((MedicoCoordenadorManager) medicoCoordenadorManager.proxy());
+		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
+
+		medicoCoordenadorManager = mock(MedicoCoordenadorManager.class);
+		action.setMedicoCoordenadorManager(medicoCoordenadorManager);
+
+		estabelecimentoManager = mock(EstabelecimentoManager.class);
+		action.setEstabelecimentoManager(estabelecimentoManager);
+		
+		PowerMockito.mockStatic(CheckListBoxUtil.class);
+		PowerMockito.mockStatic(ServletActionContext.class);
 	}
 
-	protected void tearDown() throws Exception
-	{
-		Mockit.restoreAllOriginalDefinitions();
-		medicoCoordenadorManager = null;
-		action = null;
-        MockSecurityUtil.verifyRole = false;
-		super.tearDown();
-	}
-
+	@Test
 	public void testExecute() throws Exception
 	{
-		assertEquals(action.execute(), "success");
+		Assert.assertEquals(Action.SUCCESS, action.execute());
 	}
 
+	@Test
 	public void testPrepareInsert() throws Exception
 	{
-		MedicoCoordenador medicoCoordenador = new MedicoCoordenador();
-		medicoCoordenador.setId(1L);
-
-		action.setMedicoCoordenador(medicoCoordenador);
-
-		medicoCoordenadorManager.expects(once()).method("findByIdProjection").with(eq(medicoCoordenador.getId())).will(returnValue(medicoCoordenador));
-		medicoCoordenadorManager.expects(once()).method("getAssinaturaDigital").with(eq(medicoCoordenador.getId())).will(returnValue(new File()));
-		assertEquals(action.prepareInsert(), "success");
-		assertEquals(action.getMedicoCoordenador(), medicoCoordenador);
+		when(estabelecimentoManager.populaCheckBox(action.getEmpresaSistema().getId())).thenReturn(null);
+		
+		Assert.assertEquals(Action.SUCCESS, action.prepareInsert());
 	}
 
-    public void testPrepareUpdate() throws Exception
+	@Test
+    public void testPrepareUpdateComMedico() throws Exception
     {
-    	MedicoCoordenador medicoCoordenador = new MedicoCoordenador();
-    	medicoCoordenador.setId(1L);
-    	medicoCoordenador.setEmpresa(MockSecurityUtil.getEmpresaSession(null));
+    	MedicoCoordenador medicoCoordenador = MedicoCoordenadorFactory.getEntity(1L);
+    	medicoCoordenador.setEmpresa(action.getEmpresaSistema());
+    	
     	action.setMedicoCoordenador(medicoCoordenador);
 
-    	medicoCoordenadorManager.expects(atLeastOnce()).method("findByIdProjection").with(eq(medicoCoordenador.getId())).will(returnValue(medicoCoordenador));
-    	medicoCoordenadorManager.expects(once()).method("getAssinaturaDigital").with(eq(medicoCoordenador.getId())).will(returnValue(new File()));
-    	assertEquals(action.prepareUpdate(), "success");
+		when(medicoCoordenadorManager.findByIdProjection(medicoCoordenador.getId())).thenReturn(medicoCoordenador);
+		when(estabelecimentoManager.populaCheckBox(action.getEmpresaSistema().getId())).thenReturn(null);
 
-    	medicoCoordenadorManager.expects(atLeastOnce()).method("findByIdProjection").with(eq(medicoCoordenador.getId())).will(returnValue(null));
-    	assertEquals(action.prepareUpdate(), "error");
-    	assertNotNull(action.getActionErrors());
-
+    	Assert.assertEquals(Action.SUCCESS, action.prepareUpdate());
     }
+	
+	@Test
+	public void testPrepareUpdateComEmpresaMedicoDiferente() throws Exception
+	{
+		MedicoCoordenador medicoCoordenador = MedicoCoordenadorFactory.getEntity(1L);
+		medicoCoordenador.setEmpresa(EmpresaFactory.getEmpresa(2L));
+		
+		action.setMedicoCoordenador(medicoCoordenador);
+		
+		when(medicoCoordenadorManager.findByIdProjection(medicoCoordenador.getId())).thenReturn(medicoCoordenador);
+		when(estabelecimentoManager.populaCheckBox(action.getEmpresaSistema().getId())).thenReturn(null);
+		
+		Assert.assertEquals(Action.ERROR, action.prepareUpdate());
+    	Assert.assertTrue(action.getActionWarnings().iterator().next().toString().startsWith("O médico solicitado não existe na empresa"));
+	}
+	
+	@Test
+	public void testPrepareUpdateComMedicoNulo() throws Exception
+	{
+		MedicoCoordenador medicoCoordenador = null;
+		action.setMedicoCoordenador(medicoCoordenador);
+		
+		when(estabelecimentoManager.populaCheckBox(action.getEmpresaSistema().getId())).thenReturn(null);
+		
+    	Assert.assertEquals(Action.ERROR, action.prepareUpdate());
+    	Assert.assertTrue(action.getActionWarnings().iterator().next().toString().startsWith("O médico solicitado não existe na empresa"));
+	}
 
-    public void testInsert() throws Exception
+	@Test
+	public void testInsertMedicoCoordenadorAlgunsEstabelecimentos() throws Exception
+	{
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(1L);
+		Long[] estabelecimentosCheck = new Long[]{estabelecimento.getId()};
+		Collection<Estabelecimento> estabelecimentos = Arrays.asList(estabelecimento);
+		
+		MedicoCoordenador medicoCoordenador = MedicoCoordenadorFactory.getEntity(action.getEmpresaSistema(), new Date(), TipoEstabelecimentoResponsavel.ALGUNS, estabelecimentos);
+		medicoCoordenador.setId(1L);
+		
+		action.setMedicoCoordenador(medicoCoordenador);
+		action.setEstabelecimentosCheck(estabelecimentosCheck);
+		
+		Assert.assertEquals(Action.SUCCESS, action.insert());
+		Assert.assertTrue(action.getActionSuccess().iterator().next().toString().equals("Médico coordenador gravado com sucesso."));
+		
+		verify(medicoCoordenadorManager, times(1)).insere(medicoCoordenador, estabelecimentosCheck);
+	}
+
+	
+	@Test
+    public void testInsertException() throws Exception
     {
-    	MedicoCoordenador medicoCoordenador = new MedicoCoordenador();
+		MedicoCoordenador medicoCoordenador = MedicoCoordenadorFactory.getEntity(action.getEmpresaSistema(), new Date(), TipoEstabelecimentoResponsavel.TODOS, null);
     	medicoCoordenador.setId(1L);
     	action.setMedicoCoordenador(medicoCoordenador);
 
-		medicoCoordenadorManager.expects(once()).method("save").with(eq(medicoCoordenador)).will(returnValue(medicoCoordenador));
+    	doThrow(Exception.class).when(medicoCoordenadorManager).insere(medicoCoordenador, null);
 
-    	assertEquals(action.insert(), "success");
-    	assertEquals(action.getMedicoCoordenador(), medicoCoordenador);
-
+		Assert.assertEquals(Action.INPUT, action.insert());
+    	Assert.assertTrue(action.getActionErrors().iterator().next().toString().equals("Cadastro não pôde ser realizado."));
     }
+	@Test
+	public void testInsertValidacaoAssinaturaException() throws Exception
+	{
+		MedicoCoordenador medicoCoordenador = MedicoCoordenadorFactory.getEntity(action.getEmpresaSistema(), new Date(), TipoEstabelecimentoResponsavel.TODOS, null);
+		medicoCoordenador.setId(1L);
+		action.setMedicoCoordenador(medicoCoordenador);
+		
+		doThrow(ValidacaoAssinaturaException.class).when(medicoCoordenadorManager).insere(medicoCoordenador, null);
+		
+		Assert.assertEquals(Action.INPUT, action.insert());
+		Assert.assertTrue(action.getActionErrors().iterator().next().toString().equals("Cadastro não pôde ser realizado."));
+	}
 
-    public void testInsertAssinaturaInvalida() throws Exception
-    {
-    	MedicoCoordenador medicoCoordenador = new MedicoCoordenador();
-    	medicoCoordenador.setId(1L);
-    	File assinatura = new File();
-    	assinatura.setContentType("text/html");//formato invalido
-    	medicoCoordenador.setAssinaturaDigital(assinatura);
-    	action.setMedicoCoordenador(medicoCoordenador);
-
-    	//prepareInsert
-    	medicoCoordenadorManager.expects(once()).method("findByIdProjection").with(eq(medicoCoordenador.getId())).will(returnValue(medicoCoordenador));
-		medicoCoordenadorManager.expects(once()).method("getAssinaturaDigital").with(eq(medicoCoordenador.getId())).will(returnValue(new File()));
-
-    	assertEquals(action.insert(), "input");
-    }
-
+	@Test
     public void testUpdate() throws Exception
     {
-    	MedicoCoordenador medicoCoordenador = new MedicoCoordenador();
+		MedicoCoordenador medicoCoordenador = MedicoCoordenadorFactory.getEntity(action.getEmpresaSistema(), new Date(), TipoEstabelecimentoResponsavel.TODOS, null);
     	medicoCoordenador.setId(1L);
-    	medicoCoordenador.setEmpresa(MockSecurityUtil.getEmpresaSession(null));
+    	
+    	Boolean manterAssinatura = Boolean.TRUE;
     	action.setMedicoCoordenador(medicoCoordenador);
+    	action.setManterAssinatura(Boolean.TRUE);
 
-    	medicoCoordenadorManager.expects(once()).method("update").with(eq(medicoCoordenador));
+    	Assert.assertEquals(Action.SUCCESS, action.update());
+    	Assert.assertEquals(action.getMedicoCoordenador(), medicoCoordenador);
+		Assert.assertTrue(action.getActionSuccess().iterator().next().toString().equals("Médico coordenador atualizado com sucesso."));
 
-    	assertEquals(action.update(), "success");
-    	assertEquals(action.getMedicoCoordenador(), medicoCoordenador);
+    	verify(medicoCoordenadorManager, times(1)).atualiza(medicoCoordenador, null, manterAssinatura);
     }
+	
+	@Test
+	public void testUpdateException() throws Exception
+	{
+		MedicoCoordenador medicoCoordenador = MedicoCoordenadorFactory.getEntity(action.getEmpresaSistema(), new Date(), TipoEstabelecimentoResponsavel.TODOS, null);
+		medicoCoordenador.setId(1L);
+		
+		Boolean manterAssinatura = Boolean.TRUE;
+		action.setMedicoCoordenador(medicoCoordenador);
+		action.setManterAssinatura(Boolean.TRUE);
+		
+		doThrow(Exception.class).when(medicoCoordenadorManager).atualiza(medicoCoordenador, null, manterAssinatura);
+		
+		Assert.assertEquals(Action.INPUT, action.update());
+		Assert.assertTrue(action.getActionErrors().iterator().next().toString().equals("Atualização não pôde ser realizada."));
+	}
+	
+	@Test
+	public void testUpdateValidacaoAssinaturaException() throws Exception
+	{
+		MedicoCoordenador medicoCoordenador = MedicoCoordenadorFactory.getEntity(action.getEmpresaSistema(), new Date(), TipoEstabelecimentoResponsavel.TODOS, null);
+		medicoCoordenador.setId(1L);
+		
+		Boolean manterAssinatura = Boolean.TRUE;
+		action.setMedicoCoordenador(medicoCoordenador);
+		action.setManterAssinatura(Boolean.TRUE);
+		
+		doThrow(ValidacaoAssinaturaException.class).when(medicoCoordenadorManager).atualiza(medicoCoordenador, null, manterAssinatura);
+		
+		Assert.assertEquals(Action.INPUT, action.update());
+		Assert.assertTrue(action.getActionErrors().iterator().next().toString().equals("Atualização não pôde ser realizada."));
+	}
 
-    public void testUpdateAssinaturaInvalida() throws Exception
-    {
+	@Test
+    public void testShowAssinatura() throws Exception
+	{
     	MedicoCoordenador medicoCoordenador = new MedicoCoordenador();
     	medicoCoordenador.setId(1L);
-    	medicoCoordenador.setEmpresa(MockSecurityUtil.getEmpresaSession(null));
+    	
     	File assinatura = new File();
-    	assinatura.setContentType("text/html");//formato invalido
-    	medicoCoordenador.setAssinaturaDigital(assinatura);
+    	assinatura.setContentType("image/jpeg");
+    	assinatura.setBytes(new byte[]{2,3,127,4,43,3,31});
+    	
+    	HttpServletResponse response = mock(HttpServletResponse.class);
+    	ServletOutputStream outputStream = mock(ServletOutputStream.class);
+    	
     	action.setMedicoCoordenador(medicoCoordenador);
+    	
+    	when(medicoCoordenadorManager.getAssinaturaDigital(medicoCoordenador.getId())).thenReturn(assinatura);
+    	when(ServletActionContext.getResponse()).thenReturn(response);
+    	when(response.getOutputStream()).thenReturn(outputStream);
 
-    	//prepareInsert
-    	medicoCoordenadorManager.expects(once()).method("findByIdProjection").with(eq(medicoCoordenador.getId())).will(returnValue(medicoCoordenador));
-		medicoCoordenadorManager.expects(once()).method("getAssinaturaDigital").with(eq(medicoCoordenador.getId())).will(returnValue(new File()));
-
-    	assertEquals("input", action.insert());
-    }
-
-     // TODO . Como mockar HttpServletResponse?
-//    public void testShowAssinatura() throws Exception
-//	{
-//    	MedicoCoordenador medicoCoordenador = new MedicoCoordenador();
-//    	medicoCoordenador.setId(1L);
-//    	File assinatura = new File();
-//    	assinatura.setContentType("image/jpeg");
-//    	assinatura.setBytes(new byte[]{2,3,127,4,43,3,31});
-//    	action.setMedicoCoordenador(medicoCoordenador);
-//
-//    	medicoCoordenadorManager.expects(once()).method("getAssinaturaDigital").with(eq(medicoCoordenador.getId())).will(returnValue(assinatura));
-//
-//    	response.expects(once()).method("addHeader").with(ANYTHING, ANYTHING).isVoid();
-//    	response.expects(once()).method("addHeader").with(ANYTHING, ANYTHING).isVoid();
-//    	response.expects(once()).method("addHeader").with(ANYTHING, ANYTHING).isVoid();
-//    	response.expects(once()).method("addHeader").with(ANYTHING, ANYTHING).isVoid();
-//
-//
-//    	assertEquals("success", action.showAssinatura());
-//	}
-
-    public void testGetSet() throws Exception
-    {
-    	action.setMedicoCoordenador(null);
-        action.getMedicoCoordenador();
-        action.getModel();
-    }
+    	Assert.assertEquals(Action.SUCCESS, action.showAssinatura());
+	}
 }

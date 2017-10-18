@@ -33,11 +33,11 @@ public class MedicoCoordenadorListAction extends MyActionSupportList
 		try
 		{
 			medicoCoordenadorManager.remove(new Long[]{medicoCoordenador.getId()});
-			addActionMessage("Médico Coordenador excluído com sucesso.");
+			addActionSuccess("Médico coordenador excluído com sucesso.");
 		}
 		catch (Exception e)
 		{
-			addActionError("Não foi possível excluir este Médico Coordenador.");
+			addActionError("Não foi possível excluir este médico coordenador.");
 			e.printStackTrace();
 		}
 

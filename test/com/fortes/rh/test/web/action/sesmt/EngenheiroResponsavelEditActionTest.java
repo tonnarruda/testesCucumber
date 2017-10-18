@@ -1,105 +1,157 @@
 package com.fortes.rh.test.web.action.sesmt;
 
-import mockit.Mockit;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
 
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
+import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.EngenheiroResponsavelManager;
+import com.fortes.rh.model.dicionario.TipoEstabelecimentoResponsavel;
+import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.EngenheiroResponsavel;
-import com.fortes.rh.security.SecurityUtil;
-import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
+import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
+import com.fortes.rh.test.factory.sesmt.EngenheiroResponsavelFactory;
+import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.web.action.sesmt.EngenheiroResponsavelEditAction;
+import com.opensymphony.xwork.Action;
 
-public class EngenheiroResponsavelEditActionTest extends MockObjectTestCase
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(CheckListBoxUtil.class)
+public class EngenheiroResponsavelEditActionTest 
 {
 	private EngenheiroResponsavelEditAction action;
-	private Mock manager;
-
-	protected void setUp() throws Exception
+	private EngenheiroResponsavelManager engenheiroResponsavelManager;
+	private EstabelecimentoManager estabelecimentoManager;
+	
+	@Before
+	public void setUp() throws Exception
 	{
-		super.setUp();
-		manager = new Mock(EngenheiroResponsavelManager.class);
-
-		Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
-
 		action = new EngenheiroResponsavelEditAction();
-		action.setEngenheiroResponsavelManager((EngenheiroResponsavelManager) manager.proxy());
+		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
+		
+		engenheiroResponsavelManager = Mockito.mock(EngenheiroResponsavelManager.class);
+		action.setEngenheiroResponsavelManager(engenheiroResponsavelManager);
+		
+		estabelecimentoManager = Mockito.mock(EstabelecimentoManager.class);
+		action.setEstabelecimentoManager(estabelecimentoManager);
+		
+		PowerMockito.mockStatic(CheckListBoxUtil.class);
 	}
 
-	protected void tearDown() throws Exception
-	{
-		Mockit.restoreAllOriginalDefinitions();
-		manager = null;
-		action = null;
-        MockSecurityUtil.verifyRole = false;
-		super.tearDown();
-	}
-
+	@Test
 	public void testExecute() throws Exception
 	{
-		assertEquals(action.execute(), "success");
+		Assert.assertEquals(Action.SUCCESS, action.execute());
 	}
 
+	@Test
 	public void testPrepareInsert() throws Exception
 	{
-		EngenheiroResponsavel engenheiroResponsavel = new EngenheiroResponsavel();
-		engenheiroResponsavel.setId(1L);
-
-		action.setEngenheiroResponsavel(engenheiroResponsavel);
-
-		manager.expects(once()).method("findByIdProjection").with(eq(engenheiroResponsavel.getId())).will(returnValue(engenheiroResponsavel));
-
-		assertEquals(action.prepareInsert(), "success");
-		assertEquals(action.getEngenheiroResponsavel(), engenheiroResponsavel);
+		Mockito.when(estabelecimentoManager.populaCheckBox(action.getEmpresaSistema().getId())).thenReturn(null);
+		
+		Assert.assertEquals(Action.SUCCESS, action.prepareInsert());
 	}
 
-    public void testPrepareUpdate() throws Exception
+	@Test
+    public void testPrepareUpdateComEngenheiro() throws Exception
     {
-    	EngenheiroResponsavel engenheiroResponsavel = new EngenheiroResponsavel();
-    	engenheiroResponsavel.setId(1L);
-    	engenheiroResponsavel.setEmpresa(MockSecurityUtil.getEmpresaSession(null));
+    	EngenheiroResponsavel engenheiroResponsavel = EngenheiroResponsavelFactory.getEntity(1L);
+    	engenheiroResponsavel.setEmpresa(action.getEmpresaSistema());
+    	
     	action.setEngenheiroResponsavel(engenheiroResponsavel);
 
-    	manager.expects(atLeastOnce()).method("findByIdProjection").with(eq(engenheiroResponsavel.getId())).will(returnValue(engenheiroResponsavel));
-    	assertEquals(action.prepareUpdate(), "success");
+		Mockito.when(engenheiroResponsavelManager.findByIdProjection(engenheiroResponsavel.getId())).thenReturn(engenheiroResponsavel);
+		Mockito.when(estabelecimentoManager.populaCheckBox(action.getEmpresaSistema().getId())).thenReturn(null);
 
-    	manager.expects(atLeastOnce()).method("findByIdProjection").with(eq(engenheiroResponsavel.getId())).will(returnValue(null));
-    	assertEquals(action.prepareUpdate(), "error");
-    	assertNotNull(action.getActionErrors());
-
+    	Assert.assertEquals(Action.SUCCESS, action.prepareUpdate());
     }
+	
+	@Test
+	public void testPrepareUpdateComEngenheiroNulo() throws Exception
+	{
+		EngenheiroResponsavel engenheiroResponsavel = null;
+		action.setEngenheiroResponsavel(engenheiroResponsavel);
+		
+		Mockito.when(estabelecimentoManager.populaCheckBox(action.getEmpresaSistema().getId())).thenReturn(null);
+		
+    	Assert.assertEquals(Action.ERROR, action.prepareUpdate());
+    	Assert.assertTrue(action.getActionWarnings().iterator().next().toString().startsWith("O engenheiro solicitado não existe na empresa"));
+		
+	}
 
-    public void testInsert() throws Exception
+	@Test
+    public void testInsertEngenheiroResponsavelTodosEstabelecimentos() throws Exception
     {
-    	EngenheiroResponsavel engenheiroResponsavel = new EngenheiroResponsavel();
+    	EngenheiroResponsavel engenheiroResponsavel = EngenheiroResponsavelFactory.getEntity(action.getEmpresaSistema(), new Date(), TipoEstabelecimentoResponsavel.TODOS, null);
     	engenheiroResponsavel.setId(1L);
     	action.setEngenheiroResponsavel(engenheiroResponsavel);
 
-		manager.expects(once()).method("save").with(eq(engenheiroResponsavel)).will(returnValue(engenheiroResponsavel));
+    	Mockito.when(engenheiroResponsavelManager.save(engenheiroResponsavel)).thenReturn(engenheiroResponsavel);
 
-    	assertEquals(action.insert(), "success");
-    	assertEquals(action.getEngenheiroResponsavel(), engenheiroResponsavel);
-
+		Assert.assertEquals(Action.SUCCESS, action.insert());
+    	Assert.assertTrue(action.getActionSuccess().iterator().next().toString().equals("Engenheiro responsável gravado com sucesso."));
     }
+	
+	@Test
+	public void testInsertEngenheiroResponsavelAlgunsEstabelecimentos() throws Exception
+	{
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(1L);
+		Long[] estabelecimentosCheck = new Long[]{estabelecimento.getId()};
+		Collection<Estabelecimento> estabelecimentos = Arrays.asList(estabelecimento);
+		
+		action.setEstabelecimentosCheck(estabelecimentosCheck);
+		
+		EngenheiroResponsavel engenheiroResponsavel = EngenheiroResponsavelFactory.getEntity(action.getEmpresaSistema(), new Date(), TipoEstabelecimentoResponsavel.ALGUNS, estabelecimentos);
+		engenheiroResponsavel.setId(1L);
+		action.setEngenheiroResponsavel(engenheiroResponsavel);
+		
+		Mockito.when(engenheiroResponsavelManager.save(engenheiroResponsavel)).thenReturn(engenheiroResponsavel);
+    	Mockito.when(estabelecimentoManager.findById(estabelecimentosCheck)).thenReturn(estabelecimentos);
+		
+		Assert.assertEquals(Action.SUCCESS, action.insert());
+		Assert.assertTrue(action.getActionSuccess().iterator().next().toString().equals("Engenheiro responsável gravado com sucesso."));
+	}
 
-    public void testUpdate() throws Exception
+	@Test
+    public void testUpdateTodosEstabelecimentos() throws Exception
     {
-    	EngenheiroResponsavel engenheiroResponsavel = new EngenheiroResponsavel();
+    	EngenheiroResponsavel engenheiroResponsavel = EngenheiroResponsavelFactory.getEntity(action.getEmpresaSistema(), new Date(), TipoEstabelecimentoResponsavel.TODOS, null);
     	engenheiroResponsavel.setId(1L);
-    	engenheiroResponsavel.setEmpresa(MockSecurityUtil.getEmpresaSession(null));
     	action.setEngenheiroResponsavel(engenheiroResponsavel);
 
-    	manager.expects(once()).method("update").with(eq(engenheiroResponsavel));
+    	Mockito.when(engenheiroResponsavelManager.save(engenheiroResponsavel)).thenReturn(engenheiroResponsavel);
 
-    	assertEquals(action.update(), "success");
-    	assertEquals(action.getEngenheiroResponsavel(), engenheiroResponsavel);
-
+		Assert.assertEquals(Action.SUCCESS, action.update());
+    	Assert.assertTrue(action.getActionSuccess().iterator().next().toString().equals("Engenheiro responsável atualizado com sucesso."));
     }
 
-    public void testGetSet() throws Exception
-    {
-    	action.setEngenheiroResponsavel(null);
-        action.getEngenheiroResponsavel();
-    }
+	@Test
+	public void testUpdateEngenheiroResponsavelAlgunsEstabelecimentos() throws Exception
+	{
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(1L);
+		Long[] estabelecimentosCheck = new Long[]{estabelecimento.getId()};
+		Collection<Estabelecimento> estabelecimentos = Arrays.asList(estabelecimento);
+		
+		action.setEstabelecimentosCheck(estabelecimentosCheck);
+		
+		EngenheiroResponsavel engenheiroResponsavel = EngenheiroResponsavelFactory.getEntity(action.getEmpresaSistema(), new Date(), TipoEstabelecimentoResponsavel.ALGUNS, estabelecimentos);
+		engenheiroResponsavel.setId(1L);
+		action.setEngenheiroResponsavel(engenheiroResponsavel);
+		
+		Mockito.when(engenheiroResponsavelManager.save(engenheiroResponsavel)).thenReturn(engenheiroResponsavel);
+    	Mockito.when(estabelecimentoManager.findById(estabelecimentosCheck)).thenReturn(estabelecimentos);
+		
+		Assert.assertEquals(Action.SUCCESS, action.update());
+		Assert.assertTrue(action.getActionSuccess().iterator().next().toString().equals("Engenheiro responsável atualizado com sucesso."));
+	}
 }

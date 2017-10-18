@@ -139,5 +139,4 @@ public class EstabelecimentoManagerTest extends MockObjectTestCase
     	
     	assertEquals(1, estabelecimentoManager.populaCheckBox(new Long[]{empresa.getId()}).size());
     }
-
 }

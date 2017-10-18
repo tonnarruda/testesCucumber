@@ -9,5 +9,5 @@ import com.fortes.rh.model.sesmt.EngenheiroResponsavel;
 public interface EngenheiroResponsavelDao extends GenericDao<EngenheiroResponsavel>
 {
 	EngenheiroResponsavel findByIdProjection(Long engenheiroResponsavelId);
-	Collection<EngenheiroResponsavel> findAllByEmpresa(Long empresaId);
+	Collection<EngenheiroResponsavel> findResponsaveisPorEstabelecimento(Long empresaId, Long estabelecimentoId);
 }

@@ -1,10 +1,19 @@
 package com.fortes.rh.web.action.sesmt;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import javax.servlet.http.HttpServletResponse;
 
+import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.MedicoCoordenadorManager;
+import com.fortes.rh.exception.ValidacaoAssinaturaException;
+import com.fortes.rh.model.dicionario.TipoEstabelecimentoResponsavel;
 import com.fortes.rh.model.sesmt.MedicoCoordenador;
+import com.fortes.rh.util.CheckListBoxUtil;
+import com.fortes.rh.util.ModelUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
+import com.fortes.web.tags.CheckBox;
 import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ModelDriven;
@@ -14,18 +23,27 @@ public class MedicoCoordenadorEditAction extends MyActionSupportEdit implements 
 	private static final long serialVersionUID = 1L;
 
 	private MedicoCoordenadorManager medicoCoordenadorManager;
+	private EstabelecimentoManager estabelecimentoManager;
 
 	private MedicoCoordenador medicoCoordenador;
 	private boolean manterAssinatura;
 
+	private Long[] estabelecimentosCheck;
+	private Collection<CheckBox> estabelecimentosCheckList = new ArrayList<CheckBox>();
+
+	private TipoEstabelecimentoResponsavel tipoEstabelecimentoResponsavel = new TipoEstabelecimentoResponsavel();
+			
 	private void prepare() throws Exception
 	{
-		if(medicoCoordenador != null && medicoCoordenador.getId() != null)
+		if(ModelUtil.hasNotNull("getId()", medicoCoordenador))
 		{
-			medicoCoordenador = (MedicoCoordenador) medicoCoordenadorManager.findByIdProjection(medicoCoordenador.getId());
-			if (medicoCoordenador != null)
+			medicoCoordenador = medicoCoordenadorManager.findByIdProjection(medicoCoordenador.getId());
+			if (medicoCoordenador != null){
 				medicoCoordenador.setAssinaturaDigital(medicoCoordenadorManager.getAssinaturaDigital(medicoCoordenador.getId()));
+				medicoCoordenador.setEstabelecimentos(estabelecimentoManager.findByMedicoCoordenador(medicoCoordenador.getId(), Boolean.TRUE));
+			}
 		}
+		estabelecimentosCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());			
 	}
 
 	public String prepareInsert() throws Exception
@@ -37,47 +55,58 @@ public class MedicoCoordenadorEditAction extends MyActionSupportEdit implements 
 	public String prepareUpdate() throws Exception
 	{
 		prepare();
-
 		if(medicoCoordenador == null || !getEmpresaSistema().getId().equals(medicoCoordenador.getEmpresa().getId()))
 		{
-			addActionError("O Médico solicitado não existe na empresa " + getEmpresaSistema().getNome() +".");
+			addActionWarning("O médico solicitado não existe na empresa " + getEmpresaSistema().getNome() +".");
 			return Action.ERROR;
 		}
+		estabelecimentosCheckList = CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, medicoCoordenador.getEstabelecimentos());
 
 		return Action.SUCCESS;
 	}
 
 	public String insert() throws Exception
 	{
-		if(!assinaturaValida(medicoCoordenador.getAssinaturaDigital()))
-		{
+		try {
+			medicoCoordenador.setEmpresa(getEmpresaSistema());
+			medicoCoordenadorManager.insere(medicoCoordenador, estabelecimentosCheck);
+			
+			addActionSuccess("Médico coordenador gravado com sucesso.");
+		} catch (Exception e) {
+			processaException(e);
 			prepareInsert();
-			medicoCoordenador.setAssinaturaDigital(null);
+
+			addActionError("Cadastro não pôde ser realizado.");
 			return Action.INPUT;
 		}
 
-		medicoCoordenador.setEmpresa(getEmpresaSistema());
-		medicoCoordenadorManager.save(medicoCoordenador);
 		return Action.SUCCESS;
 	}
 
 	public String update() throws Exception
 	{
-		medicoCoordenador.setEmpresa(getEmpresaSistema());
-
-		if (manterAssinatura)
-		{
-			medicoCoordenador.setAssinaturaDigital(medicoCoordenadorManager.getAssinaturaDigital(medicoCoordenador.getId()));
-		}
-		else if(!assinaturaValida(medicoCoordenador.getAssinaturaDigital()))
-		{
+		try {
+			medicoCoordenador.setEmpresa(getEmpresaSistema());
+			medicoCoordenadorManager.atualiza(medicoCoordenador, estabelecimentosCheck, manterAssinatura);
+			
+			addActionSuccess("Médico coordenador atualizado com sucesso.");
+		} catch (Exception e) {
+			processaException(e);
 			prepareUpdate();
-			medicoCoordenador.setAssinaturaDigital(null);
+			
+			addActionError("Atualização não pôde ser realizada.");
 			return Action.INPUT;
 		}
 
-		medicoCoordenadorManager.update(medicoCoordenador);
 		return Action.SUCCESS;
+	}
+
+	private void processaException(Exception exception) {
+		if(exception instanceof ValidacaoAssinaturaException){
+			medicoCoordenador.setAssinaturaDigital(null);
+			addActionWarning(exception.getMessage());
+		}
+		exception.printStackTrace();
 	}
 
 	public String showAssinatura() throws Exception
@@ -99,30 +128,6 @@ public class MedicoCoordenadorEditAction extends MyActionSupportEdit implements 
 		}
 
 		return Action.SUCCESS;
-	}
-
-	private boolean assinaturaValida(com.fortes.model.type.File assinatura)
-	{
-		boolean fotoValida =  true;
-		if(assinatura != null)
-		{
-			if(assinatura.getContentType().length() >= 5)
-			{
-				if(!assinatura.getContentType().substring(0, 5).equals("image"))
-				{
-					addActionError("Tipo de arquivo não suportado");
-					fotoValida = false;
-				}
-
-				else if(assinatura.getSize() > 524288)
-				{
-					addActionError("Tamanho do arquivo maior que o suportado");
-					fotoValida = false;
-				}
-			}
-		}
-
-		return fotoValida;
 	}
 
 	public Object getModel()
@@ -155,5 +160,25 @@ public class MedicoCoordenadorEditAction extends MyActionSupportEdit implements 
 	public void setManterAssinatura(boolean manterAssinatura)
 	{
 		this.manterAssinatura = manterAssinatura;
+	}
+
+	public void setEstabelecimentosCheck(Long[] estabelecimentosCheck) {
+		this.estabelecimentosCheck = estabelecimentosCheck;
+	}
+	
+	public TipoEstabelecimentoResponsavel getTipoEstabelecimentoResponsavel() {
+		return tipoEstabelecimentoResponsavel;
+	}
+	
+	public Collection<CheckBox> getEstabelecimentosCheckList() {
+		return estabelecimentosCheckList;
+	}
+	
+	public String getTipoEstabelecimentoResponsavelAlguns() {
+		return TipoEstabelecimentoResponsavel.ALGUNS;
+	}
+
+	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager) {
+		this.estabelecimentoManager = estabelecimentoManager;
 	}
 }

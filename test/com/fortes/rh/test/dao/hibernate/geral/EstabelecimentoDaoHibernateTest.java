@@ -1,6 +1,11 @@
 package com.fortes.rh.test.dao.hibernate.geral;
 
+import java.util.Arrays;
 import java.util.Collection;
+
+import org.junit.Assert;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.geral.CidadeDao;
@@ -8,31 +13,53 @@ import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.geral.EstabelecimentoDao;
 import com.fortes.rh.dao.geral.EstadoDao;
 import com.fortes.rh.dao.geral.GrupoACDao;
+import com.fortes.rh.dao.sesmt.EngenheiroResponsavelDao;
+import com.fortes.rh.dao.sesmt.MedicoCoordenadorDao;
+import com.fortes.rh.model.dicionario.TipoEstabelecimentoResponsavel;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Endereco;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.geral.GrupoAC;
-import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.model.sesmt.EngenheiroResponsavel;
+import com.fortes.rh.model.sesmt.MedicoCoordenador;
+import com.fortes.rh.test.dao.GenericDaoHibernateTest_JUnit4;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.geral.CidadeFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.geral.EstadoFactory;
+import com.fortes.rh.test.factory.sesmt.EngenheiroResponsavelFactory;
+import com.fortes.rh.test.factory.sesmt.MedicoCoordenadorFactory;
 
-public class EstabelecimentoDaoHibernateTest extends GenericDaoHibernateTest<Estabelecimento>
+
+public class EstabelecimentoDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<Estabelecimento>
 {
+	@Autowired
 	private EstabelecimentoDao estabelecimentoDao;
+	@Autowired
 	private EmpresaDao empresaDao;
+	@Autowired
 	private GrupoACDao grupoACDao;
+	@Autowired
 	private CidadeDao cidadeDao;
+	@Autowired
 	private EstadoDao estadoDao;
+	@Autowired
+	private MedicoCoordenadorDao medicoCoordenadorDao;
+	@Autowired
+	private EngenheiroResponsavelDao engenheiroResponsavelDao;
 
-	public Estabelecimento getEntity()
-	{
+	public Estabelecimento getEntity() {
 		return EstabelecimentoFactory.getEntity();
 	}
 
+	@Override
+	public GenericDao<Estabelecimento> getGenericDao() {
+		return estabelecimentoDao;
+	}
+
+	@Test
 	public void testRemoveByCodigo()
 	{
 		GrupoAC grupoAC = new GrupoAC("XXX", "desc");
@@ -49,13 +76,14 @@ public class EstabelecimentoDaoHibernateTest extends GenericDaoHibernateTest<Est
 		estabelecimento.setCodigoAC("123456");
 		estabelecimento = estabelecimentoDao.save(estabelecimento);
 
-		assertEquals(true, estabelecimentoDao.remove("123456", idEmpresa));
+		Assert.assertTrue(estabelecimentoDao.remove("123456", idEmpresa));
 
 		Estabelecimento est = estabelecimentoDao.findByCodigo("123456", "001122", "XXX");
 
-		assertNull(est);
+		Assert.assertNull(est);
 	}
 
+	@Test
 	public void testFindByCodigo()
 	{
 		GrupoAC grupoAC = new GrupoAC("XXX", "desc");
@@ -73,10 +101,11 @@ public class EstabelecimentoDaoHibernateTest extends GenericDaoHibernateTest<Est
 
 		Estabelecimento est = estabelecimentoDao.findByCodigo("123456", "001122", "XXX");
 
-		assertNotNull(est);
-		assertEquals("123456", est.getCodigoAC());
+		Assert.assertNotNull(est);
+		Assert.assertEquals("123456", est.getCodigoAC());
 	}
 
+	@Test
 	public void testFindEstabelecimentoCodigoAc()
 	{
 		Estabelecimento estabelecimentoRetorno = EstabelecimentoFactory.getEntity();
@@ -85,9 +114,10 @@ public class EstabelecimentoDaoHibernateTest extends GenericDaoHibernateTest<Est
 
 		Estabelecimento estabelecimento = estabelecimentoDao.findEstabelecimentoCodigoAc(estabelecimentoRetorno.getId());
 
-		assertEquals("0001", estabelecimento.getCodigoAC());
+		Assert.assertEquals("0001", estabelecimento.getCodigoAC());
 	}
 
+	@Test
 	public void testFindEstabelecimento()
 	{
 		Empresa empresa1 = EmpresaFactory.getEmpresa();
@@ -107,10 +137,11 @@ public class EstabelecimentoDaoHibernateTest extends GenericDaoHibernateTest<Est
 		Collection<Estabelecimento> estabelecimentosEmpresa1 = estabelecimentoDao.findEstabelecimentos(estabelecimentosIds, empresa1.getId());
 		Collection<Estabelecimento> estabelecimentosGeral = estabelecimentoDao.findEstabelecimentos(estabelecimentosIds, null);
 		
-		assertEquals("Estabelecimentos da empresa 1", 1, estabelecimentosEmpresa1.size());
-		assertEquals("Estabelecimentos geral", 2, estabelecimentosGeral.size());
+		Assert.assertEquals("Estabelecimentos da empresa 1", 1, estabelecimentosEmpresa1.size());
+		Assert.assertEquals("Estabelecimentos geral", 2, estabelecimentosGeral.size());
 	}
 
+	@Test
 	public void testFindEstabelecimentoByCodigoAc()
 	{
 		GrupoAC grupoAC = new GrupoAC("XXX", "desc");
@@ -128,9 +159,10 @@ public class EstabelecimentoDaoHibernateTest extends GenericDaoHibernateTest<Est
 
 		Estabelecimento estabelecimentoRetorno = estabelecimentoDao.findEstabelecimentoByCodigoAc(estabelecimento.getCodigoAC(), empresa.getCodigoAC(), "XXX");
 
-		assertEquals(estabelecimento, estabelecimentoRetorno);
+		Assert.assertEquals(estabelecimento, estabelecimentoRetorno);
 	}
 
+	@Test
 	public void testVerificaCnpjExiste()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -148,7 +180,7 @@ public class EstabelecimentoDaoHibernateTest extends GenericDaoHibernateTest<Est
 
 		boolean existeCnpj = estabelecimentoDao.verificaCnpjExiste("0001", estabelecimentoRetorno.getId(), estabelecimentoRetorno.getEmpresa().getId());
 
-		assertTrue(existeCnpj);
+		Assert.assertTrue(existeCnpj);
 
 		Estabelecimento estabelecimentoRetornoFalse = EstabelecimentoFactory.getEntity();
 		estabelecimentoRetornoFalse.setComplementoCnpj("1256");
@@ -157,10 +189,11 @@ public class EstabelecimentoDaoHibernateTest extends GenericDaoHibernateTest<Est
 
 		existeCnpj = estabelecimentoDao.verificaCnpjExiste("1256", estabelecimentoRetornoFalse.getId(),estabelecimentoRetornoFalse.getEmpresa().getId());
 
-		assertFalse(existeCnpj);
+		Assert.assertFalse(existeCnpj);
 
 	}
 
+	@Test
 	public void testAllSelect()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -195,12 +228,13 @@ public class EstabelecimentoDaoHibernateTest extends GenericDaoHibernateTest<Est
 
 		Collection<Estabelecimento> estabelecimentos = estabelecimentoDao.findAllSelect(empresa.getId());
 
-		assertEquals("Test 1", 3, estabelecimentos.size());
-		assertEquals("Test 2", estabelecimento1.getId(), ((Estabelecimento)(estabelecimentos.toArray()[0])).getId() );
-		assertEquals("Test 3", estabelecimento4.getId(), ((Estabelecimento)(estabelecimentos.toArray()[1])).getId() );
-		assertEquals("Test 4", estabelecimento2.getId(), ((Estabelecimento)(estabelecimentos.toArray()[2])).getId() );
+		Assert.assertEquals("Test 1", 3, estabelecimentos.size());
+		Assert.assertEquals("Test 2", estabelecimento1.getId(), ((Estabelecimento)(estabelecimentos.toArray()[0])).getId() );
+		Assert.assertEquals("Test 3", estabelecimento4.getId(), ((Estabelecimento)(estabelecimentos.toArray()[1])).getId() );
+		Assert.assertEquals("Test 4", estabelecimento2.getId(), ((Estabelecimento)(estabelecimentos.toArray()[2])).getId() );
 	}
 	
+	@Test
 	public void testAllByEmpresa()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -257,12 +291,13 @@ public class EstabelecimentoDaoHibernateTest extends GenericDaoHibernateTest<Est
 		
 		Collection<Estabelecimento> estabelecimentos = estabelecimentoDao.findByEmpresa(empresa.getId());
 		
-		assertEquals("Test 1", 3, estabelecimentos.size());
-		assertEquals("Test 2", estabelecimento1.getId(), ((Estabelecimento)(estabelecimentos.toArray()[0])).getId() );
-		assertEquals("Test 3", estabelecimento4.getId(), ((Estabelecimento)(estabelecimentos.toArray()[1])).getId() );
-		assertEquals("Test 4", estabelecimento2.getId(), ((Estabelecimento)(estabelecimentos.toArray()[2])).getId() );
+		Assert.assertEquals("Test 1", 3, estabelecimentos.size());
+		Assert.assertEquals("Test 2", estabelecimento1.getId(), ((Estabelecimento)(estabelecimentos.toArray()[0])).getId() );
+		Assert.assertEquals("Test 3", estabelecimento4.getId(), ((Estabelecimento)(estabelecimentos.toArray()[1])).getId() );
+		Assert.assertEquals("Test 4", estabelecimento2.getId(), ((Estabelecimento)(estabelecimentos.toArray()[2])).getId() );
 	}
 	
+	@Test
 	public void testAllSelect2()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
@@ -297,11 +332,12 @@ public class EstabelecimentoDaoHibernateTest extends GenericDaoHibernateTest<Est
 		
 		Collection<Estabelecimento> estabelecimentos = estabelecimentoDao.findAllSelect(new Long[]{empresa.getId(), empresa2.getId()});
 		
-		assertEquals("Test 1", 4, estabelecimentos.size());
-		assertEquals("Test 2", estabelecimento1.getId(), ((Estabelecimento)(estabelecimentos.toArray()[0])).getId() );
-		assertEquals("Test 3", "empresa 01 - A", ((Estabelecimento)(estabelecimentos.toArray()[0])).getDescricaoComEmpresa() );
+		Assert.assertEquals("Test 1", 4, estabelecimentos.size());
+		Assert.assertEquals("Test 2", estabelecimento1.getId(), ((Estabelecimento)(estabelecimentos.toArray()[0])).getId() );
+		Assert.assertEquals("Test 3", "empresa 01 - A", ((Estabelecimento)(estabelecimentos.toArray()[0])).getDescricaoComEmpresa() );
 	}
 	
+	@Test
 	public void testFindSemCodigoAC() {
 		
 		Empresa empresa1 = EmpresaFactory.getEmpresa();
@@ -335,11 +371,12 @@ public class EstabelecimentoDaoHibernateTest extends GenericDaoHibernateTest<Est
 		estabelecimento5.setEmpresa(empresa2);
 		estabelecimentoDao.save(estabelecimento5);
 		
-		assertEquals(2, estabelecimentoDao.findSemCodigoAC(empresa1.getId()).size());
-		assertEquals(1, estabelecimentoDao.findSemCodigoAC(empresa2.getId()).size());
+		Assert.assertEquals(2, estabelecimentoDao.findSemCodigoAC(empresa1.getId()).size());
+		Assert.assertEquals(1, estabelecimentoDao.findSemCodigoAC(empresa2.getId()).size());
 		
 	}
 
+	@Test
 	public void testFindComEnderecoById()
 	{
 		Estado uf = EstadoFactory.getEntity();
@@ -367,43 +404,98 @@ public class EstabelecimentoDaoHibernateTest extends GenericDaoHibernateTest<Est
 		
 		Estabelecimento estabelecimentoRetorno = estabelecimentoDao.findComEnderecoById(estabelecimento.getId());
 		
-		assertEquals(estabelecimento, estabelecimentoRetorno);
+		Assert.assertEquals(estabelecimento, estabelecimentoRetorno);
 	}
 	
+	@Test
 	public void testUpdateCodigoAC()
 	{
 		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
 		estabelecimento.setCodigoAC(null);
 		estabelecimentoDao.save(estabelecimento);
 		
-		assertNull(estabelecimento.getCodigoAC());
+		Assert.assertNull(estabelecimento.getCodigoAC());
 		
 		estabelecimentoDao.updateCodigoAC(estabelecimento.getId(), "0001");
 		
-		assertEquals("0001", estabelecimentoDao.findEntidadeComAtributosSimplesById(estabelecimento.getId()).getCodigoAC());
-	}
-
-	public GenericDao<Estabelecimento> getGenericDao() {
-		return estabelecimentoDao;
-	}
-
-	public void setEmpresaDao(EmpresaDao empresaDao) {
-		this.empresaDao = empresaDao;
-	}
-
-	public void setEstabelecimentoDao(EstabelecimentoDao estabelecimentoDao) {
-		this.estabelecimentoDao = estabelecimentoDao;
+		Assert.assertEquals("0001", estabelecimentoDao.findEntidadeComAtributosSimplesById(estabelecimento.getId()).getCodigoAC());
 	}
 	
-	public void setGrupoACDao(GrupoACDao grupoACDao) {
-		this.grupoACDao = grupoACDao;
-	}
+	@Test
+	public void testFindByMedicoCoordenador()
+	{
+		Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento1);
 
-	public void setCidadeDao(CidadeDao cidadeDao) {
-		this.cidadeDao = cidadeDao;
+		Estabelecimento estabelecimento2 = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento2);
+		
+		MedicoCoordenador medicoCoordenador1 = MedicoCoordenadorFactory.getEntity(null, null, TipoEstabelecimentoResponsavel.ALGUNS, Arrays.asList(estabelecimento1));
+		medicoCoordenadorDao.save(medicoCoordenador1);
+		
+		MedicoCoordenador medicoCoordenador2 = MedicoCoordenadorFactory.getEntity(null, null, TipoEstabelecimentoResponsavel.ALGUNS, Arrays.asList(estabelecimento2));
+		medicoCoordenadorDao.save(medicoCoordenador2);
+		
+		MedicoCoordenador medicoCoordenador3 = MedicoCoordenadorFactory.getEntity(null, null, TipoEstabelecimentoResponsavel.TODOS, null);
+		medicoCoordenadorDao.save(medicoCoordenador3);
+		
+		MedicoCoordenador medicoCoordenador4 = MedicoCoordenadorFactory.getEntity(null, null, TipoEstabelecimentoResponsavel.ALGUNS, Arrays.asList(estabelecimento1, estabelecimento2));
+		medicoCoordenadorDao.save(medicoCoordenador4);
+		
+		Collection<Estabelecimento> estabelecimentosDoMedico1 = estabelecimentoDao.findByMedicoCoordenador(medicoCoordenador1.getId());
+		Collection<Estabelecimento> estabelecimentosDoMedico2 = estabelecimentoDao.findByMedicoCoordenador(medicoCoordenador2.getId());
+		Collection<Estabelecimento> estabelecimentosDoMedico3 = estabelecimentoDao.findByMedicoCoordenador(medicoCoordenador3.getId());
+		Collection<Estabelecimento> estabelecimentosDoMedico4 = estabelecimentoDao.findByMedicoCoordenador(medicoCoordenador4.getId());
+		
+		Assert.assertEquals(1, estabelecimentosDoMedico1.size());
+		Assert.assertEquals(estabelecimento1.getId(), estabelecimentosDoMedico1.iterator().next().getId());
+		
+		Assert.assertEquals(1, estabelecimentosDoMedico2.size());
+		Assert.assertEquals(estabelecimento2.getId(), estabelecimentosDoMedico2.iterator().next().getId());
+		
+		Assert.assertTrue(estabelecimentosDoMedico3.isEmpty());
+		
+		Assert.assertEquals(2, estabelecimentosDoMedico4.size());
+		Assert.assertEquals(estabelecimento1.getId(), (estabelecimentosDoMedico4.toArray(new Estabelecimento[1])[0]).getId());
+		Assert.assertEquals(estabelecimento2.getId(), (estabelecimentosDoMedico4.toArray(new Estabelecimento[1])[1]).getId());
 	}
-
-	public void setEstadoDao(EstadoDao estadoDao) {
-		this.estadoDao = estadoDao;
+	
+	@Test
+	public void testFindByEngenheiroResponsavel()
+	{
+		Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento1);
+		
+		Estabelecimento estabelecimento2 = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento2);
+		
+		EngenheiroResponsavel engenheiroResponsavel1 = EngenheiroResponsavelFactory.getEntity(null, null, TipoEstabelecimentoResponsavel.ALGUNS, Arrays.asList(estabelecimento1));
+		engenheiroResponsavelDao.save(engenheiroResponsavel1);
+		
+		EngenheiroResponsavel engenheiroResponsavel2 = EngenheiroResponsavelFactory.getEntity(null, null, TipoEstabelecimentoResponsavel.ALGUNS, Arrays.asList(estabelecimento2));
+		engenheiroResponsavelDao.save(engenheiroResponsavel2);
+		
+		EngenheiroResponsavel engenheiroResponsavel3 = EngenheiroResponsavelFactory.getEntity(null, null, TipoEstabelecimentoResponsavel.TODOS, null);
+		engenheiroResponsavelDao.save(engenheiroResponsavel3);
+		
+		EngenheiroResponsavel engenheiroResponsavel4 = EngenheiroResponsavelFactory.getEntity(null, null, TipoEstabelecimentoResponsavel.ALGUNS, Arrays.asList(estabelecimento1, estabelecimento2));
+		engenheiroResponsavelDao.save(engenheiroResponsavel4);
+		
+		Collection<Estabelecimento> estabelecimentosDoEngenheiro1 = estabelecimentoDao.findByEngenheiroResponsavel(engenheiroResponsavel1.getId());
+		Collection<Estabelecimento> estabelecimentosDoEngenheiro2 = estabelecimentoDao.findByEngenheiroResponsavel(engenheiroResponsavel2.getId());
+		Collection<Estabelecimento> estabelecimentosDoEngenheiro3 = estabelecimentoDao.findByEngenheiroResponsavel(engenheiroResponsavel3.getId());
+		Collection<Estabelecimento> estabelecimentosDoEngenheiro4 = estabelecimentoDao.findByEngenheiroResponsavel(engenheiroResponsavel4.getId());
+		
+		Assert.assertEquals(1, estabelecimentosDoEngenheiro1.size());
+		Assert.assertEquals(estabelecimento1.getId(), estabelecimentosDoEngenheiro1.iterator().next().getId());
+		
+		Assert.assertEquals(1, estabelecimentosDoEngenheiro2.size());
+		Assert.assertEquals(estabelecimento2.getId(), estabelecimentosDoEngenheiro2.iterator().next().getId());
+		
+		Assert.assertTrue(estabelecimentosDoEngenheiro3.isEmpty());
+		
+		Assert.assertEquals(2, estabelecimentosDoEngenheiro4.size());
+		Assert.assertEquals(estabelecimento1.getId(), (estabelecimentosDoEngenheiro4.toArray(new Estabelecimento[1])[0]).getId());
+		Assert.assertEquals(estabelecimento2.getId(), (estabelecimentosDoEngenheiro4.toArray(new Estabelecimento[1])[1]).getId());
 	}
 }

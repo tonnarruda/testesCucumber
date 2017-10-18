@@ -10,5 +10,5 @@ import com.fortes.rh.model.sesmt.EngenheiroResponsavel;
 public interface EngenheiroResponsavelManager extends GenericManager<EngenheiroResponsavel>
 {
 	EngenheiroResponsavel findByIdProjection(Long engenheiroResponsavelId);
-	Collection<EngenheiroResponsavel> getEngenheirosAteData(Colaborador colaborador, Date data);
+	Collection<EngenheiroResponsavel> findResponsaveisPorEstabelecimento(Colaborador colaborador, Date data);
 }

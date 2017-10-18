@@ -642,7 +642,7 @@ public class CandidatoListAction extends MyActionSupportList
 	{
 		if(candidatosId != null && candidatosId.length > 0)
 			candidatoSolicitacaoManager.insertCandidatos(candidatosId, solicitacao,StatusCandidatoSolicitacao.INDIFERENTE, getEmpresaSistema(), getUsuarioLogado());
-
+ 
 		return Action.SUCCESS;
 	}
 

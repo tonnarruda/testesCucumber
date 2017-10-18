@@ -16,9 +16,9 @@ public class EngenheiroResponsavelManagerImpl extends GenericManagerImpl<Engenhe
 		return getDao().findByIdProjection(engenheiroResponsavelId);
 	}
 	
-	public Collection<EngenheiroResponsavel> getEngenheirosAteData(Colaborador colaborador, Date data)
+	public Collection<EngenheiroResponsavel> findResponsaveisPorEstabelecimento(Colaborador colaborador, Date data)
 	{
-		Collection<EngenheiroResponsavel> engenheiroResponsavels = getDao().findAllByEmpresa(colaborador.getEmpresa().getId());
+		Collection<EngenheiroResponsavel> engenheiroResponsavels = getDao().findResponsaveisPorEstabelecimento(colaborador.getEmpresa().getId(), colaborador.getHistoricoColaborador().getEstabelecimento().getId());
 		Collection<EngenheiroResponsavel> resultado = new ArrayList<EngenheiroResponsavel>();
 
 		for (EngenheiroResponsavel engenheiroResponsavel : engenheiroResponsavels) {

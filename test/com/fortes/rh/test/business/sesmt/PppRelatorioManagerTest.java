@@ -225,8 +225,8 @@ public class PppRelatorioManagerTest
 		
 		when(historicoColaboradorManager.findDistinctFuncao(historicoColaboradors)).thenReturn(historicoColaboradors);
 		when(historicoFuncaoManager.findHistoricoFuncaoColaborador(historicoColaboradors, hoje, colaborador.getDataDesligamento())).thenReturn(Arrays.asList(historicoFuncao));
-		when(engenheiroResponsavelManager.getEngenheirosAteData(colaborador, hoje)).thenReturn(engenheirosResponsaveis);
-		when(medicoCoordenadorManager.getMedicosAteData(hoje, colaborador)).thenReturn(medicosCoordenadores);
+		when(engenheiroResponsavelManager.findResponsaveisPorEstabelecimento(colaborador, hoje)).thenReturn(engenheirosResponsaveis);
+		when(medicoCoordenadorManager.findResponsaveisPorEstabelecimento(hoje, colaborador)).thenReturn(medicosCoordenadores);
 		
 		when(historicoAmbienteManager.findDadosNoPeriodo(ambiente.getId(), historicoColaborador1.getData(), historicoColaborador2.getData())).thenReturn(dadosAmbientesRiscos);
 		when(historicoAmbienteManager.findDadosNoPeriodo(ambiente.getId(), historicoColaborador2.getData(), historicoColaborador3.getData())).thenReturn(dadosAmbientesRiscos);

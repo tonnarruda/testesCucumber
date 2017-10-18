@@ -197,6 +197,7 @@ import com.fortes.rh.test.business.sesmt.HistoricoExtintorManagerTest;
 import com.fortes.rh.test.business.sesmt.HistoricoFuncaoManagerTest;
 import com.fortes.rh.test.business.sesmt.MedicaoRiscoManagerTest;
 import com.fortes.rh.test.business.sesmt.MedicoCoordenadorManagerTest;
+import com.fortes.rh.test.business.sesmt.MedicoCoordenadorManagerTest_JUnit4;
 import com.fortes.rh.test.business.sesmt.MedidaSegurancaManagerTest;
 import com.fortes.rh.test.business.sesmt.NaturezaLesaoManagerTest;
 import com.fortes.rh.test.business.sesmt.ObraManagerTest;
@@ -1299,6 +1300,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	MedicoCoordenadorListActionTest.class,
 	MedicoCoordenadorDaoHibernateTest.class,
 	MedicoCoordenadorManagerTest.class,
+	MedicoCoordenadorManagerTest_JUnit4.class,
 
 	PcmsoListActionTest.class,
 	PcmsoManagerTest.class,
