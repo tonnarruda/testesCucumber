@@ -183,9 +183,16 @@ $(function() {
 	$("#avaliadores .actions .remove").click(function(){
 		if ( !$(this).hasClass("disabled") && !$(this).hasClass("force-disabled") ) {
 			$(this).parents(".box").find(".ui-selected:not('.avaliadoInterno')").each(function(){
-				$("#participantesAvaliadosRemovidos").append("<input type='hidden' name='participantesAvaliadoresRemovidos' value='" + $(this).find('.participanteAvaliadorId').val() + "' />");
+				var participanteAvaliadorId=$(this).find('.participanteAvaliadorId').val();
+				
+				if(participanteAvaliadorId)
+					$("#participantesAvaliadosRemovidos").append("<input type='hidden' name='participantesAvaliadoresRemovidos' value='" + participanteAvaliadorId + "' />");
+				
 				$(this).find(".colaboradorQuestionarioId").each(function(){
-					$("#colaboradorQuestionariosRemovidos").append("<input type='hidden' name='colaboradorQuestionariosRemovidos' value='"+$(this).val()+"' />");
+					var colaboradorQuestionarioId= $(this).val();
+					
+					if(colaboradorQuestionarioId)
+						$("#colaboradorQuestionariosRemovidos").append("<input type='hidden' name='colaboradorQuestionariosRemovidos' value='"+ colaboradorQuestionarioId +"' />");
 				});
 			});
 			
@@ -194,6 +201,7 @@ $(function() {
 			
 			$(this).parent().parent().find(".selecteds .list").html("");
 			$(this).parent().parent().find(".selecteds").hide();
+			
 			resizeBox(this);
 		}
 	});
@@ -201,10 +209,16 @@ $(function() {
 	$("#avaliados .actions .remove").click(function(){
 		if ( !$(this).hasClass("disabled") && !$(this).hasClass("force-disabled") ) {
 			$(this).parents(".box").find(".ui-selected").each(function(){
-				$("#participantesAvaliadosRemovidos").append("<input type='hidden' name='participantesAvaliadosRemovidos' value='" + $(this).find('.participanteAvaliadoId').val() + "' />");
+				var participanteAvaliadoId = $(this).find('.participanteAvaliadoId').val();
+				
+				if(participanteAvaliadoId)
+					$("#participantesAvaliadosRemovidos").append("<input type='hidden' name='participantesAvaliadosRemovidos' value='" + participanteAvaliadoId + "' />");
 				
 				$("#avaliadores .avaliado_" + $(this).attr("id")).each(function(){
-					$("#colaboradorQuestionariosRemovidos").append("<input type='hidden' name='colaboradorQuestionariosRemovidos' value='" + $(this).find('.colaboradorQuestionarioId').val() + "' />");
+					var colaboradorQuestionarioId = $(this).find('.colaboradorQuestionarioId').val();
+					
+					if(colaboradorQuestionarioId)
+						$("#colaboradorQuestionariosRemovidos").append("<input type='hidden' name='colaboradorQuestionariosRemovidos' value='" + colaboradorQuestionarioId + "' />");
 				});
 				
 				$("#avaliadores .avaliado_" + $(this).attr("id")).remove();
@@ -215,6 +229,7 @@ $(function() {
 			
 			$(this).parent().parent().find(".selecteds .list").html("");
 			$(this).parent().parent().find(".selecteds").hide();
+			
 			resizeBox(this);
 		}
 	});
