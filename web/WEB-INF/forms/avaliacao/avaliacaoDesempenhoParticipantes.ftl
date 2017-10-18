@@ -248,6 +248,10 @@
 			if(validForm){
 				removerSelecao();
 				processando('${urlImgs}');
+				
+				$("input[nametmp$='avaliador.nome']").val('');
+				$("input[name$='avaliador.nome']").val('');
+				
 				$("#formParticipantes").submit();
 			}else {
 				jAlert("Preencha os campos indicados.");
