@@ -28,6 +28,10 @@
 			$('#competenciasConsideradas').change(function() {
 				populaCompetencias();
 			});
+			
+			$('#tooltipHelp').qtip({
+				content: 'Poderá vir menos competências por página quando existirem muitos resultados a serem exibidos por competência.'
+			});
 		})
 
 		function mostraMensagemCarregando()
@@ -116,8 +120,14 @@
 		
 		function createListCompetencias(data)
 		{
-			addChecks('competenciasCheck',data);
+			addChecks('competenciasCheck',data, 'populaSelectLimiteQtdCompetenciaPorPagina()');
 			addChecks('competenciasCheckAux',data);
+			
+			$('#limiteQtdCompetenciaPorPagina').find('option').remove().end();
+			var contador = 1;
+			for (var key in data) {
+				$('#limiteQtdCompetenciaPorPagina').append('<option>' + contador++ + '</option>');
+			}
 		}
 		
 		function gerarRelatorio(tipoRelatorio)
@@ -136,6 +146,20 @@
 				$('form[name=form]').attr('action', 'imprimeAnaliseDesempenhoCompetenciaOrganizacaoXls.action');
 				
 			return validaFormulario('form', new Array('@avaliacoesCheck'), null);
+		}
+		
+		function populaSelectLimiteQtdCompetenciaPorPagina(){
+			var qtd;
+			
+			if($('input[name="competenciasCheck"]:checked').length > 0)
+			 	qtd = $('input[name="competenciasCheck"]:checked').length;
+			else
+				qtd = $('input[name="competenciasCheck"]').length;
+			
+			$('#limiteQtdCompetenciaPorPagina').find('option').remove().end();
+			for(var i=1 ; i <= qtd ; i++){
+				$('#limiteQtdCompetenciaPorPagina').append('<option>' + i + '</option>');
+			}
 		}
 		
 	</script>
@@ -157,7 +181,7 @@
 		<fieldset style="padding: 5px 0px 5px 5px; width: 593px;">
 			<legend>Competências consideradas no relatório</legend>
 			<@ww.select label="Considerar" name="competenciasConsideradas" id="competenciasConsideradas" list="competenciasConsideradas" />
-			<@frt.checkListBox label="Competências" id="competenciasCheck" name="competenciasCheck" list="competenciasCheckList" width="586" height="180" filtro="true"/>
+			<@frt.checkListBox label="Competências" id="competenciasCheck" name="competenciasCheck" list="competenciasCheckList" width="586" height="180" filtro="true" onClick="populaSelectLimiteQtdCompetenciaPorPagina()"/>
 		</fieldset>
 		<!-- Estes campos são utilizados para enviar os ids dos registros, caso não marcados, para a action -->
 		<div id="divCheckboxAuxiliares" style="display: none;">
@@ -166,6 +190,8 @@
 			<@frt.checkListBox name="cargosCheckAux" id="cargosCheckAux" list="cargosCheckList" />
 			<@frt.checkListBox name="competenciasCheckAux" id="competenciasCheckAux" list="competenciasCheckList" />
 		</div>
+		<img id="tooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: 455px; margin-bottom: -18px;" />
+		<@ww.select label="Quantidade maxima de competências por pagina (Relatório em pdf)" name="limiteQtdCompetenciaPorPagina" id="limiteQtdCompetenciaPorPagina" cssStyle="width: 600px;"/>
 	</@ww.form>
 
 	<div class="buttonGroup">

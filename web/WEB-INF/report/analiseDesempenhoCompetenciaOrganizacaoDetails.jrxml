@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="AnaliseDesempenhoCompetenciaOrganizacao" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="784" leftMargin="29" rightMargin="29" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="3e5d2dbb-32dc-472b-8486-a4f3e312c585">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="0.8264462809917407"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="CABECALHO" class="com.fortes.rh.model.relatorio.Cabecalho" isForPrompting="false"/>
+	<field name="competenciaNome" class="java.lang.String"/>
+	<field name="performance" class="java.lang.Double"/>
+	<field name="agrupador" class="java.lang.String"/>
+	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Page" calculation="Count">
+		<variableExpression><![CDATA[]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="400" splitType="Stretch">
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+			<barChart>
+				<chart evaluationTime="Report" customizerClass="com.fortes.rh.model.relatorio.customizers.AnaliseDesempenhoOrganizacaoGraphCustomizer">
+					<reportElement x="0" y="0" width="773" height="400" uuid="27111e3f-9e6c-4a9c-9bd8-236530af22fa"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend position="Bottom"/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA[$F{agrupador}]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{competenciaNome}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{performance}]]></valueExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot isShowLabels="true">
+					<plot orientation="Horizontal" backgroundAlpha="1.0" foregroundAlpha="1.0">
+						<seriesColor seriesOrder="0" color="#10D0F0"/>
+						<seriesColor seriesOrder="1" color="#B17F2C"/>
+						<seriesColor seriesOrder="2" color="#A6DC33"/>
+						<seriesColor seriesOrder="3" color="#0066FF"/>
+						<seriesColor seriesOrder="4" color="#185870"/>
+						<seriesColor seriesOrder="5" color="#7B8E81"/>
+						<seriesColor seriesOrder="6" color="#75B225"/>
+						<seriesColor seriesOrder="7" color="#DC9661"/>
+						<seriesColor seriesOrder="8" color="#62B548"/>
+						<seriesColor seriesOrder="9" color="#34C6DC"/>
+						<seriesColor seriesOrder="10" color="#D7A283"/>
+						<seriesColor seriesOrder="11" color="#11C450"/>
+						<seriesColor seriesOrder="12" color="#2B5E43"/>
+						<seriesColor seriesOrder="13" color="#65A96F"/>
+					</plot>
+					<itemLabel>
+						<font size="6"/>
+					</itemLabel>
+					<categoryAxisFormat>
+						<axisFormat labelColor="#000000" tickLabelColor="#000000" verticalTickLabels="true" axisLineColor="#000000">
+							<labelFont>
+								<font size="10"/>
+							</labelFont>
+							<tickLabelFont>
+								<font size="8"/>
+							</tickLabelFont>
+						</axisFormat>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000">
+							<labelFont>
+								<font size="10"/>
+							</labelFont>
+							<tickLabelFont>
+								<font size="8"/>
+							</tickLabelFont>
+						</axisFormat>
+					</valueAxisFormat>
+					<domainAxisMinValueExpression><![CDATA[0]]></domainAxisMinValueExpression>
+					<domainAxisMaxValueExpression><![CDATA[100]]></domainAxisMaxValueExpression>
+					<rangeAxisMinValueExpression><![CDATA[0]]></rangeAxisMinValueExpression>
+					<rangeAxisMaxValueExpression><![CDATA[110]]></rangeAxisMaxValueExpression>
+				</barPlot>
+			</barChart>
+		</band>
+	</pageHeader>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -81,6 +81,7 @@ public class AvaliacaoDesempenhoEditActionTest_JUnit4
 	public void testImprimeAnaliseDesempenhoCompetenciaOrganizacao() {
 		Collection<AnaliseDesempenhoOrganizacao> analiseDesempenhoOrganizacaos = new ArrayList<AnaliseDesempenhoOrganizacao>();
 		analiseDesempenhoOrganizacaos.add(new AnaliseDesempenhoOrganizacao("Comp 1", "Agrup 1", 1d));
+		action.setCompetenciasCheck(new Long[]{});
 		
 		Mockito.when(avaliacaoDesempenhoManager.findAnaliseDesempenhoOrganizacao(any(Long[].class),any(Long[].class),any(Long[].class),any(Long[].class),any(Long[].class),anyString(), anyLong())).thenReturn(analiseDesempenhoOrganizacaos);
 		
@@ -104,6 +105,7 @@ public class AvaliacaoDesempenhoEditActionTest_JUnit4
 	public void testImprimeAnaliseDesempenhoCompetenciaOrganizacaoException() {
 		Collection<AnaliseDesempenhoOrganizacao> analiseDesempenhoOrganizacaos = null;
 		Collection<AvaliacaoDesempenho> avaliacaoDesempenhos = new ArrayList<AvaliacaoDesempenho>();
+		action.setCompetenciasCheck(new Long[]{});
 		
 		Mockito.when(avaliacaoDesempenhoManager.findAnaliseDesempenhoOrganizacao(any(Long[].class),any(Long[].class),any(Long[].class),any(Long[].class),any(Long[].class),anyString(), anyLong())).thenReturn(analiseDesempenhoOrganizacaos);
 		Mockito.when(avaliacaoDesempenhoManager.findComCompetencia(action.getEmpresaSistema().getId())).thenReturn(avaliacaoDesempenhos);

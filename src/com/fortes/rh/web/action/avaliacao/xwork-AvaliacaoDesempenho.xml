@@ -185,7 +185,7 @@
 			<interceptor-ref name="defaultListStack"/>
 			<result name="success" type="jasper">
 				<param name="location">WEB-INF/report/analiseDesempenhoCompetenciaOrganizacao.jasper</param>
-				<param name="dataSource">analiseDesempenhoOrganizacaos</param>
+				<param name="dataSource">agrupadorAnaliseDesempenhoOrganizacaos</param>
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">analiseDesempenhoCompetenciaOrganizacao.pdf</param>
 			</result>

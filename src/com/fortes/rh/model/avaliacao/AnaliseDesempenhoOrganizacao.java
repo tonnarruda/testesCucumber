@@ -23,7 +23,7 @@ public class AnaliseDesempenhoOrganizacao
 	}
 	
 	public String getAgrupador() {
-		return agrupador;
+		return agrupador.trim();
 	}
 
 	public void setAgrupador(String agrupador) {
