@@ -23,6 +23,7 @@ import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.exception.AvaliacaoRespondidaException;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.FortesException;
+import com.fortes.rh.model.avaliacao.AgrupadorAnaliseDesempenhoOrganizacao;
 import com.fortes.rh.model.avaliacao.AnaliseDesempenhoOrganizacao;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
@@ -147,12 +148,15 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	
 	private Collection<ColaboradorQuestionario> colaboradorQuestionarios = new ArrayList<ColaboradorQuestionario>();
 	private Collection<ResultadoAvaliacaoDesempenho> resultados = new ArrayList<ResultadoAvaliacaoDesempenho>();
+	private Collection<AgrupadorAnaliseDesempenhoOrganizacao> agrupadorAnaliseDesempenhoOrganizacaos = new ArrayList<AgrupadorAnaliseDesempenhoOrganizacao>();
 	private Collection<AnaliseDesempenhoOrganizacao> analiseDesempenhoOrganizacaos = new ArrayList<AnaliseDesempenhoOrganizacao>();
 	private Boolean compartilharColaboradores;
 	private String msgResultadoAvaliacao;
 	private Long avaliacaoId;
 	private String reportTitle;
 	private CompetenciasConsideradas competenciasConsideradas = new CompetenciasConsideradas();
+	
+	private Long limiteQtdCompetenciaPorPagina = 1L;
 	
 	private void prepare() throws Exception
 	{
@@ -439,6 +443,12 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	public String imprimeAnaliseDesempenhoCompetenciaOrganizacao()
 	{
 		try {
+			if(competenciasCheckAux == null && competenciasCheck == null){
+				addActionMessage("Não existem competências a serem informados no relatório.");
+				prepareAnaliseDesempenhoCompetenciaOrganizacao();
+				return INPUT;
+			}
+			
 			analiseDesempenhoOrganizacaos = avaliacaoDesempenhoManager.findAnaliseDesempenhoOrganizacao(
 					StringUtil.stringToLong(avaliacoesCheck),
 					(estabelecimentosCheck == null ? estabelecimentosCheckAux : estabelecimentosCheck),
@@ -453,9 +463,9 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 				prepareAnaliseDesempenhoCompetenciaOrganizacao();
 				return INPUT;
 			}
-			
+
+			agrupadorAnaliseDesempenhoOrganizacaoParaSepararEmPaginas();
 			reportTitle = "Análise de Desempenho das Competências da Organização";
-			
 			parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), "Agrupado por " + new AnaliseDesempenhoOrganizacao().getAgrupamento(agrupamentoDasCompetencias));
 
 		} catch (Exception e) {
@@ -466,6 +476,35 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		}
 
 		return Action.SUCCESS;
+	}
+
+	private void agrupadorAnaliseDesempenhoOrganizacaoParaSepararEmPaginas() throws CloneNotSupportedException {
+		Long limiteQtdAnaliseDesempOrganiPorPagina = 20L;
+		
+		AgrupadorAnaliseDesempenhoOrganizacao agrupadorAnaliseDesempenhoOrganizacao = new AgrupadorAnaliseDesempenhoOrganizacao();
+		agrupadorAnaliseDesempenhoOrganizacao.setAnaliseDesempenhoOrganizacaos(new ArrayList<AnaliseDesempenhoOrganizacao>());
+		String competenciaNome = "";
+		Long qtdCompetencia = 0L;
+		
+		for (AnaliseDesempenhoOrganizacao analiseDesempenhoOrganizacao : analiseDesempenhoOrganizacaos) {
+			if((agrupadorAnaliseDesempenhoOrganizacao.getAnaliseDesempenhoOrganizacaos().size() >= limiteQtdAnaliseDesempOrganiPorPagina 
+				|| qtdCompetencia >= limiteQtdCompetenciaPorPagina) && (!analiseDesempenhoOrganizacao.getCompetenciaNome().equals(competenciaNome))){
+					agrupadorAnaliseDesempenhoOrganizacaos.add((AgrupadorAnaliseDesempenhoOrganizacao) agrupadorAnaliseDesempenhoOrganizacao.clone());
+					agrupadorAnaliseDesempenhoOrganizacao = new AgrupadorAnaliseDesempenhoOrganizacao();
+					agrupadorAnaliseDesempenhoOrganizacao.setAnaliseDesempenhoOrganizacaos(new ArrayList<AnaliseDesempenhoOrganizacao>());
+					competenciaNome = analiseDesempenhoOrganizacao.getCompetenciaNome();
+					qtdCompetencia = 1L;
+			}
+			
+			if(!analiseDesempenhoOrganizacao.getCompetenciaNome().equals(competenciaNome)){
+				competenciaNome = analiseDesempenhoOrganizacao.getCompetenciaNome();
+				qtdCompetencia++;
+			}
+			
+			agrupadorAnaliseDesempenhoOrganizacao.getAnaliseDesempenhoOrganizacaos().add(analiseDesempenhoOrganizacao);
+		}
+		
+		agrupadorAnaliseDesempenhoOrganizacaos.add((AgrupadorAnaliseDesempenhoOrganizacao) agrupadorAnaliseDesempenhoOrganizacao.clone());
 	}
 	
 	public String imprimeAnaliseDesempenhoCompetenciaOrganizacaoXls()
@@ -1224,10 +1263,6 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		this.agrupamentoDasCompetencias = agrupamentoDasCompetencias;
 	}
 
-	public Collection<AnaliseDesempenhoOrganizacao> getAnaliseDesempenhoOrganizacaos() {
-		return analiseDesempenhoOrganizacaos;
-	}
-
 	public String getReportTitle() {
 		return reportTitle;
 	}
@@ -1250,5 +1285,38 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 
 	public CompetenciasConsideradas getCompetenciasConsideradas() {
 		return competenciasConsideradas;
+	}
+
+	public Collection<AgrupadorAnaliseDesempenhoOrganizacao> getAgrupadorAnaliseDesempenhoOrganizacaos() {
+		return agrupadorAnaliseDesempenhoOrganizacaos;
+	}
+
+	public void setAnaliseDesempenhoOrganizacaos(
+			Collection<AnaliseDesempenhoOrganizacao> analiseDesempenhoOrganizacaos) {
+		this.analiseDesempenhoOrganizacaos = analiseDesempenhoOrganizacaos;
+	}
+
+	public void setLimiteQtdCompetenciaPorPagina(Long limiteQtdCompetenciaPorPagina) {
+		this.limiteQtdCompetenciaPorPagina = limiteQtdCompetenciaPorPagina;
+	}
+
+	public Long getLimiteQtdCompetenciaPorPagina() {
+		return limiteQtdCompetenciaPorPagina;
+	}
+
+	public String[] getAvaliacoesCheck() {
+		return avaliacoesCheck;
+	}
+
+	public Long[] getCargosCheck() {
+		return cargosCheck;
+	}
+
+	public Long[] getAreasCheck() {
+		return areasCheck;
+	}
+
+	public Long[] getCompetenciasCheck() {
+		return competenciasCheck;
 	}
 }

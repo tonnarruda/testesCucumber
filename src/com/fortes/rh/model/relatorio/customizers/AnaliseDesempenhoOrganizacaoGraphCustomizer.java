@@ -37,8 +37,8 @@ public class AnaliseDesempenhoOrganizacaoGraphCustomizer extends JRAbstractChart
 		categoryPlot.setRangeGridlinesVisible(false);
 		
 		CategoryAxis categoryAxis = categoryPlot.getDomainAxis();
-		categoryAxis.setMaximumCategoryLabelLines(2);
-		categoryAxis.setMaximumCategoryLabelWidthRatio(1f);
+		categoryAxis.setMaximumCategoryLabelLines(5);
+		categoryAxis.setMaximumCategoryLabelWidthRatio(0.2f);
 		categoryAxis.setLowerMargin(.01);
 		categoryAxis.setUpperMargin(.01);
 		
@@ -75,9 +75,9 @@ public class AnaliseDesempenhoOrganizacaoGraphCustomizer extends JRAbstractChart
 			}
 		});
 		
-		if(categoryPlot.getDataset().getRowCount() * categoryPlot.getDataset().getColumnCount() > 100)
+		if(categoryPlot.getDataset().getRowCount() * categoryPlot.getDataset().getColumnCount() > 50)
 			barRenderer.setBaseItemLabelsVisible(false);
-		else if(categoryPlot.getDataset().getRowCount() * categoryPlot.getDataset().getColumnCount() > 70)
-			barRenderer.setBaseItemLabelFont(new Font("SansSerif", Font.PLAIN, 4));
+		else if(categoryPlot.getDataset().getRowCount() * categoryPlot.getDataset().getColumnCount() > 20)
+				barRenderer.setBaseItemLabelFont(new Font("SansSerif", Font.PLAIN, 4));
 	}
 }
