@@ -34,7 +34,6 @@ INSERT INTO CodificacaoAcidenteTrabalho(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('
 INSERT INTO CodificacaoAcidenteTrabalho(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('CodificacaoAcidenteTrabalho_sequence'),'4.0.02','Constatação de ocorrência ou agravamento de doenças profissionais, através de exames médicos que incluam os definidos na NR 07; ou sendo verificadas alterações que revelem qualquer tipo de disfunção de órgão ou sistema biológico, através dos exames constantes dos Quadros I (apenas aqueles com interpretação SC) e II, e do item 7.4.2.3 desta NR, mesmo sem sintomatologia, caberá ao médico-coordenador ou encarregado.');--.go
 INSERT INTO CodificacaoAcidenteTrabalho(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('CodificacaoAcidenteTrabalho_sequence'),'5.0.01','Outros.');--.go
 
-
 --Table Situacao Geradora de Acidente de Trabalho --.go
 CREATE TABLE SituacaoGeradoraAcidenteTrabalho (
 	id bigint NOT NULL,
@@ -107,7 +106,6 @@ INSERT INTO SituacaoGeradoraAcidenteTrabalho(ID, CODIGO, DESCRICAO) VALUES (NEXT
 INSERT INTO SituacaoGeradoraAcidenteTrabalho(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('SituacaoGeradoraAcidenteTrabalho_sequence'),'200080900','Ataque de ser vivo, NIC');--.go
 INSERT INTO SituacaoGeradoraAcidenteTrabalho(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('SituacaoGeradoraAcidenteTrabalho_sequence'),'209000000','Tipo, NIC');--.go
 INSERT INTO SituacaoGeradoraAcidenteTrabalho(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('SituacaoGeradoraAcidenteTrabalho_sequence'),'209500000','Tipo inexistente');--.go
-
 
 --Table Agente Causador do Acidente de Trabalho --.go
 CREATE TABLE AgenteCausadorAcidenteTrabalho (
@@ -371,7 +369,6 @@ INSERT INTO AgenteCausadorAcidenteTrabalho(ID, CODIGO, DESCRICAO) VALUES (NEXTVA
 INSERT INTO AgenteCausadorAcidenteTrabalho(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('AgenteCausadorAcidenteTrabalho_sequence'),'355016600','Neblina');--.go
 INSERT INTO AgenteCausadorAcidenteTrabalho(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('AgenteCausadorAcidenteTrabalho_sequence'),'355016800','Gás e vapor');--.go
 
-
 --Tabela Agente Causador/Situação Geradora de Doença Profissional --.go
 CREATE TABLE SituacaoGeradoraDoencaProfissional (
 	id bigint NOT NULL,
@@ -384,7 +381,6 @@ CREATE SEQUENCE SituacaoGeradoraDoencaProfissional_sequence START WITH 1 INCREME
 
 ALTER TABLE cat ADD COLUMN SituacaoGeradoraDoencaProfissional_id BIGINT;--.go
 ALTER TABLE ONLY cat ADD CONSTRAINT cat_SituacaoGeradoraDoencaProfissional_fk FOREIGN KEY (SituacaoGeradoraDoencaProfissional_id) REFERENCES SituacaoGeradoraDoencaProfissional(id);--.go
-
 
 INSERT INTO SituacaoGeradoraDoencaProfissional(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('SituacaoGeradoraDoencaProfissional_sequence'),'200004300','Impacto de pessoa contra objeto parado. Aplica-se a casos em que a lesão foi produzida por impacto da pessoa acidentada contra a fonte da lesão, tendo sido o movimento que produziu o contato originalmente o da pessoa e não o da fonte da lesão, exceto quando o movimento do acidentado tiver sido provocado por queda. Inclui casos de alguém chocar-se contra alguma coisa, tropeçar em alguma coisa, ser empurrado ou projetado contra alguma coisa, etc. Não inclui casos de salto para nível inferior.');--.go
 INSERT INTO SituacaoGeradoraDoencaProfissional(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('SituacaoGeradoraDoencaProfissional_sequence'),'200004600','Impacto de pessoa contra objeto em movimento. Aplica-se a casos em que a lesão foi produzida por impacto da pessoa acidentada contra a fonte da lesão, tendo sido o movimento que produziu o contato originalmente o da pessoa e não o da fonte da lesão, exceto quando o movimento do acidentado tiver sido provocado por queda. Inclui casos de alguém chocar-se contra alguma coisa, tropeçar em alguma coisa, ser empurrado ou projetado contra alguma coisa, etc. Não inclui casos de salto para nível inferior.');--.go
@@ -445,8 +441,6 @@ INSERT INTO SituacaoGeradoraDoencaProfissional(ID, CODIGO, DESCRICAO) VALUES (NE
 INSERT INTO SituacaoGeradoraDoencaProfissional(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('SituacaoGeradoraDoencaProfissional_sequence'),'200080901','Contato com pessoas doentes ou material infecto-contagiante - agentes biológicos.');--.go
 INSERT INTO SituacaoGeradoraDoencaProfissional(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('SituacaoGeradoraDoencaProfissional_sequence'),'209000000','Tipo, NIC');--.go
 INSERT INTO SituacaoGeradoraDoencaProfissional(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('SituacaoGeradoraDoencaProfissional_sequence'),'209500000','Tipo inexistente');--.go
-
-
 
 --Tabela Parte do Corpo Atingida --.go
 CREATE TABLE ParteCorpoAtingida (

@@ -7,4 +7,10 @@
       <ref bean="sessionFactory" />
     </property>
   </bean>
+  <bean id="situacaoGeradoraAcidenteTrabalhoDaoTarget" class="com.fortes.rh.dao.hibernate.sesmt.eSocialTabelas.SituacaoGeradoraAcidenteTrabalhoDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
 </beans>
+

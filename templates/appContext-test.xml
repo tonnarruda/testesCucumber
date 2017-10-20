@@ -1,5 +1,5 @@
 
-  <bean id="#NOME_CLASSE_MINUSCULO#" class="com.fortes.rh.dao.hibernate.#NOME_PACOTE#.#NOME_CLASSE#">
+  <bean id="#NOME_CLASSE_MINUSCULO#Dao" class="com.fortes.rh.dao.hibernate.#NOME_PACOTE#.#NOME_CLASSE#DaoHibernate">
 	<property name="sessionFactory">
 		<ref bean="sessionFactory" />
 	</property>

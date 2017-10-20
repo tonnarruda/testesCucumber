@@ -224,6 +224,8 @@
     <mapping class="com.fortes.rh.model.avaliacao.AvaliacaoPratica" />
 
     <mapping class="com.fortes.rh.model.ws.Token" />
+      <mapping class="com.fortes.rh.model.sesmt.eSocialTabelas.SituacaoGeradoraAcidenteTrabalho" />
   </session-factory>
+
 
 </hibernate-configuration>

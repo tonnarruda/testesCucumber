@@ -21,7 +21,7 @@ public class #NOME_CLASSE#ManagerTest
 	public void setUp() throws Exception
     {
         #NOME_CLASSE_MINUSCULO#Dao = mock(#NOME_CLASSE#Dao.class);
-        #NOME_CLASSE_MINUSCULO#Manager.setDao((#NOME_CLASSE#Dao) #NOME_CLASSE_MINUSCULO#Dao.proxy());
+        #NOME_CLASSE_MINUSCULO#Manager.setDao(#NOME_CLASSE_MINUSCULO#Dao);
     }
 
 	@Test

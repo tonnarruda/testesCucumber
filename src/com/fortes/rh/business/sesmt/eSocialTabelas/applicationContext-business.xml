@@ -15,4 +15,18 @@
       <ref bean="codificacaoAcidenteTrabalhoManagerTarget" />
     </property>
   </bean>
+  <bean id="situacaoGeradoraAcidenteTrabalhoManagerTarget" class="com.fortes.rh.business.sesmt.eSocialTabelas.SituacaoGeradoraAcidenteTrabalhoManagerImpl">
+    <property name="dao">
+      <ref bean="situacaoGeradoraAcidenteTrabalhoDao" />
+    </property>
+  </bean>
+  <bean id="situacaoGeradoraAcidenteTrabalhoManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.sesmt.eSocialTabelas.SituacaoGeradoraAcidenteTrabalhoManager</value>
+    </property>
+    <property name="target">
+      <ref bean="situacaoGeradoraAcidenteTrabalhoManagerTarget" />
+    </property>
+  </bean>
 </beans>
+
