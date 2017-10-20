@@ -225,7 +225,9 @@
 
     <mapping class="com.fortes.rh.model.ws.Token" />
       <mapping class="com.fortes.rh.model.sesmt.eSocialTabelas.SituacaoGeradoraAcidenteTrabalho" />
+      <mapping class="com.fortes.rh.model.sesmt.eSocialTabelas.AgenteCausadorAcidenteTrabalho" />
   </session-factory>
+
 
 
 </hibernate-configuration>
