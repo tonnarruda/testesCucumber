@@ -54,7 +54,21 @@
       <ref bean="situacaoGeradoraDoencaProfissionalManagerTarget" />
     </property>
   </bean>
+  <bean id="parteCorpoAtingidaManagerTarget" class="com.fortes.rh.business.sesmt.eSocialTabelas.ParteCorpoAtingidaManagerImpl">
+    <property name="dao">
+      <ref bean="parteCorpoAtingidaDao" />
+    </property>
+  </bean>
+  <bean id="parteCorpoAtingidaManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.sesmt.eSocialTabelas.ParteCorpoAtingidaManager</value>
+    </property>
+    <property name="target">
+      <ref bean="parteCorpoAtingidaManagerTarget" />
+    </property>
+  </bean>
 </beans>
+
 
 
 

@@ -22,7 +22,13 @@
       <ref bean="sessionFactory" />
     </property>
   </bean>
+  <bean id="parteCorpoAtingidaDaoTarget" class="com.fortes.rh.dao.hibernate.sesmt.eSocialTabelas.ParteCorpoAtingidaDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
 </beans>
+
 
 
 
