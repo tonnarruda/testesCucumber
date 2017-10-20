@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+  <bean id="codificacaoAcidenteTrabalhoManagerTarget" class="com.fortes.rh.business.sesmt.eSocialTabelas.CodificacaoAcidenteTrabalhoManagerImpl">
+    <property name="dao">
+      <ref bean="codificacaoAcidenteTrabalhoDao" />
+    </property>
+  </bean>
+  <bean id="codificacaoAcidenteTrabalhoManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.sesmt.eSocialTabelas.CodificacaoAcidenteTrabalhoManager</value>
+    </property>
+    <property name="target">
+      <ref bean="codificacaoAcidenteTrabalhoManagerTarget" />
+    </property>
+  </bean>
+</beans>

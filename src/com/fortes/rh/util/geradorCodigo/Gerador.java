@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 
 public class Gerador
 {
-	public final String WORKSPACE = "/home/paula/Workspaces/MyEclipseProfessional2014/FortesRH";
+	public final String WORKSPACE = "/home/samuel/Workspaces/FortesRH";
 	public final char separator = java.io.File.separatorChar;
 	public String NOME_CLASSE;
 	public String NOME_CLASSE_MINUSCULO;
@@ -109,7 +109,7 @@ public class Gerador
 		lerTemplate(WORKSPACE + separator + "templates" + separator + template);
 		
 		criarFile(WORKSPACE + separator + subDir + separator + "com" + separator + "fortes" + separator + "rh"
-				+ separator + diretorio + separator + NOME_PACOTE 
+				+ separator + diretorio + separator + NOME_PACOTE.replace(".", "" + separator) 
 				+ separator + fileName);
 	}
 	
@@ -118,7 +118,7 @@ public class Gerador
 		lerTemplate(WORKSPACE + separator + "templates" + separator + template);
 		
 		criarFile(WORKSPACE + separator + "web" + separator + "WEB-INF" + separator + "forms"
-				+ separator + NOME_PACOTE 
+				+ separator + NOME_PACOTE.replace(".", "" + separator)
 				+ separator + fileName);
 	}
 	
@@ -133,7 +133,7 @@ public class Gerador
 		else
 		{
 			concatenarFile(WORKSPACE + separator + "src" + separator + "com" + separator + "fortes" + separator + "rh"
-					+ separator + diretorio + separator + NOME_PACOTE 
+					+ separator + diretorio + separator + NOME_PACOTE.replace(".", "" + separator) 
 					+ separator + fileAntigo + ".xml", substituir);
 		}
 	}

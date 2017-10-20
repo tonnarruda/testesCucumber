@@ -6,9 +6,9 @@ import java.io.IOException;
 public class Principal
 {
 	//Refresh(F5) o projeto e Commit antes de rodar essa classe...
-	public static String NOME_CLASSE = "CursoLnt";
-	public static String NOME_CLASSE_MINUSCULO = "cursoLnt";
-	public static String NOME_PACOTE = "desenvolvimento";
+	public static String NOME_CLASSE = "CodificacaoAcidenteTrabalho";
+	public static String NOME_CLASSE_MINUSCULO = "codificacaoAcidenteTrabalho";
+	public static String NOME_PACOTE = "sesmt.eSocialTabelas";
 	public static boolean GERAR_TODOS_ARQUIVOS = false;//gera todos os arquivos ou somente entidade, manager e dao 
 	
 	private static final char separator = java.io.File.separatorChar;
@@ -58,6 +58,7 @@ public class Principal
 			gerador.editarXml("dao", "applicationContext-dao", "appContext-dao", "</beans>");
 			gerador.editarXml("dao" + separator + "hibernate", "applicationContext-dao-hibernate", "appContext-daoHibernate", "</beans>");
 			gerador.editarXml(null, "hibernate.cfg", "hib.cfg", "</session-factory>");
+			gerador.editarXml(null, "applicationContext-test", "appContext-test", "</beans>");
 			
 			if(GERAR_TODOS_ARQUIVOS)
 				gerador.editarXml(null, "xwork", "xw", "</xwork>");

@@ -614,5 +614,12 @@
     <property name="sessionFactory">
       <ref bean="sessionFactory" />
     </property>
+   </bean>
+    
+  <bean id="codificacaoAcidenteTrabalhoDao" class="com.fortes.rh.dao.hibernate.sesmt.eSocialTabelas.CodificacaoAcidenteTrabalhoDaoHibernate">
+	<property name="sessionFactory">
+		<ref bean="sessionFactory" />
+	</property>
   </bean>
+  
 </beans>

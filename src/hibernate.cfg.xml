@@ -213,6 +213,8 @@
     <mapping class="com.fortes.rh.model.sesmt.SolicitacaoEpiItemDevolucao" />
     <mapping class="com.fortes.rh.model.sesmt.OrdemDeServico" />
     <mapping class="com.fortes.rh.model.sesmt.FatorDeRisco" />
+     <!-- SESMT eSocial Tabelas -->
+    <mapping class="com.fortes.rh.model.sesmt.eSocialTabelas.CodificacaoAcidenteTrabalho" />
 	<!-- AVALIAÇÃO -->
     <mapping class="com.fortes.rh.model.avaliacao.PeriodoExperiencia" />
     <mapping class="com.fortes.rh.model.avaliacao.Avaliacao" />
@@ -223,4 +225,5 @@
 
     <mapping class="com.fortes.rh.model.ws.Token" />
   </session-factory>
+
 </hibernate-configuration>
