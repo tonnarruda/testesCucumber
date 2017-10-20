@@ -17,6 +17,12 @@
       <ref bean="sessionFactory" />
     </property>
   </bean>
+  <bean id="situacaoGeradoraDoencaProfissionalDaoTarget" class="com.fortes.rh.dao.hibernate.sesmt.eSocialTabelas.SituacaoGeradoraDoencaProfissionalDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
 </beans>
+
 
 

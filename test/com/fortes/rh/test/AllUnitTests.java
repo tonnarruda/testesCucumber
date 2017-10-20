@@ -222,6 +222,7 @@ import com.fortes.rh.test.business.sesmt.TestemunhaManagerTest;
 import com.fortes.rh.test.business.sesmt.eSocialTabelas.AgenteCausadorAcidenteTrabalhoManagerTest;
 import com.fortes.rh.test.business.sesmt.eSocialTabelas.CodificacaoAcidenteTrabalhoManagerTest;
 import com.fortes.rh.test.business.sesmt.eSocialTabelas.SituacaoGeradoraAcidenteTrabalhoManagerTest;
+import com.fortes.rh.test.business.sesmt.eSocialTabelas.SituacaoGeradoraDoencaProfissionalManagerTest;
 import com.fortes.rh.test.business.ws.RHServiceIntranetTest;
 import com.fortes.rh.test.business.ws.RHServiceTest;
 import com.fortes.rh.test.dao.hibernate.acesso.PapelDaoHibernateTest;
@@ -423,6 +424,7 @@ import com.fortes.rh.test.dao.hibernate.sesmt.TipoTamanhoEPIDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.eSocialTabelas.AgenteCausadorAcidenteTrabalhoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.eSocialTabelas.CodificacaoAcidenteTrabalhoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.eSocialTabelas.SituacaoGeradoraAcidenteTrabalhoDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.sesmt.eSocialTabelas.SituacaoGeradoraDoencaProfissionalDaoHibernateTest;
 import com.fortes.rh.test.dicionario.AptoTest;
 import com.fortes.rh.test.dicionario.AreasFormacaoTest;
 import com.fortes.rh.test.dicionario.DeficienciaTest;
@@ -1500,6 +1502,8 @@ import com.fortes.test.web.tags.LinkTagTest;
 	SituacaoGeradoraAcidenteTrabalhoDaoHibernateTest.class,
 	AgenteCausadorAcidenteTrabalhoManagerTest.class,
 	AgenteCausadorAcidenteTrabalhoDaoHibernateTest.class,
+	SituacaoGeradoraDoencaProfissionalManagerTest.class,
+	SituacaoGeradoraDoencaProfissionalDaoHibernateTest.class,
 	        
     // UTILITARIOS
 	AutenticadorTest.class,

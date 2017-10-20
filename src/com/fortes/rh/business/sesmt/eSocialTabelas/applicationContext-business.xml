@@ -41,6 +41,20 @@
       <ref bean="agenteCausadorAcidenteTrabalhoManagerTarget" />
     </property>
   </bean>
+  <bean id="situacaoGeradoraDoencaProfissionalManagerTarget" class="com.fortes.rh.business.sesmt.eSocialTabelas.SituacaoGeradoraDoencaProfissionalManagerImpl">
+    <property name="dao">
+      <ref bean="situacaoGeradoraDoencaProfissionalDao" />
+    </property>
+  </bean>
+  <bean id="situacaoGeradoraDoencaProfissionalManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.sesmt.eSocialTabelas.SituacaoGeradoraDoencaProfissionalManager</value>
+    </property>
+    <property name="target">
+      <ref bean="situacaoGeradoraDoencaProfissionalManagerTarget" />
+    </property>
+  </bean>
 </beans>
+
 
 

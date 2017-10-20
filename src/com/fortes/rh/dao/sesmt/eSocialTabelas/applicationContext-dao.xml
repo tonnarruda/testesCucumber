@@ -27,7 +27,16 @@
       <ref bean="agenteCausadorAcidenteTrabalhoDaoTarget" />
     </property>
   </bean>
+  <bean id="situacaoGeradoraDoencaProfissionalDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.dao.sesmt.eSocialTabelas.SituacaoGeradoraDoencaProfissionalDao</value>
+    </property>
+    <property name="target">
+      <ref bean="situacaoGeradoraDoencaProfissionalDaoTarget" />
+    </property>
+  </bean>
 </beans>
+
 
 
 
