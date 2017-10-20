@@ -67,7 +67,21 @@
       <ref bean="parteCorpoAtingidaManagerTarget" />
     </property>
   </bean>
+  <bean id="descricaoNaturezaLesaoManagerTarget" class="com.fortes.rh.business.sesmt.eSocialTabelas.DescricaoNaturezaLesaoManagerImpl">
+    <property name="dao">
+      <ref bean="descricaoNaturezaLesaoDao" />
+    </property>
+  </bean>
+  <bean id="descricaoNaturezaLesaoManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.sesmt.eSocialTabelas.DescricaoNaturezaLesaoManager</value>
+    </property>
+    <property name="target">
+      <ref bean="descricaoNaturezaLesaoManagerTarget" />
+    </property>
+  </bean>
 </beans>
+
 
 
 

@@ -228,7 +228,9 @@
       <mapping class="com.fortes.rh.model.sesmt.eSocialTabelas.AgenteCausadorAcidenteTrabalho" />
       <mapping class="com.fortes.rh.model.sesmt.eSocialTabelas.SituacaoGeradoraDoencaProfissional" />
       <mapping class="com.fortes.rh.model.sesmt.eSocialTabelas.ParteCorpoAtingida" />
+      <mapping class="com.fortes.rh.model.sesmt.eSocialTabelas.DescricaoNaturezaLesao" />
   </session-factory>
+
 
 
 

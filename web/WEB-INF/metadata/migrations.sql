@@ -500,3 +500,46 @@ INSERT INTO ParteCorpoAtingida(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('ParteCorp
 INSERT INTO ParteCorpoAtingida(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('ParteCorpoAtingida_sequence'),'758570000','Sistema musculoesquelético');--.go
 INSERT INTO ParteCorpoAtingida(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('ParteCorpoAtingida_sequence'),'758590000','Sistemas e aparelhos, NIC');--.go
 INSERT INTO ParteCorpoAtingida(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('ParteCorpoAtingida_sequence'),'759000000','Localização da lesão, NIC');--.go
+
+--Table Descrição da Natureza da Lesão --.go
+CREATE TABLE DescricaoNaturezaLesao (
+	id bigint NOT NULL,
+	codigo character varying(9),
+	descricao text
+);--.go
+
+ALTER TABLE DescricaoNaturezaLesao ADD CONSTRAINT DescricaoNaturezaLesao_pkey PRIMARY KEY(id);--.go
+CREATE SEQUENCE DescricaoNaturezaLesao_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+
+ALTER TABLE cat ADD COLUMN DescricaoNaturezaLesao_id BIGINT;--.go
+ALTER TABLE ONLY cat ADD CONSTRAINT cat_DescricaoNaturezaLesao_fk FOREIGN KEY (DescricaoNaturezaLesao_id) REFERENCES DescricaoNaturezaLesao(id);--.go
+
+INSERT INTO DescricaoNaturezaLesao(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('DescricaoNaturezaLesao_sequence'),'702000000','Lesão imediata');--.go
+INSERT INTO DescricaoNaturezaLesao(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('DescricaoNaturezaLesao_sequence'),'702005000','Escoriação, abrasão (ferimento superficial)');--.go
+INSERT INTO DescricaoNaturezaLesao(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('DescricaoNaturezaLesao_sequence'),'702010000','Corte, laceração, ferida contusa, punctura (ferida aberta)');--.go
+INSERT INTO DescricaoNaturezaLesao(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('DescricaoNaturezaLesao_sequence'),'702015000','Contusão, esmagamento (superfície cutânea intacta)');--.go
+INSERT INTO DescricaoNaturezaLesao(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('DescricaoNaturezaLesao_sequence'),'702020000','Distensão, torção');--.go
+INSERT INTO DescricaoNaturezaLesao(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('DescricaoNaturezaLesao_sequence'),'702025000','Inflamação de articulação, tendão ou músculo - inclui sinovite, tenossionovite, etc. Não inclui distensão, torção ou suas consequências');--.go
+INSERT INTO DescricaoNaturezaLesao(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('DescricaoNaturezaLesao_sequence'),'702030000','Luxação');--.go
+INSERT INTO DescricaoNaturezaLesao(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('DescricaoNaturezaLesao_sequence'),'702035000','Fratura');--.go
+INSERT INTO DescricaoNaturezaLesao(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('DescricaoNaturezaLesao_sequence'),'702040000','Queimadura ou escaldadura - efeito de temperatura elevada. Efeito do contato com substância quente. Inclui queimadura por eletricidade, mas não inclui choque elétrico. Não inclui queimadura por substância química, efeito de radiação, queimadura de sol, incapacidade sistêmica como intermação, queimadura por atrito, etc.');--.go
+INSERT INTO DescricaoNaturezaLesao(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('DescricaoNaturezaLesao_sequence'),'702042000','Queimadura química (lesão de tecido provocada pela ação corrosiva de produto químico, suas emanações, etc.)');--.go
+INSERT INTO DescricaoNaturezaLesao(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('DescricaoNaturezaLesao_sequence'),'702045000','Efeito de radiação (imediato) - queimadura de sol e toda forma de lesão de tecido, osso ou fluido orgânico, por exposição à radiação');--.go
+INSERT INTO DescricaoNaturezaLesao(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('DescricaoNaturezaLesao_sequence'),'702048000','Congelamento, geladura e outros efeitos da exposição à baixa temperatura');--.go
+INSERT INTO DescricaoNaturezaLesao(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('DescricaoNaturezaLesao_sequence'),'702050000','Asfixia, estrangulamento, afogamento');--.go
+INSERT INTO DescricaoNaturezaLesao(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('DescricaoNaturezaLesao_sequence'),'702055000','Intermação, insolação, cãibra, exaustão e outros efeitos da temperatura ambiente elevada - não inclui queimadura de sol ou outros efeitos de radiação');--.go
+INSERT INTO DescricaoNaturezaLesao(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('DescricaoNaturezaLesao_sequence'),'702060000','Choque elétrico e eletroplessão (eletrocussão)');--.go
+INSERT INTO DescricaoNaturezaLesao(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('DescricaoNaturezaLesao_sequence'),'702065000','Hérnia de qualquer natureza, ruptura');--.go
+INSERT INTO DescricaoNaturezaLesao(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('DescricaoNaturezaLesao_sequence'),'702070000','Amputação ou enucleação');--.go
+INSERT INTO DescricaoNaturezaLesao(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('DescricaoNaturezaLesao_sequence'),'702075000','Perda ou diminuição de sentido (audição, visão, olfato, paladar e tato, desde que não seja sequela de outra lesão)');--.go
+INSERT INTO DescricaoNaturezaLesao(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('DescricaoNaturezaLesao_sequence'),'702080000','Concussão cerebral');--.go
+INSERT INTO DescricaoNaturezaLesao(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('DescricaoNaturezaLesao_sequence'),'702090000','Lesão imediata, NIC');--.go
+INSERT INTO DescricaoNaturezaLesao(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('DescricaoNaturezaLesao_sequence'),'704020000','Doença contagiosa ou infecciosa (tuberculose, brucelose, etc.)');--.go
+INSERT INTO DescricaoNaturezaLesao(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('DescricaoNaturezaLesao_sequence'),'704030000','Pneumoconiose (silicose, asbestose, etc.)');--.go
+INSERT INTO DescricaoNaturezaLesao(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('DescricaoNaturezaLesao_sequence'),'706090000','Outras lesões, NIC');--.go
+INSERT INTO DescricaoNaturezaLesao(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('DescricaoNaturezaLesao_sequence'),'704040000','Dermatose (erupção, inflamação da pele, inclusive furúnculo, etc.). Geralmente provocada pelo contato direto com substâncias ou agentes sensibilizantes ou irritantes, tais como medicamentos, óleos, agentes biológicos, plantas, madeiras ou metais. Não inclui lesão provocada pela ação corrosiva de produtos químicos, queimadura por contato com substâncias quentes, efeito de exposição à radiação, efeito de exposição a baixas temperaturas ou inflamação ou irritação causada por fricção ou impacto');--.go
+INSERT INTO DescricaoNaturezaLesao(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('DescricaoNaturezaLesao_sequence'),'704050000','Envenenamento sistêmico - condição mórbida sistêmica provocada por inalação, ingestão ou absorção cutânea de substância tóxica, que afete o metabolismo, o funcionamento do sistema nervoso, do aparelho circulatório, do aparelho digestivo, do aparelho respiratório, dos órgãos de excreção, do sistema músculo-esquelético, etc., inclui ação de produto químico, medicamento, metal ou peçonha. Não inclui efeito de radiação, pneumoconiose, efeito corrosivo de produto químico, irritação cutânea, septicemia ou caso de ferida infectada');--.go
+INSERT INTO DescricaoNaturezaLesao(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('DescricaoNaturezaLesao_sequence'),'704060000','Perda ou diminuição mediatas de sentido (audição, visão, olfato, paladar e tato, desde que não seja sequela de outra lesão)');--.go
+INSERT INTO DescricaoNaturezaLesao(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('DescricaoNaturezaLesao_sequence'),'704070000','Efeito de radiação (mediato) - queimadura do sol e toda forma de lesão de tecido, osso, ou fluido orgânico por exposição à radiação.');--.go
+INSERT INTO DescricaoNaturezaLesao(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('DescricaoNaturezaLesao_sequence'),'704090000','Doença, NIC');--.go
+INSERT INTO DescricaoNaturezaLesao(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('DescricaoNaturezaLesao_sequence'),'706050000','Lesões múltiplas');--.go

@@ -30,5 +30,4 @@ public class ParteCorpoAtingidaDaoHibernate extends GenericDaoHibernate<ParteCor
 		
 		return criteria.list();
 	}
-	
 }

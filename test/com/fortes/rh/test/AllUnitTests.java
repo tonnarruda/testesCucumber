@@ -221,6 +221,7 @@ import com.fortes.rh.test.business.sesmt.TamanhoEPIManagerTest;
 import com.fortes.rh.test.business.sesmt.TestemunhaManagerTest;
 import com.fortes.rh.test.business.sesmt.eSocialTabelas.AgenteCausadorAcidenteTrabalhoManagerTest;
 import com.fortes.rh.test.business.sesmt.eSocialTabelas.CodificacaoAcidenteTrabalhoManagerTest;
+import com.fortes.rh.test.business.sesmt.eSocialTabelas.DescricaoNaturezaLesaoManagerTest;
 import com.fortes.rh.test.business.sesmt.eSocialTabelas.ParteCorpoAtingidaManagerTest;
 import com.fortes.rh.test.business.sesmt.eSocialTabelas.SituacaoGeradoraAcidenteTrabalhoManagerTest;
 import com.fortes.rh.test.business.sesmt.eSocialTabelas.SituacaoGeradoraDoencaProfissionalManagerTest;
@@ -424,6 +425,7 @@ import com.fortes.rh.test.dao.hibernate.sesmt.TestemunhaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.TipoTamanhoEPIDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.eSocialTabelas.AgenteCausadorAcidenteTrabalhoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.eSocialTabelas.CodificacaoAcidenteTrabalhoDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.sesmt.eSocialTabelas.DescricaoNaturezaLesaoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.eSocialTabelas.ParteCorpoAtingidaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.eSocialTabelas.SituacaoGeradoraAcidenteTrabalhoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.eSocialTabelas.SituacaoGeradoraDoencaProfissionalDaoHibernateTest;
@@ -1508,6 +1510,8 @@ import com.fortes.test.web.tags.LinkTagTest;
 	SituacaoGeradoraDoencaProfissionalDaoHibernateTest.class,
 	ParteCorpoAtingidaManagerTest.class,
 	ParteCorpoAtingidaDaoHibernateTest.class,
+	DescricaoNaturezaLesaoManagerTest.class,
+	DescricaoNaturezaLesaoDaoHibernateTest.class,
 	        
     // UTILITARIOS
 	AutenticadorTest.class,
