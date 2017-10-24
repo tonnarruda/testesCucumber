@@ -293,6 +293,7 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 				"delete from colaboradorquestionario where candidato_id in (select id from candidato where empresa_id = " + id + ");",
 				"delete from candidato where empresa_id = " + id + ";",
 				"delete from configuracaoimpressaocurriculo where empresa_id = " + id + ";",
+				"delete from faturamentomensal where estabelecimento_id in (select id from estabelecimento where empresa_id = " + id + ");",
 				"delete from eleicao where estabelecimento_id in (select id from estabelecimento where empresa_id = " + id + ");",
 				"delete from colaboradorresposta where estabelecimento_id in (select id from estabelecimento where empresa_id = " + id + ");",
 				"delete from historicocolaborador where estabelecimento_id in (select id from estabelecimento where empresa_id = " + id + ");",
