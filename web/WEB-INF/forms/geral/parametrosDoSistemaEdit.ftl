@@ -114,9 +114,9 @@
 				return false;
 		
 			if ($("#autenticacao").is(':checked')) {
-				return validaFormulario('form', new Array('appUrl', '@horariosBackup', 'appContext', 'sessionTimeout','atualizadorPath','servidorRemprot','perfil','emailDoSuporteTecnico', 'emailUser'), new Array('emailDoSuporteTecnico','emailRemetente','proximaVersao'));
+				return validaFormulario('form', new Array('appUrl', 'appContext', 'sessionTimeout','atualizadorPath','servidorRemprot','perfil','emailDoSuporteTecnico', 'emailUser'), new Array('emailDoSuporteTecnico','emailRemetente','proximaVersao'));
 			} else {
-				return validaFormulario('form', new Array('appUrl', '@horariosBackup', 'appContext', 'sessionTimeout','atualizadorPath','servidorRemprot','perfil','emailDoSuporteTecnico'), new Array('emailDoSuporteTecnico','emailRemetente','proximaVersao'));			
+				return validaFormulario('form', new Array('appUrl', 'appContext', 'sessionTimeout','atualizadorPath','servidorRemprot','perfil','emailDoSuporteTecnico'), new Array('emailDoSuporteTecnico','emailRemetente','proximaVersao'));			
 			}
 		}
 		

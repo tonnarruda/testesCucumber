@@ -32,7 +32,7 @@ public class BackupJob extends QuartzJobBean implements StatefulJob {
 			String[] horariosBackup = parametrosDoSistema.getHorariosBackup().split(",");
 			Integer horaAtual = new Date().getHours();
 			
-			if ( Arrays.asList(horariosBackup).contains(horaAtual.toString()) )
+			if ( horariosBackup != null && horariosBackup.length > 0 && Arrays.asList(horariosBackup).contains(horaAtual.toString()) )
 				service.backupAndSendMail();
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);

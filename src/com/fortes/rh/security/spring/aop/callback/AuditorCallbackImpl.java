@@ -72,14 +72,14 @@ public abstract class AuditorCallbackImpl implements AuditorCallback {
 			Method mValue = metodo.getParametros()[0].getClass().getMethod("getNome");
 			return (String) mValue.invoke(metodo.getParametros()[0],new Object[]{});
 		} catch (Exception e) {
-			e.printStackTrace();
+			
 		}
 		
 		try {
 			Method mValue = metodo.getParametros()[0].getClass().getMethod("getDescricao");
 			return (String) mValue.invoke(metodo.getParametros()[0],new Object[]{});
 		} catch (Exception e) {
-			e.printStackTrace();
+			
 		}
 		
 		return "";
