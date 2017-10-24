@@ -27871,6 +27871,10 @@ insert into migrations values('20170827154958');--.go
 update parametrosdosistema set appversao = '1.1.183.215', quantidadeConstraints = 417;--.go
 -- versao 1.1.184.216
 
+delete from candidatocurriculo where candidato_id in (select id from candidato where nome ='.'); --.go
+delete from experiencia where candidato_id in (select id from candidato where nome ='.'); --.go
+delete from formacao where candidato_id in (select id from candidato where nome ='.'); --.go
+delete from candidatoidioma where candidato_id in (select id from candidato where nome ='.'); --.go
 delete from candidato_conhecimento where candidato_id in (select id from candidato where nome ='.'); --.go
 delete from candidato_areainteresse where candidato_id in (select id from candidato where nome ='.'); --.go
 delete from candidato_cargo where candidato_id in (select id from candidato where nome ='.'); --.go
