@@ -12,6 +12,7 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Contato;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.test.model.geral.EnderecoFactory;
 
@@ -192,6 +193,21 @@ public class ColaboradorFactory
 	public static Colaborador getEntity(String nome) {
 		Colaborador colaborador = getEntity();
 		colaborador.setNome(nome);
+		
+		return colaborador;
+	}
+	
+	public static Colaborador getEntity(Estado uf) {
+		
+		Colaborador colaborador = getEntity();
+		
+		colaborador.getEndereco().setUf(uf);
+		colaborador.getPessoal().setQtdFilhos(5);
+		colaborador.getPessoal().setRgUf(uf);
+		colaborador.getHabilitacao().setEmissao(null);
+		colaborador.getPessoal().getCtps().setCtpsNumero("123499");
+		colaborador.getPessoal().getCtps().setCtpsDataExpedicao(new Date());
+		
 		return colaborador;
 	}
 }
