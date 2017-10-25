@@ -33,16 +33,15 @@
 			
 			<@ww.hidden id="pagina" name="page"/>
 			<@ww.hidden id="showFilter" name="showFilter"/>
-			<input type="submit" value="" class="btnPesquisar grayBGE" onclick="pesquisar();">
+			<button type="submit" value="" onclick="pesquisar();">Pesquisar</button>
 		</@ww.form>
 	<#include "../util/bottomFiltro.ftl" />
 	<br>
 	
 	<@display.table name="riscos" id="risco" class="dados">
 		<@display.column title="Ações" class="acao" style="width:52px;">
-					
-			<a href="prepareUpdate.action?risco.id=${risco.id}"><i title="Editar" class="fa fa-edit" aria-hidden="true" style="font-size: 15px; color: black;"></i></a>
-			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?risco.id=${risco.id}&page=${page}'});"><i title="Excluir" class="fa fa-times" aria-hidden="true" style="font-size: 18px; color: black;"></i></a>
+			<@frt.link href="prepareUpdate.action?risco.id=${risco.id}" imgTitle="Editar" iconeClass="fa-edit"/>
+			<@frt.link href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?risco.id=${risco.id}&page=${page}'});"imgTitle="Excluir" iconeClass="fa-times"/>		
 		</@display.column>
 		<@display.column property="descricao" title="Risco" style="width:300px;"/>
 		<@display.column property="descricaoGrupoRisco" title="Tipo de Risco" style="width:100px;"/>

@@ -259,9 +259,11 @@
 		<@ww.textfield label="Nome" name="risco.descricao" id="descricao" cssClass="inputNome" maxLength="100" cssStyle="width: 502px;" required="true"/>
 		<@ww.select label="Tipo de Risco" name="risco.grupoRisco" id="grupoRisco" list="grupoRiscos" cssStyle="width: 502px;" headerKey="-1" headerValue="[Selecione...]" required="true"/>
 		<@ww.select label="Tipo de Risco eSocial" name="risco.grupoRiscoESocial" id="grupoRiscoESocial" list="grupoRiscosESocial" cssStyle="width: 502px;" headerKey="" headerValue="[Selecione...]" required="true"  onchange="onchangeGrupoRiscoESocial();"/>
-
+		<img border="0" src="<@ww.url value="/imgs/esocial.png"/>" style="float: left;margin-top: -47px;margin-left: 135px; width: 27px; height: 27px;">
+		
 		<div style="margin-top: 4px;">
 			<span>Fator de Risco:*<span>
+				<img border="0" src="<@ww.url value="/imgs/esocial.png"/>" style="margin-top: -11px; margin-bottom: -5px; width: 27px; height: 27px;">
 			<div id="divDescricaoFator">
 				<#if !risco.fatorDeRisco?exists>
 					<span id="selecionarFator" onclick="populaFatoresDeRisco();" style="cursor: pointer; color: #1c96e8;">

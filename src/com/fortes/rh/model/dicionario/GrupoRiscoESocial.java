@@ -24,8 +24,8 @@ public class GrupoRiscoESocial extends LinkedHashMap<String, String>
 	
 	public static GrupoRiscoESocial getInstance()
 	{
-		if (instance == null)
-			instance = new GrupoRiscoESocial();
+		
+		instance = new GrupoRiscoESocial();
 		
 		return instance;
 	}
@@ -47,8 +47,7 @@ public class GrupoRiscoESocial extends LinkedHashMap<String, String>
 	
 	public static GrupoRiscoESocial getGrupoRiscoESocialListagemDeRiscos()
 	{
-		if (instance == null)
-			instance = new GrupoRiscoESocial();
+		instance = new GrupoRiscoESocial();
 		
 		instance.put(SEM_GRUPO_CONFIGURADO, "Sem grupo configurado");
 		return instance;
