@@ -308,15 +308,15 @@ function validaCamposObrigatorios(campos, formulario)
 				validacao = true;
 			else if(campoClass == "mascaraCnpj" && campo.value != valueCnpj)
 				validacao = true;
-			else if(campoClass == "mascaraCpf" && campo.value != valueCpf)
+			else if(campoClass.substring(0, 10) == "mascaraCpf" && campo.value != valueCpf)
 				validacao = true;
-			else if(campoClass == "mascaraCep" && campo.value != valueCep)
+			else if(campoClass.substring(0, 10) == "mascaraCep" && campo.value != valueCep)
 				validacao = true;
 			else if(campoClass == "mascaraHora" && campo.value != valueHora)
 				validacao = true;
 			else if(campoClass == "pontuacao" && campo.value != '')
 				validacao = true;
-			else if((campoClass != "listCheckBox" && campoClass != "mascaraHora" && campoClass != "mascaraCnpj" && campoClass != "mascaraCep" && campoClass != "mascaraCpf" && campoClass.substring(0, 11) != "mascaraData" && campoClass.substring(0, 17) != "mascaraMesAnoData" && campo.value.trim() != "" && campo.value.trim() != "-1") || (campo.type == "select-multiple" && campo.length > 0))
+			else if((campoClass != "listCheckBox" && campoClass != "mascaraHora" && campoClass != "mascaraCnpj" && campoClass.substring(0, 10) != "mascaraCep" && campoClass.substring(0, 10) != "mascaraCpf" && campoClass.substring(0, 11) != "mascaraData" && campoClass.substring(0, 17) != "mascaraMesAnoData" && campo.value.trim() != "" && campo.value.trim() != "-1") || (campo.type == "select-multiple" && campo.length > 0))
 				validacao = true;
 
 			if(validacao)
