@@ -375,7 +375,7 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 		sql.append("	    cncc.avaliador_id, chn.nivelcompetenciahistorico_id, (cq.pesoavaliador*chn.ordem) as pesoavaliador_ordem ");
 		sql.append("	from configuracaonivelcompetenciacolaborador cncc ");
 		sql.append("	inner join configuracaonivelcompetencia cnc on cnc.configuracaonivelcompetenciacolaborador_id = cncc.id ");
-		sql.append("	inner join competencia comp on comp.id = cnc.competencia_id ");
+		sql.append("	inner join competencia comp on comp.id = cnc.competencia_id and comp.tipo = cnc.tipocompetencia ");
 		sql.append("	inner join configuracaonivelcompetenciafaixasalarial cncf on cncf.id = cncc.configuracaonivelcompetenciafaixasalarial_id ");
 		sql.append("	left join confighistoriconivel chn on cncf.nivelcompetenciahistorico_id = chn.nivelcompetenciahistorico_id and chn.nivelcompetencia_id = cnc.nivelcompetencia_id ");
 		sql.append("	inner join colaboradorquestionario cq on cq.id = cncc.colaboradorquestionario_id and cq.respondida ");

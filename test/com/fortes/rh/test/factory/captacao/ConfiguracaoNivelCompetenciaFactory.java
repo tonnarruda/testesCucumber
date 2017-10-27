@@ -27,13 +27,13 @@ public class ConfiguracaoNivelCompetenciaFactory
 		return configuracaoNivelCompetencia;
 	}
 
-	public static ConfiguracaoNivelCompetencia getEntity(NivelCompetencia nivelCompetencia, Long competenciaId, ConfiguracaoNivelCompetenciaColaborador cncColaborador, ConfiguracaoNivelCompetenciaFaixaSalarial cncFaixaSalarial, FaixaSalarial faixaSalarial)
+	public static ConfiguracaoNivelCompetencia getEntity(NivelCompetencia nivelCompetencia, Long competenciaId, Character tipoCompetencia, ConfiguracaoNivelCompetenciaColaborador cncColaborador, ConfiguracaoNivelCompetenciaFaixaSalarial cncFaixaSalarial, FaixaSalarial faixaSalarial)
 	{
 		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia = getEntity();
 		configuracaoNivelCompetencia.setConfiguracaoNivelCompetenciaColaborador(cncColaborador);
 		configuracaoNivelCompetencia.setConfiguracaoNivelCompetenciaFaixaSalarial(cncFaixaSalarial);
 		configuracaoNivelCompetencia.setFaixaSalarial(faixaSalarial);
-		setCompetenciaNivelTipo(competenciaId, null, nivelCompetencia, configuracaoNivelCompetencia);
+		setCompetenciaNivelTipo(competenciaId, tipoCompetencia, nivelCompetencia, configuracaoNivelCompetencia);
 		return configuracaoNivelCompetencia;
 	}
 	

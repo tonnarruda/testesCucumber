@@ -49,7 +49,7 @@ public class CompetenciaDaoHibernate extends GenericDaoHibernate<Competencia> im
 		StringBuilder sqlBase = new StringBuilder();
 		sqlBase.append("select distinct comp.id, comp.nome ");
 		sqlBase.append("from ConfiguracaoNivelCompetencia cnc ");
-		sqlBase.append("  inner join Competencia comp on comp.id = cnc.competencia_id ");
+		sqlBase.append("  inner join Competencia comp on comp.id = cnc.competencia_id and comp.tipo = cnc.tipocompetencia");
 		sqlBase.append("  inner join ConfiguracaoNivelCompetenciaColaborador cncc on cncc.id = cnc.configuracaonivelcompetenciacolaborador_id ");
 		sqlBase.append("  inner join ColaboradorQuestionario cq on cq.id = cncc.colaboradorquestionario_id ");
 
