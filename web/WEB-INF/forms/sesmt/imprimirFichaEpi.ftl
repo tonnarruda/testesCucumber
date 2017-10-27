@@ -38,6 +38,7 @@
 		
 		function buscaSolicitacao(colaboradorId)
 		{
+			$('#listCheckBoxsolicitacoesEpiCheck').css("background", "#FFFFFF");
 			DWRUtil.useLoadingMessage('Carregando...');
 			SolicitacaoEpiDWR.getByColaboradorId(listSolicitacoes, colaboradorId);
 		}
@@ -51,6 +52,16 @@
 				$('#listCheckBoxsolicitacoesEpiCheck').append('<div class="info"> <ul> <li>'+mensagemSemEpis()+'</li> </ul> </div>');
 			}else{
 				addChecksByCollection('solicitacoesEpiCheck',solicitacoesEpi);
+			}
+		}
+		
+		function imprimir()
+		{
+			if($("input[name='solicitacoesEpiCheck']").length == 0){
+				$('#listCheckBoxsolicitacoesEpiCheck').css("background", "#FFEEC2");
+				return false;
+			} else {
+				return validaFormulario('formRelatorio',new Array('colaborador','@solicitacoesEpiCheck'),null);
 			}
 		}
 		
@@ -90,7 +101,7 @@
 		<@ww.checkbox label="Imprimir verso" id="imprimirVerso" name="imprimirVerso" labelPosition="left"/>
 		
 		<div class="buttonGroup">
-			<button class="btnImprimirPdf" onclick="return validaFormulario('formRelatorio',new Array('colaborador','@solicitacoesEpiCheck'),null);"></button>
+			<button class="btnImprimirPdf" onclick="return imprimir();"></button>
 		</div>
 
 		<@ww.hidden name="colaborador.nome" />
