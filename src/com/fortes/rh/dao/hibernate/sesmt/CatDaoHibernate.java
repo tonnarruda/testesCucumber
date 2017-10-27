@@ -28,7 +28,6 @@ public class CatDaoHibernate extends GenericDaoHibernate<Cat> implements CatDao
 {
 	public Collection<Cat> findByColaborador(Colaborador colaborador)
 	{
-		// refactoring para reaproveitar código
 		return  findCatsColaboradorByDate(colaborador, null);
 	}
 
@@ -226,7 +225,7 @@ public class CatDaoHibernate extends GenericDaoHibernate<Cat> implements CatDao
 	
 	public Cat findByIdProjectionDetalhada(Long catId) 
 	{
-		StringBuilder hql = new StringBuilder("select new Cat(cat, emp.razaoSocial, emp.cnpj, emp.cnae, emp.endereco, empCid.nome, empUf.sigla, emp.ddd, emp.telefone, " +
+		StringBuilder hql = new StringBuilder("select new Cat(cat, emp.razaoSocial, emp.cnpj, est.complementoCnpj, emp.cnae, emp.endereco, empCid.nome, empUf.sigla, emp.ddd, emp.telefone, " +
 				"col.nome, col.pessoal.mae, col.pessoal.dataNascimento, col.pessoal.sexo, col.pessoal.estadoCivil, col.pessoal.ctps.ctpsNumero, col.pessoal.ctps.ctpsSerie, col.pessoal.ctps.ctpsDataExpedicao, ctpsUf, col.pessoal.rg, col.pessoal.rgDataExpedicao, col.pessoal.rgOrgaoEmissor, rgUf, col.pessoal.pis, hc.salario," +
 				"col.endereco.logradouro, col.endereco.numero, col.endereco.bairro, col.endereco.cep, cid, uf, " +
 				"col.contato.ddd, col.contato.foneFixo, ca.nomeMercado, fs.codigoCbo, " +
@@ -241,6 +240,7 @@ public class CatDaoHibernate extends GenericDaoHibernate<Cat> implements CatDao
 		hql.append(" left join col.pessoal.ctps.ctpsUf ctpsUf ");
 		hql.append(" left join col.pessoal.rgUf rgUf ");
 		hql.append(" left join col.historicoColaboradors hc ");
+		hql.append(" left join hc.estabelecimento est ");
 		hql.append(" left join hc.faixaSalarial fs ");
 		hql.append(" left join fs.cargo ca ");
 		hql.append(" left join emp.cidade empCid");

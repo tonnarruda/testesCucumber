@@ -34,8 +34,8 @@
 		function imprimirRelatorio(catId) {
 			$('#selectRelatorio').dialog({	title: 'Imprimir relatório',
 			modal: true, 
-			height: 145,
-			width: 200,
+			height: 150,
+			width: 215,
 				buttons: [ 	{ text: "Imprimir", click: function() {
 				            if ( $('#tipoRelatorio').val() == 'S' ) {
 				            	popupConfigRelatorio(catId);

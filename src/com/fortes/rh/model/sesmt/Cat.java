@@ -16,6 +16,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.captacao.Ctps;
 import com.fortes.rh.model.cargosalario.Cargo;
@@ -27,6 +29,7 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.geral.Pessoal;
+import com.fortes.rh.util.CnpjUtil;
 import com.fortes.rh.util.DateUtil;
 
 @SuppressWarnings("serial")
@@ -159,7 +162,7 @@ public class Cat extends AbstractModel implements Serializable
 		naturezaLesao.setDescricao(naturezaLesaoDescricao);
 	}
     
-    public Cat(Cat cat, String empresaRazaoSocial, String empresaCnpj, String empresaCnae, String empresaEndereco, String empresaCidadeNome, String empresaUfSigla, String empresaDDD, String empresaTelefone,
+    public Cat(Cat cat, String empresaRazaoSocial, String empresaCnpj, String estabComplementoCnpj, String empresaCnae, String empresaEndereco, String empresaCidadeNome, String empresaUfSigla, String empresaDDD, String empresaTelefone,
 			String colaboradorNome, String colaboradorMae, Date colaboradorDataNascimento, Character colaboradorSexo, String colaboradorEstadoCivil, String colaboradorCtpsNumero,
 			String colaboradorCtpsSerie, Date colaboradorCtpsDataExpedicao, Estado colaboradorCtpsUf, String colaboradorRg, Date colaboradorRgDataExpedicao, String colaboradorRgOrgaoEmissor,
 			Estado colaboradorRgUf, String colaboradorPis, Double colaboradorSalario,
@@ -231,9 +234,11 @@ public class Cat extends AbstractModel implements Serializable
 		pessoal.setCtps(ctps);
 		colaborador.setPessoal(pessoal);
 		
+		String cnpj = CnpjUtil.formata(StringUtils.defaultString(empresaCnpj) + StringUtils.defaultString(estabComplementoCnpj));
+		
 		Empresa empresa = new Empresa();
-		empresa.setCnpj(empresaCnpj);
 		empresa.setCnae(empresaCnae);
+		empresa.setCnpj(cnpj);
 		empresa.setRazaoSocial(empresaRazaoSocial);
 		empresa.setEndereco(empresaEndereco);
 		empresa.setProjectionCidadeNome(empresaCidadeNome);
@@ -245,12 +250,6 @@ public class Cat extends AbstractModel implements Serializable
 		uf.setSigla(empresaUfSigla);
 		empresa.setUf(uf);
 		
-//		this.ambienteColaborador = new Ambiente();
-//		ambienteColaborador.setNome(ambienteNome);
-
-//		this.funcaoColaborador = new Funcao();
-//		funcaoColaborador.setNome(funcaoNome);
-
 		this.naturezaLesao = new NaturezaLesao();
 		naturezaLesao.setDescricao(naturezaLesaoDescricao);
 	}
