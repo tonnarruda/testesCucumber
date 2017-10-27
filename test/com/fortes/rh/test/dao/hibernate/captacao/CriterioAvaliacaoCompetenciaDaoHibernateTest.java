@@ -179,7 +179,7 @@ public class CriterioAvaliacaoCompetenciaDaoHibernateTest extends GenericDaoHibe
 		configuracaoNivelCompetenciaFaixaSalarial.setNivelCompetenciaHistorico(nivelCompetenciaHistorico);
 		configuracaoNivelCompetenciaFaixaSalarialDao.save(configuracaoNivelCompetenciaFaixaSalarial);
 		
-		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia = ConfiguracaoNivelCompetenciaFactory.getEntity(nivelCompetencia, conhecimento.getId(), null, configuracaoNivelCompetenciaFaixaSalarial, null);
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia = ConfiguracaoNivelCompetenciaFactory.getEntity(nivelCompetencia, conhecimento.getId(), null, null, configuracaoNivelCompetenciaFaixaSalarial, null);
 		configuracaoNivelCompetencia.setTipoCompetencia(TipoCompetencia.CONHECIMENTO);
 		configuracaoNivelCompetenciaDao.save(configuracaoNivelCompetencia);
 		

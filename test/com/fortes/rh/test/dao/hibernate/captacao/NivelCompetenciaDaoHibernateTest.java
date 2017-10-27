@@ -182,7 +182,7 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		ConfiguracaoNivelCompetenciaCandidato configuracaoNivelCompetenciaCandidato = ConfiguracaoNivelCompetenciaCandidatoFactory.getEntity(candidato, solicitacao, configuracaoNivelCompetenciaFaixaSalarial, new Date()); 
 		configuracaoNivelCompetenciaCandidatoDao.save(configuracaoNivelCompetenciaCandidato);
 		
-		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia = ConfiguracaoNivelCompetenciaFactory.getEntity(nivel, habilidade.getId(), null, null, null);
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia = ConfiguracaoNivelCompetenciaFactory.getEntity(nivel, habilidade.getId(), null, null, null, null);
 		configuracaoNivelCompetencia.setFaixaSalarial(faixaSalarial);
 		configuracaoNivelCompetencia.setConfiguracaoNivelCompetenciaCandidato(configuracaoNivelCompetenciaCandidato);
 		configuracaoNivelCompetenciaDao.save(configuracaoNivelCompetencia);
@@ -219,7 +219,7 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		Habilidade habilidade = HabilidadeFactory.getEntity();
 		habilidadeDao.save(habilidade);
 		
-		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia = ConfiguracaoNivelCompetenciaFactory.getEntity(nivel, habilidade.getId(), configuracaoNivelCompetenciaColaborador, null, null);
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia = ConfiguracaoNivelCompetenciaFactory.getEntity(nivel, habilidade.getId(), null, configuracaoNivelCompetenciaColaborador, null, null);
 		configuracaoNivelCompetenciaDao.save(configuracaoNivelCompetencia);
 		
 		Collection<ConfiguracaoNivelCompetencia> configs = configuracaoNivelCompetenciaDao.findByConfiguracaoNivelCompetenciaColaborador(null, configuracaoNivelCompetenciaColaborador.getId(), configuracaoNivelCompetenciaFaixaSalarial.getId());
@@ -242,7 +242,7 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = ConfiguracaoNivelCompetenciaFaixaSalarialFactory.getEntity();
 		configuracaoNivelCompetenciaFaixaSalarialDao.save(configuracaoNivelCompetenciaFaixaSalarial);
 		
-		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia = ConfiguracaoNivelCompetenciaFactory.getEntity(nivel, habilidade.getId(), null, configuracaoNivelCompetenciaFaixaSalarial, null);
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia = ConfiguracaoNivelCompetenciaFactory.getEntity(nivel, habilidade.getId(), null, null, configuracaoNivelCompetenciaFaixaSalarial, null);
 		configuracaoNivelCompetenciaDao.save(configuracaoNivelCompetencia);
 		
 		int result1 = configuracaoNivelCompetenciaDao.findToList(new String[]{"id"}, new String[]{"id"}, new String[]{"configuracaoNivelCompetenciaFaixaSalarial.id"}, new Long[]{configuracaoNivelCompetenciaFaixaSalarial.getId()}).size();
@@ -273,7 +273,7 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		configuracaoNivelCompetenciaFaixaSalarial.setNivelCompetenciaHistorico(nivelCompetenciaHistorico);
 		configuracaoNivelCompetenciaFaixaSalarialDao.save(configuracaoNivelCompetenciaFaixaSalarial);
 		
-		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia = ConfiguracaoNivelCompetenciaFactory.getEntity(nivel, habilidade.getId(), null, configuracaoNivelCompetenciaFaixaSalarial, null);
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia = ConfiguracaoNivelCompetenciaFactory.getEntity(nivel, habilidade.getId(), null, null, configuracaoNivelCompetenciaFaixaSalarial, null);
 		configuracaoNivelCompetenciaDao.save(configuracaoNivelCompetencia);
 
 		Collection<ConfiguracaoNivelCompetencia> configs = configuracaoNivelCompetenciaDao.findByFaixa(faixaSalarial.getId(), configuracaoNivelCompetenciaFaixaSalarial.getData());
@@ -307,16 +307,16 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		ConfiguracaoNivelCompetenciaColaborador cncColaborador1 = ConfiguracaoNivelCompetenciaColaboradorFactory.getEntity(colaborador, cncFaixaSalarial1);
 		configuracaoNivelCompetenciaColaboradorDao.save(cncColaborador1);
 		
-		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia1 = ConfiguracaoNivelCompetenciaFactory.getEntity(nivel, habilidade.getId(), cncColaborador1, null, null);
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia1 = ConfiguracaoNivelCompetenciaFactory.getEntity(nivel, habilidade.getId(), null, cncColaborador1, null, null);
 		configuracaoNivelCompetenciaDao.save(configuracaoNivelCompetencia1);
 
-		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia2 = ConfiguracaoNivelCompetenciaFactory.getEntity(nivel, habilidade.getId(), cncColaborador1, null, null);
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia2 = ConfiguracaoNivelCompetenciaFactory.getEntity(nivel, habilidade.getId(), null, cncColaborador1, null, null);
 		configuracaoNivelCompetenciaDao.save(configuracaoNivelCompetencia2);
 		
 		ConfiguracaoNivelCompetenciaColaborador cncColaborador2 = ConfiguracaoNivelCompetenciaColaboradorFactory.getEntity(colaborador, cncFaixaSalarial1);
 		configuracaoNivelCompetenciaColaboradorDao.save(cncColaborador2);
 		
-		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia3 = ConfiguracaoNivelCompetenciaFactory.getEntity(nivel, habilidade.getId(), cncColaborador2, null, null);
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia3 = ConfiguracaoNivelCompetenciaFactory.getEntity(nivel, habilidade.getId(), null, cncColaborador2, null, null);
 		configuracaoNivelCompetenciaDao.save(configuracaoNivelCompetencia3);
 		
 		configuracaoNivelCompetenciaDao.removeColaborador(colaborador);
@@ -351,7 +351,7 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		configNivelCompetenciaColaborador1.setConfiguracaoNivelCompetenciaFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarial);
 		configuracaoNivelCompetenciaColaboradorDao.save(configNivelCompetenciaColaborador1);
 		
-		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia = ConfiguracaoNivelCompetenciaFactory.getEntity(nivelCompetencia, habilidade.getId(), configNivelCompetenciaColaborador1, null, null);
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia = ConfiguracaoNivelCompetenciaFactory.getEntity(nivelCompetencia, habilidade.getId(), null, configNivelCompetenciaColaborador1, null, null);
 		configuracaoNivelCompetenciaDao.save(configuracaoNivelCompetencia);
 
 		int result = configuracaoNivelCompetenciaDao.findByConfiguracaoNivelCompetenciaColaborador(null, configNivelCompetenciaColaborador1.getId(), configuracaoNivelCompetenciaFaixaSalarial.getId()).size();
@@ -379,14 +379,14 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		configNivelCompetenciaColaborador1.setFaixaSalarial(faixaSalarial1);
 		configuracaoNivelCompetenciaColaboradorDao.save(configNivelCompetenciaColaborador1);
 		
-		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia1 = ConfiguracaoNivelCompetenciaFactory.getEntity(nivelCompetencia, habilidade.getId(), configNivelCompetenciaColaborador1, null, null);
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia1 = ConfiguracaoNivelCompetenciaFactory.getEntity(nivelCompetencia, habilidade.getId(), null, configNivelCompetenciaColaborador1, null, null);
 		configuracaoNivelCompetenciaDao.save(configuracaoNivelCompetencia1);
 
 		ConfiguracaoNivelCompetenciaColaborador configNivelCompetenciaColaborador2 = new ConfiguracaoNivelCompetenciaColaborador();
 		configNivelCompetenciaColaborador2.setFaixaSalarial(faixaSalarial2);
 		configuracaoNivelCompetenciaColaboradorDao.save(configNivelCompetenciaColaborador2);
 		
-		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia2 = ConfiguracaoNivelCompetenciaFactory.getEntity(nivelCompetencia, habilidade.getId(), configNivelCompetenciaColaborador2, null, null);
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia2 = ConfiguracaoNivelCompetenciaFactory.getEntity(nivelCompetencia, habilidade.getId(), null, configNivelCompetenciaColaborador2, null, null);
 		configuracaoNivelCompetenciaDao.save(configuracaoNivelCompetencia2);	
 		
 		int result1 = configuracaoNivelCompetenciaDao.findToList(new String[]{"id"}, new String[]{"id"}, new String[]{"configuracaoNivelCompetenciaColaborador.id"}, new Long[]{configNivelCompetenciaColaborador1.getId()}).size();
@@ -420,14 +420,14 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		configuracaoNivelCompetenciaFaixaSalarial1.setFaixaSalarial(faixaSalarial1);
 		configuracaoNivelCompetenciaFaixaSalarialDao.save(configuracaoNivelCompetenciaFaixaSalarial1);
 		
-		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia1 = ConfiguracaoNivelCompetenciaFactory.getEntity(nivelCompetencia, habilidade.getId(), null, configuracaoNivelCompetenciaFaixaSalarial1, null);
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia1 = ConfiguracaoNivelCompetenciaFactory.getEntity(nivelCompetencia, habilidade.getId(), null, null, configuracaoNivelCompetenciaFaixaSalarial1, null);
 		configuracaoNivelCompetenciaDao.save(configuracaoNivelCompetencia1);
 		
 		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial2 = ConfiguracaoNivelCompetenciaFaixaSalarialFactory.getEntity();
 		configuracaoNivelCompetenciaFaixaSalarial2.setFaixaSalarial(faixaSalarial2);
 		configuracaoNivelCompetenciaFaixaSalarialDao.save(configuracaoNivelCompetenciaFaixaSalarial2);
 		
-		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia2 = ConfiguracaoNivelCompetenciaFactory.getEntity(nivelCompetencia, habilidade.getId(), null, configuracaoNivelCompetenciaFaixaSalarial2, null);
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia2 = ConfiguracaoNivelCompetenciaFactory.getEntity(nivelCompetencia, habilidade.getId(), null, null, configuracaoNivelCompetenciaFaixaSalarial2, null);
 		configuracaoNivelCompetenciaDao.save(configuracaoNivelCompetencia2);
 		
 		int result1 = configuracaoNivelCompetenciaDao.findToList(new String[]{"id"}, new String[]{"id"}, new String[]{"configuracaoNivelCompetenciaFaixaSalarial.id"}, new Long[]{configuracaoNivelCompetenciaFaixaSalarial1.getId()}).size();

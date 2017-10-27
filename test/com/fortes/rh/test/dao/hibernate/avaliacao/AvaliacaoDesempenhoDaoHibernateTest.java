@@ -35,6 +35,7 @@ import com.fortes.rh.model.avaliacao.AnaliseDesempenhoOrganizacao;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenho;
+import com.fortes.rh.model.captacao.Competencia;
 import com.fortes.rh.model.captacao.ConfigHistoricoNivel;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
@@ -466,7 +467,7 @@ public class AvaliacaoDesempenhoDaoHibernateTest extends GenericDaoHibernateTest
 	
 	@Test
 	public void testFindAnaliseDesempenhoOrganizacaoPorEmpresa() {
-		String nomeAgrupador = "Empresa I";
+		String nomeAgrupador = "Empresa Teste I";
 		SetUpTesteFindAnaliseDesempenhoOrganizacao setup = setupTestFindAnaliseDesempenhoOrganizacao(nomeAgrupador);
 		
 		Collection<AnaliseDesempenhoOrganizacao> analiseDesempenhoOrganizacao = avaliacaoDesempenhoDao.findAnaliseDesempenhoOrganizacao(setup.avaliacoesDesempenhoIds, setup.estabelecimentosIds, null, null, setup.competenciasIds, AnaliseDesempenhoOrganizacao.POR_EMPRESA, setup.empresaId);
@@ -477,7 +478,7 @@ public class AvaliacaoDesempenhoDaoHibernateTest extends GenericDaoHibernateTest
 
 	@Test
 	public void testFindAnaliseDesempenhoOrganizacaoPorArea() {
-		String nomeAgrupador = "Área I";
+		String nomeAgrupador = "Área Teste I";
 		SetUpTesteFindAnaliseDesempenhoOrganizacao setup = setupTestFindAnaliseDesempenhoOrganizacao(nomeAgrupador);
 		
 		Collection<AnaliseDesempenhoOrganizacao> analiseDesempenhoOrganizacao = avaliacaoDesempenhoDao.findAnaliseDesempenhoOrganizacao(setup.avaliacoesDesempenhoIds, setup.estabelecimentosIds, null, setup.areasIds, setup.competenciasIds, AnaliseDesempenhoOrganizacao.POR_AREA, setup.empresaId);
@@ -488,7 +489,7 @@ public class AvaliacaoDesempenhoDaoHibernateTest extends GenericDaoHibernateTest
 	
 	@Test
 	public void testFindAnaliseDesempenhoOrganizacaoPorCargo() {
-		String nomeAgrupador = "Cargo I";
+		String nomeAgrupador = "Cargo Teste I";
 		SetUpTesteFindAnaliseDesempenhoOrganizacao setup = setupTestFindAnaliseDesempenhoOrganizacao(nomeAgrupador);
 		
 		Collection<AnaliseDesempenhoOrganizacao> analiseDesempenhoOrganizacao = avaliacaoDesempenhoDao.findAnaliseDesempenhoOrganizacao(setup.avaliacoesDesempenhoIds, setup.estabelecimentosIds,setup.cargosIds, null, setup.competenciasIds, AnaliseDesempenhoOrganizacao.POR_CARGO, setup.empresaId);
@@ -555,7 +556,7 @@ public class AvaliacaoDesempenhoDaoHibernateTest extends GenericDaoHibernateTest
 		cncColaborador.setConfiguracaoNivelCompetenciaFaixaSalarial(cncFaixaSalarial);
 		configuracaoNivelCompetenciaColaboradorDao.save(cncColaborador);
 
-		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia = ConfiguracaoNivelCompetenciaFactory.getEntity(nivelCompetencia, habilidade.getId(), cncColaborador, cncFaixaSalarial, faixaSalarial);
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia = ConfiguracaoNivelCompetenciaFactory.getEntity(nivelCompetencia, habilidade.getId(), Competencia.HABILIDADE, cncColaborador, cncFaixaSalarial, faixaSalarial);
 		configuracaoNivelCompetenciaDao.save(configuracaoNivelCompetencia);
 
 		avaliacaoDesempenhoDao.getHibernateTemplateByGenericDao().flush();
