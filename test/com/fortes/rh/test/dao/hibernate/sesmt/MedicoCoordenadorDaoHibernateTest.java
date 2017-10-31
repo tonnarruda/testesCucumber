@@ -1,8 +1,13 @@
 package com.fortes.rh.test.dao.hibernate.sesmt;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
@@ -12,16 +17,19 @@ import com.fortes.rh.model.dicionario.TipoEstabelecimentoResponsavel;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.MedicoCoordenador;
-import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.dao.GenericDaoHibernateTest_JUnit4;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.sesmt.MedicoCoordenadorFactory;
 import com.fortes.rh.util.DateUtil;
 
-public class MedicoCoordenadorDaoHibernateTest extends GenericDaoHibernateTest<MedicoCoordenador>
+public class MedicoCoordenadorDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<MedicoCoordenador>
 {
-	MedicoCoordenadorDao medicoCoordenadorDao = null;
+	@Autowired
+	MedicoCoordenadorDao medicoCoordenadorDao;
+	@Autowired
 	private EmpresaDao empresaDao;
+	@Autowired
 	private EstabelecimentoDao estabelecimentoDao;
 
 	@Override
@@ -38,11 +46,7 @@ public class MedicoCoordenadorDaoHibernateTest extends GenericDaoHibernateTest<M
 		return medicoCoordenadorDao;
 	}
 
-	public void setMedicoCoordenadorDao(MedicoCoordenadorDao medicoCoordenadorDao)
-	{
-		this.medicoCoordenadorDao = medicoCoordenadorDao;
-	}
-
+	@Test
 	@SuppressWarnings("deprecation")
 	public void testFindByDataEmpresa()
 	{
@@ -81,7 +85,8 @@ public class MedicoCoordenadorDaoHibernateTest extends GenericDaoHibernateTest<M
 
 		assertEquals(medico2, medicoRetorno);
 	}
-
+	
+	@Test
 	public void testFindByIdProjection()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -96,6 +101,7 @@ public class MedicoCoordenadorDaoHibernateTest extends GenericDaoHibernateTest<M
 		assertEquals(medico, medicoRetorno);
 	}
 
+	@Test
 	@SuppressWarnings("unused")
 	public void testFindResponsaveisPorEstabelecimentoComEstabelecimento()
 	{
@@ -125,6 +131,7 @@ public class MedicoCoordenadorDaoHibernateTest extends GenericDaoHibernateTest<M
 		assertEquals(medicoCoordenador1.getId(), ((MedicoCoordenador)medicosCoordenadores.toArray()[1]).getId());
 	}
 	
+	@Test
 	@SuppressWarnings("unused")
 	public void testFindResponsaveisPorEstabelecimentoSemEstabelecimento()
 	{
@@ -148,25 +155,18 @@ public class MedicoCoordenadorDaoHibernateTest extends GenericDaoHibernateTest<M
 		MedicoCoordenador medicoCoordenador4 = saveMedicoCoordenador(MedicoCoordenadorFactory.getEntity(empresa1, DateUtil.incrementaDias(new Date(), 1), TipoEstabelecimentoResponsavel.TODOS, null));
 		MedicoCoordenador medicoCoordenador5 = saveMedicoCoordenador(MedicoCoordenadorFactory.getEntity(empresa1, DateUtil.incrementaDias(new Date(), -1), TipoEstabelecimentoResponsavel.TODOS, null));
 		MedicoCoordenador medicoCoordenador6 = saveMedicoCoordenador(MedicoCoordenadorFactory.getEntity(empresa1, DateUtil.incrementaMes(new Date(), -5), TipoEstabelecimentoResponsavel.TODOS, null));
+			
+		Collection<MedicoCoordenador> medicosCoordenadores = medicoCoordenadorDao.findResponsaveisPorEstabelecimento(empresa1.getId(), estabelecimento1.getId());
 		
-		Collection<MedicoCoordenador> medicosCoordenadores = medicoCoordenadorDao.findResponsaveisPorEstabelecimento(empresa1.getId(), null);
-		
-		assertEquals(3, medicosCoordenadores.size());
+		assertEquals(4, medicosCoordenadores.size());
 		assertEquals(medicoCoordenador6.getId(), ((MedicoCoordenador)medicosCoordenadores.toArray()[0]).getId());
-		assertEquals(medicoCoordenador1.getId(), ((MedicoCoordenador)medicosCoordenadores.toArray()[1]).getId());
-		assertEquals(medicoCoordenador5.getId(), ((MedicoCoordenador)medicosCoordenadores.toArray()[2]).getId());
+		assertEquals(medicoCoordenador2.getId(), ((MedicoCoordenador)medicosCoordenadores.toArray()[1]).getId());
+		assertEquals(medicoCoordenador1.getId(), ((MedicoCoordenador)medicosCoordenadores.toArray()[2]).getId());
+		assertEquals(medicoCoordenador5.getId(), ((MedicoCoordenador)medicosCoordenadores.toArray()[3]).getId());
 	}
 
 	private MedicoCoordenador saveMedicoCoordenador(MedicoCoordenador medicoCoordenador) {
 		medicoCoordenadorDao.save(medicoCoordenador);
 		return medicoCoordenador;
-	}
-	
-	public void setEmpresaDao(EmpresaDao empresaDao) {
-		this.empresaDao = empresaDao;
-	}
-
-	public void setEstabelecimentoDao(EstabelecimentoDao estabelecimentoDao) {
-		this.estabelecimentoDao = estabelecimentoDao;
 	}
 }

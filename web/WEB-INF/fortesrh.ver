@@ -15,6 +15,7 @@
 		<Item visivel="S" motivo="S17060000306"><![CDATA[SESMT > Movimentações > Gerenciamento de Ordem de Serviço: O nome da função apresentado faz referência ao histórico da função anterior a data preenchida na tela.(Adequação ao eSocial)]]></Item>
 		<Item visivel="S" motivo="S17060000306"><![CDATA[SESMT > Relatórios > PPRA e LTCAT: Os nomes das funções apresentados no relatório faz referência ao histórico da função anterior a data preenchida na tela.(Adequação ao eSocial)]]></Item>
 		<Item visivel="S" motivo="S17060000306"><![CDATA[SESMT > Relatórios > PPP: O nome da função apresentado no relatório faz referência ao histórico da função anterior a data preenchida na tela.(Adequação ao eSocial)]]></Item>
+		<Item visivel="S" motivo="S17080000256"><![CDATA[SESMT > Relatórios > PPP: Os médicos e engenheiros listados no relatório serão exibidos de acordo com os estabelecimentos dos quais são responsáveis configurados em seus respectivos cadastros.]]></Item>
 		<Item visivel="S" motivo="S17090000301"><![CDATA[SESMT > Relatórios > EPI > Ficha de EPI: Possibilidade de selecionar várias solicitações de EPI por colaborador para gerar uma ficha de EPI.]]></Item>
 		<Item visivel="S" motivo="S17060000306"><![CDATA[SESMT > Relatórios > PCMSO: Os nomes das funções apresentados no relatório faz referência ao histórico da função anterior a data preenchida na tela.(Adequação ao eSocial)]]></Item>
 		<Item visivel="N" motivo="S17090000302"><![CDATA[Importador: Nova validação para checar a compatibilidade do Importador com o FortesRH.]]></Item>

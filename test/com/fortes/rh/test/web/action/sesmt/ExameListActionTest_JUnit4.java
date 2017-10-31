@@ -12,13 +12,11 @@ import mockit.Mockit;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.ClinicaAutorizadaManager;
 import com.fortes.rh.business.sesmt.ExameManager;
-import com.fortes.rh.business.sesmt.MedicoCoordenadorManager;
 import com.fortes.rh.business.sesmt.SolicitacaoExameManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.geral.Empresa;
@@ -40,8 +38,6 @@ public class ExameListActionTest_JUnit4
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private EstabelecimentoManager estabelecimentoManager;
 	private ColaboradorManager colaboradorManager;
-	private MedicoCoordenadorManager medicoCoordenadorManager;
-	private CandidatoManager candidatoManager;
 	private ClinicaAutorizadaManager clinicaAutorizadaManager;
 	private SolicitacaoExameManager solicitacaoExameManager;
 
@@ -62,12 +58,6 @@ public class ExameListActionTest_JUnit4
 
 		colaboradorManager = mock(ColaboradorManager.class);
 		action.setColaboradorManager(colaboradorManager);
-
-		medicoCoordenadorManager = mock(MedicoCoordenadorManager.class);
-		action.setMedicoCoordenadorManager(medicoCoordenadorManager);
-
-		candidatoManager = mock(CandidatoManager.class);
-		action.setCandidatoManager(candidatoManager);
 		
 		clinicaAutorizadaManager = mock(ClinicaAutorizadaManager.class);
 		action.setClinicaAutorizadaManager(clinicaAutorizadaManager);

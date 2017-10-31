@@ -33,7 +33,6 @@ import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
-import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
@@ -44,9 +43,7 @@ public class ExameListAction extends MyActionSupportList
 	
 	private ExameManager exameManager;
 	private SolicitacaoExameManager solicitacaoExameManager;
-	private MedicoCoordenadorManager medicoCoordenadorManager;
 	private ColaboradorManager colaboradorManager;
-	private CandidatoManager candidatoManager;
 
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private EstabelecimentoManager estabelecimentoManager;
@@ -134,28 +131,6 @@ public class ExameListAction extends MyActionSupportList
 
 	public String prepareImprimirAso()
 	{
-		return SUCCESS;
-	}
-
-	public String filtroImprimirAso()
-	{
-		medicoCoordenadors = medicoCoordenadorManager.findByEmpresa(getEmpresaSistema().getId());
-
-		if (emitirPara == 'C')
-		{
-			colaborador.setPessoalCpf(StringUtil.removeMascara(colaborador.getPessoal().getCpf()));
-			colaboradors = colaboradorManager.findByNomeCpfMatricula(colaborador, false, null, null, getEmpresaSistema().getId());
-			if (colaboradors == null || colaboradors.isEmpty())
-				addActionMessage("Nenhum colaborador para o filtro informado.");
-		}
-		else
-		{
-			candidato.setPessoalCpf(StringUtil.removeMascara(candidato.getPessoal().getCpf()));
-			candidatos = candidatoManager.findByNomeCpf(candidato, getEmpresaSistema().getId());
-			if (candidatos == null || candidatos.isEmpty())
-				addActionMessage("Nenhum candidato para o filtro informado.");
-		}
-
 		return SUCCESS;
 	}
 
@@ -345,19 +320,9 @@ public class ExameListAction extends MyActionSupportList
 		this.exames = exames;
 	}
 
-	public void setCandidatoManager(CandidatoManager candidatoManager)
-	{
-		this.candidatoManager = candidatoManager;
-	}
-
 	public void setColaboradorManager(ColaboradorManager colaboradorManager)
 	{
 		this.colaboradorManager = colaboradorManager;
-	}
-
-	public void setMedicoCoordenadorManager(MedicoCoordenadorManager medicoCoordenadorManager)
-	{
-		this.medicoCoordenadorManager = medicoCoordenadorManager;
 	}
 
 	public Candidato getCandidato()

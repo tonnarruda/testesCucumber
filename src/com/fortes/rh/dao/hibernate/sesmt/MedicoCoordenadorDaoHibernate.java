@@ -59,13 +59,16 @@ public class MedicoCoordenadorDaoHibernate extends GenericDaoHibernate<MedicoCoo
 		p.add(Projections.property("m.registro"), "registro");
 		p.add(Projections.property("m.estabelecimentoResponsavel"), "estabelecimentoResponsavel");
 
-		criteria.setProjection(p);
+		criteria.setProjection(Projections.distinct(p))	;
 
 		criteria.add(Expression.eq("m.empresa.id", empresaId));
 		criteria.add(Expression.le("m.inicio", hoje));
-		criteria.add(Expression.or(Expression.eq("m.estabelecimentoResponsavel", TipoEstabelecimentoResponsavel.TODOS), Expression.eq("est.id", estabelecimentoId)));
+		
+		if(estabelecimentoId != null)
+			criteria.add(Expression.or(Expression.eq("m.estabelecimentoResponsavel", TipoEstabelecimentoResponsavel.TODOS), Expression.eq("est.id", estabelecimentoId)));
 		
 		criteria.addOrder(Order.asc("m.inicio"));
+		criteria.addOrder(Order.asc("m.nome"));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(MedicoCoordenador.class));

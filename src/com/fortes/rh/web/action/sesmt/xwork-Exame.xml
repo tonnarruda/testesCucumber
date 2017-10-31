@@ -34,9 +34,6 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/exameEdit.ftl</result>
 			<result name="error" type="freemarker">/WEB-INF/forms/sesmt/exameEdit.ftl</result>
 		</action>
-		<action name="prepareImprimirAso" class="com.fortes.rh.web.action.sesmt.ExameListAction" method="prepareImprimirAso">
-			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/relatorioAso.ftl</result>
-		</action>
 		<action name="filtroImprimirAso" class="com.fortes.rh.web.action.sesmt.ExameListAction" method="filtroImprimirAso">
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/relatorioAso.ftl</result>
 		</action>

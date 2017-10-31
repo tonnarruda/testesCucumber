@@ -9,21 +9,16 @@ import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.jmock.core.Constraint;
 
-import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.ClinicaAutorizadaManager;
 import com.fortes.rh.business.sesmt.ExameManager;
-import com.fortes.rh.business.sesmt.MedicoCoordenadorManager;
 import com.fortes.rh.business.sesmt.SolicitacaoExameManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
-import com.fortes.rh.model.captacao.Candidato;
-import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.ClinicaAutorizada;
 import com.fortes.rh.model.sesmt.Exame;
-import com.fortes.rh.model.sesmt.MedicoCoordenador;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.util.mockObjects.MockRelatorioUtil;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
@@ -41,8 +36,6 @@ public class ExameListActionTest extends MockObjectTestCase
 	private Mock areaOrganizacionalManager;
 	private Mock estabelecimentoManager;
 	private Mock colaboradorManager;
-	private Mock medicoCoordenadorManager;
-	private Mock candidatoManager;
 	private Mock clinicaAutorizadaManager;
 	private Mock solicitacaoExameManager;
 
@@ -66,12 +59,6 @@ public class ExameListActionTest extends MockObjectTestCase
 
 		colaboradorManager = new Mock(ColaboradorManager.class);
 		action.setColaboradorManager((ColaboradorManager)colaboradorManager.proxy());
-
-		medicoCoordenadorManager = new Mock(MedicoCoordenadorManager.class);
-		action.setMedicoCoordenadorManager((MedicoCoordenadorManager)medicoCoordenadorManager.proxy());
-
-		candidatoManager = new Mock(CandidatoManager.class);
-		action.setCandidatoManager((CandidatoManager)candidatoManager.proxy());
 		
 		clinicaAutorizadaManager = mock(ClinicaAutorizadaManager.class);
 		action.setClinicaAutorizadaManager((ClinicaAutorizadaManager) clinicaAutorizadaManager.proxy());
@@ -178,28 +165,6 @@ public class ExameListActionTest extends MockObjectTestCase
 	public void testPrepareImprimirAso()
 	{
 		assertEquals("success", action.prepareImprimirAso());
-	}
-
-	public void testFiltroImprimirAso()
-	{
-		Long empresaId = 1L;
-		String cpf = "123.456.789-10";
-
-		//Colaborador
-		medicoCoordenadorManager.expects(once()).method("findByEmpresa").with(eq(empresaId)).will(returnValue(new ArrayList<MedicoCoordenador>()));
-		StringUtil.removeMascara(cpf);
-		colaboradorManager.expects(once()).method("findByNomeCpfMatricula").with(new Constraint[]{ANYTHING, ANYTHING, eq(null), eq(null), eq(new Long[]{empresaId})}).will(returnValue(new ArrayList<Colaborador>()));
-
-		action.setEmitirPara('C');
-		assertEquals("success", action.filtroImprimirAso());
-
-		//Candidato
-		medicoCoordenadorManager.expects(once()).method("findByEmpresa").with(eq(empresaId)).will(returnValue(new ArrayList<MedicoCoordenador>()));
-		StringUtil.removeMascara(cpf);
-		candidatoManager.expects(once()).method("findByNomeCpf").with(ANYTHING, eq(empresaId)).will(returnValue(new ArrayList<Candidato>()));
-
-		action.setEmitirPara('A');
-		assertEquals("success", action.filtroImprimirAso());
 	}
 	
 	public void testPrepareRelatorioExamesPrevistos()
