@@ -139,7 +139,6 @@
 			if(camposColaboradorObrigatorio != "")
 				arrayObrigatorios = camposColaboradorObrigatorio.split(',');
 		
-		
 			$('#abas div').each(function(){
 					var abaNaoEncontrada = ($.inArray($(this).attr('class'), arrayAbasVisiveis) == -1);
 			        if (abaNaoEncontrada)

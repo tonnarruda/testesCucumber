@@ -194,6 +194,10 @@
 			populaOrdensNivelCompetencia();
 			mudaLabelMultCheckBoxAvaliadores();
 			
+			$('#sugerirAssinaturas').click(function() {
+				populaAssinaturas();
+			});
+			
 			$('#cargosVinculadosAreas').click(function() {
 				populaCargosByAreaVinculados();
 			});
@@ -223,13 +227,14 @@
 			DWREngine.setAsync(false);
 			DWRUtil.useLoadingMessage('Carregando...');
 			
-			if($('#avaliacao').val() !==""){
+			if($('#avaliacao').not("")){
 			
 				EmpresaDWR.findDistinctEmpresasByAvaliacaoDesempenho($('#avaliacao').val(), empresasPermitidasIds, populaEmpresaPorAvaliacaoDesempenho);
 				
 				populaArea();
 				populaCargosByAreaVinculados();
 				populaAvaliadores();
+				limpaAssinaturas();
 			}
 			else{
 				limpaCamposPorAvaliacao();
@@ -291,14 +296,17 @@
 			if($('input[name=relatorioDetalhado]:checked').val() == 'true') {
 				populaAvaliadores();
 				$('#paraRelatorioDetalhado').show();
-			} else
+				$('label[for="sugerirAssinaturas"]').text('Sugerir assinaturas com os nomes do avaliado e avaliador.');
+			} else {
+				$('label[for="sugerirAssinaturas"]').text('Sugerir assinatura com o nome do avaliado.');
 				$('#paraRelatorioDetalhado').hide();
+			}
 		}
 		
 		function populaAvaliadores()
 		{
 			if(($('input[name=relatorioDetalhado]:checked').val() == 'true') && ($('#avaliados').val() != 0) && ($('#avaliados').val() != -1)){
-				DWREngine.setAsync(true);
+				DWREngine.setAsync(false);
 				DWRUtil.useLoadingMessage('Carregando...');
 				AvaliacaoDesempenhoDWR.getAvaliadores(createListCargosAvaliadores, $('#avaliacao').val(), $('#avaliados').val());
 			}else{
@@ -310,13 +318,19 @@
 		
 		function createListCargosAvaliadores(data)
 		{
-			addChecks('avaliadores',data, 'verificaQtdMarcados()');
+			addChecks('avaliadores',data, 'onClickAvaliadores()');
 			$("input[name=avaliadores]").each(function(){
 				if($(this).val() == $("#avaliados").val() ){
 					$(this).attr('checked', 'checked');
 					$(this).attr('disabled', 'disabled');
 				}
 			});
+		}
+		
+		function onClickAvaliadores()
+		{
+			verificaQtdMarcados();
+			populaAssinaturas();
 		}
 		
 		function populaOrdensNivelCompetencia()
@@ -457,7 +471,38 @@
 				AvaliacaoDesempenhoDWR.getAvaliados(populaSelectAvaliados, $('#avaliacao').val(), empresaIds, areasIds, cargosIds);
 			}
 		}
+
+		function onChangeAvaliado()
+		{
+			populaAvaliadores();
+			populaOrdensNivelCompetencia();
+			populaAssinaturas();
+		}
+
+		function populaAssinaturas()
+		{
+			if($("#sugerirAssinaturas").is(':checked')){
+			
+				if($('#avaliados').find(':selected').val() == '')
+					limpaAssinaturas();
+				else 
+					$('#primeiraAssinatura').val( $('#avaliados').find(':selected').text() );
+				
+				if($(':checkbox[name=avaliadores]:checked').length > 0) {
+					$('#segundaAssinatura').val( $(':checkbox[name=avaliadores]:checked').first().parent().text() );
+				} else if($(':checkbox[name=avaliadores]').length > 0) {
+					$('#segundaAssinatura').val( $(':checkbox[name=avaliadores]').first().parent().text() );
+				} else {
+					$('#segundaAssinatura').val('');
+				}
+			}
+		}
 		
+		function limpaAssinaturas()
+		{
+			$('#primeiraAssinatura').val('');
+			$('#segundaAssinatura').val('');
+		}
 	</script>
 </head>
 <body>
@@ -465,7 +510,6 @@
 	<@ww.actionmessage />
 	
 	<@ww.form name="form" action="analiseDesempenhoCompetenciaColaborador.action" onsubmit="${validarCampos}" method="POST">
-		<!-- <@ww.select label="Gerar relatório" name="relatorioDetalhado" id="relatorioDetalhado" list=r"#{false:'Resumido', true:'Detalhado'}" cssStyle="width: 600px;" onchange="exibeOuOcultaFiltros();"/> -->
 		
 		<div id="previews">
 			<div id="x4" class="box-type">
@@ -524,14 +568,7 @@
 		<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList" width="600" onClick="populaCargosByAreaVinculados();" filtro="true" selectAtivoInativo="true"/>
 		<@ww.checkbox label="Exibir somente os cargos vinculados às áreas organizacionais acima." id="cargosVinculadosAreas" name="" labelPosition="left"/>
 		<@frt.checkListBox label="Cargos" name="cargosCheck" id="cargosCheck" list="cargosCheckList"  width="600" onClick="populaAvaliadosPorAreaCargoEmpresa();" filtro="true" selectAtivoInativo="true"/>
-		<@ww.select label="Avaliado" required="true" name="avaliado.id" id="avaliados" list="participantesAvaliadores" listKey="id" listValue="nome" cssStyle="width: 600px;" headerKey="-1" headerValue="Selecione uma avaliação de desempenho"  onchange="populaAvaliadores();populaOrdensNivelCompetencia();"/>
-	 	<div id="divAssinaturas">
-			<fieldset style="padding: 5px 0px 5px 5px; width: 595px;">
-				<legend>Assinaturas</legend>
-				<@ww.textarea label="Assinatura 1" name="primeiraAssinatura" cssStyle="width: 296px;height: 30px;"/>
-				<@ww.textarea label="Assinatura 2" name="segundaAssinatura"  cssStyle="width: 296px;height: 30px;"/>
-			</fieldset>
-		</div>
+		<@ww.select label="Avaliado" required="true" name="avaliado.id" id="avaliados" list="participantesAvaliadores" listKey="id" listValue="nome" cssStyle="width: 600px;" headerKey="-1" headerValue="Selecione uma avaliação de desempenho"  onchange="onChangeAvaliado();"/>
 		
 		<div id="paraRelatorioDetalhado">
 			<@ww.checkbox label="Agrupar avaliadores por cargo." id="agruparPorCargo" name="agruparPorCargo" labelPosition="left" onchange="verificaQtdMarcados();mudaLabelMultCheckBoxAvaliadores();"/>
@@ -539,9 +576,18 @@
 			Nota mínima considerada em "Média Geral das Competências":
 			<img id="tooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-top:20px;" />
 			</br>
-			<div id="ordensNivelCompetencia"/>
+			<div id="ordensNivelCompetencia"></div>
 		</div>
 		
+	 	<div id="divAssinaturas">
+			<fieldset style="padding: 5px 0px 5px 5px; width: 595px;">
+	 			<input type="checkbox" id="sugerirAssinaturas" name="sugerirAssinaturas" onclick="populaAssinaturas();"/>
+	 			<label for="sugerirAssinaturas" >Sugerir assinaturas com avaliado e avaliador</label>
+				<legend>Assinaturas</legend>
+				<@ww.textarea label="Assinatura 1" id="primeiraAssinatura" name="primeiraAssinatura" cssStyle="width: 296px;height: 30px;"/>
+				<@ww.textarea label="Assinatura 2" id="segundaAssinatura" name="segundaAssinatura"  cssStyle="width: 296px;height: 30px;"/>
+			</fieldset>
+		</div>
 	</@ww.form>
 
 	<div class="buttonGroup">

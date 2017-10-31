@@ -420,7 +420,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 			parametros.put("SEGUNDAASSINATURA", segundaAssinatura);
 
 		} catch (Exception e) {
-			addActionError("Problema ao gerar relatório.");
+			addActionError("Não foi possível gerar o relatório.");
 			e.printStackTrace();
 			prepareAnaliseDesempenhoCompetenciaColaborador();
 			return Action.INPUT;
@@ -1326,16 +1326,8 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		return competenciasCheck;
 	}
 	
-	public String getPrimeiraAssinatura() {
-		return primeiraAssinatura;
-	}
-
 	public void setPrimeiraAssinatura(String primeiraAssinatura) {
 		this.primeiraAssinatura = primeiraAssinatura;
-	}
-
-	public String getSegundaAssinatura() {
-		return segundaAssinatura;
 	}
 
 	public void setSegundaAssinatura(String segundaAssinatura) {
