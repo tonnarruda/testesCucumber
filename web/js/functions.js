@@ -395,7 +395,7 @@ function limpaMascaras(campos)
 					campo.value = limpaCamposMascaraDataMesAno(campo.value);
 				else if(campoClass.substring(0, 11) == "mascaraData" && campo.value == valueData)
 					campo.value = limpaCamposMascaraData(campo.value);
-				if(campoClass.substring(0, 10) == "mascaraCnpj")
+				if(campoClass == "mascaraCnpj")
 					campo.value = limpaCamposMascaraCnpj(campo.value);
 				else if(campoClass.substring(0, 10) == "mascaraCpf")
 					campo.value = limpaCamposMascaraCpf(campo.value);
