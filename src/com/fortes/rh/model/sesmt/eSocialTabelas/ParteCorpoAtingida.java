@@ -22,6 +22,14 @@ public class ParteCorpoAtingida extends AbstractModel implements Serializable
 	@Lob
 	private String descricao;
 
+	public ParteCorpoAtingida() {
+		super();
+	}
+	
+	public ParteCorpoAtingida(Long id) {
+		setId(id);
+	}
+
 	public String getCodigo() {
 		return codigo;
 	}
@@ -36,5 +44,9 @@ public class ParteCorpoAtingida extends AbstractModel implements Serializable
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
+	}
+	
+	public String getCodigoDescricao() {
+		return codigo + " - " + descricao;
 	}
 }

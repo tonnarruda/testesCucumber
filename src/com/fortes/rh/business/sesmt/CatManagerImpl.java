@@ -16,6 +16,9 @@ import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.sesmt.Cat;
+import com.fortes.rh.model.sesmt.ParteAtingida;
+import com.fortes.rh.model.sesmt.eSocialTabelas.AgenteCausadorAcidenteTrabalho;
+import com.fortes.rh.model.sesmt.eSocialTabelas.SituacaoGeradoraDoencaProfissional;
 import com.fortes.rh.model.sesmt.relatorio.CatRelatorioAnual;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.DateUtil;
@@ -24,6 +27,7 @@ import com.fortes.rh.util.LongUtil;
 public class CatManagerImpl extends GenericManagerImpl<Cat, CatDao> implements CatManager
 {
 	private AreaOrganizacionalManager areaOrganizacionalManager;
+	private ParteAtingidaManager parteAtingidaManager;
 	
 	public Collection<Cat> findByColaborador(Colaborador colaborador)
 	{
@@ -172,7 +176,75 @@ public class CatManagerImpl extends GenericManagerImpl<Cat, CatDao> implements C
 		}
 	}
 	
+	public void ajustaEntidade(Cat cat, String[] partesCorpoAtingidaSelecionados, Long[] agentesCausadoresAcidenteTrabalhoSelecionados, Long[] situacoesGeradoraDoencaProfissionalSelecionados) {
+
+		if("  :  ".equals(cat.getHorario()))
+			cat.setHorario(null);
+		
+		if("  :  ".equals(cat.getHorasTrabalhadasAntesAcidente()))
+			cat.setHorasTrabalhadasAntesAcidente(null);
+		
+		if(cat.getAtestado() != null && "  :  ".equals(cat.getAtestado().getHoraAtendimento()))
+			cat.getAtestado().setHoraAtendimento(null);
+		
+		if(cat.getNaturezaLesao() != null && cat.getNaturezaLesao().getId() == null)
+			cat.setNaturezaLesao(null);
+		
+		if(cat.getCodificacaoAcidenteTrabalho() != null && cat.getCodificacaoAcidenteTrabalho().getId() == null)
+			cat.setCodificacaoAcidenteTrabalho(null);
+		
+		if(cat.getSituacaoGeradoraAcidenteTrabalho() != null && cat.getSituacaoGeradoraAcidenteTrabalho().getId() == null)
+			cat.setSituacaoGeradoraAcidenteTrabalho(null);
+		
+		if(cat.getAtestado() != null && cat.getAtestado().getDescricaoNaturezaLesao() != null && (cat.getAtestado().getDescricaoNaturezaLesao().getId() == null || !cat.getAtestado().isPossuiAtestado()))
+			cat.getAtestado().setDescricaoNaturezaLesao(null);
+		
+		if(cat.getAtestado() != null && cat.getAtestado().getUfAtestado() != null && cat.getAtestado().getUfAtestado().getId() == null)
+			cat.getAtestado().setUfAtestado(null);
+		
+		if(cat.getEndereco() != null && cat.getEndereco().getCidade() != null && cat.getEndereco().getCidade().getId() == null)
+			cat.getEndereco().setCidade(null);
+		
+		if(cat.getEndereco() != null && cat.getEndereco().getUf() != null && cat.getEndereco().getUf().getId() == null)
+			cat.getEndereco().setUf(null);
+
+		cat.setPartesAtingida(new ArrayList<ParteAtingida>());
+		Long parteAtingidaId;
+		Long lateralidade;
+		if(partesCorpoAtingidaSelecionados != null && partesCorpoAtingidaSelecionados.length > 0){
+			for (String parteAtingidaMaisLateralidade : partesCorpoAtingidaSelecionados) 
+				if(parteAtingidaMaisLateralidade != null){
+					String [] parteAtingidaMaisLateralidadeArray = parteAtingidaMaisLateralidade.split("_"); 
+					if(parteAtingidaMaisLateralidadeArray.length == 2){
+						parteAtingidaId = new Long(parteAtingidaMaisLateralidadeArray[0]);
+						lateralidade = new Long(parteAtingidaMaisLateralidadeArray[1]);
+						ParteAtingida parteAtingida = new ParteAtingida(parteAtingidaId,lateralidade);
+						parteAtingidaManager.save(parteAtingida);
+						cat.getPartesAtingida().add(parteAtingida);
+					}
+				}
+		}
+		
+		cat.setAgentesCausadoresAcidenteTrabalho(new ArrayList<AgenteCausadorAcidenteTrabalho>());
+		if(agentesCausadoresAcidenteTrabalhoSelecionados != null && agentesCausadoresAcidenteTrabalhoSelecionados.length > 0){
+			for (Long agenteCausadorAcidenteId : agentesCausadoresAcidenteTrabalhoSelecionados) 
+				if(agenteCausadorAcidenteId != null)
+					cat.getAgentesCausadoresAcidenteTrabalho().add(new AgenteCausadorAcidenteTrabalho(agenteCausadorAcidenteId));
+		}
+		
+		cat.setSituacoesGeradoraDoencaProfissional(new ArrayList<SituacaoGeradoraDoencaProfissional>());
+		if(situacoesGeradoraDoencaProfissionalSelecionados != null && situacoesGeradoraDoencaProfissionalSelecionados.length > 0){
+			for (Long situacaoGeradoraDoencaProfissionalId : situacoesGeradoraDoencaProfissionalSelecionados) 
+				if(situacaoGeradoraDoencaProfissionalId != null)
+					cat.getSituacoesGeradoraDoencaProfissional().add(new SituacaoGeradoraDoencaProfissional(situacaoGeradoraDoencaProfissionalId));
+		}
+	}
+
 	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
 		this.areaOrganizacionalManager = areaOrganizacionalManager;
+	}
+
+	public void setParteAtingidaManager(ParteAtingidaManager parteAtingidaManager) {
+		this.parteAtingidaManager = parteAtingidaManager;
 	}
 }

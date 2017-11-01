@@ -238,6 +238,7 @@ import com.fortes.rh.model.sesmt.MedidaSeguranca;
 import com.fortes.rh.model.sesmt.MotivoSolicitacaoEpi;
 import com.fortes.rh.model.sesmt.Obra;
 import com.fortes.rh.model.sesmt.OrdemDeServico;
+import com.fortes.rh.model.sesmt.ParteAtingida;
 import com.fortes.rh.model.sesmt.Pcmat;
 import com.fortes.rh.model.sesmt.Prontuario;
 import com.fortes.rh.model.sesmt.RealizacaoExame;
@@ -250,6 +251,12 @@ import com.fortes.rh.model.sesmt.SolicitacaoEpiItemDevolucao;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
 import com.fortes.rh.model.sesmt.SolicitacaoExame;
 import com.fortes.rh.model.sesmt.TipoEPI;
+import com.fortes.rh.model.sesmt.eSocialTabelas.AgenteCausadorAcidenteTrabalho;
+import com.fortes.rh.model.sesmt.eSocialTabelas.CodificacaoAcidenteTrabalho;
+import com.fortes.rh.model.sesmt.eSocialTabelas.DescricaoNaturezaLesao;
+import com.fortes.rh.model.sesmt.eSocialTabelas.ParteCorpoAtingida;
+import com.fortes.rh.model.sesmt.eSocialTabelas.SituacaoGeradoraAcidenteTrabalho;
+import com.fortes.rh.model.sesmt.eSocialTabelas.SituacaoGeradoraDoencaProfissional;
 import com.fortes.rh.model.sesmt.relatorio.AsoRelatorio;
 import com.fortes.rh.model.sesmt.relatorio.AtaPosseRelatorio;
 import com.fortes.rh.model.sesmt.relatorio.CatRelatorioAnual;
@@ -989,6 +996,13 @@ public class CoberturaGetSetTest extends MockObjectTestCase
 		cobreGetSet(new OrdemDeServico());
 		cobreGetSet(new Lnt());
 		cobreGetSet(new CursoLnt());
+		cobreGetSet(new ParteAtingida());
+		cobreGetSet(new ParteCorpoAtingida());
+		cobreGetSet(new DescricaoNaturezaLesao());
+		cobreGetSet(new SituacaoGeradoraDoencaProfissional());
+		cobreGetSet(new AgenteCausadorAcidenteTrabalho());
+		cobreGetSet(new SituacaoGeradoraAcidenteTrabalho());
+		cobreGetSet(new CodificacaoAcidenteTrabalho());
 	}
 	
 	private void cobreGetSet(Object obj)

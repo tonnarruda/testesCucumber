@@ -226,7 +226,7 @@ function validaCampos(campos)
 				validacao = validaCpfCnpj(campo);
 			else if(campoClass.substring(0, 10) == "mascaraCep" && campo.value != valueCep)
 				validacao = true;
-			else if(campoClass == "mascaraHora" && campo.value != valueHora)
+			else if(campoClass.substring(0, 11) == "mascaraHora" && campo.value != valueHora)
 				validacao = validaHora(campo.value);
 			else if(campoClass.substring(0, 10) == "mascaraPis")
 				validacao = validaPIS(campo);
@@ -265,6 +265,7 @@ function validaCampos(campos)
 // return true ou false
 
 var exibeLabelDosCamposNaoPreenchidos = false;
+var camposNaoPreenchidos = [];
 function validaCamposObrigatorios(campos, formulario)
 {
 	var qtdElementos = campos.length;
@@ -292,6 +293,12 @@ function validaCamposObrigatorios(campos, formulario)
 			nameCampoSemIdentificador = nameCampo.replace('@','');
 			nameCampo = 'listCheckBox' + nameCampoSemIdentificador;
 		}
+		
+		if(nameCampo.substr(0,1) == '&')
+		{
+			nameCampoSemIdentificador = nameCampo.replace('&','');
+			nameCampo = $('#block' + nameCampoSemIdentificador).find('.divSelectDialog').attr('id');
+		}
 
 		campo = document.getElementById(nameCampo);
 
@@ -300,6 +307,8 @@ function validaCamposObrigatorios(campos, formulario)
 			campoClass = campo.className;
 
 			// valida campos
+			if(campoClass == "divSelectDialog" && $('#' + nameCampo).parent().find('.selectDialog').length != 0)
+				validacao = true;
 			if(campoClass == "listCheckBox" && qtdeChecksSelected(document.getElementsByName(formulario)[0], nameCampoSemIdentificador) != 0)
 				validacao = true;
 			else if(campoClass.substring(0, 17) == "mascaraMesAnoData" && campo.value != valueDataMesAno)
@@ -312,21 +321,21 @@ function validaCamposObrigatorios(campos, formulario)
 				validacao = true;
 			else if(campoClass.substring(0, 10) == "mascaraCep" && campo.value != valueCep)
 				validacao = true;
-			else if(campoClass == "mascaraHora" && campo.value != valueHora)
+			else if(campoClass.substring(0, 11) == "mascaraHora" && campo.value != valueHora)
 				validacao = true;
 			else if(campoClass == "pontuacao" && campo.value != '')
 				validacao = true;
-			else if((campoClass != "listCheckBox" && campoClass != "mascaraHora" && campoClass != "mascaraCnpj" && campoClass.substring(0, 10) != "mascaraCep" && campoClass.substring(0, 10) != "mascaraCpf" && campoClass.substring(0, 11) != "mascaraData" && campoClass.substring(0, 17) != "mascaraMesAnoData" && campo.value.trim() != "" && campo.value.trim() != "-1") || (campo.type == "select-multiple" && campo.length > 0))
+			else if((campoClass != "divSelectDialog" && campoClass != "listCheckBox" && campoClass.substring(0, 11) != "mascaraHora" && campoClass != "mascaraCnpj" && campoClass.substring(0, 10) != "mascaraCep" && campoClass.substring(0, 10) != "mascaraCpf" && campoClass.substring(0, 11) != "mascaraData" && campoClass.substring(0, 17) != "mascaraMesAnoData" && campo.value.trim() != "" && campo.value.trim() != "-1") || (campo.type == "select-multiple" && campo.length > 0))
 				validacao = true;
-
-			if(validacao)
-			{
-				campo.style.background = "#FFF"; // Cor do campo validado que
+			
+			if(validacao){
+				if(campoClass == "divSelectDialog")
+					campo.style.background = "#F6F6F6"; // Cor do campo validado que
+				else
+					campo.style.background = "#FFF"; // Cor do campo validado que
 													// foi preenchido(depois de
 													// corrigido)
-			}
-			else
-			{
+			}else{
 				if(campoFocus == "")
 					campoFocus = campo;
 				//CUIDADO com a cor, utilizo o RGB
@@ -342,10 +351,9 @@ function validaCamposObrigatorios(campos, formulario)
 		if(exibeLabelDosCamposNaoPreenchidos)
 		{
 			desmarcarAbas();
-			var camposNaoPreenchidos = [];
 			
 			//CUIDADO pegando a cor pelo rgb do #FFEEC2
-			$("input:text,textarea,select,.listCheckBox").each(function() {
+			$("input:text,textarea,select,.listCheckBox,.divSelectDialog").each(function() {
 				var labelInput = $(this);
 				if(labelInput.css('background-color') == "rgb(255, 238, 194)" || labelInput.css('background-color') == "#ffeec2") {
 					//var campoId = labelInput.attr('i').find('label').text().match(/(.+):/);
@@ -353,17 +361,23 @@ function validaCamposObrigatorios(campos, formulario)
 					
 					if (labelInput.hasClass('listCheckBox'))
 						var label =	$("label[for='" + campoId.replace('listCheckBox','') + "']");
+					else if(labelInput.hasClass('divSelectDialog'))
+						var label = $(this).parent().find('label');
 					else
 						var label =	$("label[for='" + campoId + "']");
 					
-					if (label)
-						camposNaoPreenchidos.push(label.text().replace(':','').replace('*','').replace('\n','').trim());
+					if (label){
+						textoLabel = label.text().replace(':','').replace('*','').replace('\n','').trim();
+						if(camposNaoPreenchidos.indexOf(textoLabel) == -1)
+							camposNaoPreenchidos.push(textoLabel);
+					}
 					
 					marcarAbas('#' + campoId);
 				}
 			});
 			
-			jAlert("Preencha os campos indicados:\n" + camposNaoPreenchidos.join(", "));		
+			jAlert("Preencha os campos indicados:\n" + camposNaoPreenchidos.join(", "));
+			camposNaoPreenchidos = [];
 		}
 		else
 			jAlert("Preencha os campos indicados.");
@@ -890,7 +904,183 @@ jQuery.fn.insertAtCaret = function (tagName) {
          jQuery(this).val(jQuery(this).val().replace(/\./g, ""));
     });
     
+    $("textarea[maxLength]").bind('input propertychange', function() {  
+    	var maxLength = $(this).attr('maxLength');  
+    	if ($(this).val().length > maxLength) {  
+    		$(this).val($(this).val().substring(0, maxLength));  
+    	}  
+    })  
+    
+    carregaSelectDialog();
   });
+  
+  function carregaSelectDialog(){
+	    try {
+	        if($(".listSelectDialog").length > 0){
+		    	$(".listSelectDialog").selectable({  stop:function(event, ui){$(event.target).children('.ui-selected').not(':first').removeClass('ui-selected');}});
+			    $(".listSelectDialog .ui-selected").live("dblclick", function(event){
+			    	id = $(this).parent().parent().parent().parent().attr('id').replace('formSelectDialog','').trim();
+			    	titulo = $(this).parent().parent().parent().parent().parent().find('.ui-dialog-title').text();
+		    		variacao = $(this).parent().parent().parent().parent().attr('variacao');
+			    	setselectedSelectDialog(titulo, id, $(this).text().trim().trim(), $(".listSelectDialog .ui-selected input").val(), variacao);
+				});
+			    
+			    constroiContainsIgnoreAccents();
+			    $(".search").keyup(function(e){
+			    	$(this).parents(".box").find(".column").find(".ui-widget-content").hide();
+			    	$(this).parents(".box").find(".column").find(".ui-widget-content").find(".nome:contains-IgnoreAccents('"+$(this).val()+"')").parent().show();
+			    });
+	    	}
+	    }
+	    catch(err) {
+	    }
+  }
+  
+  function openSelectDialog(titulo, id, variacao){
+	  $('.search').val('').keyup();
+	  $('#formSelectDialog' + id).dialog({
+				title: titulo, 
+				id: 'Dialog',
+				modal: true, 
+				width: 750,
+				buttons: 
+						[
+						    {
+						        text: "Selecionar",
+						        click: function() { 
+						        	if($(".listSelectDialog .ui-selected").length == 0)
+						        		jAlert("Selecione um ítem.")
+						        	else
+						        		setselectedSelectDialog(titulo, id, $(".listSelectDialog .ui-selected").text().trim().trim(), $(".listSelectDialog .ui-selected input").val(), variacao);
+						        }
+						    },
+						    {
+						        text: "Sair",
+						        click: function() { 
+						        	$(this).dialog("close");
+						        }
+						    }
+						]
+			});
+	  
+	  marcaItensJaSelecionados(id);
+	  $('#formSelectDialog' + id).attr('variacao', variacao);  
+  }
+  
+  function marcaItensJaSelecionados(id){
+	  $('.listSelectDialog').find('li').removeClass('ui-selected').css('background-color','');
+	  $('#' + id + '-list').find('.selecionadoDialog').each(function(){
+		  item = $(this);
+		  valor = $(this).val();
+		  $('#block' + id).find('input').each(function(){
+			  if($(this).val() == valor){
+				  item.parent().css('background-color','#A4E2DB');
+			  }
+		  });
+		  
+	  });
+  }
+  
+  function addSelecioneItemSelectDialog(tituloDialog, id, variacao){
+	  onclick= "";
+	  $('#divSelectDialog' + id + variacao).html('');
+	  $('#divSelectDialog' + id + variacao).append("<span class='openSelectDialog' onclick=\"openSelectDialog('" + tituloDialog + "','" + id + "'," + variacao + ");" + onclick + ";\" style='cursor: pointer; color: #1c96e8;'> " +
+														"<i class='fa fa-plus-circle' aria-hidden='true' style='font-size: 16px;'></i> Selecione um Ítem " +
+													"</span>");
+  }
+  
+  function addItemRemoverSelectDialog(titulo, id, variacao){
+	  $('#block' + id).find('.fontOuser').remove();
+	  $('#block' + id).find('.openSelectDialog').parent().prepend("" +
+					"<a class='fontOuser' onmouseover=\"$(this).find('i').addClass('fa-2x').css('color','#6965ec')\" onmouseout=\"$(this).find('i').removeClass('fa-2x').css('color','black')\"" +
+					"style='cursor:pointer; float: right; margin: -10px -10px -80px 595px;' onclick=\"$(this).parent().find('input').remove();$(this).parent().find('span').remove();" +
+					"addSelecioneItemSelectDialog('" + titulo + "','" + id + "','" + variacao + "')\">" +
+					"<i title='Remover' class='fa fa-times fa-lg' aria-hidden='true'></i>&nbsp;</a>");
+  }
+  
+  function setselectedSelectDialog(titulo, id, itemSelecionadoDescricao, itemSelecionadoValor, variacao){
+	  	var jaContemValor = false;
+	  	$('#block' + id).find('input').each(function(){
+	  		if($(this).val() == itemSelecionadoValor)
+	  			jaContemValor = true;
+	  	});
+	  	
+	  	if(!jaContemValor){
+		  	$('#divSelectDialog' + id + variacao).html('');
+			$('#divSelectDialog' + id + variacao).append("<span class='openSelectDialog' title='Modificar Ítem' onclick=\"openSelectDialog('" + titulo + "','" + id + "','" + variacao + "');\">" +
+													"<i class='fa fa-pencil-square-o' aria-hidden='true' style='color: #1c96e8;font-size: 16px;cursor: pointer;'></i>" +
+												"</span>" +
+												"<span style='margin-left: 8px;'>" + itemSelecionadoDescricao + "</span>");
+			
+			if($('#block' + id).attr('possuiitemremover') == "true")
+				addItemRemoverSelectDialog(titulo, id, variacao);
+	
+			if($('#divSelectDialog' + id + variacao).find('input').length == 0){
+				name = $('#block' + id).attr('nomename');
+				$('#divSelectDialog' + id + variacao).append("<input type='hidden' id='" + id + variacao + "' class='selectDialog' name='" + name + "' value='" + itemSelecionadoValor + "'/>");
+			}else{
+				$('#' + id + variacao).val(itemSelecionadoValor);
+			}
+	  	}
+	  	
+	  	$('#formSelectDialog' + id).dialog("close");//Não remover desssa posição
+  }
+  
+  function constroiContainsIgnoreAccents() {
+		var accent_map = {
+	    'á':'a',
+	    'à':'a',
+	    'â':'a',
+	    'å':'a',
+	    'ä':'a',
+	    'a':'a',
+	    'ã':'a',
+	    'ç':'c',
+	    'é':'e',
+	    'è':'e',
+	    'ê':'e',
+	    'ë':'e',
+	    'í':'i',
+	    'ì':'i',
+	    'î':'i',
+	    'ï':'i',
+	    'ñ':'n',
+	    'ó':'o',
+	    'ò':'o',
+	    'ô':'o',
+	    'ö':'o',
+	    'õ':'o',
+	    'ú':'u',
+	    'ù':'u',
+	    'û':'u',
+	    'ü':'u',};
+	
+	
+		String.prototype.replaceEspecialChars = function() {
+	        var ret = '', s = this.toString();
+	        if (!s) { return ''; }
+	        for (var i=0; i<s.length; i++) {
+	            ret += accent_map[s.charAt(i)] || s.charAt(i);
+	        }
+	        return ret;
+		};
+	
+	    String.prototype.contains = function(otherString) {
+	        return this.toString().indexOf(otherString) !== -1;
+	    };
+		
+		
+	    $.extend($.expr[':'], {
+	        'contains-IgnoreAccents' : function(elemt, idx, math) {
+	            var expression1 = math[3].toLowerCase(),
+	                semAcent1 = expression1.replaceEspecialChars(),
+	                expression2 = elemt.innerHTML.toLowerCase(),
+	                semAcent2 = expression2.replaceEspecialChars();
+	
+	            return semAcent2.contains(semAcent1);             
+	        }
+	    });
+  }
 
 // VALIDA DATA POSTERIOR A OUTRA
  function validaDatasPeriodo(dataIni, dataFim) 

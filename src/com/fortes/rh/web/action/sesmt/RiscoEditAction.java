@@ -39,7 +39,6 @@ public class RiscoEditAction extends MyActionSupportList
 	
 	private Collection<Risco> riscos;
 
-
 	private void prepare() throws Exception
 	{
 		if(risco != null && risco.getId() != null)

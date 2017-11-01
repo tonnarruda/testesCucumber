@@ -6,6 +6,7 @@ import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Lob;
@@ -15,6 +16,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -27,8 +29,13 @@ import com.fortes.rh.model.dicionario.TipoAcidente;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Endereco;
 import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.geral.Pessoal;
+import com.fortes.rh.model.sesmt.eSocialTabelas.AgenteCausadorAcidenteTrabalho;
+import com.fortes.rh.model.sesmt.eSocialTabelas.CodificacaoAcidenteTrabalho;
+import com.fortes.rh.model.sesmt.eSocialTabelas.SituacaoGeradoraAcidenteTrabalho;
+import com.fortes.rh.model.sesmt.eSocialTabelas.SituacaoGeradoraDoencaProfissional;
 import com.fortes.rh.util.CnpjUtil;
 import com.fortes.rh.util.DateUtil;
 
@@ -57,6 +64,9 @@ public class Cat extends AbstractModel implements Serializable
     
     @Column(length=5)
     private String horario;
+    
+    @Column(length=5)
+    private String horasTrabalhadasAntesAcidente;
     
     @Column(length=100)
     private String parteAtingida;
@@ -94,6 +104,47 @@ public class Cat extends AbstractModel implements Serializable
 
     @OneToOne (fetch=FetchType.LAZY, cascade= CascadeType.ALL)
     private Testemunha testemunha2;
+    
+    @OneToOne (fetch=FetchType.LAZY)
+    private CodificacaoAcidenteTrabalho codificacaoAcidenteTrabalho;
+    @OneToOne (fetch=FetchType.LAZY)
+    private SituacaoGeradoraAcidenteTrabalho situacaoGeradoraAcidenteTrabalho;
+    @ManyToMany(fetch = FetchType.LAZY)
+    private Collection<ParteAtingida> partesAtingida;
+    @ManyToMany(fetch = FetchType.LAZY)
+    private Collection<AgenteCausadorAcidenteTrabalho> agentesCausadoresAcidenteTrabalho;
+    @ManyToMany(fetch = FetchType.LAZY)
+    private Collection<SituacaoGeradoraDoencaProfissional> situacoesGeradoraDoencaProfissional;
+    
+    @Temporal(TemporalType.DATE)
+    private Date dataObito;
+    @Temporal(TemporalType.DATE)
+    private Date dataCatOrigem;
+
+    private Long tipoRegistardor;
+    private Integer tipoInscricao;
+    private Long tipo;
+    private Boolean obito;
+    private Boolean comunicouPolicia;
+    private Long iniciatCAT;
+    private Long tipoLocal;
+    private String cnpjLocalAcidente;
+    
+    @Column(length=11)
+    private String cpfRegistardor;
+    @Column(length=12)
+    private String cnpjRegistardor;
+
+    @Transient
+    private String obitoString;
+    @Transient
+    private String comunicouPoliciaString;
+    
+    @Embedded
+	private Endereco endereco = new Endereco();
+
+    @Embedded
+    private Atestado atestado = new Atestado(); 
     
     public Cat()
 	{
@@ -534,5 +585,197 @@ public class Cat extends AbstractModel implements Serializable
 	public void setTestemunha2(Testemunha testemunha2) {
 		this.testemunha2 = testemunha2;
 	}
-	
+
+	public Long getTipoRegistardor() {
+		return tipoRegistardor;
+	}
+
+	public void setTipoRegistardor(Long tipoRegistardor) {
+		this.tipoRegistardor = tipoRegistardor;
+	}
+
+	public Integer getTipoInscricao() {
+		return tipoInscricao;
+	}
+
+	public void setTipoInscricao(Integer tipoInscricao) {
+		this.tipoInscricao = tipoInscricao;
+	}
+
+	public String getHorasTrabalhadasAntesAcidente() {
+		return horasTrabalhadasAntesAcidente;
+	}
+
+	public void setHorasTrabalhadasAntesAcidente(
+			String horasTrabalhadasAntesAcidente) {
+		this.horasTrabalhadasAntesAcidente = horasTrabalhadasAntesAcidente;
+	}
+
+	public Long getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(Long tipo) {
+		this.tipo = tipo;
+	}
+
+	public Date getDataObito() {
+		return dataObito;
+	}
+
+	public void setDataObito(Date dataObito) {
+		this.dataObito = dataObito;
+	}
+
+	public Boolean getObito() {
+		return obito;
+	}
+
+	public void setObito(Boolean obito) {
+		this.obito = obito;
+	}
+
+	public Boolean getComunicouPolicia() {
+		return comunicouPolicia;
+	}
+
+	public void setComunicouPolicia(Boolean comunicouPolicia) {
+		this.comunicouPolicia = comunicouPolicia;
+	}
+
+	public Long getIniciatCAT() {
+		return iniciatCAT;
+	}
+
+	public void setIniciatCAT(Long iniciatCAT) {
+		this.iniciatCAT = iniciatCAT;
+	}
+
+	public Long getTipoLocal() {
+		return tipoLocal;
+	}
+
+	public void setTipoLocal(Long tipoLocal) {
+		this.tipoLocal = tipoLocal;
+	}
+
+	public Endereco getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(Endereco endereco) {
+		this.endereco = endereco;
+	}
+
+	public String getCnpjLocalAcidente() {
+		return cnpjLocalAcidente;
+	}
+
+	public void setCnpjLocalAcidente(String cnpjLocalAcidente) {
+		this.cnpjLocalAcidente = cnpjLocalAcidente;
+	}
+
+	public Atestado getAtestado() {
+		return atestado;
+	}
+
+	public void setAtestado(Atestado atestado) {
+		this.atestado = atestado;
+	}
+
+	public Collection<AgenteCausadorAcidenteTrabalho> getAgentesCausadoresAcidenteTrabalho() {
+		return agentesCausadoresAcidenteTrabalho;
+	}
+
+	public void setAgentesCausadoresAcidenteTrabalho(Collection<AgenteCausadorAcidenteTrabalho> agentesCausadoresAcidenteTrabalho) {
+		this.agentesCausadoresAcidenteTrabalho = agentesCausadoresAcidenteTrabalho;
+	}
+
+	public Collection<SituacaoGeradoraDoencaProfissional> getSituacoesGeradoraDoencaProfissional() {
+		return situacoesGeradoraDoencaProfissional;
+	}
+
+	public void setSituacoesGeradoraDoencaProfissional(Collection<SituacaoGeradoraDoencaProfissional> situacoesGeradoraDoencaProfissional) {
+		this.situacoesGeradoraDoencaProfissional = situacoesGeradoraDoencaProfissional;
+	}
+
+	public CodificacaoAcidenteTrabalho getCodificacaoAcidenteTrabalho() {
+		return codificacaoAcidenteTrabalho;
+	}
+
+	public void setCodificacaoAcidenteTrabalho(CodificacaoAcidenteTrabalho codificacaoAcidenteTrabalho) {
+		this.codificacaoAcidenteTrabalho = codificacaoAcidenteTrabalho;
+	}
+
+	public SituacaoGeradoraAcidenteTrabalho getSituacaoGeradoraAcidenteTrabalho() {
+		return situacaoGeradoraAcidenteTrabalho;
+	}
+
+	public void setSituacaoGeradoraAcidenteTrabalho(SituacaoGeradoraAcidenteTrabalho situacaoGeradoraAcidenteTrabalho) {
+		this.situacaoGeradoraAcidenteTrabalho = situacaoGeradoraAcidenteTrabalho;
+	}
+
+	public Date getDataCatOrigem() {
+		return dataCatOrigem;
+	}
+
+	public void setDataCatOrigem(Date dataCatOrigem) {
+		this.dataCatOrigem = dataCatOrigem;
+	}
+
+	public void setObitoString(String obitoString) {
+		if(obitoString.equals("true"))
+			this.obito = true;
+		else if(obitoString.equals("false"))
+			this.obito = false;
+		else
+			this.obito = null;
+	}
+
+	public void setComunicouPoliciaString(String comunicouPoliciaString) {
+		if(comunicouPoliciaString.equals("true"))
+			this.comunicouPolicia = true;
+		else if(comunicouPoliciaString.equals("false"))
+			this.comunicouPolicia = false;
+		else
+			this.comunicouPolicia = null;
+	}
+
+	public String getObitoString() {
+		if(obito != null)
+			return obito.toString();
+		else 
+			return null;
+	}
+
+	public String getComunicouPoliciaString() {
+		if(comunicouPolicia != null)
+			return comunicouPolicia.toString();
+		else 
+			return null;
+	}
+
+	public Collection<ParteAtingida> getPartesAtingida() {
+		return partesAtingida;
+	}
+
+	public void setPartesAtingida(Collection<ParteAtingida> partesAtingida) {
+		this.partesAtingida = partesAtingida;
+	}
+
+	public String getCpfRegistardor() {
+		return cpfRegistardor;
+	}
+
+	public void setCpfRegistardor(String cpfRegistardor) {
+		this.cpfRegistardor = cpfRegistardor;
+	}
+
+	public String getCnpjRegistardor() {
+		return cnpjRegistardor;
+	}
+
+	public void setCnpjRegistardor(String cnpjRegistardor) {
+		this.cnpjRegistardor = cnpjRegistardor;
+	}
 }

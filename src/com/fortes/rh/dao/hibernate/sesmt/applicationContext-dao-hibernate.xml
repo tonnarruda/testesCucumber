@@ -350,7 +350,13 @@
       <ref bean="sessionFactory" />
     </property>
   </bean>
+  <bean id="parteAtingidaDaoTarget" class="com.fortes.rh.dao.hibernate.sesmt.ParteAtingidaDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
 </beans>
+
 
 
 

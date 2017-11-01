@@ -80,5 +80,62 @@
     	<required>true</required>
     </attribute>
   </tag>
-
+  <tag>
+    <name>selectDialog</name>
+    <tagclass>com.fortes.web.tags.SelectDialogTag</tagclass>
+    <bodycontent>JSP</bodycontent>
+    <info>Cria um SelectDialog</info>
+     <attribute>
+    	<name>label</name>
+    	<required>true</required>
+    </attribute>
+    <attribute>
+    	<name>id</name>
+    	<required>true</required>
+    </attribute>
+    <attribute>
+    	<name>name</name>
+    	<required>true</required>
+    </attribute>
+    <attribute>
+    	<name>list</name>
+    	<required>true</required>
+    </attribute>
+    <attribute>
+    	<name>heightDialog</name>
+    	<required>false</required>
+    </attribute>
+    <attribute>
+    	<name>listKey</name>
+    	<required>true</required>
+    </attribute>
+    <attribute>
+    	<name>listValue</name>
+    	<required>true</required>
+    </attribute>
+    <attribute>
+    	<name>width</name>
+    	<required>false</required>
+    </attribute>
+    <attribute>
+    	<name>tituloDialog</name>
+    	<required>true</required>
+    </attribute>
+    <attribute>
+    	<name>required</name>
+    	<required>false</required>
+    </attribute>
+    <attribute>
+    	<name>img</name>
+    	<required>false</required>
+    </attribute>
+    <attribute>
+    	<name>onclick</name>
+    	<required>false</required>
+    </attribute>
+    <attribute>
+    	<name>addRemover</name>
+    	<required>false</required>
+    </attribute>
+  </tag>
 </taglib>

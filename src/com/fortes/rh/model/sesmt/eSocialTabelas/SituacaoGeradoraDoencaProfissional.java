@@ -21,6 +21,14 @@ public class SituacaoGeradoraDoencaProfissional extends AbstractModel implements
 	
 	@Lob
 	private String descricao;
+	
+	public SituacaoGeradoraDoencaProfissional() {
+		super();
+	}
+
+	public SituacaoGeradoraDoencaProfissional(Long id) {
+		setId(id);
+	}
 
 	public String getCodigo() {
 		return codigo;
@@ -36,5 +44,9 @@ public class SituacaoGeradoraDoencaProfissional extends AbstractModel implements
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
+	}
+	
+	public String getCodigoDescricao() {
+		return codigo + " - " + descricao;
 	}
 }

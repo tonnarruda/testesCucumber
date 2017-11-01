@@ -22,6 +22,14 @@ public class AgenteCausadorAcidenteTrabalho extends AbstractModel implements Ser
 	@Lob
 	private String descricao;
 
+	public AgenteCausadorAcidenteTrabalho() {
+		super();
+	}
+
+	public AgenteCausadorAcidenteTrabalho(Long id) {
+		setId(id);
+	}
+
 	public String getCodigo() {
 		return codigo;
 	}
@@ -36,5 +44,9 @@ public class AgenteCausadorAcidenteTrabalho extends AbstractModel implements Ser
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
+	}
+	
+	public String getCodigoDescricao() {
+		return codigo + " - " + descricao;
 	}
 }

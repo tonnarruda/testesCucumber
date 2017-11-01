@@ -229,7 +229,9 @@
       <mapping class="com.fortes.rh.model.sesmt.eSocialTabelas.SituacaoGeradoraDoencaProfissional" />
       <mapping class="com.fortes.rh.model.sesmt.eSocialTabelas.ParteCorpoAtingida" />
       <mapping class="com.fortes.rh.model.sesmt.eSocialTabelas.DescricaoNaturezaLesao" />
+      <mapping class="com.fortes.rh.model.sesmt.ParteAtingida" />
   </session-factory>
+
 
 
 

@@ -87,6 +87,9 @@
     <property name="areaOrganizacionalManager">
       <ref bean="areaOrganizacionalManager" />
     </property>
+    <property name="parteAtingidaManager">
+      <ref bean="parteAtingidaManager" />
+    </property>
   </bean>
   <bean id="catManager" parent="parentManager">
     <property name="proxyInterfaces">
@@ -1214,4 +1217,18 @@
       <ref bean="fatorDeRiscoManagerTarget" />
     </property>
   </bean>
+  <bean id="parteAtingidaManagerTarget" class="com.fortes.rh.business.sesmt.ParteAtingidaManagerImpl">
+    <property name="dao">
+      <ref bean="parteAtingidaDao" />
+    </property>
+  </bean>
+  <bean id="parteAtingidaManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.sesmt.ParteAtingidaManager</value>
+    </property>
+    <property name="target">
+      <ref bean="parteAtingidaManagerTarget" />
+    </property>
+  </bean>
 </beans>
+

@@ -6,27 +6,55 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
 import com.fortes.model.type.File;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
+import com.fortes.rh.business.geral.CidadeManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
+import com.fortes.rh.business.geral.EstadoManager;
+import com.fortes.rh.business.geral.UsuarioAjudaESocialManager;
 import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.business.sesmt.CatManager;
 import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.business.sesmt.NaturezaLesaoManager;
 import com.fortes.rh.business.sesmt.TestemunhaManager;
+import com.fortes.rh.business.sesmt.eSocialTabelas.AgenteCausadorAcidenteTrabalhoManager;
+import com.fortes.rh.business.sesmt.eSocialTabelas.CodificacaoAcidenteTrabalhoManager;
+import com.fortes.rh.business.sesmt.eSocialTabelas.DescricaoNaturezaLesaoManager;
+import com.fortes.rh.business.sesmt.eSocialTabelas.ParteCorpoAtingidaManager;
+import com.fortes.rh.business.sesmt.eSocialTabelas.SituacaoGeradoraAcidenteTrabalhoManager;
+import com.fortes.rh.business.sesmt.eSocialTabelas.SituacaoGeradoraDoencaProfissionalManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.model.dicionario.IniciativaCat;
+import com.fortes.rh.model.dicionario.Lateralidade;
+import com.fortes.rh.model.dicionario.OrgaoDeClasse;
+import com.fortes.rh.model.dicionario.TelaAjudaESocial;
 import com.fortes.rh.model.dicionario.TipoAcidente;
+import com.fortes.rh.model.dicionario.TipoCat;
+import com.fortes.rh.model.dicionario.TipoInscricao;
+import com.fortes.rh.model.dicionario.TipoLocalAcidente;
+import com.fortes.rh.model.dicionario.TipoRegistrador;
+import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Cat;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.NaturezaLesao;
+import com.fortes.rh.model.sesmt.eSocialTabelas.AgenteCausadorAcidenteTrabalho;
+import com.fortes.rh.model.sesmt.eSocialTabelas.CodificacaoAcidenteTrabalho;
+import com.fortes.rh.model.sesmt.eSocialTabelas.DescricaoNaturezaLesao;
+import com.fortes.rh.model.sesmt.eSocialTabelas.ParteCorpoAtingida;
+import com.fortes.rh.model.sesmt.eSocialTabelas.SituacaoGeradoraAcidenteTrabalho;
+import com.fortes.rh.model.sesmt.eSocialTabelas.SituacaoGeradoraDoencaProfissional;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
@@ -34,6 +62,7 @@ import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
+import com.fortes.rh.web.ws.AcPessoalClientSistema;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.Action;
@@ -49,6 +78,17 @@ public class CatEditAction extends MyActionSupportList
 	private AmbienteManager ambienteManager;
 	private NaturezaLesaoManager naturezaLesaoManager;
 	private TestemunhaManager testemunhaManager;
+	private CodificacaoAcidenteTrabalhoManager codificacaoAcidenteTrabalhoManager;
+	private SituacaoGeradoraAcidenteTrabalhoManager situacaoGeradoraAcidenteTrabalhoManager;
+	private ParteCorpoAtingidaManager parteCorpoAtingidaManager;
+	private AgenteCausadorAcidenteTrabalhoManager agenteCausadorAcidenteTrabalhoManager;
+	private SituacaoGeradoraDoencaProfissionalManager situacaoGeradoraDoencaProfissionalManager;
+	private DescricaoNaturezaLesaoManager descricaoNaturezaLesaoManager;
+	private EstadoManager estadoManager;
+	private AcPessoalClientSistema acPessoalClientSistema;
+	private EmpresaManager empresaManager;
+	private CidadeManager cidadeManager;
+	private UsuarioAjudaESocialManager usuarioAjudaESocialManager;
 
 	private Colaborador colaborador;
 	private Cat cat;
@@ -84,6 +124,30 @@ public class CatEditAction extends MyActionSupportList
 	
 	private boolean manterFoto;
 	private File fotoAcidente;
+	private Map<Integer, String> tiposInscricao = TipoInscricao.getInstanceCAT();
+	private Collection<CodificacaoAcidenteTrabalho> codificacoesAcidenteTrabalho = new ArrayList<CodificacaoAcidenteTrabalho>();
+	private Collection<SituacaoGeradoraAcidenteTrabalho> situacoesGeradoraAcidenteTrabalho = new ArrayList<SituacaoGeradoraAcidenteTrabalho>();
+	private Collection<ParteCorpoAtingida> partesCorpoAtingida = new ArrayList<ParteCorpoAtingida>();
+	private Collection<AgenteCausadorAcidenteTrabalho> agentesCausadoresAcidenteTrabalho = new ArrayList<AgenteCausadorAcidenteTrabalho>();
+	private Collection<SituacaoGeradoraDoencaProfissional> situacoesGeradorasDoencaProfissional = new ArrayList<SituacaoGeradoraDoencaProfissional>();
+	private Collection<DescricaoNaturezaLesao> descricoesNaturezaLesoes = new ArrayList<DescricaoNaturezaLesao>();
+	private Collection<Estado> estados;
+	private LinkedHashMap<Long, String> orgaosDeClasse = new OrgaoDeClasse();
+	private LinkedHashMap<Long, String> tiposLocalAcidente = new TipoLocalAcidente();
+	private LinkedHashMap<Long, String> iniciativasCat = new IniciativaCat();
+	private LinkedHashMap<Long, String> tiposCat = new TipoCat();
+	@SuppressWarnings("unchecked")
+	private LinkedHashMap<Long, String> lateralidades = new Lateralidade();
+	@SuppressWarnings("unchecked")
+	private LinkedHashMap<Long, String> tiposRegistradores = new TipoRegistrador();
+	
+	private Collection<Cidade> cidades;
+	
+	private String[] partesCorpoAtingidaSelecionados;
+	private Long[] agentesCausadoresAcidenteTrabalhoSelecionados;
+	private Long[] situacoesGeradoraDoencaProfissionalSelecionados;
+	
+	private boolean aderiuAoESocial;
 	
 	public String list() throws Exception
 	{
@@ -172,6 +236,28 @@ public class CatEditAction extends MyActionSupportList
 		ambientes = ambienteManager.findByEmpresa(getEmpresaSistema().getId());
 		naturezaLesaos = naturezaLesaoManager.findAllSelect(getEmpresaSistema().getId());
 		tipoAcidentes = new TipoAcidente();
+		
+		//eSocial
+		codificacoesAcidenteTrabalho = codificacaoAcidenteTrabalhoManager.findAllSelect();
+		situacoesGeradoraAcidenteTrabalho = situacaoGeradoraAcidenteTrabalhoManager.findAllSelect();
+		partesCorpoAtingida = parteCorpoAtingidaManager.findAllSelect();
+		agentesCausadoresAcidenteTrabalho = agenteCausadorAcidenteTrabalhoManager.findAllSelect(); 
+		situacoesGeradorasDoencaProfissional = situacaoGeradoraDoencaProfissionalManager.findAll();
+		descricoesNaturezaLesoes = descricaoNaturezaLesaoManager.findAllSelect();
+		estados = estadoManager.findAll(new String[]{"sigla"});
+		
+		if (cat != null && cat.getEndereco() != null && cat.getEndereco().getUf() != null)
+			cidades = cidadeManager.find(new String[]{"uf.id"}, new Object[]{cat.getEndereco().getUf().getId()}, new String[]{"nome"});
+		else
+			cidades = new ArrayList<Cidade>();
+		
+		Empresa empresa = empresaManager.findByIdProjection(getEmpresaSistema().getId());
+		if(empresa.isAcIntegra())
+			aderiuAoESocial = acPessoalClientSistema.isAderiuAoESocial(empresa);
+		aderiuAoESocial = true;
+		
+		setExibeDialogAJuda(!usuarioAjudaESocialManager.verifyExists(new String[]{"usuario.id", "telaAjuda"}, new Object[]{getUsuarioLogado().getId(), TelaAjudaESocial.EDICAO_CAT}));
+		setTelaAjuda(TelaAjudaESocial.EDICAO_CAT);
 	}
 
 	public String prepareInsert() throws Exception
@@ -212,6 +298,7 @@ public class CatEditAction extends MyActionSupportList
 		try {
 			beforeInsertUpdate();
 			validatestemunha(cat);
+			catManager.ajustaEntidade(cat,partesCorpoAtingidaSelecionados,agentesCausadoresAcidenteTrabalhoSelecionados,situacoesGeradoraDoencaProfissionalSelecionados);
 			catManager.save(cat);
 			
 			addActionSuccess("Ficha de investigação de acidente cadastrada com sucesso.");
@@ -230,6 +317,7 @@ public class CatEditAction extends MyActionSupportList
 		try {
 			beforeInsertUpdate();
 			validatestemunha(cat);
+			catManager.ajustaEntidade(cat,partesCorpoAtingidaSelecionados,agentesCausadoresAcidenteTrabalhoSelecionados,situacoesGeradoraDoencaProfissionalSelecionados);
 			catManager.update(cat);
 			
 			addActionSuccess("Ficha de investigação de acidente atualizada com sucesso.");
@@ -239,6 +327,7 @@ public class CatEditAction extends MyActionSupportList
 			return Action.INPUT;
 		}
 		
+		prepare();
 		return Action.SUCCESS;
 	}
 	
@@ -625,5 +714,179 @@ public class CatEditAction extends MyActionSupportList
 
 	public void setTestemunhaManager(TestemunhaManager testemunhaManager) {
 		this.testemunhaManager = testemunhaManager;
+	}
+
+	public Map<Integer, String> getTiposInscricao() {
+		return tiposInscricao;
+	}
+
+	public void setCodificacaoAcidenteTrabalhoManager(CodificacaoAcidenteTrabalhoManager codificacaoAcidenteTrabalhoManager) {
+		this.codificacaoAcidenteTrabalhoManager = codificacaoAcidenteTrabalhoManager;
+	}
+
+	public Collection<CodificacaoAcidenteTrabalho> getCodificacoesAcidenteTrabalho() {
+		return codificacoesAcidenteTrabalho;
+	}
+
+	public Collection<SituacaoGeradoraAcidenteTrabalho> getSituacoesGeradoraAcidenteTrabalho() {
+		return situacoesGeradoraAcidenteTrabalho;
+	}
+
+	public void setSituacoesGeradoraAcidenteTrabalho(
+			Collection<SituacaoGeradoraAcidenteTrabalho> situacoesGeradoraAcidenteTrabalho) {
+		this.situacoesGeradoraAcidenteTrabalho = situacoesGeradoraAcidenteTrabalho;
+	}
+
+	public void setSituacaoGeradoraAcidenteTrabalhoManager(
+			SituacaoGeradoraAcidenteTrabalhoManager situacaoGeradoraAcidenteTrabalhoManager) {
+		this.situacaoGeradoraAcidenteTrabalhoManager = situacaoGeradoraAcidenteTrabalhoManager;
+	}
+
+	public void setParteCorpoAtingidaManager(
+			ParteCorpoAtingidaManager parteCorpoAtingidaManager) {
+		this.parteCorpoAtingidaManager = parteCorpoAtingidaManager;
+	}
+
+	public Collection<ParteCorpoAtingida> getPartesCorpoAtingida() {
+		return partesCorpoAtingida;
+	}
+
+	public void setPartesCorpoAtingida(
+			Collection<ParteCorpoAtingida> partesCorpoAtingida) {
+		this.partesCorpoAtingida = partesCorpoAtingida;
+	}
+
+	public void setSituacaoGeradoraDoencaProfissionalManager(
+			SituacaoGeradoraDoencaProfissionalManager situacaoGeradoraDoencaProfissionalManager) {
+		this.situacaoGeradoraDoencaProfissionalManager = situacaoGeradoraDoencaProfissionalManager;
+	}
+
+	public void setAgenteCausadorAcidenteTrabalhoManager(
+			AgenteCausadorAcidenteTrabalhoManager agenteCausadorAcidenteTrabalhoManager) {
+		this.agenteCausadorAcidenteTrabalhoManager = agenteCausadorAcidenteTrabalhoManager;
+	}
+
+	public Collection<AgenteCausadorAcidenteTrabalho> getAgentesCausadoresAcidenteTrabalho() {
+		return agentesCausadoresAcidenteTrabalho;
+	}
+
+	public Collection<SituacaoGeradoraDoencaProfissional> getSituacoesGeradorasDoencaProfissional() {
+		return situacoesGeradorasDoencaProfissional;
+	}
+
+	public Collection<DescricaoNaturezaLesao> getDescricoesNaturezaLesoes() {
+		return descricoesNaturezaLesoes;
+	}
+
+	public void setDescricoesNaturezaLesoes(
+			Collection<DescricaoNaturezaLesao> descricoesNaturezaLesoes) {
+		this.descricoesNaturezaLesoes = descricoesNaturezaLesoes;
+	}
+
+	public void setDescricaoNaturezaLesaoManager(
+			DescricaoNaturezaLesaoManager descricaoNaturezaLesaoManager) {
+		this.descricaoNaturezaLesaoManager = descricaoNaturezaLesaoManager;
+	}
+
+	public Collection<Estado> getEstados() {
+		return estados;
+	}
+
+	public void setEstados(Collection<Estado> estados) {
+		this.estados = estados;
+	}
+
+	public void setEstadoManager(EstadoManager estadoManager) {
+		this.estadoManager = estadoManager;
+	}
+
+	public LinkedHashMap<Long, String> getOrgaosDeClasse() {
+		return orgaosDeClasse;
+	}
+
+	public void setOrgaosDeClasse(LinkedHashMap<Long, String> orgaosDeClasse) {
+		this.orgaosDeClasse = orgaosDeClasse;
+	}
+
+	public LinkedHashMap<Long, String> getTiposLocalAcidente() {
+		return tiposLocalAcidente;
+	}
+
+	public void setTiposLocalAcidente(LinkedHashMap<Long, String> tiposLocalAcidente) {
+		this.tiposLocalAcidente = tiposLocalAcidente;
+	}
+
+	public LinkedHashMap<Long, String> getIniciativasCat() {
+		return iniciativasCat;
+	}
+
+	public void setIniciativasCat(LinkedHashMap<Long, String> iniciativasCat) {
+		this.iniciativasCat = iniciativasCat;
+	}
+
+	public LinkedHashMap<Long, String> getTiposCat() {
+		return tiposCat;
+	}
+
+	public void setTiposCat(LinkedHashMap<Long, String> tiposCat) {
+		this.tiposCat = tiposCat;
+	}
+
+	public void setSituacoesGeradoraDoencaProfissionalSelecionados(Long[] situacoesGeradoraDoencaProfissionalSelecionados) {
+		this.situacoesGeradoraDoencaProfissionalSelecionados = situacoesGeradoraDoencaProfissionalSelecionados;
+	}
+
+	public void setAgentesCausadoresAcidenteTrabalhoSelecionados(Long[] agentesCausadoresAcidenteTrabalhoSelecionados) {
+		this.agentesCausadoresAcidenteTrabalhoSelecionados = agentesCausadoresAcidenteTrabalhoSelecionados;
+	}
+
+	public boolean isAderiuAoESocial() {
+		return aderiuAoESocial;
+	}
+
+	public void setAderiuAoESocial(boolean aderiuAoESocial) {
+		this.aderiuAoESocial = aderiuAoESocial;
+	}
+
+	public void setAcPessoalClientSistema(
+			AcPessoalClientSistema acPessoalClientSistema) {
+		this.acPessoalClientSistema = acPessoalClientSistema;
+	}
+
+	public void setEmpresaManager(EmpresaManager empresaManager) {
+		this.empresaManager = empresaManager;
+	}
+
+	public void setCidadeManager(CidadeManager cidadeManager) {
+		this.cidadeManager = cidadeManager;
+	}
+
+	public Collection<Cidade> getCidades() {
+		return cidades;
+	}
+
+	public void setUsuarioAjudaESocialManager(
+			UsuarioAjudaESocialManager usuarioAjudaESocialManager) {
+		this.usuarioAjudaESocialManager = usuarioAjudaESocialManager;
+	}
+
+	public LinkedHashMap<Long, String> getLateralidades() {
+		return lateralidades;
+	}
+
+	public void setLateralidades(LinkedHashMap<Long, String> lateralidades) {
+		this.lateralidades = lateralidades;
+	}
+
+	public void setPartesCorpoAtingidaSelecionados(String[] partesCorpoAtingidaSelecionados) {
+		this.partesCorpoAtingidaSelecionados = partesCorpoAtingidaSelecionados;
+	}
+
+	public LinkedHashMap<Long, String> getTiposRegistradores() {
+		return tiposRegistradores;
+	}
+
+	public void setTiposRegistradores(LinkedHashMap<Long, String> tiposRegistradores) {
+		this.tiposRegistradores = tiposRegistradores;
 	}
 }

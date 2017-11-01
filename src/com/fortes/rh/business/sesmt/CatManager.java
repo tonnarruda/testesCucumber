@@ -24,4 +24,5 @@ public interface CatManager extends GenericManager<Cat>
 	Cat findByIdProjectionSimples(Long catId);
 	Cat findByIdProjectionDetalhada(Long catId);
 	void setFoto(Cat cat, boolean manterFoto, File foto, String local);
+	void ajustaEntidade(Cat cat, String[] partesCorpoAtingidaSelecionados, Long[] agentesCausadoresAcidenteTrabalhoSelecionados, Long[] situacoesGeradoraDoencaProfissionalSelecionados);
 }

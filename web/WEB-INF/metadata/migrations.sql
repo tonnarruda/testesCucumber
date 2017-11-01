@@ -1,3 +1,43 @@
+--Campos CAT --.go
+ALTER TABLE cat ADD COLUMN tipoRegistardor BIGINT;--.go
+ALTER TABLE cat ADD COLUMN tipoInscricao BIGINT;--.go
+ALTER TABLE cat ADD COLUMN horasTrabalhadasAntesAcidente character varying(5);--.go
+ALTER TABLE cat ADD COLUMN tipo BIGINT;--.go
+ALTER TABLE cat ADD COLUMN obito boolean;--.go
+ALTER TABLE cat ADD COLUMN dataObito date;--.go
+ALTER TABLE cat ADD COLUMN dataCatOrigem date;--.go
+ALTER TABLE cat ADD COLUMN comunicouPolicia boolean;--.go
+ALTER TABLE cat ADD COLUMN iniciatCAT BIGINT;--.go
+ALTER TABLE cat ADD COLUMN tipoLocal BIGINT;--.go
+ALTER TABLE cat ADD COLUMN logradouro character varying(80);--.go
+ALTER TABLE cat ADD COLUMN numero character varying(10);--.go
+ALTER TABLE cat ADD COLUMN bairro character varying(60);--.go
+ALTER TABLE cat ADD COLUMN cep character varying(8);--.go
+ALTER TABLE cat ADD COLUMN cidade_id bigint;--.go
+ALTER TABLE cat ADD COLUMN uf_id bigint;--.go
+ALTER TABLE cat ADD COLUMN complemento character varying(30);--.go
+ALTER TABLE cat ADD COLUMN cnpjLocalAcidente character varying(30);--.go
+ALTER TABLE cat ADD COLUMN cpfRegistardor character varying(11);--.go
+ALTER TABLE cat ADD COLUMN cnpjRegistardor character varying(12);--.go
+
+--Atestado --.go
+ALTER TABLE cat ADD COLUMN possuiAtestado boolean default false ;--.go
+ALTER TABLE cat ADD COLUMN codigoCNES character varying(7);--.go 
+ALTER TABLE cat ADD COLUMN dataAtendimento date;--.go
+ALTER TABLE cat ADD COLUMN horaAtendimento character varying(5);--.go
+ALTER TABLE cat ADD COLUMN duracaoTratamentoEmDias character varying(4);--.go
+ALTER TABLE cat ADD COLUMN descricaoComplementarLesao character varying(200);--.go
+ALTER TABLE cat ADD COLUMN diagnosticoProvavel character varying(100);--.go
+ALTER TABLE cat ADD COLUMN codCID character varying(4);--.go
+ALTER TABLE cat ADD COLUMN observacaoAtestado character varying(255);--.go
+ALTER TABLE cat ADD COLUMN medicoNome character varying(70);--.go
+ALTER TABLE cat ADD COLUMN orgaoDeClasse BIGINT;--.go
+ALTER TABLE cat ADD COLUMN numericoInscricao character varying(14);--.go
+ALTER TABLE cat ADD COLUMN indicativoInternacao boolean ;--.go
+ALTER TABLE cat ADD COLUMN indicativoAfastamento boolean;--.go
+ALTER TABLE cat ADD COLUMN ufAtestado_id bigint; --.go
+ALTER TABLE cat ADD CONSTRAINT cat_estado_fk FOREIGN KEY (ufAtestado_id) REFERENCES estado(id);--.go
+
 --Table Codificacao Acidente de Trabalho --.go
 CREATE TABLE CodificacaoAcidenteTrabalho (
 	id bigint NOT NULL,
@@ -8,8 +48,8 @@ CREATE TABLE CodificacaoAcidenteTrabalho (
 ALTER TABLE CodificacaoAcidenteTrabalho ADD CONSTRAINT CodificacaoAcidenteTrabalho_pkey PRIMARY KEY(id);--.go
 CREATE SEQUENCE CodificacaoAcidenteTrabalho_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
 
-ALTER TABLE cat ADD COLUMN CodificacaoAcidenteTrabalho_id BIGINT;--.go
-ALTER TABLE ONLY cat ADD CONSTRAINT cat_CodificacaoAcidenteTrabalho_fk FOREIGN KEY (CodificacaoAcidenteTrabalho_id) REFERENCES CodificacaoAcidenteTrabalho(id);--.go
+ALTER TABLE cat ADD COLUMN CodificacaoAcidenteTrabalho_id bigint;--.go
+ALTER TABLE cat ADD CONSTRAINT cat_CodificacaoAcidenteTrabalho_fk FOREIGN KEY (CodificacaoAcidenteTrabalho_id) REFERENCES CodificacaoAcidenteTrabalho(id);--.go
 
 INSERT INTO CodificacaoAcidenteTrabalho(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('CodificacaoAcidenteTrabalho_sequence'),'1.0.01','Lesão corporal que cause a morte ou a perda ou redução, permanente ou temporária, da capacidade para o trabalho, desde que não enquadrada em nenhum dos demais códigos.');--.go
 INSERT INTO CodificacaoAcidenteTrabalho(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('CodificacaoAcidenteTrabalho_sequence'),'1.0.02','Perturbação funcional que cause a morte ou a perda ou redução, permanente ou temporária, da capacidade para o trabalho, desde que não enquadrada em nenhum dos demais códigos.');--.go
@@ -44,8 +84,8 @@ CREATE TABLE SituacaoGeradoraAcidenteTrabalho (
 ALTER TABLE SituacaoGeradoraAcidenteTrabalho ADD CONSTRAINT SituacaoGeradoraAcidenteTrabalho_pkey PRIMARY KEY(id);--.go
 CREATE SEQUENCE SituacaoGeradoraAcidenteTrabalho_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
 
-ALTER TABLE cat ADD COLUMN SituacaoGeradoraAcidenteTrabalho_id BIGINT;--.go
-ALTER TABLE ONLY cat ADD CONSTRAINT cat_SituacaoGeradoraAcidenteTrabalho_fk FOREIGN KEY (SituacaoGeradoraAcidenteTrabalho_id) REFERENCES SituacaoGeradoraAcidenteTrabalho(id);--.go
+ALTER TABLE cat ADD COLUMN situacaoGeradoraAcidenteTrabalho_id bigint;--.go
+ALTER TABLE cat ADD CONSTRAINT cat_situacaoGeradoraAcidenteTrabalho_fk FOREIGN KEY (situacaoGeradoraAcidenteTrabalho_id) REFERENCES situacaoGeradoraAcidenteTrabalho(id);--.go
 
 INSERT INTO SituacaoGeradoraAcidenteTrabalho(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('SituacaoGeradoraAcidenteTrabalho_sequence'),'200004300','Impacto de pessoa contra objeto parado');--.go
 INSERT INTO SituacaoGeradoraAcidenteTrabalho(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('SituacaoGeradoraAcidenteTrabalho_sequence'),'200004600','Impacto de pessoa contra objeto em movimento');--.go
@@ -117,8 +157,12 @@ CREATE TABLE AgenteCausadorAcidenteTrabalho (
 ALTER TABLE AgenteCausadorAcidenteTrabalho ADD CONSTRAINT AgenteCausadorAcidenteTrabalho_pkey PRIMARY KEY(id);--.go
 CREATE SEQUENCE AgenteCausadorAcidenteTrabalho_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
 
-ALTER TABLE cat ADD COLUMN AgenteCausadorAcidenteTrabalho_id BIGINT;--.go
-ALTER TABLE ONLY cat ADD CONSTRAINT cat_AgenteCausadorAcidenteTrabalho_fk FOREIGN KEY (AgenteCausadorAcidenteTrabalho_id) REFERENCES AgenteCausadorAcidenteTrabalho(id);--.go
+CREATE TABLE cat_AgenteCausadorAcidenteTrabalho(
+    cat_id bigint NOT NULL,
+    agentesCausadoresAcidenteTrabalho_id bigint NOT NULL
+);--.go
+ALTER TABLE cat_AgenteCausadorAcidenteTrabalho ADD CONSTRAINT cat_AgenteCausadorAcidenteTrabalho_cat_fk FOREIGN KEY (cat_id) REFERENCES cat(id);--.go 
+ALTER TABLE cat_AgenteCausadorAcidenteTrabalho ADD CONSTRAINT cat_AgenteCausadorAcidenteTrabalho_fk FOREIGN KEY (agentesCausadoresAcidenteTrabalho_id) REFERENCES AgenteCausadorAcidenteTrabalho(id);--.go
 
 INSERT INTO AgenteCausadorAcidenteTrabalho(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('AgenteCausadorAcidenteTrabalho_sequence'),'302010200','Rua e estrada - superfície utilizada para sustentar pessoas');--.go
 INSERT INTO AgenteCausadorAcidenteTrabalho(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('AgenteCausadorAcidenteTrabalho_sequence'),'302010250','Calçada ou caminho para pedestre - superfície utilizada para sustentar pessoas');--.go
@@ -379,8 +423,12 @@ CREATE TABLE SituacaoGeradoraDoencaProfissional (
 ALTER TABLE SituacaoGeradoraDoencaProfissional ADD CONSTRAINT SituacaoGeradoraDoencaProfissional_pkey PRIMARY KEY(id);--.go
 CREATE SEQUENCE SituacaoGeradoraDoencaProfissional_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
 
-ALTER TABLE cat ADD COLUMN SituacaoGeradoraDoencaProfissional_id BIGINT;--.go
-ALTER TABLE ONLY cat ADD CONSTRAINT cat_SituacaoGeradoraDoencaProfissional_fk FOREIGN KEY (SituacaoGeradoraDoencaProfissional_id) REFERENCES SituacaoGeradoraDoencaProfissional(id);--.go
+CREATE TABLE cat_SituacaoGeradoraDoencaProfissional(
+    cat_id bigint NOT NULL,
+    situacoesGeradoraDoencaProfissional_id bigint NOT NULL
+);--.go
+ALTER TABLE cat_SituacaoGeradoraDoencaProfissional ADD CONSTRAINT cat_SituacaoGeradoraDoencaProfissional_cat_fk FOREIGN KEY (cat_id) REFERENCES cat(id);--.go 
+ALTER TABLE cat_SituacaoGeradoraDoencaProfissional ADD CONSTRAINT cat_SituacaoGeradoraDoencaProfissional_fk FOREIGN KEY (situacoesGeradoraDoencaProfissional_id) REFERENCES SituacaoGeradoraDoencaProfissional(id);--.go
 
 INSERT INTO SituacaoGeradoraDoencaProfissional(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('SituacaoGeradoraDoencaProfissional_sequence'),'200004300','Impacto de pessoa contra objeto parado. Aplica-se a casos em que a lesão foi produzida por impacto da pessoa acidentada contra a fonte da lesão, tendo sido o movimento que produziu o contato originalmente o da pessoa e não o da fonte da lesão, exceto quando o movimento do acidentado tiver sido provocado por queda. Inclui casos de alguém chocar-se contra alguma coisa, tropeçar em alguma coisa, ser empurrado ou projetado contra alguma coisa, etc. Não inclui casos de salto para nível inferior.');--.go
 INSERT INTO SituacaoGeradoraDoencaProfissional(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('SituacaoGeradoraDoencaProfissional_sequence'),'200004600','Impacto de pessoa contra objeto em movimento. Aplica-se a casos em que a lesão foi produzida por impacto da pessoa acidentada contra a fonte da lesão, tendo sido o movimento que produziu o contato originalmente o da pessoa e não o da fonte da lesão, exceto quando o movimento do acidentado tiver sido provocado por queda. Inclui casos de alguém chocar-se contra alguma coisa, tropeçar em alguma coisa, ser empurrado ou projetado contra alguma coisa, etc. Não inclui casos de salto para nível inferior.');--.go
@@ -452,8 +500,21 @@ CREATE TABLE ParteCorpoAtingida (
 ALTER TABLE ParteCorpoAtingida ADD CONSTRAINT ParteCorpoAtingida_pkey PRIMARY KEY(id);--.go
 CREATE SEQUENCE ParteCorpoAtingida_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
 
-ALTER TABLE cat ADD COLUMN ParteCorpoAtingida_id BIGINT;--.go
-ALTER TABLE ONLY cat ADD CONSTRAINT cat_ParteCorpoAtingida_fk FOREIGN KEY (ParteCorpoAtingida_id) REFERENCES ParteCorpoAtingida(id);--.go
+CREATE TABLE parteAtingida(
+    id bigint NOT NULL,
+    lateralidade bigint NOT NULL,
+    parteCorpoAtingida_id bigint NOT NULL
+);--.go
+ALTER TABLE ParteAtingida ADD CONSTRAINT parteAtingida_pkey PRIMARY KEY(id);--.go
+ALTER TABLE ParteAtingida ADD CONSTRAINT parteAtingida_parteCorpoAtingida_fk FOREIGN KEY (parteCorpoAtingida_id) REFERENCES parteCorpoAtingida(id);--.go
+
+CREATE TABLE cat_parteAtingida(
+    cat_id bigint NOT NULL,
+    partesAtingida_id bigint NOT NULL
+);--.go
+ALTER TABLE cat_parteAtingida ADD CONSTRAINT cat_parteAtingida_cat_fk FOREIGN KEY (cat_id) REFERENCES cat(id);--.go 
+ALTER TABLE cat_parteAtingida ADD CONSTRAINT cat_parteAtingida_fk FOREIGN KEY (partesAtingida_id) REFERENCES parteAtingida(id);--.go
+CREATE SEQUENCE parteAtingida_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
 
 INSERT INTO ParteCorpoAtingida(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('ParteCorpoAtingida_sequence'),'753030000','Crânio (inclusive encéfalo)');--.go
 INSERT INTO ParteCorpoAtingida(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('ParteCorpoAtingida_sequence'),'753050000','Ouvido (externo, médio, interno, audição e equilíbrio)');--.go
@@ -511,8 +572,8 @@ CREATE TABLE DescricaoNaturezaLesao (
 ALTER TABLE DescricaoNaturezaLesao ADD CONSTRAINT DescricaoNaturezaLesao_pkey PRIMARY KEY(id);--.go
 CREATE SEQUENCE DescricaoNaturezaLesao_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
 
-ALTER TABLE cat ADD COLUMN DescricaoNaturezaLesao_id BIGINT;--.go
-ALTER TABLE ONLY cat ADD CONSTRAINT cat_DescricaoNaturezaLesao_fk FOREIGN KEY (DescricaoNaturezaLesao_id) REFERENCES DescricaoNaturezaLesao(id);--.go
+ALTER TABLE cat ADD COLUMN descricaoNaturezaLesao_id bigint;--.go
+ALTER TABLE cat ADD CONSTRAINT cat_descricaoNaturezaLesao_fk FOREIGN KEY (descricaoNaturezaLesao_id) REFERENCES descricaoNaturezaLesao(id);--.go
 
 INSERT INTO DescricaoNaturezaLesao(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('DescricaoNaturezaLesao_sequence'),'702000000','Lesão imediata');--.go
 INSERT INTO DescricaoNaturezaLesao(ID, CODIGO, DESCRICAO) VALUES (NEXTVAL('DescricaoNaturezaLesao_sequence'),'702005000','Escoriação, abrasão (ferimento superficial)');--.go

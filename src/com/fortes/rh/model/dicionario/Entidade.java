@@ -215,6 +215,7 @@ public class Entidade extends LinkedHashMap<String, String> {
 		put("usuarioempresa", "empresas do usuário");
 		put("usuariomensagem", "mensagens do usuário");
 		put("usuarionoticia", "notícias lidas pelo usuário");
+		put("ParteAtingida", "parte do corpo atingida");
 	}
 	
 	public static String getDescricao(String tabela)

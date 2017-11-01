@@ -37,4 +37,8 @@ public class SituacaoGeradoraAcidenteTrabalho extends AbstractModel implements S
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
+	
+	public String getCodigoDescricao() {
+		return codigo + " - " + descricao;
+	}
 }

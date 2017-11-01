@@ -480,3 +480,7 @@ pre {
 }
 
 .moeda { text-align: right; }
+
+.listSelectDialog .ui-selecting { background: #7BB5DF; }
+.listSelectDialog .ui-selected { background: #5292C0; color: white; }
+.listSelectDialog li{ margin: 3px; padding: 7px; display: block;margin-left: -35px; cursor: pointer;}

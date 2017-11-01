@@ -537,7 +537,16 @@
       <ref bean="fatorDeRiscoDaoTarget" />
     </property>
   </bean>
+  <bean id="parteAtingidaDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.dao.sesmt.ParteAtingidaDao</value>
+    </property>
+    <property name="target">
+      <ref bean="parteAtingidaDaoTarget" />
+    </property>
+  </bean>
 </beans>
+
 
 
 

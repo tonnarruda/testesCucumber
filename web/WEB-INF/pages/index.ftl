@@ -43,9 +43,10 @@
 		
 		.btn {
 			margin: 0 auto;
-/*			background: #D1CDC9;
+			/*background: #D1CDC9;
 			border: none;
-			color: #FFFFFF;*/
+			color: #FFFFFF;
+			*/
 			padding: 8px 16px;
 			font-weight: bold;
 			border-radius: 50px;
@@ -73,17 +74,17 @@
 	<script type='text/javascript'>
 		$(function () {
 			/*
-			$( "#splash" ).dialog({
-				autoOpen: false,
-				modal: true,
-				zIndex: 99999,
-				minWidth: 626,
-				create: function (event, ui) {  },
-			  	close: function() {
-			  		if ( $('#naoExibirMsg').is(':checked') ) 
-			  			$.cookie("pgInicialSplashMarca", false, { expires: 30 }); 
-			  	}
-			});
+				$( "#splash" ).dialog({
+					autoOpen: false,
+					modal: true,
+					zIndex: 99999,
+					minWidth: 626,
+					create: function (event, ui) {  },
+				  	close: function() {
+				  		if ( $('#naoExibirMsg').is(':checked') ) 
+				  			$.cookie("pgInicialSplashMarca", false, { expires: 30 }); 
+				  	}
+				});
 			*/
 			
 			if($.cookie("pgInicialSplashMarca") != 'false')
@@ -334,16 +335,16 @@
 		</#if>
 	</@authz.authorize>
 	
-	<@authz.authorize ifAllGranted="ROLE_VISUALIZAR_ATUALIZACAO_SISTEMA">
-		<!--
+	<!--
+		<@authz.authorize ifAllGranted="ROLE_VISUALIZAR_ATUALIZACAO_SISTEMA">
 			<div id="splash" style="display: none;">
 				<a id="fecharSplash" title="Fechar" href="javascript:;" onclick="$('#splash').dialog('close');" style="float: right; color: red;">FECHAR</a>
 				<img border="0" title="Atualização das tecnologias Java 7 e Tomcat 7"  src="<@ww.url includeParams="none" value="/imgs/splashAtualizacaoSistema.jpg"/>" />
 				<input type="checkbox" id="naoExibirMsg" name="naoExibirMsg"/>
 				<label for="naoExibirMsg">Não exibir esta mensagem novamente</label>
 			</div>
-		-->
-	</@authz.authorize>
+		</@authz.authorize>
+	-->
 
 	<script type="text/javascript">
 		<#if idiomaIncorreto?exists && !idiomaIncorreto>
