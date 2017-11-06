@@ -7,9 +7,11 @@
 	      	<interceptor-ref name="showFilterStack" />			
 		</action>
 		<action name="list" class="com.fortes.rh.web.action.sesmt.RiscoEditAction" method="list">
+			<interceptor-ref name="defaultListStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/riscoList.ftl</result>
 		</action>
 		<action name="delete" class="com.fortes.rh.web.action.sesmt.RiscoEditAction" method="delete">
+			<interceptor-ref name="defaultDeleteStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/riscoList.ftl</result>
 		</action>
 		<action name="prepareInsert" class="com.fortes.rh.web.action.sesmt.RiscoEditAction" method="prepareInsert">
@@ -20,12 +22,14 @@
 			<result name="error" type="redirect">list.action?msgAlert=${msgAlert}</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.sesmt.RiscoEditAction" method="insert">
+			<interceptor-ref name="defaultUpdateStack"/>
 			<interceptor-ref name="tokenWebStack" />
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/riscoEdit.ftl</result>
 			<result name="invalid.token" type="redirect">list.action?msgAlert=${msgAlert}</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.sesmt.RiscoEditAction" method="update">
+			<interceptor-ref name="defaultUpdateStack"/>
 			<interceptor-ref name="tokenWebStack" />
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/riscoEdit.ftl</result>

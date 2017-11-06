@@ -9,11 +9,13 @@ import org.springframework.dao.DataIntegrityViolationException;
 
 import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.business.sesmt.RiscoManager;
+import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.dicionario.GrupoRisco;
 import com.fortes.rh.model.dicionario.GrupoRiscoESocial;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.util.CheckListBoxUtil;
+import com.fortes.rh.util.ExceptionUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 
@@ -75,14 +77,14 @@ public class RiscoEditAction extends MyActionSupportList
 			risco.setEmpresa(getEmpresaSistema());
 			
 			riscoManager.save(risco);
-			
+			addActionSuccess("Risco cadastrado com sucesso");
 			return SUCCESS;
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
 			prepareInsert();
-			addErro("Não foi possível gravar o risco.");
+			ExceptionUtil.traduzirMensagem(this, e, "Não foi possível gravar o risco.");
 			return INPUT;
 		}
 	}
@@ -100,25 +102,28 @@ public class RiscoEditAction extends MyActionSupportList
 			risco.setEpis(epiManager.populaEpi(episCheck));
 			risco.setEmpresa(getEmpresaSistema());
 			riscoManager.update(risco);
+			addActionSuccess("Risco atualizado com sucesso");
 			return SUCCESS;
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
 			prepareUpdate();
-			addErro("Não foi possível gravar o risco.");
+			ExceptionUtil.traduzirMensagem(this, e, "Não foi possível atualizar o risco.");
 			return INPUT;
 		}
 	}
 	
-	public String list() throws Exception
+	public String list()
 	{
 		risco.setEmpresa(getEmpresaSistema());
 		setTotalSize(riscoManager.getCount(risco));
 		
-		riscos = riscoManager.listRiscos(getPage(), getPagingSize(), risco);
-
-		addErro(msgAlert);
+		try {
+			riscos = riscoManager.listRiscos(getPage(), getPagingSize(), risco);
+		} catch (ColecaoVaziaException e) {
+			addActionMessage(e.getMessage());
+		}
 
 		return SUCCESS;
 	}
@@ -133,7 +138,7 @@ public class RiscoEditAction extends MyActionSupportList
 		{
 			try {
 				riscoManager.remove(new Long[]{risco.getId()});
-				addActionMessage("Risco excluído com sucesso.");
+				addActionSuccess("Risco excluído com sucesso.");
 			} catch (Exception e) {
 				String message = "Erro ao excluir o risco.<br/>";
 				

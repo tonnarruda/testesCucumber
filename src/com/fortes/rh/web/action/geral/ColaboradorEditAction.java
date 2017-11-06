@@ -923,7 +923,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 					colaboradorManager.isExisteHistoricoCadastralDoColaboradorComPendenciaNoESocial(getEmpresaSistema(), colaborador.getCodigoAC())){
 				colaboradorManager.setDadosIntegrados(colaborador);
 				dadosIntegradosAtualizados = false;
-				mensagem = "Os dados integrados não podem ser editados pois no Fortes Pessoal existe pendência como eSocial.";
+				mensagem = "Os dados integrados não podem ser editados pois no Fortes Pessoal existe pendência com o eSocial.";
 			}
 			
 			colaboradorManager.update(colaborador, formacaos, idiomas, experiencias, getEmpresaSistema(),editarHistorico, salarioColaborador, dataAlteracao, dadosIntegradosAtualizados);

@@ -1451,3 +1451,24 @@ function getCookieProcessando() {
         });
     };
 })(jQuery);
+
+
+function setAjudaESocial(msg, img){
+	$('#waDivTitulo').append('<span style="margin-top: -9px;"><img onclick="javascript:dialogAjudaESocial();" src="' + img + '" style="cursor:pointer;" title="eSocial"></span>');
+	$('#waDivTitulo').append('<div id="formAjudaESocial" style="display: none;"><div id="ajuda">' + msg + '</div></div>');
+}
+
+function dialogAjudaESocial(){
+	$('#formAjudaESocial').dialog({
+							title:'Ajuda eSocial', 	
+							modal: true, 
+							width: 440,
+							buttons:[{
+								text:"Fechar",
+								click: function() { 
+						        	$(this).dialog("close");
+						        }
+							}]
+							
+						});
+}

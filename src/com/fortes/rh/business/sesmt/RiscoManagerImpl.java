@@ -8,6 +8,7 @@ import java.util.Map;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.RiscoDao;
+import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.model.sesmt.RiscoAmbiente;
@@ -97,8 +98,13 @@ public class RiscoManagerImpl extends GenericManagerImpl<Risco, RiscoDao> implem
 		}
 	}
 	
-	public Collection<Risco> listRiscos(int page, int pagingSize, Risco risco){
-		return getDao().listRiscos(page, pagingSize, risco);
+	public Collection<Risco> listRiscos(int page, int pagingSize, Risco risco) throws ColecaoVaziaException{
+		Collection<Risco> riscos = getDao().listRiscos(page, pagingSize, risco);
+		
+		if(riscos.isEmpty())
+			throw new ColecaoVaziaException(); 
+		
+		return riscos;
 	}
 	
 	public Integer getCount(Risco risco)

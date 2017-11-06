@@ -96,6 +96,10 @@
 		    	$(this).parents(".box").find(".column").find(".fatoresDeRiscoLi").find(".nome:contains-IgnoreAccents('"+$(this).val()+"')").parent().show();
 		    });
 		    $( "#fatoresDeRisco-list" ).selectable();
+		    
+		    setAjudaESocial('<strong>Tipo de risco eSocial:</strong> Classificação de riscos definida pelo eSocial na tabela 23 do leiaute do eSocial.<br><br>'+
+									'<strong>Fator de risco:</strong> Detalhamento dos riscos de acordo com a classificação do eSocial. Define todos os riscos que o colaborador' + 
+									'poderá estar exposto.', '<@ww.url value="/imgs/esocial.png"/>');
 		 });
 	
 		function constroiContainsIgnoreAccents() {
@@ -227,15 +231,19 @@
 		
 		function submitForm(){
 			var formValido = validaFormulario('form', new Array('descricao','grupoRisco', 'grupoRiscoESocial'), null, true);
+			var fatorDeRisco = $('#hidenFatorDeRisco').val() != '' ? true : false;
+			if(fatorDeRisco && !formValido)
+				$('#divDescricaoFator').css('backgroundColor','#f3f3f3');
 			if(formValido){
-				var fatorDeRisco = $('#hidenFatorDeRisco').val() != '' ? true : false;
 				if(!fatorDeRisco){
+					$('#divDescricaoFator').css('backgroundColor','#ffeec2');
 					jAlert("Selecione um fator de risco.")
 				}
 				else
 					$("form").submit();
 			}
 		}
+		
 	</script>	
 	
 	
@@ -259,11 +267,9 @@
 		<@ww.textfield label="Nome" name="risco.descricao" id="descricao" cssClass="inputNome" maxLength="100" cssStyle="width: 502px;" required="true"/>
 		<@ww.select label="Tipo de Risco" name="risco.grupoRisco" id="grupoRisco" list="grupoRiscos" cssStyle="width: 502px;" headerKey="-1" headerValue="[Selecione...]" required="true"/>
 		<@ww.select label="Tipo de Risco eSocial" name="risco.grupoRiscoESocial" id="grupoRiscoESocial" list="grupoRiscosESocial" cssStyle="width: 502px;" headerKey="" headerValue="[Selecione...]" required="true"  onchange="onchangeGrupoRiscoESocial();"/>
-		<img border="0" src="<@ww.url value="/imgs/esocial.png"/>" style="float: left;margin-top: -47px;margin-left: 135px; width: 27px; height: 27px;">
 		
 		<div style="margin-top: 4px;">
 			<span>Fator de Risco:*<span>
-				<img border="0" src="<@ww.url value="/imgs/esocial.png"/>" style="margin-top: -11px; margin-bottom: -5px; width: 27px; height: 27px;">
 			<div id="divDescricaoFator">
 				<#if !risco.fatorDeRisco?exists>
 					<span id="selecionarFator" onclick="populaFatoresDeRisco();" style="cursor: pointer; color: #1c96e8;">
@@ -292,5 +298,10 @@
 		<button type="button" onclick="submitForm()" accesskey="${accessKey}">Gravar</button>
 		<button type="button" onclick="window.location='list.action'" accesskey="V">Voltar</button>
 	</div>
+	
+	
+
+	
+	
 </body>
 </html>

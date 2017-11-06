@@ -10,6 +10,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +23,7 @@ import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureExcepti
 
 import com.fortes.rh.business.sesmt.RiscoManagerImpl;
 import com.fortes.rh.dao.sesmt.RiscoDao;
+import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.Risco;
@@ -112,17 +114,29 @@ public class RiscoManagerTest
 	}
 	
 	@Test
-	public void testListRiscos(){
+	public void testListRiscos() throws ColecaoVaziaException{
+		int page = 0;
+		int pagingSize = 0;
+		Risco risco = RiscoFactory.getEntity(1L);
+		
+		when(riscoDao.listRiscos(page, pagingSize, risco)).thenReturn(Arrays.asList(RiscoFactory.getEntity()));
+		
+		Collection<Risco> riscos = riscoManager.listRiscos(page, pagingSize, risco);
+		verify(riscoDao, times(1)).listRiscos(page, pagingSize, risco);
+		assertEquals(1, riscos.size());
+	}
+	
+	@Test(expected=ColecaoVaziaException.class)
+	public void testListRiscosException() throws ColecaoVaziaException{
 		int page = 0;
 		int pagingSize = 0;
 		Risco risco = RiscoFactory.getEntity(1L);
 		
 		when(riscoDao.listRiscos(page, pagingSize, risco)).thenReturn(new ArrayList<Risco>());
-		
-		Collection<Risco> riscos = riscoManager.listRiscos(page, pagingSize, risco);
+		riscoManager.listRiscos(page, pagingSize, risco);
 		verify(riscoDao, times(1)).listRiscos(page, pagingSize, risco);
-		assertEquals(0, riscos.size());
 	}
+	
 	
 	@Test
 	public void testGetCount()
