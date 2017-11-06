@@ -2653,7 +2653,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			for (Long qtdDias : dias) {
 				periodo = new PeriodoExperiencia();
 				periodo.setDias(qtdDias.intValue());
-				periodo.setDataFim(DateUtil.incrementaDias(colaborador.getDataAdmissao(), qtdDias.intValue()));
+				periodo.setDataFim(DateUtil.incrementaDias(colaborador.getDataAdmissao(), qtdDias.intValue() - 1));
 				periodos.add(periodo);
 			}
 
