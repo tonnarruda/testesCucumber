@@ -16,10 +16,15 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/autoCompleteFortes.js?version=${versao}"/>'></script>
 	<script src='<@ww.url includeParams="none" value="/js/fortes.js?version=${versao}"/>'></script>
 	<script src='<@ww.url includeParams="none" value="/js/functions.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UsuarioAjudaESocialDWR.js?version=${versao}"/>'></script>
+	
 	<style type="text/css">
 	    @import url('<@ww.url includeParams="none" value="/css/fortes.css?version=${versao}"/>');
 	    @import url('<@ww.url includeParams="none" value="/css/cssYui/fonts-min.css"/>');
 	    
+	    input[disabled]{ background: #EFEFEF; }
 	    #wwgrp_descricaoCBO
 	    {
 			float: left;
@@ -73,6 +78,17 @@
 				$('#descricaoCBO').focus(function() {
 				    $(this).select();
 				});
+			<#else>
+				setAjudaESocial('Estamos nos adequando as exigências impostas pelo Governo Federal para atender as normas do eSocial.<br><br>'+
+						'Desta forma, a partir da versão <strong>1.1.184.216</strong>, a edição dos campos '+ 
+						'<strong>Descrição no Fortes Pessoal</strong> e <strong>CBO</strong> só poderão ser efetuadas pelo Fortes Pessoal.',
+				 '<@ww.url value="/imgs/esocial.png"/>', 'imgAjudaEsocial');
+									
+				<#if exibeDialogAJuda>
+					dialogAjudaESocial();
+					UsuarioAjudaESocialDWR.saveUsuarioAjuda(${usuarioLogado.id}, "${telaAjuda?string}");
+				</#if>
+			
 			</#if>
 		});
 			
@@ -89,19 +105,14 @@
 		<b>Cargo:</b> ${cargoAux.nome}<br><br>
 
 		<@ww.textfield label="Faixa" name="faixaSalarialAux.nome" id="nome" cssStyle="width: 220px;"  maxLength="30" required="true"/>
+		
 		<#if integradoAC>
 			<@ww.textfield label="Descrição no Fortes Pessoal" name="faixaSalarialAux.nomeACPessoal" id="nomeACPessoal" cssStyle="width: 220px; margin-top: 1px"  maxLength="30" required="true" disabled="${empresaEstaIntegradaEAderiuAoESocial?string}"/>
-			<#if empresaEstaIntegradaEAderiuAoESocial>
-				<img border="0" title="Em virtude de adequações ao eSocial, não é possível editar no Fortes RH." src="<@ww.url value="/imgs/esocial.png"/>" style="margin-top: -47px; float: left; margin-left: 177px; width: 27px; height: 27px;">
-			</#if>
 		<#else>
 			<@ww.hidden	name="faixaSalarialAux.nomeACPessoal" />
 		</#if>
 		
 		<@ww.textfield label="Cód. CBO" name="faixaSalarialAux.codigoCbo" id="codigoCBO" onkeypress="return(somenteNumeros(event,''));" cssStyle="margin-top: 1px" size="6"  maxLength="6" liClass="liLeft" required="true" disabled="${empresaEstaIntegradaEAderiuAoESocial?string}"/>
-		<#if empresaEstaIntegradaEAderiuAoESocial>
-			<img border="0" title="Em virtude de adequações ao eSocial, não é possível editar no Fortes RH." src="<@ww.url value="/imgs/esocial.png"/>" style="margin-top: -8px; float: left; margin-left: -4px; width: 27px; height: 27px;">
-		</#if>
 		
 		<#if !empresaEstaIntegradaEAderiuAoESocial>
 			<@ww.textfield label="Busca CBO (Código ou Descrição)" name="descricaoCBO" id="descricaoCBO" cssStyle="width: 414px;"/>

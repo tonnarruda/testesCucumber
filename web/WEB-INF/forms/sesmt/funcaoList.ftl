@@ -40,7 +40,7 @@
 	
 	<@display.table name="funcaos" id="funcao" class="dados" sort="list">
 		<@display.column title="Ações" class="acao">
-			<@frt.link href="prepareUpdate.action?funcao.id=${funcao.id}" imgTitle="Editar" iconeClass="fa-edit"/>
+			<@frt.link href="prepareUpdate.action?funcao.id=${funcao.id}" imgTitle="Históricos" iconeClass="fa-list"/>
 			<@frt.link href="javascript:;" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?funcao.id=${funcao.id}&page=${page}'});" imgTitle="Excluir" iconeClass="fa-times"/>
 		</@display.column>
 		<@display.column property="nome" title="Nome"/>

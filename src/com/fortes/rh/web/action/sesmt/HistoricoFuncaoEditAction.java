@@ -5,12 +5,14 @@ import java.util.HashSet;
 
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.geral.CodigoCBOManager;
+import com.fortes.rh.business.geral.UsuarioAjudaESocialManager;
 import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.business.sesmt.ExameManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.business.sesmt.HistoricoFuncaoManager;
 import com.fortes.rh.business.sesmt.RiscoManager;
 import com.fortes.rh.exception.FortesException;
+import com.fortes.rh.model.dicionario.TelaAjudaESocial;
 import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
@@ -31,6 +33,7 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 	private RiscoManager riscoManager;
 	private CursoManager cursoManager;
 	private CodigoCBOManager codigoCBOManager;
+	private UsuarioAjudaESocialManager usuarioAjudaESocialManager;
 
 	private HistoricoFuncao historicoFuncao = new HistoricoFuncao();
 	private Funcao funcao;
@@ -68,6 +71,10 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 		episCheckList = epiManager.populaCheckToEpi(getEmpresaSistema().getId(), epiAtivo);
 		setCursosCheckList(cursoManager.populaCheckListCurso(getEmpresaSistema().getId()));
 		riscosFuncoes = riscoManager.findRiscosFuncoesByEmpresa(getEmpresaSistema().getId());
+
+		setExibeDialogAJuda(!usuarioAjudaESocialManager.verifyExists(new String[]{"usuario.id", "telaAjuda"}, new Object[]{getUsuarioLogado().getId(), TelaAjudaESocial.EDICAO_HISTORICO_FUNCAO}));
+		setTelaAjuda(TelaAjudaESocial.EDICAO_HISTORICO_FUNCAO);
+
 	}
 
 	public String prepareInsert() throws Exception
@@ -99,6 +106,7 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 			historicoFuncao.setFuncao(funcao);
 			historicoFuncaoManager.saveHistorico(historicoFuncao, examesChecked, episChecked, riscoChecks, cursosChecked, riscosFuncoes);
 			funcaoManager.atualizaNomeUltimoHistorico(funcao.getId());
+			addActionSuccess("Histórico da função cadastrado com sucesso.");
 			return Action.SUCCESS;
 		
 		} catch (FortesException e) {
@@ -118,6 +126,7 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 		try {
 			historicoFuncaoManager.saveHistorico(historicoFuncao, examesChecked, episChecked, riscoChecks, cursosChecked, riscosFuncoes);
 			funcaoManager.atualizaNomeUltimoHistorico(funcao.getId());
+			addActionSuccess("Histórico dafunção atualizado com sucesso.");
 			return Action.SUCCESS;
 
 		} catch (FortesException e) {
@@ -254,5 +263,10 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 
 	public void setFuncaoManager(FuncaoManager funcaoManager) {
 		this.funcaoManager = funcaoManager;
+	}
+
+	public void setUsuarioAjudaESocialManager(
+			UsuarioAjudaESocialManager usuarioAjudaESocialManager) {
+		this.usuarioAjudaESocialManager = usuarioAjudaESocialManager;
 	}
 }

@@ -54,6 +54,7 @@
 		.buttonGroupFixed { position: fixed; bottom: 0px; background: url('<@ww.url includeParams="none" value="/imgs/branco_70.png"/>'); }
 		.buttonGroupFixed button { margin: 5px 0px; }
 		#topDiv, #menuDropDown { min-width: 1070px; }
+		.ui-effects-transfer { border: 2px dotted gray;} 
 		
 		@media (max-width: 1150px) {
 		    .box_icones {

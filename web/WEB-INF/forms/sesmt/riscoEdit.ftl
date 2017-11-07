@@ -7,6 +7,8 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/FatorDeRiscoDWR.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UsuarioAjudaESocialDWR.js?version=${versao}"/>'></script>
+	
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/formModal.js?version=${versao}"/>'></script>
 
 <style type="text/css">
@@ -15,7 +17,7 @@
 	@import url('<@ww.url value="/css/font-awesome.min.css?version=${versao}"/>');
 	@import url('<@ww.url value="/css/buttons.css"/>');
 		
-	#formDialog { display: none; width: 600px; list-style-type: none;}
+#formDialog { display: none; width: 600px; list-style-type: none;}
 	
 #fatoresDeRisco-list .ui-selecting { background: #7BB5DF; }
 #fatoresDeRisco-list .ui-selected { background: #5292C0; color: white; }
@@ -71,7 +73,6 @@
 	
 </style>
 
-
 <#if risco.id?exists>
 	<title>Editar Risco</title>
 	<#assign formAction="update.action"/>
@@ -97,11 +98,19 @@
 		    });
 		    $( "#fatoresDeRisco-list" ).selectable();
 		    
-		    setAjudaESocial('<strong>Tipo de risco eSocial:</strong> Classificação de riscos definida pelo eSocial na tabela 23 do leiaute do eSocial.<br><br>'+
-									'<strong>Fator de risco:</strong> Detalhamento dos riscos de acordo com a classificação do eSocial. Define todos os riscos que o colaborador' + 
-									'poderá estar exposto.', '<@ww.url value="/imgs/esocial.png"/>');
+		    setAjudaESocial('Estamos nos adequando as exigências impostas pelo Governo Federal para atender as normas do eSocial.<br><br>'+
+           					'Desta forma, a partir da versão <strong>1.1.185.217</strong>, o cadastro de riscos passa a ter dois novos campos:<br><br>' + 
+		    				'<strong>Tipo de risco eSocial:</strong> Classificação de riscos definida pelo eSocial na tabela 23 de seu leiaute.<br><br>'+
+							'<strong>Fator de risco:</strong> Detalhamento dos riscos de acordo com a classificação do eSocial. Define todos os riscos que o colaborador ' + 
+							'poderá estar exposto.', '<@ww.url value="/imgs/esocial.png"/>', 'imgAjudaEsocial');
+									
+			<#if exibeDialogAJuda>
+				dialogAjudaESocial();
+				UsuarioAjudaESocialDWR.saveUsuarioAjuda(${usuarioLogado.id}, "${telaAjuda?string}");
+			</#if>
+			
 		 });
-	
+		 
 		function constroiContainsIgnoreAccents() {
 			var accent_map = {
             'á':'a',
@@ -243,7 +252,7 @@
 					$("form").submit();
 			}
 		}
-		
+
 	</script>	
 	
 	
@@ -298,10 +307,5 @@
 		<button type="button" onclick="submitForm()" accesskey="${accessKey}">Gravar</button>
 		<button type="button" onclick="window.location='list.action'" accesskey="V">Voltar</button>
 	</div>
-	
-	
-
-	
-	
 </body>
 </html>

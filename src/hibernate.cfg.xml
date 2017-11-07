@@ -63,6 +63,7 @@
     <mapping class="com.fortes.rh.model.geral.GerenciadorComunicacao" />
     <mapping class="com.fortes.rh.model.geral.Cartao" />
     <mapping class="com.fortes.rh.model.geral.ConfiguracaoCampoExtraVisivelObrigadotorio"/>
+    <mapping class="com.fortes.rh.model.geral.UsuarioAjudaESocial"/>
     <!-- CAPTACAO DE TALENTOS -->
     <mapping class="com.fortes.rh.model.captacao.Candidato" />
     <mapping class="com.fortes.rh.model.captacao.HistoricoCandidato" />

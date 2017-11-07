@@ -37,6 +37,9 @@
 <script type='text/javascript' src='<@ww.url includeParams="none" value="/js/autoCompleteFortes.js?version=${versao}"/>'></script>
 <script src='<@ww.url includeParams="none" value="/js/fortes.js?version=${versao}"/>'></script>
 <script src='<@ww.url includeParams="none" value="/js/functions.js?version=${versao}"/>'></script>
+<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
+<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UsuarioAjudaESocialDWR.js?version=${versao}"/>'></script>
 
 <script type="text/javascript">
 	$(function() {

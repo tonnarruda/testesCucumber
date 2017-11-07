@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import com.fortes.business.GenericManager;
+import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.relatorio.QtdPorFuncaoRelatorio;
@@ -11,7 +12,7 @@ import com.fortes.web.tags.CheckBox;
 public interface FuncaoManager extends GenericManager<Funcao>
 {
 	Integer getCount(Long empresaId, String funcaoNome);
-	Collection<Funcao> findByEmpresa(int page, int pagingSize, Long empresaId, String funcaoNome);
+	Collection<Funcao> findByEmpresa(int page, int pagingSize, Long empresaId, String funcaoNome) throws ColecaoVaziaException;
 	Collection<Funcao> findByEmpresa(Long empresaId);
 	public Collection<Long> getIdsFuncoes(Collection<HistoricoColaborador> historicosColaborador);
 	Funcao findByIdProjection(Long funcaoId);

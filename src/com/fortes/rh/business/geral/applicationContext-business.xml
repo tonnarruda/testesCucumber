@@ -1044,6 +1044,22 @@
       <ref bean="configuracaoCampoExtraVisivelObrigadotorioManagerTarget" />
     </property>
   </bean>
+  
+  
+  <bean id="usuarioAjudaESocialManagerTarget" class="com.fortes.rh.business.geral.UsuarioAjudaESocialManagerImpl">
+  	<property name="dao">
+      <ref bean="usuarioAjudaESocialDao" />
+    </property>
+  </bean>
+  <bean id="usuarioAjudaESocialManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.geral.UsuarioAjudaESocialManager</value>
+    </property>
+	<property name="target">
+      <ref bean="usuarioAjudaESocialManagerTarget" />
+    </property>
+  </bean>
+  
 </beans>
 
 

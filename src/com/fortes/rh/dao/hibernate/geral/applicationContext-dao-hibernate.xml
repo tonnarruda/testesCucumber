@@ -252,4 +252,9 @@
       <ref bean="sessionFactory" />
     </property>
   </bean>
+  <bean id="usuarioAjudaESocialDaoTarget" class="com.fortes.rh.dao.hibernate.geral.UsuarioAjudaESocialDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
 </beans>

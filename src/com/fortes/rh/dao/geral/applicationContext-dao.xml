@@ -402,4 +402,13 @@
       <ref bean="configuracaoCampoExtraVisivelObrigadotorioDaoTarget" />
     </property>
   </bean>
+  
+  <bean id="usuarioAjudaESocialDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.dao.geral.UsuarioAjudaESocialDao</value>
+    </property>
+    <property name="target">
+      <ref bean="usuarioAjudaESocialDaoTarget" />
+    </property>
+  </bean>
 </beans>

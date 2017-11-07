@@ -11,6 +11,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.business.sesmt.HistoricoFuncaoManager;
+import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.geral.AreaOrganizacional;
@@ -62,10 +63,14 @@ public class FuncaoListAction extends MyActionSupportList
 
 	private char tipoAtivo;
 	
-	public String list() throws Exception
+	public String list()
 	{
 		setTotalSize(funcaoManager.getCount(getEmpresaSistema().getId(), funcao.getNome()));
-		funcaos = funcaoManager.findByEmpresa(getPage(), getPagingSize(), getEmpresaSistema().getId(), funcao.getNome());
+		try {
+			funcaos = funcaoManager.findByEmpresa(getPage(), getPagingSize(), getEmpresaSistema().getId(), funcao.getNome());
+		} catch (ColecaoVaziaException e) {
+			addActionMessage(e.getMessage());
+		}
 
 		return Action.SUCCESS;
 	}

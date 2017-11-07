@@ -1453,8 +1453,8 @@ function getCookieProcessando() {
 })(jQuery);
 
 
-function setAjudaESocial(msg, img){
-	$('#waDivTitulo').append('<span style="margin-top: -9px;"><img onclick="javascript:dialogAjudaESocial();" src="' + img + '" style="cursor:pointer;" title="eSocial"></span>');
+function setAjudaESocial(msg, img, idImg){
+	$('#waDivTitulo').append('<span style="margin-top: -9px;"><img id='+idImg+' class="imgAjudaEsocial" onclick="javascript:dialogAjudaESocial();" src="' + img + '" style="cursor:pointer;" title="eSocial"></span>');
 	$('#waDivTitulo').append('<div id="formAjudaESocial" style="display: none;"><div id="ajuda">' + msg + '</div></div>');
 }
 
@@ -1466,9 +1466,21 @@ function dialogAjudaESocial(){
 							buttons:[{
 								text:"Fechar",
 								click: function() { 
-						        	$(this).dialog("close");
+									runEffect();
 						        }
 							}]
-							
 						});
+	$(".ui-dialog-buttonset button").removeClass().unbind('mouseover mousedown focus');
+}
+
+
+function callback() {
+    	setTimeout(function() {
+		$('#formAjudaESocial').dialog('close');
+  		}, 10 );
+ };
+
+function runEffect(idImg){
+	options = { to: ".imgAjudaEsocial", className: "ui-effects-transfer" };
+	$( "#formAjudaESocial" ).effect( 'transfer', options, 600, callback );
 }

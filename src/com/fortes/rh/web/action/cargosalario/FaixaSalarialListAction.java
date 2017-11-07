@@ -5,8 +5,10 @@ import java.util.Collection;
 
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
+import com.fortes.rh.business.geral.UsuarioAjudaESocialManager;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.dicionario.TelaAjudaESocial;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
 
@@ -15,6 +17,7 @@ public class FaixaSalarialListAction extends MyActionSupportList
 {
 	private FaixaSalarialManager faixaSalarialManager;
 	private CargoManager cargoManager;
+	private UsuarioAjudaESocialManager usuarioAjudaESocialManager;
 	private Collection<FaixaSalarial> faixaSalarials = new ArrayList<FaixaSalarial>();
 	private FaixaSalarial faixaSalarial;
 	private Cargo cargo;
@@ -40,9 +43,10 @@ public class FaixaSalarialListAction extends MyActionSupportList
 		
 		if(isEmpresaIntegradaEAderiuAoESocial()){
 			empresaEstaIntegradaEAderiuAoESocial = true;
-		    addActionMessage("Devido as adequações ao eSocial a inserção e remoção de faixa só podem ser realizadas no Fortes Pessoal.");
-		}
+			setExibeDialogAJuda(!usuarioAjudaESocialManager.verifyExists(new String[]{"usuario.id", "telaAjuda"}, new Object[]{getUsuarioLogado().getId(), TelaAjudaESocial.LISTAGEM_FAIXA_SALARIAL}));
+			setTelaAjuda(TelaAjudaESocial.LISTAGEM_FAIXA_SALARIAL);
 
+		}
 		return Action.SUCCESS;
 	}
 
@@ -103,5 +107,10 @@ public class FaixaSalarialListAction extends MyActionSupportList
 
 	public boolean isEmpresaEstaIntegradaEAderiuAoESocial() {
 		return empresaEstaIntegradaEAderiuAoESocial;
+	}
+
+	public void setUsuarioAjudaESocialManager(
+			UsuarioAjudaESocialManager usuarioAjudaESocialManager) {
+		this.usuarioAjudaESocialManager = usuarioAjudaESocialManager;
 	}
 }

@@ -7,11 +7,13 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.dao.DataIntegrityViolationException;
 
+import com.fortes.rh.business.geral.UsuarioAjudaESocialManager;
 import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.business.sesmt.RiscoManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.dicionario.GrupoRisco;
 import com.fortes.rh.model.dicionario.GrupoRiscoESocial;
+import com.fortes.rh.model.dicionario.TelaAjudaESocial;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -25,6 +27,7 @@ public class RiscoEditAction extends MyActionSupportList
 	
 	private RiscoManager riscoManager;
 	private EpiManager epiManager;
+	private UsuarioAjudaESocialManager usuarioAjudaESocialManager;
 
 	private Collection<Epi> epis = new ArrayList<Epi>();
 	private Collection<CheckBox> episCheckList = new ArrayList<CheckBox>();
@@ -44,6 +47,9 @@ public class RiscoEditAction extends MyActionSupportList
 
 		grupoRiscos = GrupoRisco.getInstance();
 		grupoRiscosESocial = GrupoRiscoESocial.getInstance();
+		
+		setExibeDialogAJuda(!usuarioAjudaESocialManager.verifyExists(new String[]{"usuario.id", "telaAjuda"}, new Object[]{getUsuarioLogado().getId(), TelaAjudaESocial.EDICAO_RISCO}));
+		setTelaAjuda(TelaAjudaESocial.EDICAO_RISCO);
 	}
 
 	public String prepareInsert() throws Exception
@@ -239,5 +245,9 @@ public class RiscoEditAction extends MyActionSupportList
 
 	public Collection<Risco> getRiscos() {
 		return riscos;
+	}
+
+	public void setUsuarioAjudaESocialManager( UsuarioAjudaESocialManager usuarioAjudaESocialManager) {
+		this.usuarioAjudaESocialManager = usuarioAjudaESocialManager;
 	}
 }

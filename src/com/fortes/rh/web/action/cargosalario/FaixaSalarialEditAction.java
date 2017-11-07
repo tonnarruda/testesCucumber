@@ -10,6 +10,7 @@ import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.cargosalario.IndiceManager;
 import com.fortes.rh.business.desenvolvimento.CertificacaoManager;
 import com.fortes.rh.business.geral.CodigoCBOManager;
+import com.fortes.rh.business.geral.UsuarioAjudaESocialManager;
 import com.fortes.rh.exception.ESocialException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.cargosalario.Cargo;
@@ -19,6 +20,7 @@ import com.fortes.rh.model.cargosalario.FaixaSalarialHistoricoVO;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
+import com.fortes.rh.model.dicionario.TelaAjudaESocial;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
@@ -35,6 +37,7 @@ public class FaixaSalarialEditAction extends MyActionSupportEdit implements Mode
 	private FaixaSalarialHistoricoManager faixaSalarialHistoricoManager;
 	private CertificacaoManager certificacaoManager;
 	private CodigoCBOManager codigoCBOManager;
+	private UsuarioAjudaESocialManager usuarioAjudaESocialManager;
 
 	private FaixaSalarial faixaSalarialAux;
 	private FaixaSalarialHistorico faixaSalarialHistorico;
@@ -64,7 +67,12 @@ public class FaixaSalarialEditAction extends MyActionSupportEdit implements Mode
 	private void prepare() throws Exception
 	{
 		empresaEstaIntegradaEAderiuAoESocial = isEmpresaIntegradaEAderiuAoESocial();
-		
+		empresaEstaIntegradaEAderiuAoESocial = true;
+		if(empresaEstaIntegradaEAderiuAoESocial){
+			setExibeDialogAJuda(!usuarioAjudaESocialManager.verifyExists(new String[]{"usuario.id", "telaAjuda"}, new Object[]{getUsuarioLogado().getId(), TelaAjudaESocial.EDICAO_FAIXA_SALARIAL}));
+			setTelaAjuda(TelaAjudaESocial.EDICAO_FAIXA_SALARIAL);
+		}
+			
 		if(faixaSalarialAux != null && faixaSalarialAux.getId() != null)
 		{
 			faixaSalarialAux = faixaSalarialManager.findByFaixaSalarialId(faixaSalarialAux.getId());
@@ -328,5 +336,10 @@ public class FaixaSalarialEditAction extends MyActionSupportEdit implements Mode
     
     public boolean isEmpresaEstaIntegradaEAderiuAoESocial() {
 		return this.empresaEstaIntegradaEAderiuAoESocial;
+	}
+
+	public void setUsuarioAjudaESocialManager(
+			UsuarioAjudaESocialManager usuarioAjudaESocialManager) {
+		this.usuarioAjudaESocialManager = usuarioAjudaESocialManager;
 	}
 }

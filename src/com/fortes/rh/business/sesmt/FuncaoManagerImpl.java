@@ -9,6 +9,7 @@ import java.util.Map;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.FuncaoDao;
+import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
@@ -24,9 +25,15 @@ public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> imp
 		return getDao().getCount(empresaId, funcaoNome);
 	}
 
-	public Collection<Funcao> findByEmpresa(int page, int pagingSize, Long empresaId, String funcaoNome)
+	public Collection<Funcao> findByEmpresa(int page, int pagingSize, Long empresaId, String funcaoNome) throws ColecaoVaziaException
 	{
-		return getDao().findByEmpresa(page, pagingSize, empresaId, funcaoNome);
+		Collection<Funcao> funcoes = getDao().findByEmpresa(page, pagingSize, empresaId, funcaoNome);
+		
+		if(funcoes.isEmpty())
+			throw new ColecaoVaziaException();
+		
+		return funcoes;
+		
 	}
 
 	public Collection<Funcao> findByEmpresa(Long empresaId)

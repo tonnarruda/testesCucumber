@@ -9,6 +9,7 @@ import java.util.Map;
 import com.fortes.rh.business.geral.NoticiaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.dicionario.TelaAjudaESocial;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Noticia;
@@ -33,6 +34,8 @@ public abstract class MyActionSupport extends ActionSupport
 	private String versao = null;
 	private String msgHelp = null;
 	private ParametrosDoSistema parametrosDoSistemaSession;
+	private String telaAjuda;
+	private boolean exibeDialogAJuda = false;
 	
 	public static final String MESSAGE = "message";
 	
@@ -224,5 +227,21 @@ public abstract class MyActionSupport extends ActionSupport
 				addActionWarning("Não foi possível verificar se a empresa aderiu ao eSocial. Por motivo de segurança consideramos que tenha aderido.");
 		}
 	    return aderiuAoESocial && getEmpresaSistema().isAcIntegra();
+	}
+
+	public String getTelaAjuda() {
+		return telaAjuda;
+	}
+
+	public void setTelaAjuda(String telaAjuda) {
+		this.telaAjuda = telaAjuda;
+	}
+
+	public boolean isExibeDialogAJuda() {
+		return exibeDialogAJuda;
+	}
+
+	public void setExibeDialogAJuda(boolean exibeDialogAJuda) {
+		this.exibeDialogAJuda = exibeDialogAJuda;
 	}
 }

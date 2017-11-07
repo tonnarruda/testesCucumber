@@ -5,12 +5,14 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import com.fortes.rh.business.desenvolvimento.CursoManager;
+import com.fortes.rh.business.geral.UsuarioAjudaESocialManager;
 import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.business.sesmt.ExameManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.business.sesmt.HistoricoFuncaoManager;
 import com.fortes.rh.business.sesmt.RiscoManager;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.dicionario.TelaAjudaESocial;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.Ambiente;
@@ -33,6 +35,7 @@ public class FuncaoEditAction extends MyActionSupportEdit
 	private EpiManager epiManager;
 	private RiscoManager riscoManager;
 	private CursoManager cursoManager;
+	private UsuarioAjudaESocialManager usuarioAjudaESocialManager;
 
 	private Funcao funcao;
 	private HistoricoFuncao historicoFuncao;
@@ -78,6 +81,8 @@ public class FuncaoEditAction extends MyActionSupportEdit
 	{
 		prepare();
 		riscosFuncoes = riscoManager.findRiscosFuncoesByEmpresa(getEmpresaSistema().getId());
+		setExibeDialogAJuda(!usuarioAjudaESocialManager.verifyExists(new String[]{"usuario.id", "telaAjuda"}, new Object[]{getUsuarioLogado().getId(), TelaAjudaESocial.EDICAO_HISTORICO_FUNCAO}));
+		setTelaAjuda(TelaAjudaESocial.EDICAO_HISTORICO_FUNCAO);
 
 		return Action.SUCCESS;
 	}
@@ -94,7 +99,7 @@ public class FuncaoEditAction extends MyActionSupportEdit
 	{
 		funcao = new Funcao(historicoFuncao.getFuncaoNome(), getEmpresaSistema().getId()); 
 		historicoFuncaoManager.saveFuncaoHistorico(funcao, historicoFuncao, examesChecked, episChecked, cursosChecked, riscoChecks, riscosFuncoes);
-		addActionSuccess("Função " + funcao.getNome() + " cadastrada com sucesso.");
+		addActionSuccess("Função <strong>" + funcao.getNome() + "</strong> cadastrada com sucesso.");
 		
 		return Action.SUCCESS;
 	}
@@ -286,5 +291,13 @@ public class FuncaoEditAction extends MyActionSupportEdit
 
 	public void setDescricaoCBO(String descricaoCBO) {
 		this.descricaoCBO = descricaoCBO;
+	}
+
+	public UsuarioAjudaESocialManager getUsuarioAjudaESocialManager() {
+		return usuarioAjudaESocialManager;
+	}
+
+	public void setUsuarioAjudaESocialManager(UsuarioAjudaESocialManager usuarioAjudaESocialManager) {
+		this.usuarioAjudaESocialManager = usuarioAjudaESocialManager;
 	}
 }

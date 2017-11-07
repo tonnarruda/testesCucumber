@@ -232,4 +232,7 @@
 	<bean id="fatorDeRiscoDWR" class="com.fortes.rh.web.dwr.FatorDeRiscoDWR">
 		<property name="fatorDeRiscoManager" ref="fatorDeRiscoManager"/>
 	</bean>	
+	<bean id="usuarioAjudaESocialDWR" class="com.fortes.rh.web.dwr.UsuarioAjudaESocialDWR">
+		<property name="usuarioAjudaESocialManager" ref="usuarioAjudaESocialManager"/>
+	</bean>	
 </beans>
