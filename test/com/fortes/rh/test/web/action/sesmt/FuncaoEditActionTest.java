@@ -18,19 +18,21 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.fortes.rh.business.desenvolvimento.CursoManager;
+import com.fortes.rh.business.geral.UsuarioAjudaESocialManager;
 import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.business.sesmt.ExameManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.business.sesmt.HistoricoFuncaoManager;
 import com.fortes.rh.business.sesmt.RiscoManager;
+import com.fortes.rh.model.dicionario.TelaAjudaESocial;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
 import com.fortes.rh.model.sesmt.RiscoFuncao;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
-import com.fortes.rh.test.factory.cargosalario.FuncaoFactory;
 import com.fortes.rh.test.factory.sesmt.RiscoFuncaoFactory;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.web.action.sesmt.FuncaoEditAction;
@@ -47,6 +49,7 @@ public class FuncaoEditActionTest
 	private EpiManager epiManager;
 	private RiscoManager riscoManager;
 	private CursoManager cursoManager;
+	private UsuarioAjudaESocialManager usuarioAjudaESocialManager;
 
 	@Before
     public void setUp()
@@ -57,11 +60,13 @@ public class FuncaoEditActionTest
         epiManager = mock(EpiManager.class);
         riscoManager = mock(RiscoManager.class);
         cursoManager = mock(CursoManager.class);
+        usuarioAjudaESocialManager = mock(UsuarioAjudaESocialManager.class);
 
         action = new FuncaoEditAction();
         action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
         action.setFuncaoManager(funcaoManager);
         action.setHistoricoFuncaoManager(historicoFuncaoManager);
+        action.setUsuarioAjudaESocialManager(usuarioAjudaESocialManager);
         action.setExameManager(exameManager);
         action.setEpiManager(epiManager);
         action.setRiscoManager(riscoManager);
@@ -69,6 +74,8 @@ public class FuncaoEditActionTest
 
         PowerMockito.mockStatic(SecurityUtil.class);
         PowerMockito.mockStatic(CheckListBoxUtil.class);
+        
+        action.setUsuarioLogado(UsuarioFactory.getEntity(2L));
     }
 
 	@Test
@@ -88,38 +95,9 @@ public class FuncaoEditActionTest
     	when(riscoManager.findRiscosFuncoesByEmpresa(eq(empresa.getId()))).thenReturn(new ArrayList<RiscoFuncao>());
     	when(cursoManager.populaCheckListCurso(eq(empresa.getId()))).thenReturn(new ArrayList<CheckBox>());
     	
+    	when(usuarioAjudaESocialManager.verifyExists(new String[]{"usuario.id", "telaAjuda"},new Object[]{action.getUsuarioLogado().getId(), TelaAjudaESocial.EDICAO_HISTORICO_FUNCAO})).thenReturn(false); 
+    	
     	assertEquals(action.prepareInsert(), "success");
-    	assertNotNull(action.getExamesCheckList());
-    }
-
-    @Test
-    public void testPrepareUpdate() throws Exception
-    {
-    	Funcao funcaoRetorno = FuncaoFactory.getEntity(1L);
-    	action.setFuncao(funcaoRetorno);
-    	
-    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
-    	action.setEmpresaSistema(empresa);
-    	
-    	Collection<HistoricoFuncao> historicoFuncaos = new ArrayList<HistoricoFuncao>();
-    	HistoricoFuncao hf1 = new HistoricoFuncao();
-    	hf1.setId(2L);
-    	HistoricoFuncao hf2 = new HistoricoFuncao();
-    	hf2.setId(2L);
-
-    	historicoFuncaos.add(hf1);
-    	historicoFuncaos.add(hf2);
-    	action.setHistoricoFuncaos(historicoFuncaos);
-
-    	when(exameManager.findByEmpresaComAsoPadrao(action.getEmpresaSistema().getId())).thenReturn(new ArrayList<Exame>());
-    	when(epiManager.populaCheckToEpi(eq(empresa.getId()), eq(true))).thenReturn(new ArrayList<CheckBox>());
-    	when(funcaoManager.findByIdProjection(eq(funcaoRetorno.getId()))).thenReturn(funcaoRetorno);
-    	when(cursoManager.populaCheckListCurso(eq(action.getEmpresaSistema().getId()))).thenReturn(new ArrayList<CheckBox>());
-    	when(historicoFuncaoManager.findToList(new String[]{"id","descricao","data", "codigoCbo", "funcaoNome"}, new String[]{"id","descricao","data", "codigoCbo", "funcaoNome"}, new String[]{"funcao.id"}, new Object[]{funcaoRetorno.getId()}, new String[]{"data desc"})).thenReturn(historicoFuncaos);
-
-    	assertEquals(action.prepareUpdate(), "success");
-    	assertEquals(action.getFuncao(), funcaoRetorno);
-    	assertEquals(action.getHistoricoFuncaos(), historicoFuncaos);
     	assertNotNull(action.getExamesCheckList());
     }
 

@@ -52,7 +52,7 @@
 <@ww.datepicker label="A partir de" name="historicoFuncao.data" id="dataHist" required="true" value="${data}" cssClass="mascaraData"/>
 <@ww.textfield label="Nome da Função" name="historicoFuncao.funcaoNome" id="funcaoNome" cssClass="inputNome" maxLength="100" required="true" cssStyle="width: 500px;"/>
 
-<@ww.textfield label="Cód. CBO" name="historicoFuncao.codigoCbo" id="codigoCBO" onkeypress="return(somenteNumeros(event,''));" cssStyle="margin-top: 1px" size="6"  maxLength="6" liClass="liLeft"/>
+<@ww.textfield label="Cód. CBO" name="historicoFuncao.codigoCbo" id="codigoCBO" onkeypress="return(somenteNumeros(event,''));" cssStyle="margin-top: 1px" size="6"  maxLength="6" liClass="liLeft" required="true"/>
 <@ww.textfield label="Busca CBO (Código ou Descrição)" name="descricaoCBO" id="descricaoCBO" cssStyle="width: 414px;"/>
 <div style="clear:both"></div></br>
 

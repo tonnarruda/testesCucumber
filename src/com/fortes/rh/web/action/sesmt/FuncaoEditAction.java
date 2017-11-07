@@ -40,7 +40,6 @@ public class FuncaoEditAction extends MyActionSupportEdit
 	private Funcao funcao;
 	private HistoricoFuncao historicoFuncao;
 
-	private Collection<HistoricoFuncao> historicoFuncaos = new ArrayList<HistoricoFuncao>();
     private Collection<Ambiente> ambientes;
 	private Collection<RiscoFuncao> riscosFuncoes;
 	private String[] riscoChecks;
@@ -86,15 +85,7 @@ public class FuncaoEditAction extends MyActionSupportEdit
 
 		return Action.SUCCESS;
 	}
-
-	public String prepareUpdate() throws Exception
-	{
-		prepare();
-		historicoFuncaos = historicoFuncaoManager.findToList(new String[]{"id","descricao","data", "codigoCbo", "funcaoNome"}, new String[]{"id","descricao","data", "codigoCbo", "funcaoNome"}, new String[]{"funcao.id"}, new Object[]{funcao.getId()}, new String[]{"data desc"});
-
-		return Action.SUCCESS;
-	}
-
+	
 	public String insert() throws Exception
 	{
 		funcao = new Funcao(historicoFuncao.getFuncaoNome(), getEmpresaSistema().getId()); 
@@ -134,16 +125,6 @@ public class FuncaoEditAction extends MyActionSupportEdit
 	public void setHistoricoFuncao(HistoricoFuncao historicoFuncao)
 	{
 		this.historicoFuncao = historicoFuncao;
-	}
-
-	public Collection<HistoricoFuncao> getHistoricoFuncaos()
-	{
-		return historicoFuncaos;
-	}
-
-	public void setHistoricoFuncaos(Collection<HistoricoFuncao> historicoFuncaos)
-	{
-		this.historicoFuncaos = historicoFuncaos;
 	}
 
 	public Collection<Ambiente> getAmbientes()

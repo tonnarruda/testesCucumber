@@ -3,8 +3,13 @@
 
 <xwork>
 	<package name="historicoFuncao" extends="default" namespace="/sesmt/historicoFuncao">
+		<action name="list" class="com.fortes.rh.web.action.sesmt.HistoricoFuncaoListAction" method="list">
+			<interceptor-ref name="defaultListStack"/>
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/historicoFuncaoList.ftl</result>
+		</action>
 		<action name="delete" class="com.fortes.rh.web.action.sesmt.HistoricoFuncaoListAction" method="delete">
-			<result name="success" type="redirect"><![CDATA[../funcao/prepareUpdate.action?funcao.id=${funcao.id}]]></result>
+			<interceptor-ref name="defaultDeleteStack"/>
+			<result name="success" type="redirect">list.action?funcao.id=${funcao.id}</result>
 		</action>
 		<action name="prepareInsert" class="com.fortes.rh.web.action.sesmt.HistoricoFuncaoEditAction" method="prepareInsert">
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/historicoFuncaoEdit.ftl</result>
@@ -13,11 +18,13 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/historicoFuncaoEdit.ftl</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.sesmt.HistoricoFuncaoEditAction" method="insert">
-			<result name="success" type="redirect"><![CDATA[../funcao/prepareUpdate.action?funcao.id=${funcao.id}]]></result>
+			<interceptor-ref name="defaultUpdateStack"/>
+			<result name="success" type="redirect">list.action?funcao.id=${funcao.id}</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/historicoFuncaoEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.sesmt.HistoricoFuncaoEditAction" method="update">
-			<result name="success" type="redirect"><![CDATA[../funcao/prepareUpdate.action?funcao.id=${funcao.id}]]></result>
+			<interceptor-ref name="defaultUpdateStack"/>
+			<result name="success" type="redirect">list.action?funcao.id=${funcao.id}</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/historicoFuncaoEdit.ftl</result>
 		</action>
 	</package>

@@ -20,9 +20,6 @@
 		<action name="prepareInsert" class="com.fortes.rh.web.action.sesmt.FuncaoEditAction" method="prepareInsert">
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/funcaoEdit.ftl</result>
 		</action>
-		<action name="prepareUpdate" class="com.fortes.rh.web.action.sesmt.FuncaoEditAction" method="prepareUpdate">
-			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/funcaoEdit.ftl</result>
-		</action>
 		<action name="insert" class="com.fortes.rh.web.action.sesmt.FuncaoEditAction" method="insert">
 			<interceptor-ref name="defaultUpdateStack"/>
 			<result name="success" type="redirect">list.action</result>

@@ -81,11 +81,10 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 	{
 		prepare();
 		
-		if(funcao != null){
-			historicoFuncao.setFuncaoNome(funcao.getNome());
-			historicoFuncao.setCodigoCbo(historicoFuncaoManager.findUltimoHistoricoAteData(funcao.getId(), null).getCodigoCbo());
-			descricaoCBO = codigoCBOManager.findDescricaoByCodigo(historicoFuncao.getCodigoCbo());
-		}
+		funcao = funcaoManager.findByIdProjection(funcao.getId());
+		historicoFuncao.setFuncaoNome(funcao.getNome());
+		historicoFuncao.setCodigoCbo(historicoFuncaoManager.findUltimoHistoricoAteData(funcao.getId(), null).getCodigoCbo());
+		descricaoCBO = codigoCBOManager.findDescricaoByCodigo(historicoFuncao.getCodigoCbo());
 		
 		return Action.SUCCESS;
 	}
@@ -126,7 +125,7 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 		try {
 			historicoFuncaoManager.saveHistorico(historicoFuncao, examesChecked, episChecked, riscoChecks, cursosChecked, riscosFuncoes);
 			funcaoManager.atualizaNomeUltimoHistorico(funcao.getId());
-			addActionSuccess("Histórico dafunção atualizado com sucesso.");
+			addActionSuccess("Histórico da função atualizado com sucesso.");
 			return Action.SUCCESS;
 
 		} catch (FortesException e) {

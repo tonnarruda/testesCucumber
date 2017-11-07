@@ -21,6 +21,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
+import com.fortes.rh.business.geral.UsuarioAjudaESocialManager;
 import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.business.sesmt.RiscoManager;
 import com.fortes.rh.model.dicionario.GrupoRisco;
@@ -28,6 +29,7 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.sesmt.RiscoFactory;
 import com.fortes.rh.test.util.mockObjects.MockCheckListBoxUtil;
@@ -43,21 +45,25 @@ public class RiscoEditActionTest
 	private RiscoEditAction action;
 	private RiscoManager manager;
 	private EpiManager epiManager;
+	private UsuarioAjudaESocialManager usuarioAjudaESocialManager;
 
 	@Before
 	public void setUp() throws Exception
 	{
 		manager = mock(RiscoManager.class);
 		epiManager = mock(EpiManager.class);
+		usuarioAjudaESocialManager = mock(UsuarioAjudaESocialManager.class);
 
 		action = new RiscoEditAction();
 		action.setRiscoManager(manager);
 		action.setEpiManager(epiManager);
+		action.setUsuarioAjudaESocialManager(usuarioAjudaESocialManager);
 
 		PowerMockito.mockStatic(SecurityUtil.class);
 		PowerMockito.mockStatic(CheckListBoxUtil.class);
 		
 		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
+		action.setUsuarioLogado(UsuarioFactory.getEntity(2L));
 	}
 
 	@Test

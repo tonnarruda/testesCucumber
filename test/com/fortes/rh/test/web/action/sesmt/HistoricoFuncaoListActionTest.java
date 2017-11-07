@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,7 +13,6 @@ import org.junit.Test;
 import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.business.sesmt.HistoricoFuncaoManager;
 import com.fortes.rh.business.sesmt.RiscoFuncaoManager;
-import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
 import com.fortes.rh.test.factory.cargosalario.FuncaoFactory;
@@ -66,6 +67,18 @@ public class HistoricoFuncaoListActionTest
     	
     	assertEquals(action.delete(), "success");
     }
+	
+	@Test
+	public void testList(){
+		Funcao funcao = FuncaoFactory.getEntity(1L);
+    	action.setFuncao(funcao);			
+				
+		when(funcaoManager.findByIdProjection(funcao.getId())).thenReturn(funcao);
+		
+		when(manager.findToList(new String[]{"id","descricao","data", "codigoCbo", "funcaoNome"}, new String[]{"id","descricao","data", "codigoCbo", "funcaoNome"}, new String[]{"funcao.id"}, new Object[]{funcao.getId()}, new String[]{"data desc"})).thenReturn(new ArrayList<HistoricoFuncao>());
+
+		assertEquals(action.list(), "success"); 
+	}
 
 	@Test
     public void testGetSet() throws Exception
@@ -80,13 +93,7 @@ public class HistoricoFuncaoListActionTest
 
     	action.setFuncao(funcao);
 
-    	Cargo cargo = new Cargo();
-    	cargo.setId(1L);
-
-    	action.setCargoTmp(cargo);
-
     	assertEquals(action.getHistoricoFuncao(), historicoFuncao);
-    	assertEquals(action.getCargoTmp(), cargo);
     	assertEquals(action.getFuncao(), funcao);
     }
 }

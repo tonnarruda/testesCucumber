@@ -83,7 +83,7 @@ public class PppRelatorioException extends Exception
 		String dataFmt = DateUtil.formataDiaMesAno(dataHistorico);
 		
 		if (SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_FUNCAO"}))
-			historicoSemHistoricoFuncao.append("<a href='../funcao/prepareUpdate.action?funcao.id=" + funcaoId + "'>" + dataFmt.concat(" - Função do colaborador não possui histórico nesta data.</a><br />"));
+			historicoSemHistoricoFuncao.append("<a href='../historicoFuncao/list.action?funcao.id=" + funcaoId + "'>" + dataFmt.concat(" - Função do colaborador não possui histórico nesta data.</a><br />"));
 		else
 			historicoSemHistoricoFuncao.append(dataFmt.concat(" - Função do colaborador não possui histórico nesta data.<br />"));
 	}
