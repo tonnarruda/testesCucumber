@@ -8,7 +8,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.fortes.model.type.FileUtil;
 import com.fortes.rh.business.captacao.AnuncioManager;
@@ -282,8 +282,7 @@ public class CandidatoListAction extends MyActionSupportList
 		if(empresaId == null)
 			empresaId = getEmpresaSistema().getId();
 		
-		cpfBusca = StringUtil.removeMascara(cpfBusca);
-		candidatoDTO.setCpfBusca(cpfBusca);
+		candidatoDTO.setCpfBusca(StringUtil.removeMascara(candidatoDTO.getCpfBusca()));
 		setTotalSize(candidatoManager.getCount(candidatoDTO, EmpresaUtil.empresasSelecionadas(empresaId, empresas)));
 		candidatos = candidatoManager.list(getPage(), getPagingSize(), candidatoDTO, EmpresaUtil.empresasSelecionadas(empresaId, empresas));
 
@@ -301,7 +300,7 @@ public class CandidatoListAction extends MyActionSupportList
 	public String delete() throws Exception
 	{
 		candidatoManager.removeCandidato(candidato);
-		addActionSuccess("Candidato excluído com sucesso!");
+		addActionSuccess("Candidato excluído com sucesso.");
 
 		return Action.SUCCESS;
 	}
@@ -1272,7 +1271,7 @@ public class CandidatoListAction extends MyActionSupportList
 
 	public String getNomeBusca()
 	{
-		return nomeBusca;
+		return nomeBusca ;
 	}
 
 	public void setNomeBusca(String nomeBusca)

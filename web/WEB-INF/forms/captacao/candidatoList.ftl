@@ -65,15 +65,15 @@
 		}
 	</script>
 	
-	<#if dataCadIni?exists>
-		<#assign dataValueIni = dataCadIni?date/>
+	<#if candidatoDTO.dataIni?exists>
+		<#assign dataIniValue = candidatoDTO.dataIni?date/>
 	<#else>
-		<#assign dataValueIni = ""/>
+		<#assign dataIniValue = ""/>
 	</#if>
-	<#if dataCadFim?exists>
-		<#assign dataValueFim = dataCadFim?date/>
+	<#if candidatoDTO.dataFim?exists>
+		<#assign dataFimValue = candidatoDTO.dataFim?date/>
 	<#else>
-		<#assign dataValueFim = ""/>
+		<#assign dataFimValue = ""/>
 	</#if>
 
 	<#assign validarCampos="return validaFormulario('formBusca', null, new Array('dataIni','dataFim'), true)"/>
@@ -97,21 +97,21 @@
 	<#include "../util/topFiltro.ftl" />
 		<@ww.form name="formBusca" id="formBusca" action="list.action" onsubmit="${validarCampos}" validate="true" method="POST">
 			<@ww.select label="Empresa" id="empresaId" name="empresaId" list="empresas" listKey="id" listValue="nome" headerKey="-1" headerValue="Todas" disabled="!compartilharCandidatos"/>
-			<@ww.textfield label="Nome" name="candidatoDTO.nomeBusca" liClass="liLeft" cssStyle="width: 350px;" value="${nomeBusca}"/>
-			<@ww.textfield label="CPF" id="cpfBusca" name="cpfBusca" value="${cpfBusca}" cssClass="mascaraCpf"/>
+			<@ww.textfield label="Nome" name="candidatoDTO.nomeBusca" liClass="liLeft" cssStyle="width: 350px;" />
+			<@ww.textfield label="CPF" id="cpfBusca" name="candidatoDTO.cpfBusca" cssClass="mascaraCpf"/>
 			
 			<@ww.textfield label="DDD" name="candidatoDTO.dddFoneFixo" id="dddFone" onkeypress="return somenteNumeros(event,'');" cssStyle="width: 30px;" maxLength="2"  liClass="liLeft"/>
 			<@ww.textfield label="Telefone" name="candidatoDTO.foneFixo" id="fone" onkeypress="return somenteNumeros(event,'');"  cssStyle="width: 80px;" maxLength="9"  liClass="liLeft" />
 			<@ww.textfield label="DDD" name="candidatoDTO.dddCelular" id="dddCelular" onkeypress="return somenteNumeros(event,'');" cssStyle="width: 30px;" maxLength="2"  liClass="liLeft"/>
-			<@ww.textfield label="Celular" id="celular" name="candidatoDTO.foneCelular" onkeypress = "return somenteNumeros(event,'');" cssStyle="width: 80px;" maxLength="9" liClass="campo"/>
+			<@ww.textfield label="Celular" name="candidatoDTO.foneCelular" id="celular" onkeypress = "return somenteNumeros(event,'');" cssStyle="width: 80px;" maxLength="9" liClass="campo"/>
 			
 			<@ww.textfield label="Indicado por" name="candidatoDTO.indicadoPor" />
 			<@ww.textfield label="Observações do RH" name="candidatoDTO.observacaoRH"  cssStyle="width: 240px;"/>
 
 			<@ww.select id="visualizacao" label="Visualizar" name="candidatoDTO.visualizar" list=r"#{'T':'Todos','D':'Disponíveis','I':'Indisponíveis'}"  liClass="liLeft"/>
 
-			<@ww.datepicker label="Atualização" name="candidatoDTO.dataCadIni" id="dataIni" value="${dataValueIni}" cssClass="mascaraData" liClass="liLeft"/>
-			<@ww.datepicker label="" name="candidatoDTO.dataCadFim" id="dataFim" value="${dataValueFim}" cssClass="mascaraData"/>
+			<@ww.datepicker label="Atualização" name="candidatoDTO.dataIni" id="dataIni" value="${dataIniValue}" cssClass="mascaraData" liClass="liLeft"/>
+			<@ww.datepicker label="" name="candidatoDTO.dataFim" id="dataFim" value="${dataFimValue}" cssClass="mascaraData"/>
 			<@ww.hidden id="pagina" name="page"/>
 			
 			<@ww.checkbox label="Exibir também contratados" id="exibeContratados" name="candidatoDTO.exibeContratados" labelPosition="left"/>

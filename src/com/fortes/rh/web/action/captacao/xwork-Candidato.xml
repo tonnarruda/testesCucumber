@@ -13,7 +13,7 @@
 		</action>
 		<action name="list" class="com.fortes.rh.web.action.captacao.CandidatoListAction" method="list">
 			<interceptor-ref name="defaultListStack">
-	    		<param name="scope.session">nomeBusca,cpfBusca,indicadoPor,observacaoRH,visualizar,dataCadIni,dataCadFim,exibeContratados,exibeExterno</param>
+	    		<param name="scope.session">candidatoDTO,empresaId</param>
 	    	</interceptor-ref>
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/candidatoList.ftl</result>
 		</action>
@@ -27,7 +27,7 @@
 		
 		<action name="delete" class="com.fortes.rh.web.action.captacao.CandidatoListAction" method="delete">
 			<interceptor-ref name="defaultDeleteStack">
-	    		<param name="scope.session">nomeBusca,cpfBusca,indicadoPor,observacaoRH,visualizar,dataCadIni,dataCadFim,exibeContratados,exibeExterno</param>
+	    		<param name="scope.session">candidatoDTO,empresaId</param>
 	    	</interceptor-ref>
 			<result name="success" type="redirect">list.action</result>
 			<result name="error" type="redirect">list.action</result>
@@ -47,6 +47,9 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/captacao/candidatoEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.captacao.CandidatoEditAction" method="update">
+			<interceptor-ref name="defaultDeleteStack">
+	    		<param name="scope.session">candidatoDTO,empresaId</param>
+	    	</interceptor-ref>
 			<interceptor-ref name="tokenWebStack" />
 		    <result name="invalid.token" type="redirect"><![CDATA[list.action?msgAlert=${msgAlert}]]></result>
 			<result name="success" type="redirect">list.action</result>
@@ -169,14 +172,26 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/curriculoTextoEdit.ftl</result>
 		</action>
 		<action name="insertCurriculo" class="com.fortes.rh.web.action.captacao.CandidatoEditAction" method="insertCurriculo">
+			<interceptor-ref name="defaultDeleteStack">
+	    		<param name="scope.session">candidatoDTO,empresaId</param>
+	    	</interceptor-ref>
+		
 			<result name="success" type="redirect">prepareUpdateCurriculo.action?candidato.id=${candidato.id}</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/captacao/curriculoEdit.ftl</result>
 		</action>
 		<action name="insertCurriculoPlus" class="com.fortes.rh.web.action.captacao.CandidatoEditAction" method="insertCurriculo">
+			<interceptor-ref name="defaultDeleteStack">
+	    		<param name="scope.session">candidatoDTO,empresaId</param>
+	    	</interceptor-ref>
+	    	
 			<result name="success" type="redirect">prepareUpdateCurriculo.action?candidato.id=${candidato.id}</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/captacao/curriculoPlusEdit.ftl</result>
 		</action>
 		<action name="insertCurriculoTexto" class="com.fortes.rh.web.action.captacao.CandidatoEditAction" method="insertCurriculoTexto">
+			<interceptor-ref name="defaultDeleteStack">
+	    		<param name="scope.session">candidatoDTO,empresaId</param>
+	    	</interceptor-ref>
+	    	
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/curriculoTextoEdit.ftl</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/captacao/curriculoTextoEdit.ftl</result>
 		</action>
