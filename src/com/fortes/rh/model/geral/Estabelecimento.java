@@ -17,6 +17,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.util.CnpjUtil;
+import com.fortes.rh.util.ModelUtil;
 
 @SuppressWarnings("serial")
 @Entity
@@ -111,18 +112,16 @@ public class Estabelecimento extends AbstractModel implements Serializable
 
 	public String getCnpj()
 	{
-		if (empresa != null && empresa.getCnpj() != null)
+		if (ModelUtil.hasNotNull("getCnpj()", empresa) )
 			return empresa.getCnpj() + complementoCnpj;
 		else
 			return "";
 	}
 
 	public String getCnpjFormatado(){
-		String cnpjFormatado = CnpjUtil.formata(getCnpj());
+		String cnpjFormatado = CnpjUtil.formata(getCnpj(), Boolean.TRUE);
 
-		if(cnpjFormatado == null)
-			return "";
-		return cnpjFormatado;
+		return StringUtils.defaultString(cnpjFormatado, StringUtils.EMPTY);
 	}
 
 	@Override

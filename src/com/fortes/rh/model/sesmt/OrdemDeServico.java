@@ -11,6 +11,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.util.CnpjUtil;
@@ -270,9 +272,9 @@ public class OrdemDeServico extends AbstractModel implements Serializable
 	}
 	
 	public String getCnpjFormatado(){
-		String cnpjFormatado = CnpjUtil.formata(empresaCnpj + estabelecimentoComplementoCnpj);
+		String cnpjFormatado = CnpjUtil.formata(empresaCnpj + estabelecimentoComplementoCnpj, Boolean.FALSE);
 		
-		return cnpjFormatado == null ? "" : cnpjFormatado;
+		return StringUtils.defaultString(cnpjFormatado, StringUtils.EMPTY);
 	}
 
 	public String getNomeCargo() {

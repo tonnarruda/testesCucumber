@@ -469,7 +469,7 @@ public final class StringUtil
 		if (isBlank(cnpj) || isBlank(complementoCnpj))
 			return cnpj;
 		
-		String cnpjFormatado = CnpjUtil.formata(cnpj+complementoCnpj);
+		String cnpjFormatado = CnpjUtil.formata(cnpj+complementoCnpj, Boolean.FALSE);
 		
 		cnpjFormatado = cnpjFormatado.substring(0,2).concat(".")
 							.concat(cnpjFormatado.substring(2,5)).concat(".")

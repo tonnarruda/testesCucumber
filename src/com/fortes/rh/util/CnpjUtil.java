@@ -1,5 +1,8 @@
 package com.fortes.rh.util;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class CnpjUtil
 {
 	public static String calculaDigitoVerificador(String cnpj)
@@ -40,23 +43,30 @@ public class CnpjUtil
 		return dvRetorno;
 	}
 
-	public static String formata(String cnpj)
+	public static String formata(String cnpj, boolean formataBaseCnpj)
 	{
 		if (cnpj == null || cnpj.trim().equals("") || cnpj.length() < 11)
 			return null;
 
-		String base = cnpj.substring(0, 8);
-		String complemento = cnpj.substring(8, 12);
-		String digitoVerificador;
-		if (cnpj.length() == 14)
-		{
-			digitoVerificador = cnpj.substring(12, 14);
-		}
-		else
-		{
-			digitoVerificador = calculaDigitoVerificador(cnpj);
-		}
-
-		return base.concat("/").concat(complemento).concat("-").concat(digitoVerificador);
+		if (cnpj.length() < 14)
+			cnpj = cnpj + calculaDigitoVerificador(cnpj);
+		
+		String padrao = "(\\d{8})(\\d{4})(\\d{2})";
+		String mascara = "$1/$2-$3";
+		
+		if(formataBaseCnpj){
+			padrao = "(\\d{2})(\\d{3})(\\d{3})(\\d{4})(\\d{2})";
+			mascara = "$1.$2.$3/$4-$5";
+		} 
+		
+		return formata(cnpj, padrao, mascara);
+	}
+	
+	private static String formata(String cnpj, String padrao, String mascara) {
+		Pattern pattern = Pattern.compile(padrao);
+		Matcher matcher = pattern.matcher(cnpj);
+		if (matcher.matches()) 
+			cnpj = matcher.replaceAll(mascara);
+		return cnpj;		
 	}
 }

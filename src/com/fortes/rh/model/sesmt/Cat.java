@@ -234,7 +234,7 @@ public class Cat extends AbstractModel implements Serializable
 		pessoal.setCtps(ctps);
 		colaborador.setPessoal(pessoal);
 		
-		String cnpj = CnpjUtil.formata(StringUtils.defaultString(empresaCnpj) + StringUtils.defaultString(estabComplementoCnpj));
+		String cnpj = CnpjUtil.formata(StringUtils.defaultString(empresaCnpj) + StringUtils.defaultString(estabComplementoCnpj), Boolean.TRUE);
 		
 		Empresa empresa = new Empresa();
 		empresa.setCnae(empresaCnae);
