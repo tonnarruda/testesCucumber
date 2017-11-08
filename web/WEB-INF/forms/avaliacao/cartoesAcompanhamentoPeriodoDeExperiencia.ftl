@@ -43,7 +43,7 @@
 	<#include "../ftl/mascarasImports.ftl" />
 
 		<@ww.form name="form" action="imprimeCartoesAcompanhamentoPeriodoExperiencia.action" onsubmit="${validarCampos}" method="POST">
-			<@ww.datepicker label="Admitidos a partir de" onchange="populaColaboradores();" id="data" name="dataReferencia" required="true" value="${dataDoDia}" cssClass="mascaraData"/>
+			<@ww.datepicker label="Admitidos a partir de" onchange="populaColaboradores();" onblur="populaColaboradores();" id="data" name="dataReferencia" required="true" value="${dataDoDia}" cssClass="mascaraData"/>
 			<@ww.select label="Estabelecimento" onchange="populaColaboradores();" name="estabelecimento.id" id="estabelecimentoId" listKey="id" listValue="nome" headerKey="-1" headerValue="Todos" list="estabelecimentos"/>
 			<@frt.checkListBox name="colaboradorsCheck" label="Colaborador*" list="colaboradorsCheckList" filtro="true" />						
 			<@frt.checkListBox name="periodoCheck" label="Período de Acompanhamento (máx. 6 opções) *" list="periodoCheckList" onClick="validaQtd();" filtro="true"/>	
