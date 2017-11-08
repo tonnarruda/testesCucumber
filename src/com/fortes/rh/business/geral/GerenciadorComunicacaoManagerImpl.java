@@ -1261,9 +1261,13 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 						Collection<UsuarioEmpresa> usuarioEmpresas = verificaUsuariosAtivosNaEmpresa(gerenciadorComunicacao);
 						usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagem, "Fortes Pessoal", null, usuarioEmpresas, null, TipoMensagem.INFO_FUNCIONAIS, null, null);
 					}
-				} catch (Exception e) {	e.printStackTrace();}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
-		} catch (Exception e) {e.printStackTrace();}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void enviaMensagemHabilitacaoAVencer(){
@@ -1287,8 +1291,9 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 					descideGerenciadorEnviaMensagemHabilitacaoAVencer(mensagemBase, subject, gerenciadorComunicacao, todasAreas, mapAreaColaborador);
 				} catch (Exception e) {e.printStackTrace();}
 			}
-		} 
-		catch (Exception e) {e.printStackTrace();}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void descideGerenciadorEnviaMensagemHabilitacaoAVencer(String mensagemBase, String subject,	GerenciadorComunicacao gerenciadorComunicacao, Collection<AreaOrganizacional> todasAreas, HashMap<AreaOrganizacional, Collection<String>> mapAreaColaborador) throws Exception, AddressException, MessagingException {
@@ -1401,7 +1406,9 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 				}
 				decideGerenciadorEnviarEmailParaResponsaveisSolicitacaoPessoal(solicitacao, empresa, gerenciadorComunicacaos, parametrosDoSistema, subject, body);
 			}
-		} catch (Exception e) {e.printStackTrace();}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void decideGerenciadorEnviarEmailParaResponsaveisSolicitacaoPessoal(Solicitacao solicitacao, Empresa empresa, Collection<GerenciadorComunicacao> gerenciadorComunicacaos, ParametrosDoSistema parametrosDoSistema, String subject, StringBuilder body) throws AddressException, MessagingException, Exception {
@@ -1482,7 +1489,9 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 					}
 				}
 			}
-		}catch (Exception e){e.printStackTrace();}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void enviaAvisoSolicitacaoDesligamento(Long colaboradorId, Long usuarioId, Long empresaId){
@@ -1529,7 +1538,9 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 					mail.send(gerenciadorComunicacao.getEmpresa(), parametrosDoSistema, subject, body.toString(), true, emails);
 				}
 			}
-		} catch (Exception e) {e.printStackTrace();}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private StringBuilder montaBodyEnviaAvisoSolicitacaoDesligamento(Colaborador colaborador, Empresa empresa, Usuario usuario, String link){
@@ -1574,7 +1585,9 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 				}
 			}
 			
-		} catch (Exception e) {e.printStackTrace();}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void enviarEmailAoCriarAcessoSistema(String login, String senha, String email, Empresa empresa) {
@@ -1596,8 +1609,9 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 					}
 				} 		
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		catch (Exception e) {e.printStackTrace();}
 	}
 
 	public void enviarNotificacaoCursosOuCertificacoesAVencer() {
@@ -1645,13 +1659,13 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 						decideGerenciadorNotificacaoCertificacao(parametros, mensagemTitulo, mensagem, gerenciadorComunicacao, colaboradorCertificacao);
 					}
 				}
-			} catch (AddressException e) {e.printStackTrace();
-			} catch (MessagingException e) {e.printStackTrace();
-			} catch (Exception e) {	e.printStackTrace();}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
-	public void decideGerenciadorNotificacaoCertificacao(ParametrosDoSistema parametros, StringBuilder mensagemTitulo, StringBuilder mensagem, GerenciadorComunicacao gerenciadorComunicacao, ColaboradorCertificacao colaboradorCertificacao)	throws AddressException, MessagingException, Exception {
+	private void decideGerenciadorNotificacaoCertificacao(ParametrosDoSistema parametros, StringBuilder mensagemTitulo, StringBuilder mensagem, GerenciadorComunicacao gerenciadorComunicacao, ColaboradorCertificacao colaboradorCertificacao)	throws AddressException, MessagingException, Exception {
 		if (gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COLABORADOR.getId())){
 			mail.send(gerenciadorComunicacao.getEmpresa(), parametros, mensagemTitulo.toString(), mensagem.toString(), true, colaboradorCertificacao.getColaborador().getContato().getEmail());
 		} else if (gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.GESTOR_AREA.getId())) {
@@ -1705,9 +1719,9 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 						decideGerenciadorNotificacaoCurso(parametros, mensagemTitulo, mensagem,	gerenciadorComunicacao, colaboradorTurma);
 					}
 				}
-			} catch (AddressException e) {e.printStackTrace();
-			} catch (MessagingException e) {e.printStackTrace();
-			} catch (Exception e) {e.printStackTrace();}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
