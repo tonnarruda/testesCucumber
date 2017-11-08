@@ -6,7 +6,7 @@
 <@ww.head/>
 
 <#if historicoFuncao.id?exists>
-	<title>Editar Histórico da Função ${funcao.nome}</title>
+	<title>Editar Histórico</title>
 	<#assign formAction="update.action"/>
 	<#assign accessKey="A"/>
 <#else>
