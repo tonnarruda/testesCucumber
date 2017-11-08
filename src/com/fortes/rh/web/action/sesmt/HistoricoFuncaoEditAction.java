@@ -114,7 +114,7 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 			return Action.INPUT;
 		
 		} catch (Exception e) {
-			addActionError("Ocorreu um erro ao gravar o histórico da função");
+			addActionError("Ocorreu um erro ao gravar o histórico da função.");
 			prepareInsert(); 
 			return Action.INPUT;
 		}
@@ -134,7 +134,7 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 			return Action.INPUT;
 		
 		} catch (Exception e) {
-			addActionError("Ocorreu um erro ao gravar o histórico da função");
+			addActionError("Ocorreu um erro ao atualizar o histórico da função.");
 			prepareInsert(); 
 			return Action.INPUT;
 		}

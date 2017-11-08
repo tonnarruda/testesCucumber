@@ -247,7 +247,7 @@ public class CandidatoListActionTest
 		Candidato candidato = CandidatoFactory.getCandidato(1L, "Candidato 1");
 		action.setCandidato(candidato);
 		action.delete();
-		assertEquals("Candidato excluído com sucesso!",action.getActionSuccess().iterator().next());
+		assertEquals("Candidato excluído com sucesso.",action.getActionSuccess().iterator().next());
 	}
 	
 	@Test

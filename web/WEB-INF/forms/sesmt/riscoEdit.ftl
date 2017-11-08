@@ -305,7 +305,7 @@
 
 	<div class="buttonGroup">
 		<button type="button" onclick="submitForm()" accesskey="${accessKey}">Gravar</button>
-		<button type="button" onclick="window.location='list.action'" accesskey="V">Voltar</button>
+		<button type="button" onclick="window.location='list.action'" accesskey="V">Cancelar</button>
 	</div>
 </body>
 </html>

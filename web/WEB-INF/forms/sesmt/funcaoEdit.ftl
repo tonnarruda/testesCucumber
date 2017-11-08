@@ -54,7 +54,7 @@
 	
 	<div class="buttonGroup">
 		<button onclick="${validarCampos};">Gravar</button>
-		<button onclick="window.location='list.action'">Voltar</button>
+		<button onclick="window.location='list.action'">Cancelar</button>
 	</div>
 </body>
 </html>

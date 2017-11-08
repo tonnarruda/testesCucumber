@@ -80,7 +80,7 @@
 
 	<div class="buttonGroup">
 		<button onclick="${validarCampos};">Gravar</button>
-		<button onclick="window.location='../funcao/prepareUpdate.action?funcao.id=${funcao.id}'">Cancelar</button>
+		<button onclick="window.location='list.action?funcao.id=${funcao.id}'">Cancelar</button>
 	</div>
 </body>
 </html>

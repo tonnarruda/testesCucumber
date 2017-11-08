@@ -152,7 +152,7 @@ public class HistoricoFuncaoEditActionTest
     	when(historicoFuncaoManager.findUltimoHistoricoAteData(action.getFuncao().getId(), data)).thenReturn(historicoFuncao);
     	
  		assertEquals("input", action.insert());
- 		assertEquals("Ocorreu um erro ao gravar o histórico da função", action.getActionErrors().iterator().next());
+ 		assertEquals("Ocorreu um erro ao gravar o histórico da função.", action.getActionErrors().iterator().next());
 	}
 	
 	@Test
@@ -215,7 +215,7 @@ public class HistoricoFuncaoEditActionTest
 		when(historicoFuncaoManager.findUltimoHistoricoAteData(action.getFuncao().getId(), data)).thenReturn(historicoFuncao);
 		
  		assertEquals("input", action.update());
- 		assertEquals("Ocorreu um erro ao gravar o histórico da função", action.getActionErrors().iterator().next());
+ 		assertEquals("Ocorreu um erro ao atualizar o histórico da função.", action.getActionErrors().iterator().next());
 	}
 	
 	@Test
