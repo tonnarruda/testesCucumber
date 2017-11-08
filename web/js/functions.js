@@ -1462,6 +1462,7 @@ function dialogAjudaESocial(){
 	$('#formAjudaESocial').dialog({
 							title:'Ajuda eSocial', 	
 							modal: true, 
+							resizable: false,
 							width: 440,
 							buttons:[{
 								text:"Fechar",

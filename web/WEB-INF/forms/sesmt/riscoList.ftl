@@ -27,9 +27,9 @@
 	
 	<#include "../util/topFiltro.ftl" />
 		<@ww.form name="formBusca" method="POST" id="formBusca">
-			<@ww.textfield label="Descricação do risco" name="risco.descricao" cssStyle="width: 502px;"/>
-			<@ww.select label="Tipo de Risco" name="risco.grupoRisco" id="grupoRisco" list="grupoRiscos" cssStyle="width: 502px;" headerKey="" headerValue="Todos" required="true"/>
-			<@ww.select label="Tipo de Risco eSocial" name="risco.grupoRiscoESocial" id="grupoRiscoESocial" list="grupoRiscoESocialListagemDeRiscos" cssStyle="width: 502px;" headerKey="" headerValue="Todos" required="true"  onchange="onchangeGrupoRiscoESocial();"/>
+			<@ww.textfield label="Descrição do risco" name="risco.descricao" cssStyle="width: 502px;"/>
+			<@ww.select label="Tipo de risco" name="risco.grupoRisco" id="grupoRisco" list="grupoRiscos" cssStyle="width: 502px;" headerKey="" headerValue="Todos" required="true"/>
+			<@ww.select label="Tipo de risco eSocial" name="risco.grupoRiscoESocial" id="grupoRiscoESocial" list="grupoRiscoESocialListagemDeRiscos" cssStyle="width: 502px;" headerKey="" headerValue="Todos" required="true"  onchange="onchangeGrupoRiscoESocial();"/>
 			
 			<@ww.hidden id="pagina" name="page"/>
 			<@ww.hidden id="showFilter" name="showFilter"/>
