@@ -133,7 +133,7 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 		return criteria.list();
 	}
 	
-	public Collection<ExamesPrevistosRelatorio> findExamesPeriodicosPrevistos(Long empresaId, Date dataInicio, Date dataFim, Long[] exameIds, Long[] estabelecimentoIds, Long[] areaIds, Long[] colaboradorIds, boolean imprimirAfastados, boolean imprimirDesligados){
+	public Collection<ExamesPrevistosRelatorio> findExamesPeriodicosPrevistos(Long empresaId, Date dataInicio, Date dataFim, Long[] exameIds, Long[] estabelecimentoIds, Long[] areaIds, Long[] colaboradorIds, boolean imprimirAfastados, boolean imprimirDesligados, boolean transfereExamesCandidatoColaborador){
 		Criteria criteria = createCriteriaFindExamesPeriodicosPrevistos(imprimirAfastados);
 		ProjectionList p = projectionFindExamesPeriodicosPrevistos();
 		p.add(Projections.property("se.data"), "dataSolicitacaoExame");
@@ -175,6 +175,8 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 																			+ "left join realizacaoexame re4 on re4.id = ese4.realizacaoexame_id "
 																			+ "where se4.colaborador_id = co4_.id and re4.resultado<> ? and ese4.exame_id = e2_.id ) limit 1 ) "
 																	, new String[]{ResultadoExame.NAO_REALIZADO.toString()}, new Type[]{Hibernate.STRING}));
+	    if(!transfereExamesCandidatoColaborador)
+	    	criteria.add(Expression.eq("se.candidato.id",null));
 	    
 	    criteria.addOrder(Order.asc("co.nome")).setResultTransformer(new AliasToBeanResultTransformer(ExamesPrevistosRelatorio.class));
 		
@@ -282,7 +284,7 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 		return listaTipoPessoa.get(tipoPessoa);
 	}
 	
-	public Collection<ExamesRealizadosRelatorio> findExamesRealizadosCandidatosAndColaboradores(Long empresaId, String nomeBusca, Date inicio, Date fim, String solicitacaoMotivo, String exameResultado, Long clinicaAutorizadaId, Long[] examesIds, Long[] estabelecimentosIds, Character tipoPessoa)  
+	public Collection<ExamesRealizadosRelatorio> findExamesRealizadosCandidatosAndColaboradores(Long empresaId, String nomeBusca, Date inicio, Date fim, String solicitacaoMotivo, String exameResultado, Long clinicaAutorizadaId, Long[] examesIds, Long[] estabelecimentosIds, Character tipoPessoa, boolean transfereExamesCandidatoColaborador)  
 	{
 		Examinado examinado = getExaminado(tipoPessoa);
 		
@@ -319,8 +321,8 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 				sql.append("and re.resultado = :resultado ");
 		}
 		
-		examinado.setWhereMaxData(sql, nomeBusca, estabelecimentosIds);
-	
+		examinado.setWhere(sql, nomeBusca, estabelecimentosIds, transfereExamesCandidatoColaborador);
+		
 		sql.append("order by e.nome, clinica.id, se.data ");
 		
 		SQLQuery query = getSession().createSQLQuery(sql.toString());
@@ -536,7 +538,7 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 	private interface Examinado {
 		public void setJoins(StringBuilder hql);
 		public void setSelect(StringBuilder hql);
-		public void setWhereMaxData(StringBuilder sql, String nomeBusca, Long[] estabelecimentosIds);
+		public void setWhere(StringBuilder sql, String nomeBusca, Long[] estabelecimentosIds, boolean transfereExamesCandidatoColaborador);
 		public void setParametros(Query query);
 	}
 	
@@ -557,13 +559,16 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 			sql.append("left join candidato as cand on se.candidato_id = cand.id ");
 		}
 
-		public void setWhereMaxData(StringBuilder sql, String nomeBusca, Long[] estabelecimentosIds)
+		public void setWhere(StringBuilder sql, String nomeBusca, Long[] estabelecimentosIds, boolean transfereExamesCandidatoColaborador)
 		{
 			if (isNotBlank(nomeBusca))
 				sql.append("and lower(colab.nome) like :nome ");
 
 			if (LongUtil.arrayIsNotEmpty(estabelecimentosIds))
 				sql.append("and estabColab.id in (:estabelecimentoIds) ");
+			
+			if(!transfereExamesCandidatoColaborador)
+				sql.append(" and se.candidato_id is null ");
 
 			sql.append("and ( ");
 			sql.append("	  ( se.motivo = :motivoSolicitacaoExame ");
@@ -609,13 +614,16 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 			hql.append("left join estabelecimento as estabCand on s.estabelecimento_id = estabCand.id ");
 		}
 
-		public void setWhereMaxData(StringBuilder sql, String nomeBusca, Long[] estabelecimentosIds)
+		public void setWhere(StringBuilder sql, String nomeBusca, Long[] estabelecimentosIds, boolean transfereExamesCandidatoColaborador)
 		{
 			if (isNotBlank(nomeBusca))
 				sql.append("and lower(cand.nome) like :nome ");
 
 			if (LongUtil.arrayIsNotEmpty(estabelecimentosIds))
 				sql.append("and estabCand.id in (:estabelecimentoIds) ");
+			
+			if(transfereExamesCandidatoColaborador)
+				sql.append(" and se.colaborador_id is null ");
 
 			sql.append("and (s.data = ( select max(s2.data) from CandidatoSolicitacao cs2 ");
 			sql.append("				inner join solicitacao as s2 on cs2.solicitacao_id = s2.id ");
@@ -650,7 +658,7 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 			hql.append("left join estabelecimento as estabCand on s.estabelecimento_id = estabCand.id ");
 		}
 
-		public void setWhereMaxData(StringBuilder sql, String nomeBusca, Long[] estabelecimentosIds)
+		public void setWhere(StringBuilder sql, String nomeBusca, Long[] estabelecimentosIds, boolean transfereExamesCandidatoColaborador)
 		{
 			if (isNotBlank(nomeBusca)){
 				sql.append("and ( ");

@@ -20,6 +20,7 @@ import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.dicionario.MotivoSolicitacaoExame;
 import com.fortes.rh.model.dicionario.ResultadoExame;
+import com.fortes.rh.model.dicionario.TipoPessoa;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.ClinicaAutorizada;
 import com.fortes.rh.model.sesmt.Exame;
@@ -280,7 +281,6 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 		try{
 			parametros = RelatorioUtil.getParametrosRelatorio("SERVIÇO DE MEDICINA OCUPACIONAL", getEmpresaSistema(), "SOLICITAÇÃO DE EXAMES");
 			parametros.put("CIDADE", getEmpresaSistema().getCidade() == null ? "" : getEmpresaSistema().getCidade().getNome());
-
 			if(tipoDeImpressao.equals("inteira")){
 				dataSource = solicitacaoExameManager.imprimirSolicitacaoExames(solicitacaoExame.getId());
 			}else{

@@ -15,6 +15,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.sesmt.SolicitacaoExameDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
@@ -41,17 +42,18 @@ public class SolicitacaoExameManagerImpl extends GenericManagerImpl<SolicitacaoE
 	private RiscoAmbienteManager riscoAmbienteManager;
 	private RiscoFuncaoManager riscoFuncaoManager;
 	private HistoricoColaboradorManager historicoColaboradorManager;
-
-	public Integer getCount(Long empresaId, Date dataIni, Date dataFim, TipoPessoa vinculo, String nomeBusca, String matriculaBusca, String motivo, String[] examesCheck, ResultadoExame resultadoExame)
+	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	
+	public Integer getCount(Long empresaId, Date dataIni, Date dataFim, TipoPessoa vinculo, String nomeBusca, String matriculaBusca, String motivo, String[] examesCheck, ResultadoExame resultadoExame, boolean transfereExamesCandidatoColaborador)
 	{
 		Long[] exameIds = LongUtil.arrayStringToArrayLong(examesCheck);
-		return getDao().getCount(empresaId, dataIni, dataFim, vinculo, nomeBusca, matriculaBusca, motivo, exameIds, resultadoExame);
+		return getDao().getCount(empresaId, dataIni, dataFim, vinculo, nomeBusca, matriculaBusca, motivo, exameIds, resultadoExame, transfereExamesCandidatoColaborador);
 	}
-
-	public Collection<SolicitacaoExame> findAllSelect(Integer page, Integer pagingSize, Long empresaId, Date dataIni, Date dataFim, TipoPessoa vinculo, String nomeBusca, String matriculaBusca, String motivo, String[] examesCheck, ResultadoExame resultadoExame)
+	
+	public Collection<SolicitacaoExame> findAllSelect(Integer page, Integer pagingSize, Long empresaId, Date dataIni, Date dataFim, TipoPessoa vinculo, String nomeBusca, String matriculaBusca, String motivo, String[] examesCheck, ResultadoExame resultadoExame, boolean transfereExamesCandidatoColaborador)
 	{
 		Long[] exameIds = LongUtil.arrayStringToArrayLong(examesCheck);
-		return getDao().findAllSelect(page, pagingSize, empresaId, dataIni, dataFim, vinculo, nomeBusca, matriculaBusca, motivo, exameIds, resultadoExame);
+		return getDao().findAllSelect(page, pagingSize, empresaId, dataIni, dataFim, vinculo, nomeBusca, matriculaBusca, motivo, exameIds, resultadoExame, transfereExamesCandidatoColaborador);
 	}
 
 	public Collection<SolicitacaoExame> findByCandidatoOuColaborador(TipoPessoa vinculo, Long candidatoOuColaboradorId, String motivo)
@@ -123,7 +125,7 @@ public class SolicitacaoExameManagerImpl extends GenericManagerImpl<SolicitacaoE
 	public Collection<SolicitacaoExameRelatorio> imprimirSolicitacaoExames(Long solicitacaoExameId) throws ColecaoVaziaException
 	{
 		CollectionUtil<SolicitacaoExameRelatorio> collectionUtil = new CollectionUtil<SolicitacaoExameRelatorio>();
-
+		
 		Collection<SolicitacaoExameRelatorio> collection = getDao().findImprimirSolicitacaoExames(solicitacaoExameId);
 		if (collection == null || collection.isEmpty())
 			throw new ColecaoVaziaException("Solicitação de exames não encontrada.");
@@ -187,7 +189,10 @@ public class SolicitacaoExameManagerImpl extends GenericManagerImpl<SolicitacaoE
 				asoRelatorio.getColaborador().setFuncao(historicoColaborador.getFuncao());
 			}
 
-			configuraRiscos(empresa, solicitacaoExame, considerarRiscoPor, asoRelatorio, historicoColaborador);
+			boolean transfereExamesCandidatoColaborador = parametrosDoSistemaManager.findByIdProjection(1l).isTransfereExamesCandidatoColaborador();
+			
+			if(transfereExamesCandidatoColaborador)
+				configuraRiscos(empresa, solicitacaoExame, considerarRiscoPor, asoRelatorio, historicoColaborador);
 		}
 		
 		return asoRelatorio;
@@ -290,9 +295,21 @@ public class SolicitacaoExameManagerImpl extends GenericManagerImpl<SolicitacaoE
 			}
 		}
 	}
-
+	
+	public void transferirSolicitacaoExamesCandidatoColaborador(Long candidatoId ,Long colaboradorId){
+		getDao().transferirSolicitacaoExamesCandidatoColaborador(candidatoId, colaboradorId);
+	}
+	
 	public void setRiscoFuncaoManager(RiscoFuncaoManager riscoFuncaoManager) {
 		this.riscoFuncaoManager = riscoFuncaoManager;
+	}
+
+	public ParametrosDoSistemaManager getParametrosDoSistemaManager() {
+		return parametrosDoSistemaManager;
+	}
+
+	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
+		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 	
 }

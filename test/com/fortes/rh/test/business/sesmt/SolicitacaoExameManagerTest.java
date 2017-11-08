@@ -1,6 +1,7 @@
 package com.fortes.rh.test.business.sesmt;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
@@ -109,8 +110,8 @@ public class SolicitacaoExameManagerTest
 		Date ini = new Date();
 		Date fim = new Date();
 		
-		when(solicitacaoExameDao.getCount(1L, ini, fim, TipoPessoa.COLABORADOR, null, null, null, new Long[]{}, null)).thenReturn(1);
-		assertEquals(1, solicitacaoExameManager.getCount(1L, ini, fim, TipoPessoa.COLABORADOR, null, null, null, null, null).intValue());
+		when(solicitacaoExameDao.getCount(1L, ini, fim, TipoPessoa.COLABORADOR, null, null, null, new Long[]{}, null, false)).thenReturn(1);
+		assertEquals(1, solicitacaoExameManager.getCount(1L, ini, fim, TipoPessoa.COLABORADOR, null, null, null, null, null, false).intValue());
 	}
 
 	@Test
@@ -122,9 +123,9 @@ public class SolicitacaoExameManagerTest
 		Date ini = new Date();
 		Date fim = new Date();
 		
-		when(solicitacaoExameDao.findAllSelect(0, 20, 4L, ini, fim, TipoPessoa.CANDIDATO, null, null, null, new Long[]{}, null)).thenReturn(colecao);
+		when(solicitacaoExameDao.findAllSelect(0, 20, 4L, ini, fim, TipoPessoa.CANDIDATO, null, null, null, new Long[]{}, null, false)).thenReturn(colecao);
 
-		assertEquals(colecao, solicitacaoExameManager.findAllSelect(0, 20, 4L, ini, fim, TipoPessoa.CANDIDATO, null, null, null, null, null));
+		assertEquals(colecao, solicitacaoExameManager.findAllSelect(0, 20, 4L, ini, fim, TipoPessoa.CANDIDATO, null, null, null, null, null, false));
 	}
 	
 	@Test
@@ -427,5 +428,10 @@ public class SolicitacaoExameManagerTest
 		
 		assertEquals(solicitacaoExame.getColaborador(), asoRelatorio.getPessoa());
 		assertEquals(asoRelatorio.getGrpRiscoAcidente()+asoRelatorio.getGrpRiscoBiologico()+asoRelatorio.getGrpRiscoErgonomico()+asoRelatorio.getGrpRiscoFisico()+asoRelatorio.getGrpRiscoQuimico(), StringUtils.EMPTY);
+	}
+	
+	@Test
+	public void transferirSolicitacaoExamesCandidatoColaborador(){
+		assertFalse(true);
 	}
 }

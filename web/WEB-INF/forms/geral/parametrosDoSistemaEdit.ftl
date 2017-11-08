@@ -203,7 +203,8 @@
 	</select>	
 	ou menos respostas.
 	
-	<br /><br />
+	<br />
+	<@ww.checkbox label="Transferir solicitações de exame do candidato para o colaborador" id="transfereExamesCandidatoColaborador" name="parametrosDoSistema.transfereExamesCandidatoColaborador" labelPosition="left"/>
 	<@ww.textfield label="E-mail do suporte técnico" name="parametrosDoSistema.emailDoSuporteTecnico" id="emailDoSuporteTecnico" cssClass="mascaraEmail" size="40" maxLength="39" required="true"/>
 	
 	Email remetente: &nbsp;&nbsp;&nbsp;

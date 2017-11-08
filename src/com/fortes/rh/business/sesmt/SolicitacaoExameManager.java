@@ -16,8 +16,8 @@ import com.fortes.security.auditoria.MetodoCarregaEntidadeAuditoria;
 
 public interface SolicitacaoExameManager extends GenericManager<SolicitacaoExame>
 {
-	Integer getCount(Long empresaId, Date dataIni, Date dataFim, TipoPessoa vinculo, String nomeBusca, String matriculaBusca, String motivo, String[] examesCheck, ResultadoExame resultadoExame);
-	Collection<SolicitacaoExame> findAllSelect(Integer page, Integer pagingSize, Long empresaId, Date dataIni, Date dataFim, TipoPessoa vinculo, String nomeBusca, String matriculaBusca, String motivo, String[] examesCheck, ResultadoExame resultadoExame);
+	Integer getCount(Long empresaId, Date dataIni, Date dataFim, TipoPessoa vinculo, String nomeBusca, String matriculaBusca, String motivo, String[] examesCheck, ResultadoExame resultadoExame, boolean transfereExamesCandidatoColaborador);
+	Collection<SolicitacaoExame> findAllSelect(Integer page, Integer pagingSize, Long empresaId, Date dataIni, Date dataFim, TipoPessoa vinculo, String nomeBusca, String matriculaBusca, String motivo, String[] examesCheck, ResultadoExame resultadoExame, boolean transfereExamesCandidatoColaborador);
 	SolicitacaoExame save(SolicitacaoExame solicitacaoExame, String[] exameIds, String[] selectClinicas, Integer[] periodicidades) throws Exception;
 	Collection<SolicitacaoExameRelatorio> imprimirSolicitacaoExames(Long solicitacaoExameId) throws ColecaoVaziaException;
 	void update(SolicitacaoExame solicitacaoExame, String[] examesId, String[] selectClinicas, Integer[] periodicidades);
@@ -33,4 +33,5 @@ public interface SolicitacaoExameManager extends GenericManager<SolicitacaoExame
 	Integer findProximaOrdem(Date data);
 	void ajustaOrdemDoList(Date data, Integer ordem) throws Exception;
 	void ajustaOrdem(Date dataAnterior, Date dataAtual, Integer ordemAnterior, Integer novaOrdem) throws Exception;
+	void transferirSolicitacaoExamesCandidatoColaborador(Long candidatoId ,Long colaboradorId) throws Exception;;
 }

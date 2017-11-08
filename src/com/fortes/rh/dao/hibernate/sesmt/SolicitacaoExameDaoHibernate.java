@@ -31,7 +31,7 @@ import com.fortes.rh.util.StringUtil;
 @SuppressWarnings("unchecked")
 public class SolicitacaoExameDaoHibernate extends GenericDaoHibernate<SolicitacaoExame> implements SolicitacaoExameDao
 {
-	public Collection<SolicitacaoExame> findAllSelect(int page, int pagingSize, Long empresaId, Date dataIni, Date dataFim, TipoPessoa vinculo, String nomeBusca, String matriculaBusca, String motivo, Long[] exameIds, ResultadoExame resultadoExame)
+	public Collection<SolicitacaoExame> findAllSelect(int page, int pagingSize, Long empresaId, Date dataIni, Date dataFim, TipoPessoa vinculo, String nomeBusca, String matriculaBusca, String motivo, Long[] exameIds, ResultadoExame resultadoExame, boolean transfereExamesCandidatoColaborador)
 	{
 		StringBuilder hql = new StringBuilder("select distinct new SolicitacaoExame(se.id, se.data, se.motivo, se.ordem, se.medicoCoordenador.nome, co.nome, co.nomeComercial, ca.nome, cg.nome, co.desligado) ");		
 		hql.append("from SolicitacaoExame se ");
@@ -63,11 +63,15 @@ public class SolicitacaoExameDaoHibernate extends GenericDaoHibernate<Solicitaca
 		{
 			case COLABORADOR:
 				hql.append("and co != null ");
+				if(!transfereExamesCandidatoColaborador)
+					hql.append("and se.candidato.id = null ");
 				hql.append("and lower(co.matricula) like lower(:matricula) ");
 				hql.append("and lower(co.nome) like lower(:nome) ");
 				break;
 			case CANDIDATO:
 				hql.append("and ca != null ");
+				if(transfereExamesCandidatoColaborador)
+					hql.append("and se.colaborador.id = null ");
 				hql.append("and lower(ca.nome) like lower(:nome) ");
 				break;
 			case TODOS:
@@ -127,9 +131,9 @@ public class SolicitacaoExameDaoHibernate extends GenericDaoHibernate<Solicitaca
 		return query.list();
 	}
 	
-	public Integer getCount(Long empresaId, Date dataIni, Date dataFim, TipoPessoa vinculo, String nomeBusca, String matriculaBusca, String motivo, Long[] exameIds, ResultadoExame resultadoExame)
+	public Integer getCount(Long empresaId, Date dataIni, Date dataFim, TipoPessoa vinculo, String nomeBusca, String matriculaBusca, String motivo, Long[] exameIds, ResultadoExame resultadoExame, boolean transfereExamesCandidatoColaborador)
 	{
-		Collection<SolicitacaoExame> solicitacaoExameIds = findAllSelect(0,0, empresaId, dataIni, dataFim, vinculo, nomeBusca, matriculaBusca, motivo, exameIds, resultadoExame); 
+		Collection<SolicitacaoExame> solicitacaoExameIds = findAllSelect(0,0, empresaId, dataIni, dataFim, vinculo, nomeBusca, matriculaBusca, motivo, exameIds, resultadoExame, transfereExamesCandidatoColaborador); 
 		
 		if (solicitacaoExameIds == null)
 			return 0;
@@ -165,6 +169,7 @@ public class SolicitacaoExameDaoHibernate extends GenericDaoHibernate<Solicitaca
 		hql.append("				where hc2.colaborador.id = co.id ");
 		hql.append("				and hc2.data <= :hoje and hc2.status = :status ) ");
 		hql.append("	or hc.data is null) ");
+		
 		hql.append("order by clinica.nome ");
 
 		Query query = getSession().createQuery(hql.toString());
@@ -369,6 +374,18 @@ public class SolicitacaoExameDaoHibernate extends GenericDaoHibernate<Solicitaca
 		if (ordemFinal != null)
 			query.setInteger("ordemFinal", ordemFinal);
 
+		query.executeUpdate();
+	}
+	
+	public void transferirSolicitacaoExamesCandidatoColaborador(Long candidatoId ,Long colaboradorId) 
+	{
+		String hql = "update SolicitacaoExame set colaborador.id = :colaboradorId  where candidato.id = :candidatoId and colaborador.id is null";
+		
+		Query query = getSession().createQuery(hql);
+
+		query.setLong("candidatoId", candidatoId);
+		query.setLong("colaboradorId", colaboradorId);
+		
 		query.executeUpdate();
 	}
 }

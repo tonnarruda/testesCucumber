@@ -220,6 +220,30 @@ public class SolicitacaoExameDaoHibernateTest_Junit4 extends GenericDaoHibernate
 		assertEquals("Candidato",SEResult1.getCandidatoNome());
 		assertEquals(funcao2.getNome(), SEResult1.getCandidatoFuncao());
 	}
+	
+	@Test
+	public void testTransferirSolicitacaoExamesCandidatoColaborador(){
+		
+		Candidato candidato= CandidatoFactory.getCandidato(2l);
+		candidatoDao.save(candidato);
+
+		Colaborador colaborador = ColaboradorFactory.getEntity(1l);
+		colaboradorDao.save(colaborador);
+		
+		SolicitacaoExame solicitacaoExame =SolicitacaoExameFactory.getEntity(1l);
+		solicitacaoExame.setCandidato(candidato);
+		solicitacaoExame.setColaborador(colaborador);
+		solicitacaoExameDao.save(solicitacaoExame);
+		
+		solicitacaoExameDao.transferirSolicitacaoExamesCandidatoColaborador(candidato.getId(), colaborador.getId());
+		SolicitacaoExame solicitacaoExameAtualizada = solicitacaoExameDao.findByIdProjection(solicitacaoExame.getId());
+		assertFalse(true);
+//		assertNotNull(solicitacaoExameAtualizada.getColaborador());
+//		assertEquals(solicitacaoExame.getCandidato(),candidato);
+//		assertEquals(solicitacaoExame.getColaborador(),colaborador);
+//		testDesligaColaborador basear por este metodo na colaboradorDaoHibernate
+		
+	}
 
 	private SolicitacaoExame saveSolicitacaoExame(Candidato candidato, Colaborador colaborador, Empresa empresa, Date data, MedicoCoordenador medico, String motivoSolicitacaoExame){
 		SolicitacaoExame solicitacaoExame = SolicitacaoExameFactory.getEntity(null, data, empresa, colaborador, candidato, MotivoSolicitacaoExame.PERIODICO);

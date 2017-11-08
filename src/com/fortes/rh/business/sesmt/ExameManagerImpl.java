@@ -8,10 +8,11 @@ import java.util.Map;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.sesmt.ExameDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
-import com.fortes.rh.model.dicionario.TipoPessoa;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.sesmt.ClinicaAutorizada;
 import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.model.sesmt.relatorio.ExamesPrevistosRelatorio;
@@ -24,6 +25,8 @@ import com.fortes.web.tags.CheckBox;
 public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implements ExameManager
 {
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	
 	Map<String,Object> parametros = new HashMap<String, Object>();
 	
 	public Exame findByIdProjection(Long exameId)
@@ -97,8 +100,10 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 
 	public Collection<ExamesPrevistosRelatorio> findRelatorioExamesPrevistos(Long empresaId, Date dataInicio, Date dataFim, Long[] examesChecks, Long[] estabelecimentosChecks, Long[] areasChecks, Long[] colaboradoresChecks, char agruparPor, boolean imprimirAfastados, boolean imprimirDesligados, boolean exibirExamesNaoRealizados) throws Exception
 	{
-		Collection<ExamesPrevistosRelatorio> examesPrevistos = getDao().findExamesPeriodicosPrevistos(empresaId, dataInicio, dataFim, examesChecks, estabelecimentosChecks, areasChecks, colaboradoresChecks, imprimirAfastados, imprimirDesligados);
-
+		ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1l);
+		boolean transfereExamesCandidatoColaborador = parametrosDoSistema.isTransfereExamesCandidatoColaborador();
+		Collection<ExamesPrevistosRelatorio> examesPrevistos = getDao().findExamesPeriodicosPrevistos(empresaId, dataInicio, dataFim, examesChecks, estabelecimentosChecks, areasChecks, colaboradoresChecks, imprimirAfastados, imprimirDesligados, transfereExamesCandidatoColaborador);
+		
 		if(exibirExamesNaoRealizados)
 			examesPrevistos.addAll(getDao().findExamesPeriodicosPrevistosNaoRealizados(empresaId, dataInicio, dataFim, examesChecks, estabelecimentosChecks, areasChecks, colaboradoresChecks, imprimirAfastados, imprimirDesligados));
 		
@@ -120,7 +125,9 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 
 	public Collection<ExamesRealizadosRelatorio> findRelatorioExamesRealizados(Long empresaId, String nomeBusca, Date inicio, Date fim, String motivo, String exameResultado, Long clinicaAutorizadaId, Long[] examesIds, Long[] estabelecimentosIds, Character tipoPessoa) throws ColecaoVaziaException
 	{
-		Collection<ExamesRealizadosRelatorio> examesRealizados = getDao().findExamesRealizadosCandidatosAndColaboradores(empresaId, nomeBusca, inicio, fim, motivo, exameResultado, clinicaAutorizadaId, examesIds, estabelecimentosIds, tipoPessoa);
+		ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1l);
+		boolean transfereExamesCandidatoColaborador = parametrosDoSistema.isTransfereExamesCandidatoColaborador();
+		Collection<ExamesRealizadosRelatorio> examesRealizados = getDao().findExamesRealizadosCandidatosAndColaboradores(empresaId, nomeBusca, inicio, fim, motivo, exameResultado, clinicaAutorizadaId, examesIds, estabelecimentosIds, tipoPessoa, transfereExamesCandidatoColaborador);
 		
 		if (examesRealizados == null || examesRealizados.isEmpty())
 			throw new ColecaoVaziaException("Não existem exames realizados para os filtros informados.");
@@ -170,5 +177,8 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
 		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
-	
+
+	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
+		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
+	}
 }

@@ -147,9 +147,9 @@ public class SolicitacaoExameDaoHibernateTest extends GenericDaoHibernateTest<So
 		exameSolicitacaoExame.setRealizacaoExame(realizacaoExame);
 		exameSolicitacaoExameDao.save(exameSolicitacaoExame);
 		
-		assertEquals(1,solicitacaoExameDao.getCount(empresa.getId(), dataIni, dataFim, TipoPessoa.TODOS, "", "", null, null, null).intValue());
+		assertEquals(1,solicitacaoExameDao.getCount(empresa.getId(), dataIni, dataFim, TipoPessoa.TODOS, "", "", null, null, null, false).intValue());
 		
-		assertEquals(0,solicitacaoExameDao.getCount(empresa.getId(), dataIni, dataFim, TipoPessoa.COLABORADOR, "", "", null, null, null).intValue());
+		assertEquals(0,solicitacaoExameDao.getCount(empresa.getId(), dataIni, dataFim, TipoPessoa.COLABORADOR, "", "", null, null, null, false).intValue());
 	}
 			
 	public void testFindAllSelect()
@@ -176,7 +176,7 @@ public class SolicitacaoExameDaoHibernateTest extends GenericDaoHibernateTest<So
 		solicitacaoExame.setEmpresa(empresa);
 		solicitacaoExameDao.save(solicitacaoExame);
 
-		solicitacaoExameDao.findAllSelect(0, 1, empresa.getId(), dataSolicitacao, dataAdmissao, TipoPessoa.TODOS, "", "", "", null, null);
+		solicitacaoExameDao.findAllSelect(0, 1, empresa.getId(), dataSolicitacao, dataAdmissao, TipoPessoa.TODOS, "", "", "", null, null, false);
 
 	}
 

@@ -97,6 +97,7 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
     private Integer modulosPermitidosSomatorio = 0;
     private boolean autorizacaoGestorNaSolicitacaoPessoal;
     private boolean smtpRemetente;
+	private boolean transfereExamesCandidatoColaborador;
     
     @Column(length=20)
     private String versaoImportador;
@@ -498,5 +499,11 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
 	}
 	public void setVersaoImportador(String versaoImportador) {
 		this.versaoImportador = versaoImportador;
+	}
+	public boolean isTransfereExamesCandidatoColaborador() {
+		return transfereExamesCandidatoColaborador;
+	}
+	public void setTransfereExamesCandidatoColaborador(boolean transfereExamesCandidatoColaborador) {
+		this.transfereExamesCandidatoColaborador = transfereExamesCandidatoColaborador;
 	}
 }

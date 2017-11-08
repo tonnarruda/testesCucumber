@@ -249,7 +249,6 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findColaboradorPesquisa(id, empresaId);
 	}
 
-	// TODO: SEM TESTE
 	public boolean insert(Colaborador colaborador, Double salarioColaborador, Long idCandidato, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas, Collection<Experiencia> experiencias, Solicitacao solicitacao, Empresa empresa, Long candidatoSolicitacaoId) throws Exception
 	{
 		colaborador.setUsuario(null);
@@ -285,7 +284,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		{
 			candidatoManager.updateSetContratado(idCandidato, empresa.getId());
 			experienciaManager.removeCandidato(new Candidato(idCandidato, null));//vai ser salvo logo abaixo com id de candidato e colaborador, fazendo compartilhamento das experiências.
-
+			
 			if (candidatoSolicitacaoId != null)
 			{
 				configuracaoNivelCompetenciaManager.criaCNCColaboradorByCNCCnadidato(colaborador, idCandidato, solicitacao, historico);
@@ -303,7 +302,10 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		// Flush necessário quando houver uma operação com banco/sistema externo.
 		// garante que erro no banco do RH levantará uma Exception antes de alterar o outro banco.
 		getDao().getHibernateTemplateByGenericDao().flush();
-
+		
+		if(idCandidato!=null)
+			solicitacaoExameManager.transferirSolicitacaoExamesCandidatoColaborador(idCandidato, colaborador.getId());
+		
 		if (!colaborador.isNaoIntegraAc() && empresa.isAcIntegra())
 			contratarColaboradorNoAC(colaborador, historico, empresa, true);
 		else 

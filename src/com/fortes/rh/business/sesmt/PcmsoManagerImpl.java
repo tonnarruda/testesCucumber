@@ -1,13 +1,10 @@
 package com.fortes.rh.business.sesmt;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
-import java.util.Locale;
 
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EmpresaManager;
@@ -18,14 +15,12 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Agenda;
 import com.fortes.rh.model.sesmt.ComposicaoSesmt;
-import com.fortes.rh.model.sesmt.Evento;
 import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
 import com.fortes.rh.model.sesmt.relatorio.CatRelatorioAnual;
 import com.fortes.rh.model.sesmt.relatorio.ExameAnualRelatorio;
 import com.fortes.rh.model.sesmt.relatorio.PCMSO;
 import com.fortes.rh.util.CollectionUtil;
-import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.StringUtil;
 
 

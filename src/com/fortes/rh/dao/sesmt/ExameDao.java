@@ -15,9 +15,9 @@ public interface ExameDao extends GenericDao<Exame>
 	Exame findByIdProjection(Long exameId);
 	Collection<Exame> findByHistoricoFuncao(Long historicoFuncaoId);
 	Collection<Long> findBySolicitacaoExame(Long solicitacaoExameId);
-	Collection<ExamesPrevistosRelatorio> findExamesPeriodicosPrevistos(Long empresaId, Date dataInicio, Date dataFim, Long[] exameIds, Long[] estabelecimentoIds, Long[] areaIds, Long[] colaboradorIds, boolean imprimirAfastados, boolean imprimirDesligados);
+	Collection<ExamesPrevistosRelatorio> findExamesPeriodicosPrevistos(Long empresaId, Date dataInicio, Date dataFim, Long[] exameIds, Long[] estabelecimentoIds, Long[] areaIds, Long[] colaboradorIds, boolean imprimirAfastados, boolean imprimirDesligados, boolean transfereExamesCandidatoColaborador);
 	Collection<ExamesPrevistosRelatorio> findExamesPeriodicosPrevistosNaoRealizados(Long empresaId, Date dataInicio, Date dataFim, Long[] exameIds, Long[] estabelecimentoIds, Long[] areaIds, Long[] colaboradorIds, boolean imprimirAfastados, boolean imprimirDesligados);
-	Collection<ExamesRealizadosRelatorio> findExamesRealizadosCandidatosAndColaboradores(Long empresaId, String nomeBusca, Date inicio, Date fim, String solicitacaoMotivo, String exameResultado, Long clinicaAutorizadaId, Long[] examesIds, Long[] estabelecimentosIds, Character tipoPessoa);
+	Collection<ExamesRealizadosRelatorio> findExamesRealizadosCandidatosAndColaboradores(Long empresaId, String nomeBusca, Date inicio, Date fim, String solicitacaoMotivo, String exameResultado, Long clinicaAutorizadaId, Long[] examesIds, Long[] estabelecimentosIds, Character tipoPessoa, boolean transfereExamesCandidatoColaborador);
 	Collection<ExamesRealizadosRelatorio> findExamesRealizadosRelatorioResumido(Long empresaId, Date dataInicio, Date dataFim, ClinicaAutorizada clinicaAutorizada, Long[] examesIds, String exameResultado);
 	Integer getCount(Long empresaId, Exame exame);
 	Collection<Exame> find(Integer page, Integer pagingSize, Long empresaId, Exame exame);

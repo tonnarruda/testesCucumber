@@ -198,7 +198,10 @@
     </property>
     <property name="gerenciadorComunicacaoManager">
       <ref bean="gerenciadorComunicacaoManager" />
-    </property>    
+    </property> 
+    <property name="parametrosDoSistemaManager">
+      <ref bean="parametrosDoSistemaManager" />
+    </property>   
   </bean>
   <bean id="exameManager" parent="parentManager">
     <property name="proxyInterfaces">
@@ -340,6 +343,9 @@
     </property>
     <property name="riscoFuncaoManager">
       <ref bean="riscoFuncaoManager" />
+    </property>
+    <property name="parametrosDoSistemaManager">
+      <ref bean="parametrosDoSistemaManager" />
     </property>
   </bean>
   <bean id="solicitacaoExameManager" parent="parentManager">

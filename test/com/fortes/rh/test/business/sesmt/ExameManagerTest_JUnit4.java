@@ -54,7 +54,7 @@ public class ExameManagerTest_JUnit4
     	
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
     	
-    	when(exameDao.findExamesPeriodicosPrevistos(empresa.getId(), doisMesesAtras.getTime(), hoje, examesCheck, estabelecimentosCheck, areasCheck, colaboradoresCheck, false, false)).thenReturn(colecao);
+    	when(exameDao.findExamesPeriodicosPrevistos(empresa.getId(), doisMesesAtras.getTime(), hoje, examesCheck, estabelecimentosCheck, areasCheck, colaboradoresCheck, false, false, false)).thenReturn(colecao);
     	
     	Collection<ExamesPrevistosRelatorio> resultado = null;
 
@@ -92,7 +92,7 @@ public class ExameManagerTest_JUnit4
     	
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
     	
-    	when(exameDao.findExamesPeriodicosPrevistos(empresa.getId(), doisMesesAtras, hoje, examesCheck, estabelecimentosCheck, areasCheck, colaboradoresCheck, false, false)).thenReturn(colecao);
+    	when(exameDao.findExamesPeriodicosPrevistos(empresa.getId(), doisMesesAtras, hoje, examesCheck, estabelecimentosCheck, areasCheck, colaboradoresCheck, false, false, false)).thenReturn(colecao);
     	when(exameDao.findExamesPeriodicosPrevistosNaoRealizados(empresa.getId(), doisMesesAtras, hoje, examesCheck, estabelecimentosCheck, areasCheck, colaboradoresCheck, false, false)).thenReturn(examesNaoRealizados);
     	
     	Collection<ExamesPrevistosRelatorio> resultado = null;
@@ -138,7 +138,7 @@ public class ExameManagerTest_JUnit4
     	
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
     	
-    	when(exameDao.findExamesPeriodicosPrevistos(empresa.getId(), doisMesesAtras.getTime(), hoje, examesCheck, estabelecimentosCheck, areasCheck, colaboradoresCheck, imprimirAfastados, false)).thenReturn(colecao);
+    	when(exameDao.findExamesPeriodicosPrevistos(empresa.getId(), doisMesesAtras.getTime(), hoje, examesCheck, estabelecimentosCheck, areasCheck, colaboradoresCheck, imprimirAfastados, false, false)).thenReturn(colecao);
     	
     	Collection<ExamesPrevistosRelatorio> resultado = null;
     	
@@ -178,7 +178,7 @@ public class ExameManagerTest_JUnit4
     	
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
     	
-    	when(exameDao.findExamesPeriodicosPrevistos(empresa.getId(), doisMesesAtras.getTime(), hoje, examesCheck, estabelecimentosCheck, areasCheck, colaboradoresCheck, imprimirAfastados, false)).thenReturn(colecao);
+    	when(exameDao.findExamesPeriodicosPrevistos(empresa.getId(), doisMesesAtras.getTime(), hoje, examesCheck, estabelecimentosCheck, areasCheck, colaboradoresCheck, imprimirAfastados, false, false)).thenReturn(colecao);
     	Collection<ExamesPrevistosRelatorio> resultado = null;
     	
     	Exception exception = null;
@@ -200,7 +200,7 @@ public class ExameManagerTest_JUnit4
     public void testFindRelatorioExamesPrevistosColecaoVaziaException() throws Exception
     {
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
-    	when(exameDao.findExamesPeriodicosPrevistos(empresa.getId(), null, null, new Long[]{}, new Long[]{}, new Long[]{}, new Long[]{}, false, false)).thenReturn(new ArrayList<ExamesPrevistosRelatorio>());
+    	when(exameDao.findExamesPeriodicosPrevistos(empresa.getId(), null, null, new Long[]{}, new Long[]{}, new Long[]{}, new Long[]{}, false, false, false)).thenReturn(new ArrayList<ExamesPrevistosRelatorio>());
 
 		assertTrue(exameManager.findRelatorioExamesPrevistos(empresa.getId(), null, null, null, null, null,null, 'N', false, false, false).isEmpty());
     }

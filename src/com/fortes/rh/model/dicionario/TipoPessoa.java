@@ -2,7 +2,9 @@ package com.fortes.rh.model.dicionario;
 
 public enum TipoPessoa
 {
-	TODOS('T',"Todos"), CANDIDATO('A', "Candidato"), COLABORADOR('C',"Colaborador");
+	TODOS('T',"Todos"), 
+	CANDIDATO('A', "Candidato"), 
+	COLABORADOR('C',"Colaborador");
 
 	TipoPessoa(char chave, String descricao)
 	{

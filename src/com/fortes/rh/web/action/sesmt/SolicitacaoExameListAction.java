@@ -10,6 +10,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.sesmt.ExameManager;
 import com.fortes.rh.business.sesmt.ExameSolicitacaoExameManager;
 import com.fortes.rh.business.sesmt.SolicitacaoExameManager;
@@ -17,6 +18,7 @@ import com.fortes.rh.model.dicionario.MotivoSolicitacaoExame;
 import com.fortes.rh.model.dicionario.ResultadoExame;
 import com.fortes.rh.model.dicionario.TipoPessoa;
 import com.fortes.rh.model.dicionario.TipoRiscoSistema;
+import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.sesmt.ExameSolicitacaoExame;
 import com.fortes.rh.model.sesmt.SolicitacaoExame;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -35,6 +37,7 @@ public class SolicitacaoExameListAction extends MyActionSupportList
 	private SolicitacaoExameManager solicitacaoExameManager;
 	private ExameSolicitacaoExameManager exameSolicitacaoExameManager;
 	private ExameManager exameManager;
+	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 
 	private Collection<SolicitacaoExame> solicitacaoExames;
 	private Collection<ExameSolicitacaoExame> exameSolicitacaoExames;
@@ -79,11 +82,14 @@ public class SolicitacaoExameListAction extends MyActionSupportList
 		
 		TipoPessoa vinculo = TipoPessoa.valueOf(String.valueOf(this.vinculo));
 		
+		ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1l);
+		boolean transfereExamesCandidatoColaborador = parametrosDoSistema.isTransfereExamesCandidatoColaborador();
+		
 		examesCheckList = exameManager.populaCheckBox(getEmpresaSistema().getId());
 		examesCheckList = CheckListBoxUtil.marcaCheckListBox(examesCheckList, examesCheck);
 
-		setTotalSize(solicitacaoExameManager.getCount(getEmpresaSistema().getId(), dataIni, dataFim, vinculo, nomeBusca, matriculaBusca, motivo, examesCheck, resultadoExame));
-		solicitacaoExames = solicitacaoExameManager.findAllSelect(getPage(), getPagingSize(), getEmpresaSistema().getId(), dataIni, dataFim, vinculo, nomeBusca, matriculaBusca, motivo, examesCheck, resultadoExame);
+		setTotalSize(solicitacaoExameManager.getCount(getEmpresaSistema().getId(), dataIni, dataFim, vinculo, nomeBusca, matriculaBusca, motivo, examesCheck, resultadoExame, transfereExamesCandidatoColaborador));
+		solicitacaoExames = solicitacaoExameManager.findAllSelect(getPage(), getPagingSize(), getEmpresaSistema().getId(), dataIni, dataFim, vinculo, nomeBusca, matriculaBusca, motivo, examesCheck, resultadoExame, transfereExamesCandidatoColaborador);
 
 		if (solicitacaoExames == null || solicitacaoExames.isEmpty())
 		{
@@ -257,5 +263,13 @@ public class SolicitacaoExameListAction extends MyActionSupportList
 
 	public Map<String, String> getTiposRiscoSistema() {
 		return tiposRiscoSistema;
+	}
+
+	public ParametrosDoSistemaManager getParametrosDoSistemaManager() {
+		return parametrosDoSistemaManager;
+	}
+
+	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
+		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 }
