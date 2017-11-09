@@ -287,7 +287,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	private String camposColaboradorObrigatorio = "";
 	private boolean empresaEstaIntegradaEAderiuAoESocial = false;
 	private boolean podeRetificar = true;
-	private boolean pisObrigatorio;
 	
 	private void prepare() throws Exception
 	{
@@ -452,10 +451,12 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			if(habilitaCampoExtra && colaborador.getCamposExtras() != null && colaborador.getCamposExtras().getId() != null)
 				camposExtras = camposExtrasManager.findById(colaborador.getCamposExtras().getId());
 			
-			pisObrigatorio = !colaborador.getVinculo().equals(Vinculo.ESTAGIO);
 			validaEdicaoDeCamposIntegrados();
 			if(!desabilitarEdicaoCamposIntegrados)
 				camposColaboradorObrigatorio = parametrosDoSistema.getCamposColaboradorObrigatorio();
+			
+			if(colaborador.getVinculo().equals(Vinculo.ESTAGIO))
+				camposColaboradorObrigatorio = camposColaboradorObrigatorio.replace("pis", "");
 		}
 		
 		return Action.SUCCESS;
@@ -512,7 +513,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		}
 		if(desabilitarEdicaoCamposIntegrados)
 			camposColaboradorObrigatorio = colaboradorManager.configuraCamposObrigatorios(parametrosDoSistema);
-		
 	}
 
 	private void verificaRetificacao() {
@@ -2174,13 +2174,5 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 	public void setPodeRetificar(boolean podeRetificar) {
 		this.podeRetificar = podeRetificar;
-	}
-
-	public boolean isPisObrigatorio() {
-		return pisObrigatorio;
-	}
-
-	public void setPisObrigatorio(boolean pisObrigatorio) {
-		this.pisObrigatorio = pisObrigatorio;
 	}
 }

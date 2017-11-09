@@ -503,19 +503,20 @@
 					<input type="hidden" class="campo-hidden" value="ctpsUf" />
 				</td>
 			</tr>
-			<tr class="desabilitado" id="tr_pis">
+			<tr id="tr_pis">
 				<td>
-					<input id="visivel-pis" class="check-visivel" name="camposVisivels" value="pis" type="checkbox" checked disabled/>
-    				<label for="visivel-pis" class="label-visivel"></label>
+					<input id="visivel-candidato-pis" class="check-visivel" name="camposVisivels" value="pis" type="checkbox"/>
+    				<label for="visivel-candidato-pis" class="label-visivel"></label>
 				</td>
 				<td class="campo">PIS - Programa de Integração Social</td>
-				<td><input type="checkbox" disabled /></td>
-				<input type="hidden"  id="pis_vis" value="pis" name="camposVisivels" />		
+				<td>
+					<input type="checkbox" value="pis" name="camposObrigatorios" />
+				</td>
 			</tr>
 		</table>
 		<div class="info">
 			<i class="fa fa-info-circle" aria-hidden="true" style="margin-left:-29px;margin-top: 3px;font-size: 27px;"></i>
-			<div style="margin-top: -30px;">O PIS é obrigatório para as seguintes colocações: Empregado, Aprendiz, Temporário e Sócio.<br>É opcional para a colocação de Estagiário.</div>
+			<div style="margin-top: -30px;">Quando o PIS estiver configurado como obrigatório, terá o seguinte comportamento:<br>Será obrigatório somente para as colocações de: Empregado, Aprendiz, Temporário e Sócio.<br>E para a colocação de Estagiário será opcional.</div>
 		</div>
 	</div>
 	

@@ -264,8 +264,7 @@
 			$('#vinculoSocioTooltipHelp').qtip({ content: 'Colaboradores com a colocação Sócio, não serão integrados com o Fortes Pessoal.' });
 			$('#dataAdmissaoTooltipHelp').qtip({ content: 'Não é possível alterar a data de admissão quando integrado com o Fortes Pessoal.' });
 			$('#vinculoTooltipHelp').qtip({ content: 'Não é possível alterar o vínculo quando integrado com o Fortes Pessoal.' });
-			$('#pisTooltipHelp').qtip({ content: 'O PIS é obrigatório para as seguintes colocações: Empregado, Aprendiz, Temporário e Sócio.<br>É opcional para a colocação de Estagiário.' });
-			
+
 			<#if colaborador.id?exists && integraAc && !colaborador.naoIntegraAc>
 				$('.naturalidadeAndNacionalidadeHelp').qtip({
 					content: '<div style="text-align:justify">Informações do sistema Fortes Pessoal.</div>',
@@ -354,7 +353,7 @@
 			<#if !desabilitarEdicaoCamposIntegrados>
 				var lblAntigo = $('label[for="pis"]');
 				lblAntigo.text(lblAntigo.text().replace('*', ''));
-				if($("#vinculo").val() != "S"){
+				if(camposColaboradorObrigatorio.includes('pis') && $("#vinculo").val() != "S"){
 					lblAntigo.text(lblAntigo.text().replace(/\s$/, '') + "*");
 				}
 			</#if>
@@ -516,13 +515,14 @@
 				</#if>
 			</@authz.authorize>
 			
-			<#if !desabilitarEdicaoCamposIntegrados>
-				if($("#vinculo").val() != "S")
-					arrayValidacao.push('pis');
-			</#if>
 			
 			$('.campo-integrado-select').removeAttr('disabled');
 			
+			if(camposColaboradorObrigatorio.includes('pis') && $("#vinculo").val() == "S"){
+				arrayValidacao = arrayValidacao.filter(item => item != 'pis');
+				$('#pis').css('background', '#FFFFFF');
+			}
+
 			var validaCampos = false;
 			validaCampos = validaFormulario('form', arrayValidacao, new Array('email', 'nascimento', 'cpf', 'cep', 'dt_admissao','dt_encerramentoContrato', 'emissao', 'vencimento','rgDataExpedicao','ctpsDataExpedicao', 'pis' ${validaDataCamposExtras}), true);
 			
@@ -1049,7 +1049,6 @@
 					<ul>
 						<b><@ww.label label="PIS - Programa de Integração Social"/></b>
 						<@ww.textfield label="Número" name="colaborador.pessoal.pis" id="pis" liClass="campoAdd" cssClass="mascaraPis campo-integrado" cssStyle="width: 79px;" onkeypress = "return(somenteNumeros(event,'{,}'));" maxLength="11"/>
-				    	<img id="pisTooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="float: left; margin-left: 83px;margin-top: -18px;"/>
 				    	<div style="clear: both;"></div>
 				   	</ul>
 				</@ww.div>

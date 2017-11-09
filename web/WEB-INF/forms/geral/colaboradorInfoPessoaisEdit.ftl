@@ -86,9 +86,6 @@
 		var camposColaboradorVisivel = "${parametrosDoSistema.camposColaboradorVisivel}";
 		var camposColaboradorObrigatorio = "${camposColaboradorObrigatorio}";
 		
-		if(${pisObrigatorio?string})
-			camposColaboradorObrigatorio = camposColaboradorObrigatorio + ',pis';
-		
 		var abasVisiveis = "${parametrosDoSistema.camposColaboradorTabs}";
 		var arrayAbasVisiveis  = abasVisiveis.split(',');
 		qtdAbas = arrayAbasVisiveis.length;
@@ -218,8 +215,6 @@
 			});
 	
 			arrayValidacao = arrayObrigatorios;
-			if($("#vinculo").val() != "S")
-				arrayValidacao.push('pis');
 			
 			var validaCampos = validaFormulario('form', arrayValidacao, new Array('ende','num','uf','cidade','ddd','fone','escolaridade','cep','emissao','vencimento','rgDataExpedicao','ctpsDataExpedicao', 'pis' ${validaDataCamposExtras}), true);
 		
