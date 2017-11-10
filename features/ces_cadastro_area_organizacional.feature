@@ -31,7 +31,7 @@ Cenário: Cadastro de Áreas Organizacionais | Cadastro Completo Com Área Mae
          E eu clico no botão "Gravar"
 
 #-------------------------------------------------------------------------------------------------------------------------------------
-
+@teste
 Cenário: Cadastro de Áreas Organizacionais | Cadastro de área filha com empregado vinculado a área mae
       Dado que exista um colaborador "João", da area "Area Mae", com o cargo "Dev" e a faixa salarial "A1"
       Dado que eu esteja logado com o usuário "SOS"

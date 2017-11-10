@@ -1,34 +1,23 @@
 # language: pt
 
-Funcionalidade: Cadastrar Conhecimentos
+Funcionalidade: Gerenciamento do Cadastro de Conhecimento
 
-  Cenário: Validar Campos Obrigatórios no Cadastro de Conhecimentos
-      Dado que eu esteja logado com o usuário "SOS"
+  Esquema do Cenario: Cadastro de Conhecimento
       Dado que exista a área organizacional "Administração"
-      Dado que exista a área organizacional "Administração > Desenvolvimento"
-    Quando eu acesso o menu "C&S > Cadastros > Conhecimentos"
-     Então eu devo ver o título "Conhecimentos"
-         E eu clico no botão "Inserir"
-         E eu clico no botão "Gravar"
-    Então eu devo ver o alert do valida campos e clico no ok
-         E eu preencho "Nome" com "_Ruby"
-         E eu clico no botão "Gravar"
-    Então eu devo ver o alert do valida campos e clico no ok
-
-#---------------------------------------------------------------------------------
-
-  Cenário: Cadastrar de Conhecimentos
       Dado que eu esteja logado com o usuário "SOS"
-      Dado que exista a área organizacional "Administração"
-      Dado que exista a área organizacional "Administração > Desenvolvimento"
-    Quando eu acesso o menu "C&S > Cadastros > Conhecimentos"
-     Então eu devo ver o título "Conhecimentos"
-         E eu clico no botão "Inserir"
-         E eu preencho "Nome" com "_Ruby"
-         E eu marco "Administração"
-         E eu preencho "Observação" com "_Ruby super ferramenta"
-         E eu clico no botão "Gravar"
-    Então eu devo ver "Conhecimento cadastrado com sucesso."
+    Quando eu acesso o menu "C&S > Cadastros > Conhecimentos" 
+     Então  eu clico no botão "Inserir"  
+         E eu preencho "Nome" com <Conhecimento>
+         E eu marco <Lotação>
+         E eu clico "Adicionar comportamento"
+         E eu preencho "Observação" com <Observação>
+     Então eu clico no botão "Gravar"
+         E eu devo ver <Mensagem>
+
+Exemplos:
+    | Conhecimento    | Observação                        | Lotação         | Mensagem                               |
+    | ""              | ""                                | ""              | "Preencha os campos indicados."        | 
+    | "Ruby on Rails" | "Necessário Orientação a Objetos" | "Administração" | "Conhecimento cadastrado com sucesso." | 
 
 #---------------------------------------------------------------------------------
 

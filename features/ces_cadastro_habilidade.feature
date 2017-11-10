@@ -1,38 +1,25 @@
 # language: pt
 
 Funcionalidade: Gerenciamento do Cadastro de Habilidades
-
-  Cenário: Cadastro Completo de Habilidades
+@teste
+  Esquema do Cenario: Cadastro de Habilidades
       Dado que exista a área organizacional "Administração"
-      Dado que exista a área organizacional "Administração > Desenvolvimento"
       Dado que eu esteja logado com o usuário "SOS"
-    Quando eu acesso o menu "C&S > Cadastros > Habilidades"
-     Então eu clico no botão "Inserir"
-         E eu preencho "Nome" com "Comunicação"
-         E eu marco "Administração"
+    Quando eu acesso o menu "C&S > Cadastros > Habilidades" 
+     Então  eu clico no botão "Inserir"  
+         E eu preencho "Nome" com <Habilidade>
+         E eu marco <Lotação>
          E eu clico "Adicionar comportamento"
-         E eu preencho "habilidade.criteriosAvaliacaoCompetencia[0].descricao" com "Ser capaz de realizar uma comunicação de forma totalmente efetiva"
-         E eu preencho "Observação" com "Deve-se utilizar apenas para a Lotação Administração"
-         E eu clico no botão "Gravar"
-     Então eu devo ver o título "Habilidades"
+         E eu preencho "habilidade.criteriosAvaliacaoCompetencia[0].descricao" com <Criterio>
+         E eu preencho "Observação" com <Observação>
+     Então eu clico no botão "Gravar"
+         E eu devo ver <Mensagem>
 
-#------------------------------------------------------------------------------------------------------------------------
-
-  Cenário: Cadastro de Habilidades (Validar Campos obrigatórios)
-      Dado que exista a área organizacional "Administração"
-      Dado que exista a área organizacional "Administração > Desenvolvimento"
-      Dado que eu esteja logado com o usuário "SOS"
-    Quando eu acesso o menu "C&S > Cadastros > Habilidades"
-     Então eu clico no botão "Inserir"
-         E eu clico no botão "Gravar"
-     Então eu devo ver o alert do valida campos e clico no ok
-         E eu preencho "Nome" com "Comunicação"
-         E eu clico no botão "Gravar"
-     Então eu devo ver o alert do valida campos e clico no ok
-         E eu marco "Administração"
-         E eu clico no botão "Gravar"
-     Então eu devo ver o título "Habilidades"
-
+Exemplos:
+    | Habilidade    | Observação                                                          | Lotação         | Mensagem                        | Criterio                                                            |
+    | ""            | ""                                                                  | ""              | "Preencha os campos indicados." | ""                                                                  |
+    | "Organização" | "Será exigido que o Candidato/Colaborador seja bastante organizado" | "Administração" | ""                              | "Ser capaz de realizar uma comunicação de forma totalmente efetiva" |
+  
 #------------------------------------------------------------------------------------------------------------------------
 
   Cenário: Edição do Cadastro de Habilidades

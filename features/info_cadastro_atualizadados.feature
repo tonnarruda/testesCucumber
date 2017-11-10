@@ -8,24 +8,10 @@ Funcionalidade: Atualizar Dados do Colaborador
         E eu devo ver "Sua conta de usuário não está vinculada à nenhum colaborador"
 
 #------------------------------------------------------------------------------------------------------------------------
-
+@teste
   Cenário: Alterar Dados de Colaborador
-     Dado que exista um colaborador "Theresa May", da area "Financeiro", com o cargo "Contador" e a faixa salarial "I"
-     Dado que eu esteja logado com o usuário "SOS"
-    Então eu acesso o menu "Info. Funcionais > Cadastros > Colaboradores"
-        E eu clico na linha "Theresa May" da imagem "Criar Acesso ao Sistema"
-        E eu preencho "Nome" com "Theresa May"
-        E eu preencho "Login" com "may"
-        E eu preencho "Senha" com "1234"
-        E eu preencho "Confirmar Senha" com "1234"
-        E eu seleciono "Administrador" de "selectPerfil_1"
-        E eu clico no botão "Gravar"
-     Dado que eu esteja deslogado
-        E eu preencho "username" com "may"
-        E eu espero 1 segundo
-        E eu preencho "password" com "1234"
-        E eu clico em "Entrar"
-        E eu espero 1 segundo
+     Dado que exista um usuario "admin" associado a um empregado
+     Dado que eu esteja logado com o usuário "admin"
     Então eu acesso o menu "Info. Funcionais > Cadastros > Atualizar meus dados"
         E eu preencho "E-mail" com "email@teste.com.br"
         E eu preencho o campo pelo name "colaborador.contato.ddd" com "85"       
@@ -39,3 +25,7 @@ Funcionalidade: Atualizar Dados do Colaborador
         E eu clico no botão "Gravar"
         E eu devo ver "Dados atualizado com sucesso."
     Então eu devo deslogar do sistema
+
+
+
+    

@@ -2,45 +2,59 @@
 
 Funcionalidade: Cadastrar Estabelecimento
 
-  Cenário: Empresa
-    Dado que eu esteja logado com o usuário "SOS"
+Esquema do Cenario: Edição de Cadastro de Estabelecimentos
+    Dado que eu esteja logado com o usuário "SOS" 
+  Quando eu acesso o menu "Utilitários > Cadastros > Estabelecimentos" 
+       E eu clico em editar <Estabelecimento> 
+       E eu preencho <Item> com <Descrição>
+   Então eu clico no botão "Gravar"
+       E eu devo deslogar do sistema    
 
-    Quando eu acesso o menu "Utilitários > Cadastros > Estabelecimentos"
-    Então eu devo ver o título "Estabelecimentos"
-    E eu clico no botão "Inserir"
-    Então eu devo ver o título "Inserir Estabelecimento"
-    E eu clico no botão "Gravar"
-    Então eu devo ver o alert do confirmar e clico no ok
-	E eu preencho campo pelo id "complementoCnpj" com "0002"
-    E eu clico no botão "Gravar"
-    Então eu devo ver o alert do valida campos e clico no ok
-    E eu clico no botão "Cancelar"
-    Então eu devo ver o título "Estabelecimentos"
+  Exemplos:
+    | Estabelecimento          | Item         | Descrição                   |
+    | "Estabelecimento Padrão" | "Nome"       | "Estabelecimento Matriz"    |
+    | "Estabelecimento Padrão" | "Logradouro" | "Avenida Washington Soares" |
+    | "Estabelecimento Padrão" | "Bairro"     | "Eng. Luciano Cavalcante"   |
 
-    E eu clico no botão "Inserir"
-    E eu devo ver o título "Inserir Estabelecimento"
-    E eu preencho "Nome" com "Fortes"
-    E eu preencho campo pelo id "complementoCnpj" com "0002"
-    E eu preencho o campo (JS) "CEP" com "60320-104"
-    E eu saio do campo "CEP"
-    E eu espero 4 segundos
-    Então o campo "Logradouro" deve conter "Rua Haroldo Torres"
-    E o campo "Estado" deve ter "CE" selecionado
-    E o campo "cidade" deve ter "Fortaleza" selecionado
-    E o campo "bairroNome" deve conter "São Gerardo"
-    E eu preencho "Nº" com "330"
-    E eu clico no botão "Gravar"
-    Então eu devo ver o título "Estabelecimentos"
+#------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    Quando eu clico em editar "Fortes"
-    Então o campo "Nome" deve conter "Fortes"
-    Quando eu preencho "Nome" com "Ente"
-    E eu clico no botão "Gravar"
-    Então eu devo ver o título "Estabelecimentos"
+Esquema do Cenario: Exclusão de Cadastro de Estabelecimentos
+    Dado que exista o estabelecimento "Filial São Paulo"
+    Dado que exista um ambiente "Cozinha" com o risco "Queimadura"
+    Dado que eu esteja logado com o usuário "SOS" 
+  Quando eu acesso o menu "Utilitários > Cadastros > Estabelecimentos" 
+       E eu clico em excluir <Estabelecimento> 
+   Então eu devo ver o alert "Confirma exclusão?" e clico no ok
+       E eu devo ver <Mensagem> 
+       E eu devo deslogar do sistema 
 
-    Então eu clico em excluir "Ente"
-    E eu devo ver o alert "Confirma exclusão?" e clico no ok
-    E eu devo ver "Estabelecimento excluído com sucesso."
-    Então eu não devo ver na listagem "Ente"
-    Então eu acesso o menu "Sair"
-    
+  Exemplos:
+    | Estabelecimento          | Mensagem                                                      |
+    | "Estabelecimento Padrão" | "Entidade estabelecimento possui dependências em ambiente."   |
+    | "Filial São Paulo"       | "Estabelecimento excluído com sucesso."                       |
+
+#------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Esquema do Cenario: Gerenciamento do Cadastro de Estabelecimentos
+    Dado que eu esteja logado com o usuário "SOS" 
+  Quando eu acesso o menu "Utilitários > Cadastros > Estabelecimentos" 
+       E eu clico no botão "Inserir" 
+       E eu preencho "Nome" com <Estabelecimento>
+       E eu preencho "Logradouro" com <Endereco>
+       E eu preencho "num" com <Num>
+       E eu seleciono "CE" de "Estado"
+       E eu preencho "Bairro" com <Bairro>  
+       E eu preencho campo pelo id "complementoCnpj" com <CNPJ>     
+   Então eu clico no botão "Gravar" 
+       E eu devo ver <Mensagem> 
+       E eu devo deslogar do sistema    
+
+  Exemplos:
+    | Estabelecimento | CNPJ     | Endereco             | Num    | Bairro                    | Mensagem                                  |
+    | "Matriz"        | "0000"   | "Rua Antonio Fortes" | "330"  | "Eng. Luciano Cavalcante" | "CNPJ já existe."                         |
+    | ""              | ""       | ""                   | ""     | ""                        | "Complemento do CNPJ deve ter 4 dígitos." |
+    | ""              | "0002"   | ""                   | ""     | ""                        | "Preencha os campos indicados."           |
+    | "Filial"        | "0002"   | ""                   | ""     | ""                        | "Preencha os campos indicados."           |
+    | "Filial"        | "0002"   | "Rua Antonio Fortes" | ""     | ""                        | "Preencha os campos indicados."           |
+    | "Filial"        | "0002"   | "Rua Antonio Fortes" | "330"  | ""                        | "Preencha os campos indicados."           |
+    | "Filial"        | "0002"   | "Rua Antonio Fortes" | "330"  | "Eng. Luciano Cavalcante" | ""                                        |

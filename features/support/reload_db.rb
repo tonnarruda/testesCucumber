@@ -4,7 +4,8 @@ require 'pg'
 $db_name = "fortesrh"
 
 def reload_db
-  puts "Limpando banco de dados, apagando todos os registros"
+  puts ""
+  puts "Executando a limpeza e apagando todos os registros do Banco de Dados."
   conn = nil
   begin
     conn = PGconn.connect( :dbname => $db_name, :user => 'postgres', :host => 'localhost' )
@@ -24,16 +25,15 @@ def reload_db
     end
 
     conn.exec("select alter_trigger(table_name, 'ENABLE') FROM information_schema.constraint_column_usage  where table_schema='public'  and table_catalog='#{$db_name}' group by table_name;")
-    
+    puts "A limpeza do Banco de Dados foi realizada com sucesso."
     popula_db conn
   ensure
     conn.finish if conn
   end
-  puts "Limpeza do banco de dados realizada com sucesso"
 end
 
 def popula_db conn
-    puts "Populando banco de dados com dados iniciais..."
+    puts "Aguarde.. Banco de dados sendo populado com os dados iniciais..."
     i = 0
     sql = "";
     File.readlines("./web/WEB-INF/metadata/create_data.sql").each do |linha|

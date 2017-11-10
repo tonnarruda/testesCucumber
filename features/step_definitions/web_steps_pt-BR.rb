@@ -27,6 +27,7 @@ end
 
 Dado(/^que eu esteja deslogado$/) do
   exec_sql "update parametrosdosistema set servidorremprot = 'FORTESAG'"
+  exec_sql "update empresa set acintegra = false;"
   page.execute_script("window.location = 'http://localhost:8080/fortesrh/logout.action'")
 end
 
@@ -44,6 +45,10 @@ end
 
 Dado(/^que eu desligue o colaborador "([^"]*)" na data "([^"]*)" com motivo de desligamento "([^"]*)"$/) do |colaborador_nome, data, motivo_nome|
   exec_sql "update colaborador set desligado = true, dataDesligamento = '#{data}', motivodemissao_id = (select id from motivodemissao  where motivo = '#{motivo_nome}') where nome = '#{colaborador_nome}';"
+end
+
+Dado(/^que a configuração de parentesco esteja ativa$/) do
+  exec_sql "update empresa set verificaparentesco = 'E';"
 end
 
 Quando(/^eu acesso "([^"]*)"$/) do |path|
@@ -66,9 +71,12 @@ end
 
 Então(/^eu devo deslogar do sistema$/) do
    exec_sql "update parametrosdosistema set servidorremprot = 'FORTESAG'"
-  page.execute_script("window.location = 'http://localhost:8080/fortesrh/logout.action'")
+   page.execute_script("window.location = 'http://localhost:8080/fortesrh/logout.action'")
 end
 
+Quando(/^eu clico em Esqueci minha senha$/) do |text|
+  page.execute_script("window.location = 'http://localhost:8080/fortesrh/acesso/usuario/prepareRecuperaSenha.action'")
+end
 
 Quando(/^eu clico no botão "([^"]*)"$/) do |text|
     find('.btn' + text).click
@@ -78,8 +86,21 @@ Quando(/^eu clico no botão novo "([^"]*)"$/) do |text|
    page.execute_script("$(\"button:contains('#{text}')\").click()")
 end
 
+Quando(/^eu clico no botão pesquisar na tela de liberar avaliação em lote$/) do
+  page.execute_script("$(\"span:contains('Liberar Avaliações em lote')\").parent().parent().find('.btnPesquisar').click()")  
+end
+
+Quando(/^eu clico em marcar todas as avaliações e liberar$/) do
+  page.execute_script("$('#formModalLiberar #mt').click()")
+  page.execute_script("$('#formModalLiberar .btnLiberar').click()")
+end
+
 Quando(/^eu clico no botão de Id "([^"]*)"$/) do |text|
     find('#' + text).click
+end
+
+Quando(/^eu clico selecione um fator de risco$/) do
+  find('#selecionarFator').click
 end
 
 Quando(/^eu clico no input de name  "([^"]*)"$/) do |text|
@@ -92,11 +113,26 @@ end
 
 Quando(/^eu clico em excluir "([^"]*)"$/) do |text|
   find(:xpath, "//td[contains(text(), '#{text}')]/../td/a/img[@title='Excluir']").click
-  #find(:xpath, "//td[text()='#{text}']/../td")
+end
+
+Quando(/^eu clico em participantes de "([^"]*)"$/) do |text|
+  find(:xpath, "//td[contains(text(), '#{text}')]/../td/a/img[@title='Participantes']").click
+end
+
+Quando(/^eu clico em remover colaboradores selecionados da coluna avaliados$/) do
+  page.execute_script("$('#avaliados').find('.remove').click()")
+end
+
+Quando(/^eu clico em remover colaboradores selecionados da coluna avaliadores$/) do
+  page.execute_script("$('#avaliadores').find('.remove').click()")
 end
 
 Quando(/^eu clico em editar "([^"]*)"$/) do |text|
   find(:xpath, "//td[contains(text(), '#{text}')]/../td/a/img[@title='Editar']").click
+end
+
+Quando(/^eu clico em contratar "([^"]*)"$/) do |text|
+  find(:xpath, "//td[contains(text(), '#{text}')]/../td/a/img[@title='Contratar']").click
 end
 
 Quando(/^eu clico no icone "([^"]*)" da linha contendo "([^"]*)"$/) do |acao, text|
@@ -439,6 +475,13 @@ Então(/^eu marco todos os itens padrões$/) do
   page.execute_script("$('#marcarTodosCandidato1').click()")
 end
 
+Então(/^eu marcos todos os colaboladores$/) do
+  page.execute_script("$('#formModal #mt').click()")
+end  
+
+Então(/^eu seleciono todos os avaliados$/) do
+  page.execute_script("$('#selecionarTodosAvaliado').click()")
+end  
 
 Dado(/^que exista o evento "([^"]*)"$/) do |nome_evento|
    insert :evento do
@@ -455,6 +498,7 @@ end
 Dado(/^que exista o estabelecimento "([^"]*)"$/) do |nome|
    insert :estabelecimento do
      nome nome
+     complementocnpj '0002'
      empresa :id => 1
    end
 end
@@ -688,6 +732,93 @@ Dado(/^que exista um usuario "([^"]*)"$/) do |usuario_nome|
    end
 end
 
+Dado(/^que exista um usuario "([^"]*)" associado a um empregado$/) do |usuario_nome|
+  insert :usuario do
+    nome usuario_nome
+    login usuario_nome
+    acessosistema true
+    superadmin false
+    senha 'MTIzNA=='
+    caixasmensagens '{"caixasDireita":["T","C","F","U"],"caixasEsquerda":["P","D","A","S"],"caixasMinimizadas":[]}'
+  end
+  insert :usuarioempresa do
+    usuario :nome => usuario_nome
+    perfil_id 1
+    empresa :id => 1
+  end
+  insert :colaborador do
+    nome 'colaborador_nome'
+    nomecomercial 'colaborador_nome'
+    dataadmissao '01/07/2011'
+    desligado false
+    conjugetrabalha true
+    qtdfilhos 0
+    sexo 'M'
+    cpf '12321362391'
+    logradouro 'Rua a'
+    numero '20'
+    cidade :nome => 'Fortaleza'
+    dataNascimento '01/01/2000'
+    pai 'José da Silva'
+    naointegraac false
+    deficiencia 'N'
+    respondeuentrevista true
+    empresa :nome => 'Empresa Padrão'
+    email 'teste@gmail.com'
+    ddd '99'
+    foneFixo '99998888'
+    escolaridade '12'
+    estadocivil '03'
+    vinculo 'E'
+    uf_id 1
+    pis '12345678919'
+    usuario_id 3
+  end
+end
+
+Dado(/^que exista um usuario "([^"]*)" sem senha, associado a um empregado$/) do |usuario_nome|
+  insert :usuario do
+    nome usuario_nome
+    login usuario_nome
+    acessosistema true
+    superadmin false
+    caixasmensagens '{"caixasDireita":["T","C","F","U"],"caixasEsquerda":["P","D","A","S"],"caixasMinimizadas":[]}'
+  end
+  insert :usuarioempresa do
+    usuario :nome => usuario_nome
+    perfil_id 1
+    empresa :id => 1
+  end
+  insert :colaborador do
+    nome 'colaborador_nome'
+    nomecomercial 'colaborador_nome'
+    dataadmissao '01/07/2011'
+    desligado false
+    conjugetrabalha true
+    qtdfilhos 0
+    sexo 'M'
+    cpf '34425164555'
+    logradouro 'Rua a'
+    numero '20'
+    cidade :nome => 'Fortaleza'
+    dataNascimento '01/01/2000'
+    pai 'José da Silva'
+    naointegraac false
+    deficiencia 'N'
+    respondeuentrevista true
+    empresa :nome => 'Empresa Padrão'
+    email 'teste@gmail.com'
+    ddd '99'
+    foneFixo '99998888'
+    escolaridade '12'
+    estadocivil '03'
+    vinculo 'E'
+    uf_id 1
+    pis '12345678919'
+    usuario_id 4
+  end
+end
+
 Dado(/^que exista um curso "([^"]*)"$/) do |curso_nome|
    insert :curso do
      nome curso_nome
@@ -767,6 +898,13 @@ Dado(/^que exista um ambiente "([^"]*)" com o risco "([^"]*)"$/) do |ambiente_no
    end
 end
 
+Dado(/^que exista um risco "([^"]*)"$/) do |risco_descricao|
+  insert :risco do
+    descricao risco_descricao
+    empresa :nome => 'Empresa Padrão'
+ end
+end 
+
 Dado(/^que exista o EPI "([^"]*)" da categoria "([^"]*)"$/) do |epi_nome, tipoepi_nome|
   insert :tipoepi do
     nome tipoepi_nome
@@ -797,6 +935,7 @@ Dado(/^que exista um candidato "([^"]*)"$/) do |candidato_nome|
     senha 'MTIzNA=='
     conjugetrabalha true
     sexo 'M'
+    pai 'José da Silva'
     blacklist false
     colocacao 'E'
     contratado false
@@ -921,11 +1060,12 @@ Dado(/^que exista um colaborador "([^"]*)", da area "([^"]*)", com o cargo "([^"
     numero '20'
     cidade :nome => 'Fortaleza'
     dataNascimento '01/01/2000'
+    pai 'José da Silva'
     naointegraac false
     deficiencia 'N'
     respondeuentrevista true
     empresa :nome => 'Empresa Padrão'
-    email 'samuelpinheiroce@gmail.com'
+    email 'teste@gmail.com'
     ddd '99'
     foneFixo '99998888'
     escolaridade '12'
@@ -978,6 +1118,20 @@ Dado(/^que exista um novo historico para o colaborador "([^"]*)", na area "([^"]
   end
 end
 
+
+Dado(/^que exista um novo historico por indice para o colaborador "([^"]*)" na faixa salarial "([^"]*)"$/) do |colaborador_nome, faixasalarial_nome|
+  insert :historicocolaborador do
+    data '20/06/2016'
+    colaborador :nome => colaborador_nome
+    faixasalarial :nome => faixasalarial_nome
+    estabelecimento :id => 1
+    motivo 'S'
+    tiposalario 2
+    indice :id => 1
+    status 1
+  end
+end
+
 Dado(/^que exista um extintor localizado em "([^"]*)"$/) do |extintor_localizacao|
   insert :extintor do
     numerocilindro 123
@@ -991,6 +1145,81 @@ Dado(/^que exista um extintor localizado em "([^"]*)"$/) do |extintor_localizaca
     localizacao extintor_localizacao
     data '24/11/2011'
     extintor :numerocilindro => 123
+  end
+end
+
+Dado(/^que exista um exame "([^"]*)"$/) do |exame_nome|
+  insert :exame do
+    nome exame_nome
+    periodicidade 12
+    periodico true
+    empresa :nome => 'Empresa Padrão'
+  end
+end
+
+Dado(/^que exista ums solicitação de exame para o colaborador "([^"]*)"$/) do |colaborador_nome|
+  insert :colaborador do
+    nome colaborador_nome
+    nomecomercial colaborador_nome
+    dataadmissao '01/07/2011'
+    desligado false
+    conjugetrabalha true
+    qtdfilhos 0
+    sexo 'M'
+    cpf '12321362391'
+    logradouro 'Rua a'
+    numero '20'
+    cidade :nome => 'Fortaleza'
+    dataNascimento '01/01/2000'
+    pai 'José da Silva'
+    naointegraac false
+    deficiencia 'N'
+    respondeuentrevista true
+    empresa :nome => 'Empresa Padrão'
+    email 'teste@gmail.com'
+    ddd '99'
+    foneFixo '99998888'
+    escolaridade '12'
+    estadocivil '03'
+    vinculo 'E'
+    uf_id 1
+    pis '12345678919'
+  end
+
+  insert :solicitacaoexame do
+    data '01/11/2017'
+    motivo 'CONSULTA'
+    colaborador_id 1
+    medicocoordenador_id 1
+    empresa_id 1
+  end
+
+  insert :examesolicitacaoexame do
+    periodicidade 12
+    exame_id 4 
+    solicitacaoexame_id 1
+  end  
+end
+
+Dado(/^que exista uma inspeção para o extintor localizado em "([^"]*)"$/) do |extintor_localizacao|
+  insert :extintor do
+    numerocilindro 12578
+    tipo '1'
+    ativo true
+    empresa :nome => 'Empresa Padrão'
+  end
+
+  insert :historicoextintor do
+    estabelecimento :nome => 'Estabelecimento Padrão'
+    localizacao extintor_localizacao
+    data '24/11/2011'
+    extintor :numerocilindro => 12578
+  end
+
+  insert :extintorinspecao do
+    id 1
+    data '31/12/2012'
+    extintor :numerocilindro => 12578
   end
 end
 
@@ -1011,6 +1240,22 @@ Dado(/^que exista uma funcao "([^"]*)"$/) do |funcao_nome|
   insert :historicoFuncao do
     data '01/07/2010'
     funcaoNome funcao_nome
+    funcao :nome => funcao_nome
+  end
+end
+
+Dado(/^que exista um histórico para a funcao "([^"]*)"$/) do |funcao_nome|
+  insert :historicofuncao do
+    data '01/10/2017'
+    descricao 'Descrição da Função'
+    funcao :nome => funcao_nome
+  end
+end
+
+Dado(/^que exista um histórico para a funcao "([^"]*)" na data "([^"]*)"$/) do |funcao_nome, data_historico|
+  insert :historicofuncao do
+    data data_historico
+    descricao 'Descrição da Função'
     funcao :nome => funcao_nome
   end
 end
@@ -1039,7 +1284,6 @@ Dado(/^que exista um modelo de ficha medica "([^"]*)" com a pergunta "([^"]*)"$/
   end
 end
 
-
 Dado(/^que exista uma solicitacao "([^"]*)" para área "([^"]*)" na faixa "([^"]*)"$/) do |solicitacao_nome, area_nome, faixa_nome|
   insert :solicitacao do
     quantidade 1
@@ -1052,6 +1296,19 @@ Dado(/^que exista uma solicitacao "([^"]*)" para área "([^"]*)" na faixa "([^"]
     faixasalarial :faixasalarial, :nome => faixa_nome
   end
 end
+
+Dado(/^que exista uma solicitacao "([^"]*)" com o motivo "([^"]*)"$/) do |solicitacao_nome, motivo_nome|
+  insert :solicitacao do
+    quantidade 1
+    encerrada false
+    suspensa false
+    empresa :id => 1
+    descricao solicitacao_nome
+    status 'A'
+    motivosolicitacao :motivosolicitacao, :descricao => motivo_nome
+  end
+end
+
 
 Dado(/^que exista um afastamento "([^"]*)"$/) do |afastamento_descricao|
   insert :afastamento do
@@ -1070,6 +1327,13 @@ end
 Dado(/^que exista uma habilidade "([^"]*)"$/) do |habilidade_nome|
   insert :habilidade do
     nome habilidade_nome
+    empresa :id => 1
+  end 
+end
+
+Dado(/^que exista a atitude "([^"]*)"$/) do |atitude_nome|
+  insert :atitude do
+    nome atitude_nome
     empresa :id => 1
   end
 end
@@ -1161,6 +1425,15 @@ Dado(/^que exista uma connfiguracao de nivel de competencia "([^"]*)" no conheci
   end
 end
 
+Dado(/^que exista uma configuracao de nivel de competencia "([^"]*)" na atitude "([^"]*)" para a faixa salarial "([^"]*)"$/) do |nivelcompetencia_descricao, atitude_nome, faixasalarial_nome|
+  insert :configuracaonivelcompetencia do
+    nivelcompetencia :nivelcompetencia, :descricao => nivelcompetencia_descricao
+    faixasalarial :faixasalarial, :nome => faixasalarial_nome
+    competencia :competencia, :nome => atitude_nome
+    tipocompetencia 'A'
+  end
+end
+
 Dado(/^que exista um periodo de experiencia "([^"]*)" de (\d+) dias$/) do |periodo_descricao, periodo_dias|
   insert :periodoexperiencia do
     descricao periodo_descricao
@@ -1204,6 +1477,15 @@ end
 Dado(/^que exista um documento "([^"]*)"$/) do |documento_nome|
     insert :tipodocumento do
     descricao documento_nome
+  end
+end
+
+Dado(/^que exista um clínica\(médico\) "([^"]*)"$/) do |clinica_nome|
+  insert :clinicaautorizada do
+    nome clinica_nome
+    tipo '02'
+    data '01/01/2017'
+    empresa :id => 1
   end
 end
 
@@ -1277,3 +1559,76 @@ end
 Dado(/^que a configuração do captcha esteja ativa$/) do
   exec_sql "update parametrosdosistema set utilizarcaptchanologin = true"
 end
+
+Dado(/^que existam "([^"]*)" colaboradores, na area "([^"]*)", com o cargo "([^"]*)" e a faixa salarial "([^"]*)"$/) do |qtd_colaborador, areaorganizacional_nome, cargo_nome, faixasalarial_nome| 
+  insert :areaorganizacional do
+    nome areaorganizacional_nome
+    empresa :nome => 'Empresa Padrão'
+    ativo true
+  end
+
+  insert :cargo do
+    nome cargo_nome
+    nomemercado cargo_nome
+    empresa :nome => 'Empresa Padrão'
+  end
+
+  insert :faixasalarial do
+    nome faixasalarial_nome
+    cargo :nome => cargo_nome
+  end  
+  
+  $i = 0
+  $num = qtd_colaborador.to_i
+  
+  while $i < $num  do
+    insert :colaborador do
+      nome "Colaborador Teste #$i"
+      nomecomercial "Colaborador Teste #$i"
+      dataadmissao '01/07/2011'
+      desligado false
+      conjugetrabalha true
+      qtdfilhos 0
+      sexo 'M'
+      cpf '12321362391'
+      logradouro 'Rua a'
+      numero '20'
+      cidade :nome => 'Fortaleza'
+      dataNascimento '01/01/2000'
+      pai 'José da Silva'
+      naointegraac false
+      deficiencia 'N'
+      respondeuentrevista true
+      empresa :nome => 'Empresa Padrão'
+      email 'samuelpinheiroce@gmail.com'
+      ddd '99'
+      foneFixo '99998888'
+      escolaridade '12'
+      estadocivil '03'
+      vinculo 'E'
+      uf_id 1
+      pis '12345678919'
+    end
+  
+    insert :historicocolaborador do
+      data '01/07/2011'
+      colaborador :nome => "Colaborador Teste #$i"
+      faixasalarial :nome => faixasalarial_nome
+      areaorganizacional :nome => areaorganizacional_nome
+      estabelecimento :id => 1
+      motivo 'C'
+      tiposalario 3
+      salario 1000
+      status 1
+    end
+     $i +=1
+  end
+end
+
+#Dado(/^que exista um motivo de solicitação de pessoal "([^"]*)"$ com a configuração de alerta marcado/) do |motivo_nome|
+#  insert :motivosolicitacao do
+#    descricao motivo_nome
+#    turnover false
+#    considerarqtdcolaboradoresporcargo true
+#   end
+#end

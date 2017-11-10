@@ -1,7 +1,7 @@
 # language: pt
 
 Funcionalidade: Cadastrar Modelos de Avaliação de Desempenho/Acompanhamento do Per. de Experiência
-
+          
   Cenário: Cadastro de Modelos de Avaliação de Desempenho/Acompanhamento do Per. de Experiência
     Dado que exista um colaborador "Paula", da area "Desenvolvimento", com o cargo "Desenvolvedor" e a faixa salarial "3"
     Dado que exista um colaborador "Samuel", da area "Desenvolvimento1", com o cargo "Desenvolvedor1" e a faixa salarial "2"
@@ -93,3 +93,6 @@ Funcionalidade: Cadastrar Modelos de Avaliação de Desempenho/Acompanhamento do
     E eu clico no botão "Gravar"
     E eu devo ver "Respostas gravadas com sucesso."
     Entao eu devo ver "100%"
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------
+

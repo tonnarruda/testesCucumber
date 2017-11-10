@@ -61,13 +61,6 @@ Funcionalidade: Cadastrar Colaborador
         E eu clico no botão de Id "frmIdioma_0"
         E eu preencho "Curso" com "Contabilidade Geral"
     Então eu clico no botão de Id "avancar"
-        #E eu clico no botão de class "btnInserir grayBG"
-#       E eu preencho "Empresa" com "Fortes Tecnologia"
-#       E eu preencho campo pelo id "contatoEmpresa" com "8540051111"
-#       E eu seleciono "Desenvolvedor" de "Cargo"
-#       E eu preencho o campo (JS) "Data de Admissão" com "08/09/2008"
-#       E eu preencho "Observações" com "Nada a declarar"
-#       E eu clico no botão de Id "frmExperiencia_0"
         E eu clico no botão "Gravar"
         E eu devo ver "Colaborador Boris Johnson cadastrado com sucesso."
 
@@ -250,7 +243,7 @@ Funcionalidade: Cadastrar Colaborador
          E eu devo ver o alert "Layout do relatório salvo com sucesso." e clico no ok
 
 #------------------------------------------------------------------------------------------------------------------------
-  @teste
+  
   Cenário: Pesquisar Colaboradores
      Dado que exista um colaborador "Theresa May", da area "Financeiro", com o cargo "Contador" e a faixa salarial "I"
      Dado que exista um colaborador "Tony Blair", da area "Desenvolvimento", com o cargo "Diretor de Produto" e a faixa salarial "II"
@@ -259,7 +252,6 @@ Funcionalidade: Cadastrar Colaborador
      Dado que eu desligue o colaborador "Ellen Pompeo" na data "25/04/2017" com motivo de desligamento "Redução de Quadro"
      Dado que eu esteja logado com o usuário "SOS"
     Então eu acesso o menu "Info. Funcionais > Cadastros > Colaboradores"
-        #E eu clico "Exibir Filtro"
         E eu seleciono "Desligado" de "Situação"
         E eu clico no botão "Pesquisar"
         E eu devo ver "Ellen Pompeo"
@@ -274,18 +266,40 @@ Funcionalidade: Cadastrar Colaborador
         E eu clico no botão "Pesquisar"
         E eu devo ver "Theresa May"
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-
+ #------------------------------------------------------------------------------------------------------------------------   
+  
+Cenário: Cadastro Colaborador - Validar mensagem de parentesco
+     Dado que exista um colaborador "João Mendes", da area "Desenvolvimento", com o cargo "DevOps" e a faixa salarial "II"
+     Dado que a configuração de parentesco esteja ativa
+     Dado que eu esteja logado com o usuário "SOS"
+    Então eu acesso o menu "Info. Funcionais > Cadastros > Colaboradores"
+        E eu clico no botão "Inserir"
+    Então eu preencho "Nome" com "Boris Johnson"
+        E eu preencho "Nome Comercial" com "Boris Johnson"
+        E eu preencho o campo (JS) "Nascimento" com "01/01/1987"
+        E eu preencho o campo (JS) "CPF" com "123.213.623-91"
+        E eu preencho "Logradouro" com "Avenida João Pessoa"
+        E eu preencho "num" com "4901"
+        E eu seleciono "CE" de "Estado"
+        E eu seleciono "Fortaleza" de "Cidade"
+        E eu preencho "E-mail" com "email@teste.com.br"
+		E eu preencho o campo pelo name "colaborador.contato.ddd" com "85"       
+        E eu preencho "Telefone" com "88438383"
+        E eu seleciono "Doutorado completo" de "Escolaridade"
+        E eu preencho "Nome do Pai" com "José da Silva"
+        E eu saio do campo "Nome do Pai"
+        E eu devo ver "Verificação de Parentesco"
+        E eu clico no botão novo "Fechar"
+    Então eu clico "Dados Funcionais"
+        E eu preencho o campo (JS) "Admissão" com "21/12/2010"
+        E eu saio do campo "Admissão"
+        E eu seleciono "Estabelecimento Padrão" de "Estabelecimento"
+        E eu seleciono (JS) "1" de "areaOrganizacional"
+        E eu seleciono "DevOps II" de "Cargo/Faixa"
+        E eu seleciono "Por valor" de "Salário Proposto"
+        E eu preencho "Valor" com "4000,00"
+    Então eu clico "Documentos"
+     	E eu preencho o campo (JS) "pis" com "12345678919"
+        E eu clico no botão "Gravar"
+        E eu clico no botão novo "Gravar"
+        E eu devo ver "Colaborador Boris Johnson cadastrado com sucesso."

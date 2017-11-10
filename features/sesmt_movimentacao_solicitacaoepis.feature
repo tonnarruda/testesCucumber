@@ -83,7 +83,7 @@ Funcionalidade: Gerenciamento de EPIs
          E eu devo ver o título "Entrega/Devolução de EPIs"
 
 #------------------------------------------------------------------------------------------------------------------------
-@teste
+
   Cenário: Entrega de EPI Solicitado com quantidade superior a solicitada
      Dado que exista o EPI "Bota" da categoria "Proteção_Membro_Inferior"
      Dado que exista o EPI "Luvas" da categoria "Proteção_Membro_Superior"

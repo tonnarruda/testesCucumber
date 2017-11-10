@@ -137,7 +137,6 @@ Funcionalidade: Cadastrar Cargos e Faixas
 #------------------------------------------------------------------------------------------------------------------------
   @erro
   Cenário: Exclusao do cadastro de Cargo e Faixa associado ao Empregado
-
       Dado que exista um colaborador "Tony Blair", da area "Desenvolvimento", com o cargo "Desenvolvedor Java" e a faixa salarial "1 A"
       Dado que eu esteja logado com o usuário "SOS"
 

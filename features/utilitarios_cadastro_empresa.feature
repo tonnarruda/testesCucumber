@@ -2,11 +2,9 @@
 
 Funcionalidade: Cadastrar Empresa
 
-  Cenário: Empresa
-    Dado que exista um curso "tdd"
-	
+  Cenário: Gerenciamento de Cadastro de Empresas
+    Dado que exista um curso "tdd"	
     Dado que eu esteja logado com o usuário "SOS"
-
     Quando eu acesso o menu "Utilitários > Cadastros > Empresas"
     Então eu devo ver o título "Empresas"
     E eu clico no botão "Inserir"
@@ -39,9 +37,17 @@ Funcionalidade: Cadastrar Empresa
     E eu clico no botão "Gravar"
     Então eu devo ver o título "Empresas"
 
-    Então eu clico em excluir "ente"
-    E eu devo ver o alert "Deseja realmente excluir a empresa?" e clico no ok
-    E eu devo ver "Empresa excluída com sucesso."
-    Então eu não devo ver na listagem "ente"
+#-----------------------------------------------------------------------------------------------------------------------
 
+  Esquema do Cenario: Excluir Empresa
+      Dado que exista uma empresa "Ente Tecnologia"
+      Dado que eu esteja logado com o usuário "SOS"
+    Quando eu acesso o menu "Utilitários > Cadastros > Empresas"
+     Então eu clico em excluir <Empresa> 
+     E eu devo ver o alert "Deseja realmente excluir a empresa?" e clico no ok 
+     E eu devo ver <Mensagem> 
 
+  Exemplos:
+    | Empresa           | Mensagem                                                  |
+    | "Ente Tecnologia" | "Empresa excluída com sucesso."                           |
+    | "Empresa Padrão"  | "Não é possível excluir a empresa cujo você esta logado." |

@@ -1,40 +1,68 @@
 # language: pt
 
-Funcionalidade: Cadastrar Atitudes
+Funcionalidade: Gerenciamento do Cadastro de Atitudes
 
-  Cenário: Cadastro de Atitudes
-    Dado que eu esteja logado com o usuário "SOS"
-    Dado que exista a área organizacional "Administração"
-    Dado que exista a área organizacional "Administração > Desenvolvimento"
+Esquema do Cenario: Cadastro de Atitude
+      Dado que exista a área organizacional "Administração"
+      Dado que eu esteja logado com o usuário "SOS"
+    Quando eu acesso o menu "C&S > Cadastros > Atitudes" 
+     Então  eu clico no botão "Inserir"  
+         E eu preencho "Nome" com <Atitude>
+         E eu marco <Lotação>
+         E eu preencho "Observação" com <Observação>
+     Então eu clico no botão "Gravar"
+         E eu devo ver <Mensagem>
 
+Exemplos:
+    | Atitude       | Observação                                                          | Lotação         | Mensagem                        |
+    | ""            | ""                                                                  | ""              | "Preencha os campos indicados." |
+    | "Organização" | "Será exigido que o Candidato/Colaborador seja bastante organizado" | "Administração" | "Atitudes"                      |
+
+#----------------------------------------------------------------------------------------------------------------------------------------------------
+
+  Cenário: Edição de Atitudes
+      Dado que exista a área organizacional "Administração"
+      Dado que exista a área organizacional "Administração > Desenvolvimento"
+      Dado que exista a atitude "Organizdo"
+      Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "C&S > Cadastros > Atitudes"
-    Então eu devo ver o título "Atitudes"
-    E eu clico no botão "Inserir"
-    Então eu devo ver o título "Inserir Atitude"
-    E eu clico no botão "Gravar"
-    Então eu devo ver o alert do valida campos e clico no ok
-    E eu clico no botão "Cancelar"
-    Então eu devo ver o título "Atitudes"
+     Entao eu clico em editar "Organizdo"
+         E eu devo ver o título "Editar Atitude"
+         E eu preencho "Nome" com "Organizado"
+         E eu marco "Administração > Desenvolvimento"
+     Então eu clico no botão "Gravar"
 
-    Então eu clico no botão "Inserir"
-    E eu devo ver o título "Inserir Atitude"
-    E eu preencho "Nome" com "_Organização"
-    E eu marco "Administração"
-    E eu preencho "Observação" com "_muito organizado"
-    E eu clico no botão "Gravar"
-    E eu devo ver o título "Atitudes"
-    E eu devo ver "_Organização"
+#----------------------------------------------------------------------------------------------------------------------------------------------------
 
-    Entao eu clico em editar "_Organização"
-    E eu devo ver o título "Editar Atitude"
-    E o campo "Nome" deve conter "_Organização"
-    E eu preencho "Nome" com "_Responsabilidade"
-    E eu desmarco "Administração"
-    E eu marco "Administração > Desenvolvimento"
-    E eu clico no botão "Gravar"
-    E eu devo ver o título "Atitudes"
+  Esquema do Cenario: Exclusão de Cadastro de Atitude
+      Dado que exista um nivel de competencia "Bom"
+      Dado que exista um historico de nivel de competencia na data "01/01/2010"
+      Dado que exista uma configuracao de nivel de competencia com nivel "Bom" no historico do nivel de data "01/01/2010" na ordem 1
+      Dado que exista a área organizacional "Administração"
+      Dado que exista o cargo "Quality Assurance" na área organizacional "Administração"
+      Dado que exista o cargo "Desenvolvedor" na área organizacional "Administração"
+      Dado que exista o cargo "Gerente de Produto" na área organizacional "Administração"
+      Dado que haja uma faixa salarial com id 3, nome "II", cargo_id 3
+      Dado que exista a atitude "Organização"
+      Dado que exista a atitude "Persistencia"
+      Dado que exista a atitude "Resiliencia"
+      Dado que exista uma configuracao de nivel de competencia "Bom" na atitude "Resiliencia" para a faixa salarial "II"
+      Dado que eu esteja logado com o usuário "SOS"
+    Quando eu acesso o menu "C&S > Cadastros > Atitudes"
+     Entao eu clico em editar "Organização"
+         E eu marco "Administração"
+     Então eu clico no botão "Gravar"
+    Quando eu acesso o menu "C&S > Cadastros > Cargos e Faixas"
+         E eu clico em editar "Desenvolvedor"
+         E eu marco o checkbox com name "atitudesCheck"       
+         E eu clico no botão "Gravar"
+    Quando eu acesso o menu "C&S > Cadastros > Atitudes"     
+         E eu clico em excluir <Atitude>
+         E eu devo ver o alert do confirmar exclusão e clico no ok
+     Então eu devo ver <Mensagem>
 
-    Então eu clico em excluir "_Responsabilidade"
-    E eu devo ver o alert do confirmar exclusão e clico no ok
-    Então eu devo ver "Atitude excluída com sucesso."
-    E eu não devo ver "_Responsabilidade"
+Exemplos:
+    | Atitude        | Mensagem                                                                                                          |
+    | "Organização"  | "Não foi possível excluir a atitude."                                                                             |
+    | "Persistencia" | "Atitude excluída com sucesso."                                                                                   |
+    | "Resiliencia"  | "Não é possível excluir esta atitude pois possui dependência com o nível de competencia do cargo/faixa salarial." |

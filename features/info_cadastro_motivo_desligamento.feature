@@ -78,23 +78,18 @@ Funcionalidade: Motivos de Desligamento
 
 #---------------------------------------------------------------------------------------------------------
 
-  Cenário: Excluir Cadastro de Motivos de Desligamento vinculados a empregados
+  Esquema do Cenario: Excluir Cadastro de Motivos de Desligamento
        Dado que exista um motivo de desligamento "Sem Justa Causa"
+       Dado que exista um motivo de desligamento "Redução de Quadro"
        Dado que exista um colaborador "Ellen Pompeo", da area "Desenvolvimento", com o cargo "Product Owner" e a faixa salarial "A"
        Dado que eu desligue o colaborador "Ellen Pompeo" na data "29/05/2017" com motivo de desligamento "Sem Justa Causa"
        Dado que eu esteja logado com o usuário "SOS"
      Quando eu acesso o menu "Info. Funcionais > Cadastros > Motivos de Desligamento"
-       Entao eu clico em excluir "Sem Justa Causa"
+       Entao eu clico em excluir <motivo_nome>
           E eu devo ver o alert do confirmar exclusão e clico no ok
-          E eu devo ver "Entidade motivo de demissão possui dependências em colaborador."
+          E eu devo ver <mensagem_nome>   
 
-
-
-
-
-
-
-
-
-
-
+  Exemplos:
+    | motivo_nome         | mensagem_nome                                                       |
+    | "Redução de Quadro" | "Motivo de desligamento excluído com sucesso."                      |
+    | "Sem Justa Causa"   | "Entidade motivo de demissão possui dependências em colaborador."   |

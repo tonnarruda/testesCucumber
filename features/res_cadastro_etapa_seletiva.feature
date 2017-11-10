@@ -49,9 +49,8 @@ Funcionalidade: Gerenciamento Cadastral da Etapa Seletiva
      Então eu devo ver "Etapa Seletiva excluída com sucesso."            
 
   #------------------------------------------------------------------------------------------------------------------------
-
+@teste
   Cenário: Exclusão do cadastro de Etapa Seletiva Associada a Solicitação de Pessoal
-
       Dado que exista o cargo "QA Engineer"                                                                       
       Dado que haja uma faixa salarial com id 1, nome "I", cargo_id 1                                             
       Dado que exista um candidato "Tony Blair"        

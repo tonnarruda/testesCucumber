@@ -2,6 +2,42 @@
 
 Funcionalidade: Extintor
 
+  Esquema do Cenario: Cadastro de Extintores
+      Dado que eu esteja logado com o usuário "SOS"
+    Quando eu acesso o menu "SESMT > Cadastros > Extintores"
+         E eu clico no botão "Inserir"
+     Então eu seleciono <Estabelecimento> de "Estabelecimento"
+         E eu seleciono <Tipo> de "Tipo"
+         E eu preencho "Localização" com <Local>
+         E eu preencho "Fabricante" com <Fabricante>
+     Então eu clico no botão "Gravar"
+         E eu devo ver <Mensagem>  
+
+  Exemplos:
+    | Estabelecimento           | Tipo                                | Local    | Fabricante  | Mensagem                        |
+    | "Selecione..."            | "Selecione..."                      | ""       | ""          | "Preencha os campos indicados." |
+    | "Estabelecimento Padrão"  | "Selecione..."                      | ""       | ""          | "Preencha os campos indicados." |
+    | "Estabelecimento Padrão"  | "AP - Água Pressurizada (Classe A)" | ""       | ""          | "Preencha os campos indicados." |
+    | "Estabelecimento Padrão"  | "AP - Água Pressurizada (Classe A)" | "Escada" | "Extinfogo" | "Extintor gravado com sucesso." |
+
+
+@teste
+  Esquema do Cenario: Excluir de Extintores
+      Dado que exista uma inspeção para o extintor localizado em "Escada"
+      Dado que exista um extintor localizado em "Copa"
+      Dado que eu esteja logado com o usuário "SOS"
+    Quando eu acesso o menu "SESMT > Cadastros > Extintores"
+         E eu clico em excluir <Extintor>
+         E eu devo ver o alert do confirmar exclusão e clico no ok
+         E eu devo ver <Mensagem>  
+
+  Exemplos:
+    | Extintor | Mensagem                                                         |
+    | "Escada" | "Entidade extintor possui dependências em inspeção do extintor." |
+    | "Copa"   | "Extintores"                                                     |
+
+
+
   Cenário: Cadastro de Extintor
     Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "SESMT > Cadastros > Extintores"

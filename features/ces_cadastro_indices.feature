@@ -1,7 +1,7 @@
 # language: pt
 
 Funcionalidade: Cadastrar Índices
-
+   
   Cenário: Cadastro de Índices | Valida Campos Obrigatórios
       Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "C&S > Cadastros > Índices"
@@ -50,15 +50,23 @@ Funcionalidade: Cadastrar Índices
 
 #----------------------------------------------------------------------------------------------------------------------------------
 
-   Cenário: Cadastro de Índices | Exclusão do índice
-      Dado que exista um indice "Salário Mínimo do Brasil" com historico na data "01/10/2000" e valor "3000"
-      Dado que eu esteja logado com o usuário "SOS"
-    Quando eu acesso o menu "C&S > Cadastros > Índices"
-         E eu clico em excluir "Salário Mínimo do Brasil"
+  Esquema do Cenario: Exclusão de Indices    
+    Dado que exista um indice "Salário Mínimo" com historico na data "01/10/2000" e valor "1000"
+    Dado que exista um colaborador "Theresa May", da area "Financeiro", com o cargo "Contador" e a faixa salarial "I"
+    Dado que exista um novo historico por indice para o colaborador "Theresa May" na faixa salarial "I"
+    Dado que exista um indice "Salário Aprendizes" com historico na data "01/10/2000" e valor "900"
+    Dado que eu esteja logado com o usuário "SOS"
+  Quando eu acesso o menu "C&S > Cadastros > Índices"
+       E eu clico em excluir <Indice>
          E eu devo ver o alert do confirmar exclusão e clico no ok
-     Então eu devo ver "Índice excluído com sucesso." 
+     Então eu devo ver <mensagem> 
          E eu devo deslogar do sistema
 
+  Exemplos:
+    | Indice               |  mensagem                                                           |
+    | "Salário Aprendizes" |  "Índice excluído com sucesso."                                     |
+    | "Salário Mínimo"     |  "Entidade índice possui dependências em histórico do colaborador." |
+  
 #----------------------------------------------------------------------------------------------------------------------------------
 
   Cenário: Cadastro de Índices | Integrado com o Pessoal

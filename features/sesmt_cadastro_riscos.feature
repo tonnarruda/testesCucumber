@@ -1,46 +1,48 @@
 # language: pt
 
 Funcionalidade: Riscos
-
-  Cenário: Cadastro de Riscos
-    Dado que eu esteja logado com o usuário "SOS"
+#Refatorar todo o teste
+#Alterar Teste de geração do PPP quando existe um risco na SEP e não existe medição de risco (Config da empresa  por Ambiente)
+#Alterar Teste de geração do PPP quando existe um risco na SEP (Config da empresa por Função)
+  Esquema do Cenario: Cadastro de Riscos  
+      Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "SESMT > Cadastros > Riscos"
-    Então eu devo ver o título "Riscos"
-    E eu clico no botão "Inserir"
-    Então eu devo ver o título "Inserir Risco"
-    E eu clico no botão "Gravar"
-    Então eu devo ver o alert do valida campos e clico no ok
-    E eu clico no botão "Cancelar"
+         E eu clico no botão "Inserir"
+         E eu devo ver "Ajuda eSocial"
+         E eu clico no botão do dialog "Fechar"
+     Então eu preencho "Nome" com <Risco>
+         E eu seleciono <TipoEsocial> de "Tipo de Risco eSocial"
+     Então eu clico selecione um fator de risco    
+         E eu clico no botão "Gravar"
+     Então eu devo ver <Mensagem>    
 
-    Então eu devo ver o título "Riscos"
-    E eu clico no botão "Inserir"
-    E eu preencho "Nome" com "choque"
-    E eu seleciono "Físico" de "Tipo de Risco"
-    E eu clico no botão "Gravar"
-    Então eu devo ver o título "Riscos"
-    Então eu devo ver "choque"
+  Exemplos:
+    | Risco      | Tipo             | Mensagem                        |
+    | ""         | "[Selecione...]" | "Preencha os campos indicados." |
+    | "Queda"    | "Físico"         | "Riscos"                        |
 
-    Entao eu clico em editar "choque"
-    E eu devo ver o título "Editar Risco"
-    E o campo "Nome" deve conter "choque"
-    E eu preencho "Nome" com "queda"
-    E eu clico no botão "Gravar"
-    Então eu devo ver o título "Riscos"
-    Então eu devo ver "queda"
+#-----------------------------------------------------------------------------------------------------------------
 
-    Então eu clico em excluir "queda"
-    E eu devo ver o alert do confirmar exclusão e clico no ok
-    E eu devo ver "Risco excluído com sucesso."
-    Então eu não devo ver na listagem "queda"
+  Esquema do Cenario: Exclusão de Cadastro de Riscos  
+      Dado que exista um risco "Queimadura"
+      Dado que exista um ambiente "Cozinha" com o risco "Queda"
+      Dado que eu esteja logado com o usuário "SOS"
+    Quando eu acesso o menu "SESMT > Cadastros > Riscos"
+     Entao eu clico em excluir <Risco>
+         E eu devo ver o alert do confirmar exclusão e clico no ok
+         E eu devo ver <Mensagem>
 
+  Exemplos:
+    | Risco        | Mensagem                                                                       |
+    | "Queimadura" | "Risco excluído com sucesso."                                                  |
+    | "Queda"      | "O risco não pode ser excluído, pois possui dependência com outros cadastros." |    
 
+#-----------------------------------------------------------------------------------------------------------------
 
-
-
-
-
-
-
-
-
-
+  Cenário: Edição do Cadastro de Riscos
+      Dado que exista um risco "Queimadura"
+      Dado que eu esteja logado com o usuário "SOS"
+    Quando eu acesso o menu "SESMT > Cadastros > Riscos"
+     Entao eu clico em editar "Queimadura"
+         E eu preencho "Nome" com "Queimadura Grave"
+         E eu clico no botão "Gravar"
