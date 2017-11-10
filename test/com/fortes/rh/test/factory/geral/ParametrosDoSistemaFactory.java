@@ -19,6 +19,7 @@ public class ParametrosDoSistemaFactory
 		parametrosDoSistema.setCompartilharColaboradores(true);
 		parametrosDoSistema.setCompartilharCandidatos(true);
 		parametrosDoSistema.setTelaInicialModuloExterno('L');
+		parametrosDoSistema.setCamposColaboradorObrigatorio("");
 
 		return parametrosDoSistema;
 	}

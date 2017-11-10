@@ -75,6 +75,7 @@ import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.dicionario.OrigemAnexo;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoConfiguracaoCampoExtra;
+import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.CamposExtras;
 import com.fortes.rh.model.geral.Cidade;
@@ -474,6 +475,44 @@ public class ColaboradorEditActionTest_JUnit4
 		colaborador.setEmpresa(empresa);
 		colaborador.getEndereco().setUf(EstadoFactory.getEntity(1L));
 		colaborador.setCamposExtras(camposExtras);
+		action.setColaborador(colaborador);
+		
+		when(parametrosDoSistemaManager.findByIdProjection(1L)).thenReturn(parametrosDoSistema);
+		when(colaboradorManager.findColaboradorById(colaborador.getId())).thenReturn(colaborador);
+		when(SecurityUtil.getColaboradorSession(anyMap())).thenReturn(colaborador);
+		
+		when(cidadeManager.find(new String[]{"uf.id"}, new Object[]{colaborador.getEndereco().getUf().getId()}, new String[]{"nome"})).thenReturn(new ArrayList<Cidade>());
+		when(estadoManager.findAll(new String[]{"sigla"})).thenReturn(new ArrayList<Estado>());
+
+		when(camposExtrasManager.findById(colaborador.getCamposExtras().getId())).thenReturn(camposExtras);
+
+		assertEquals("success", action.prepareUpdateInfoPessoais());
+	}
+	
+	@Test
+	public void testPrepareUpdateInfoPessoaisEstagiario() throws Exception
+	{
+		ConfiguracaoCampoExtra configuracaoCampoExtra = new ConfiguracaoCampoExtra();
+		configuracaoCampoExtra.setId(1L);
+		configuracaoCampoExtra.setAtivoColaborador(true);
+		Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras = new ArrayList<ConfiguracaoCampoExtra>();
+		configuracaoCampoExtras.add(configuracaoCampoExtra);
+	
+		Empresa empresa = EmpresaFactory.getEmpresa(2L);
+		empresa.setCampoExtraColaborador(true);
+		empresa.setCampoExtraAtualizarMeusDados(true);
+		action.setEmpresaSistema(empresa);
+		
+		ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity();
+		parametrosDoSistema.setCamposColaboradorObrigatorio("pis");
+		CamposExtras camposExtras = CamposExtrasFactory.getEntity(1L);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setEmpresa(empresa);
+		colaborador.getEndereco().setUf(EstadoFactory.getEntity(1L));
+		colaborador.setCamposExtras(camposExtras);
+		
+		colaborador.setVinculo(Vinculo.ESTAGIO);
 		action.setColaborador(colaborador);
 		
 		when(parametrosDoSistemaManager.findByIdProjection(1L)).thenReturn(parametrosDoSistema);
