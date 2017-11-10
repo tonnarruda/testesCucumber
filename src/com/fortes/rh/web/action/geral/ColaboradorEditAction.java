@@ -452,11 +452,15 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 				camposExtras = camposExtrasManager.findById(colaborador.getCamposExtras().getId());
 			
 			validaEdicaoDeCamposIntegrados();
-			if(!desabilitarEdicaoCamposIntegrados)
+			if(!desabilitarEdicaoCamposIntegrados){
 				camposColaboradorObrigatorio = parametrosDoSistema.getCamposColaboradorObrigatorio();
 			
-			if(colaborador.getVinculo().equals(Vinculo.ESTAGIO))
-				camposColaboradorObrigatorio = camposColaboradorObrigatorio.replace("pis", "");
+				if(!camposColaboradorObrigatorio.contains("pis") && !colaborador.getVinculo().equals(Vinculo.ESTAGIO)){
+					camposColaboradorObrigatorio = camposColaboradorObrigatorio.concat(",pis");
+				}else if(camposColaboradorObrigatorio.contains("pis") && colaborador.getVinculo().equals(Vinculo.ESTAGIO)){
+					camposColaboradorObrigatorio = camposColaboradorObrigatorio.replace("pis", "");
+				}
+			}
 		}
 		
 		return Action.SUCCESS;
@@ -468,6 +472,10 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		validaEdicaoDeCamposIntegrados();
 		
 		setNacionalidadeAndNaturalidade();
+		
+		if(!desabilitarEdicaoCamposIntegrados && !camposColaboradorObrigatorio.contains("pis") ){
+			camposColaboradorObrigatorio = camposColaboradorObrigatorio.concat(",pis");
+		}
 		
 		if(historicoColaboradorManager.findByColaboradorProjection(colaborador.getId(), null).size() > 1 || (getEmpresaSistema().isAcIntegra() && !"".equals(colaborador.getCodigoAC())))
 			editarHistorico = false;
