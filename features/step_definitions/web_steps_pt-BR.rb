@@ -115,6 +115,10 @@ Quando(/^eu clico em excluir "([^"]*)"$/) do |text|
   find(:xpath, "//td[contains(text(), '#{text}')]/../td/a/img[@title='Excluir']").click
 end
 
+Quando(/^eu clico em excluir novo "([^"]*)"$/) do |text|
+  find(:xpath, "//td[contains(text(), '#{text}')]/../td/a/i[@title='Excluir']").click
+end
+
 Quando(/^eu clico em participantes de "([^"]*)"$/) do |text|
   find(:xpath, "//td[contains(text(), '#{text}')]/../td/a/img[@title='Participantes']").click
 end
@@ -129,6 +133,10 @@ end
 
 Quando(/^eu clico em editar "([^"]*)"$/) do |text|
   find(:xpath, "//td[contains(text(), '#{text}')]/../td/a/img[@title='Editar']").click
+end
+
+Quando(/^eu clico em editar novo "([^"]*)"$/) do |text|
+  find(:xpath, "//td[contains(text(), '#{text}')]/../td/a/i[@title='Editar']").click
 end
 
 Quando(/^eu clico em contratar "([^"]*)"$/) do |text|
@@ -161,6 +169,10 @@ end
 
 Quando(/^eu clico na linha "([^"]*)" da imagem "([^"]*)"$/) do |desc, img|
   find(:xpath, "//td[contains(text(), '#{desc}')]/../td/a/img[@title='#{img}']").click
+end
+
+Quando(/^eu clico na linha "([^"]*)" da imagem nova "([^"]*)"$/) do |desc, img|
+  find(:xpath, "//td[contains(text(), '#{desc}')]/../td/a/i[@title='#{img}']").click
 end
 
 Quando(/^eu clico na imagem "([^"]*)" da pergunta "([^"]*)"$/) do |img, titulo|
@@ -620,10 +632,9 @@ Dado(/^que exista um reajuste para o indice "([^"]*)" com a tabela de reajuste "
    end
 end
 
-Dado(/^que exista a faixa salarial "([^"]*)" no cargo "([^"]*)"$/) do |faixa_nome, cargo_nome|
+Dado(/^que exista a faixa salarial "([^"]*)"$/) do |faixa_nome|
    insert :faixasalarial do
      nome faixa_nome
-     cargo :nome => cargo_nome
    end
 end
 
@@ -1256,6 +1267,7 @@ Dado(/^que exista um histórico para a funcao "([^"]*)" na data "([^"]*)"$/) do 
   insert :historicofuncao do
     data data_historico
     descricao 'Descrição da Função'
+    funcaoNome funcao_nome
     funcao :nome => funcao_nome
   end
 end

@@ -321,6 +321,7 @@ Então eu clico no botão de Id "inserir_Avaliador"
      Então eu clico no botão de Id "inserir_Avaliado"
          E eu espero 1 segundos
          E eu clico no botão "Pesquisar"
+         E eu espero 2 segundos
          E eu marcos todos os colaboladores
      Então eu clico no botão "Gravar"
          E eu espero 1 segundos

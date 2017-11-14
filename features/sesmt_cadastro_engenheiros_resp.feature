@@ -34,7 +34,7 @@ Funcionalidade: Engenheiros Responsáveis do Trabalho
 
     Então eu clico em excluir "_joao"
     E eu devo ver o alert do confirmar exclusão e clico no ok
-    E eu devo ver "Engenheiro Responsável excluído com sucesso."
+    E eu devo ver "Engenheiro responsável excluído com sucesso"
     Então eu não devo ver na listagem "_joao"
 
 

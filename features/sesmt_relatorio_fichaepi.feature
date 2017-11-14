@@ -11,7 +11,8 @@ Funcionalidade: Ficha de EPI
     E eu preencho "Nome" com "Gera"
     E eu clico no botão "Pesquisar"
 
-    Então eu clico no botão "ImprimirPdf"
-    E eu devo ver o alert do valida campos e clico no ok
+    Então eu devo ver "Selecione um colaborador para popular as solicitações de EPI."
+    E eu clico no botão "ImprimirPdf"
     E eu seleciono "geraldo - 123.213.623-91" de "Colaborador"
+    Então eu devo ver "O colaborador selecionado não possui solicitação de EPI."
     E eu marco "Imprimir verso"

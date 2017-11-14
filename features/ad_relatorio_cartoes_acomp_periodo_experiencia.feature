@@ -8,7 +8,7 @@ Funcionalidade: Cartões para Acompanhamento do Período de Experiência
     Dado que exista um periodo de experiencia "30 dias" de 30 dias
 
     Quando eu acesso o menu "Aval. Desempenho > Relatórios > Cartões de Acompanhamento do Período de Experiência"
-    Então eu devo ver o título "Cartões para Acompanhamento do Período de Experiência"
+    Então eu devo ver o título "Cartões de Acompanhamento do Período de Experiência"
     E eu clico no botão "Relatorio"
     Então eu devo ver o alert do valida campos e clico no ok
 

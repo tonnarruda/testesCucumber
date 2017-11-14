@@ -323,6 +323,8 @@
 			checkNaoIntegraAC();
 			configurarObrigatoriedadeDoPis();
 			configuraEdicaoCamposIntegrados();
+			
+			alteraArrayValidacao(document.getElementById("tipoSalario").value);
 		});
 		
 		function habilitaDtEncerramentoContrato()
@@ -355,9 +357,10 @@
 			<#if !desabilitarEdicaoCamposIntegrados>
 				var lblAntigo = $('label[for="pis"]');
 				lblAntigo.text(lblAntigo.text().replace('*', ''));
-				if(camposColaboradorObrigatorio.includes('pis') && $("#vinculo").val() != "S"){
+				if((camposColaboradorObrigatorio.split(',').indexOf('pis') > 0 && $("#vinculo").val() != "S") || ${integraAc?string} == "true"){
 					lblAntigo.text(lblAntigo.text().replace(/\s$/, '') + "*");
 				}
+				
 			</#if>
 		}
 		
@@ -517,10 +520,9 @@
 				</#if>
 			</@authz.authorize>
 			
-			
 			$('.campo-integrado-select').removeAttr('disabled');
 			
-			if(camposColaboradorObrigatorio.includes('pis') && $("#vinculo").val() == "S"){
+			if(camposColaboradorObrigatorio.split(',').indexOf('pis') > 0 && $("#vinculo").val() == "S"){
 				arrayValidacao = arrayValidacao.filter(item => item != 'pis');
 				$('#pis').css('background', '#FFFFFF');
 			}
@@ -1209,7 +1211,6 @@
 		}
 
 		alteraTipoSalario(document.getElementById("tipoSalario").value);
-		alteraArrayValidacao(document.getElementById("tipoSalario").value);
 	</script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.autocomplete.js"/>"></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/forms/geral/bairros.js?version=${versao}"/>'></script>

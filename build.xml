@@ -3,6 +3,12 @@
 	
 	<property file="${ant.project.name}/build.properties" />
 
+	<taskdef resource="net/sf/antcontrib/antlib.xml">
+		<classpath>
+			<pathelement location="${lib.dir}/ant-contrib-1.0b3.jar"/>
+		</classpath>
+	</taskdef>
+	
 	<property environment="env"/>
 	<property name="class_dir" value="${ant.project.name}/web/WEB-INF/classes" />
 	<property name="report_dir" value="${ant.project.name}/web/WEB-INF/report" />
@@ -167,15 +173,24 @@
 		<delete dir="${tmpweb}" /> <!--Deleta diretorio temporario -->
 	</target>
 	
+	<target name="getVersaoFortesRhVer">
+		<loadfile property="conteudoFortesRhVer" srcfile="${ant.project.name}/web/WEB-INF/fortesrh.ver"/>
+		<propertyregex property="versao.atualizador" input="${conteudoFortesRhVer}" regexp='Versao id="(.*)" db="' select="\1"/>
+		<echo message="Versao do FortesRH: ${versao.atualizador}" />
+	</target>
+	
 	<target name="update-file-update-sql">
-		<!-- Solicita Numero da Versao -->
-		<input addproperty="versao.atualizador" message="Versao do FortesRH:" />
+		<antcallback target="getVersaoFortesRhVer" return="versao.atualizador"/>
+		
+		<!-- Solicita Número da Versão do Importador-->
+		<input addproperty="versao.importador" message="Versao compatível do Importador:" />
 		
 		<exec executable="ruby">
 			<arg value="${ant.project.name}/migrate.rb" />
 			<arg value="--deploy" />
 			<arg value="${versao.atualizador}" />
 			<arg value="${ant.project.name}" />
+			<arg value="${versao.importador}" />
 		</exec>
 		
 		<antcall target="verifica-migrates-update-sql"></antcall>
@@ -269,7 +284,9 @@
 
 	<!-- Gera Atualizador -->
 	<target name="build_atualizador">
+		<antcallback target="getVersaoFortesRhVer" return="versao.atualizador"/>
 		<ant dir="EquipeRH/FortesRH_Atualizador" antfile="gera_atualizador_build.xml">
+			<property name="versao.atualizador" value="${versao.atualizador}" /> <!-- Versão do sistema -->
 			<property name="tomcat.versao" value="Tomcat7" /> <!-- Versão do tomcat -->
 			<property name="fortesrh.war.file" location="${ant.project.name}/dist/fortesrh.war" /> <!-- Origem -->
 			<property name="fortesrh.pack.dir" location="${ant.project.name}/dist" /> <!-- Destino -->

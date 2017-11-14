@@ -23,6 +23,7 @@
 			<@ww.password label="Senha atual" name="usuario.senha" id="senha" required="true"/>
 			<@ww.password label="Nova senha" name="usuario.novaSenha" id="novaSenha"  required="true"/>
 			<@ww.password label="Confirmação nova senha" name="usuario.confNovaSenha" id="confSenha"  required="true"/>
+			<@ww.hidden name="colaborador.id" value="${colaborador.id}" />
 		
 		<@ww.token/>
 		</@ww.form>

@@ -3,7 +3,7 @@
 --
 
 -- Dumped from database version 9.0.18
--- Dumped by pg_dump version 9.5.8
+-- Dumped by pg_dump version 9.5.9
 
 SET statement_timeout = 0;
 SET client_encoding = 'UTF8';
@@ -3139,8 +3139,7 @@ CREATE TABLE documentoanexo (
     origem character(1) NOT NULL,
     origemid bigint,
     etapaseletiva_id bigint,
-    tipodocumento_id bigint,
-    moduloexterno boolean DEFAULT false NOT NULL
+    tipodocumento_id bigint
 );
 
 
@@ -3332,11 +3331,24 @@ CREATE TABLE engenheiroresponsavel (
     crea character varying(20),
     fim date,
     nit character varying(15),
-    empresa_id bigint
+    empresa_id bigint,
+    estabelecimentoresponsavel character varying(6) DEFAULT 'TODOS'::character varying
 );
 
 
 ALTER TABLE engenheiroresponsavel OWNER TO postgres;
+
+--
+-- Name: engenheiroresponsavel_estabelecimento; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE engenheiroresponsavel_estabelecimento (
+    engenheiroresponsavel_id bigint NOT NULL,
+    estabelecimentos_id bigint NOT NULL
+);
+
+
+ALTER TABLE engenheiroresponsavel_estabelecimento OWNER TO postgres;
 
 --
 -- Name: engenheiroresponsavel_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -4077,6 +4089,33 @@ CREATE SEQUENCE fasepcmat_sequence
 ALTER TABLE fasepcmat_sequence OWNER TO postgres;
 
 --
+-- Name: fatorderisco; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE fatorderisco (
+    id bigint NOT NULL,
+    codigo character varying(10),
+    descricao text
+);
+
+
+ALTER TABLE fatorderisco OWNER TO postgres;
+
+--
+-- Name: fatorderisco_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE fatorderisco_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE fatorderisco_sequence OWNER TO postgres;
+
+--
 -- Name: faturamentomensal; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -4173,7 +4212,8 @@ ALTER TABLE formacao_sequence OWNER TO postgres;
 CREATE TABLE funcao (
     id bigint NOT NULL,
     nome character varying(100),
-    cargo_id bigint
+    cargo_id bigint,
+    empresa_id bigint
 );
 
 
@@ -4674,7 +4714,9 @@ CREATE TABLE historicofuncao (
     data date,
     descricao text,
     funcao_id bigint,
-    normasinternas text
+    normasinternas text,
+    funcaonome character varying(100) NOT NULL,
+    codigocbo character varying(6)
 );
 
 
@@ -4913,11 +4955,24 @@ CREATE TABLE medicocoordenador (
     bytes bytea,
     size bigint,
     fim date,
-    nit character varying(15)
+    nit character varying(15),
+    estabelecimentoresponsavel character varying(6) DEFAULT 'TODOS'::character varying
 );
 
 
 ALTER TABLE medicocoordenador OWNER TO postgres;
+
+--
+-- Name: medicocoordenador_estabelecimento; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE medicocoordenador_estabelecimento (
+    medicocoordenador_id bigint NOT NULL,
+    estabelecimentos_id bigint NOT NULL
+);
+
+
+ALTER TABLE medicocoordenador_estabelecimento OWNER TO postgres;
 
 --
 -- Name: medicocoordenador_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -5067,7 +5122,8 @@ ALTER TABLE motivodemissao_sequence OWNER TO postgres;
 CREATE TABLE motivosolicitacao (
     id bigint NOT NULL,
     descricao character varying(100),
-    turnover boolean DEFAULT false NOT NULL
+    turnover boolean DEFAULT false NOT NULL,
+    considerarqtdcolaboradoresporcargo boolean DEFAULT false
 );
 
 
@@ -5300,7 +5356,7 @@ CREATE TABLE ordemdeservico (
     colaborador_id bigint NOT NULL,
     nomecolaborador character varying(100),
     dataadmisaocolaborador date,
-    codigocbo character varying(6),
+    codigocbocargo character varying(6),
     nomefuncao character varying(100),
     nomeempresa character varying(100),
     data date NOT NULL,
@@ -5317,9 +5373,10 @@ CREATE TABLE ordemdeservico (
     impressa boolean DEFAULT false,
     empresacnpj character varying(20),
     nomeestabelecimento character varying(30),
-    nomecargo character varying(30),
+    nomecargo character varying(100),
     estabelecimentocomplementocnpj character varying(10),
-    estabelecimentoendereco text
+    estabelecimentoendereco text,
+    codigocbofuncao character varying(6)
 );
 
 
@@ -5423,7 +5480,8 @@ CREATE TABLE parametrosdosistema (
     camposcolaboradortabs text,
     autorizacaogestornasolicitacaopessoal boolean DEFAULT false,
     smtpremetente boolean DEFAULT false,
-    utilizarcaptchanologin boolean DEFAULT false
+    utilizarcaptchanologin boolean DEFAULT false,
+    versaoimportador character varying(10)
 );
 
 
@@ -6010,7 +6068,9 @@ CREATE TABLE risco (
     id bigint NOT NULL,
     descricao character varying(100),
     gruporisco character varying(5),
-    empresa_id bigint
+    empresa_id bigint,
+    gruporiscoesocial character varying(5),
+    fatorderisco_id bigint
 );
 
 
@@ -6893,6 +6953,33 @@ CREATE SEQUENCE usuario_sequence
 
 
 ALTER TABLE usuario_sequence OWNER TO postgres;
+
+--
+-- Name: usuarioajudaesocial; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE usuarioajudaesocial (
+    id bigint NOT NULL,
+    usuario_id bigint NOT NULL,
+    telaajuda character varying(40) NOT NULL
+);
+
+
+ALTER TABLE usuarioajudaesocial OWNER TO postgres;
+
+--
+-- Name: usuarioajudaesocial_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE usuarioajudaesocial_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE usuarioajudaesocial_sequence OWNER TO postgres;
 
 --
 -- Name: usuarioempresa; Type: TABLE; Schema: public; Owner: postgres
@@ -30433,6 +30520,12 @@ SELECT pg_catalog.setval('empresabds_sequence', 1, false);
 
 
 --
+-- Data for Name: engenheiroresponsavel_estabelecimento; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
 -- Name: engenheiroresponsavel_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -30805,6 +30898,954 @@ SELECT pg_catalog.setval('fase_sequence', 1, false);
 --
 
 SELECT pg_catalog.setval('fasepcmat_sequence', 1, false);
+
+
+--
+-- Data for Name: fatorderisco; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (1, '01.01.001', 'Infrassom e sons de baixa frequência');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (2, '01.01.002', 'Ruído contínuo ou Intermitente');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (3, '01.01.003', 'Ruído impulsivo ou de Impacto');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (4, '01.01.004', 'Ultrassom');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (5, '01.01.005', 'Campos magnéticos estáticos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (6, '01.01.006', 'Campos magnéticos de sub-radiofrequência (30 kHz e abaixo)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (7, '01.01.007', 'Sub-Radiofrequência (30 kHz e abaixo) e campos eletrostáticos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (8, '01.01.008', 'Radiação de radiofrequência e micro-ondas');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (9, '01.01.009', 'Radiação visível e infravermelho próximo');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (10, '01.01.010', 'Radiação ultravioleta');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (11, '01.01.011', 'LASERS');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (12, '01.01.012', 'Radiações Ionizantes');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (13, '01.01.013', 'Vibrações Localizadas (Mão-Braço)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (14, '01.01.014', 'Vibração de corpo inteiro');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (15, '01.01.015', 'Estresse por frio (Hipotermia)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (16, '01.01.016', 'Estresse e sobrecarga fisiológica por calor');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (17, '01.01.017', 'Pressão Hiperbárica');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (18, '01.01.018', 'Pressão Hipobárica');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (19, '01.01.019', 'Umidade');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (20, '01.01.999', 'Outros');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (21, '02.01.001', 'Acetaldeído');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (22, '02.01.002', 'Acetato de benzila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (23, '02.01.003', 'Acetato de n-butila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (24, '02.01.004', 'Acetato de sec-butila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (25, '02.01.005', 'Acetato de terc-butila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (26, '02.01.006', 'Acetato de 2-butoxietila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (27, '02.01.007', 'Acetato de cellosolve');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (28, '02.01.008', 'Acetato de éter monoetílico de etileno glicol');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (29, '02.01.009', 'Sais de Cianeto');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (30, '02.01.010', 'Acetato de 2-etoxietila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (31, '02.01.011', 'Acetato de sec-hexila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (32, '02.01.012', 'Acetato de isobutila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (33, '02.01.013', 'Acetato de isopropila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (34, '02.01.014', 'Acetato de metila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (35, '02.01.015', 'Acetato de 2-metoxietila (EGMEA)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (36, '02.01.016', 'Acetato de n-propila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (37, '02.01.017', 'Acetato de pentila, todos os isômeros');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (38, '02.01.018', 'Acetato de vinila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (39, '02.01.019', 'Acetileno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (40, '02.01.020', 'Acetofenona');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (41, '02.01.021', 'Acetona');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (42, '02.01.022', 'Acetona cianidrina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (43, '02.01.023', 'Acetonitrila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (44, '02.01.024', 'Ácido acético');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (45, '02.01.025', 'Ácido acetilsalicílico (Aspirina)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (46, '02.01.026', 'Ácido acrílico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (47, '02.01.027', 'Ácido adípico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (48, '02.01.028', 'Ácido Aristólico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (49, '02.01.029', 'Ácido bromídrico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (50, '02.01.030', 'ácido carbônico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (51, '02.01.031', 'Ácido cianídrico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (52, '02.01.032', 'Ácido clorídrico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (53, '02.01.033', 'Ácido 2-cloropropiônico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (54, '02.01.034', 'Ácido crômico (névoa)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (55, '02.01.035', 'Ácido dicloroacético');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (56, '02.01.036', 'Ácido 2,2-dicloropropiônico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (57, '02.01.037', 'Ácido etanóico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (58, '02.01.038', 'Ácido 2-etil hexanoico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (59, '02.01.039', 'Ácido fluorídrico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (60, '02.01.040', 'Ácido fórmico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (61, '02.01.041', 'Ácido fosfórico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (62, '02.01.042', 'Ácido metacrílico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (63, '02.01.043', 'Ácido metanóico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (64, '02.01.044', 'Ácido monocloroacético');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (65, '02.01.045', 'Ácido nítrico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (66, '02.01.046', 'Ácido oxálico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (67, '02.01.047', 'Ácido peracético');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (68, '02.01.048', 'Ácido pícrico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (69, '02.01.049', 'Ácido propiônico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (70, '02.01.050', 'Ácido sulfúrico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (71, '02.01.051', 'Ácido tereftálico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (72, '02.01.052', 'Ácido tioglicólico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (73, '02.01.053', 'Ácido tricloroacético');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (74, '02.01.054', 'Acrilamida');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (75, '02.01.055', 'Acrilato de n-butila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (76, '02.01.056', 'Acrilato de etila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (77, '02.01.057', 'Acrilato de 2-hidroxipropila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (78, '02.01.058', 'Acrilato de metila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (79, '02.01.059', 'Acrilonitrila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (80, '02.01.060', 'Acroleína');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (81, '02.01.061', 'Acronitrila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (82, '02.01.062', 'Adiponitrila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (83, '02.01.063', 'Aflatoxinas');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (84, '02.01.064', 'Aguarrás mineral (Solvente de Stoddard)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (85, '02.01.065', 'Alaclor');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (86, '02.01.066', 'álcalis cáusticos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (87, '02.01.067', 'Alcatrão de hulha, produtos voláteis como aerossóis solúveis em benzeno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (88, '02.01.068', 'Álcool alílico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (89, '02.01.069', 'Álcool n-butílico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (90, '02.01.070', 'Álcool sec-butílico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (91, '02.01.071', 'Álcool terc-butílico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (92, '02.01.072', 'Álcool etílico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (93, '02.01.073', 'Álcool furfurílico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (94, '02.01.074', 'Álcool isoamílico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (95, '02.01.075', 'Álcool isobutílico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (96, '02.01.076', 'Álcool isooctílico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (97, '02.01.077', 'Álcool isopropílico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (98, '02.01.078', 'Álcool propargílico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (99, '02.01.079', 'Álcool metil amílico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (100, '02.01.080', 'Álcool metílico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (101, '02.01.081', 'Álcool n-propílico (n-propanol)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (102, '02.01.082', 'Aldrin');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (103, '02.01.083', 'Aldeído acético');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (104, '02.01.084', 'Aldeído fórmico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (105, '02.01.085', 'Algodão, bruto, sem tratamento, poeira');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (106, '02.01.086', 'Alumínio metal e compostos insolúveis');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (107, '02.01.087', 'Amido');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (108, '02.01.088', 'Aminas aromáticas');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (109, '02.01.089', '4 - Aminodifenil (p-xenilamina)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (110, '02.01.090', 'Aminobifenila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (111, '02.01.091', 'aminoderivados');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (112, '02.01.092', '4-Aminodifenil');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (113, '02.01.093', '2-Aminopiridina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (114, '02.01.094', 'Amitrol (3-amina-1,2,4-triazol)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (115, '02.01.095', 'Amônia');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (116, '02.01.096', 'Anidro sulfuroso');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (117, '02.01.097', 'Anidrido acético');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (118, '02.01.098', 'Anidrido ftálico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (119, '02.01.099', 'Anidrido hexahidroftálico todos os isômeros');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (120, '02.01.100', 'Anidrido maleico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (121, '02.01.101', 'Anidrido trimelítico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (122, '02.01.102', 'Anilina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (123, '02.01.103', 'o-Anisidina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (124, '02.01.104', 'p-Anisidina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (125, '02.01.105', 'Antimônio e seus compostos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (126, '02.01.106', 'antraceno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (127, '02.01.107', 'ANTU');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (128, '02.01.108', 'Argônio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (129, '02.01.109', 'Arseneto de gálio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (130, '02.01.110', 'Arsênio e seus compostos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (131, '02.01.111', 'Arsina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (132, '02.01.112', 'Asbestos, todas as formas');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (133, '02.01.113', 'Asfalto (betume), fumos, como aerossol solúvel em benzeno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (134, '02.01.114', 'Atrazine (e triazinas simétricas relacionadas)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (135, '02.01.115', 'Auramina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (136, '02.01.116', 'Azatioprina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (137, '02.01.117', 'Azida de sódio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (138, '02.01.118', 'Azinfos metil');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (139, '02.01.119', 'Bário e compostos solúveis');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (140, '02.01.120', 'Benomil');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (141, '02.01.121', 'Benzeno e seus compostos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (142, '02.01.122', 'Benzidina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (143, '02.01.123', 'Benzo[a]antraceno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (144, '02.01.124', 'Benzo[b]fluoranteno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (145, '02.01.125', 'Benzopireno (Benzo[a]pireno)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (146, '02.01.126', 'Berílio e seus compostos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (147, '02.01.127', 'betume');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (148, '02.01.128', 'BHC (hexacloreto de benzeno)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (149, '02.01.129', 'Bifenil');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (150, '02.01.130', 'Bifenis policlorados');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (151, '02.01.131', 'Biscloroetileter');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (152, '02.01.132', 'Bisclorometil');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (153, '02.01.133', 'Bissulfito de sódio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (154, '02.01.134', 'Borracha natural, látex como proteínas alergênicas inaláveis');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (155, '02.01.135', 'Borato, compostos inorgânicos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (156, '02.01.136', 'breu');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (157, '02.01.137', 'Bromacil');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (158, '02.01.138', 'Brometo de alila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (159, '02.01.139', 'Brometo de etila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (160, '02.01.140', 'Brometo de hidrogênio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (161, '02.01.141', 'Brometo de metila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (162, '02.01.142', 'Brometo de vinila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (163, '02.01.143', 'Bromo e seus compostos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (164, '02.01.144', 'Bromoetano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (165, '02.01.145', 'Bromofórmio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (166, '02.01.146', 'Bromometano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (167, '02.01.147', '1-Bromopropano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (168, '02.01.148', 'Bussulfano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (169, '02.01.149', '1,3-Butadieno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (170, '02.01.150', 'Butadieno-estireno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (171, '02.01.151', 'n-Butano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (172, '02.01.152', 'Butano, todos os isômeros');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (173, '02.01.153', '1-4 Butanodiol');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (174, '02.01.154', 'Butenos, todos os isômeros');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (175, '02.01.155', 'sec-Butanol');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (176, '02.01.156', 'Butanona');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (177, '02.01.157', '1-Butanotiol');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (178, '02.01.158', 'Butil cellosolve');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (179, '02.01.159', 'n-Butil mercaptana');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (180, '02.01.160', 'n-Butilamina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (181, '02.01.161', 'o-sec Butilfenol');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (182, '02.01.162', 'p-terc-Butiltolueno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (183, '02.01.163', '2-Butóxi etanol (EGBE)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (184, '02.01.164', 'Cádmio e seus compostos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (185, '02.01.165', 'Canfeno clorado');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (186, '02.01.166', 'Cânfora, sintética');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (187, '02.01.167', 'Caolim');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (188, '02.01.168', 'Caprolactama');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (189, '02.01.169', 'Captafol');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (190, '02.01.170', 'Captan');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (191, '02.01.171', 'Carbaril');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (192, '02.01.172', 'Carbeto de silício');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (193, '02.01.173', 'Carbofuran');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (194, '02.01.174', 'Carvão mineral e seus derivados');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (195, '02.01.175', 'Catecol');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (196, '02.01.176', 'Cellosolve');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (197, '02.01.177', 'Celulose');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (198, '02.01.178', 'Cereais, poeira (aveia, cevada, trigo)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (199, '02.01.179', 'Ceteno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (200, '02.01.180', 'Chumbo e seus compostos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (201, '02.01.181', 'Chumbo tetraetila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (202, '02.01.182', 'Chumbo tetrametila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (203, '02.01.183', 'Cianamida');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (204, '02.01.184', 'Cianamida de cálcio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (205, '02.01.185', 'Cianeto de hidrogênio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (206, '02.01.186', 'Cianeto de metila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (207, '02.01.187', 'Cianeto de vinila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (208, '02.01.188', 'Cianoacrilato de etila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (209, '02.01.189', '2-Cianoacrilato de metila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (210, '02.01.190', 'Cianogênio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (211, '02.01.191', 'Ciclofosfamida');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (212, '02.01.192', 'Ciclohexano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (213, '02.01.193', 'Ciclohexanol');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (214, '02.01.194', 'Ciclohexanona');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (215, '02.01.195', 'Ciclohexeno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (216, '02.01.196', 'Ciclohexilamina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (217, '02.01.197', 'Ciclonita');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (218, '02.01.198', 'Ciclopentadieno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (219, '02.01.199', 'Ciclopentano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (220, '02.01.200', 'Ciclosporina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (221, '02.01.201', 'Cihexatin');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (222, '02.01.202', 'Cimento portland');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (223, '02.01.203', 'Citral');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (224, '02.01.204', 'Clopidol');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (225, '02.01.205', 'Clorambucil');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (226, '02.01.206', 'Clordane');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (227, '02.01.207', 'Cloreto de alila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (228, '02.01.208', 'Cloreto de amônio - fumos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (229, '02.01.209', 'Cloreto de benzila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (230, '02.01.210', 'Cloreto de benzoíla');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (231, '02.01.211', 'Cloreto de carbonila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (232, '02.01.212', 'Cloreto de cianogênio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (233, '02.01.213', 'Cloreto de cloroacetila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (234, '02.01.214', 'Cloreto de cromila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (235, '02.01.215', 'Cloreto de dimetil carbamoila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (236, '02.01.216', 'Cloreto de enxofre');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (237, '02.01.217', 'Cloreto de etila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (238, '02.01.218', 'Cloreto de fenila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (239, '02.01.219', 'Cloreto de hidrogênio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (240, '02.01.220', 'Cloreto de metila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (241, '02.01.221', 'Cloreto de metileno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (242, '02.01.222', 'Cloreto de polivinila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (243, '02.01.223', 'Cloreto de tionila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (244, '02.01.224', 'Cloreto de vinila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (245, '02.01.225', 'Cloreto de vinilideno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (246, '02.01.226', 'Cloreto de zinco, fumos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (247, '02.01.227', 'Clornafazina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (248, '02.01.228', 'Cloro');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (249, '02.01.229', 'Cloroacetaldeído');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (250, '02.01.230', '2-Cloroacetofenona');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (251, '02.01.231', 'Cloroacetona');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (252, '02.01.232', 'Cloroambucil');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (253, '02.01.233', 'Clorobenzeno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (254, '02.01.234', 'o-Clorobenzilideno malononitrila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (255, '02.01.235', 'Clorobromometano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (256, '02.01.236', 'Clorodifenil (42% de Cloro)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (257, '02.01.237', 'Clorodifenil (54% de Cloro)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (258, '02.01.238', 'Clorodifluormetano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (259, '02.01.239', 'o-Cloroestireno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (260, '02.01.240', 'Cloroetano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (261, '02.01.241', 'Cloroetílico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (262, '02.01.242', 'Clorofórmio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (263, '02.01.243', '1-Cloro-1-nitropropano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (264, '02.01.244', '1-Cloro-2');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (265, '02.01.245', 'Clorometileter');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (266, '02.01.246', 'Cloropentafluoretano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (267, '02.01.247', 'Cloropicrina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (268, '02.01.248', 'Cloropirifos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (269, '02.01.249', 'Cloroprene');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (270, '02.01.250', 'Cloropreno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (271, '02.01.251', 'ß-Cloropreno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (272, '02.01.252', '1-Cloro-2-propanol');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (273, '02.01.253', '2-Cloro-1-propanol');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (274, '02.01.254', 'o-Clorotolueno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (275, '02.01.255', 'Cobalto e seus compostos inorgânicos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (276, '02.01.256', 'Cobalto carbonila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (277, '02.01.257', 'Cobalto hidrocarbonila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (278, '02.01.258', 'Cobre');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (279, '02.01.259', 'Coumafos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (280, '02.01.260', 'Cresol, todos os isômeros');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (281, '02.01.261', 'Creosoto');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (282, '02.01.262', 'Criseno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (283, '02.01.263', 'Cromato de terc-butila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (284, '02.01.264', 'Cromato de cálcio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (285, '02.01.265', 'Cromato de chumbo');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (286, '02.01.266', 'Cromato de estrôncio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (287, '02.01.267', 'Cromatos de zinco');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (288, '02.01.268', 'Cromita - processamento do minério (Cromato)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (289, '02.01.269', 'Cromo e seus compostos inorgânicos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (290, '02.01.270', 'Crotonaldeído');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (291, '02.01.271', 'Crufomate');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (292, '02.01.272', 'Cumeno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (293, '02.01.273', '2,4 D');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (294, '02.01.274', 'DDD (diclorodifenildicloretano)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (295, '02.01.275', 'DDT');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (296, '02.01.276', 'Decaborano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (297, '02.01.277', 'Demeton');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (298, '02.01.278', 'Demeton-S-metila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (299, '02.01.279', 'Destilação do alcatrão de hulha');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (300, '02.01.280', 'Diacetil');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (301, '02.01.281', 'Diacetona álcool');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (302, '02.01.282', 'Diamina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (303, '02.01.283', 'α,α''Diamina m-xileno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (304, '02.01.284', 'Dianizidina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (305, '02.01.285', 'Diazinon');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (306, '02.01.286', 'Diazometano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (307, '02.01.287', 'Diborano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (308, '02.01.288', '1,2-Dibramoetano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (309, '02.01.289', 'Dibrometo de etileno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (310, '02.01.290', '2-N-Dibutilaminoetanol');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (311, '02.01.291', 'Dibutilftalato');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (312, '02.01.292', 'Diciclopentadieno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (313, '02.01.293', '1,1 Dicloreotileno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (314, '02.01.294', 'Dicloreto de etileno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (315, '02.01.295', 'Dicloreto de propileno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (316, '02.01.296', 'o-Diclorobenzeno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (317, '02.01.297', 'p-Diclorobenzeno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (318, '02.01.298', 'Diclorobenzidina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (319, '02.01.299', '3,3'' -Diclorobenzidina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (320, '02.01.300', '1,4-Dicloro-2-buteno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (321, '02.01.301', 'Diclorodifluormetano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (322, '02.01.302', '1,3-Dicloro-5,5-dimetil hidantoina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (323, '02.01.303', '1,1-Dicloroetano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (324, '02.01.304', '1,2 Dicloroetano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (325, '02.01.305', '1,2 Dicloroetileno, todos os isômeros');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (326, '02.01.306', 'Diclorofluormetano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (327, '02.01.307', 'Diclorometano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (328, '02.01.308', '1,1-Dicloro-1-nitroetano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (329, '02.01.309', '1,2 Dicloropropano (Dicloroacetileno)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (330, '02.01.310', '1,3-Dicloropropeno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (331, '02.01.311', 'Diclorotetrafluoretano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (332, '02.01.312', 'Diclorvos (DDVP)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (333, '02.01.313', 'Dicrotofós');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (334, '02.01.314', 'Dieldrin');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (335, '02.01.315', 'Diesel, combustível, como hidrocarbonetos totais');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (336, '02.01.316', 'Dietanolamina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (337, '02.01.317', 'Dietilamina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (338, '02.01.318', '2-Dietilaminoetanol');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (339, '02.01.319', 'Dietilcetona');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (340, '02.01.320', 'Dietil éter');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (341, '02.01.321', 'Dietileno triamina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (342, '02.01.322', 'Dietilestil-bestrol');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (343, '02.01.323', 'Dietilestilbestrol');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (344, '02.01.324', 'Dietilftalato');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (345, '02.01.325', 'Dietilsulfato');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (346, '02.01.326', 'Difenilamina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (347, '02.01.327', 'Difluordibromometano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (348, '02.01.328', 'Difluoreto de oxigênio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (349, '02.01.329', 'Dihidrocloreto de piperazina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (350, '02.01.330', 'Diisobutil cetona');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (351, '02.01.331', 'Diisocianato de isoforona');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (352, '02.01.332', '2,4 Diisocianato de tolueno (TDI)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (353, '02.01.333', 'Diisopropilamina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (354, '02.01.334', 'N,N-Dietilhidroxilamina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (355, '02.01.335', 'Dimetanosulfonato (MILERAN)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (356, '02.01.336', 'N,N-Dimetilacetamida');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (357, '02.01.337', 'Dimetilacetamida');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (358, '02.01.338', 'Dimetilamina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (359, '02.01.339', 'Dimetilanilina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (360, '02.01.340', 'Dimetiletoxisilano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (361, '02.01.341', 'Dimetilformamida');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (362, '02.01.342', 'Dimetilftalato');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (363, '02.01.343', '1,1-Dimetilhidrazina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (364, '02.01.344', 'Dimetilsulfato');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (365, '02.01.345', 'Dinitrato de etileno glicol');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (366, '02.01.346', 'Dinitrato de propileno glicol');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (367, '02.01.347', 'Dinitrobenzeno, todos os isômeros');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (368, '02.01.348', 'Dinitro-o-cresol');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (369, '02.01.349', '3,5-Dinitro-o-toluamida');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (370, '02.01.350', 'Dinitrotolueno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (371, '02.01.351', '1,4-Dioxano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (372, '02.01.352', 'Dioxation');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (373, '02.01.353', 'Dióxido de carbono');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (374, '02.01.354', 'Dióxido de cloro');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (375, '02.01.355', 'Dióxido de enxofre');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (376, '02.01.356', '1,3-Dioxolane');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (377, '02.01.357', 'Dióxido de nitrogênio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (378, '02.01.358', 'Dióxido de titânio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (379, '02.01.359', 'Dióxido de vinilciclohexano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (380, '02.01.360', 'Dipropil cetona');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (381, '02.01.361', 'Diquat');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (382, '02.01.362', 'Dissulfeto de alil propila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (383, '02.01.363', 'Dissulfeto de carbono');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (384, '02.01.364', 'Dissulfeto de dimetila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (385, '02.01.365', 'Dissulfiram');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (386, '02.01.366', 'Dissulfoton');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (387, '02.01.367', 'Diuron');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (388, '02.01.368', 'Divinil benzeno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (389, '02.01.369', 'Dodecil mercaptana');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (390, '02.01.370', 'Endosulfan');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (391, '02.01.371', 'Endrin');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (392, '02.01.372', 'Enflurano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (393, '02.01.373', 'Epicloridrina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (394, '02.01.374', 'EPN');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (395, '02.01.375', 'Erionita');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (396, '02.01.376', 'Estanho e seus compostos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (397, '02.01.377', 'Estearatos (J)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (398, '02.01.378', 'Estibina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (399, '02.01.379', 'Estilbenzeno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (400, '02.01.380', 'Estireno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (401, '02.01.381', 'Estriquinina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (402, '02.01.382', 'Etano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (403, '02.01.383', 'Etanol');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (404, '02.01.384', 'Etanolamina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (405, '02.01.385', 'Etanotiol');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (406, '02.01.386', 'Éter alil glicidílico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (407, '02.01.387', 'Éter n-Butil glicidílico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (408, '02.01.388', 'Éter bis-(Clorometílico) ou Bis (cloro metil) éter');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (409, '02.01.389', 'Éter bis (2-dimetilaminoetil)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (410, '02.01.390', 'Éter dicloroetílico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (411, '02.01.391', 'Éter diglicidílico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (412, '02.01.392', 'Éter etil terc-butílico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (413, '02.01.393', 'Éter etílico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (414, '02.01.394', 'Éter fenílico, vapor');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (415, '02.01.395', 'Éter fenil glicidílico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (416, '02.01.396', 'Éter isopropil glicidílico (IGE)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (417, '02.01.397', 'Éter isopropílico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (418, '02.01.398', 'Éter isopropílico de monoetileno glicol');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (419, '02.01.399', 'Éter metil terc-amílico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (420, '02.01.400', 'Éter metil terc-butílico (MTBE)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (421, '02.01.401', 'Éter metílico de clorometila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (422, '02.01.402', 'Éter metílico de dipropilenoglicol (DPGME)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (423, '02.01.403', 'Éter monobutílico de dietileno glicol');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (424, '02.01.404', 'Éter monobutílico do etileno glicol');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (425, '02.01.405', 'Éter monoetílico do etileno glicol');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (426, '02.01.406', 'Éter monometílico do etileno glicol');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (427, '02.01.407', 'Etil amil cetona');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (428, '02.01.408', 'Etil butil cetona');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (429, '02.01.409', 'Etil mercaptana');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (430, '02.01.410', 'n-Etil morfolina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (431, '02.01.411', 'Etilamina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (432, '02.01.412', 'Etilbenzeno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (433, '02.01.413', 'Etileno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (434, '02.01.414', 'Etilenoamina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (435, '02.01.415', 'Etilenotiureia');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (436, '02.01.416', 'Etileno cloridrina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (437, '02.01.417', 'Etileno diamina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (438, '02.01.418', 'Etileno glicol');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (439, '02.01.419', 'Etilideno norborneno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (440, '02.01.420', 'Etil isocianato');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (441, '02.01.421', 'Etilenoimina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (442, '02.01.422', 'Etilnitrosuréias');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (443, '02.01.423', 'Etion');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (444, '02.01.424', 'Etoposide');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (445, '02.01.425', 'Etoposide em associação com cisplatina e bleomicina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (446, '02.01.426', '2-Etoxietanol');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (447, '02.01.427', 'Farinha (poeiras)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (448, '02.01.428', 'Fenacetina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (449, '02.01.429', 'Fenamifos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (450, '02.01.430', 'n-Fenil-ß-naftilamina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (451, '02.01.431', 'o-Fenileno diamina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (452, '02.01.432', 'm-Fenileno diamina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (453, '02.01.433', 'p-Fenileno diamina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (454, '02.01.434', 'Fenilfosfina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (455, '02.01.435', 'Fenilhidrazina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (456, '02.01.436', 'Fenil mercaptana');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (457, '02.01.437', 'Fenol');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (458, '02.01.438', 'Fenotiazine');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (459, '02.01.439', 'Fensulfotion');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (460, '02.01.440', 'Fention');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (461, '02.01.441', 'Ferbam');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (462, '02.01.442', 'Ferro, sais solúveis');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (463, '02.01.443', 'Ferro diciclopentadienila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (464, '02.01.444', 'Ferro, óxido (Fe 2 O 3 )');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (465, '02.01.445', 'Ferro pentacarbonila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (466, '02.01.446', 'Ferrovanádio, poeira');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (467, '02.01.447', 'Fibras Vítreas Sintéticas');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (468, '02.01.448', 'Flúor');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (469, '02.01.449', 'Fluoracetato de sódio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (470, '02.01.450', 'Fluoretos, como F');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (471, '02.01.451', 'Fluoreto de carbonila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (472, '02.01.452', 'Fluoreto de hidrogênio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (473, '02.01.453', 'Fluoreto de perclorila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (474, '02.01.454', 'Fluoreto de sulfurila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (475, '02.01.455', 'Fluoreto de vinila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (476, '02.01.456', 'Fluoreto de vinilideno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (477, '02.01.457', 'Fonofos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (478, '02.01.458', 'Forate');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (479, '02.01.459', 'Formaldeído');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (480, '02.01.460', 'Formamida');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (481, '02.01.461', 'Formiato de etila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (482, '02.01.462', 'Formiato de metila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (483, '02.01.463', 'Fosfato de dibutila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (484, '02.01.464', 'Fosfato de dibutil fenila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (485, '02.01.465', 'Fosfato de tributila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (486, '02.01.466', 'Fosfato de trifenila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (487, '02.01.467', 'Fosfato de triortocresila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (488, '02.01.468', 'Fosfina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (489, '02.01.469', 'Fosfito de trimetila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (490, '02.01.470', 'Fósforo (amarelo)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (491, '02.01.471', 'Fosgênio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (492, '02.01.472', 'Fluortriclorometano (freon 11)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (493, '02.01.473', 'Freon 12');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (494, '02.01.474', 'Freon 22');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (495, '02.01.475', 'Freon 113');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (496, '02.01.476', 'Freon 114');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (497, '02.01.477', 'Ftalato de dibutila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (498, '02.01.478', 'Ftalato de di(2-etilhexila)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (499, '02.01.479', 'Ftalato de dietila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (500, '02.01.480', 'm-Ftalodinitrila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (501, '02.01.481', 'o-Ftalodinitrila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (502, '02.01.482', 'Furfural');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (503, '02.01.483', 'Gás amoníaco');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (504, '02.01.484', 'Gás carbônico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (505, '02.01.485', 'Gás cianídrico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (506, '02.01.486', 'Gás clorídrico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (507, '02.01.487', 'Gás Mostarda');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (508, '02.01.488', 'Gás natural');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (509, '02.01.489', 'Gás sulfídrico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (510, '02.01.490', 'Gasolina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (511, '02.01.491', 'Glicerina, névoas');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (512, '02.01.492', 'Glicidol');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (513, '02.01.493', 'Glioxal');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (514, '02.01.494', 'GLP (gás liquefeito do petróleo)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (515, '02.01.495', 'Glutaraldeído, ativado e não ativado');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (516, '02.01.496', 'Grafite (todas as formas, exceto fibras de grafite)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (517, '02.01.497', 'Grãos, poeira (aveia, trigo, cevada)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (518, '02.01.498', 'Háfnio e seus compostos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (519, '02.01.499', 'halogenados');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (520, '02.01.500', 'Halotano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (521, '02.01.501', 'Hélio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (522, '02.01.502', 'Heptacloro');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (523, '02.01.503', 'Heptacloro epóxido');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (524, '02.01.504', 'Heptano, todos os isômeros');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (525, '02.01.505', 'Hexaclorobenzeno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (526, '02.01.506', 'Hexaclorobutadieno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (527, '02.01.507', 'Hexaclorociclopentadieno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (528, '02.01.508', 'Hexacloroetano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (529, '02.01.509', 'Hexacloronaftaleno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (530, '02.01.510', 'Hexafluoracetona');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (531, '02.01.511', 'Hexafluorpropileno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (532, '02.01.512', 'Hexafluoreto de enxofre');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (533, '02.01.513', 'Hexafluoreto de selênio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (534, '02.01.514', 'Hexafluoreto de telúrio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (535, '02.01.515', 'Hexametileno diisocianato (HDI)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (536, '02.01.516', 'Hexametil fosforamida');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (537, '02.01.517', 'n-Hexano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (538, '02.01.518', 'Hexano, outros isômeros que não o n-Hexano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (539, '02.01.519', '1,6-Hexanodiamina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (540, '02.01.520', '1-Hexeno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (541, '02.01.521', 'Hexileno glicol');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (542, '02.01.522', 'Hidrazina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (543, '02.01.523', 'Hidreto de antimônio (Estibina)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (544, '02.01.524', 'Hidreto de lítio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (545, '02.01.525', 'Hidrocarbonetos alifáticos gasosos Alcanos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (546, '02.01.526', 'Hidrocarbonetos e outros compostos de carbono');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (547, '02.01.527', 'hidrocarbonetos aromáticos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (548, '02.01.528', 'hidrocarbonetos cíclicos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (549, '02.01.529', 'Hidrogênio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (550, '02.01.530', 'Hidroquinona');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (551, '02.01.531', 'Hidróxido de cálcio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (552, '02.01.532', 'Hidróxido de césio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (553, '02.01.533', 'Hidróxido de potássio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (554, '02.01.534', 'Hidróxido de sódio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (555, '02.01.535', 'Hidroxitolueno butilado');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (556, '02.01.536', 'Indeno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (557, '02.01.537', 'Iodeto de metila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (558, '02.01.538', 'Índio e seus compostos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (559, '02.01.539', 'Iodo');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (560, '02.01.540', 'Iodetos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (561, '02.01.541', 'Iodofórmio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (562, '02.01.542', 'Isobutanol');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (563, '02.01.543', 'Isobuteno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (564, '02.01.544', 'isocianato');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (565, '02.01.545', 'Isocianato de metila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (566, '02.01.546', 'Isoforona');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (567, '02.01.547', 'Isopropilamina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (568, '02.01.548', 'n-Isopropilanilina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (569, '02.01.549', 'Isopropil benzeno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (570, '02.01.550', '2-Isopropoxietanol');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (571, '02.01.551', 'Ítrio e compostos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (572, '02.01.552', 'Lactato de n-butila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (573, '02.01.553', 'Lindano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (574, '02.01.554', 'Madeira, poeiras');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (575, '02.01.555', 'Malation');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (576, '02.01.556', 'Manganês e seus compostos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (577, '02.01.557', 'Manganês ciclopentadienil tricarbonila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (578, '02.01.558', 'Melfalano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (579, '02.01.559', 'Mercaptanos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (580, '02.01.560', 'Mercúrio e seus compostos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (581, '02.01.561', 'Metabisulfito de sódio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (582, '02.01.562', 'Metacrilato de metila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (583, '02.01.563', 'Metano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (584, '02.01.564', 'Metanol');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (585, '02.01.565', 'Metil acetileno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (586, '02.01.566', 'Metil acetileno-propadieno, mistura (MAPP)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (587, '02.01.567', 'Metilacrilonitrila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (588, '02.01.568', 'Metilal');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (589, '02.01.569', 'Metilamina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (590, '02.01.570', 'Metil n-amil cetona');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (591, '02.01.571', 'n-Metil anilina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (592, '02.01.572', 'Metil n-butil cetona');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (593, '02.01.573', 'Metil cellosolve');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (594, '02.01.574', 'Metilciclohexano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (595, '02.01.575', 'Metilciclohexanol');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (596, '02.01.576', 'o-Metilciclohexanona');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (597, '02.01.577', '2-Metilciclopentadienil manganês tricarbonila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (598, '02.01.578', 'Metil clorofórmio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (599, '02.01.579', 'Metil demeton');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (600, '02.01.580', 'Metil etil cetona (MEK)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (601, '02.01.581', 'α-Metil estireno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (602, '02.01.582', 'Metil hidrazina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (603, '02.01.583', 'Metil isoamil cetona');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (604, '02.01.584', 'Metil isobutil carbinol');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (605, '02.01.585', 'Metil isobutil cetona');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (606, '02.01.586', 'Metil isopropil cetona');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (607, '02.01.587', 'Metil mercaptana');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (608, '02.01.588', '1-Metil naftaleno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (609, '02.01.589', '2-Metil naftaleno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (610, '02.01.590', 'Metil paration');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (611, '02.01.591', 'Metil propil cetona');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (612, '02.01.592', 'Metil vinil cetona');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (613, '02.01.593', 'Metileno-bis-(4-ciclohexilisocianato)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (614, '02.01.594', '4,4-metileno-bis-(2-cloroanilina) (MOCA®) (MBOCA®)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (615, '02.01.595', 'Metileno bisfenil isocianato (MDI)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (616, '02.01.596', '4,4''-Metileno dianilina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (617, '02.01.597', 'Metileno-ortocloroanilina (MOCA)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (618, '02.01.598', 'Metomil');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (619, '02.01.599', 'Metoxicloro');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (620, '02.01.600', '2-Metoxietanol (EGME)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (621, '02.01.601', '(2-Metoximetiletoxi) propanol (DPGME)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (622, '02.01.602', '4-Metoxifenol');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (623, '02.01.603', '1-Metoxi-2-propanol');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (624, '02.01.604', 'Metoxsalen associado com radiação ultravioleta A');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (625, '02.01.605', 'Monometil hidrazina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (626, '02.01.606', 'Metribuzin');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (627, '02.01.607', 'Mevinfos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (628, '02.01.608', 'Mica');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (629, '02.01.609', 'Molibdênio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (630, '02.01.610', 'Monocrotofós');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (631, '02.01.611', 'Monóxido de carbono');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (632, '02.01.612', 'Morfolina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (633, '02.01.613', 'Naftaleno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (634, '02.01.614', 'ß-Naftilamina (Betanaftilamina)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (635, '02.01.615', 'naftóis');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (636, '02.01.616', 'Naled');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (637, '02.01.617', 'Negro de fumo');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (638, '02.01.618', 'Neônio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (639, '02.01.619', 'Nicotina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (640, '02.01.620', 'Níquel e seus compostos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (641, '02.01.621', 'Nitrapirin');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (642, '02.01.622', 'Nitrato de n-propila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (643, '02.01.623', 'Nitrito de isobutila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (644, '02.01.624', 'p-Nitroanilina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (645, '02.01.625', 'Nitrobenzeno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (646, '02.01.626', 'p-Nitroclorobenzeno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (647, '02.01.627', 'nitroderivados');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (648, '02.01.628', '4 - Nitrodifenil');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (649, '02.01.629', '4-Nitrodifenila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (650, '02.01.630', 'Nitroetano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (651, '02.01.631', 'Nitrogênio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (652, '02.01.632', 'Nitroglicerina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (653, '02.01.633', 'Nitrometano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (654, '02.01.634', 'Nitronaftilamina 4-Dimetil-aminoazobenzeno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (655, '02.01.635', '1-Nitropropano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (656, '02.01.636', '2-Nitropropano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (657, '02.01.637', 'Nitrosamina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (658, '02.01.638', 'n-Nitrosodimetilamina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (659, '02.01.639', 'N''-nitrosonornicotina (NNN) e 4-. (metilnitrosamino)-1-(3-piridil)1-butano- na (NNK)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (660, '02.01.640', 'Nitrotolueno, todos os isômeros');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (661, '02.01.641', '5-Nitro-o-toluidina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (662, '02.01.642', 'Nonano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (663, '02.01.643', 'Octacloronaftaleno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (664, '02.01.644', 'Octano, todos os isômeros');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (665, '02.01.645', 'Óleo diesel, como hidrocarbonetos totais');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (666, '02.01.646', 'Óleo mineral, excluídos os fluídos de trabalho com metais');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (667, '02.01.647', 'óleo queimado');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (668, '02.01.648', 'Óleos de xisto');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (669, '02.01.649', 'Ortotoluidina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (670, '02.01.650', 'p,p''-Oxibis(benzeno sulfonila hidrazida)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (671, '02.01.651', 'Oxicloreto de fósforo');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (672, '02.01.652', 'Óxido de boro');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (673, '02.01.653', 'Óxido de cálcio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (674, '02.01.654', 'Óxido de difenila o-clorada');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (675, '02.01.655', 'Óxido de etileno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (676, '02.01.656', 'Óxido de magnésio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (677, '02.01.657', 'Óxido de mesitila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (678, '02.01.658', 'Óxido de propileno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (679, '02.01.659', 'Óxido de zinco');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (680, '02.01.660', 'Óxido nítrico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (681, '02.01.661', 'Óxido nitroso');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (682, '02.01.662', 'Oxime-talona');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (683, '02.01.663', 'Ozona');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (684, '02.01.664', 'Ozônio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (685, '02.01.665', 'Parafina, cera (fumos)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (686, '02.01.666', 'Paraquat, como o cátion');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (687, '02.01.667', 'Paration');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (688, '02.01.668', 'Partículados (insolúveis ou de baixa solubilidade) não especificados de outra maneira (PNOS)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (689, '02.01.669', 'Pentaborano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (690, '02.01.670', 'Pentacloreto de fósforo');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (691, '02.01.671', '3, 4, 5, 3´, 4'' -Pentaclorobifenil (PCB - 126)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (692, '02.01.672', '2 ,3 ,4 ,7 ,8-Pentaclorodibenzofurano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (693, '02.01.673', 'Pentaclorofenol');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (694, '02.01.674', 'Pentacloronaftaleno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (695, '02.01.675', 'Pentacloronitrobenzeno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (696, '02.01.676', 'Pentaeritritol');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (697, '02.01.677', 'Pentafluoreto de bromo');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (698, '02.01.678', 'Pentafluoreto de enxofre');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (699, '02.01.679', 'n-Pentano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (700, '02.01.680', 'Pentano, todos os isômeros');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (701, '02.01.681', '2,4-Pentanodiona');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (702, '02.01.682', 'Pentassulfeto de fósforo');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (703, '02.01.683', 'Pentóxido de vanádio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (704, '02.01.684', 'Percloroetileno (Tetracloroetileno)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (705, '02.01.685', 'Perclorometil mercaptana');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (706, '02.01.686', 'Perfluorobutil etileno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (707, '02.01.687', 'Perfluorisobutileno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (708, '02.01.688', 'Perfluoroctanoato de amônio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (709, '02.01.689', 'Peróxido de benzoíla');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (710, '02.01.690', 'Peróxido de hidrogênio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (711, '02.01.691', 'Peróxido de metil etil cetona');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (712, '02.01.692', 'Persulfatos, como persulfato');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (713, '02.01.693', 'Petróleo e seus derivados');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (714, '02.01.694', 'Picloram');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (715, '02.01.695', 'Pindone');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (716, '02.01.696', 'Pirperazina e sais, como Piperazia');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (717, '02.01.697', 'Piretro');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (718, '02.01.698', 'Piridina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (719, '02.01.699', 'Pirofosfato de tetraetila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (720, '02.01.700', 'Platina e sais solúveis');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (721, '02.01.701', 'Plutônio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (722, '02.01.702', 'poliisocianetos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (723, '02.01.703', 'poliuretanas');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (724, '02.01.704', '3-Poxipro-pano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (725, '02.01.705', 'Prata e seus compostos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (726, '02.01.706', 'Procarbazina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (727, '02.01.707', 'Propano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (728, '02.01.708', 'n-propano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (729, '02.01.709', 'Propanona');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (730, '02.01.710', 'Propano sultona');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (731, '02.01.711', 'Propano sultone');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (732, '02.01.712', 'Propanosultona');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (733, '02.01.713', 'n-Propanol');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (734, '02.01.714', 'iso-Propanol');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (735, '02.01.715', '2-Propanol');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (736, '02.01.716', 'Propileno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (737, '02.01.717', 'Propileno imina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (738, '02.01.718', 'ß-Propiolactona (Beta-propiolactona)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (739, '02.01.719', 'Propionaldeído');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (740, '02.01.720', 'Propoxur');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (741, '02.01.721', 'PVC (poli cloreto de vinila)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (742, '02.01.722', 'Querosene combustível de avião, como vapor de hidrocarbonetos totais');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (743, '02.01.723', 'Quinona');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (744, '02.01.724', 'Rádio-224 e seus produtos de decaimento');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (745, '02.01.725', 'Rádio-226 e seus produtos de decaimento');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (746, '02.01.726', 'Rádio-228 e seus produtos de decaimento');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (747, '02.01.727', 'Radônio-222 e seus produtos de decaimento');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (748, '02.01.728', 'Resina de vareta (eletrodo arame) de solda, produtos da decomposição térmica (breu)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (749, '02.01.729', 'Resorcinol');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (750, '02.01.730', 'Ródio e seus compostos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (751, '02.01.731', 'Ronel');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (752, '02.01.732', 'Rotenona (comercial)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (753, '02.01.733', 'Sacarose');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (754, '02.01.734', 'Seleneto de hidrogênio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (755, '02.01.735', 'Selênio e seus compostos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (756, '02.01.736', 'Semustina [1-(2 -cloroetil) -3-(4-metilciclohexil)-1-nitrosourea, Metil CC- NU]');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (757, '02.01.737', 'Sesone');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (758, '02.01.738', 'Sílica Cristalina - α-quartzo e cristobalita');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (759, '02.01.739', 'Sílica livre');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (760, '02.01.740', 'Sílica cristobalita');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (761, '02.01.741', 'Silicato de cálcio, sintético não fibroso');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (762, '02.01.742', 'Silicato de etila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (763, '02.01.743', 'Silicato de metila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (764, '02.01.744', 'Silicatos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (765, '02.01.745', 'Subtilisins, como enzima cristalina ativa');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (766, '02.01.746', 'Sulfamato de amônio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (767, '02.01.747', 'Sulfato de bário');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (768, '02.01.748', 'Sulfato de cálcio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (769, '02.01.749', 'Sulfato de dimetila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (770, '02.01.750', 'Sulfato de carbonila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (771, '02.01.751', 'Sulfeto de hidrogênio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (772, '02.01.752', 'Sulfeto de dimetila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (773, '02.01.753', 'sulfeto de níquel');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (774, '02.01.754', 'Sulfometuron metil');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (775, '02.01.755', 'Sulfotep (TEDP)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (776, '02.01.756', 'Sulprofos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (777, '02.01.757', 'Systox');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (778, '02.01.758', '2,4,5-T');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (779, '02.01.759', 'Talco');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (780, '02.01.760', 'Tálio, e compostos, como TI');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (781, '02.01.761', 'Tamoxifeno (nota: há evidências também conclusivas para seu uso na re- dução do risco de câncer de mama contralateral em pacientes com câncer de mama)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (782, '02.01.762', 'Telureto de bismuto');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (783, '02.01.763', 'Telúrio e compostos (NOS), como Te, excluído telureto de hidrogênio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (784, '02.01.764', 'Temefós');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (785, '02.01.765', 'Terbufos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (786, '02.01.766', 'Terebentina e monoterpenos selecionados');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (787, '02.01.767', 'Terfenilas (o,m,p-isômeros)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (788, '02.01.768', 'Terfenilas hidrogenadas (não irradiadas)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (789, '02.01.769', '1,1,2,2,Tetrabromoetano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (790, '02.01.770', 'Tetrabrometo de acetileno (1,1,2,2-Tetrabromoetano)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (791, '02.01.771', 'Tetrabrometo de carbono');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (792, '02.01.772', 'Tetracloreto de carbono');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (793, '02.01.773', '2,3,7,8-Tetraclorodibenzo-para-dioxina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (794, '02.01.774', '1,1,1,2-Tetracloro-2,2-difluoretano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (795, '02.01.775', '1,1,2,2-Tetracloro-1,2-difluoretano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (796, '02.01.776', '1,1,2,2-Tetracloroetano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (797, '02.01.777', 'Tetracloroetano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (798, '02.01.778', 'Tetracloronaftaleno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (799, '02.01.779', 'Tetracloroetileno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (800, '02.01.780', 'Tetrafluoretileno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (801, '02.01.781', 'Tetrafluoreto de enxofre');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (802, '02.01.782', 'Tetrahidreto de germânio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (803, '02.01.783', 'Tetrahidreto de silício');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (804, '02.01.784', 'Tetrahidrofurano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (805, '02.01.785', 'Tetraquis (hidroximetil) fosfônio, sais - Cloreto de tetraquis (hidroximetil) fosfônio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (806, '02.01.786', 'Tetraquis (hidroximetil) fosfônio, sais - Sulfato de tetraquis (hidroximetil) fosfônio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (807, '02.01.787', 'Tetrametil succinonitrila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (808, '02.01.788', 'Tetranitrometano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (809, '02.01.789', 'Tetril');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (810, '02.01.790', 'Tetróxido de ósmio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (811, '02.01.791', 'Thiram');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (812, '02.01.792', 'Tiotepa');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (813, '02.01.793', 'Titânio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (814, '02.01.794', '4,4''-Tiobis (6-terc-butil-m-cresol)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (815, '02.01.795', 'o-Tolidina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (816, '02.01.796', 'Tolueno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (817, '02.01.797', 'Tolueno 2,4 ou 2,6 -diisocianato (ou como mistura)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (818, '02.01.798', 'o-Toluidina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (819, '02.01.799', 'm-Toluidina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (820, '02.01.800', 'p-Toluidina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (821, '02.01.801', 'Tório-232 e seus produtos de decaimento');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (822, '02.01.802', 'Tribrometo de boro');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (823, '02.01.803', 'Tribromometano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (824, '02.01.804', 'Tricloreto de fósforo');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (825, '02.01.805', 'Tricloreto de vinila');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (826, '02.01.806', 'Triclorfon');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (827, '02.01.807', 'Triclorometil benzeno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (828, '02.01.808', '1,1,2-Tricloro-1,2,2-trifluoretano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (829, '02.01.809', '1,2,4-Triclorobenzeno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (830, '02.01.810', '1,1,1 Tricloroetano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (831, '02.01.811', '1,1,2-Tricloroetano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (832, '02.01.812', 'Tricloroetileno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (833, '02.01.813', 'Triclorometano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (834, '02.01.814', 'Triclorofluormetano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (835, '02.01.815', 'Tricloronaftaleno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (836, '02.01.816', '1,2,3-Tricloropropano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (837, '02.01.817', 'Trietanolamina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (838, '02.01.818', 'Trietilamina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (839, '02.01.819', 'Trifluorbromometano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (840, '02.01.820', 'Trifluoreto de boro');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (841, '02.01.821', 'Trifluoreto de cloro');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (842, '02.01.822', 'Trifluoreto de nitrogênio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (843, '02.01.823', 'Trifluormonobramometano');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (844, '02.01.824', '1,3,5-Triglicidil-s-triazinetriona');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (845, '02.01.825', 'Trimetilamina');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (846, '02.01.826', 'Trimetil benzeno (mistura de isômeros)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (847, '02.01.827', '2,4,6-Trinitrotolueno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (848, '02.01.828', 'trióxido de amônio');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (849, '02.01.829', 'Trióxido de antimônio - Produção');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (850, '02.01.830', 'Tungstênio e seus compostos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (851, '02.01.831', 'Urânio (natural) Compostos solúveis e insolúveis');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (852, '02.01.832', 'n-Valeraldeído');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (853, '02.01.833', 'Vinibenzeno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (854, '02.01.834', '4-Vinilciclohexeno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (855, '02.01.835', 'n-Vinil-2-pirrolidone');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (856, '02.01.836', 'Vinil tolueno');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (857, '02.01.837', 'Warfarin');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (858, '02.01.838', 'Xileno (o, m e p isômeros)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (859, '02.01.839', 'Xilidina (mistura de isômeros)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (860, '02.01.840', 'Xisto betuminoso');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (861, '02.01.841', 'Zircônio e compostos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (862, '02.01.999', 'Outros');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (863, '03.01.001', 'Trabalho ou operações, em contato permanente com pacientes em isolamento por doenças infecto-contagiosas, bem como objetos de seu uso, não previamente esterilizados');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (864, '03.01.002', 'Trabalho ou operações, em contato permanente com carnes, glândulas, vísceras, sangue, ossos, couros, pêlos e dejeções de animais portadores de doenças infecto-contagiosas (carbunculose, brucelose, tuberculose)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (865, '03.01.003', 'Trabalho ou operações, em contato permanente com esgotos (galerias e tanques)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (866, '03.01.004', 'Trabalho ou operações, em contato permanente com lixo urbano (coleta e industrialização)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (867, '03.01.005', 'Trabalhos e operações em contato permanente com pacientes, animais ou com material infecto-contagiante, em hospitais, serviços de emergência, enfermarias, ambulatórios, postos de vacinação e outros estabelecimentos destinados aos cuidados da saúde humana (aplica se unicamente ao pessoal que tenha contato com os pacientes, bem como aos que manuseiam objetos de uso desses pacientes, não previamente esterilizados).');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (868, '03.01.006', 'Trabalhos e operações em contato permanente com pacientes, animais ou com material infecto-contagiante, em hospitais, ambulatórios, postos de vacinação e outros estabelecimentos destinados ao atendimento e tratamento de animais (aplica se apenas ao pessoal que tenha contato com tais animais).');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (869, '03.01.007', 'Trabalhos e operações em contato permanente com pacientes, animais ou com material infecto-contagiante, em contato em laboratórios, com animais destinados ao preparo de soro, vacinas e outros produtos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (870, '03.01.008', 'Trabalhos e operações em contato permanente com pacientes, animais ou com material infecto-contagiante, em laboratórios de análise clínica e histopatologia (aplica-se tão-só ao pessoal técnico)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (871, '03.01.009', 'Trabalhos e operações em contato permanente com pacientes, animais ou com material infecto-contagiante, em gabinetes de autópsias, de anatomia e histoanatomopatologia (aplica-se somente ao pessoal técnico)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (872, '03.01.010', 'Trabalhos e operações em contato permanente com pacientes, animais ou com material infecto-contagiante, em cemitérios (exumação de corpos).');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (873, '03.01.011', 'Trabalhos e operações em contato permanente com pacientes, animais ou com material infecto-contagiante, em estábulos e cavalariças');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (874, '03.01.012', 'Trabalhos e operações em contato permanente com pacientes, animais ou com material infecto-contagiante, em resíduos de animais deteriorados.');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (875, '03.01.013', 'Trabalho de exumação de corpos e manipulação de resíduos de animais deteriorados');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (876, '03.01.014', 'Esvaziamento de biodigestores');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (877, '03.01.999', 'Outros');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (878, '04.01.001', 'Exigência de posturas incômodas ou pouco confortáveis por longos períodos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (879, '04.01.002', 'Postura sentada por longos períodos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (880, '04.01.003', 'Postura de pé por longos períodos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (881, '04.01.004', 'Constante deslocamento a pé durante a jornada de trabalho');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (882, '04.01.005', 'Exigência de esforço físico intenso');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (883, '04.01.006', 'Levantamento e transporte manual de cargas ou volumes');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (884, '04.01.007', 'Frequente ação de puxar/empurrar cargas ou volumes');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (885, '04.01.008', 'Frequente execução de movimentos repetitivos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (886, '04.01.009', 'Manuseio de ferramentas e/ou objetos pesados por períodos prolongados');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (887, '04.01.999', 'Outros');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (888, '04.02.001', 'Mobiliário sem meios de regulagem de ajuste');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (889, '04.02.002', 'Equipamentos e/ou máquinas sem meios de regulagem de ajuste ou sem condições de uso');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (890, '04.02.999', 'Outros');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (891, '04.03.001', 'Ausência de pausas para descanso ou não cumprimento destas durante a jornada');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (892, '04.03.002', 'Necessidade de manter ritmos intensos de trabalho');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (893, '04.03.003', 'Trabalho com necessidade de variação de turnos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (894, '04.03.004', 'Monotonia');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (895, '04.03.005', 'Ausência de um plano de capacitação, habilitação, reciclagem e atualização dos empregados');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (896, '04.03.006', 'Cobrança de metas de impossível atingimento');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (897, '04.03.999', 'Outros');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (898, '04.04.001', 'Situações de estresse');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (899, '04.04.002', 'Situações de sobrecarga de trabalho mental');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (900, '04.04.003', 'Exigência de alto nível de concentração ou atenção');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (901, '04.04.004', 'Meios de comunicação ineficientes');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (902, '04.04.999', 'Outros');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (903, '05.01.001', 'Trabalho em altura');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (904, '05.01.002', 'Iluminação inadequada');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (905, '05.01.003', 'Choque elétrico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (906, '05.01.004', 'Choque mecânico');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (907, '05.01.005', 'Arranjo físico inadequado');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (908, '05.01.006', 'Incêndio e explosão (probabilidade)');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (909, '05.01.007', 'Máquinas e equipamentos sem proteção');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (910, '05.01.008', 'Máquinas e equipamentos com proteção inadequada');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (911, '05.01.009', 'Armazenamento inadequado');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (912, '05.01.010', 'Ferramentas inadequadas ou defeituosas');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (913, '05.01.011', 'Soterramento');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (914, '05.01.012', 'Animais peçonhentos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (915, '05.01.013', 'Animais domésticos/Risco a acidentes de ataque');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (916, '05.01.014', 'Animais selvagens/Risco a acidentes de ataque');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (917, '05.01.015', 'Cortes e perfurações');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (918, '05.01.016', 'Queimaduras');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (919, '05.01.017', 'Acidentes de trânsito');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (920, '05.01.999', 'Outros');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (921, '06.01.001', 'Explosivos');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (922, '06.01.002', 'Inflamáveis');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (923, '06.01.003', 'Energia elétrica');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (924, '06.01.004', 'Radiações Ionizantes ou substâncias Radioativas');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (925, '06.01.005', 'Profissionais de Segurança Pessoal ou Patrimonial');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (926, '06.01.006', 'As atividades laborais com utilização de motocicleta ou motoneta no deslocamento de trabalhador em vias públicas são consideradas perigosas.');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (927, '06.01.999', 'Outros');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (928, '07.01.001', 'Decisão judicial');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (929, '07.01.002', 'Acordo - Convenção');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (930, '07.01.003', 'Liberalidade');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (931, '07.01.999', 'Outros');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (932, '08.01.001', 'Mineração subterrânea cujas atividades sejam exercidas afastadas das frentes de produção');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (933, '08.01.002', 'Trabalhos em atividades permanentes no subsolo de minerações subterrâneas em frente de produção');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (934, '08.01.999', 'Outros');
+INSERT INTO fatorderisco (id, codigo, descricao) VALUES (935, '09.01.001', 'Ausência de Fator de Risco');
+
+
+--
+-- Name: fatorderisco_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('fatorderisco_sequence', 935, true);
 
 
 --
@@ -31208,6 +32249,12 @@ SELECT pg_catalog.setval('medicaorisco_sequence', 1, false);
 
 --
 -- Data for Name: medicocoordenador; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- Data for Name: medicocoordenador_estabelecimento; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 
@@ -31791,6 +32838,16 @@ INSERT INTO migrations (name) VALUES ('20170920113353');
 INSERT INTO migrations (name) VALUES ('20170926073828');
 INSERT INTO migrations (name) VALUES ('20170927153641');
 INSERT INTO migrations (name) VALUES ('20170929152030');
+INSERT INTO migrations (name) VALUES ('20171005105053');
+INSERT INTO migrations (name) VALUES ('20171005132858');
+INSERT INTO migrations (name) VALUES ('20171009092851');
+INSERT INTO migrations (name) VALUES ('20171013133238');
+INSERT INTO migrations (name) VALUES ('20171013171100');
+INSERT INTO migrations (name) VALUES ('20171016095944');
+INSERT INTO migrations (name) VALUES ('20171030132939');
+INSERT INTO migrations (name) VALUES ('20171108083848');
+INSERT INTO migrations (name) VALUES ('20171109085011');
+INSERT INTO migrations (name) VALUES ('20171114074625');
 
 
 --
@@ -32080,7 +33137,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (36, 'ROLE_REL_GASTOEMPRESA', 'Investimentos da Empresa', '/geral/gastoEmpresa/prepareImprimir.action', 9, true, NULL, 463, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (29, 'ROLE_MOV_GASTO_GASTOEMPRESA', 'Investimentos da Empresa', '/geral/gastoEmpresa/list.action', 10, true, NULL, 463, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (31, 'ROLE_REL_MATRIZ', 'Matriz de Qualificação', '/desenvolvimento/turma/prepareImprimirMatriz.action', 11, true, NULL, 463, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (66, 'ROLE_SESMT_MUDANCA_FUNCAO', 'Mudança de Função', '/sesmt/funcao/mudancaFuncaoFiltro.action', 12, true, NULL, 463, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (32, 'ROLE_REL_PLANO', 'Plano de Treinamento', '/desenvolvimento/turma/prepareImprimirTurma.action', 13, true, NULL, 463, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (72, 'ROLE_MOV_CURSO_DNT_GESTOR', 'Preenchimento da DNT', '/desenvolvimento/dnt/list.action?gestor=true', 14, true, NULL, 463, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (13, 'ROLE_CAD_PRIORIDADETREINAMENTO', 'Prioridades de Treinamento', '/desenvolvimento/prioridadeTreinamento/list.action', 15, true, NULL, 463, NULL);
@@ -32178,7 +33234,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (637, 'ROLE_CAD_CARGO_INSERIR', 'Inserir', '#', 1, false, NULL, 11, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (638, 'ROLE_CAD_CARGO_EDITAR', 'Editar', '#', 2, false, NULL, 11, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (639, 'ROLE_CAD_CARGO_EXCLUIR', 'Excluir', '#', 3, false, NULL, 11, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (640, 'ROLE_CAD_CARGO_FUNCOES', 'Exibir Funções', '#', 4, false, NULL, 11, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (641, 'ROLE_CAD_CARGO_IMPRIMIR', 'Imprimir', '#', 5, false, NULL, 11, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (499, 'ROLE_CAD_FAIXA_SALARIAL', 'Exibir Faixa Salarial de Cargos', '', 6, false, NULL, 11, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (417, 'ROLE_TRANSFERIR_FAIXAS_AC', 'Transferir Faixas entre Cargos', '', 7, false, NULL, 11, NULL);
@@ -32197,7 +33252,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (427, 'ROLE_CAD_FICHAMEDICA', 'Modelos de Fichas Médicas', '/sesmt/fichaMedica/list.action', 16, true, NULL, 385, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (440, 'ROLE_CAD_AFASTAMENTO', 'Motivos de Afastamentos', '/sesmt/afastamento/list.action', 17, true, NULL, 385, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (530, 'ROLE_CAD_NATUREZALESAO', 'Natureza da Lesão', '/sesmt/naturezaLesao/list.action', 18, true, NULL, 385, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (476, 'ROLE_FUNCAO', 'Funções', '/sesmt/funcao/listFiltro.action', 19, true, NULL, 385, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (532, 'ROLE_COMPOSICAO_SESMT', 'Composição do SESMT', '/sesmt/composicaoSesmt/list.action', 20, true, NULL, 385, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (643, 'ROLE_CAD_TAMANHO_EPI', 'Tamanhos de EPI/Fardamento', '/sesmt/tamanhoEPI/list.action', 1, true, NULL, 385, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (77, 'ROLE_CAD_TIPO_EPI', 'Categorias de EPI/Fardamento', '/sesmt/tipoEPI/list.action', 2, true, NULL, 385, NULL);
@@ -32223,6 +33277,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (431, 'ROLE_REL_EXAMES_PREVISTOS', 'Exames Previstos', '/sesmt/exame/prepareRelatorioExamesPrevistos.action', 1, true, NULL, 658, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (460, 'ROLE_CAD_SOLICITACAOEXAME', 'Exames Realizados', '/sesmt/exame/prepareRelatorioExamesRealizados.action', 2, true, NULL, 658, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (659, 'ROLE_AFASTAMENTOS', 'Afastamentos', '#', 8, true, NULL, 387, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (476, 'ROLE_FUNCAO', 'Funções', '/sesmt/funcao/list.action', 19, true, NULL, 385, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (442, 'ROLE_CAD_AFASTAMENTO', 'Afastamentos', '/sesmt/colaboradorAfastamento/prepareRelatorioAfastamentos.action', 2, true, NULL, 659, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (536, 'ROLE_REL_AFASTAMENTO', 'Resumo de Afastamentos', '/sesmt/colaboradorAfastamento/prepareRelatorioResumoAfastamentos.action', 1, true, NULL, 659, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (448, 'ROLE_CAD_EXTINTOR', 'Extintores - Manutenção e Inspeção', '/sesmt/extintor/prepareRelatorio.action', 4, true, NULL, 387, NULL);
@@ -32313,20 +33368,21 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (477, 'ROLE_AMBIENTE_FUNCAO_COLABORADOR', 'Ambientes e Funções do Colaborador', '/cargosalario/historicoColaborador/prepareUpdateAmbientesEFuncoes.action', 5, true, NULL, 386, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (503, 'ROLE_CONFIG_CAMPOS', 'Configurar Cadastro de Colaborador e Candidato', '#', 3, true, NULL, 41, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (706, 'ROLE_REL_ANALISE_COMPETENCIAS_ORGANIZACAO', 'Análise de Desempenho das Competências da Organização', '/avaliacao/desempenho/prepareAnaliseDesempenhoCompetenciaOrganizacao.action', 8, true, NULL, 486, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (707, 'ROLE_MOV_SOLICITACAO_DOCUMENTOS', 'Documentos da Solicitação de Pessoal', '#', 13, false, NULL, 21, NULL);
 
 
 --
 -- Name: papel_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('papel_sequence', 707, false);
+SELECT pg_catalog.setval('papel_sequence', 708, false);
 
 
 --
 -- Data for Name: parametrosdosistema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatoexternovisivel, camposcandidatoexternoobrigatorio, camposcandidatoexternotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima, quantidadeconstraints, tamanhomaximoupload, modulospermitidossomatorio, versaoacademica, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, camposcolaboradorvisivel, camposcolaboradorobrigatorio, camposcolaboradortabs, autorizacaogestornasolicitacaopessoal, smtpremetente, utilizarcaptchanologin) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.184.216', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.66.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,uf,fone,ddd', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', '2', false, 1, 418, NULL, 63, false, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,comoFicouSabendoVaga,comfirmaSenha,senha,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,carteiraHabilitacao,tituloEleitoral,certificadoMilitar,ctps,pis', 'nome,escolaridade,ende,num,cidade,uf,fone,ddd', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais', 'nome,nomeComercial,nascimento,sexo,cpf,escolaridade,endereco,email,fone,celular,estadoCivil,qtdFilhos,nomeConjuge,nomePai,nomeMae,deficiencia,matricula,dt_admissao,dt_encerramentoContrato,regimeRevezamento,formacao,idioma,desCursos,expProfissional,infoAdicionais,identidade,carteiraHabilitacao,tituloEleitoral,certificadoMilitar,ctps,modelosAvaliacao,pis,vinculo', 'nome,nomeComercial,nascimento,cpf,escolaridade,ende,num,cidade,uf,email,fone,ddd,dt_admissao,vinculo', 'abaDocumentos,abaExperiencias,abaDadosFuncionais,abaFormacaoEscolar,abaDadosPessoais,abaModelosAvaliacao', false, false, false);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatoexternovisivel, camposcandidatoexternoobrigatorio, camposcandidatoexternotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima, quantidadeconstraints, tamanhomaximoupload, modulospermitidossomatorio, versaoacademica, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, camposcolaboradorvisivel, camposcolaboradorobrigatorio, camposcolaboradortabs, autorizacaogestornasolicitacaopessoal, smtpremetente, utilizarcaptchanologin, versaoimportador) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.185.217', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.66.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,uf,fone,ddd', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', '2', false, 1, 433, NULL, 63, false, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,comoFicouSabendoVaga,comfirmaSenha,senha,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,carteiraHabilitacao,tituloEleitoral,certificadoMilitar,ctps,pis', 'nome,escolaridade,ende,num,cidade,uf,fone,ddd', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais', 'nome,nomeComercial,nascimento,sexo,cpf,escolaridade,endereco,email,fone,celular,estadoCivil,qtdFilhos,nomeConjuge,nomePai,nomeMae,deficiencia,matricula,dt_admissao,dt_encerramentoContrato,regimeRevezamento,formacao,idioma,desCursos,expProfissional,infoAdicionais,identidade,carteiraHabilitacao,tituloEleitoral,certificadoMilitar,ctps,modelosAvaliacao,pis,vinculo', 'nome,nomeComercial,nascimento,cpf,escolaridade,ende,num,cidade,uf,email,fone,ddd,dt_admissao,vinculo,pis', 'abaDocumentos,abaExperiencias,abaDadosFuncionais,abaFormacaoEscolar,abaDadosPessoais,abaModelosAvaliacao', false, false, false, '1.64.0');
 
 
 --
@@ -32665,7 +33721,6 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 636);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 637);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 638);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 639);
-INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 640);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 641);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 642);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 643);
@@ -32701,6 +33756,7 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 702);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 704);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 705);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 706);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 707);
 
 
 --
@@ -33248,6 +34304,19 @@ INSERT INTO usuario (id, nome, login, senha, acessosistema, ultimologin, superad
 --
 
 SELECT pg_catalog.setval('usuario_sequence', 2, true);
+
+
+--
+-- Data for Name: usuarioajudaesocial; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- Name: usuarioajudaesocial_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('usuarioajudaesocial_sequence', 1, false);
 
 
 --
@@ -34154,6 +35223,14 @@ ALTER TABLE ONLY fasepcmat
 
 
 --
+-- Name: fatorderisco_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY fatorderisco
+    ADD CONSTRAINT fatorderisco_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: faturamentomensal_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -34895,6 +35972,14 @@ ALTER TABLE ONLY usuario
 
 ALTER TABLE ONLY usuario
     ADD CONSTRAINT usuario_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: usuarioajudaesocial_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY usuarioajudaesocial
+    ADD CONSTRAINT usuarioajudaesocial_pkey PRIMARY KEY (id);
 
 
 --
@@ -36698,14 +37783,6 @@ ALTER TABLE ONLY curso_avaliacaocurso
 
 
 --
--- Name: curso_empresa; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY curso
-    ADD CONSTRAINT curso_empresa FOREIGN KEY (empresa_id) REFERENCES empresa(id);
-
-
---
 -- Name: curso_empresa_curso_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -36719,6 +37796,14 @@ ALTER TABLE ONLY curso_empresa
 
 ALTER TABLE ONLY curso_empresa
     ADD CONSTRAINT curso_empresa_empresa_fk FOREIGN KEY (empresasparticipantes_id) REFERENCES empresa(id);
+
+
+--
+-- Name: curso_empresa_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY curso
+    ADD CONSTRAINT curso_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
 
 
 --
@@ -36831,6 +37916,22 @@ ALTER TABLE ONLY empresabds
 
 ALTER TABLE ONLY engenheiroresponsavel
     ADD CONSTRAINT engenheiroresponsavel_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
+
+
+--
+-- Name: engenheiroresponsavel_estabelecimento_engenheiroresponsavel_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY engenheiroresponsavel_estabelecimento
+    ADD CONSTRAINT engenheiroresponsavel_estabelecimento_engenheiroresponsavel_fk FOREIGN KEY (engenheiroresponsavel_id) REFERENCES engenheiroresponsavel(id);
+
+
+--
+-- Name: engenheiroresponsavel_estabelecimento_estabelecimento_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY engenheiroresponsavel_estabelecimento
+    ADD CONSTRAINT engenheiroresponsavel_estabelecimento_estabelecimento_fk FOREIGN KEY (estabelecimentos_id) REFERENCES estabelecimento(id);
 
 
 --
@@ -37202,11 +38303,11 @@ ALTER TABLE ONLY solicitacao
 
 
 --
--- Name: funcao_cargo_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: funcao_empresa_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY funcao
-    ADD CONSTRAINT funcao_cargo_fk FOREIGN KEY (cargo_id) REFERENCES cargo(id);
+    ADD CONSTRAINT funcao_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
 
 
 --
@@ -37631,6 +38732,22 @@ ALTER TABLE ONLY medicaorisco
 
 ALTER TABLE ONLY medicocoordenador
     ADD CONSTRAINT medicocoordenador_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
+
+
+--
+-- Name: medicocoordenador_estabelecimento_estabelecimento_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY medicocoordenador_estabelecimento
+    ADD CONSTRAINT medicocoordenador_estabelecimento_estabelecimento_fk FOREIGN KEY (estabelecimentos_id) REFERENCES estabelecimento(id);
+
+
+--
+-- Name: medicocoordenador_estabelecimento_medicocoordenador_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY medicocoordenador_estabelecimento
+    ADD CONSTRAINT medicocoordenador_estabelecimento_medicocoordenador_fk FOREIGN KEY (medicocoordenador_id) REFERENCES medicocoordenador(id);
 
 
 --
@@ -38098,6 +39215,14 @@ ALTER TABLE ONLY risco_epi
 
 
 --
+-- Name: risco_fator_de_risco_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY risco
+    ADD CONSTRAINT risco_fator_de_risco_fk FOREIGN KEY (fatorderisco_id) REFERENCES fatorderisco(id);
+
+
+--
 -- Name: riscoambiente_historicoambiente_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -38551,6 +39676,14 @@ ALTER TABLE ONLY turma
 
 ALTER TABLE ONLY turmatipodespesa
     ADD CONSTRAINT turma_tipodespesa_tipodespesas_fk FOREIGN KEY (tipodespesa_id) REFERENCES tipodespesa(id);
+
+
+--
+-- Name: usuarioajudaesocial_usario_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY usuarioajudaesocial
+    ADD CONSTRAINT usuarioajudaesocial_usario_fk FOREIGN KEY (usuario_id) REFERENCES usuario(id);
 
 
 --

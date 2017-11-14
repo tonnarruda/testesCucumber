@@ -7,7 +7,7 @@ import junit.framework.TestCase;
 import org.apache.commons.httpclient.HttpException;
 
 import com.fortes.rh.util.ArquivoUtil;
-import com.fortes.rh.util.HttpUtil;
+import com.fortes.rh.web.dwr.EnderecoDWR;
 
 public class TestsNoIncludeAllUnitTest extends TestCase
 {
@@ -71,9 +71,7 @@ public class TestsNoIncludeAllUnitTest extends TestCase
     // Testes da classe StringUtil.java
 	public void testGetHTML() throws HttpException, IOException
 	{
-		String url = "http://m.correios.com.br/movel/buscaCepConfirma.do?cepEntrada=60870520&tipoCep=&cepTemp=&metodo=buscarCep";
-		
-		assertTrue(HttpUtil.getHtmlViaPost(url).contains("respostadestaque"));
+		assertTrue(new EnderecoDWR().buscaPorCep("61760000").contains("61760000"));
 	}
 
 }

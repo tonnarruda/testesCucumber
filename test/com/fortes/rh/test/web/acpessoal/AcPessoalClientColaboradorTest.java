@@ -491,7 +491,7 @@ public class AcPessoalClientColaboradorTest extends AcPessoalClientTest
 	public void testStatusAdmissaoNoFortesPessoalEmpregado() throws Exception{
 		montaMockGrupoAC();
 		
-		execute("INSERT INTO EPG (EMP_CODIGO,CODIGO,NOME,ID_EXTERNO) VALUES ('"+ empCodigo +"','991199','TESTE do RH', '1')");
+		execute("INSERT INTO EPG (EMP_CODIGO,CODIGO,NOME,ID_EXTERNO) VALUES ('"+ empCodigo +"','998199','TESTE do RH', '1')");
 		ResultSet result = query("select nome from epg where codigo = '991199' and emp_codigo = '" + empCodigo + "'");
 		if (!result.next())
 			fail("Consulta RETORNOU algo...");

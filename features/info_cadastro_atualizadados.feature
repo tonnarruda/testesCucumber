@@ -6,13 +6,16 @@ Funcionalidade: Atualizar Dados do Colaborador
      Dado que eu esteja logado com o usuário "SOS"
     Então eu acesso o menu "Info. Funcionais > Cadastros > Atualizar meus dados"
         E eu devo ver "Sua conta de usuário não está vinculada à nenhum colaborador"
+    
 
 #------------------------------------------------------------------------------------------------------------------------
 @teste
   Cenário: Alterar Dados de Colaborador
      Dado que exista um usuario "admin" associado a um empregado
+     Dado que eu esteja deslogado
      Dado que eu esteja logado com o usuário "admin"
     Então eu acesso o menu "Info. Funcionais > Cadastros > Atualizar meus dados"
+        E eu espero 10 segundos
         E eu preencho "E-mail" com "email@teste.com.br"
         E eu preencho o campo pelo name "colaborador.contato.ddd" com "85"       
         E eu preencho "Telefone" com "88438383"

@@ -67,7 +67,7 @@ public class FaixaSalarialEditAction extends MyActionSupportEdit implements Mode
 	private void prepare() throws Exception
 	{
 		empresaEstaIntegradaEAderiuAoESocial = isEmpresaIntegradaEAderiuAoESocial();
-		empresaEstaIntegradaEAderiuAoESocial = true;
+
 		if(empresaEstaIntegradaEAderiuAoESocial){
 			setExibeDialogAJuda(!usuarioAjudaESocialManager.verifyExists(new String[]{"usuario.id", "telaAjuda"}, new Object[]{getUsuarioLogado().getId(), TelaAjudaESocial.EDICAO_FAIXA_SALARIAL}));
 			setTelaAjuda(TelaAjudaESocial.EDICAO_FAIXA_SALARIAL);

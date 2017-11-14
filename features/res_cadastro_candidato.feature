@@ -64,5 +64,5 @@ Funcionalidade: Cadastrar Candidato
     Quando eu clico em excluir "_Pedro 2"
     Então eu devo ver "Deseja realmente excluir o candidato _Pedro 2?"
     Quando eu aperto "OK"
-    Então eu devo ver "Candidato excluído com sucesso!"
+    Então eu devo ver "Candidato excluído com sucesso"
     E eu não devo ver "_Pedro 2"

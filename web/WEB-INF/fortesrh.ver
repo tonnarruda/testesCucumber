@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.18x.21x" db="" data="xx/xx/2017">
+	<Versao id="1.1.185.217" db="" data="16/11/2017">
 		<Item visivel="S" motivo="S17100000197"><![CDATA[R&S > Cadastros > Candidatos: Conservação dos dados digitados no filtro após realizar pesquisa e outras operações que recarregam as informações da tela de listagem.]]></Item>
 		<Item visivel="S" motivo="S17070000106"><![CDATA[R&S > Cadastros > Motivo de Solicitação de Pessoal > Inserir/Editar: Novo campo que possibilita alertar sobre a quantidade limite de colaboradores ativos por cargo ao inserir/editar uma solicitação de pessoal.]]></Item>
 		<Item visivel="S" motivo="S17030000004"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Documentos da Solicitação de Pessoal: Nova funcionalidade para anexar documentos.]]></Item>
@@ -21,7 +21,7 @@
 		<Item visivel="S" motivo="S17080000256"><![CDATA[SESMT > Relatórios > PPP: Os médicos e engenheiros listados no relatório serão exibidos de acordo com os estabelecimentos dos quais são responsáveis configurados em seus respectivos cadastros.]]></Item>
 		<Item visivel="S" motivo="S17090000301"><![CDATA[SESMT > Relatórios > EPI > Ficha de EPI: Possibilidade de selecionar várias solicitações de EPI por colaborador para gerar uma ficha de EPI.]]></Item>
 		<Item visivel="S" motivo="S17060000306"><![CDATA[SESMT > Relatórios > PCMSO: Os nomes das funções apresentados no relatório faz referência ao histórico da função anterior a data preenchida na tela.(Adequação ao eSocial)]]></Item>
-		<Item visivel="S" motivo="P17110000069"><![CDATA[Utilitários > Configuraçẽs > Configurar Cadastro de Colaborador e Candidato > Campos padrões do sistema > Colaborador > Documentos: Retorno da possibilidade de configurar a visibilidade e obrigatoriedade do PIS.]]></Item>
+		<Item visivel="S" motivo="P17110000069"><![CDATA[Utilitários > Configurações > Configurar Cadastro de Colaborador e Candidato > Campos padrões do sistema > Colaborador > Documentos: Retorno da possibilidade de configurar a visibilidade e obrigatoriedade do PIS.]]></Item>
 		<Item visivel="N" motivo="S17090000302"><![CDATA[Importador: Nova validação para checar a compatibilidade do Importador com o FortesRH.]]></Item>
 	</Versao>
 	<Versao id="1.1.184.216" db="" data="02/10/2017">

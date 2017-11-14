@@ -455,7 +455,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			if(!desabilitarEdicaoCamposIntegrados){
 				camposColaboradorObrigatorio = parametrosDoSistema.getCamposColaboradorObrigatorio();
 			
-				if(!camposColaboradorObrigatorio.contains("pis") && !colaborador.getVinculo().equals(Vinculo.ESTAGIO)){
+				if(!camposColaboradorObrigatorio.contains("pis") && !colaborador.getVinculo().equals(Vinculo.ESTAGIO) && getEmpresaSistema().isAcIntegra()){
 					camposColaboradorObrigatorio = camposColaboradorObrigatorio.concat(",pis");
 				}else if(camposColaboradorObrigatorio.contains("pis") && colaborador.getVinculo().equals(Vinculo.ESTAGIO)){
 					camposColaboradorObrigatorio = camposColaboradorObrigatorio.replace("pis", "");
@@ -473,7 +473,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		
 		setNacionalidadeAndNaturalidade();
 		
-		if(!desabilitarEdicaoCamposIntegrados && !camposColaboradorObrigatorio.contains("pis") ){
+		if(!desabilitarEdicaoCamposIntegrados && !camposColaboradorObrigatorio.contains("pis") && getEmpresaSistema().isAcIntegra()){
 			camposColaboradorObrigatorio = camposColaboradorObrigatorio.concat(",pis");
 		}
 		

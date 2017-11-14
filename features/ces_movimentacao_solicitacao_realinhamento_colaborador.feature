@@ -37,9 +37,8 @@ Funcionalidade: Solicitação de Realinhamento por Colaborador
     E eu seleciono "desenvolvimento" de "Áreas Organizacionais"
     E eu seleciono "maria (maria)" de "Colaborador"
 
-    E eu seleciono (JS) "1" de "estabelecimentoProposta"
+    E eu seleciono (JS) "1" de "estabelecimentoProposto"
     E eu seleciono (JS) "2" de "areaOrganizacionalProposta"
-
     E eu seleciono (JS) "2" de "faixa"
 
     E eu espero 1 segundo

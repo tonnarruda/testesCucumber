@@ -50,6 +50,7 @@ Funcionalidade: Campos Extras para Colaborador
     Quando eu clico na aba "EXTRA"
     E eu preencho "Placa do veículo" com "hoz2549"
     E eu clico no botão "Gravar"
+    E eu espero 10 segundos
     Quando eu clico em editar "_Zé da Silva"
     Quando eu clico na aba "EXTRA"
     Entao o campo "Placa do veículo" deve conter "hoz2549"

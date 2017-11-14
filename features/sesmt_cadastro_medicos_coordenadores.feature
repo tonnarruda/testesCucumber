@@ -34,5 +34,5 @@ Funcionalidade: Médicos Coordenadores
 
     Então eu clico em excluir "perera"
     E eu devo ver o alert do confirmar exclusão e clico no ok
-    E eu devo ver "Médico Coordenador excluído com sucesso."
+    E eu devo ver "Médico coordenador excluído com sucesso."
     Então eu não devo ver na listagem "perera"

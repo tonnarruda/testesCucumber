@@ -35,6 +35,7 @@ if ARGV.empty? || ARGV[0] == '--db'
 elsif ARGV[0] == '--deploy'
 	version = ARGV[1] || 'INSIRA_NUMERO_VERSAO'
 	fortesrh_home = ARGV[2] || '.'
+	versao_importador = ARGV[3] || 'INSIRA_NUMERO_VERSAO_IMPORTADOR'
 	result_qtd_constraints = exec_sql "SELECT COUNT(*) FROM information_schema.table_constraints WHERE constraint_type = 'FOREIGN KEY';"
     qtd_constraints = result_qtd_constraints.getvalue(0,0)
     
@@ -55,7 +56,7 @@ elsif ARGV[0] == '--deploy'
 	  puts "update.sql ja esta com a migrate mais nova!"
 	end
 	
-	close_version = "\nupdate parametrosdosistema set appversao = '#{version}', quantidadeConstraints = #{qtd_constraints};--.go"
+	close_version = "\nupdate parametrosdosistema set appversao = '#{version}', quantidadeConstraints = #{qtd_constraints}, versaoimportador = '#{versao_importador}';--.go"
 	File.open("#{fortesrh_home}/web/WEB-INF/metadata/update.sql",'a'){|f| f.write "\n-- versao #{version}\n" + sql_migrates + close_version}
 	puts "update editado com sucesso."
 	

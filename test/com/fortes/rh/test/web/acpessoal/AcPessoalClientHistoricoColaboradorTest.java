@@ -181,7 +181,7 @@ public class AcPessoalClientHistoricoColaboradorTest extends AcPessoalClientTest
 
 		TSituacao situacao2 = new TSituacao();
 		situacao2.setId(2);
-		situacao2.setData("01/01/2000");
+		situacao2.setData("01/02/2000");
 		situacao2.setValor(0.0);
 		situacao2.setTipoSalario(TipoAplicacaoIndice.VALOR + "");
 		situacao2.setIndiceQtd(0.0);
@@ -189,9 +189,10 @@ public class AcPessoalClientHistoricoColaboradorTest extends AcPessoalClientTest
 		situacao2.setEmpresaCodigoAC("0006");
 		situacao2.setEmpregadoCodigoAC(amanda.getCodigoAC());
 		
-		acPessoalClientTabelaReajuste.deleteHistoricoColaboradorAC(empresa, new TSituacao[]{situacao1, situacao2});
+		acPessoalClientTabelaReajuste.deleteHistoricoColaboradorAC(empresa, new TSituacao[]{situacao2});
 
 		result = query("select data,valor,sal_tipo from rhsep");
+		result.next();//Possui um histórico
 		if (result.next())
 			fail("Consulta não RETORNOU algo...");
 	}

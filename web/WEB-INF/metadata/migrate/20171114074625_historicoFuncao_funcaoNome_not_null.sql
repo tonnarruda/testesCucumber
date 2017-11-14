@@ -1,0 +1,1 @@
+alter table historicoFuncao alter column funcaonome set not null; --.go

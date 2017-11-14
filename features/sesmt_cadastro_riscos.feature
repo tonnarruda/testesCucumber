@@ -7,18 +7,18 @@ Funcionalidade: Riscos
   Esquema do Cenario: Cadastro de Riscos  
       Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "SESMT > Cadastros > Riscos"
-         E eu clico no botão "Inserir"
+         E eu clico no botão novo "Inserir"
          E eu devo ver "Ajuda eSocial"
          E eu clico no botão do dialog "Fechar"
      Então eu preencho "Nome" com <Risco>
          E eu seleciono <TipoEsocial> de "Tipo de Risco eSocial"
      Então eu clico selecione um fator de risco    
-         E eu clico no botão "Gravar"
+         E eu clico no botão novo "Gravar"
      Então eu devo ver <Mensagem>    
 
   Exemplos:
-    | Risco      | Tipo             | Mensagem                        |
-    | ""         | "[Selecione...]" | "Preencha os campos indicados." |
+    | Risco      | TipoEsocial      | Mensagem                        |
+    | ""         | "[Selecione...]" | "Selecione um 'Tipo de Risco do eSocial'" |
     | "Queda"    | "Físico"         | "Riscos"                        |
 
 #-----------------------------------------------------------------------------------------------------------------
@@ -28,7 +28,7 @@ Funcionalidade: Riscos
       Dado que exista um ambiente "Cozinha" com o risco "Queda"
       Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "SESMT > Cadastros > Riscos"
-     Entao eu clico em excluir <Risco>
+     Entao eu clico em excluir novo <Risco>
          E eu devo ver o alert do confirmar exclusão e clico no ok
          E eu devo ver <Mensagem>
 
@@ -43,6 +43,7 @@ Funcionalidade: Riscos
       Dado que exista um risco "Queimadura"
       Dado que eu esteja logado com o usuário "SOS"
     Quando eu acesso o menu "SESMT > Cadastros > Riscos"
-     Entao eu clico em editar "Queimadura"
+     Entao eu clico em editar novo "Queimadura"
+         E eu clico no botão do dialog "Fechar"
          E eu preencho "Nome" com "Queimadura Grave"
-         E eu clico no botão "Gravar"
+         E eu clico no botão novo "Gravar"
