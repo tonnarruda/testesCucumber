@@ -32,7 +32,7 @@ public class SolicitacaoAvaliacaoManagerTest {
 	}
 	
 	@Test
-	public void testInserirNovasAvaliações(){
+	public void testInserirNovasAvaliacoes(){
 		Long solicitacaoId = 1L;
 		
 		Avaliacao avaliacao1 = AvaliacaoFactory.getEntity(1L);
@@ -45,7 +45,7 @@ public class SolicitacaoAvaliacaoManagerTest {
 		
 		when(solicitacaoAvaliacaoDao.findBySolicitacaoId(solicitacaoId, null)).thenReturn(solicitacaoAvaliacaos);
 		 
-		solicitacaoAvaliacaoManager.inserirNovasAvaliações(solicitacaoId, avaliacoes);
+		solicitacaoAvaliacaoManager.inserirNovasAvaliacoes(solicitacaoId, avaliacoes);
 		verify(solicitacaoAvaliacaoDao, times(1)).save(any(SolicitacaoAvaliacao.class));
 	}
 }

@@ -28,7 +28,7 @@ public interface ColaboradorCertificacaoManager extends GenericManager<Colaborad
 	void reprocessaCertificacao(Long certificacaoId, CertificacaoManager certificacaoManager);
 	boolean existiColaboradorCertificadoByTurma(Long turmaId);
 	boolean isCertificadoByColaboradorTurmaId(Long colaboradorTurmaId);
-	void setCertificaçõesNomesInColaboradorTurmas(Collection<ColaboradorTurma> colaboradorTurmas);
+	void setCertificacoesNomesInColaboradorTurmas(Collection<ColaboradorTurma> colaboradorTurmas);
 	Collection<CheckBox> checkBoxColaboradoresSemCertificacaoDWR(Long empresaId, Long[] areasIds, Long[] estabelecimentosIds, Long[] certificacoesIds, String situacaoColaborador);
 	Collection<ColaboradorCertificacao> colaboradoresSemCertificacao(Long empresaId, Long[] areasIds, Long[] estabelecimentosIds, Long[] colaboradoresIds, Long[] certificacoesIds, String situacaoColaborador);
 }

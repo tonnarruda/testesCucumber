@@ -48,7 +48,7 @@ public class SolicitacaoAvaliacaoManagerImpl extends GenericManagerImpl<Solicita
 		getDao().removeBySolicitacaoId(solicitacaoId);
 	}
 	
-	public void inserirNovasAvaliações(Long solicitacaoId, Collection<Avaliacao> avaliacoes){
+	public void inserirNovasAvaliacoes(Long solicitacaoId, Collection<Avaliacao> avaliacoes){
 		Collection<SolicitacaoAvaliacao> solicitacaoAvaliacoesExistentes = getDao().findBySolicitacaoId(solicitacaoId, null);
 		Collection<Long> avaliacoesIdExistentes = new ArrayList<Long>(); 
 		

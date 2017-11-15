@@ -611,7 +611,7 @@ public class ColaboradorCertificacaoDaoHibernateTest extends GenericDaoHibernate
 	}
 	
 	@Test
-	public void testFindCertificaçõesNomesByColaboradoresTurmasIds(){
+	public void testFindCertificacoesNomesByColaboradoresTurmasIds(){
 		Curso curso = CursoFactory.getEntity();
 		cursoDao.save(curso);
 		
@@ -645,7 +645,7 @@ public class ColaboradorCertificacaoDaoHibernateTest extends GenericDaoHibernate
 		
 		colaboradorCertificacaoDao.getHibernateTemplateByGenericDao().flush();
 		
-		Map<Long, ColaboradorTurma> retorno = colaboradorCertificacaoDao.findCertificaçõesNomesByColaboradoresTurmasIds(new CollectionUtil<ColaboradorTurma>().convertCollectionToArrayIds(colaboradoresTurma));
+		Map<Long, ColaboradorTurma> retorno = colaboradorCertificacaoDao.findCertificacoesNomesByColaboradoresTurmasIds(new CollectionUtil<ColaboradorTurma>().convertCollectionToArrayIds(colaboradoresTurma));
 		
 		assertEquals(1, retorno.size());
 		assertEquals("Certificação Nome", retorno.get(colaboradorTurma.getId()).getCertificacoesNomes());

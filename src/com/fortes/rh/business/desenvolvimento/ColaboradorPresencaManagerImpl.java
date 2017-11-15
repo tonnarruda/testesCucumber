@@ -54,7 +54,7 @@ public class ColaboradorPresencaManagerImpl extends GenericManagerImpl<Colaborad
 		checaCertificacao(validarCertificacao, colaboradorTurma, colaboradoresTurmaCertificados);
 		
 		if(validarCertificacao && colaboradoresTurmaCertificados.size() > 0)
-			colaboradorCertificacaoManager.setCertificaçõesNomesInColaboradorTurmas(colaboradoresTurmaCertificados);
+			colaboradorCertificacaoManager.setCertificacoesNomesInColaboradorTurmas(colaboradoresTurmaCertificados);
 		
 		return colaboradoresTurmaCertificados;
 	}
@@ -80,7 +80,7 @@ public class ColaboradorPresencaManagerImpl extends GenericManagerImpl<Colaborad
 			}
 			
 			if(validarCertificacao && colaboradoresTurmaCertificados.size() > 0)
-				colaboradorCertificacaoManager.setCertificaçõesNomesInColaboradorTurmas(colaboradoresTurmaCertificados);
+				colaboradorCertificacaoManager.setCertificacoesNomesInColaboradorTurmas(colaboradoresTurmaCertificados);
 		}
 		
 		return colaboradoresTurmaCertificados;

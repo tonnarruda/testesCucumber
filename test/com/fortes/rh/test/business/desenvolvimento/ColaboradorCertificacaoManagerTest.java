@@ -546,7 +546,7 @@ public class ColaboradorCertificacaoManagerTest
 	}
 	
 	@Test
-	public void testSetCertificaçõesNomesInColaboradorTurmas(){
+	public void testSetCertificacoesNomesInColaboradorTurmas(){
 		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(1L);
 		
 		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
@@ -556,8 +556,8 @@ public class ColaboradorCertificacaoManagerTest
 		Map<Long, ColaboradorTurma> colaboradoresTurmaMap = new HashMap<Long, ColaboradorTurma>();
 		colaboradoresTurmaMap.put(colaboradorTurma.getId(), colaboradorTurma);
 
-		when(colaboradorCertificacaoDao.findCertificaçõesNomesByColaboradoresTurmasIds(new CollectionUtil<ColaboradorTurma>().convertCollectionToArrayIds(colaboradorTurmas))).thenReturn(colaboradoresTurmaMap);
-		colaboradorCertificacaoManager.setCertificaçõesNomesInColaboradorTurmas( colaboradorTurmas);
+		when(colaboradorCertificacaoDao.findCertificacoesNomesByColaboradoresTurmasIds(new CollectionUtil<ColaboradorTurma>().convertCollectionToArrayIds(colaboradorTurmas))).thenReturn(colaboradoresTurmaMap);
+		colaboradorCertificacaoManager.setCertificacoesNomesInColaboradorTurmas( colaboradorTurmas);
 		
 		assertEquals(colaboradorTurma.getCertificacoesNomes(), ((ColaboradorTurma) colaboradorTurmas.toArray()[0]).getCertificacoesNomes());
 	}
@@ -572,7 +572,7 @@ public class ColaboradorCertificacaoManagerTest
 		Map<Long, ColaboradorTurma> colaboradoresTurmaMap = new HashMap<Long, ColaboradorTurma>();
 		colaboradoresTurmaMap.put(colaboradorTurma.getId(), colaboradorTurma);
 
-		when(colaboradorCertificacaoDao.findCertificaçõesNomesByColaboradoresTurmasIds(colaboradorTurma.getId())).thenReturn(colaboradoresTurmaMap);
+		when(colaboradorCertificacaoDao.findCertificacoesNomesByColaboradoresTurmasIds(colaboradorTurma.getId())).thenReturn(colaboradoresTurmaMap);
 		assertTrue(colaboradorCertificacaoManager.isCertificadoByColaboradorTurmaId(colaboradorTurma.getId()));
 	}
 	

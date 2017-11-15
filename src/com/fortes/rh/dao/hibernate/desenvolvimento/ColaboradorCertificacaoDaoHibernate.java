@@ -582,7 +582,7 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		return criteria.list().size() > 0;
 	}
 	
-	public Map<Long, ColaboradorTurma> findCertificaçõesNomesByColaboradoresTurmasIds(Long... colaboradorTurmasIds) {
+	public Map<Long, ColaboradorTurma> findCertificacoesNomesByColaboradoresTurmasIds(Long... colaboradorTurmasIds) {
 		StringBuilder sql = new StringBuilder();
 		sql.append("select cc.colaboradoresTurmas_id, ct.nome from colaboradorcertificacao cct ");
 		sql.append("inner join colaboradorcertificacao_colaboradorturma cc on cc.colaboradorcertificacao_id = cct.id ");

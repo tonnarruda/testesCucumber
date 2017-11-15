@@ -140,7 +140,7 @@ public class CandidatoSolicitacaoManagerTest_JUnit4
     	
     	candidatoSolicitacaoManager.moverCandidatos(candidatosSolicitacaoId, solicitacaoOrigem, solicitacaoDestino, true);
     	
-    	verify(solicitacaoAvaliacaoManager).inserirNovasAvaliações(solicitacaoDestino.getId(), avaliacoes);
+    	verify(solicitacaoAvaliacaoManager).inserirNovasAvaliacoes(solicitacaoDestino.getId(), avaliacoes);
     	verify(colaboradorQuestionarioManager).updateByCandidatoSolicitacaoAndSoclicitacaoOrigemAndDestino(candidatoSolicitacaoIds, solicitacaoOrigem.getId(), solicitacaoDestino.getId());
     	verify(candidatoSolicitacaoDao).updateSolicitacaoCandidatos(solicitacaoDestino, candidatoSolicitacaoIds);
     }

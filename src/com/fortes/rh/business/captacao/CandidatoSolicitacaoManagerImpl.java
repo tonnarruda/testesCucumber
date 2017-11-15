@@ -101,7 +101,7 @@ public class CandidatoSolicitacaoManagerImpl extends GenericManagerImpl<Candidat
         if(atualizarModelo){
         	Collection<Avaliacao> avaliacoes = colaboradorQuestionarioManager.getAvaliacoesBySolicitacaoIdAndCandidatoSolicitacaoId(solicitacaoOrigem.getId(), LongUtil.collectionStringToArrayLong(candidatoSolicitacaoIds));
         	if(avaliacoes != null && avaliacoes.size() > 0)
-        		solicitacaoAvaliacaoManager.inserirNovasAvaliações(solicitacaoDestino.getId(), avaliacoes);
+        		solicitacaoAvaliacaoManager.inserirNovasAvaliacoes(solicitacaoDestino.getId(), avaliacoes);
     		colaboradorQuestionarioManager.updateByCandidatoSolicitacaoAndSoclicitacaoOrigemAndDestino(candidatoSolicitacaoIds, solicitacaoOrigem.getId(), solicitacaoDestino.getId());
         }else{
         	colaboradorQuestionarioManager.removeByCandidatoSolicitacaoIdsAndSolicitacaoId(candidatoSolicitacaoIds, solicitacaoOrigem.getId());

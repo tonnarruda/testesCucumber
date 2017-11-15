@@ -518,11 +518,11 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 		return getDao().getMaiorDataDasTurmasDaCertificacao(colaboradorCertificacaoId);
 	}
 
-	public void setCertificaçõesNomesInColaboradorTurmas(Collection<ColaboradorTurma> colaboradorTurmas) {
+	public void setCertificacoesNomesInColaboradorTurmas(Collection<ColaboradorTurma> colaboradorTurmas) {
 		if(colaboradorTurmas.size() == 0)
 			return;
 		
-		Map<Long, ColaboradorTurma> colaboradoresTurmaMap = getDao().findCertificaçõesNomesByColaboradoresTurmasIds(new CollectionUtil<ColaboradorTurma>().convertCollectionToArrayIds(colaboradorTurmas));
+		Map<Long, ColaboradorTurma> colaboradoresTurmaMap = getDao().findCertificacoesNomesByColaboradoresTurmasIds(new CollectionUtil<ColaboradorTurma>().convertCollectionToArrayIds(colaboradorTurmas));
 		
 		for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) {
 			if(colaboradoresTurmaMap.containsKey(colaboradorTurma.getId())){
@@ -535,7 +535,7 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 	public boolean isCertificadoByColaboradorTurmaId(Long colaboradorTurmaId){
 		if(colaboradorTurmaId == null)
 			return false;
-		Map<Long, ColaboradorTurma> colaboradoresTurmaMap = getDao().findCertificaçõesNomesByColaboradoresTurmasIds(colaboradorTurmaId);
+		Map<Long, ColaboradorTurma> colaboradoresTurmaMap = getDao().findCertificacoesNomesByColaboradoresTurmasIds(colaboradorTurmaId);
 		return colaboradoresTurmaMap.containsKey(colaboradorTurmaId);
 	}
 

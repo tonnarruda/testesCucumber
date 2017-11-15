@@ -360,7 +360,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		colaboradorTurmasLista = colaboradorTurmaManager.findByTurma(turma.getId(), null, true, null, null, getEmpresaSistema().isControlarVencimentoPorCertificacao(), null);
 
 		if(getEmpresaSistema().isControlarVencimentoPorCertificacao())
-			colaboradorCertificacaoManager.setCertificaçõesNomesInColaboradorTurmas(colaboradorTurmasLista);
+			colaboradorCertificacaoManager.setCertificacoesNomesInColaboradorTurmas(colaboradorTurmasLista);
 		
 		turma = turmaManager.findByIdProjection(turma.getId());
 		colaboradorPresencas = colaboradorPresencaManager.findPresencaByTurma(turma.getId());
@@ -550,7 +550,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 			else
 			{
 				if(getEmpresaSistema().isControlarVencimentoPorCertificacao())
-					colaboradorCertificacaoManager.setCertificaçõesNomesInColaboradorTurmas(colaboradoresTurma);
+					colaboradorCertificacaoManager.setCertificacoesNomesInColaboradorTurmas(colaboradoresTurma);
 				
 				avaliacaoCurso = avaliacaoCursoManager.findById(avaliacaoCurso.getId());
 				CollectionUtil<ColaboradorTurma> util = new CollectionUtil<ColaboradorTurma>();

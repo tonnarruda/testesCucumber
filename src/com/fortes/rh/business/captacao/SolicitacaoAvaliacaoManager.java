@@ -13,5 +13,5 @@ public interface SolicitacaoAvaliacaoManager extends GenericManager<SolicitacaoA
 	void setResponderModuloExterno(Long solicitacaoId, Long[] solicitacaoAvaliacaoIds);
 	Collection<SolicitacaoAvaliacao> findAvaliacaoesNaoRespondidas(Long solicitacaoId, Long candidatoId);
 	void removeBySolicitacaoId(Long solicitacaoId);
-	void inserirNovasAvaliações(Long solicitacaoId, Collection<Avaliacao> avaliacoes);
+	void inserirNovasAvaliacoes(Long solicitacaoId, Collection<Avaliacao> avaliacoes);
 }
