@@ -23,6 +23,7 @@
 		<Item visivel="S" motivo="S17060000306"><![CDATA[SESMT > Relatórios > PCMSO: Os nomes das funções apresentados no relatório faz referência ao histórico da função anterior a data preenchida na tela.(Adequação ao eSocial)]]></Item>
 		<Item visivel="S" motivo="P17110000069"><![CDATA[Utilitários > Configurações > Configurar Cadastro de Colaborador e Candidato > Campos padrões do sistema > Colaborador > Documentos: Retorno da possibilidade de configurar a visibilidade e obrigatoriedade do PIS.]]></Item>
 		<Item visivel="N" motivo="S17090000302"><![CDATA[Importador: Nova validação para checar a compatibilidade do Importador com o FortesRH.]]></Item>
+		<Item visivel="S" motivo="P17110000179"><![CDATA[Módulo Externo > Quero me cadastrar: Ajuste de inconsistência ao tentar se cadastrar.]]></Item>
 	</Versao>
 	<Versao id="1.1.184.216" db="" data="02/10/2017">
 		<Item visivel="N" motivo="P17080000225"><![CDATA[R&S > Cadastros > Candidatos: Script para remover candidatos com nome contendo somente o caractere ".".]]></Item>

@@ -49,6 +49,7 @@ import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.dicionario.Deficiencia;
 import com.fortes.rh.model.dicionario.Escolaridade;
 import com.fortes.rh.model.dicionario.EstadoCivil;
+import com.fortes.rh.model.dicionario.OrigemAnexo;
 import com.fortes.rh.model.dicionario.OrigemCandidato;
 import com.fortes.rh.model.dicionario.SexoCadastro;
 import com.fortes.rh.model.dicionario.TipoConfiguracaoCampoExtra;
@@ -1443,6 +1444,10 @@ public class CandidatoEditAction extends MyActionSupportEdit
 	public String getBairros()
 	{
 		return bairros;
+	}
+	
+	public char getOrigemAnexo() {
+		return OrigemAnexo.CANDIDATOEXTERNO;
 	}
 
 	public ParametrosDoSistema getParametrosDoSistema() {
