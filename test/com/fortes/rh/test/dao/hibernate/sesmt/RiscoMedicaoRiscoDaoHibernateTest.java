@@ -147,11 +147,12 @@ public class RiscoMedicaoRiscoDaoHibernateTest extends GenericDaoHibernateTest_J
 	@Test
 	public void testFindMedicoesDeRiscosDaFuncao()
 	{
-		Funcao funcao = new Funcao();
+		Funcao funcao = FuncaoFactory.getEntity();
 		funcaoDao.save(funcao);
 		
 		HistoricoFuncao historicoFuncao = new HistoricoFuncao();
 		historicoFuncao.setFuncao(funcao);
+		historicoFuncao.setFuncaoNome(funcao.getNome());
 		historicoFuncao.setData(new Date());
 		historicoFuncaoDao.save(historicoFuncao);
 		

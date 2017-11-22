@@ -16,6 +16,8 @@ import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.model.sesmt.RiscoFuncao;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.cargosalario.FuncaoFactory;
+import com.fortes.rh.test.factory.cargosalario.HistoricoFuncaoFactory;
 import com.fortes.rh.test.factory.sesmt.RiscoFactory;
 import com.fortes.rh.test.factory.sesmt.RiscoFuncaoFactory;
 import com.fortes.rh.util.DateUtil;
@@ -42,7 +44,7 @@ public class RiscoFuncaoDaoHibernateTest extends GenericDaoHibernateTest<RiscoFu
 
 	public void testRemoveByHistoricoFuncao()
 	{
-		HistoricoFuncao historicoFuncao = new HistoricoFuncao();
+		HistoricoFuncao historicoFuncao = HistoricoFuncaoFactory.getEntity();
 		historicoFuncaoDao.save(historicoFuncao);
 		
 		RiscoFuncao riscoFuncao = RiscoFuncaoFactory.getEntity();
@@ -54,11 +56,12 @@ public class RiscoFuncaoDaoHibernateTest extends GenericDaoHibernateTest<RiscoFu
 
 	public void testRemoveByFuncao()
 	{
-		Funcao funcao = new Funcao();
+		Funcao funcao = FuncaoFactory.getEntity();
 		funcaoDao.save(funcao);
 		
 		HistoricoFuncao historicoFuncao = new HistoricoFuncao();
 		historicoFuncao.setFuncao(funcao);
+		historicoFuncao.setFuncaoNome(funcao.getNome());
 		historicoFuncaoDao.save(historicoFuncao);
 		
 		RiscoFuncao riscoFuncao = RiscoFuncaoFactory.getEntity();
@@ -83,20 +86,22 @@ public class RiscoFuncaoDaoHibernateTest extends GenericDaoHibernateTest<RiscoFu
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
-		Funcao funcao = new Funcao();
+		Funcao funcao = FuncaoFactory.getEntity();
 		funcaoDao.save(funcao);
 
-		Funcao funcao2 = new Funcao();
+		Funcao funcao2 = FuncaoFactory.getEntity();
 		funcaoDao.save(funcao2);
 		
 		HistoricoFuncao historicoFuncao = new HistoricoFuncao();
 		historicoFuncao.setData(hoje);
 		historicoFuncao.setFuncao(funcao);
+		historicoFuncao.setFuncaoNome(funcao.getNome());
 		historicoFuncaoDao.save(historicoFuncao);
 
 		HistoricoFuncao historicoFuncaoAntigo = new HistoricoFuncao();
 		historicoFuncaoAntigo.setData(doisMesesAtras);
 		historicoFuncaoAntigo.setFuncao(funcao2);
+		historicoFuncaoAntigo.setFuncaoNome(funcao2.getNome());
 		historicoFuncaoDao.save(historicoFuncaoAntigo);
 		
 		Risco risco1 = RiscoFactory.getEntity();

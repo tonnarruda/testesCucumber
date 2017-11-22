@@ -13,6 +13,7 @@ public class HistoricoFuncaoFactory
 	{
 		HistoricoFuncao historicoFuncao = new HistoricoFuncao();
 		historicoFuncao.setId(null);
+		historicoFuncao.setFuncaoNome("Função");
 
 		return historicoFuncao;
 	}

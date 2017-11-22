@@ -52,6 +52,7 @@ import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
 import com.fortes.rh.test.factory.cargosalario.FuncaoFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
+import com.fortes.rh.test.factory.cargosalario.HistoricoFuncaoFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.sesmt.ClinicaAutorizadaFactory;
 import com.fortes.rh.test.factory.sesmt.ExameFactory;
@@ -132,7 +133,7 @@ public class ExameDaoHibernateTest extends GenericDaoHibernateTest<Exame>
 		exames.add(exame1);
 		exames.add(exame2);
 
-		HistoricoFuncao historicoFuncao = new HistoricoFuncao();
+		HistoricoFuncao historicoFuncao = HistoricoFuncaoFactory.getEntity();
 		historicoFuncao.setExames(exames);
 		historicoFuncao = historicoFuncaoDao.save(historicoFuncao);
 
@@ -740,12 +741,14 @@ public class ExameDaoHibernateTest extends GenericDaoHibernateTest<Exame>
 		
 		HistoricoFuncao historicoFuncao = new HistoricoFuncao();
 		historicoFuncao.setFuncao(funcao);
+		historicoFuncao.setFuncaoNome(funcao.getNome());
 		historicoFuncao.setExames(Arrays.asList(exame1));
 		historicoFuncao.setData(data1);
 		historicoFuncaoDao.save(historicoFuncao);
 		
 		HistoricoFuncao historicoFuncao2 = new HistoricoFuncao();
 		historicoFuncao2.setFuncao(funcao2);
+		historicoFuncao2.setFuncaoNome(funcao2.getNome());
 		historicoFuncao2.setExames(Arrays.asList(exame2));
 		historicoFuncao2.setData(data2);
 		historicoFuncaoDao.save(historicoFuncao2);

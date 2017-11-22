@@ -52,7 +52,7 @@ public class HistoricoFuncaoDaoHibernateTest extends GenericDaoHibernateTest_JUn
 
 	public HistoricoFuncao getEntity()
 	{
-		HistoricoFuncao historicoFuncao = new HistoricoFuncao();
+		HistoricoFuncao historicoFuncao = HistoricoFuncaoFactory.getEntity();
 
 		historicoFuncao.setId(1L);
 		historicoFuncao.setDescricao("asd");
@@ -79,28 +79,34 @@ public class HistoricoFuncaoDaoHibernateTest extends GenericDaoHibernateTest_JUn
 		f2 = funcaoDao.save(f2);
 
 		HistoricoFuncao historicoFuncao1 = new HistoricoFuncao();
+		historicoFuncao1.setFuncaoNome(f1.getNome());
 		historicoFuncao1.setData(new Date("2007/10/01"));
 		historicoFuncao1.setFuncao(f1);
 
 		HistoricoFuncao historicoFuncao2 = new HistoricoFuncao();
 		historicoFuncao2.setData(new Date("2008/01/01"));
 		historicoFuncao2.setFuncao(f1);
+		historicoFuncao2.setFuncaoNome(f1.getNome());
 
 		HistoricoFuncao historicoFuncao3 = new HistoricoFuncao();
 		historicoFuncao3.setData(new Date("2009/01/01"));
 		historicoFuncao3.setFuncao(f1);
+		historicoFuncao3.setFuncaoNome(f1.getNome());
 
 		HistoricoFuncao historicoFuncao4 = new HistoricoFuncao();
 		historicoFuncao4.setData(new Date("2007/01/01"));
 		historicoFuncao4.setFuncao(f2);
+		historicoFuncao4.setFuncaoNome(f2.getNome());
 
 		HistoricoFuncao historicoFuncao5 = new HistoricoFuncao();
 		historicoFuncao5.setData(new Date("2008/01/01"));
 		historicoFuncao5.setFuncao(f2);
+		historicoFuncao5.setFuncaoNome(f2.getNome());
 
 		HistoricoFuncao historicoFuncao6 = new HistoricoFuncao();
 		historicoFuncao6.setData(new Date("2009/01/01"));
 		historicoFuncao6.setFuncao(f2);
+		historicoFuncao6.setFuncaoNome(f2.getNome());
 
 		historicoFuncao1 = historicoFuncaoDao.save(historicoFuncao1);
 		historicoFuncao2 = historicoFuncaoDao.save(historicoFuncao2);
@@ -186,6 +192,7 @@ public class HistoricoFuncaoDaoHibernateTest extends GenericDaoHibernateTest_JUn
 		HistoricoFuncao historicoFuncao1 = new HistoricoFuncao();
 		historicoFuncao1.setData(hoje);
 		historicoFuncao1.setFuncao(funcao);
+		historicoFuncao1.setFuncaoNome(funcao.getNome());
 		historicoFuncaoDao.save(historicoFuncao1);
 		
 		assertEquals("Inserção", historicoFuncao1.getId(), historicoFuncaoDao.findByData(hoje, null, funcao.getId()).getId());
@@ -217,26 +224,32 @@ public class HistoricoFuncaoDaoHibernateTest extends GenericDaoHibernateTest_JUn
 		HistoricoFuncao historicoFuncao1 = new HistoricoFuncao();
 		historicoFuncao1.setData(DateUtil.criarDataMesAno(1, 1, 2005));
 		historicoFuncao1.setFuncao(f1);
+		historicoFuncao1.setFuncaoNome(f1.getNome());
 
 		HistoricoFuncao historicoFuncao2 = new HistoricoFuncao();
 		historicoFuncao2.setData(DateUtil.criarDataMesAno(1, 1, 2007));
 		historicoFuncao2.setFuncao(f1);
+		historicoFuncao2.setFuncaoNome(f1.getNome());
 
 		HistoricoFuncao historicoFuncao3 = new HistoricoFuncao();
 		historicoFuncao3.setData(DateUtil.criarDataMesAno(1, 3, 2007));
 		historicoFuncao3.setFuncao(f1);
+		historicoFuncao3.setFuncaoNome(f1.getNome());
 
 		HistoricoFuncao historicoFuncao4 = new HistoricoFuncao();
 		historicoFuncao4.setData(DateUtil.criarDataMesAno(1, 6, 2007));
 		historicoFuncao4.setFuncao(f2);
+		historicoFuncao4.setFuncaoNome(f2.getNome());
 
 		HistoricoFuncao historicoFuncao5 = new HistoricoFuncao();
 		historicoFuncao5.setData(DateUtil.criarDataMesAno(1, 12, 2008));
 		historicoFuncao5.setFuncao(f2);
+		historicoFuncao5.setFuncaoNome(f2.getNome());
 
 		HistoricoFuncao historicoFuncao6 = new HistoricoFuncao();
 		historicoFuncao6.setData(DateUtil.criarDataMesAno(1, 12, 2009));
 		historicoFuncao6.setFuncao(f2);
+		historicoFuncao6.setFuncaoNome(f2.getNome());
 
 		historicoFuncao1 = historicoFuncaoDao.save(historicoFuncao1);
 		historicoFuncao2 = historicoFuncaoDao.save(historicoFuncao2);
@@ -256,18 +269,20 @@ public class HistoricoFuncaoDaoHibernateTest extends GenericDaoHibernateTest_JUn
 	@Test
 	public void testRemoveByFuncoes()
 	{		
-		Funcao funcao1 = new Funcao();
+		Funcao funcao1 = FuncaoFactory.getEntity();
 		funcao1 = funcaoDao.save(funcao1);
 		
-		Funcao funcao2 = new Funcao();		
+		Funcao funcao2 = FuncaoFactory.getEntity();		
 		funcao2 = funcaoDao.save(funcao2);
 		
 		HistoricoFuncao historicoFuncao1 = new HistoricoFuncao();
 		historicoFuncao1.setFuncao(funcao1);
+		historicoFuncao1.setFuncaoNome(funcao1.getNome());
 		historicoFuncao1 = historicoFuncaoDao.save(historicoFuncao1);
 		
 		HistoricoFuncao historicoFuncao2 = new HistoricoFuncao();
 		historicoFuncao2.setFuncao(funcao2);
+		historicoFuncao2.setFuncaoNome(funcao2.getNome());
 		historicoFuncao2 = historicoFuncaoDao.save(historicoFuncao2);
 		
 		Long[] funcaoIds = new Long[]{funcao1.getId(), funcao2.getId()};
@@ -281,11 +296,12 @@ public class HistoricoFuncaoDaoHibernateTest extends GenericDaoHibernateTest_JUn
 	@Test
 	public void testFindByIdProjection()
 	{		
-		Funcao funcao = new Funcao();
+		Funcao funcao = FuncaoFactory.getEntity();
 		funcao = funcaoDao.save(funcao);
 		
 		HistoricoFuncao historicoFuncao = new HistoricoFuncao();
 		historicoFuncao.setFuncao(funcao);
+		historicoFuncao.setFuncaoNome(funcao.getNome());
 		historicoFuncao = historicoFuncaoDao.save(historicoFuncao);
 		
 		assertEquals(historicoFuncao, historicoFuncaoDao.findByIdProjection(historicoFuncao.getId()));
@@ -308,28 +324,31 @@ public class HistoricoFuncaoDaoHibernateTest extends GenericDaoHibernateTest_JUn
 		
 		Collection<Exame> exames = Arrays.asList(exame1, exame2, exame3);
 				
-		Funcao funcao = new Funcao();
+		Funcao funcao = FuncaoFactory.getEntity();
 		funcao = funcaoDao.save(funcao);
 		
-		Funcao funcao2 = new Funcao();
+		Funcao funcao2 = FuncaoFactory.getEntity();
 		funcao2 = funcaoDao.save(funcao2);
 		
 		HistoricoFuncao historicoFuncao = new HistoricoFuncao();
 		historicoFuncao.setExames(exames);
 		historicoFuncao.setData(data);
 		historicoFuncao.setFuncao(funcao);
+		historicoFuncao.setFuncaoNome(funcao.getNome());
 		historicoFuncao = historicoFuncaoDao.save(historicoFuncao);
 		
 		HistoricoFuncao historicoFuncao2 = new HistoricoFuncao();
 		historicoFuncao2.setExames(exames);
 		historicoFuncao2.setData(datafutura);
 		historicoFuncao2.setFuncao(funcao);
+		historicoFuncao2.setFuncaoNome(funcao.getNome());
 		historicoFuncao2 = historicoFuncaoDao.save(historicoFuncao2);
 		
 		HistoricoFuncao historicoFuncao3 = new HistoricoFuncao();
 		historicoFuncao3.setExames(exames);
 		historicoFuncao3.setData(data);
 		historicoFuncao3.setFuncao(funcao2);
+		historicoFuncao3.setFuncaoNome(funcao2.getNome());
 		historicoFuncao3 = historicoFuncaoDao.save(historicoFuncao3);
 		
 		Long[] funcoesIds = new Long[] {funcao.getId()};
@@ -345,25 +364,28 @@ public class HistoricoFuncaoDaoHibernateTest extends GenericDaoHibernateTest_JUn
 		Date data1 = DateUtil.criarDataMesAno(01, 01, 2012);
 		Date data2 = DateUtil.criarDataMesAno(01, 02, 2012);
 		
-		Funcao funcao = new Funcao();
+		Funcao funcao = FuncaoFactory.getEntity();
 		funcao = funcaoDao.save(funcao);
 		
-		Funcao funcao2 = new Funcao();
+		Funcao funcao2 = FuncaoFactory.getEntity();
 		funcao2 = funcaoDao.save(funcao2);
 		
 		HistoricoFuncao historicoFuncao = new HistoricoFuncao();
 		historicoFuncao.setData(data1);
 		historicoFuncao.setFuncao(funcao);
+		historicoFuncao.setFuncaoNome(funcao.getNome());
 		historicoFuncao = historicoFuncaoDao.save(historicoFuncao);
 		
 		HistoricoFuncao historicoFuncao2 = new HistoricoFuncao();
 		historicoFuncao2.setData(data2);
 		historicoFuncao2.setFuncao(funcao);
+		historicoFuncao2.setFuncaoNome(funcao.getNome());
 		historicoFuncao2 = historicoFuncaoDao.save(historicoFuncao2);
 		
 		HistoricoFuncao historicoFuncao3 = new HistoricoFuncao();
 		historicoFuncao3.setData(data1);
 		historicoFuncao3.setFuncao(funcao2);
+		historicoFuncao3.setFuncaoNome(funcao2.getNome());
 		historicoFuncao3 = historicoFuncaoDao.save(historicoFuncao3);
 		
 		Collection<HistoricoFuncao> funcoes = historicoFuncaoDao.findByFuncao(funcao.getId());
@@ -377,19 +399,20 @@ public class HistoricoFuncaoDaoHibernateTest extends GenericDaoHibernateTest_JUn
 		Date data1 = DateUtil.criarDataMesAno(01, 01, 2012);
 		Date data2 = DateUtil.criarDataMesAno(01, 02, 2012);
 		
-		Funcao funcao = new Funcao();
+		Funcao funcao = FuncaoFactory.getEntity();
 		funcao = funcaoDao.save(funcao);
 		
 		HistoricoFuncao historicoFuncao = new HistoricoFuncao();
 		historicoFuncao.setData(data1);
 		historicoFuncao.setFuncao(funcao);
+		historicoFuncao.setFuncaoNome(funcao.getNome());
 		historicoFuncao = historicoFuncaoDao.save(historicoFuncao);
 		
 		HistoricoFuncao historicoFuncao2 = new HistoricoFuncao();
 		historicoFuncao2.setData(data2);
 		historicoFuncao2.setFuncao(funcao);
+		historicoFuncao2.setFuncaoNome(funcao.getNome());
 		historicoFuncao2 = historicoFuncaoDao.save(historicoFuncao2);
-		
 		
 		HistoricoFuncao historicoFuncaoRetornoDoBanco = historicoFuncaoDao.findByFuncaoAndData(funcao.getId(), new Date());
 		
@@ -411,6 +434,7 @@ public class HistoricoFuncaoDaoHibernateTest extends GenericDaoHibernateTest_JUn
 		HistoricoFuncao historicoFuncao = new HistoricoFuncao();
 		historicoFuncao.setData(dataIni);
 		historicoFuncao.setFuncao(funcao);
+		historicoFuncao.setFuncaoNome(funcao.getNome());
 		historicoFuncaoDao.save(historicoFuncao);
 
 		RiscoFuncao riscoFuncao = RiscoFuncaoFactory.getEntity();

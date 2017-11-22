@@ -43,6 +43,7 @@ import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.AmbienteFactory;
 import com.fortes.rh.test.factory.cargosalario.FuncaoFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
+import com.fortes.rh.test.factory.cargosalario.HistoricoFuncaoFactory;
 import com.fortes.rh.test.factory.sesmt.EpiFactory;
 import com.fortes.rh.test.factory.sesmt.RiscoAmbienteFactory;
 import com.fortes.rh.test.factory.sesmt.RiscoFactory;
@@ -261,6 +262,7 @@ public class EpiDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<Epi>
 		HistoricoFuncao historicoFuncao = new HistoricoFuncao();
 		historicoFuncao.setData(new Date());
 		historicoFuncao.setFuncao(funcao);
+		historicoFuncao.setFuncaoNome(funcao.getNome());
 		historicoFuncaoDao.save(historicoFuncao);
 		
 		RiscoFuncao riscoFuncao = RiscoFuncaoFactory.getEntity();
@@ -317,7 +319,7 @@ public class EpiDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<Epi>
 		epis.add(epi1);
 		epis.add(epi2);
 
-		HistoricoFuncao historicoFuncao = new HistoricoFuncao();
+		HistoricoFuncao historicoFuncao = HistoricoFuncaoFactory.getEntity();
 		historicoFuncao.setEpis(epis);
 		historicoFuncao = historicoFuncaoDao.save(historicoFuncao);
 
@@ -454,12 +456,14 @@ public class EpiDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<Epi>
 		
 		HistoricoFuncao historicoFuncao = new HistoricoFuncao();
 		historicoFuncao.setFuncao(funcao);
+		historicoFuncao.setFuncaoNome(funcao.getNome());
 		historicoFuncao.setEpis(Arrays.asList(epi));
 		historicoFuncao.setData(data1);
 		historicoFuncaoDao.save(historicoFuncao);
 		
 		HistoricoFuncao historicoFuncao2 = new HistoricoFuncao();
 		historicoFuncao2.setFuncao(funcao2);
+		historicoFuncao2.setFuncaoNome(funcao2.getNome());
 		historicoFuncao2.setEpis(Arrays.asList(epi2));
 		historicoFuncao2.setData(data1);
 		historicoFuncaoDao.save(historicoFuncao2);

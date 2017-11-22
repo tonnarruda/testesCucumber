@@ -151,6 +151,7 @@ public class FuncaoDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<Funca
 		
 		HistoricoFuncao historicoFuncao1 = new HistoricoFuncao();
 		historicoFuncao1.setFuncao(funcao1);
+		historicoFuncao1.setFuncaoNome(funcao1.getNome());
 		historicoFuncao1.setData(hoje);
 		historicoFuncao1.setDescricao("Realizar a limpeza dos principais acessos.");
 		historicoFuncaoDao.save(historicoFuncao1);
@@ -201,6 +202,7 @@ public class FuncaoDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<Funca
 		
 		HistoricoFuncao historicoFuncao1 = new HistoricoFuncao();
 		historicoFuncao1.setFuncao(funcao1);
+		historicoFuncao1.setFuncaoNome(funcao1.getNome());
 		historicoFuncao1.setData(hoje);
 		historicoFuncao1.setDescricao("Realizar a limpeza dos principais acessos.");
 		historicoFuncaoDao.save(historicoFuncao1);
@@ -261,8 +263,10 @@ public class FuncaoDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<Funca
 		Funcao funcao1 = FuncaoFactory.getEntity();
 		funcao1.setNome("F1");
 		funcaoDao.save(funcao1);
+		
 		HistoricoFuncao historicoFuncao1 = new HistoricoFuncao();
 		historicoFuncao1.setFuncao(funcao1);
+		historicoFuncao1.setFuncaoNome(funcao1.getNome());
 		historicoFuncao1.setData(hoje);
 		historicoFuncao1.setDescricao("Realizar a limpeza dos principais acessos.");
 		historicoFuncaoDao.save(historicoFuncao1);
@@ -273,12 +277,14 @@ public class FuncaoDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<Funca
 		
 		HistoricoFuncao historicoFuncao2 = new HistoricoFuncao();
 		historicoFuncao2.setFuncao(funcao2);
+		historicoFuncao2.setFuncaoNome(funcao2.getNome());
 		historicoFuncao2.setData(doisMesesAntes.getTime());
 		historicoFuncao2.setDescricao("Porteiro.");
 		historicoFuncaoDao.save(historicoFuncao2);
 		
 		HistoricoFuncao historicoFuncao2Atual = new HistoricoFuncao();
 		historicoFuncao2Atual.setFuncao(funcao2);
+		historicoFuncao2Atual.setFuncaoNome(funcao2.getNome());
 		historicoFuncao2Atual.setData(hoje);
 		historicoFuncao2Atual.setDescricao("Zelar pela guarda do patrimônio.");
 		historicoFuncaoDao.save(historicoFuncao2Atual);
@@ -289,6 +295,7 @@ public class FuncaoDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<Funca
 		
 		HistoricoFuncao historicoFuncao3 = new HistoricoFuncao();
 		historicoFuncao3.setFuncao(funcao3);
+		historicoFuncao3.setFuncaoNome(funcao2.getNome());
 		historicoFuncao3.setData(hoje);
 		historicoFuncao3.setDescricao("Recepcionar os clientes com cortesia, atenção e eficiência.");
 		historicoFuncaoDao.save(historicoFuncao3);
@@ -299,6 +306,7 @@ public class FuncaoDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<Funca
 		
 		HistoricoFuncao historicoFuncao4 = new HistoricoFuncao();
 		historicoFuncao4.setFuncao(funcao4);
+		historicoFuncao4.setFuncaoNome(funcao4.getNome());
 		historicoFuncao4.setData(hoje);
 		historicoFuncao4.setDescricao("Desenvolver software.");
 		historicoFuncaoDao.save(historicoFuncao4);

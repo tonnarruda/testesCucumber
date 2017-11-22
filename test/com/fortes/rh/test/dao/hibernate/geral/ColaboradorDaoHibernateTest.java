@@ -5935,7 +5935,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
-		Funcao funcao = FuncaoFactory.getEntity();
+		Funcao funcao = FuncaoFactory.getEntity(null, "Funcao");
 		funcaoDao.save(funcao);
 
 		Epi epi1 = EpiFactory.getEntity();
@@ -5947,6 +5947,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<
 		HistoricoFuncao historicoFuncao = new HistoricoFuncao();
 		historicoFuncao.setData(DateUtil.criarDataMesAno(01, 01, 2005));
 		historicoFuncao.setFuncao(funcao);
+		historicoFuncao.setFuncaoNome(funcao.getNome());
 		historicoFuncao.setEpis(Arrays.asList(epi1, epi2));
 		historicoFuncaoDao.save(historicoFuncao);
 		
@@ -5998,6 +5999,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<
 		HistoricoFuncao historicoFuncao = new HistoricoFuncao();
 		historicoFuncao.setData(DateUtil.criarDataMesAno(01, 01, 2005));
 		historicoFuncao.setFuncao(funcao);
+		historicoFuncao.setFuncaoNome(funcao.getNome());
 		historicoFuncao.setEpis(Arrays.asList(epi1, epi2));
 		historicoFuncaoDao.save(historicoFuncao);
 		
