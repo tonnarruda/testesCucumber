@@ -2,6 +2,7 @@
 <Versoes>
 	<Versao id="1.1.186.218" db="" data="23/11/2017">
 		<Item visivel="S" motivo="P17110000212"><![CDATA[SESMT > Relatórios > PPP: Ajuste de inconsistência ao emitir o PPP.]]></Item>
+		<Item visivel="N" motivo="P17110000197"><![CDATA[Sistema: Ajuste na tabela de histórico de função.]]></Item>
 	</Versao>
 	<Versao id="1.1.185.217" db="" data="16/11/2017">
 		<Item visivel="S" motivo="S17100000197"><![CDATA[R&S > Cadastros > Candidatos: Conservação dos dados digitados no filtro após realizar pesquisa e outras operações que recarregam as informações da tela de listagem.]]></Item>
