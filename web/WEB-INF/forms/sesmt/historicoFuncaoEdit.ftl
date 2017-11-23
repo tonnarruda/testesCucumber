@@ -16,7 +16,7 @@
 </#if>
 
 <#include "../ftl/mascarasImports.ftl" />
-<#assign validarCampos="return validaFormulario('form', new Array('dataHist','descricao', 'codigoCBO'), new Array('dataHist'))"/>
+<#assign validarCampos="return validaFormulario('form', new Array('dataHist','funcaoNome','descricao', 'codigoCBO'), new Array('dataHist'))"/>
 
 <style type="text/css">
 	@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
