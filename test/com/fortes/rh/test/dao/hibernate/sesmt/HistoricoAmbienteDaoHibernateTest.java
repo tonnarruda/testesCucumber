@@ -1,7 +1,9 @@
 package com.fortes.rh.test.dao.hibernate.sesmt;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,6 +21,7 @@ import com.fortes.rh.dao.sesmt.AmbienteDao;
 import com.fortes.rh.dao.sesmt.HistoricoAmbienteDao;
 import com.fortes.rh.dao.sesmt.RiscoAmbienteDao;
 import com.fortes.rh.dao.sesmt.RiscoDao;
+import com.fortes.rh.model.dicionario.LocalAmbiente;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Ambiente;
@@ -168,10 +171,10 @@ public class HistoricoAmbienteDaoHibernateTest extends GenericDaoHibernateTest_J
 	@Test
 	public void testFindRiscosAmbientes() throws Exception
 	{
-		Ambiente a1 = AmbienteFactory.getEntity("A1", null, null);
+		Ambiente a1 = AmbienteFactory.getEntity("A1");
 		ambienteDao.save(a1);
 		
-		Ambiente a2 = AmbienteFactory.getEntity("A2", null, null);
+		Ambiente a2 = AmbienteFactory.getEntity("A2");
 		ambienteDao.save(a2);
 		
 		Risco risco1 = RiscoFactory.getEntity(null, "Risco 1", null);
@@ -230,5 +233,174 @@ public class HistoricoAmbienteDaoHibernateTest extends GenericDaoHibernateTest_J
 		assertEquals("Inserção", historicoAmbiente1.getId(), historicoAmbienteDao.findByData(hoje, null, ambiente.getId()).getId());
 		assertEquals("Atualização própria", null, historicoAmbienteDao.findByData(hoje, historicoAmbiente1.getId(), historicoAmbiente1.getAmbiente().getId()));
 		assertEquals("Atualização outra", historicoAmbiente1.getId(), historicoAmbienteDao.findByData(hoje, 0L, historicoAmbiente1.getAmbiente().getId()).getId());
+	}
+	
+	@Test
+	public void testExisteHistoricoAmbienteByDataAssertTrue() throws Exception
+	{
+		Date dataReferencia = DateUtil.criarDataMesAno(1, 1, 2017);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento);
+		
+		Ambiente ambiente = AmbienteFactory.getEntity("Teste", empresa);
+		ambienteDao.save(ambiente);
+		
+		HistoricoAmbiente historicoAmbiente1 = new HistoricoAmbiente("Teste", ambiente.getNome());
+		historicoAmbiente1.setData(dataReferencia);
+		historicoAmbiente1.setAmbiente(ambiente);
+		historicoAmbiente1.setEstabelecimento(estabelecimento);
+		historicoAmbienteDao.save(historicoAmbiente1);
+		
+		assertTrue(historicoAmbienteDao.existeHistoricoAmbienteByData(estabelecimento.getId(), ambiente.getId(), dataReferencia));
+	}
+	
+	@Test
+	public void testExisteHistoricoAmbienteByDataAssertFalse() throws Exception
+	{
+		Date dataReferencia = DateUtil.criarDataMesAno(1, 1, 2017);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento);
+		
+		Ambiente ambiente = AmbienteFactory.getEntity("Teste", empresa);
+		ambienteDao.save(ambiente);
+		
+		HistoricoAmbiente historicoAmbiente1 = new HistoricoAmbiente("Teste", ambiente.getNome());
+		historicoAmbiente1.setData(dataReferencia);
+		historicoAmbiente1.setAmbiente(ambiente);
+		historicoAmbiente1.setEstabelecimento(estabelecimento);
+		historicoAmbienteDao.save(historicoAmbiente1);
+		
+		assertFalse(historicoAmbienteDao.existeHistoricoAmbienteByData(estabelecimento.getId(), ambiente.getId(), DateUtil.criarDataMesAno(1, 1, 2016)));
+	}
+	
+	@Test
+	public void testExisteHistoricoAmbienteByDataParaEstebelecimentoDeTerceiro() throws Exception
+	{
+		Date dataReferencia = DateUtil.criarDataMesAno(1, 1, 2017);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento);
+		
+		Ambiente ambiente = AmbienteFactory.getEntity("Teste", empresa);
+		ambienteDao.save(ambiente);
+		
+		HistoricoAmbiente historicoAmbiente1 = new HistoricoAmbiente("Teste", ambiente.getNome());
+		historicoAmbiente1.setData(dataReferencia);
+		historicoAmbiente1.setAmbiente(ambiente);
+		historicoAmbiente1.setLocalAmbiente(LocalAmbiente.ESTABELECIMENTO_DE_TERCEIROS.getOpcao());
+		historicoAmbienteDao.save(historicoAmbiente1);
+		
+		assertTrue(historicoAmbienteDao.existeHistoricoAmbienteByData(estabelecimento.getId(), ambiente.getId(), dataReferencia));
+	}
+	
+	@Test
+	public void testDeleteByEstabelecimentos() throws Exception 
+	{
+		Empresa empresa = empresaDao.save(EmpresaFactory.getEmpresa());
+		Estabelecimento estabelecimento1 = estabelecimentoDao.save(EstabelecimentoFactory.getEntity());
+		Estabelecimento estabelecimento2 = estabelecimentoDao.save(EstabelecimentoFactory.getEntity());
+		
+		Ambiente ambiente1 = ambienteDao.save(AmbienteFactory.getEntity("Ambiente 1", empresa));
+		Ambiente ambiente2 = ambienteDao.save(AmbienteFactory.getEntity("Ambiente 2", empresa));
+		
+		HistoricoAmbiente historicoAmbiente1 = HistoricoAmbienteFactory.getEntity(new Date(), ambiente1.getNome(), ambiente1, estabelecimento1, "Ambiente 1", LocalAmbiente.ESTABELECIMENTO_DO_PROPRIO_EMPREGADOR.getOpcao());
+		historicoAmbienteDao.save(historicoAmbiente1);
+		
+		HistoricoAmbiente historicoAmbiente2 = HistoricoAmbienteFactory.getEntity(new Date(), ambiente2.getNome(), ambiente2, estabelecimento2, "Ambiente 2", LocalAmbiente.ESTABELECIMENTO_DO_PROPRIO_EMPREGADOR.getOpcao());
+		historicoAmbienteDao.save(historicoAmbiente2);
+		
+		assertTrue(historicoAmbienteDao.existeHistoricoAmbienteByData(estabelecimento1.getId(), ambiente1.getId(), historicoAmbiente1.getData()));
+		assertTrue(historicoAmbienteDao.existeHistoricoAmbienteByData(estabelecimento2.getId(), ambiente2.getId(), historicoAmbiente2.getData()));
+		
+		historicoAmbienteDao.deleteByEstabelecimentos(new Long[]{estabelecimento1.getId()});
+		
+		assertFalse(historicoAmbienteDao.existeHistoricoAmbienteByData(estabelecimento1.getId(), ambiente1.getId(), historicoAmbiente1.getData()));
+		assertTrue(historicoAmbienteDao.existeHistoricoAmbienteByData(estabelecimento2.getId(), ambiente2.getId(), historicoAmbiente2.getData()));
+	}
+	
+	@Test
+	public void testDeleteByEstabelecimentosPassandoUmArrayComDoisEstabelecimentos() throws Exception 
+	{
+		Empresa empresa = empresaDao.save(EmpresaFactory.getEmpresa());
+		Estabelecimento estabelecimento1 = estabelecimentoDao.save(EstabelecimentoFactory.getEntity());
+		Estabelecimento estabelecimento2 = estabelecimentoDao.save(EstabelecimentoFactory.getEntity());
+		
+		Ambiente ambiente1 = ambienteDao.save(AmbienteFactory.getEntity("Ambiente 1", empresa));
+		Ambiente ambiente2 = ambienteDao.save(AmbienteFactory.getEntity("Ambiente 2", empresa));
+		
+		HistoricoAmbiente historicoAmbiente1 = HistoricoAmbienteFactory.getEntity(new Date(), ambiente1.getNome(), ambiente1, estabelecimento1, "Ambiente 1", LocalAmbiente.ESTABELECIMENTO_DO_PROPRIO_EMPREGADOR.getOpcao());
+		historicoAmbienteDao.save(historicoAmbiente1);
+		
+		HistoricoAmbiente historicoAmbiente2 = HistoricoAmbienteFactory.getEntity(new Date(), ambiente2.getNome(), ambiente2, estabelecimento2, "Ambiente 2", LocalAmbiente.ESTABELECIMENTO_DO_PROPRIO_EMPREGADOR.getOpcao());
+		historicoAmbienteDao.save(historicoAmbiente2);
+		
+		assertTrue(historicoAmbienteDao.existeHistoricoAmbienteByData(estabelecimento1.getId(), ambiente1.getId(), historicoAmbiente1.getData()));
+		assertTrue(historicoAmbienteDao.existeHistoricoAmbienteByData(estabelecimento2.getId(), ambiente2.getId(), historicoAmbiente2.getData()));
+		
+		historicoAmbienteDao.deleteByEstabelecimentos(new Long[]{estabelecimento1.getId(), estabelecimento2.getId()});
+		
+		assertFalse(historicoAmbienteDao.existeHistoricoAmbienteByData(estabelecimento1.getId(), ambiente1.getId(), historicoAmbiente1.getData()));
+		assertFalse(historicoAmbienteDao.existeHistoricoAmbienteByData(estabelecimento2.getId(), ambiente2.getId(), historicoAmbiente2.getData()));
+	}
+	
+	@Test
+	public void testDeleteByEstabelecimentosPassandoUmArrayNulo() throws Exception 
+	{
+		Empresa empresa = empresaDao.save(EmpresaFactory.getEmpresa());
+		Estabelecimento estabelecimento1 = estabelecimentoDao.save(EstabelecimentoFactory.getEntity());
+		Estabelecimento estabelecimento2 = estabelecimentoDao.save(EstabelecimentoFactory.getEntity());
+		
+		Ambiente ambiente1 = ambienteDao.save(AmbienteFactory.getEntity("Ambiente 1", empresa));
+		Ambiente ambiente2 = ambienteDao.save(AmbienteFactory.getEntity("Ambiente 2", empresa));
+		
+		HistoricoAmbiente historicoAmbiente1 = HistoricoAmbienteFactory.getEntity(new Date(), ambiente1.getNome(), ambiente1, estabelecimento1, "Ambiente 1", LocalAmbiente.ESTABELECIMENTO_DO_PROPRIO_EMPREGADOR.getOpcao());
+		historicoAmbienteDao.save(historicoAmbiente1);
+		
+		HistoricoAmbiente historicoAmbiente2 = HistoricoAmbienteFactory.getEntity(new Date(), ambiente2.getNome(), ambiente2, estabelecimento2, "Ambiente 2", LocalAmbiente.ESTABELECIMENTO_DO_PROPRIO_EMPREGADOR.getOpcao());
+		historicoAmbienteDao.save(historicoAmbiente2);
+		
+		assertTrue(historicoAmbienteDao.existeHistoricoAmbienteByData(estabelecimento1.getId(), ambiente1.getId(), historicoAmbiente1.getData()));
+		assertTrue(historicoAmbienteDao.existeHistoricoAmbienteByData(estabelecimento2.getId(), ambiente2.getId(), historicoAmbiente2.getData()));
+		
+		historicoAmbienteDao.deleteByEstabelecimentos(null);
+		
+		assertTrue(historicoAmbienteDao.existeHistoricoAmbienteByData(estabelecimento1.getId(), ambiente1.getId(), historicoAmbiente1.getData()));
+		assertTrue(historicoAmbienteDao.existeHistoricoAmbienteByData(estabelecimento2.getId(), ambiente2.getId(), historicoAmbiente2.getData()));
+	}
+	
+	@Test
+	public void testDeleteByEstabelecimentosPassandoUmArrayVazio() throws Exception 
+	{
+		Empresa empresa = empresaDao.save(EmpresaFactory.getEmpresa());
+		Estabelecimento estabelecimento1 = estabelecimentoDao.save(EstabelecimentoFactory.getEntity());
+		Estabelecimento estabelecimento2 = estabelecimentoDao.save(EstabelecimentoFactory.getEntity());
+		
+		Ambiente ambiente1 = ambienteDao.save(AmbienteFactory.getEntity("Ambiente 1", empresa));
+		Ambiente ambiente2 = ambienteDao.save(AmbienteFactory.getEntity("Ambiente 2", empresa));
+		
+		HistoricoAmbiente historicoAmbiente1 = HistoricoAmbienteFactory.getEntity(new Date(), ambiente1.getNome(), ambiente1, estabelecimento1, "Ambiente 1", LocalAmbiente.ESTABELECIMENTO_DO_PROPRIO_EMPREGADOR.getOpcao());
+		historicoAmbienteDao.save(historicoAmbiente1);
+		
+		HistoricoAmbiente historicoAmbiente2 = HistoricoAmbienteFactory.getEntity(new Date(), ambiente2.getNome(), ambiente2, estabelecimento2, "Ambiente 2", LocalAmbiente.ESTABELECIMENTO_DO_PROPRIO_EMPREGADOR.getOpcao());
+		historicoAmbienteDao.save(historicoAmbiente2);
+		
+		assertTrue(historicoAmbienteDao.existeHistoricoAmbienteByData(estabelecimento1.getId(), ambiente1.getId(), historicoAmbiente1.getData()));
+		assertTrue(historicoAmbienteDao.existeHistoricoAmbienteByData(estabelecimento2.getId(), ambiente2.getId(), historicoAmbiente2.getData()));
+		
+		historicoAmbienteDao.deleteByEstabelecimentos(new Long[]{});
+		
+		assertTrue(historicoAmbienteDao.existeHistoricoAmbienteByData(estabelecimento1.getId(), ambiente1.getId(), historicoAmbiente1.getData()));
+		assertTrue(historicoAmbienteDao.existeHistoricoAmbienteByData(estabelecimento2.getId(), ambiente2.getId(), historicoAmbiente2.getData()));
 	}
 }

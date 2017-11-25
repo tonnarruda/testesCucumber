@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 
@@ -37,11 +36,16 @@ public class AmbienteFactory
 		return Ambientes;
 	}
 
-	public static Ambiente getEntity(String nome, Empresa empresa, Estabelecimento estabelecimento) {
+	public static Ambiente getEntity(String nome) {
+		Ambiente ambiente = new Ambiente();
+		ambiente.setNome(nome);
+		return ambiente;
+	}
+	
+	public static Ambiente getEntity(String nome, Empresa empresa) {
 		Ambiente ambiente = new Ambiente();
 		ambiente.setNome(nome);
 		ambiente.setEmpresa(empresa);
-		ambiente.setEstabelecimento(estabelecimento);
 		return ambiente;
 	}
 	

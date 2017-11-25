@@ -22,20 +22,24 @@ import org.junit.Test;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
+import com.fortes.rh.business.sesmt.HistoricoAmbienteManager;
 import com.fortes.rh.business.sesmt.MedicaoRiscoManager;
 import com.fortes.rh.business.sesmt.RiscoAmbienteManager;
 import com.fortes.rh.business.sesmt.RiscoFuncaoManager;
 import com.fortes.rh.business.sesmt.RiscoMedicaoRiscoManager;
+import com.fortes.rh.model.dicionario.LocalAmbiente;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Funcao;
+import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 import com.fortes.rh.model.sesmt.MedicaoRisco;
 import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.model.sesmt.RiscoMedicaoRisco;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.AmbienteFactory;
 import com.fortes.rh.test.factory.cargosalario.FuncaoFactory;
+import com.fortes.rh.test.factory.cargosalario.HistoricoAmbienteFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.sesmt.MedicaoRiscoFactory;
 import com.fortes.rh.test.factory.sesmt.RiscoMedicaoRiscoFactory;
@@ -52,6 +56,7 @@ public class MedicaoRiscoEditActionTest
 	private RiscoFuncaoManager riscoFuncaoManager;
 	private EstabelecimentoManager estabelecimentoManager;
 	private RiscoMedicaoRiscoManager riscoMedicaoRiscoManager;
+	private HistoricoAmbienteManager historicoAmbienteManager;
 
 	@Before
 	public void setUp() throws Exception
@@ -80,6 +85,9 @@ public class MedicaoRiscoEditActionTest
 		
 		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));		
         action.setMedicaoRisco(new MedicaoRisco());
+        
+        historicoAmbienteManager = mock(HistoricoAmbienteManager.class);
+        action.setHistoricoAmbienteManager(historicoAmbienteManager);
 	}
 
 	@Test
@@ -121,7 +129,6 @@ public class MedicaoRiscoEditActionTest
 		action.setEmpresaSistema(empresa);
 		
 		Ambiente ambiente = AmbienteFactory.getEntity(2L);
-		ambiente.setEstabelecimento(EstabelecimentoFactory.getEntity(1L));
 		
 		MedicaoRisco medicaoRisco = MedicaoRiscoFactory.getEntity(1L);
 		medicaoRisco.setAmbiente(ambiente);
@@ -167,16 +174,18 @@ public class MedicaoRiscoEditActionTest
 		action.setEstabelecimento(EstabelecimentoFactory.getEntity(1L));
 		
 		Ambiente ambiente = AmbienteFactory.getEntity(2L);
-		ambiente.setEstabelecimento(EstabelecimentoFactory.getEntity(1L));
+		HistoricoAmbiente historicoAmbiente = HistoricoAmbienteFactory.getEntity(ambiente.getNome(), action.getEstabelecimento(), "descricao", ambiente, new Date(), "");
+		historicoAmbiente.setLocalAmbiente(LocalAmbiente.ESTABELECIMENTO_DO_PROPRIO_EMPREGADOR.getOpcao());
 		
 		MedicaoRisco medicaoRisco = MedicaoRiscoFactory.getEntity(1L);
 		medicaoRisco.setAmbiente(ambiente);
 		action.setMedicaoRisco(medicaoRisco);
 		
 		when(manager.getTecnicasUtilizadas(eq(action.getEmpresaSistema().getId()))).thenReturn("");
+		when(historicoAmbienteManager.findUltimoHistoricoAteData(ambiente.getId(), medicaoRisco.getData())).thenReturn(historicoAmbiente);
+		
 		when(estabelecimentoManager.findAllSelect(eq(empresa.getId()))).thenReturn(new ArrayList<Estabelecimento>());
 		when(manager.findById(eq(medicaoRisco.getId()))).thenReturn(medicaoRisco);
-		when(ambienteManager.findByEstabelecimento(any(Long[].class))).thenReturn(new ArrayList<Ambiente>());
 		when(riscoAmbienteManager.findRiscosByAmbienteData(eq(ambiente.getId()), any(Date.class))).thenReturn(new ArrayList<Risco>());
 		when(manager.preparaRiscosDaMedicao(eq(medicaoRisco),anyCollection())).thenReturn(new ArrayList<RiscoMedicaoRisco>());
 		
@@ -234,7 +243,6 @@ public class MedicaoRiscoEditActionTest
 		when(manager.getTecnicasUtilizadas(action.getEmpresaSistema().getId())).thenReturn("");
 		when(estabelecimentoManager.findAllSelect(action.getEmpresaSistema().getId())).thenReturn(new ArrayList<Estabelecimento>());
 		
-		when(ambienteManager.findByEstabelecimento(action.getEstabelecimento().getId())).thenReturn(new ArrayList<Ambiente>());
 		when(riscoAmbienteManager.findRiscosByAmbienteData(eq(action.getEmpresaSistema().getId()), any(Date.class))).thenReturn(new ArrayList<Risco>());
 		when(manager.preparaRiscosDaMedicao(eq(medicaoRisco), anyCollection())).thenReturn(new ArrayList<RiscoMedicaoRisco>());
 		
@@ -264,12 +272,11 @@ public class MedicaoRiscoEditActionTest
 		when(riscoMedicaoRiscoManager.findMedicoesDeRiscosDoAmbiente(eq(ambiente.getId()), any(Date.class))).thenReturn(riscoMedicaoRiscos);
 		when(estabelecimentoManager.findAllSelect(action.getEmpresaSistema().getId())).thenReturn(new ArrayList<Estabelecimento>());
 		
-		when(ambienteManager.findByEstabelecimento(any(Long[].class))).thenReturn(new ArrayList<Ambiente>());
 		when(riscoAmbienteManager.findRiscosByAmbienteData(eq(ambiente.getId()), any(Date.class))).thenReturn(new ArrayList<Risco>());
 		when(manager.preparaRiscosDaMedicao(eq(medicaoRisco), anyCollection())).thenReturn(riscoMedicaoRiscos);
 		
 		assertEquals("success", action.carregarRiscosComMedicao());
-		assertTrue(action.getActionMessages().size() == 0);
+		assertTrue(action.getActionMessages().isEmpty());
 	}
 	
 	@Test
@@ -300,7 +307,7 @@ public class MedicaoRiscoEditActionTest
 		when(manager.preparaRiscosDaMedicao(eq(medicaoRisco), anyCollection())).thenReturn(riscoMedicaoRiscos);
 		
 		assertEquals("success", action.carregarRiscosComMedicao());
-		assertTrue(action.getActionMessages().size() == 0);
+		assertTrue(action.getActionMessages().isEmpty());
 	}
 
 	@Test
@@ -392,6 +399,7 @@ public class MedicaoRiscoEditActionTest
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa.setControlaRiscoPor('A');
+		action.setControlaRiscoPor(empresa.getControlaRiscoPor());
 		action.setEmpresaSistema(empresa);
 		
 		MedicaoRisco medicaoRisco = MedicaoRiscoFactory.getEntity(1L);
@@ -406,6 +414,25 @@ public class MedicaoRiscoEditActionTest
 		assertEquals("success", action.insert());
 	}
 
+	@Test
+	public void testInsertByFuncao() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa.setControlaRiscoPor('F');
+		action.setControlaRiscoPor(empresa.getControlaRiscoPor());
+		action.setEmpresaSistema(empresa);
+		
+		MedicaoRisco medicaoRisco = MedicaoRiscoFactory.getEntity(1L);
+		action.setMedicaoRisco(medicaoRisco);
+		
+		action.setLtcatValues(ltcatValues);
+		action.setPpraValues(ppraValues);
+		action.setIntensidadeValues(intensidadeValues);
+		action.setTecnicaValues(tecnicaValues);
+		action.setRiscoIds(riscoIds);
+
+		assertEquals("success", action.insert());
+	}
 	@Test
 	public void testInsertException() throws Exception
 	{
@@ -423,9 +450,9 @@ public class MedicaoRiscoEditActionTest
 		assertEquals("input", action.insert());
 		assertEquals("Não foi possível gravar esta medição de risco.", action.getActionErrors().iterator().next());
 	}
-
+	
 	@Test
-	public void testUpdate() throws Exception
+	public void testUpdatePorAmbiente() throws Exception
 	{
 		MedicaoRisco medicaoRisco = MedicaoRiscoFactory.getEntity(1L);
 		action.setMedicaoRisco(medicaoRisco);
@@ -435,6 +462,23 @@ public class MedicaoRiscoEditActionTest
 		action.setIntensidadeValues(intensidadeValues);
 		action.setTecnicaValues(tecnicaValues);
 		action.setRiscoIds(riscoIds);
+		action.setControlaRiscoPor('A');
+
+		assertEquals("success", action.update());
+	}
+	
+	@Test
+	public void testUpdatePorFuncao() throws Exception
+	{
+		MedicaoRisco medicaoRisco = MedicaoRiscoFactory.getEntity(1L);
+		action.setMedicaoRisco(medicaoRisco);
+		
+		action.setLtcatValues(ltcatValues);
+		action.setPpraValues(ppraValues);
+		action.setIntensidadeValues(intensidadeValues);
+		action.setTecnicaValues(tecnicaValues);
+		action.setRiscoIds(riscoIds);
+		action.setControlaRiscoPor('F');
 
 		assertEquals("success", action.update());
 	}
@@ -443,7 +487,6 @@ public class MedicaoRiscoEditActionTest
 	public void testUpdateException() throws Exception
 	{
 		Ambiente ambiente = AmbienteFactory.getEntity(15L);
-		ambiente.setEstabelecimento(EstabelecimentoFactory.getEntity(2L));
 		
 		action.setAmbiente(ambiente);
 		action.setData(new Date());
@@ -454,7 +497,6 @@ public class MedicaoRiscoEditActionTest
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		action.setEmpresaSistema(empresa);
 
-		empresa.setControlaRiscoPor('A');
 		action.setMedicaoRisco(medicaoRisco);
 		
 
@@ -465,7 +507,6 @@ public class MedicaoRiscoEditActionTest
 		when(estabelecimentoManager.findAllSelect(action.getEmpresaSistema().getId())).thenReturn(new ArrayList<Estabelecimento>());
 		when(manager.findById(eq(medicaoRisco.getId()))).thenReturn(medicaoRisco);
 		
-		when(ambienteManager.findByEstabelecimento(any(Long[].class))).thenReturn(new ArrayList<Ambiente>());
 		when(riscoAmbienteManager.findRiscosByAmbienteData(eq(ambiente.getId()), any(Date.class))).thenReturn(new ArrayList<Risco>());
 		when(manager.preparaRiscosDaMedicao(eq(medicaoRisco), anyCollection())).thenReturn(new ArrayList<RiscoMedicaoRisco>());
 

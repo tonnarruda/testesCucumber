@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -106,7 +107,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
     Collection<SolicitacaoAvaliacao> solicitacaoAvaliacaos;
 
     private Collection<Funcao> funcoes;
-    private Collection<Ambiente> ambientes;
+    public Map<String, Collection<Ambiente>> ambientes = new HashMap<String, Collection<Ambiente>>();
 
     private String[] colaboradoresSusbstituidos = new String[]{};
     private String[] bairrosCheck;
@@ -206,8 +207,9 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
             if (candidatoSolicitacaoManager.getCount(new String[] {"solicitacao.id"}, new Object[]{solicitacao.getId()}) > 0)
             	possuiCandidatoSolicitacao = true;
             
-			if(solicitacao.getEstabelecimento() != null && solicitacao.getEstabelecimento().getId() != null)
-				ambientes = ambienteManager.findByEstabelecimento(solicitacao.getEstabelecimento().getId());
+			if(solicitacao.getEstabelecimento() != null && solicitacao.getEstabelecimento().getId() != null){
+				ambientes = ambienteManager.montaMapAmbientes(solicitacao.getEmpresa().getId(), solicitacao.getEstabelecimento().getId(), solicitacao.getEstabelecimento().getNome(), solicitacao.getData());
+			}
             
             Colaborador colaboradorLiberador = colaboradorManager.findByUsuarioProjection(solicitacao.getLiberador().getId(), null);
 			nomeLiberador = colaboradorLiberador!=null?colaboradorLiberador.getNomeMaisNomeComercial():solicitacao.getLiberador().getNome();
@@ -652,16 +654,6 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 		this.ambienteManager = ambienteManager;
 	}
 
-	public Collection<Ambiente> getAmbientes()
-	{
-		return ambientes;
-	}
-
-	public void setAmbientes(Collection<Ambiente> ambientes)
-	{
-		this.ambientes = ambientes;
-	}
-
 	public Collection<Funcao> getFuncoes()
 	{
 		return funcoes;
@@ -985,5 +977,9 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 	public void setObsStatusSolicitacaoAnterior(
 			String obsStatusSolicitacaoAnterior) {
 		this.obsStatusSolicitacaoAnterior = obsStatusSolicitacaoAnterior;
+	}
+
+	public Map<String, Collection<Ambiente>> getAmbientes() {
+		return ambientes;
 	}
 }

@@ -10,10 +10,12 @@ import java.util.Map;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.model.dicionario.LocalAmbiente;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.relatorio.PpraLtcatRelatorio;
 import com.fortes.rh.util.Autenticador;
 import com.fortes.rh.util.CheckListBoxUtil;
+import com.fortes.rh.util.ModelUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.fortes.web.tags.CheckBox;
@@ -40,19 +42,23 @@ public class PpraEditAction extends MyActionSupportEdit
 	
 	private Map<String, Object> parametros = new HashMap<String, Object>();
 	private Collection<PpraLtcatRelatorio> dataSource = new ArrayList<PpraLtcatRelatorio>();
+	private Map<Integer, String> locaisAmbiente;
+	private Integer localAmbiente = LocalAmbiente.ESTABELECIMENTO_DO_PROPRIO_EMPREGADOR.getOpcao();
 
 	public String prepareRelatorio() throws Exception
 	{
     	if(Autenticador.isDemo())
     		addActionMessage("Este relatório não pode ser impresso na Versão Demonstração.");
-    	
+
+    	locaisAmbiente = LocalAmbiente.mapLocalAmbiente();
 		estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
 		
-		if (estabelecimento != null){
-			ambienteCheckList = ambienteManager.populaCheckBox(estabelecimento.getId());
-			ambienteCheckList = CheckListBoxUtil.marcaCheckListBox(ambienteCheckList, ambienteCheck);
-		}
+		if(ModelUtil.hasNotNull("getId", estabelecimento)) 
+			ambienteCheckList = ambienteManager.populaCheckBox(getEmpresaSistema().getId(), estabelecimento.getId(), localAmbiente, data);
+		else 
+			ambienteCheckList = ambienteManager.populaCheckBox(getEmpresaSistema().getId(), null, localAmbiente, data);
 		
+		ambienteCheckList = CheckListBoxUtil.marcaCheckListBox(ambienteCheckList, ambienteCheck);
 		return SUCCESS;
 	}
 	
@@ -70,8 +76,7 @@ public class PpraEditAction extends MyActionSupportEdit
 			parametros.put("EXIBIR_COMPOSICAO_SESMT", exibirComposicaoSesmt);
 			parametros.put("AGRUPADO_POR_AMBIENTE", getEmpresaSistema().getControlaRiscoPor() == 'A');
 			parametros.put("QUEBRAR_PAGINA", isQuebrarPagina());
-			
-			dataSource = ambienteManager.montaRelatorioPpraLtcat(getEmpresaSistema(), estabelecimento.getId(), data, ambienteCheck, gerarPpra, gerarLtcat, exibirComposicaoSesmt);
+			dataSource = ambienteManager.montaRelatorioPpraLtcat(getEmpresaSistema(), estabelecimento, localAmbiente, data, ambienteCheck, gerarPpra, gerarLtcat, exibirComposicaoSesmt);
 		}
 		catch (ColecaoVaziaException e)
 		{
@@ -169,5 +174,21 @@ public class PpraEditAction extends MyActionSupportEdit
 
 	public void setQuebrarPagina(boolean quebrarPagina) {
 		this.quebrarPagina = quebrarPagina;
+	}
+
+	public Map<Integer, String> getLocaisAmbiente() {
+		return locaisAmbiente;
+	}
+
+	public void setLocaisAmbiente(Map<Integer, String> locaisAmbiente) {
+		this.locaisAmbiente = locaisAmbiente;
+	}
+
+	public Integer getLocalAmbiente() {
+		return localAmbiente;
+	}
+
+	public void setLocalAmbiente(Integer localAmbiente) {
+		this.localAmbiente = localAmbiente;
 	}
 }

@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -43,6 +44,7 @@ import com.fortes.security.auditoria.NaoAudita;
 @SuppressWarnings("serial")
 @Table(uniqueConstraints=@UniqueConstraint(columnNames={"data", "colaborador_id"}))
 @Entity
+@org.hibernate.annotations.Entity(dynamicUpdate = false)
 @SequenceGenerator(name="sequence", sequenceName="historicocolaborador_sequence", allocationSize=1)
 public class HistoricoColaborador extends AbstractModel implements Serializable, Cloneable
 {
@@ -92,6 +94,9 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 	@Transient private Date dataSolicitacaoDesligamento;
 	@Transient private Double mensalidade;
 	@Transient private int statusAnterior;
+	@Transient private Map<String, Collection<Ambiente>> mapAmbientes;
+	@Transient private String funcaoDescricao;
+	@Transient private String ambienteDescricao;
 	
 	public HistoricoColaborador(String colaborador, String areaOrganizacional) {
 		
@@ -1209,5 +1214,30 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 
 	public void setStatusAnterior(int statusAnterior) {
 		this.statusAnterior = statusAnterior;
+	}
+
+	@NaoAudita
+	public Map<String, Collection<Ambiente>> getMapAmbientes() {
+		return mapAmbientes;
+	}
+
+	public void setMapAmbientes(Map<String, Collection<Ambiente>> mapAmbientes) {
+		this.mapAmbientes = mapAmbientes;
+	}
+
+	public String getFuncaoDescricao() {
+		return funcaoDescricao;
+	}
+
+	public void setFuncaoDescricao(String funcaoDescricao) {
+		this.funcaoDescricao = funcaoDescricao;
+	}
+
+	public String getAmbienteDescricao() {
+		return ambienteDescricao;
+	}
+
+	public void setAmbienteDescricao(String ambienteDescricao) {
+		this.ambienteDescricao = ambienteDescricao;
 	}
 }

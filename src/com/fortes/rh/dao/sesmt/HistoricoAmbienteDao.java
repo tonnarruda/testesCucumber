@@ -17,4 +17,6 @@ public interface HistoricoAmbienteDao extends GenericDao<HistoricoAmbiente>
 	HistoricoAmbiente findUltimoHistoricoAteData(Long ambienteId, Date dataMaxima);
 	Collection<HistoricoAmbiente> findRiscosAmbientes(Collection<Long> ambienteIds, Date data);
 	HistoricoAmbiente findByData(Date data, Long historicoAmbienteId, Long ambienteId);
+	boolean existeHistoricoAmbienteByData(Long estabelecimentoId,Long ambienteId, Date data);
+	void deleteByEstabelecimentos(Long[] estabelecimentoIds) throws Exception ;
 }

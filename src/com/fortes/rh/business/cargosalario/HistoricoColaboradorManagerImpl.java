@@ -1368,17 +1368,9 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	private void prepareAmbientes(Collection<HistoricoColaborador> historicoColaboradors) {
 		
 		AmbienteManager ambienteManager = (AmbienteManager) SpringUtil.getBean("ambienteManager");
-		
-		HashMap<Long, Collection<Ambiente>> mapEstabelecimentoAmbiente = new HashMap<Long, Collection<Ambiente>>();
-		
 		for (HistoricoColaborador historicoColaborador : historicoColaboradors) {
-			
-			Estabelecimento estabelecimento = historicoColaborador.getEstabelecimento();
-			
-			if (mapEstabelecimentoAmbiente.get(estabelecimento.getId()) == null)
-				mapEstabelecimentoAmbiente.put(estabelecimento.getId(), ambienteManager.findByEstabelecimento(estabelecimento.getId()));
-			
-			historicoColaborador.setAmbientes(mapEstabelecimentoAmbiente.get(estabelecimento.getId()));
+			historicoColaborador.setMapAmbientes(ambienteManager.montaMapAmbientes(historicoColaborador.getColaborador().getEmpresa().getId(), 
+						historicoColaborador.getEstabelecimento().getId(), historicoColaborador.getEstabelecimento().getNome(), historicoColaborador.getData()));
 		}
 	}
 	private void prepareFuncoes(Collection<HistoricoColaborador> historicoColaboradors, Long empresaId) {

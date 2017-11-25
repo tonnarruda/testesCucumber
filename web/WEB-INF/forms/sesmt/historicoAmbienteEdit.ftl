@@ -6,6 +6,7 @@
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
 	</style>
+	
 	<#include "../ftl/mascarasImports.ftl" />
 	<@ww.head/>
 	<#if historicoAmbiente.id?exists>
@@ -17,8 +18,7 @@
 		<#assign formAction="insert.action"/>
 		<#assign accessKey="I"/>
 	</#if>
-	<#assign validarCamp="return validaFormulario('form', new Array('dataHist','descricao'), new Array('dataHist'), !validaRiscosExistentes())"/>
-
+	
 	<#if historicoAmbiente.data?exists>
 			<#assign data = historicoAmbiente.data>
 		<#else>
@@ -53,17 +53,30 @@
 			$('input[name="riscoChecks"]').click(function() {
 				habilitarDesabilitarCamposLinha(this);
 			});
+			
+			toggleEstabecimento();
 		});
 		
 		function habilitarDesabilitarCamposLinha(campoRisco)
 		{
 			$(campoRisco).parent().parent().find('input, select, textarea').not(campoRisco).attr('disabled', !campoRisco.checked);
 		}
+		
+		function submitForm(){
+			if($('#localAmbiente').val() == 1){
+				if(validaFormulario('form', new Array('dataHist','descricao','nome', 'estabelecimento'), new Array('dataHist'), !validaRiscosExistentes()))
+					$('#form').submit();
+			}
+			else{
+				if(validaFormulario('form', new Array('dataHist','descricao','nome', 'cnpjEstabelecimentoDeTerceiros'), new Array('dataHist', 'cnpjEstabelecimentoDeTerceiros'), !validaRiscosExistentes()))
+					$('#form').submit();
+			}
+		}
 	</script>
 </head>
 <body>
 	<@ww.actionerror />
-	<@ww.form name="form" action="${formAction}" onsubmit="${validarCamp}" validate="true" method="POST">
+	<@ww.form name="form" action="${formAction}" method="POST">
 
 		<#include "includeHistoricoAmbiente.ftl" />
 
@@ -74,7 +87,7 @@
 	</@ww.form>
 
 	<div class="buttonGroup">
-		<button onclick="${validarCamp};" class="btnGravar" accesskey="${accessKey}"></button>
+		<button onclick="submitForm();" class="btnGravar" accesskey="${accessKey}"></button>
 		<button onclick="window.location='../ambiente/prepareUpdate.action?ambiente.id=${ambiente.id}'" class="btnCancelar" accesskey="V"></button>
 	</div>
 </body>

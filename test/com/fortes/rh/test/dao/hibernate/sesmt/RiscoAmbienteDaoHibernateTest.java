@@ -136,10 +136,10 @@ public class RiscoAmbienteDaoHibernateTest extends GenericDaoHibernateTest<Risco
 		Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity();
 		estabelecimentoDao.save(estabelecimento1);
 		
-		Ambiente ambiente = AmbienteFactory.getEntity("Recepcao", null, null);
+		Ambiente ambiente = AmbienteFactory.getEntity("Recepcao");
 		ambienteDao.save(ambiente);
 		
-		HistoricoAmbiente Historicoambiente = HistoricoAmbienteFactory.getEntity("Piso metálico", ambiente, hoje, null);
+		HistoricoAmbiente Historicoambiente = HistoricoAmbienteFactory.getEntity(estabelecimento1, "Piso metálico", ambiente, hoje);
 		historicoAmbienteDao.save(Historicoambiente);
 		
 		Colaborador colaborador1 = ColaboradorFactory.getEntity();
@@ -178,7 +178,7 @@ public class RiscoAmbienteDaoHibernateTest extends GenericDaoHibernateTest<Risco
 		Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity();
 		estabelecimentoDao.save(estabelecimento1);
 		
-		Ambiente ambiente = AmbienteFactory.getEntity("Recepcao", null, null);
+		Ambiente ambiente = AmbienteFactory.getEntity("Recepcao");
 		ambienteDao.save(ambiente);
 		
 		HistoricoAmbiente Historicoambiente = HistoricoAmbienteFactory.getEntity(ambiente, hoje);

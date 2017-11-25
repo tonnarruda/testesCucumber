@@ -14,6 +14,8 @@ import com.fortes.rh.model.sesmt.RiscoAmbiente;
 import com.fortes.rh.model.sesmt.relatorio.DadosAmbienteOuFuncaoRisco;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
+import com.fortes.rh.util.ModelUtil;
+import com.fortes.rh.util.SpringUtil;
 
 public class HistoricoAmbienteManagerImpl extends GenericManagerImpl<HistoricoAmbiente, HistoricoAmbienteDao> implements HistoricoAmbienteManager
 {
@@ -29,7 +31,7 @@ public class HistoricoAmbienteManagerImpl extends GenericManagerImpl<HistoricoAm
 		return historicoAmbiente;
 	}
 	
-	public void save(HistoricoAmbiente historicoAmbiente, String[] riscoChecks, Collection<RiscoAmbiente> riscosAmbientes, String[] epcCheck) throws FortesException, Exception 
+	public void saveOrUpdate(HistoricoAmbiente historicoAmbiente, String[] riscoChecks, Collection<RiscoAmbiente> riscosAmbientes, String[] epcCheck) throws FortesException, Exception 
 	{
 		if (this.findByData(historicoAmbiente.getData(), historicoAmbiente.getId(), historicoAmbiente.getAmbiente().getId()) != null)
 			throw new FortesException("Já existe um histórico para a data informada");	
@@ -56,11 +58,12 @@ public class HistoricoAmbienteManagerImpl extends GenericManagerImpl<HistoricoAm
 		
 		historicoAmbiente.setRiscoAmbientes(riscoAmbientesSelecionados);
 		historicoAmbiente.setEpcs(epcs);
+		if(ModelUtil.hasNull("getEstabelecimento().getId()", historicoAmbiente))
+			historicoAmbiente.setEstabelecimento(null);
+		saveOrUpdate(historicoAmbiente);
 		
-		if (historicoAmbiente.getId() == null)
-			save(historicoAmbiente);
-		else
-			update(historicoAmbiente);
+		AmbienteManager ambienteManager = (AmbienteManager) SpringUtil.getBean("ambienteManager");
+		ambienteManager.atualizaDadosParaUltimoHistorico(historicoAmbiente.getAmbiente().getId());
 	}
 	
 	public HistoricoAmbiente findByData(Date data, Long historicoAmbienteId, Long ambienteId) 
@@ -78,12 +81,10 @@ public class HistoricoAmbienteManagerImpl extends GenericManagerImpl<HistoricoAm
 		// Deixa o hibernate gerenciar as remoções dos relacionamentos 
 		HistoricoAmbiente historicoAmbiente = getDao().findById(id); // não tirar essa linha.
 		getDao().remove(historicoAmbiente);
+		AmbienteManager ambienteManager = (AmbienteManager) SpringUtil.getBean("ambienteManager");
+		ambienteManager.atualizaDadosParaUltimoHistorico(historicoAmbiente.getAmbiente().getId());
 	}
 	
-	public void setRiscoAmbienteManager(RiscoAmbienteManager riscoAmbienteManager) {
-		this.riscoAmbienteManager = riscoAmbienteManager;
-	}
-
 	public Collection<HistoricoAmbiente> findByAmbiente(Long ambienteId) 
 	{
 		return getDao().findByAmbiente(ambienteId);
@@ -107,5 +108,17 @@ public class HistoricoAmbienteManagerImpl extends GenericManagerImpl<HistoricoAm
 	public Collection<HistoricoAmbiente> findRiscosAmbientes(Collection<Long> ambienteIds, Date data) 
 	{
 		return getDao().findRiscosAmbientes(ambienteIds, data);
+	}
+
+	public boolean existeHistoricoAmbienteByData(Long estabelecimentoId, Long ambienteId, Date data) {
+		return getDao().existeHistoricoAmbienteByData(estabelecimentoId, ambienteId, data);
+	}
+
+	public void deleteByEstabelecimentos(Long[] estabelecimentoIds) throws Exception {
+		getDao().deleteByEstabelecimentos(estabelecimentoIds);
+	}
+
+	public void setRiscoAmbienteManager(RiscoAmbienteManager riscoAmbienteManager) {
+		this.riscoAmbienteManager = riscoAmbienteManager;
 	}
 }

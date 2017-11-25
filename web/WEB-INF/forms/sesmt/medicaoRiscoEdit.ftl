@@ -1,3 +1,4 @@
+<#assign frt=JspTaglibs["/WEB-INF/tlds/fortes.tld"] />
 <#assign display=JspTaglibs["/WEB-INF/tlds/displaytag.tld"] />
 <#assign authz=JspTaglibs["/WEB-INF/tlds/authz.tld"] />
 <html>
@@ -23,6 +24,7 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.autocomplete.js"/>"></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/moment.min.2.18.1.js?version=${versao}"/>'></script>
 	<script type="text/javascript">
 		var tecnicasUtilizadas = [${tecnicasUtilizadas}];
 	</script>
@@ -54,14 +56,14 @@
 		
 		<@ww.form name="form" action="${formAction}" method="POST">
 			
-			<@ww.datepicker label="Data da medição" id="data" name="data" required="true" cssClass="mascaraData" value="${date}" onchange="setGravarDesabilitado('true');"/>
-			
+			<@ww.datepicker label="Data da medição" id="data" name="data" required="true" cssClass="mascaraData" value="${date}" onchange="setGravarDesabilitado('true');populaAmbientes();" onblur="populaAmbientes();" />
 			<#if controlaRiscoPor == 'A'>
 				<#if atualizacao>
 					<#assign headerValue="Selecione..." />
 				<#else>
 					<#assign headerValue="Selecione o estabelecimento" />
 				</#if>
+				<@ww.select label="Local do Ambiente" name="localAmbiente" id="localAmbiente" list="locaisAmbiente" headerKey="" required="true" cssStyle="width: 295px;" onchange="toggleEstabecimento();populaAmbientes();"/>
 				<@ww.select label="Estabelecimento" id="estabelecimento" required="true" name="estabelecimento.id" list="estabelecimentos" listKey="id" listValue="nome" headerValue="Selecione..." headerKey="" onchange="javascript:populaAmbientes();" cssStyle="width:240px;"/>
 				<@ww.select label="Ambiente" id="ambiente" required="true" name="ambiente.id" list="ambientes" listKey="id" listValue="nome" headerValue="${headerValue}" headerKey="" cssStyle="width:240px;" onchange="setGravarDesabilitado('true');"/>
 			<#else>
@@ -123,7 +125,8 @@
 		
 		$(function() {
 			insereHelp(3);			
-			insereHelp(4);			
+			insereHelp(4);	
+			toggleEstabecimento();		
 		});
 		
 		function insereHelp(posicao)
@@ -138,10 +141,14 @@
 		
 		function populaAmbientes()
 	    {
-	      var estabelecimentoId = document.getElementById("estabelecimento").value;
-
-	      DWRUtil.useLoadingMessage('Carregando...');
-	      AmbienteDWR.getAmbienteByEstabelecimento(createListAmbientes, estabelecimentoId);
+        	var estabelecimentoId = document.getElementById("estabelecimento").value;
+        	if(moment($("#data").val(),'DD/MM/YYYY',true).locale('pt-BR').isValid())
+ 				var dataMedicao = $("#data").val();
+ 			else
+ 				var dataMedicao = $.datepicker.formatDate('dd/mm/yy', new Date());        	
+        	
+			DWRUtil.useLoadingMessage('Carregando...');
+			AmbienteDWR.getAmbientesByEstabelecimentoOrAmbientesDeTerceiro(${empresaSistema.id}, estabelecimentoId, $('#localAmbiente').val(), dataMedicao, createListAmbientes);
 	    }
 		
 	    function createListAmbientes(data)
@@ -193,6 +200,16 @@
 	    		validaFormulario('form', new Array('data','funcao'), new Array('data'), false, '${urlImgs}');
 	    	</#if>
 	    }
+	    
+	    function toggleEstabecimento(){
+			$('#ambiente').val('');
+			if($('#localAmbiente').val() == 2){
+				$('#estabelecimento').val('');
+				$('#estabelecimento').parent().parent().hide();
+			}
+			else
+				$('#estabelecimento').parent().parent().show();
+		}
     </script>
 		
 	</body>

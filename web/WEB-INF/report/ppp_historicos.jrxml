@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.4.0.final using JasperReports Library version 6.4.1  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ppp_historicos" pageWidth="535" pageHeight="802" whenNoDataType="AllSectionsNoDetail" columnWidth="535" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="39277d18-6549-41d4-8ba3-0e60fe73d6da">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
 	<field name="colaborador.empresa.cnpj" class="java.lang.String"/>
-	<field name="ambiente.nome" class="java.lang.String"/>
-	<field name="funcao.nome" class="java.lang.String"/>
+	<field name="ambienteDescricao" class="java.lang.String"/>
+	<field name="funcaoDescricao" class="java.lang.String"/>
 	<field name="faixaSalarial.codigoCbo" class="java.lang.String"/>
 	<field name="gfip" class="java.lang.String"/>
 	<field name="faixaSalarial.cargo.nome" class="java.lang.String"/>
@@ -190,7 +189,7 @@
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{ambiente.nome}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{ambienteDescricao}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField" x="364" y="0" width="75" height="15" uuid="f2462422-6b9b-48f2-b71f-66158aa598a6"/>
@@ -203,7 +202,7 @@
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{funcao.nome}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{funcaoDescricao}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField" x="282" y="0" width="80" height="15" isPrintInFirstWholeBand="true" uuid="36de516e-d52f-4e33-8c79-99081d14a222"/>

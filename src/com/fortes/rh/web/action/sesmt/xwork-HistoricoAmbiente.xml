@@ -4,10 +4,12 @@
 <xwork>
 	<package name="historicoAmbiente" extends="default" namespace="/sesmt/historicoAmbiente">
 		<action name="list" class="com.fortes.rh.web.action.sesmt.HistoricoAmbienteEditAction" method="list">
+			<interceptor-ref name="defaultListStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/historicoAmbienteList.ftl</result>
 		</action>
 		<action name="delete" class="com.fortes.rh.web.action.sesmt.HistoricoAmbienteEditAction" method="delete">
-			<result name="success" type="redirect">../ambiente/prepareUpdate.action?ambiente.id=${ambiente.id}</result>
+			<interceptor-ref name="defaultDeleteStack"/>
+			<result name="success" type="redirect">list.action?ambiente.id=${ambiente.id}</result>
 		</action>
 		<action name="prepareInsert" class="com.fortes.rh.web.action.sesmt.HistoricoAmbienteEditAction" method="prepareInsert">
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/historicoAmbienteEdit.ftl</result>
@@ -16,11 +18,13 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/historicoAmbienteEdit.ftl</result>
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.sesmt.HistoricoAmbienteEditAction" method="insert">
-			<result name="success" type="redirect">../ambiente/prepareUpdate.action?ambiente.id=${ambiente.id}</result>
+			<interceptor-ref name="defaultUpdateStack"/>
+			<result name="success" type="redirect">list.action?ambiente.id=${ambiente.id}</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/historicoAmbienteEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.sesmt.HistoricoAmbienteEditAction" method="update">
-			<result name="success" type="redirect">../ambiente/prepareUpdate.action?ambiente.id=${ambiente.id}</result>
+			<interceptor-ref name="defaultUpdateStack"/>
+			<result name="success" type="redirect">list.action?ambiente.id=${ambiente.id}</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/historicoAmbienteEdit.ftl</result>
 		</action>
 	</package>

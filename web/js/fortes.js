@@ -340,6 +340,39 @@ function addOptionsByMap(selectId, data, prompt)
 	$('#' + selectId).html(result);
 }
 
+function addOpGroupByMap(selectId, data, nameKey, nameValue, prompt)
+{
+	var dados = new Array();
+	var i = 0;
+	
+	for (var key in data) {
+		dados[i] = new Array();
+		dados[i][0] = key;
+		dados[i][1] = data[key];
+		i++;
+	}
+	
+	var result = "";
+	
+	if(dados.length > 0){
+		result = prompt ? "<option value=''>" + prompt + "</option>" : "";
+		var map = new Map(dados);
+		
+		for (var [key, value] of map) {
+			result += "<optgroup label='"+key+"'>\n";
+			for(var i in value){
+				result += "<option value='" + value[i][nameKey]  + "' title='" + value[i][nameValue] + "'>" + value[i][nameValue] + "</option>\n";
+			}
+			result += "</optgroup>\n";
+		  
+		}
+	}
+	else
+		result = "<option value=''>Nenhum...</option>";
+	
+	$('#' + selectId).html(result);
+}
+
 
 function addChecksCheckBox(divName, data, marcados)
 {

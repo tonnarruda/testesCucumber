@@ -1,4 +1,5 @@
 <#assign display=JspTaglibs["/WEB-INF/tlds/displaytag.tld"] />
+<#assign frt=JspTaglibs["/WEB-INF/tlds/fortes.tld"] />
 <html>
 <head>
 	<@ww.head/>
@@ -78,8 +79,10 @@
 					<@ww.select label="" theme="simple" name="historicoColaboradors[${i}].funcao.id" list="historicoColaboradors[${i}].funcoes" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." cssStyle="width:200px; margin-right: -60px !important"/>
 					<@ww.hidden name="historicoColaboradors[${i}].id" />
 				</@display.column>
+				
+				
 				<@display.column title="Ambiente" style="width:160px;">
-					<@ww.select label="" theme="simple" name="historicoColaboradors[${i}].ambiente.id" list="historicoColaboradors[${i}].ambientes" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." cssStyle="width:200px; margin-right: -60px !important" />
+					<@frt.selectOpGroup id="ambiente" label="" theme="simple" name="historicoColaboradors[${i}].ambiente.id" map="historicoColaboradors[${i}].mapAmbientes" optionValue="id" optionText="nome" cssStyle="width:200px; margin-right: -60px !important"/>
 				</@display.column>
 				
 				<#assign i = i + 1/>

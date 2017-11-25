@@ -38,6 +38,15 @@ public class EstabelecimentoFactory
 		return estabelecimento;
 	}
 
+	public static Estabelecimento getEntity(Long id, String nome)
+	{
+		Estabelecimento estabelecimento = getEntity();
+		estabelecimento.setId(id);
+		estabelecimento.setNome(nome);
+
+		return estabelecimento;
+	}
+
 	public static Collection<Estabelecimento> getCollection()
 	{
 		Collection<Estabelecimento> estabelecimentos = new ArrayList<Estabelecimento>();

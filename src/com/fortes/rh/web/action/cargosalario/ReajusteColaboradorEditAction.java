@@ -5,6 +5,7 @@ import static com.fortes.rh.util.CheckListBoxUtil.populaCheckListBox;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
@@ -71,7 +72,7 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 	private Collection<FaixaSalarial> faixaSalarials = new ArrayList<FaixaSalarial>();
 	private Collection<AreaOrganizacional> areaOrganizacionals = new ArrayList<AreaOrganizacional>();
 	private Collection<TabelaReajusteColaborador> tabelaReajusteColaboradors = new ArrayList<TabelaReajusteColaborador>();
-	private Collection<Ambiente> ambientes = new ArrayList<Ambiente>();
+	public Map<String, Collection<Ambiente>> ambientes = new LinkedHashMap<String, Collection<Ambiente>>();
 	private Collection<Funcao> funcaos = new ArrayList<Funcao>();
 	private Collection<Estabelecimento> estabelecimentos = new ArrayList<Estabelecimento>();
 
@@ -167,8 +168,8 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 
 		if(reajusteColaborador.getFaixaSalarialProposta() != null && reajusteColaborador.getFaixaSalarialProposta().getId() != null)
 
-		if(reajusteColaborador.getEstabelecimentoProposto() != null && reajusteColaborador.getEstabelecimentoProposto().getId() != null)
-			ambientes = ambienteManager.findByEstabelecimento(reajusteColaborador.getEstabelecimentoProposto().getId());
+		tabelaReajusteColaborador = tabelaReajusteColaboradorManager.findEntidadeComAtributosSimplesById(reajusteColaborador.getTabelaReajusteColaborador().getId());
+		ambientes = ambienteManager.montaMapAmbientes(getEmpresaSistema().getId(), reajusteColaborador.getEstabelecimentoProposto().getId(), reajusteColaborador.getEstabelecimentoProposto().getNome(), tabelaReajusteColaboradorManager.findEntidadeComAtributosSimplesById(reajusteColaborador.getTabelaReajusteColaborador().getId()).getData()); 
 
 		if(reajusteColaborador.getAmbienteAtual().getNome() == null)
 			reajusteColaborador.getAmbienteAtual().setNome("Não possui");
@@ -548,16 +549,6 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 		this.funcaoProposta = funcaoProposta;
 	}
 
-	public Collection<Ambiente> getAmbientes()
-	{
-		return ambientes;
-	}
-
-	public void setAmbientes(Collection<Ambiente> ambientes)
-	{
-		this.ambientes = ambientes;
-	}
-
 	public Collection<Funcao> getFuncaos()
 	{
 		return funcaos;
@@ -815,5 +806,13 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 
 	public boolean isObrigarAmbienteFuncao() {
 		return obrigarAmbienteFuncao;
+	}
+
+	public Map<String, Collection<Ambiente>> getAmbientes() {
+		return ambientes;
+	}
+
+	public void setAmbientes(Map<String, Collection<Ambiente>> ambientes) {
+		this.ambientes = ambientes;
 	}
 }

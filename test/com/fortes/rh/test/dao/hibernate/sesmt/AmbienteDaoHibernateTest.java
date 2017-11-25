@@ -1,11 +1,17 @@
 package com.fortes.rh.test.dao.hibernate.sesmt;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
@@ -19,14 +25,16 @@ import com.fortes.rh.dao.sesmt.HistoricoAmbienteDao;
 import com.fortes.rh.dao.sesmt.MedicaoRiscoDao;
 import com.fortes.rh.dao.sesmt.RiscoMedicaoRiscoDao;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.dicionario.LocalAmbiente;
 import com.fortes.rh.model.dicionario.Sexo;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.HistoricoAmbiente;
-import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.dao.GenericDaoHibernateTest_JUnit4;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.AmbienteFactory;
@@ -36,23 +44,28 @@ import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.util.DateUtil;
 
-public class AmbienteDaoHibernateTest extends GenericDaoHibernateTest<Ambiente>
+public class AmbienteDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<Ambiente>
 {
-	private AmbienteDao ambienteDao;
-	private EmpresaDao empresaDao;
-	private EstabelecimentoDao estabelecimentoDao;
-	private HistoricoAmbienteDao historicoAmbienteDao;
+	@Autowired private AmbienteDao ambienteDao;
+	@Autowired private EmpresaDao empresaDao;
+	@Autowired private EstabelecimentoDao estabelecimentoDao;
+	@Autowired private HistoricoAmbienteDao historicoAmbienteDao;
 	
-	ColaboradorDao colaboradorDao;
-	HistoricoColaboradorDao historicoColaboradorDao;
-	FuncaoDao funcaoDao;
-	MedicaoRiscoDao medicaoRiscoDao;
-	RiscoMedicaoRiscoDao riscoMedicaoRiscoDao;
-	EpcDao epcDao;
+	@Autowired private ColaboradorDao colaboradorDao;
+	@Autowired private HistoricoColaboradorDao historicoColaboradorDao;
+	@Autowired private FuncaoDao funcaoDao;
+	@Autowired private MedicaoRiscoDao medicaoRiscoDao;
+	@Autowired private RiscoMedicaoRiscoDao riscoMedicaoRiscoDao;
+	@Autowired private EpcDao epcDao;
 
 	public Ambiente getEntity()
 	{
 		return AmbienteFactory.getEntity();
+	}
+	
+	public GenericDao<Ambiente> getGenericDao()
+	{
+		return ambienteDao;
 	}
 
 	@Test
@@ -61,13 +74,19 @@ public class AmbienteDaoHibernateTest extends GenericDaoHibernateTest<Ambiente>
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa = empresaDao.save(empresa);
 
-		Ambiente a1 = new Ambiente();
-		a1.setId(1L);
-		a1.setEmpresa(empresa);
+		Estabelecimento estabelecimento = estabelecimentoDao.save(EstabelecimentoFactory.getEntity("nome", empresa));
 
-		Ambiente a2 = new Ambiente();
-		a2.setId(2L);
-		a2.setEmpresa(empresa);
+		Ambiente a1 = ambienteDao.save(AmbienteFactory.getEntity("a", empresa));
+		Ambiente a2 = ambienteDao.save(AmbienteFactory.getEntity("b", empresa));
+
+		HistoricoAmbiente historicoAmbiente = HistoricoAmbienteFactory.getEntity(a1.getNome(), estabelecimento, "descricao", a1, new Date(), "");
+		historicoAmbiente.setLocalAmbiente(LocalAmbiente.ESTABELECIMENTO_DO_PROPRIO_EMPREGADOR.getOpcao());
+		historicoAmbienteDao.save(historicoAmbiente);
+		
+		HistoricoAmbiente historicoAmbiente2 = HistoricoAmbienteFactory.getEntity(a2.getNome(), null, "descricao", a2, new Date(), "");
+		historicoAmbiente2.setLocalAmbiente(LocalAmbiente.ESTABELECIMENTO_DE_TERCEIROS.getOpcao());
+		historicoAmbienteDao.save(historicoAmbiente2);
+	
 
 		Collection<Ambiente> ambientes = new ArrayList<Ambiente>();
 		ambientes.add(a1);
@@ -81,27 +100,30 @@ public class AmbienteDaoHibernateTest extends GenericDaoHibernateTest<Ambiente>
 		assertEquals(ambientes.size(), retorno);
 	}
 
-	public void testFindAmbientes()
+	@Test
+	public void testFindAmbientesTodosOsAmbienteDeTerceiroEDoEmpregador()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa = empresaDao.save(empresa);
+		
+		Estabelecimento estabelecimento = estabelecimentoDao.save(EstabelecimentoFactory.getEntity("nome", empresa));
 
-		Ambiente a1 = new Ambiente();
-		a1.setNome("a");
-		a1.setEmpresa(empresa);
+		Ambiente a1 = ambienteDao.save(AmbienteFactory.getEntity("a", empresa));
+		Ambiente a2 = ambienteDao.save(AmbienteFactory.getEntity("b", empresa));
 
-		Ambiente a2 = new Ambiente();
-		a2.setNome("b");
-		a2.setEmpresa(empresa);
+		HistoricoAmbiente historicoAmbiente = HistoricoAmbienteFactory.getEntity(a1.getNome(), estabelecimento, "descricao", a1, new Date(), "");
+		historicoAmbiente.setLocalAmbiente(LocalAmbiente.ESTABELECIMENTO_DO_PROPRIO_EMPREGADOR.getOpcao());
+		historicoAmbienteDao.save(historicoAmbiente);
+		
+		HistoricoAmbiente historicoAmbiente2 = HistoricoAmbienteFactory.getEntity(a2.getNome(), null, "descricao", a2, new Date(), "");
+		historicoAmbiente2.setLocalAmbiente(LocalAmbiente.ESTABELECIMENTO_DE_TERCEIROS.getOpcao());
+		historicoAmbienteDao.save(historicoAmbiente2);
+		
+		Collection<Ambiente> ambientes = Arrays.asList(a1, a2);
+		HistoricoAmbiente historicoAmbienteParaConsulta = new HistoricoAmbiente();
+		historicoAmbienteParaConsulta.setLocalAmbiente(null);
 
-		a1 = ambienteDao.save(a1);
-		a2 = ambienteDao.save(a2);
-
-		Collection<Ambiente> ambientes = new ArrayList<Ambiente>();
-		ambientes.add(a1);
-		ambientes.add(a2);
-
-		Collection<Ambiente> ambientesRetorno = ambienteDao.findAmbientes(0, 0, empresa.getId(), null);
+		Collection<Ambiente> ambientesRetorno = ambienteDao.findAmbientes(0, 0, empresa.getId(), historicoAmbienteParaConsulta);
 
 		assertEquals("findAmbientes sem paginação",ambientes, ambientesRetorno);
 
@@ -110,61 +132,162 @@ public class AmbienteDaoHibernateTest extends GenericDaoHibernateTest<Ambiente>
 		assertEquals("findAmbientes com paginação",ambientes, ambientesRetorno);
 	}
 	
-	public void testFindByIdProjection()
+	
+	@Test
+	public void testFindAmbientesComFiltroLocalAmbienteIgualATodosEEstabelecimentoSelecionado()
 	{
-		Empresa empresa = new Empresa();
+		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa = empresaDao.save(empresa);
 		
-		Ambiente ambiente = new Ambiente();
-		ambiente.setEmpresa(empresa);
+		Estabelecimento estabelecimento = estabelecimentoDao.save(EstabelecimentoFactory.getEntity("nome", empresa));
+
+		Ambiente a1 = ambienteDao.save(AmbienteFactory.getEntity("a", empresa));
+		Ambiente a2 = ambienteDao.save(AmbienteFactory.getEntity("b", empresa));
+
+		HistoricoAmbiente historicoAmbiente = HistoricoAmbienteFactory.getEntity(a1.getNome(), estabelecimento, "descricao", a1, new Date(), "");
+		historicoAmbiente.setLocalAmbiente(LocalAmbiente.ESTABELECIMENTO_DO_PROPRIO_EMPREGADOR.getOpcao());
+		historicoAmbienteDao.save(historicoAmbiente);
 		
-		ambienteDao.save(ambiente);
+		HistoricoAmbiente historicoAmbiente2 = HistoricoAmbienteFactory.getEntity(a2.getNome(), null, "descricao", a2, new Date(), "");
+		historicoAmbiente2.setLocalAmbiente(LocalAmbiente.ESTABELECIMENTO_DE_TERCEIROS.getOpcao());
+		historicoAmbienteDao.save(historicoAmbiente2);
+		
+		Collection<Ambiente> ambientes = Arrays.asList(a1);
+		HistoricoAmbiente historicoAmbienteParaConsulta = new HistoricoAmbiente();
+		historicoAmbienteParaConsulta.setLocalAmbiente(null);
+		historicoAmbienteParaConsulta.setEstabelecimento(estabelecimento);
+
+		Collection<Ambiente> ambientesRetorno = ambienteDao.findAmbientes(0, 0, empresa.getId(), historicoAmbienteParaConsulta);
+
+		assertEquals("findAmbientes selecionando somente o filtro de estabelecimento",ambientes, ambientesRetorno);
+	}
+	
+	@Test
+	public void testFindAmbientesComFiltroEstabelecimentosDeterceiros()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa = empresaDao.save(empresa);
+		
+		Estabelecimento estabelecimento = estabelecimentoDao.save(EstabelecimentoFactory.getEntity("nome", empresa));
+
+		Ambiente a1 = ambienteDao.save(AmbienteFactory.getEntity("a", empresa));
+		Ambiente a2 = ambienteDao.save(AmbienteFactory.getEntity("b", empresa));
+
+		HistoricoAmbiente historicoAmbiente = HistoricoAmbienteFactory.getEntity(a1.getNome(), estabelecimento, "descricao", a1, new Date(), "");
+		historicoAmbiente.setLocalAmbiente(LocalAmbiente.ESTABELECIMENTO_DO_PROPRIO_EMPREGADOR.getOpcao());
+		historicoAmbienteDao.save(historicoAmbiente);
+		
+		HistoricoAmbiente historicoAmbiente2 = HistoricoAmbienteFactory.getEntity(a2.getNome(), null, "descricao", a2, new Date(), "");
+		historicoAmbiente2.setLocalAmbiente(LocalAmbiente.ESTABELECIMENTO_DE_TERCEIROS.getOpcao());
+		historicoAmbienteDao.save(historicoAmbiente2);
+		
+		Collection<Ambiente> ambientes = new ArrayList<Ambiente>();
+		ambientes.add(a2);
+
+		historicoAmbiente2.setNomeAmbiente("");
+		Collection<Ambiente> ambientesRetorno = ambienteDao.findAmbientes(0, 0, empresa.getId(), historicoAmbiente2);
+		assertEquals("findAmbientes de estabelecimentos de terceiros",ambientes, ambientesRetorno);
+	}
+	
+	@Test
+	public void testFindAmbientesVisualizarTodosOSAmbienteDeUmEstabelecimento()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa = empresaDao.save(empresa);
+		
+		Estabelecimento estabelecimento = estabelecimentoDao.save(EstabelecimentoFactory.getEntity("nome", empresa));
+
+		Ambiente a1 = ambienteDao.save(AmbienteFactory.getEntity("a", empresa));
+		Ambiente a2 = ambienteDao.save(AmbienteFactory.getEntity("b", empresa));
+
+		HistoricoAmbiente historicoAmbiente = HistoricoAmbienteFactory.getEntity(a1.getNome(), estabelecimento, "descricao", a1, new Date(), "");
+		historicoAmbiente.setLocalAmbiente(LocalAmbiente.ESTABELECIMENTO_DO_PROPRIO_EMPREGADOR.getOpcao());
+		historicoAmbienteDao.save(historicoAmbiente);
+		
+		HistoricoAmbiente historicoAmbiente2 = HistoricoAmbienteFactory.getEntity(a2.getNome(), null, "descricao", a2, new Date(), "");
+		historicoAmbiente2.setLocalAmbiente(LocalAmbiente.ESTABELECIMENTO_DE_TERCEIROS.getOpcao());
+		historicoAmbienteDao.save(historicoAmbiente2);
+		
+		Collection<Ambiente> ambientes = new ArrayList<Ambiente>();
+		ambientes.add(a1);
+
+		Collection<Ambiente> ambientesRetorno = ambienteDao.findAmbientes(0, 0, empresa.getId(), historicoAmbiente);
+		assertEquals("findAmbientes visualizar todos os ambientes do empregado que estão relacionados a um estabelecimento",ambientes, ambientesRetorno);
+	}
+	
+	@Test
+	public void testFindAmbientesComFiltroEstabelecimentosDoProprioEmpregadorEscolhendoVisualizarTodososEstabelecimentos()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa = empresaDao.save(empresa);
+		
+		Estabelecimento estabelecimento = estabelecimentoDao.save(EstabelecimentoFactory.getEntity("nome", empresa));
+
+		Ambiente a1 = ambienteDao.save(AmbienteFactory.getEntity("a", empresa));
+		Ambiente a2 = ambienteDao.save(AmbienteFactory.getEntity("b", empresa));
+
+		HistoricoAmbiente historicoAmbiente = HistoricoAmbienteFactory.getEntity(a1.getNome(), estabelecimento, "descricao", a1, new Date(), "");
+		historicoAmbiente.setLocalAmbiente(LocalAmbiente.ESTABELECIMENTO_DO_PROPRIO_EMPREGADOR.getOpcao());
+		historicoAmbienteDao.save(historicoAmbiente);
+		
+		HistoricoAmbiente historicoAmbiente2 = HistoricoAmbienteFactory.getEntity(a2.getNome(), null, "descricao", a2, new Date(), "");
+		historicoAmbiente2.setLocalAmbiente(LocalAmbiente.ESTABELECIMENTO_DE_TERCEIROS.getOpcao());
+		historicoAmbienteDao.save(historicoAmbiente2);
+		
+		Collection<Ambiente> ambientes = new ArrayList<Ambiente>();
+		ambientes.add(a1);
+
+		HistoricoAmbiente historicoAmbienteParametro = HistoricoAmbienteFactory.getEntity(a1.getNome(), null, "descricao", a1, new Date(), "");
+		historicoAmbienteParametro.setLocalAmbiente(LocalAmbiente.ESTABELECIMENTO_DO_PROPRIO_EMPREGADOR.getOpcao());
+		Collection<Ambiente> ambientesRetorno = ambienteDao.findAmbientes(0, 0, empresa.getId(), historicoAmbienteParametro);
+		assertEquals("findAmbientes todos os estabalecimento do empregador de todos os estabelecimentos",ambientes, ambientesRetorno);
+	}
+	
+	@Test
+	public void testFindAmbientesComFiltroLocalAmbienteComValorInvalido()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa = empresaDao.save(empresa);
+		
+		Estabelecimento estabelecimento = estabelecimentoDao.save(EstabelecimentoFactory.getEntity("nome", empresa));
+
+		Ambiente a1 = ambienteDao.save(AmbienteFactory.getEntity("a", empresa));
+		Ambiente a2 = ambienteDao.save(AmbienteFactory.getEntity("b", empresa));
+
+		HistoricoAmbiente historicoAmbiente = HistoricoAmbienteFactory.getEntity(a1.getNome(), estabelecimento, "descricao", a1, new Date(), "");
+		historicoAmbiente.setLocalAmbiente(LocalAmbiente.ESTABELECIMENTO_DO_PROPRIO_EMPREGADOR.getOpcao());
+		historicoAmbienteDao.save(historicoAmbiente);
+		
+		HistoricoAmbiente historicoAmbiente2 = HistoricoAmbienteFactory.getEntity(a2.getNome(), null, "descricao", a2, new Date(), "");
+		historicoAmbiente2.setLocalAmbiente(LocalAmbiente.ESTABELECIMENTO_DE_TERCEIROS.getOpcao());
+		historicoAmbienteDao.save(historicoAmbiente2);
+		
+		Collection<Ambiente> ambientes = Arrays.asList(a1, a2);
+
+		HistoricoAmbiente historicoAmbienteParaConsulta = new HistoricoAmbiente();
+		historicoAmbienteParaConsulta.setLocalAmbiente(0);
+		
+		Collection<Ambiente> ambientesRetorno = ambienteDao.findAmbientes(0, 0, empresa.getId(), historicoAmbienteParaConsulta);
+		assertEquals("findAmbientes com local do ambiente com valor inválido",ambientes, ambientesRetorno);
+	}
+	
+	@Test
+	public void testFindByIdProjection()
+	{
+		Empresa empresa = empresaDao.save(new Empresa());
+		
+		Ambiente ambiente = ambienteDao.save(AmbienteFactory.getEntity("Ambiente", empresa));
 		
 		assertEquals(ambiente, ambienteDao.findByIdProjection(ambiente.getId()));
 	}
 
-	public void testFindByEstabelecimento()
-	{
-		Empresa empresa = new Empresa();
-		empresa.setNome("fortes");
-		empresa.setCnpj("65465");
-		empresa.setRazaoSocial("fortes");
-		empresa = empresaDao.save(empresa);
-
-		Estabelecimento estabelecimento1 = new Estabelecimento();
-		estabelecimento1.setNome("teste");
-		estabelecimento1.setEmpresa(empresa);
-
-		Estabelecimento estabelecimento2 = new Estabelecimento();
-		estabelecimento2.setNome("teste");
-		estabelecimento2.setEmpresa(empresa);
-
-		estabelecimento1 = estabelecimentoDao.save(estabelecimento1);
-		estabelecimento2 = estabelecimentoDao.save(estabelecimento2);
-
-		Ambiente amb1 = new Ambiente();
-		amb1.setNome("ambiente1");
-		amb1.setEstabelecimento(estabelecimento1);
-		amb1.setEmpresa(empresa);
-		ambienteDao.save(amb1);
-
-		Ambiente amb2 = new Ambiente();
-		amb2.setNome("ambiente2");
-		amb2.setEstabelecimento(estabelecimento1);
-		amb2.setEmpresa(empresa);
-		ambienteDao.save(amb2);
-
-		Collection<Ambiente> ambientes = ambienteDao.findByEstabelecimento(estabelecimento1.getId());
-
-		assertEquals(2, ambientes.size());
-
-		ambientes = ambienteDao.findByEstabelecimento(estabelecimento2.getId());
-
-		assertTrue(ambientes.isEmpty());
-	}
 	
+	@Test
 	public void testFindByIds()
 	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
 		Date hoje = Calendar.getInstance().getTime();
 		Calendar doisMesesAntes = Calendar.getInstance();
 		doisMesesAntes.add(Calendar.MONTH, -2);
@@ -175,46 +298,25 @@ public class AmbienteDaoHibernateTest extends GenericDaoHibernateTest<Ambiente>
 		estabelecimento.setNome("Estabelecimento");
 		estabelecimentoDao.save(estabelecimento);
 		
-		Ambiente ambiente1 = new Ambiente();
-		ambiente1.setNome("ZZZZ");
-		ambiente1.setEstabelecimento(estabelecimento);
-		ambienteDao.save(ambiente1);
+		Ambiente ambiente1 = ambienteDao.save(AmbienteFactory.getEntity("Ambiente 1", empresa));
 		
-		HistoricoAmbiente historicoAmbiente1 = new HistoricoAmbiente();
-		historicoAmbiente1.setAmbiente(ambiente1);
-		historicoAmbiente1.setData(doisMesesAntes.getTime());
+		HistoricoAmbiente historicoAmbiente1 = HistoricoAmbienteFactory.getEntity(doisMesesAntes.getTime(), ambiente1.getNome(), ambiente1, estabelecimento, "Descrição do Ambiente 1", LocalAmbiente.ESTABELECIMENTO_DO_PROPRIO_EMPREGADOR.getOpcao());
 		historicoAmbienteDao.save(historicoAmbiente1);
 		
-		HistoricoAmbiente historicoAmbiente1Atual = new HistoricoAmbiente();
-		historicoAmbiente1Atual.setDescricao("Descrição do Ambiente1");
-		historicoAmbiente1Atual.setAmbiente(ambiente1);
-		historicoAmbiente1Atual.setData(hoje);
+		HistoricoAmbiente historicoAmbiente1Atual = HistoricoAmbienteFactory.getEntity(hoje, ambiente1.getNome(), ambiente1, estabelecimento, "Descrição do Ambiente 1", LocalAmbiente.ESTABELECIMENTO_DO_PROPRIO_EMPREGADOR.getOpcao());
 		historicoAmbienteDao.save(historicoAmbiente1Atual);
 		
-		Ambiente ambiente2 = new Ambiente();
-		ambiente2.setEstabelecimento(estabelecimento);
-		ambienteDao.save(ambiente2);
+		Ambiente ambiente2 = ambienteDao.save(AmbienteFactory.getEntity("Ambiente 2", empresa));
 		
-		HistoricoAmbiente historicoAmbiente2 = new HistoricoAmbiente();
-		historicoAmbiente2.setDescricao("Descrição do Ambiente2");
-		historicoAmbiente2.setAmbiente(ambiente2);
-		historicoAmbiente2.setData(doisMesesAntes.getTime());
+		HistoricoAmbiente historicoAmbiente2 = HistoricoAmbienteFactory.getEntity(doisMesesAntes.getTime(), ambiente2.getNome(), ambiente2, estabelecimento, "Descrição do Ambiente 2", LocalAmbiente.ESTABELECIMENTO_DO_PROPRIO_EMPREGADOR.getOpcao());
 		historicoAmbienteDao.save(historicoAmbiente2);
 		
-		Ambiente ambiente3 = new Ambiente();
-		ambiente3.setEstabelecimento(estabelecimento);
-		ambienteDao.save(ambiente3);
+		Ambiente ambiente3 = ambienteDao.save(AmbienteFactory.getEntity("Ambiente 3", empresa));
 		
-		HistoricoAmbiente historicoAmbiente3 = new HistoricoAmbiente();
-		historicoAmbiente3.setDescricao("Descrição do Ambiente3");
-		historicoAmbiente3.setAmbiente(ambiente3);
-		historicoAmbiente3.setData(doisMesesAntes.getTime());
+		HistoricoAmbiente historicoAmbiente3 = HistoricoAmbienteFactory.getEntity(doisMesesAntes.getTime(), ambiente3.getNome(), ambiente3, estabelecimento, "Descrição do Ambiente 3", LocalAmbiente.ESTABELECIMENTO_DO_PROPRIO_EMPREGADOR.getOpcao());
 		historicoAmbienteDao.save(historicoAmbiente3);
 		
-		HistoricoAmbiente historicoAmbiente3Fora = new HistoricoAmbiente();
-		historicoAmbiente3Fora.setDescricao("XCXCXCXCX");
-		historicoAmbiente3Fora.setAmbiente(ambiente3);
-		historicoAmbiente3Fora.setData(tresMesesAntes.getTime());
+		HistoricoAmbiente historicoAmbiente3Fora = HistoricoAmbienteFactory.getEntity(tresMesesAntes.getTime(), ambiente3.getNome(), ambiente3, estabelecimento, "XCXCXCXCX", LocalAmbiente.ESTABELECIMENTO_DO_PROPRIO_EMPREGADOR.getOpcao());
 		historicoAmbienteDao.save(historicoAmbiente3Fora);
 		
 		Date data = hoje;
@@ -223,16 +325,110 @@ public class AmbienteDaoHibernateTest extends GenericDaoHibernateTest<Ambiente>
 		ambienteIds.add(ambiente2.getId());
 		ambienteIds.add(ambiente3.getId());
 		
-		Collection<Ambiente> colecao = ambienteDao.findByIds(ambienteIds, data, estabelecimento.getId());
+		Collection<Ambiente> colecao = ambienteDao.findByIds(empresa.getId(), ambienteIds, data, estabelecimento.getId(), LocalAmbiente.ESTABELECIMENTO_DO_PROPRIO_EMPREGADOR.getOpcao());
 		Object[] array = colecao.toArray();
 		
-		assertEquals("Descrição do Ambiente1",((Ambiente)array[0]).getHistoricoAtual().getDescricao());
-		assertEquals("Descrição do Ambiente2",((Ambiente)array[1]).getHistoricoAtual().getDescricao());
-		assertEquals("Descrição do Ambiente3",((Ambiente)array[2]).getHistoricoAtual().getDescricao());
+		assertEquals("Descrição do Ambiente 1",((Ambiente)array[0]).getHistoricoAtual().getDescricao());
+		assertEquals("Descrição do Ambiente 2",((Ambiente)array[1]).getHistoricoAtual().getDescricao());
+		assertEquals("Descrição do Ambiente 3",((Ambiente)array[2]).getHistoricoAtual().getDescricao());
 		
 		assertEquals(new Integer(3).intValue(), colecao.size());
 	}
 	
+	@Test
+	public void testFindByIdsComArrayDeAmbientesVazio()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Date hoje = Calendar.getInstance().getTime();
+		Calendar doisMesesAntes = Calendar.getInstance();
+		doisMesesAntes.add(Calendar.MONTH, -2);
+		Calendar tresMesesAntes = Calendar.getInstance();
+		tresMesesAntes.add(Calendar.MONTH, -3);
+		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimento.setNome("Estabelecimento");
+		estabelecimentoDao.save(estabelecimento);
+		
+		Ambiente ambiente1 = ambienteDao.save(AmbienteFactory.getEntity("Ambiente 1", empresa));
+		
+		HistoricoAmbiente historicoAmbiente1 = HistoricoAmbienteFactory.getEntity(doisMesesAntes.getTime(), ambiente1.getNome(), ambiente1, estabelecimento, "Descrição do Ambiente 1", LocalAmbiente.ESTABELECIMENTO_DO_PROPRIO_EMPREGADOR.getOpcao());
+		historicoAmbienteDao.save(historicoAmbiente1);
+		
+		HistoricoAmbiente historicoAmbiente1Atual = HistoricoAmbienteFactory.getEntity(hoje, ambiente1.getNome(), ambiente1, estabelecimento, "Descrição do Ambiente 1", LocalAmbiente.ESTABELECIMENTO_DO_PROPRIO_EMPREGADOR.getOpcao());
+		historicoAmbienteDao.save(historicoAmbiente1Atual);
+		
+		Ambiente ambiente2 = ambienteDao.save(AmbienteFactory.getEntity("Ambiente 2", empresa));
+		
+		HistoricoAmbiente historicoAmbiente2 = HistoricoAmbienteFactory.getEntity(doisMesesAntes.getTime(), ambiente2.getNome(), ambiente2, estabelecimento, "Descrição do Ambiente 2", LocalAmbiente.ESTABELECIMENTO_DO_PROPRIO_EMPREGADOR.getOpcao());
+		historicoAmbienteDao.save(historicoAmbiente2);
+		
+		Ambiente ambiente3 = ambienteDao.save(AmbienteFactory.getEntity("Ambiente 3", empresa));
+		
+		HistoricoAmbiente historicoAmbiente3 = HistoricoAmbienteFactory.getEntity(doisMesesAntes.getTime(), ambiente3.getNome(), ambiente3, estabelecimento, "Descrição do Ambiente 3", LocalAmbiente.ESTABELECIMENTO_DO_PROPRIO_EMPREGADOR.getOpcao());
+		historicoAmbienteDao.save(historicoAmbiente3);
+		
+		HistoricoAmbiente historicoAmbiente3Fora = HistoricoAmbienteFactory.getEntity(tresMesesAntes.getTime(), ambiente3.getNome(), ambiente3, estabelecimento, "XCXCXCXCX", LocalAmbiente.ESTABELECIMENTO_DO_PROPRIO_EMPREGADOR.getOpcao());
+		historicoAmbienteDao.save(historicoAmbiente3Fora);
+		
+		Date data = hoje;
+		Collection<Long> ambienteIds = new ArrayList<Long>();
+		
+		Collection<Ambiente> colecao = ambienteDao.findByIds(empresa.getId(), ambienteIds, data, null, LocalAmbiente.ESTABELECIMENTO_DO_PROPRIO_EMPREGADOR.getOpcao());
+		Object[] array = colecao.toArray();
+		
+		assertEquals("Descrição do Ambiente 1",((Ambiente)array[0]).getHistoricoAtual().getDescricao());
+		assertEquals("Descrição do Ambiente 2",((Ambiente)array[1]).getHistoricoAtual().getDescricao());
+		assertEquals("Descrição do Ambiente 3",((Ambiente)array[2]).getHistoricoAtual().getDescricao());
+		
+		assertEquals(new Integer(3).intValue(), colecao.size());
+	}
+	
+	@Test
+	public void testFindByIdsComArrayDeAmbientesNulo()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Date hoje = Calendar.getInstance().getTime();
+		Calendar doisMesesAntes = Calendar.getInstance();
+		doisMesesAntes.add(Calendar.MONTH, -2);
+		Calendar tresMesesAntes = Calendar.getInstance();
+		tresMesesAntes.add(Calendar.MONTH, -3);
+		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimento.setNome("Estabelecimento");
+		estabelecimentoDao.save(estabelecimento);
+		
+		Ambiente ambiente1 = ambienteDao.save(AmbienteFactory.getEntity("Ambiente 1", empresa));
+		
+		HistoricoAmbiente historicoAmbiente1 = HistoricoAmbienteFactory.getEntity(doisMesesAntes.getTime(), ambiente1.getNome(), ambiente1, estabelecimento, "Descrição do Ambiente 1", LocalAmbiente.ESTABELECIMENTO_DO_PROPRIO_EMPREGADOR.getOpcao());
+		historicoAmbienteDao.save(historicoAmbiente1);
+		
+		HistoricoAmbiente historicoAmbiente1Atual = HistoricoAmbienteFactory.getEntity(hoje, ambiente1.getNome(), ambiente1, estabelecimento, "Descrição do Ambiente 1", LocalAmbiente.ESTABELECIMENTO_DO_PROPRIO_EMPREGADOR.getOpcao());
+		historicoAmbienteDao.save(historicoAmbiente1Atual);
+		
+		Ambiente ambiente2 = ambienteDao.save(AmbienteFactory.getEntity("Ambiente 2", empresa));
+		
+		HistoricoAmbiente historicoAmbiente2 = HistoricoAmbienteFactory.getEntity(doisMesesAntes.getTime(), ambiente2.getNome(), ambiente2, estabelecimento, "Descrição do Ambiente 2", LocalAmbiente.ESTABELECIMENTO_DO_PROPRIO_EMPREGADOR.getOpcao());
+		historicoAmbienteDao.save(historicoAmbiente2);
+		
+		Ambiente ambiente3 = ambienteDao.save(AmbienteFactory.getEntity("Ambiente 3", empresa));
+		
+		HistoricoAmbiente historicoAmbiente3 = HistoricoAmbienteFactory.getEntity(doisMesesAntes.getTime(), ambiente3.getNome(), ambiente3, estabelecimento, "Descrição do Ambiente 3", LocalAmbiente.ESTABELECIMENTO_DO_PROPRIO_EMPREGADOR.getOpcao());
+		historicoAmbienteDao.save(historicoAmbiente3);
+		
+		HistoricoAmbiente historicoAmbiente3Fora = HistoricoAmbienteFactory.getEntity(tresMesesAntes.getTime(), ambiente3.getNome(), ambiente3, estabelecimento, "XCXCXCXCX", LocalAmbiente.ESTABELECIMENTO_DO_PROPRIO_EMPREGADOR.getOpcao());
+		historicoAmbienteDao.save(historicoAmbiente3Fora);
+		
+		Date data = hoje;
+		Collection<Ambiente> colecao = ambienteDao.findByIds(empresa.getId(), null, data, estabelecimento.getId(), LocalAmbiente.ESTABELECIMENTO_DE_TERCEIROS.getOpcao());
+		
+		assertTrue(colecao.isEmpty());
+	}
+	
+	@Test
 	public void testGetQtdColaboradorByAmbiente()
 	{
 		Date hoje = Calendar.getInstance().getTime();
@@ -241,105 +437,67 @@ public class AmbienteDaoHibernateTest extends GenericDaoHibernateTest<Ambiente>
 		Calendar tresMesesAntes = Calendar.getInstance();
 		tresMesesAntes.add(Calendar.MONTH, -3);
 		
-		Funcao funcao1 = FuncaoFactory.getEntity();
-		funcao1.setNome("F1");
-		funcaoDao.save(funcao1);
-		Funcao funcao2 = FuncaoFactory.getEntity();
-		funcao2.setNome("F2");
-		funcaoDao.save(funcao2);
-		Funcao funcao3 = FuncaoFactory.getEntity();
-		funcao3.setNome("F3");
-		funcaoDao.save(funcao3);
-		Funcao funcao4 = FuncaoFactory.getEntity();
-		funcao4.setNome("F4");
-		funcaoDao.save(funcao4);
+		Funcao funcao1 = funcaoDao.save(FuncaoFactory.getEntity(null, "F1"));
+		Funcao funcao2 = funcaoDao.save(FuncaoFactory.getEntity(null, "F2"));
+		Funcao funcao3 = funcaoDao.save(FuncaoFactory.getEntity(null, "F3"));
+		funcaoDao.save(FuncaoFactory.getEntity(null, "F4"));
 		
-		Ambiente ambiente = AmbienteFactory.getEntity();
-		ambienteDao.save(ambiente);
+		Ambiente ambiente = ambienteDao.save(AmbienteFactory.getEntity());
 		
-		Colaborador colaborador1 = ColaboradorFactory.getEntity();
-		colaborador1.getPessoal().setSexo('F');
-		colaboradorDao.save(colaborador1);
+		Colaborador colaborador1 = saveColaborador('F', null);
 		
-		HistoricoColaborador historicoColaborador1Fora = HistoricoColaboradorFactory.getEntity();
-		historicoColaborador1Fora.setData(tresMesesAntes.getTime());
-		historicoColaborador1Fora.setColaborador(colaborador1);
-		historicoColaborador1Fora.setAmbiente(ambiente);
-		historicoColaborador1Fora.setFuncao(funcao1);
+		HistoricoColaborador historicoColaborador1Fora = HistoricoColaboradorFactory.getEntity(colaborador1, tresMesesAntes.getTime(), null, null, null, funcao1, ambiente, StatusRetornoAC.CONFIRMADO);
 		historicoColaboradorDao.save(historicoColaborador1Fora);
 		
-		HistoricoColaborador historicoColaborador1Atual = HistoricoColaboradorFactory.getEntity();
-		historicoColaborador1Atual.setData(doisMesesAntes.getTime());
-		historicoColaborador1Atual.setColaborador(colaborador1);
-		historicoColaborador1Atual.setAmbiente(ambiente);
-		historicoColaborador1Atual.setFuncao(funcao2);
+		HistoricoColaborador historicoColaborador1Atual = HistoricoColaboradorFactory.getEntity(colaborador1, doisMesesAntes.getTime(), null, null, null, funcao2, ambiente, StatusRetornoAC.CONFIRMADO);
 		historicoColaboradorDao.save(historicoColaborador1Atual);
 		
-		Colaborador colaborador2 = ColaboradorFactory.getEntity();
-		colaborador2.getPessoal().setSexo('M');
-		colaboradorDao.save(colaborador2);
+		Colaborador colaborador2 = saveColaborador('M', null);
 		
-		HistoricoColaborador historicoColaborador2Atual = HistoricoColaboradorFactory.getEntity();
-		historicoColaborador2Atual.setData(hoje);
-		historicoColaborador2Atual.setColaborador(colaborador2);
-		historicoColaborador2Atual.setAmbiente(ambiente);
-		historicoColaborador2Atual.setFuncao(funcao3);
+		HistoricoColaborador historicoColaborador2Atual = HistoricoColaboradorFactory.getEntity(colaborador2, hoje, null, null, null, funcao3, ambiente, StatusRetornoAC.CONFIRMADO);
 		historicoColaboradorDao.save(historicoColaborador2Atual);
 		
-		Colaborador colaborador3 = ColaboradorFactory.getEntity();
-		colaborador3.getPessoal().setSexo('F');
-		colaboradorDao.save(colaborador3);
+		Colaborador colaborador3 = saveColaborador('F', null);
 		
-		HistoricoColaborador historicoColaborador3 = HistoricoColaboradorFactory.getEntity();
-		historicoColaborador3.setData(hoje);
-		historicoColaborador3.setColaborador(colaborador3);
-		historicoColaborador3.setAmbiente(ambiente);
-		historicoColaborador3.setFuncao(funcao3);
+		HistoricoColaborador historicoColaborador3 = HistoricoColaboradorFactory.getEntity(colaborador3, hoje, null, null, null, funcao3, ambiente, StatusRetornoAC.CONFIRMADO);
 		historicoColaboradorDao.save(historicoColaborador3);
 		
-		Colaborador colaboradorDesligadoDepois = ColaboradorFactory.getEntity();
-		colaboradorDesligadoDepois.getPessoal().setSexo('F');
-		colaboradorDesligadoDepois.setDataDesligamento(DateUtil.incrementaDias(hoje, 1));
-		colaboradorDao.save(colaboradorDesligadoDepois);
+		Colaborador colaboradorDesligadoDepois = saveColaborador('F', DateUtil.incrementaDias(hoje, 1));
 		
-		HistoricoColaborador historicoColaboradorDesligadoDepois = HistoricoColaboradorFactory.getEntity();
-		historicoColaboradorDesligadoDepois.setData(doisMesesAntes.getTime());
-		historicoColaboradorDesligadoDepois.setColaborador(colaboradorDesligadoDepois);
-		historicoColaboradorDesligadoDepois.setAmbiente(ambiente);
-		historicoColaboradorDesligadoDepois.setFuncao(funcao2);
+		HistoricoColaborador historicoColaboradorDesligadoDepois = HistoricoColaboradorFactory.getEntity(colaboradorDesligadoDepois, doisMesesAntes.getTime(), null, null, null, funcao2, ambiente, StatusRetornoAC.CONFIRMADO);
 		historicoColaboradorDao.save(historicoColaboradorDesligadoDepois);
 
-		Colaborador colaboradorDesligadoAntes = ColaboradorFactory.getEntity();
-		colaboradorDesligadoAntes.getPessoal().setSexo('F');
-		colaboradorDesligadoAntes.setDataDesligamento(DateUtil.incrementaDias(hoje, -1));
-		colaboradorDao.save(colaboradorDesligadoAntes);
-		
-		HistoricoColaborador historicoColaboradorDesligadoAntes = HistoricoColaboradorFactory.getEntity();
-		historicoColaboradorDesligadoAntes.setData(doisMesesAntes.getTime());
-		historicoColaboradorDesligadoAntes.setColaborador(colaboradorDesligadoAntes);
-		historicoColaboradorDesligadoAntes.setAmbiente(ambiente);
-		historicoColaboradorDesligadoAntes.setFuncao(funcao2);
+		Colaborador colaboradorDesligadoAntes = saveColaborador('F', DateUtil.incrementaDias(hoje, -1));
+
+		HistoricoColaborador historicoColaboradorDesligadoAntes = HistoricoColaboradorFactory.getEntity(colaboradorDesligadoAntes, doisMesesAntes.getTime(), null, null, null, funcao2, ambiente, StatusRetornoAC.CONFIRMADO);
 		historicoColaboradorDao.save(historicoColaboradorDesligadoAntes);
 		
 		assertEquals("colaborador1 e colaboradorDesligadoDepois", 2, ambienteDao.getQtdColaboradorByAmbiente(ambiente.getId(), hoje, Sexo.FEMININO, funcao2.getId()));
+		assertEquals("colaborador1, colaborador3 e colaboradorDesligadoDepois", 3, ambienteDao.getQtdColaboradorByAmbiente(ambiente.getId(), hoje, Sexo.FEMININO, null));
+	}
+
+	private Colaborador saveColaborador(char sexo, Date dataDeslisgamento) {
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.getPessoal().setSexo(sexo);
+		colaborador.setDataDesligamento(dataDeslisgamento);
+		colaboradorDao.save(colaborador);
+		return colaborador;
 	}
 	
-	public void testDeleteByEstabelecimento() {
+	
+	
+	@Test
+	public void testDeleteAmbienteSemHistorico() {
 		
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
-		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
-		estabelecimento.setEmpresa(empresa);
-		estabelecimentoDao.save(estabelecimento);
-		
-		Ambiente ambiente = AmbienteFactory.getEntity();
-		ambiente.setEstabelecimento(estabelecimento);
+		Ambiente ambiente = new Ambiente("nome", empresa);
 		ambienteDao.save(ambiente);
 		
 		Exception exception = null;
 		try {
-			ambienteDao.deleteByEstabelecimento(new Long[] {estabelecimento.getId()});
+			ambienteDao.deleteAmbienteSemHistorico();
 		} catch (Exception e) {
 			exception = e;
 		}
@@ -347,6 +505,7 @@ public class AmbienteDaoHibernateTest extends GenericDaoHibernateTest<Ambiente>
 		assertNull(exception);
 	}
 	
+	@Test
 	public void testFindAllByEmpresa() {
 		
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -356,13 +515,13 @@ public class AmbienteDaoHibernateTest extends GenericDaoHibernateTest<Ambiente>
 		estabelecimento.setEmpresa(empresa);
 		estabelecimentoDao.save(estabelecimento);
 		
-		Ambiente ambiente = AmbienteFactory.getEntity("Ambiente 1", empresa, estabelecimento);
+		Ambiente ambiente = AmbienteFactory.getEntity("Ambiente 1", empresa);
 		ambienteDao.save(ambiente);
 		
 		HistoricoAmbiente historicoAmbiente1 = HistoricoAmbienteFactory.getEntity("Descrição Ambiente 1", ambiente, DateUtil.criarDataMesAno(1, 1, 2011),"tempoExposicao Ambiente 1");
 		historicoAmbienteDao.save(historicoAmbiente1);
 		
-		Ambiente ambiente2 = AmbienteFactory.getEntity("Ambiente 2", empresa, estabelecimento);
+		Ambiente ambiente2 = AmbienteFactory.getEntity("Ambiente 2", empresa);
 		ambienteDao.save(ambiente2);
 		
 		HistoricoAmbiente historicoAmbiente2 = HistoricoAmbienteFactory.getEntity("Descrição Ambiente 2 Fora",ambiente2,DateUtil.criarDataMesAno(1, 1, 2015),"tempoExposicao Ambiente 2 Fora");
@@ -379,51 +538,140 @@ public class AmbienteDaoHibernateTest extends GenericDaoHibernateTest<Ambiente>
 		assertEquals("tempoExposicao Ambiente 2", ((Ambiente) ambientes.toArray()[1]).getHistoricoAtual().getTempoExposicao());
 	}
 	
-	public GenericDao<Ambiente> getGenericDao()
-	{
-		return ambienteDao;
-	}
+	@Test
+	public void testAtualizaDadosParaUltimoHistorico(){
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimento.setEmpresa(empresa);
+		estabelecimentoDao.save(estabelecimento);
+		
+		Estabelecimento estabelecimento2 = EstabelecimentoFactory.getEntity();
+		estabelecimento2.setEmpresa(empresa);
+		estabelecimentoDao.save(estabelecimento2);
+		
+		Ambiente ambiente = AmbienteFactory.getEntity("Ambiente 1", empresa);
+		ambienteDao.save(ambiente);
+		
+		HistoricoAmbiente historicoAmbiente1 = HistoricoAmbienteFactory.getEntity(ambiente.getNome(), estabelecimento, "Descrição Ambiente 1", ambiente, DateUtil.criarDataMesAno(1, 1, 2011),"tempoExposicao Ambiente 1");
+		historicoAmbienteDao.save(historicoAmbiente1);
+		
+		HistoricoAmbiente historicoAmbiente2 = HistoricoAmbienteFactory.getEntity("Ambiente modificado", estabelecimento2, "Descrição Ambiente 1", ambiente, DateUtil.criarDataMesAno(1, 1, 2012),"tempoExposicao Ambiente 1");
+		historicoAmbienteDao.save(historicoAmbiente2);
+		
+		ambienteDao.atualizaDadosParaUltimoHistorico(ambiente.getId());
+		Ambiente ambienteDoBanco = ambienteDao.findByIdProjection(ambiente.getId());
+		
+		assertEquals("Ambiente modificado", ambienteDoBanco.getNome());
+	} 
 
-	public void setAmbienteDao(AmbienteDao ambienteDao)
-	{
-		this.ambienteDao = ambienteDao;
-	}
+	@Test
+	public void testFindAmbientesDeEstabelecimentosDoProprioEmpregador(){
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Estabelecimento estabelecimento = estabelecimentoDao.save(EstabelecimentoFactory.getEntity("Estalecimento 1", empresa));
+		Estabelecimento estabelecimento2 = estabelecimentoDao.save(EstabelecimentoFactory.getEntity("Estalecimento 2", empresa));
+		
+		Ambiente ambienteEstabelecimento1 = ambienteDao.save(AmbienteFactory.getEntity("Ambiente do estabelecimento 1", empresa));
+		Ambiente ambienteEstabelecimento2 = ambienteDao.save(AmbienteFactory.getEntity("Ambiente do estabelecimento 2", empresa));
+		Ambiente ambienteDeTerceiro = ambienteDao.save(AmbienteFactory.getEntity("Ambiente de terceiros", empresa));
+		
+		HistoricoAmbiente historicoAmbienteDeTerceiro = HistoricoAmbienteFactory.getEntity(ambienteDeTerceiro.getNome(), null, "Descrição Ambiente de terceiros", ambienteDeTerceiro, DateUtil.criarDataMesAno(1, 1, 2011),"tempoExposicao Ambiente 1");
+		historicoAmbienteDeTerceiro.setLocalAmbiente(LocalAmbiente.ESTABELECIMENTO_DE_TERCEIROS.getOpcao());
+		historicoAmbienteDao.save(historicoAmbienteDeTerceiro);
+		
+		HistoricoAmbiente historicoAmbienteEstabelecimento1 = HistoricoAmbienteFactory.getEntity(ambienteEstabelecimento1.getNome(), estabelecimento, "Descrição Ambiente do estabelecimento 1", ambienteEstabelecimento1, DateUtil.criarDataMesAno(1, 1, 2011),"tempoExposicao Amb. estabelecimento 1");
+		historicoAmbienteEstabelecimento1.setLocalAmbiente(LocalAmbiente.ESTABELECIMENTO_DO_PROPRIO_EMPREGADOR.getOpcao());
+		historicoAmbienteDao.save(historicoAmbienteEstabelecimento1);
 
-	public void setEmpresaDao(EmpresaDao empresaDao)
-	{
-		this.empresaDao = empresaDao;
-	}
+		HistoricoAmbiente historicoAmbienteEstabelecimento2 = HistoricoAmbienteFactory.getEntity(ambienteEstabelecimento2.getNome(), estabelecimento2, "Descrição Ambiente do estabelecimento 2", ambienteEstabelecimento1, DateUtil.criarDataMesAno(1, 1, 2011),"tempoExposicao Amb. estabelecimento 2");
+		historicoAmbienteEstabelecimento2.setLocalAmbiente(LocalAmbiente.ESTABELECIMENTO_DO_PROPRIO_EMPREGADOR.getOpcao());
+		historicoAmbienteDao.save(historicoAmbienteEstabelecimento2);
 
-	public void setEstabelecimentoDao(EstabelecimentoDao estabelecimentoDao) {
-		this.estabelecimentoDao = estabelecimentoDao;
+		Collection<Ambiente> ambientes = ambienteDao.findAmbientesPorEstabelecimentoOrAmbientesDeTerceiro(empresa.getId(), estabelecimento.getId(), LocalAmbiente.ESTABELECIMENTO_DO_PROPRIO_EMPREGADOR.getOpcao(), new Date());
+		assertEquals(1, ambientes.size());
+		assertEquals(ambienteEstabelecimento1.getId(), ambientes.iterator().next().getId());
 	}
-
-	public void setHistoricoAmbienteDao(HistoricoAmbienteDao historicoAmbienteDao) {
-		this.historicoAmbienteDao = historicoAmbienteDao;
+	
+	@Test
+	public void testFindAmbienteDeEstabelecimentosDeTerceiros(){
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity("Estalecimento", empresa);
+		estabelecimentoDao.save(estabelecimento);
+		
+		Ambiente ambienteDeTerceiro = AmbienteFactory.getEntity("Ambiente de terceiros", empresa);
+		ambienteDao.save(ambienteDeTerceiro);
+		
+		HistoricoAmbiente historicoAmbiente1 = HistoricoAmbienteFactory.getEntity(ambienteDeTerceiro.getNome(), null, "Descrição Ambiente de terceiros", ambienteDeTerceiro, DateUtil.criarDataMesAno(1, 1, 2011),"tempoExposicao Ambiente 1");
+		historicoAmbiente1.setLocalAmbiente(LocalAmbiente.ESTABELECIMENTO_DE_TERCEIROS.getOpcao());
+		historicoAmbienteDao.save(historicoAmbiente1);
+		
+		Ambiente ambienteDoProprioEmpregador = AmbienteFactory.getEntity("Ambiente do próprio empregador", empresa);
+		ambienteDao.save(ambienteDoProprioEmpregador);
+		
+		HistoricoAmbiente historicoAmbienteDoProprioEmpregador = HistoricoAmbienteFactory.getEntity(ambienteDoProprioEmpregador.getNome(), estabelecimento, "Descrição Ambiente do próprio empregador", ambienteDoProprioEmpregador, DateUtil.criarDataMesAno(1, 1, 2011),"tempoExposicao Ambiente 1");
+		historicoAmbienteDoProprioEmpregador.setLocalAmbiente(LocalAmbiente.ESTABELECIMENTO_DO_PROPRIO_EMPREGADOR.getOpcao());
+		historicoAmbienteDao.save(historicoAmbienteDoProprioEmpregador);
+		
+		Collection<Ambiente> ambientes = ambienteDao.findAmbientesPorEstabelecimentoOrAmbientesDeTerceiro(empresa.getId(), null, LocalAmbiente.ESTABELECIMENTO_DE_TERCEIROS.getOpcao(), new Date());
+		assertEquals(1, ambientes.size());
+		assertEquals(ambienteDeTerceiro.getId(), ambientes.iterator().next().getId());
 	}
+	
+	@Test
+	public void testFindAmbientesPorEstabelecimento() {
+		Empresa empresa = empresaDao.save(EmpresaFactory.getEmpresa());
+		Estabelecimento estabelecimento = estabelecimentoDao.save(EstabelecimentoFactory.getEntity("Estalecimento", empresa));
+		
+		Ambiente ambiente1 = ambienteDao.save(AmbienteFactory.getEntity("Ambiente do empregador", empresa));
+		HistoricoAmbiente historicoAmbiente1 = HistoricoAmbienteFactory.getEntity(DateUtil.criarDataMesAno(1, 1, 2011), ambiente1.getNome(), ambiente1, estabelecimento, "Descrição Ambiente do empregador", LocalAmbiente.ESTABELECIMENTO_DO_PROPRIO_EMPREGADOR.getOpcao());
+		historicoAmbienteDao.save(historicoAmbiente1);
 
-	public void setColaboradorDao(ColaboradorDao colaboradorDao) {
-		this.colaboradorDao = colaboradorDao;
+		Ambiente ambiente2 = ambienteDao.save(AmbienteFactory.getEntity("Ambiente de terceiros", empresa));
+		HistoricoAmbiente historicoAmbiente2 = HistoricoAmbienteFactory.getEntity(DateUtil.criarDataMesAno(1, 1, 2011), ambiente2.getNome(), ambiente2, null, "Descrição Ambiente de terceiros", LocalAmbiente.ESTABELECIMENTO_DE_TERCEIROS.getOpcao());
+		historicoAmbienteDao.save(historicoAmbiente2);
+
+		Collection<Ambiente> ambientes = ambienteDao.findAmbientesPorEstabelecimento(new Long[]{estabelecimento.getId()}, new Date());
+		assertEquals(1, ambientes.size());
+		assertEquals(ambiente1.getId(), ambientes.iterator().next().getId());
 	}
+	
+	@Test
+	public void testFindAmbientesPorEstabelecimentoComAmbienteTentoMudadoDeEstabelecimento() {
+		Empresa empresa = empresaDao.save(EmpresaFactory.getEmpresa());
+		Estabelecimento estabelecimento1 = estabelecimentoDao.save(EstabelecimentoFactory.getEntity("Estalecimento 1", empresa));
+		Estabelecimento estabelecimento2 = estabelecimentoDao.save(EstabelecimentoFactory.getEntity("Estalecimento 2", empresa));
+		
+		Ambiente ambiente1 = ambienteDao.save(AmbienteFactory.getEntity("Ambiente Estalecimento 1", empresa));
+		HistoricoAmbiente historicoAmbiente1 = HistoricoAmbienteFactory.getEntity(DateUtil.criarDataMesAno(1, 1, 2017), ambiente1.getNome(), ambiente1, estabelecimento1, "Descrição Ambiente do empregador", LocalAmbiente.ESTABELECIMENTO_DO_PROPRIO_EMPREGADOR.getOpcao());
+		historicoAmbienteDao.save(historicoAmbiente1);
+		
+		HistoricoAmbiente historicoAmbiente2 = HistoricoAmbienteFactory.getEntity(DateUtil.criarDataMesAno(2, 10, 2017), ambiente1.getNome(), ambiente1, estabelecimento2, "Descrição Ambiente de terceiros", LocalAmbiente.ESTABELECIMENTO_DO_PROPRIO_EMPREGADOR.getOpcao());
+		historicoAmbienteDao.save(historicoAmbiente2);
 
-	public void setHistoricoColaboradorDao(
-			HistoricoColaboradorDao historicoColaboradorDao) {
-		this.historicoColaboradorDao = historicoColaboradorDao;
-	}
-
-	public void setFuncaoDao(FuncaoDao funcaoDao) {
-		this.funcaoDao = funcaoDao;
-	}
-
-	public void setMedicaoRiscoDao(MedicaoRiscoDao medicaoRiscoDao) {
-		this.medicaoRiscoDao = medicaoRiscoDao;
-	}
-
-	public void setRiscoMedicaoRiscoDao(RiscoMedicaoRiscoDao riscoMedicaoRiscoDao) {
-		this.riscoMedicaoRiscoDao = riscoMedicaoRiscoDao;
-	}
-
-	public void setEpcDao(EpcDao epcDao) {
-		this.epcDao = epcDao;
+		Collection<Ambiente> ambientes = ambienteDao.findAmbientesPorEstabelecimento(new Long[]{estabelecimento1.getId()}, DateUtil.criarDataMesAno(1, 10, 2017));
+		assertEquals(1, ambientes.size());
+		assertEquals(ambiente1.getId(), ambientes.iterator().next().getId());
+		
+		ambientes = ambienteDao.findAmbientesPorEstabelecimento(new Long[]{estabelecimento1.getId()}, DateUtil.criarDataMesAno(2, 10, 2017));
+		assertTrue(ambientes.isEmpty());
+		
+		ambientes = ambienteDao.findAmbientesPorEstabelecimento(new Long[]{estabelecimento1.getId()}, DateUtil.criarDataMesAno(1, 1, 2016));
+		assertTrue(ambientes.isEmpty());
+		
+		ambientes = ambienteDao.findAmbientesPorEstabelecimento(new Long[]{estabelecimento2.getId()}, DateUtil.criarDataMesAno(1, 10, 2017));
+		assertTrue(ambientes.isEmpty());
+		
+		ambientes = ambienteDao.findAmbientesPorEstabelecimento(new Long[]{estabelecimento2.getId()}, DateUtil.criarDataMesAno(2, 10, 2017));
+		assertEquals(1, ambientes.size());
+		assertEquals(ambiente1.getId(), ambientes.iterator().next().getId());
+		
+		ambientes = ambienteDao.findAmbientesPorEstabelecimento(new Long[]{estabelecimento2.getId()}, DateUtil.criarDataMesAno(2, 11, 2017));
+		assertEquals(1, ambientes.size());
+		assertEquals(ambiente1.getId(), ambientes.iterator().next().getId());
 	}
 }

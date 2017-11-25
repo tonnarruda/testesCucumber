@@ -1,7 +1,9 @@
 <#assign authz=JspTaglibs["/WEB-INF/tlds/authz.tld"] />
+<#assign frt=JspTaglibs["/WEB-INF/tlds/fortes.tld"] />
 <html>
 <head>
 <@ww.head/>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/moment.min.2.18.1.js?version=${versao}"/>'></script>
 	<#if historicoColaborador?exists && historicoColaborador.id?exists>
 		<title>Editar Situação do Colaborador - ${historicoColaborador.colaborador.nome}</title>
 		<#assign formAction="update.action"/>
@@ -17,6 +19,7 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ReajusteDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js?version=${versao}"/>"></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/HistoricoFuncaoDWR.js?version=${versao}"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>"></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>"></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/indice.js?version=${versao}"/>"></script>
@@ -25,25 +28,31 @@
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/areaOrganizacional.js?version=${versao}"/>"></script>
 	
 	<script type="text/javascript">
-		function populaAmbiente(estabelecimentoId, ambienteId)
+		function populaAmbiente()
 		{
-			if(estabelecimentoId != "null")
+			if(moment($("#data").val(),'DD/MM/YYYY',true).locale('pt-BR').isValid())
+ 				var data = $("#data").val();
+ 			else
+ 				var data = $.datepicker.formatDate('dd/mm/yy', new Date());
+		
+			var estabelecimentoId = $("#estabelecimento").val();
+			if(estabelecimentoId != "null" && estabelecimentoId > 0)
 			{
 				DWRUtil.useLoadingMessage('Carregando...');
-				AmbienteDWR.getAmbienteByEstabelecimento(function(data){createListAmbiente(data, ambienteId);
-															}, estabelecimentoId, ambienteId);
+				AmbienteDWR.getAmbienteByEstabelecimentoAndAmbientesDeTerceiros(${empresaSistema.id}, estabelecimentoId, $("#estabelecimento option:selected").text(), data, createListAmbiente);
+			}
+			else{
+				$('#ambiente').html("");
+				$('#ambiente').append("<option value='0'>Nenhum</option>");
 			}
 		}
-
-		function createListAmbiente(data, ambId)
+		
+		function createListAmbiente(data)
 		{
 			DWRUtil.removeAllOptions("ambiente");
-			DWRUtil.addOptions("ambiente", data);
-
-			if(ambId != null)
-				document.getElementById('ambiente').value = ambId;
+			addOpGroupByMap('ambiente', data, 'id', 'nome', 'Selecione...');
 		}
-
+		
 		var tipoSalario;
 		var  faixaSalarialId;
 		var indiceId;
@@ -157,8 +166,45 @@
 					$("#motivo option[value='C']").css("background-color", "#DEDEDE");
 					$("#motivo").val('P');			
 				}
+				
+				$('#ambiente').val("");
+				$('#funcao').val("");
 			}
-		</#if>			
+		</#if>	
+		
+		function verificaHistoricoAmbiente(){
+			if(moment($("#data").val(),'DD/MM/YYYY',true).locale('pt-BR').isValid() && $('#estabelecimento').val() && $('#ambiente').val()){
+				DWRUtil.useLoadingMessage('Carregando...');
+				AmbienteDWR.existeHistoricoAmbienteByData($('#estabelecimento').val(), $('#ambiente').val(),  $('#data').val(), montaAlertaHistoricoAmbiente);
+			}
+		}
+
+		function montaAlertaHistoricoAmbiente(possuiHistorico)
+		{
+			if(!possuiHistorico){
+    			var elemento = document.getElementById('ambiente');
+		    	var nomeAmbiente = elemento.options[elemento.selectedIndex].text;
+		    	jAlert("Cadastre um histórico para o ambiente <strong>" + nomeAmbiente + "</strong> com data menor ou igual à <strong>" + $("#data").val() + "</strong>")
+				$('#ambiente').val("");
+			}
+		}
+		
+		function verificaHistoricoFuncao(){
+			if(moment($("#data").val(),'DD/MM/YYYY',true).locale('pt-BR').isValid() && $('#funcao').val()){
+				DWRUtil.useLoadingMessage('Carregando...');
+				HistoricoFuncaoDWR.existeHistoricoAmbienteByData($('#funcao').val(), $('#data').val(),montaAlertaHistoricoFuncao);
+			}
+		}
+		
+		function montaAlertaHistoricoFuncao(possuiHistorico)
+		{
+			if(!possuiHistorico){
+    			var elemento = document.getElementById('funcao');
+		    	var nomeFuncao = elemento.options[elemento.selectedIndex].text;
+		    	jAlert("Cadastre um histórico para a função <strong>" + nomeFuncao + "</strong> com data menor ou igual à <strong>" + $("#data").val() + "</strong>")
+				$('#funcao').val("");
+			}
+		}
 	</script>
 
 	<#if folhaProcessada || disabledCamposIntegrados>
@@ -175,25 +221,26 @@
 	<@ww.form name="form" action="${formAction}" onsubmit="enviaForm();"  validate="true" method="POST">
 		
 		<@ww.hidden name="disabledCamposIntegrados"/>
+
+		<#assign funcaoEstabelecimento="populaAmbiente();"/>
+		<@authz.authorize ifNotGranted="ROLE_COMPROU_SESMT">
+			<#assign funcaoEstabelecimento=""/>
+		</@authz.authorize>
 		
 		<#if historicoColaborador?exists && historicoColaborador.id?exists>
 			<@ww.hidden name="historicoColaborador.data" id="data" value="${historicoColaborador.data}"/>
 		<#else>
-			<@ww.datepicker label="Data" id="data" name="historicoColaborador.data" required="true" cssClass="mascaraData" value="${data}" eventOnUpdate="function(){validaDataPrimeiroHist()}"/>
+			<@ww.datepicker label="Data" id="data" name="historicoColaborador.data" required="true" cssClass="mascaraData" value="${data}" eventOnUpdate="function(){validaDataPrimeiroHist();${funcaoEstabelecimento}}"/>
 		</#if>
 
-		<#assign funcaoEstabelecimento="populaAmbiente(this.value);"/>
-		<@authz.authorize ifNotGranted="ROLE_COMPROU_SESMT">
-			<#assign funcaoEstabelecimento=""/>
-		</@authz.authorize>
 		
 		<@ww.select label="Estabelecimento" name="historicoColaborador.estabelecimento.id" id="estabelecimento" list="estabelecimentos" required="true" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." cssStyle="width: 355px;" onchange="${funcaoEstabelecimento}" disabled="${somenteLeitura}"/>
 		<@ww.select label="Área Organizacional" name="historicoColaborador.areaOrganizacional.id" id="areaOrganizacional" list="areaOrganizacionals" required="true" listKey="id" listValue="descricaoComCodigoAC" headerKey="" headerValue="Selecione..." cssStyle="width: 355px;" onchange="verificaMaternidade(this.value, 'areaOrganizacional');" disabled="${somenteLeitura}"/>
 
 		<@authz.authorize ifAllGranted="ROLE_COMPROU_SESMT">
 			<@ww.select label="Cargo/Faixa" name="historicoColaborador.faixaSalarial.id" id="faixa" list="faixaSalarials" listKey="id" listValue="descricao" required="true" headerKey="" headerValue="Selecione..." cssStyle="width: 355px;" disabled="${somenteLeitura}"/>
-			<@ww.select label="Ambiente" name="historicoColaborador.ambiente.id" id="ambiente" required="${obrigarAmbienteFuncao?string}" list="ambientes" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." cssStyle="width: 355px;"/>
-			<@ww.select label="Função" name="historicoColaborador.funcao.id" id="funcao" required="${obrigarAmbienteFuncao?string}" list="funcaos" listKey="id" listValue="nome" headerValue="Selecione..." headerKey="" cssStyle="width: 355px;"/>
+			<@frt.selectOpGroup id="ambiente" label="Ambiente" name="historicoColaborador.ambiente.id" map="ambientes" optionValue="id" optionText="nome" cssStyle="width: 355px;" required="${obrigarAmbienteFuncao?string}" onchange="verificaHistoricoAmbiente();"/>
+			<@ww.select label="Função" name="historicoColaborador.funcao.id" id="funcao" required="${obrigarAmbienteFuncao?string}" list="funcaos" listKey="id" listValue="nome" headerValue="Selecione..." headerKey="" cssStyle="width: 355px;" onchange="verificaHistoricoFuncao();"/>
 		</@authz.authorize>
 		<@authz.authorize ifNotGranted="ROLE_COMPROU_SESMT">
 			<@ww.select label="Cargo/Faixa" name="historicoColaborador.faixaSalarial.id" id="faixa" list="faixaSalarials" listKey="id" listValue="descricao" required="true" headerKey="" headerValue="Selecione..." onchange="calculaSalario();" cssStyle="width: 355px;" disabled="${somenteLeitura}"/>

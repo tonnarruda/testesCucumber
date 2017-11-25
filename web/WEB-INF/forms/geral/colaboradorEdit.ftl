@@ -39,6 +39,7 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/BairroDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AmbienteDWR.js?version=${versao}"/>'></script>
 	<script type="text/javascript" src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/HistoricoFuncaoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	<#-- <script type="text/javascript" src="jsr_class.js"></script> -->
@@ -364,23 +365,31 @@
 			</#if>
 		}
 		
-		function populaAmbiente(estabelecimentoId, ambienteId)
+		function populaAmbiente()
 		{
-			if(estabelecimentoId != "null")
+			if(moment($("#data").val(),'DD/MM/YYYY',true).locale('pt-BR').isValid())
+ 				var data = $("#data").val();
+ 			else
+ 				var data = $.datepicker.formatDate('dd/mm/yy', new Date());
+		
+			var estabelecimentoId = $("#estabelecimento").val();
+			if(estabelecimentoId != "null" && estabelecimentoId > 0)
 			{
 				DWRUtil.useLoadingMessage('Carregando...');
-				AmbienteDWR.getAmbienteByEstabelecimento(function(data){createListAmbiente(data, ambienteId);
-															}, estabelecimentoId, ambienteId);
+				AmbienteDWR.getAmbienteByEstabelecimentoAndAmbientesDeTerceiros(${empresaSistema.id}, estabelecimentoId, $("#estabelecimento option:selected").text(), data, createListAmbiente);
+			}
+			else{
+				$('#ambiente').html("");
+				$('#ambiente').append("<option value='0'>Nenhum</option>");
 			}
 		}
 		
 		function createListAmbiente(data)
 		{
 			DWRUtil.removeAllOptions("ambiente");
-			DWRUtil.addOptions("ambiente", data);
-			orderSelectByNome("ambiente");
+			addOpGroupByMap('ambiente', data, 'id', 'nome', 'Selecione...');
 		}
-		
+
 		function orderSelectByNome(id) {
 			var options = $('select#'+id+' option');
 			var arr = options.map(function(_, o) { return { t: $(o).text(), v: o.value }; }).get();
@@ -426,6 +435,8 @@
 		function sugerirDataHistorico()
 		{
 			$('#dt_hist, #dt_hist_hidden').val($('#dt_admissao').val());
+			$('#ambiente').val("");
+			$('#funcao').val("");
 		}
 
 		function verificaCpf(data)
@@ -701,7 +712,48 @@
 				$('.campo-integrado-select').attr('disabled', 'disabled');
 			</#if>
 		}
+		
+		function verificaHistoricoAmbiente(){
+			if(moment($("#dt_admissao").val(),'DD/MM/YYYY',true).locale('pt-BR').isValid() && $('#estabelecimento').val() && $('#ambiente').val()){
+				DWRUtil.useLoadingMessage('Carregando...');
+				AmbienteDWR.existeHistoricoAmbienteByData($('#estabelecimento').val(), $('#ambiente').val(),  $('#dt_admissao').val(), montaAlertaHistoricoAmbiente);
+			}
+		}
+
+		function montaAlertaHistoricoAmbiente(possuiHistorico)
+		{
+			if(!possuiHistorico){
+    			var elemento = document.getElementById('ambiente');
+		    	var nomeAmbiente = elemento.options[elemento.selectedIndex].text;
+		    	jAlert("Cadastre um histórico para o ambiente <strong>" + nomeAmbiente + "</strong> com data menor ou igual à <strong>" + $("#dt_admissao").val() + "</strong>")
+				$('#ambiente').val("");
+			}
+		}
+		
+		function verificaHistoricoFuncao(){
+			if(moment($("#dt_admissao").val(),'DD/MM/YYYY',true).locale('pt-BR').isValid() && $('#funcao').val()){
+				DWRUtil.useLoadingMessage('Carregando...');
+				HistoricoFuncaoDWR.existeHistoricoAmbienteByData($('#funcao').val(), $('#dt_admissao').val(),montaAlertaHistoricoFuncao);
+			}
+		}
+		
+		function montaAlertaHistoricoFuncao(possuiHistorico)
+		{
+			if(!possuiHistorico){
+    			var elemento = document.getElementById('funcao');
+		    	var nomeFuncao = elemento.options[elemento.selectedIndex].text;
+		    	jAlert("Cadastre um histórico para a função <strong>" + nomeFuncao + "</strong> com data menor ou igual à <strong>" + $("#dt_admissao").val() + "</strong>")
+				$('#funcao').val("");
+			}
+		}
+		
 	</script>
+
+<#assign populaAmbiente="populaAmbiente();"/>
+<@authz.authorize ifNotGranted="ROLE_COMPROU_SESMT">
+	<#assign populaAmbiente=""/>
+</@authz.authorize>
+
 </head>
 <body>
 	<@ww.actionerror />
@@ -899,28 +951,21 @@
 						<@ww.textfield label="Data" name="historicoColaborador.data" value="${dataHist}" id="dt_hist" cssClass="mascaraData" cssStyle="background:#F6F6F6;" disabled="true"/>
 						<@ww.hidden  id="dt_hist_hidden" name="historicoColaborador.data" value="${dataHist}" />
 
-						<#assign funcaoEstabelecimento="populaAmbiente(this.value,null);"/>
-						<@authz.authorize ifNotGranted="ROLE_COMPROU_SESMT">
-							<#assign funcaoEstabelecimento=""/>
-						</@authz.authorize>
-
-						<@ww.select label="Estabelecimento" name="historicoColaborador.estabelecimento.id" id="estabelecimento" list="estabelecimentos" required="true" listKey="id" listValue="nome" headerKey="" disabled= "${somenteLeitura}" headerValue="Selecione..." cssStyle="width: 355px;" onchange="${funcaoEstabelecimento}"/>
+						<@ww.select label="Estabelecimento" name="historicoColaborador.estabelecimento.id" id="estabelecimento" list="estabelecimentos" required="true" listKey="id" listValue="nome" headerKey="" disabled= "${somenteLeitura}" headerValue="Selecione..." cssStyle="width: 355px;" onchange="${populaAmbiente}"/>
 						<@ww.select label="Área Organizacional" name="historicoColaborador.areaOrganizacional.id" id="areaOrganizacional" list="areaOrganizacionals" required="true" listKey="id" listValue="descricaoComCodigoAC" headerKey="" disabled= "${somenteLeitura}" headerValue="Selecione..." cssStyle="width: 355px;" onchange="verificaMaternidade(this.value, 'areaOrganizacional');"/>
+						<@ww.select label="Cargo/Faixa" name="historicoColaborador.faixaSalarial.id" id="faixa" list="faixas" listKey="id" listValue="descricao" required="true" headerKey="" headerValue="Selecione..." onchange="calculaSalario();" disabled= "${somenteLeitura}" cssStyle="width: 355px;"/>
 						
 						<@authz.authorize ifAllGranted="ROLE_COMPROU_SESMT">
-						
-							<label for="ambiente">Ambiente:</label><#if obrigarAmbienteFuncao>*</#if> <img id="ambienteTooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" /><br>
-							<@ww.select name="historicoColaborador.ambiente.id" theme="simple" id="ambiente" list="ambientes" listKey="id" listValue="nome" headerKey="" headerValue="Nenhum" cssStyle="width: 355px;" disabled="${somenteLeitura}"/>
 							
-							<@ww.select label="Cargo/Faixa" name="historicoColaborador.faixaSalarial.id" id="faixa" list="faixas" listKey="id" listValue="descricao" required="true" headerKey="" headerValue="Selecione..." onchange="calculaSalario();" disabled= "${somenteLeitura}" cssStyle="width: 355px;"/>
-							
-							<label for="funcao">Função:</label><#if obrigarAmbienteFuncao>*</#if> <img id="funcaoTooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" /><br>
-							<@ww.select name="historicoColaborador.funcao.id" id="funcao" theme="simple" list="funcoes" listKey="id" listValue="nome" headerKey="" headerValue="Nenhuma" disabled= "${somenteLeitura}" cssStyle="width: 355px;" disabled="${somenteLeitura}"/>
-						
-						</@authz.authorize>
-						
-						<@authz.authorize ifNotGranted="ROLE_COMPROU_SESMT">
-							<@ww.select label="Cargo/Faixa" name="historicoColaborador.faixaSalarial.id" id="faixa" list="faixas" listKey="id" listValue="descricao" required="true" headerKey="" headerValue="Selecione..." onchange="calculaSalario();" disabled= "${somenteLeitura}" cssStyle="width: 355px;"/>
+							<@frt.selectOpGroup id="ambiente" label="Ambiente" name="historicoColaborador.ambiente.id" map="ambientes" optionValue="id" optionText="nome" cssStyle="width: 355px;" required="${obrigarAmbienteFuncao?string}" onchange="verificaHistoricoAmbiente();" disabled="${somenteLeitura}"/>
+							<li id="wwgrp_funcao" class="wwgrp">    
+								<div id="wwlbl_funcao" class="wwlbl">
+									<label for="funcao">Função:</label><#if obrigarAmbienteFuncao>*</#if> <img id="funcaoTooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-bottom: -2px;"/>
+								</div>		
+								<div id="wwctrl_funcao" class="wwctrl">
+									<@ww.select name="historicoColaborador.funcao.id" id="funcao" theme="simple" list="funcoes" listKey="id" listValue="nome" headerKey="" headerValue="Nenhuma" cssStyle="width: 355px;" onchange="verificaHistoricoFuncao();" disabled="${somenteLeitura}"/>
+								</div>
+							</li>
 						</@authz.authorize>
 						
 						<@ww.select label="Exposição a Agentes Nocivos (Código GFIP)" name="historicoColaborador.gfip" id="gfip" list="codigosGFIP" headerKey="" headerValue="Selecione..." disabled= "${somenteLeitura}" cssStyle="width: 355px;"/>

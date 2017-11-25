@@ -4,14 +4,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.dao.sesmt.AmbienteDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
-import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.dicionario.LocalAmbiente;
 import com.fortes.rh.model.dicionario.Sexo;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
@@ -47,24 +48,18 @@ public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDa
 	private boolean exibirPpra; 
 	private boolean exibirLtcat;
 	
-	private Collection<Ambiente> getAmbientes(String[] ambienteCheck, Date data, Long estabelecimentoId) 
-	{
-		Collection<Long> ambienteIds = LongUtil.arrayStringToCollectionLong(ambienteCheck);
-		return getDao().findByIds(ambienteIds, data, estabelecimentoId);
-	}
-	
-	public Collection<PpraLtcatRelatorio> montaRelatorioPpraLtcat(Empresa empresa, Long estabelecimentoId, Date data, String[] ambienteCheck, boolean gerarPpra, boolean gerarLtcat, boolean exibirComposicaoSesmt) throws ColecaoVaziaException 
+	public Collection<PpraLtcatRelatorio> montaRelatorioPpraLtcat(Empresa empresa, Estabelecimento estabelecimento, Integer localAmbiente, Date data, String[] ambienteCheck, boolean gerarPpra, boolean gerarLtcat, boolean exibirComposicaoSesmt) throws ColecaoVaziaException 
 	{
 		this.exibirPpra = gerarPpra;
 		this.exibirLtcat = gerarLtcat;
 		ComposicaoSesmt composicaoSesmt = null;
-		
-		Estabelecimento estabelecimento = estabelecimentoManager.findById(estabelecimentoId);
-		boolean isControlaRiscoPorAmbiente = empresaManager.isControlaRiscoPorAmbiente(empresa.getId());
-		
 		relatorios = new ArrayList<PpraLtcatRelatorio>();
+		Collection<Ambiente> ambientes = getDao().findByIds(empresa.getId(), LongUtil.arrayStringToCollectionLong(ambienteCheck), data, estabelecimento.getId(), localAmbiente);
 		
-		Collection<Ambiente> ambientes = getAmbientes(ambienteCheck,data, estabelecimentoId);
+		if(LocalAmbiente.ESTABELECIMENTO_DO_PROPRIO_EMPREGADOR.getOpcao().equals(localAmbiente)){
+			estabelecimento = estabelecimentoManager.findById(estabelecimento.getId());
+		}
+		boolean isControlaRiscoPorAmbiente = empresaManager.isControlaRiscoPorAmbiente(empresa.getId());
 		
 		if (ambientes.isEmpty())
 			throw new ColecaoVaziaException("Não existem dados para o filtro informado.");
@@ -112,7 +107,7 @@ public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDa
 		Ppra ppra = new Ppra();
 		Ltcat ltcat = new Ltcat();
 		
-		PpraLtcatCabecalho cabecalho = new PpraLtcatCabecalho(empresa, estabelecimento, ambiente.getNome(), ambiente.getHistoricoAtual().getDescricao());
+		PpraLtcatCabecalho cabecalho = new PpraLtcatCabecalho(empresa, estabelecimento, ambiente);
 		PpraLtcatRelatorio ppraLtcatRelatorio = new PpraLtcatRelatorio(cabecalho, ppra, ltcat, exibirPpra, exibirLtcat);
 		
 		populaRelatorioPor(ambiente, data, composicaoSesmt, ppraLtcatRelatorio);
@@ -137,7 +132,7 @@ public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDa
 		Ppra ppra = new Ppra();
 		Ltcat ltcat = new Ltcat();
 		
-		PpraLtcatCabecalho cabecalho = new PpraLtcatCabecalho(empresa, estabelecimento, ambiente.getNome(), ambiente.getHistoricoAtual().getDescricao());
+		PpraLtcatCabecalho cabecalho = new PpraLtcatCabecalho(empresa, estabelecimento, ambiente);
 		PpraLtcatRelatorio ppraLtcatRelatorio = new PpraLtcatRelatorio(cabecalho, ppra, ltcat, exibirPpra, exibirLtcat);
 		
 		populaRelatorioPor(ambiente, data, composicaoSesmt, ppraLtcatRelatorio);
@@ -159,9 +154,9 @@ public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDa
 		return ppraLtcatRelatorio;
 	}
 	
-	public Integer getCount(Long empresaId, Ambiente ambiente)
+	public Integer getCount(Long empresaId, HistoricoAmbiente historicoAmbiente)
 	{
-		return getDao().getCount(empresaId, ambiente);
+		return getDao().getCount(empresaId, historicoAmbiente);
 	}
 
 	public Collection<Ambiente> findAmbientes(Long empresaId)
@@ -169,29 +164,36 @@ public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDa
 		return getDao().findAmbientes(0, 0, empresaId, null);
 	}
 
-	public Collection<Ambiente> findAmbientes(int page, int pagingSize, Long empresaId, Ambiente ambiente)
+	public Collection<Ambiente> findAmbientes(int page, int pagingSize, Long empresaId, HistoricoAmbiente historicoAmbiente) throws ColecaoVaziaException
 	{
-		return getDao().findAmbientes(page, pagingSize, empresaId, ambiente);
+		Collection<Ambiente> ambientes = getDao().findAmbientes(page, pagingSize, empresaId, historicoAmbiente);
+		if(ambientes.isEmpty())
+			throw new ColecaoVaziaException();
+		
+		return ambientes;
 	}
 
-	public void saveAmbienteHistorico(Ambiente ambiente, HistoricoAmbiente historicoAmbiente, String[] riscoChecks, Collection<RiscoAmbiente> riscosAmbientes, String[] epcCheck) throws Exception
+	public void saveAmbienteHistorico(Empresa empresa, HistoricoAmbiente historicoAmbiente, String[] riscoChecks, Collection<RiscoAmbiente> riscosAmbientes, String[] epcCheck) throws Exception
 	{
+		Ambiente ambiente = new Ambiente(historicoAmbiente.getNomeAmbiente(), empresa);
 		save(ambiente);
 
 		historicoAmbiente.setAmbiente(ambiente);
-		historicoAmbienteManager.save(historicoAmbiente, riscoChecks, riscosAmbientes, epcCheck);
+		historicoAmbienteManager.saveOrUpdate(historicoAmbiente, riscoChecks, riscosAmbientes, epcCheck);
 	}
 	
-	public void removeCascade(Long id) throws Exception 
+	public void removeCascade(Long ambienteId) throws Exception 
 	{
-		//O hibernate gerencia a remoção dos relacionamentos.			
-		Ambiente ambiente = findById(id);
-		getDao().remove(ambiente);
+		historicoAmbienteManager.removeByAmbiente(ambienteId);
+		getDao().remove(ambienteId);
 	}
 	
-	public Collection<Ambiente> findByEstabelecimento(Long... estabelecimentoIds)
+	public Collection<Ambiente> findAmbientesPorEstabelecimento(Long[] estabelecimentoIds, Date data)
 	{
-		return getDao().findByEstabelecimento(estabelecimentoIds);
+		Collection<Ambiente> ambientes = new ArrayList<Ambiente>();
+		if(estabelecimentoIds != null && estabelecimentoIds.length > 0)
+			ambientes = getDao().findAmbientesPorEstabelecimento(estabelecimentoIds, data);
+		return ambientes;
 	}
 
 	public Collection<Ambiente> findByEmpresa(Long empresaId)
@@ -199,34 +201,20 @@ public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDa
 		return find(new String[]{"empresa.id"}, new Object[]{empresaId}, new String[]{"nome"});
 	}
 
-	public Collection<CheckBox> getAmbientes(Empresa empresa) throws Exception
-	{
-		return CheckListBoxUtil.populaCheckListBox( find(new String[]{"empresa.id"},new Object[]{empresa.getId()}, new String[]{"nome"}), "getId", "getNome", null);
-	}
-
-	public Collection<Long> getIdsAmbientes(Collection<HistoricoColaborador> historicosColaborador)
-	{
-		Collection<Long> idAmbientes = new HashSet<Long>();
-
-		for (HistoricoColaborador historicoColaborador : historicosColaborador)
-		{
-			if(historicoColaborador.getAmbiente()!=null && !idAmbientes.contains(historicoColaborador.getAmbiente().getId()))
-				idAmbientes.add(historicoColaborador.getAmbiente().getId());
-		}
-
-		return idAmbientes;
-	}
-
 	public Ambiente findByIdProjection(Long ambienteId)
 	{
 		return getDao().findByIdProjection(ambienteId);
 	}
 	
-	public Collection<CheckBox> populaCheckBox(Long estabelecimentoId) 
+	public Collection<CheckBox> populaCheckBox(Long empresaId, Long estabelecimentoId, Integer localAmbiente, Date data) 
 	{
 		try
 		{
-			Collection<Ambiente> ambientes = getDao().findByEstabelecimento(estabelecimentoId);
+			Collection<Ambiente> ambientes = new ArrayList<Ambiente>();
+			
+			if(estabelecimentoId != null || localAmbiente.equals(LocalAmbiente.ESTABELECIMENTO_DE_TERCEIROS.getOpcao()))
+				ambientes = findAmbientesPorEstabelecimentoOrAmbientesDeTerceiro(empresaId, estabelecimentoId, localAmbiente, data);
+			
 			return CheckListBoxUtil.populaCheckListBox(ambientes, "getId", "getNome", null);
 		}
 		catch (Exception e)
@@ -240,7 +228,7 @@ public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDa
 	{
 		try
 		{
-			Collection<Ambiente> ambientes = getDao().findByEstabelecimento(estabelecimentoIds);
+			Collection<Ambiente> ambientes = this.findAmbientesPorEstabelecimento(estabelecimentoIds, new Date());
 			return CheckListBoxUtil.populaCheckListBox(ambientes, "getId", "getNomeComEstabelecimento", null);
 		}
 		catch (Exception e)
@@ -248,24 +236,6 @@ public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDa
 			e.printStackTrace();
 			return new ArrayList<CheckBox>();
 		}
-	}
-
-	public Collection<CheckBox> populaCheckBox(Long... estabelecimentoId) 
-	{
-		try
-		{
-			Collection<Ambiente> ambientes = getDao().findByEstabelecimento(estabelecimentoId);
-			return CheckListBoxUtil.populaCheckListBox(ambientes, "getId", "getNome", null);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-			return new ArrayList<CheckBox>();
-		}
-	}
-
-	public void deleteByEstabelecimento(Long[] estabelecimentoIds) throws Exception {
-		getDao().deleteByEstabelecimento(estabelecimentoIds);
 	}
 
 	public void sincronizar(Long empresaOrigemId, Long empresaDestinoId) {
@@ -276,7 +246,6 @@ public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDa
 			for (Ambiente ambienteOrigin : ambientesOrigin){
 				Ambiente ambiente = new Ambiente();
 				ambiente.setNome(ambienteOrigin.getNome());
-				ambiente.setEstabelecimento(estabelecimento);
 				ambiente.setEmpresa(new Empresa(empresaDestinoId));
 				getDao().save(ambiente);
 
@@ -284,10 +253,39 @@ public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDa
 					HistoricoAmbiente historicoAmbiente = new HistoricoAmbiente(null, ambienteOrigin.getHistoricoAtual().getData(), ambiente);
 					historicoAmbiente.setTempoExposicao(ambienteOrigin.getHistoricoAtual().getTempoExposicao());
 					historicoAmbiente.setDescricao(ambienteOrigin.getHistoricoAtual().getDescricao());
+					historicoAmbiente.setNomeAmbiente(ambienteOrigin.getHistoricoAtual().getNomeAmbiente());
+					historicoAmbiente.setEstabelecimento(estabelecimento);
 					historicoAmbienteManager.save(historicoAmbiente);
 				}
 			}
 		}
+	}
+	
+	public void atualizaDadosParaUltimoHistorico(Long ambienteId) {
+		getDao().atualizaDadosParaUltimoHistorico(ambienteId);
+	}
+	
+	public void deleteAmbienteSemHistorico() throws Exception {
+		getDao().deleteAmbienteSemHistorico();
+	}
+	
+	public Collection<Ambiente> findAmbientesPorEstabelecimentoOrAmbientesDeTerceiro(Long empresaId, Long estabelecimentoId, Integer localAmbiente, Date data) {
+		return getDao().findAmbientesPorEstabelecimentoOrAmbientesDeTerceiro(empresaId, estabelecimentoId, localAmbiente, data);
+	}
+
+	public Map<String, Collection<Ambiente>> montaMapAmbientes(Long empresaId, Long estabelecimentoId, String estabelecimentoNome, Date data){
+		Map<String, Collection<Ambiente>> ambientes = new LinkedHashMap<String, Collection<Ambiente>>();
+		
+		Collection<Ambiente> ambientesInternos = this.findAmbientesPorEstabelecimentoOrAmbientesDeTerceiro(empresaId, estabelecimentoId, LocalAmbiente.ESTABELECIMENTO_DO_PROPRIO_EMPREGADOR.getOpcao(), data);
+		Collection<Ambiente> ambientesExternos = this.findAmbientesPorEstabelecimentoOrAmbientesDeTerceiro(empresaId, null, LocalAmbiente.ESTABELECIMENTO_DE_TERCEIROS.getOpcao(), data);
+
+		if(ambientesInternos.size() > 0)
+			ambientes.put("Ambientes do estabelecimento: " + estabelecimentoNome, ambientesInternos);
+		
+		if(ambientesExternos.size() > 0)
+			ambientes.put("Ambientes de estabelecimentos de terceiros", ambientesExternos);
+		
+		return ambientes;
 	}
 	
 	public void setFuncaoManager(FuncaoManager funcaoManager) {

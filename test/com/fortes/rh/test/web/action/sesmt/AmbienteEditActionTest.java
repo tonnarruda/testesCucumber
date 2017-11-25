@@ -1,131 +1,104 @@
 package com.fortes.rh.test.web.action.sesmt;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.*;
+
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
-import mockit.Mockit;
-
-import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
-import org.jmock.core.Constraint;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.business.sesmt.EpcManager;
 import com.fortes.rh.business.sesmt.EpiManager;
-import com.fortes.rh.business.sesmt.HistoricoAmbienteManager;
 import com.fortes.rh.business.sesmt.RiscoAmbienteManager;
 import com.fortes.rh.business.sesmt.RiscoManager;
+import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.dicionario.Sexo;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Ambiente;
+import com.fortes.rh.model.sesmt.Epc;
+import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 import com.fortes.rh.model.sesmt.RiscoAmbiente;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.cargosalario.AmbienteFactory;
 import com.fortes.rh.test.factory.sesmt.RiscoAmbienteFactory;
-import com.fortes.rh.test.util.mockObjects.MockRelatorioUtil;
-import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
+import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.sesmt.AmbienteEditAction;
 import com.fortes.web.tags.CheckBox;
 
-public class AmbienteEditActionTest extends MockObjectTestCase
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({RelatorioUtil.class, SecurityUtil.class})
+public class AmbienteEditActionTest
 {
 	private AmbienteEditAction action;
-	private Mock manager;
-	private Mock historicoAmbienteManager;
-	private Mock riscoManager;
-	private Mock epcManager;
-	private Mock estabelecimentoManager;
-	private Mock riscoAmbienteManager;
-	private Mock epiManager;
+	private AmbienteManager manager;
+	private RiscoManager riscoManager;
+	private EpcManager epcManager;
+	private EstabelecimentoManager estabelecimentoManager;
+	private RiscoAmbienteManager riscoAmbienteManager;
+	private EpiManager epiManager;
 
-    protected void setUp() throws Exception
+	@Before
+    public void setUp() throws Exception
     {
-        super.setUp();
-        manager = new Mock(AmbienteManager.class);
-        historicoAmbienteManager = new Mock(HistoricoAmbienteManager.class);
-
         action = new AmbienteEditAction();
-        action.setAmbienteManager((AmbienteManager) manager.proxy());
-        action.setHistoricoAmbienteManager((HistoricoAmbienteManager) historicoAmbienteManager.proxy());
+
+        manager = mock(AmbienteManager.class);
+        action.setAmbienteManager(manager);
         
         riscoManager = mock(RiscoManager.class);
-        action.setRiscoManager((RiscoManager) riscoManager.proxy());
+        action.setRiscoManager((RiscoManager) riscoManager);
         
         epcManager = mock(EpcManager.class);
-        action.setEpcManager((EpcManager) epcManager.proxy());
+        action.setEpcManager(epcManager);
         
         estabelecimentoManager = mock(EstabelecimentoManager.class);
-        action.setEstabelecimentoManager((EstabelecimentoManager) estabelecimentoManager.proxy());
+        action.setEstabelecimentoManager(estabelecimentoManager);
         
         riscoAmbienteManager = mock(RiscoAmbienteManager.class);
-        action.setRiscoAmbienteManager((RiscoAmbienteManager) riscoAmbienteManager.proxy());
+        action.setRiscoAmbienteManager(riscoAmbienteManager);
         
         epiManager = mock(EpiManager.class);
-        action.setEpiManager((EpiManager) epiManager.proxy());
+        action.setEpiManager(epiManager);
         
         action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
         
-        Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
-        Mockit.redefineMethods(RelatorioUtil.class, MockRelatorioUtil.class);
+        PowerMockito.mockStatic(SecurityUtil.class);
+        PowerMockito.mockStatic(RelatorioUtil.class);
     }
 
-    protected void tearDown() throws Exception
-    {
-    	Mockit.restoreAllOriginalDefinitions();
-    	manager = null;
-    	historicoAmbienteManager = null;
-        action = null;
-        MockSecurityUtil.verifyRole = false;
-        super.tearDown();
-    }
-
+    @Test
     public void testPrepareInsert() throws Exception
     {
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
     	action.setEmpresaSistema(empresa);
     	
-    	riscoManager.expects(once()).method("findRiscosAmbientesByEmpresa").with(eq(empresa.getId())).will(returnValue(new ArrayList<RiscoAmbiente>()));
-		epcManager.expects(once()).method("findAllSelect");
-		epcManager.expects(once()).method("populaCheckBox");
-		estabelecimentoManager.expects(once()).method("findAllSelect");
-
+    	when(riscoManager.findRiscosAmbientesByEmpresa(eq(empresa.getId()))).thenReturn(new ArrayList<RiscoAmbiente>());
+    	when(epcManager.findAllSelect(eq(empresa.getId()))).thenReturn(new ArrayList<Epc>());
+    	when(epcManager.populaCheckBox(eq(empresa.getId()))).thenReturn(new ArrayList<CheckBox>());
+    	when(estabelecimentoManager.findAllSelect(eq(empresa.getId()))).thenReturn(new ArrayList<Estabelecimento>());
+    	
     	assertEquals(action.prepareInsert(), "success");
     }
 
-    public void testPrepareUpdate() throws Exception
-    {
-    	Ambiente ambiente = new Ambiente();
-		ambiente.setId(1L);
-		ambiente.setEmpresa(action.getEmpresaSistema());
-
-		Collection<HistoricoAmbiente> historicos = new ArrayList<HistoricoAmbiente>();
-		action.setAmbiente(ambiente);
-
-    	manager.expects(once()).method("findByIdProjection").with(eq(ambiente.getId())).will(returnValue(ambiente));
-    	historicoAmbienteManager.expects(once()).method("findToList").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(historicos));
-    	estabelecimentoManager.expects(once()).method("findAllSelect");
-
-    	assertEquals(action.prepareUpdate(), "success");
-    	assertEquals(action.getAmbiente(), ambiente);
-    }
-    
-    public void testPrepareUpdateEmpresaErrada() throws Exception
-    {
-    	Ambiente ambiente = new Ambiente();
-		ambiente.setId(1L);
-    	Empresa outraEmpresa = new Empresa();
-    	outraEmpresa.setId(1234L);
-    	ambiente.setEmpresa(outraEmpresa);
-    	action.setAmbiente(ambiente);
-    	manager.expects(once()).method("findByIdProjection").with(eq(ambiente.getId())).will(returnValue(ambiente));
-    	estabelecimentoManager.expects(once()).method("findAllSelect");
-    	
-    	assertEquals("error", action.prepareUpdate());
-    }
-
+    @Test
     public void testInsert() throws Exception
     {
     	Empresa empresa = EmpresaFactory.getEmpresa();
@@ -146,103 +119,90 @@ public class AmbienteEditActionTest extends MockObjectTestCase
 		action.setRiscosAmbientes(riscosAmbientes);
 		action.setEpcCheck(epcCheck);
 		
-		manager.expects(once()).method("saveAmbienteHistorico").with(new Constraint[]{eq(ambiente), eq(historicoAmbiente), eq(riscoChecks), eq(riscosAmbientes), eq(epcCheck)});
-
     	assertEquals("success", action.insert());
-    	assertEquals(action.getAmbiente().getEmpresa(), action.getEmpresaSistema());
     }
 
-    public void testUpdate() throws Exception
-    {
-    	Ambiente ambiente = new Ambiente();
-    	ambiente.setId(1L);
-    	ambiente.setEmpresa(MockSecurityUtil.getEmpresaSession(null));
-    	action.setAmbiente(ambiente);
-
-    	manager.expects(once()).method("verifyExists").with(ANYTHING,ANYTHING).will(returnValue(true));
-    	manager.expects(once()).method("update").with(eq(ambiente));
-
-    	assertEquals(action.update(), "success");
-    	assertEquals(action.getAmbiente(), ambiente);
-
-    	manager.expects(once()).method("verifyExists").with(ANYTHING,ANYTHING).will(returnValue(false));
-    	assertEquals(action.update(), "error");
-    	assertNotNull(action.getActionErrors());
-    }
-    
+    @Test
     public void testDelete() throws Exception
     {
     	Ambiente ambiente = new Ambiente();
     	ambiente.setId(1L);
     	action.setAmbiente(ambiente);
 
-    	manager.expects(once()).method("removeCascade").with(ANYTHING);
-
     	assertEquals(action.delete(), "success");
     }
 
+    @Test
+    public void testListException() throws Exception
+    {
+		when(manager.getCount(action.getEmpresaSistema().getId(), action.getHistoricoAmbiente())).thenReturn(0);
+		doThrow(new ColecaoVaziaException()).when(manager).findAmbientes(action.getPage(), action.getPagingSize(), action.getEmpresaSistema().getId(), action.getHistoricoAmbiente());;
+		
+	   	assertEquals("success", action.list());
+	   	assertEquals("Não existem dados para o filtro informado.", action.getActionMessages().iterator().next());
+    }
+    
+    @Test
     public void testList() throws Exception
     {
     	Collection<Ambiente> ambientes = new ArrayList<Ambiente>();
 		Ambiente a1 = new Ambiente();
 		a1.setId(1L);
-		a1.setEmpresa(MockSecurityUtil.getEmpresaSession(null));
 		Ambiente a2 = new Ambiente();
 		a2.setId(2L);
-		a2.setEmpresa(MockSecurityUtil.getEmpresaSession(null));
 
 		ambientes.add(a1);
 		ambientes.add(a2);
 
-		manager.expects(once()).method("getCount").with(ANYTHING, ANYTHING).will(returnValue(ambientes.size()));
-    	manager.expects(once()).method("findAmbientes").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(ambientes));
+		when(manager.getCount(action.getEmpresaSistema().getId(), action.getHistoricoAmbiente())).thenReturn(ambientes.size());
+		when(manager.findAmbientes(action.getPage(), action.getPagingSize(), action.getEmpresaSistema().getId(), action.getHistoricoAmbiente())).thenReturn(ambientes);
 
-    	assertEquals("success", action.list());
+		assertEquals("success", action.list());
     	assertEquals(action.getAmbientes(), ambientes);
     }
     
+    @Test
     public void testImprimirLista() throws Exception
     {
     	Collection<Ambiente> ambientes = new ArrayList<Ambiente>();
-    	Ambiente a1 = new Ambiente();
-    	a1.setId(1L);
-    	a1.setEmpresa(MockSecurityUtil.getEmpresaSession(null));
-    	Ambiente a2 = new Ambiente();
-    	a2.setId(2L);
-    	a2.setEmpresa(MockSecurityUtil.getEmpresaSession(null));
+    	Ambiente a1 = AmbienteFactory.getEntity(1L);
+    	Ambiente a2 = AmbienteFactory.getEntity(2L);
     	
     	ambientes.add(a1);
     	ambientes.add(a2);
     	
-    	manager.expects(once()).method("findAmbientes").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(ambientes));
+    	when(manager.findAmbientes(0, 0, action.getEmpresaSistema().getId(), action.getHistoricoAmbiente())).thenReturn(ambientes);
     	
     	assertEquals("success", action.imprimirLista());
     	assertEquals(action.getAmbientes(), ambientes);
     }
 
+    @Test
     public void testImprimirListaErro() throws Exception
     {
     	Collection<Ambiente> ambientes = new ArrayList<Ambiente>();
     	
-    	manager.expects(once()).method("findAmbientes").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(ambientes));
-		manager.expects(once()).method("getCount").with(ANYTHING, ANYTHING).will(returnValue(ambientes.size()));
-    	manager.expects(once()).method("findAmbientes").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(ambientes));
+    	when(manager.findAmbientes(action.getPage(), action.getPagingSize(), action.getEmpresaSistema().getId(), new HistoricoAmbiente())).thenReturn(ambientes);
+    	when(manager.getCount(action.getEmpresaSistema().getId(), new HistoricoAmbiente())).thenReturn(ambientes.size());
     	
     	assertEquals("input", action.imprimirLista());
     	assertEquals(action.getAmbientes(), ambientes);
     }
     
+    @Test
     public void testPrepareRelatorioMapaDeRisco() throws Exception
     {
-    	String[] estabelecimentoCheck = {};
+    	String[] estabelecimentoCheck = {"1"};
     	action.setEstabelecimentoCheck(estabelecimentoCheck);
+    	Collection<CheckBox> ambientesCheckList = new ArrayList<CheckBox>();
     	
-    	estabelecimentoManager.expects(once()).method("populaCheckBox").with(eq(action.getEmpresaSistema().getId()));
-    	manager.expects(once()).method("populaCheckBoxByEstabelecimentos").with(eq(estabelecimentoCheck));
-    	
+    	when(estabelecimentoManager.populaCheckBox(eq(action.getEmpresaSistema().getId()))).thenReturn(ambientesCheckList);
+    	when(manager.populaCheckBoxByEstabelecimentos(eq(LongUtil.arrayStringToArrayLong(estabelecimentoCheck)))).thenReturn(new ArrayList<CheckBox>());
+       	
     	assertEquals("success", action.prepareRelatorioMapaDeRisco());
     }
     
+    @Test
     public void testImprimirRelatorioMapaDeRisco() throws Exception
     {
     	String[] ambientesCheck = {"1","2"};
@@ -251,15 +211,16 @@ public class AmbienteEditActionTest extends MockObjectTestCase
     	Collection<RiscoAmbiente> riscoAmbientes = new ArrayList<RiscoAmbiente>();
     	riscoAmbientes.add(new RiscoAmbiente());
     	
-    	riscoAmbienteManager.expects(atLeastOnce()).method("findByAmbiente").with(ANYTHING).will(returnValue(riscoAmbientes));
-    	manager.expects(atLeastOnce()).method("findByIdProjection").with(ANYTHING);
-    	epiManager.expects(atLeastOnce()).method("findEpisDoAmbiente").with(ANYTHING, ANYTHING);
-    	manager.expects(atLeastOnce()).method("getQtdColaboradorByAmbiente").with(ANYTHING, ANYTHING, eq(Sexo.MASCULINO)).will(returnValue(2));
-    	manager.expects(atLeastOnce()).method("getQtdColaboradorByAmbiente").with(ANYTHING, ANYTHING, eq(Sexo.FEMININO)).will(returnValue(1));
+    	when(riscoAmbienteManager.findByAmbiente(anyLong())).thenReturn(riscoAmbientes);
+    	when(manager.findByIdProjection(anyLong())).thenReturn(new Ambiente());
+    	when(epiManager.findEpisDoAmbiente(anyLong(), any(Date.class))).thenReturn(new ArrayList<Epi>());
+    	when(manager.getQtdColaboradorByAmbiente(anyLong(), any(Date.class), eq(Sexo.MASCULINO))).thenReturn(2);
+    	when(manager.getQtdColaboradorByAmbiente(anyLong(), any(Date.class), eq(Sexo.FEMININO))).thenReturn(1);
     	
     	assertEquals("success", action.imprimirRelatorioMapaDeRisco());
     }
     
+    @Test
     public void testImprimirRelatorioMapaDeRiscoSemRiscoAmbiente() throws Exception
     {
     	CheckBox checkBox = new CheckBox();
@@ -277,13 +238,14 @@ public class AmbienteEditActionTest extends MockObjectTestCase
     	
     	Collection<RiscoAmbiente> riscoAmbientes = new ArrayList<RiscoAmbiente>();
     	
-    	riscoAmbienteManager.expects(once()).method("findByAmbiente").with(ANYTHING).will(returnValue(riscoAmbientes));
-    	estabelecimentoManager.expects(once()).method("populaCheckBox").with(eq(action.getEmpresaSistema().getId()));
-    	manager.expects(once()).method("populaCheckBoxByEstabelecimentos").with(eq(estabelecimentoCheck)).will(returnValue(ambientesCheckList));
-
+    	when(riscoAmbienteManager.findByAmbiente(1L)).thenReturn(riscoAmbientes);
+    	when(estabelecimentoManager.populaCheckBox(eq(action.getEmpresaSistema().getId()))).thenReturn(ambientesCheckList);
+    	when(manager.populaCheckBoxByEstabelecimentos(eq(LongUtil.arrayStringToArrayLong(estabelecimentoCheck)))).thenReturn(new ArrayList<CheckBox>());
+    
     	assertEquals("input", action.imprimirRelatorioMapaDeRisco());
     }
     
+    @Test
     public void testImprimirRelatorioMapaDeRiscoException() throws Exception
     {
     	CheckBox checkBox = new CheckBox();
@@ -301,13 +263,14 @@ public class AmbienteEditActionTest extends MockObjectTestCase
     	
     	Collection<RiscoAmbiente> riscoAmbientes = null;
     	
-    	riscoAmbienteManager.expects(once()).method("findByAmbiente").with(ANYTHING).will(returnValue(riscoAmbientes));
-    	estabelecimentoManager.expects(once()).method("populaCheckBox").with(eq(action.getEmpresaSistema().getId()));
-    	manager.expects(once()).method("populaCheckBoxByEstabelecimentos").with(eq(estabelecimentoCheck)).will(returnValue(ambientesCheckList));
+    	when(riscoAmbienteManager.findByAmbiente(1L)).thenReturn(riscoAmbientes);
+    	when(estabelecimentoManager.populaCheckBox(eq(action.getEmpresaSistema().getId()))).thenReturn(ambientesCheckList);
+    	when(manager.populaCheckBoxByEstabelecimentos(eq(LongUtil.arrayStringToArrayLong(estabelecimentoCheck)))).thenReturn(ambientesCheckList);
     	
     	assertEquals("input", action.imprimirRelatorioMapaDeRisco());
     }
     
+    @Test
     public void testGetSet() throws Exception
     {
     	Ambiente ambiente = new Ambiente();

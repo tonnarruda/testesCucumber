@@ -102,7 +102,6 @@ public class PppEditAction extends MyActionSupportList
 			parametros.put("IMPRIMIR_RECIBO", imprimirRecibo);
 			
 			dataSource = pppRelatorioManager.populaRelatorioPpp(colaborador, getEmpresaSistema(), data, nit, cnae, responsavel, observacoes, respostas, getEmpresaSistema().getId());
-			
 			return SUCCESS;
 		}catch (PppRelatorioException pppRelatorioException){
 			addActionWarning(pppRelatorioException.getMensagemDeInformacao());
@@ -115,7 +114,7 @@ public class PppEditAction extends MyActionSupportList
 			return INPUT;
 		}
 	}
-
+	
 	public Map<String, Object> getParametros()
 	{
 		return parametros;

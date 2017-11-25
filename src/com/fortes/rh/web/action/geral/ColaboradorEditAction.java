@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
@@ -193,7 +194,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	private HistoricoColaborador historicoColaborador;
 	private Collection<Funcao> funcoes;
 	private FuncaoManager funcaoManager;
-	private Collection<Ambiente> ambientes;
+	public Map<String, Collection<Ambiente>> ambientes = new LinkedHashMap<String, Collection<Ambiente>>();
 	private AmbienteManager ambienteManager;
 
 	private IndiceHistoricoManager indiceHistoricoManager;
@@ -338,7 +339,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 				salarioColaborador = historicoColaborador.getSalarioCalculado();
 
 			
-			ambientes = ambienteManager.findByEstabelecimento(historicoColaborador.getEstabelecimento().getId());
+			ambientes = ambienteManager.montaMapAmbientes(colaborador.getEmpresa().getId(), historicoColaborador.getEstabelecimento().getId(), historicoColaborador.getEstabelecimento().getNome(), historicoColaborador.getData());
 			
 			colaborador.setFoto(colaboradorManager.getFoto(colaboradorId));
 			
@@ -661,7 +662,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		historicoColaborador.setFuncao(funcao);
 		
 		if(historicoColaborador.getEstabelecimento() != null && historicoColaborador.getEstabelecimento().getId() != null)
-			ambientes = ambienteManager.findByEstabelecimento(historicoColaborador.getEstabelecimento().getId());
+			ambientes = ambienteManager.montaMapAmbientes(getEmpresaSistema().getId(), historicoColaborador.getEstabelecimento().getId(), historicoColaborador.getEstabelecimento().getNome(), new Date());
 		
 		return historicoColaborador;
 	}
@@ -1707,16 +1708,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		this.faixaSalarialManager = faixaSalarialManager;
 	}
 
-	public Collection<Ambiente> getAmbientes()
-	{
-		return ambientes;
-	}
-
-	public void setAmbientes(Collection<Ambiente> ambientes)
-	{
-		this.ambientes = ambientes;
-	}
-
 	public void setAmbienteManager(AmbienteManager ambienteManager)
 	{
 		this.ambienteManager = ambienteManager;
@@ -2182,5 +2173,13 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 	public void setPodeRetificar(boolean podeRetificar) {
 		this.podeRetificar = podeRetificar;
+	}
+
+	public Map<String, Collection<Ambiente>> getAmbientes() {
+		return ambientes;
+	}
+
+	public void setAmbientes(Map<String, Collection<Ambiente>> ambientes) {
+		this.ambientes = ambientes;
 	}
 }

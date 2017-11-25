@@ -4,25 +4,39 @@
 	<@ww.head/>
 
 	<#include "../ftl/mascarasImports.ftl" />
-	
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/moment.min.2.18.1.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AmbienteDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	
 	<script type="text/javascript">
+		function toggleEstabecimento(){
+			$('#ambiente').val('');
+			if($('#localAmbiente').val() == 2){
+				$('#estabelecimento').val('');
+				$('#estabelecimento').parent().parent().hide();
+			}
+			else
+				$('#estabelecimento').parent().parent().show();
+		}
+	
 		function populaAmbientes()
 	    {
-	      var estabelecimentoId = document.getElementById("estabelecimento").value;
-
-	      DWRUtil.useLoadingMessage('Carregando...');
-	      AmbienteDWR.getAmbienteChecks(createListAmbientes, estabelecimentoId);
+        	var estabelecimentoId = document.getElementById("estabelecimento").value;
+        	if(moment($("#data").val(),'DD/MM/YYYY',true).locale('pt-BR').isValid())
+ 				var dataReferencia = $("#data").val();
+ 			else
+ 				var dataReferencia = $.datepicker.formatDate('dd/mm/yy', new Date());        	
+        	
+			DWRUtil.useLoadingMessage('Carregando...');
+			AmbienteDWR.getAmbienteChecks(${empresaSistema.id}, estabelecimentoId, $('#localAmbiente').val(), dataReferencia, createListAmbientes);
 	    }
-
+		
 	    function createListAmbientes(data)
 	    {
-	      addChecks("ambienteCheck", data);
+	     	addChecks("ambienteCheck", data);
 	    }
-	    
+	
 	    function valida()
 	    {
 	    	gerarPpra = document.getElementById('ppra');
@@ -35,7 +49,10 @@
 	    	}
 	    	else
 	    	{
-	    	 	return validaFormulario('form', new Array('data','estabelecimento'), new Array('data'));
+	    		if($('#localAmbiente').val() == 1)
+	    	 		return validaFormulario('form', new Array('data','estabelecimento'), new Array('data'));
+	    	 	else
+	    	 		return validaFormulario('form', new Array('data'), new Array('data'));
 	    	}
 	    }
 	    $(function(){
@@ -52,6 +69,7 @@
 			});
 			
 			$('#ppra').change();
+			toggleEstabecimento();
 		});
 	
 	   $(function(){
@@ -79,8 +97,9 @@
 	
 	<#assign validarCampos="return valida();"/>
 	<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" method="POST">
-		<@ww.datepicker label="Data" id="data" name="data" required="true" cssClass="mascaraData" value="${date}" />
-		<@ww.select label="Estabelecimento" id="estabelecimento" name="estabelecimento.id" required="true" list="estabelecimentos" listKey="id" listValue="nome" headerValue="Selecione..." headerKey="" onchange="javascript:populaAmbientes();" cssStyle="width:240px;"/>
+		<@ww.datepicker label="Data" id="data" name="data" required="true" cssClass="mascaraData" value="${date}" onchange="populaAmbientes();" onblur="populaAmbientes();" />
+		<@ww.select label="Local do Ambiente" name="localAmbiente" id="localAmbiente" list="locaisAmbiente" headerKey="" required="true" cssStyle="width: 501px;" onchange="toggleEstabecimento();populaAmbientes();"/>
+		<@ww.select label="Estabelecimento" id="estabelecimento" name="estabelecimento.id" required="true" list="estabelecimentos" listKey="id" listValue="nome" headerValue="Selecione..." headerKey="" onchange="javascript:populaAmbientes();" cssStyle="width:501px;"/>
 		<@frt.checkListBox label="Ambientes" id="ambiente" name="ambienteCheck" list="ambienteCheckList" filtro="true"/>
 		Gerar:*
 		<@ww.checkbox label="PPRA" id="ppra" name="gerarPpra" labelPosition="left"/>

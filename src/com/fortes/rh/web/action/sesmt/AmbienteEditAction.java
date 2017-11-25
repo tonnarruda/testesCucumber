@@ -9,9 +9,10 @@ import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.business.sesmt.EpcManager;
 import com.fortes.rh.business.sesmt.EpiManager;
-import com.fortes.rh.business.sesmt.HistoricoAmbienteManager;
 import com.fortes.rh.business.sesmt.RiscoAmbienteManager;
 import com.fortes.rh.business.sesmt.RiscoManager;
+import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.model.dicionario.LocalAmbiente;
 import com.fortes.rh.model.dicionario.Sexo;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Ambiente;
@@ -32,7 +33,6 @@ public class AmbienteEditAction extends MyActionSupportList
 	private static final long serialVersionUID = 1L;
 	
 	private AmbienteManager ambienteManager;
-	private HistoricoAmbienteManager historicoAmbienteManager;
 	private EstabelecimentoManager estabelecimentoManager;
 	private EpcManager epcManager;
 	private RiscoManager riscoManager;
@@ -63,77 +63,39 @@ public class AmbienteEditAction extends MyActionSupportList
 
 	private Map<String, Object> parametros;
 	
-	private void prepare() throws Exception
-	{
-		if(ambiente != null && ambiente.getId() != null)
-			ambiente = ambienteManager.findByIdProjection(ambiente.getId());
-		
-		estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
-	}
-
 	public String prepareInsert() throws Exception
 	{
+		estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
 		riscosAmbientes = riscoManager.findRiscosAmbientesByEmpresa(getEmpresaSistema().getId());
-
 		epcs = epcManager.findAllSelect(getEmpresaSistema().getId());
 		epcCheckList = epcManager.populaCheckBox(getEmpresaSistema().getId());
-		
-		prepare();
-
-		return Action.SUCCESS;
-	}
-
-	public String prepareUpdate() throws Exception
-	{
-		prepare();
-
-		if(ambiente == null || ambiente.getEmpresa() == null || ambiente.getEmpresa().getId() == null || !ambiente.getEmpresa().getId().equals(getEmpresaSistema().getId()))
-		{
-			addActionError("O Ambiente solicitado não existe na empresa " + getEmpresaSistema().getNome() +".");
-			return Action.ERROR;
-		}
-		
-		historicoAmbientes = historicoAmbienteManager.findToList(new String[]{"id","descricao","data"}, new String[]{"id","descricao","data"}, new String[]{"ambiente.id"}, new Object[]{ambiente.getId()}, new String[]{"data desc"});
 		
 		return Action.SUCCESS;
 	}
 
 	public String insert() throws Exception
 	{
-		ambiente.setEmpresa(getEmpresaSistema());
-		ambienteManager.saveAmbienteHistorico(ambiente, historicoAmbiente, riscoChecks, riscosAmbientes, epcCheck);
-
+		ambienteManager.saveAmbienteHistorico(getEmpresaSistema(), historicoAmbiente, riscoChecks, riscosAmbientes, epcCheck);
+		addActionSuccess("Ambiente cadastrado com sucesso.");
 		return Action.SUCCESS;
 	}
 
-	public String update() throws Exception
+	public String list()
 	{
-		String[] key = new String[]{"id","empresa.id"};
-		Object[] values = new Object[]{ambiente.getId(), getEmpresaSistema().getId()};
-
-		if(!ambienteManager.verifyExists(key, values))
-		{
-			addActionError("O Ambiente solicitado não existe na empresa " + getEmpresaSistema().getNome() +".");
-			return Action.ERROR;
+		estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
+		setTotalSize(ambienteManager.getCount(getEmpresaSistema().getId(), historicoAmbiente));
+		try {
+			ambientes = ambienteManager.findAmbientes(getPage(), getPagingSize(), getEmpresaSistema().getId(), historicoAmbiente);
+		} catch (ColecaoVaziaException e) {
+			addActionMessage(e.getMessage());
 		}
-
-		ambiente.setEmpresa(getEmpresaSistema());
-		ambienteManager.update(ambiente);
-
-		return Action.SUCCESS;
-	}
-	
-	public String list() throws Exception
-	{
-		setTotalSize(ambienteManager.getCount(getEmpresaSistema().getId(), ambiente));
-		ambientes = ambienteManager.findAmbientes(getPage(), getPagingSize(), getEmpresaSistema().getId(), ambiente);
 
 		return Action.SUCCESS;
 	}
 
 	public String imprimirLista() throws Exception
 	{
-		ambientes = ambienteManager.findAmbientes(0, 0, getEmpresaSistema().getId(), ambiente);
+		ambientes = ambienteManager.findAmbientes(0, 0, getEmpresaSistema().getId(), historicoAmbiente);
 		if (ambientes.isEmpty()) 
 		{
 			addActionMessage("Não existem dados para o filtro informado");
@@ -197,7 +159,7 @@ public class AmbienteEditAction extends MyActionSupportList
 	public String delete() throws Exception
 	{
 		ambienteManager.removeCascade(ambiente.getId());
-		addActionMessage("Ambiente excluído com sucesso.");
+		addActionSuccess("Ambiente excluído com sucesso.");
 
 		return Action.SUCCESS;
 	}
@@ -245,11 +207,6 @@ public class AmbienteEditAction extends MyActionSupportList
 
 	public void setMapasDeRisco(Collection<MapaDeRisco> mapasDeRisco) {
 		this.mapasDeRisco = mapasDeRisco;
-	}
-
-	public void setHistoricoAmbienteManager(HistoricoAmbienteManager historicoAmbienteManager)
-	{
-		this.historicoAmbienteManager = historicoAmbienteManager;
 	}
 
 	public void setEstabelecimentoManager(
@@ -365,5 +322,10 @@ public class AmbienteEditAction extends MyActionSupportList
 	public Map<String, Object> getParametros()
 	{
 		return parametros;
+	}
+	
+	public Map<Integer, String> getLocaisAmbiente()
+	{
+		return LocalAmbiente.mapLocalAmbiente();
 	}
 }

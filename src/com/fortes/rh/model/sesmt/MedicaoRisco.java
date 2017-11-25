@@ -14,8 +14,10 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.fortes.model.AbstractModel;
-import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.model.dicionario.LocalAmbiente;
 
 @SuppressWarnings("serial")
 @Entity
@@ -69,8 +71,18 @@ public class MedicaoRisco extends AbstractModel implements Serializable
 		if (ambiente == null)
 			ambiente = new Ambiente();
 		
-		this.ambiente.setEstabelecimento(new Estabelecimento());
-		this.ambiente.getEstabelecimento().setNome(estabelecimentoNome);
+		this.ambiente.setProjectionEstabelecimentoNome(estabelecimentoNome);
+	}
+	
+	public void setEstabelecimentoNomeOrSetEstabalecimentoDeTerceiro(String estabelecimentoNome)
+	{
+		if (ambiente == null)
+			ambiente = new Ambiente();
+		
+		if(StringUtils.isBlank(estabelecimentoNome))
+			this.ambiente.setProjectionEstabelecimentoNome(LocalAmbiente.ESTABELECIMENTO_DE_TERCEIROS.getDescricao());
+		else
+			this.ambiente.setProjectionEstabelecimentoNome(estabelecimentoNome);
 	}
 	
 	public void setProjectionFuncaoId(Long funcaoId)
@@ -118,8 +130,7 @@ public class MedicaoRisco extends AbstractModel implements Serializable
 		return riscoMedicaoRiscos;
 	}
 
-	public void setRiscoMedicaoRiscos(
-			Collection<RiscoMedicaoRisco> riscoMedicaoRiscos) {
+	public void setRiscoMedicaoRiscos(Collection<RiscoMedicaoRisco> riscoMedicaoRiscos) {
 		this.riscoMedicaoRiscos = riscoMedicaoRiscos;
 	}
 

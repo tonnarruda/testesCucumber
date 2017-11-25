@@ -13,10 +13,10 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.LinkedHashMap;
 
 import org.hibernate.SessionFactory;
 import org.junit.Before;
@@ -137,7 +137,7 @@ public class HistoricoColaboradorManagerTest_Junit4
 		funcaoManager = mock(FuncaoManager.class);
 		
 		hibernateTemplate = mock(HibernateTemplate.class);
-		SessionFactory sessionFactory  = PowerMockito.mock(SessionFactory.class);
+		SessionFactory sessionFactory = PowerMockito.mock(SessionFactory.class);
 		hibernateTemplate.setSessionFactory(sessionFactory);
 		
 		BDDMockito.given(SpringUtil.getBean("colaboradorManager")).willReturn(colaboradorManager);
@@ -470,16 +470,22 @@ public class HistoricoColaboradorManagerTest_Junit4
 	public void testGetHistoricosComAmbienteEFuncao()
 	{
 		Long empresaId = 1L;
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(1L);
+		estabelecimento.setNome("Estabelecimento");
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L, EmpresaFactory.getEmpresa(1L));
 		
 		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity(1L);
-		historicoColaborador1.setEstabelecimento(EstabelecimentoFactory.getEntity(1L));
+		historicoColaborador1.setColaborador(colaborador);
+		historicoColaborador1.setData(new Date());
+		historicoColaborador1.setEstabelecimento(estabelecimento);
 		historicoColaborador1.setCargoId(1L);
 		
 		Collection<HistoricoColaborador> historicoColaboradors = Arrays.asList(historicoColaborador1);
 		
 		when(historicoColaboradorDao.findAllByColaborador(eq(1L))).thenReturn(historicoColaboradors);
-		when(ambienteManager.findByEstabelecimento(eq(new Long[]{1L}))).thenReturn(new ArrayList<Ambiente>());
-		when(funcaoManager.findByEmpresa(eq(empresaId))).thenReturn(new ArrayList<Funcao>());
+		when(ambienteManager.montaMapAmbientes(eq(empresaId), eq(historicoColaborador1.getEstabelecimento().getId()),
+				eq(historicoColaborador1.getEstabelecimento().getNome()), eq(historicoColaborador1.getData()))).thenReturn(new LinkedHashMap<String, Collection<Ambiente>>());
 		
 		assertEquals(1, historicoColaboradorManager.getHistoricosComAmbienteEFuncao(1L, empresaId).size());
 	}

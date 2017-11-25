@@ -18,7 +18,11 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.util.CnpjUtil;
 
 @SuppressWarnings("serial")
 @Entity
@@ -27,6 +31,10 @@ public class HistoricoAmbiente extends AbstractModel implements Serializable
 {
 	@ManyToOne
 	private Ambiente ambiente;
+	@Column(length=100)
+	private String nomeAmbiente;
+	@ManyToOne
+	private Estabelecimento estabelecimento; 
 	@Lob
 	private String descricao;
 	@Temporal(TemporalType.DATE)
@@ -36,6 +44,11 @@ public class HistoricoAmbiente extends AbstractModel implements Serializable
 	
 	@Column(length=40)
 	private String tempoExposicao;
+	
+	private Integer localAmbiente;
+	
+	@Column(length=14)
+    private String cnpjEstabelecimentoDeTerceiros;
 	
 	@ManyToMany(fetch=FetchType.EAGER)
     private Collection<Epc> epcs;
@@ -202,5 +215,59 @@ public class HistoricoAmbiente extends AbstractModel implements Serializable
 			this.riscoAmbientes = new ArrayList<RiscoAmbiente>();
 		
 		this.riscoAmbientes.add(new RiscoAmbiente(riscoAmbienteId));
+	}
+
+	public String getNomeAmbiente() {
+		return nomeAmbiente;
+	}
+
+	public void setNomeAmbiente(String nomeAmbiente) {
+		this.nomeAmbiente = nomeAmbiente;
+	}
+
+	public Estabelecimento getEstabelecimento() {
+		return estabelecimento;
+	}
+
+	public void setEstabelecimento(Estabelecimento estabelecimento) {
+		this.estabelecimento = estabelecimento;
+	}
+	
+	public void setEstabelecimentoId(Long estabelecimentoId) {
+		if(this.estabelecimento == null)
+			this.estabelecimento = new Estabelecimento();
+		
+		this.estabelecimento.setId(estabelecimentoId);
+	}
+
+	public Integer getLocalAmbiente() {
+		return localAmbiente;
+	}
+
+	public void setLocalAmbiente(Integer localAmbiente) {
+		this.localAmbiente = localAmbiente;
+	}
+
+	public void setEstabelecimentoNome(String estabelecimentoNome) {
+		if(this.estabelecimento == null)
+			this.estabelecimento = new Estabelecimento();
+		
+		this.estabelecimento.setNome(estabelecimentoNome);
+		
+	}
+
+	public String getCnpjEstabelecimentoDeTerceiros() {
+		return cnpjEstabelecimentoDeTerceiros;
+	}
+
+	public void setCnpjEstabelecimentoDeTerceiros(
+			String cnpjEstabelecimentoDeTerceiros) {
+		this.cnpjEstabelecimentoDeTerceiros = cnpjEstabelecimentoDeTerceiros;
+	}
+
+	public String getCnpjEstabelecimentoDeTerceirosFormatado() {
+		String cnpjFormatado = CnpjUtil.formata(getCnpjEstabelecimentoDeTerceiros(), Boolean.TRUE);
+
+		return StringUtils.defaultString(cnpjFormatado, StringUtils.EMPTY);
 	}
 }

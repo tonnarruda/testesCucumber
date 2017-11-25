@@ -4,14 +4,19 @@ import java.util.Collection;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.MedicaoRiscoDao;
+import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 import com.fortes.rh.model.sesmt.MedicaoRisco;
 import com.fortes.rh.model.sesmt.RiscoMedicaoRisco;
 
@@ -32,18 +37,25 @@ public class MedicaoRiscoDaoHibernate extends GenericDaoHibernate<MedicaoRisco> 
 	
 	public Collection<MedicaoRisco> findAllSelectByAmbiente(Long empresaId, Long ambienteId) 
 	{
+		DetachedCriteria subQueryHc = DetachedCriteria.forClass(HistoricoAmbiente.class, "ha2")
+				.setProjection(Projections.max("ha2.data"))
+				.add(Restrictions.eqProperty("ha2.ambiente.id", "ha.ambiente.id"))
+				.add(Restrictions.leProperty("ha2.data", "medicao.data"));
+		
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "medicao");
 		criteria.createCriteria("medicao.ambiente", "ambiente");
-		criteria.createCriteria("ambiente.estabelecimento", "estab");
+		criteria.createCriteria("ambiente.historicoAmbientes", "ha", CriteriaSpecification.INNER_JOIN);
+		criteria.createCriteria("ha.estabelecimento", "estab", CriteriaSpecification.LEFT_JOIN);
 		
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("medicao.id"), "id");
 		p.add(Projections.property("medicao.data"), "data");
 		p.add(Projections.property("ambiente.id"), "projectionAmbienteId");
 		p.add(Projections.property("ambiente.nome"), "projectionAmbienteNome");
-		p.add(Projections.property("estab.nome"), "projectionEstabelecimentoNome");
+		p.add(Projections.property("estab.nome"), "estabelecimentoNomeOrSetEstabalecimentoDeTerceiro");
 		
 		criteria.setProjection(p);
+		criteria.add(Subqueries.propertyEq("ha.data", subQueryHc));
 		criteria.add(Expression.eq("ambiente.empresa.id", empresaId));
 		
 		if (ambienteId != null)

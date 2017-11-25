@@ -12,7 +12,7 @@ import com.fortes.rh.model.sesmt.relatorio.DadosAmbienteOuFuncaoRisco;
 
 public interface HistoricoAmbienteManager extends GenericManager<HistoricoAmbiente>
 {
-	void save(HistoricoAmbiente historicoAmbiente, String[] riscoChecks, Collection<RiscoAmbiente> riscosAmbientes, String[] epcCheck) throws FortesException, Exception;
+	void saveOrUpdate(HistoricoAmbiente historicoAmbiente, String[] riscoChecks, Collection<RiscoAmbiente> riscosAmbientes, String[] epcCheck) throws FortesException, Exception;
 	boolean removeByAmbiente(Long ambienteId);
 	Collection<HistoricoAmbiente> findByAmbiente(Long ambienteId);
 	void removeCascade(Long id);
@@ -21,4 +21,6 @@ public interface HistoricoAmbienteManager extends GenericManager<HistoricoAmbien
 	HistoricoAmbiente findUltimoHistoricoAteData(Long ambienteId, Date dataMaxima);
 	Collection<HistoricoAmbiente> findRiscosAmbientes(Collection<Long> ambienteIds, Date data);
 	HistoricoAmbiente findByData(Date data, Long historicoAmbienteId, Long ambienteId);
+	boolean existeHistoricoAmbienteByData(Long estabelecimentoId, Long ambienteId, Date data);
+	void deleteByEstabelecimentos(Long[] estabelecimentoIds) throws Exception;
 }

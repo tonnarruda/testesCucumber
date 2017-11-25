@@ -297,5 +297,4 @@ public class HistoricoFuncaoDaoHibernate extends GenericDaoHibernate<HistoricoFu
 		
 		return query.list();
 	}
-	
 }

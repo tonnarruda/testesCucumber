@@ -2,6 +2,7 @@ package com.fortes.rh.model.sesmt.relatorio;
 
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.util.StringUtil;
 
 public class PpraLtcatCabecalho 
@@ -13,16 +14,20 @@ public class PpraLtcatCabecalho
 	private Integer qtdHomens=0;
 	private Integer qtdMulheres=0;
 	private String funcoes = "";
+	private Integer localAmbiente;
+	private String cnpjEstabelecimentoDeTerceiros;
 	
 	public PpraLtcatCabecalho() {
 	}
 	
-	public PpraLtcatCabecalho(Empresa empresa, Estabelecimento estabelecimento, String ambienteNome, String ambienteDescricao) 
+	public PpraLtcatCabecalho(Empresa empresa, Estabelecimento estabelecimento, Ambiente ambiente) 
 	{
 		this.empresa = empresa;
 		this.estabelecimento = estabelecimento;
-		this.ambienteNome = ambienteNome;
-		this.ambienteDescricao = ambienteDescricao;
+		this.ambienteNome = ambiente.getNome();
+		this.ambienteDescricao = ambiente.getHistoricoAtual().getDescricao();
+		this.localAmbiente = ambiente.getHistoricoAtual().getLocalAmbiente();
+		this.cnpjEstabelecimentoDeTerceiros = ambiente.getHistoricoAtual().getCnpjEstabelecimentoDeTerceirosFormatado();
 	}
 
 	public String getCnpjFormatado()
@@ -91,5 +96,21 @@ public class PpraLtcatCabecalho
 
 	public void setQtdMulheres(Integer qtdMulheres) {
 		this.qtdMulheres = qtdMulheres;
+	}
+
+	public Integer getLocalAmbiente() {
+		return localAmbiente;
+	}
+
+	public void setLocalAmbiente(Integer localAmbiente) {
+		this.localAmbiente = localAmbiente;
+	}
+
+	public String getCnpjEstabelecimentoDeTerceiros() {
+		return cnpjEstabelecimentoDeTerceiros;
+	}
+
+	public void setCnpjEstabelecimentoDeTerceiros(String cnpjEstabelecimentoDeTerceiros) {
+		this.cnpjEstabelecimentoDeTerceiros = cnpjEstabelecimentoDeTerceiros;
 	}
 }

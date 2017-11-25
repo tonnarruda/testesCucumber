@@ -20,6 +20,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -153,12 +155,12 @@ public class HistoricoColaboradorEditActionTest
 		verify(faixaSalarialManager).findFaixas(eq(empresaDoSistema), eq(Cargo.ATIVO), anyLong());
 		verify(areaOrganizacionalManager).findAllSelectOrderDescricao(eq(empresaDoSistema.getId()), eq(AreaOrganizacional.ATIVA), anyLong(), anyBoolean());
 		verify(funcaoManager).findByEmpresa(eq(action.getEmpresaSistema().getId()));
-		verify(ambienteManager).findByEstabelecimento(historicoColaborador.getEstabelecimento().getId());
+		verify(ambienteManager).montaMapAmbientes(eq(empresaDoSistema.getId()), eq(historicoColaborador.getEstabelecimento().getId()), eq(historicoColaborador.getEstabelecimento().getNome()), eq(historicoColaborador.getData()));
 	}
 	
 	@Test
 	public void testPrepareInsert() throws Exception {
-		
+		Map<String, Collection<Ambiente>> mapAmbientes = new LinkedHashMap<>();
 		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(1L);
 		Cargo cargo = CargoFactory.getEntity(1L);
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
@@ -166,7 +168,8 @@ public class HistoricoColaboradorEditActionTest
 		historicoColaborador.setEstabelecimento(estabelecimento);
 		historicoColaborador.setFaixaSalarial(faixaSalarial);
 		when(funcaoManager.findByEmpresa(action.getEmpresaSistema().getId())).thenReturn(new ArrayList<Funcao>());
-		when(ambienteManager.findByEstabelecimento(any(Long[].class))).thenReturn(new ArrayList<Ambiente>());
+		when(ambienteManager.montaMapAmbientes(empresaDoSistema.getId(), historicoColaborador.getEstabelecimento().getId(), 
+				historicoColaborador.getEstabelecimento().getNome(), historicoColaborador.getData())).thenReturn(mapAmbientes);
 		when(historicoColaboradorManager.findByColaboradorProjection(anyLong(), eq(StatusRetornoAC.AGUARDANDO))).thenReturn(new ArrayList<HistoricoColaborador>());
 		when(faixaSalarialManager.findById(anyLong())).thenReturn(faixaSalarial);
 		
@@ -253,6 +256,7 @@ public class HistoricoColaboradorEditActionTest
 	
 	@Test
 	public void testPrepareUpdateHistoricoAguardandoConfirmacao() throws Exception {
+		Map<String, Collection<Ambiente>> mapAmbientes = new LinkedHashMap<>();
 		
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		action.setEmpresaSistema(empresa);
@@ -285,7 +289,8 @@ public class HistoricoColaboradorEditActionTest
 		when(indiceManager.findAll(eq(empresa))).thenReturn(new ArrayList<Indice>());
 		
 		when(funcaoManager.findByEmpresa(eq(empresa.getId()))).thenReturn(new ArrayList<Funcao>());
-		when(ambienteManager.findByEstabelecimento(eq(new Long[]{historicoColaboradorAguagandoConfirmacao.getEstabelecimento().getId()}))).thenReturn(new ArrayList<Ambiente>());
+		when(ambienteManager.montaMapAmbientes(empresaDoSistema.getId(), historicoColaboradorAguagandoConfirmacao.getEstabelecimento().getId(), 
+				historicoColaboradorAguagandoConfirmacao.getEstabelecimento().getNome(), historicoColaboradorAguagandoConfirmacao.getData())).thenReturn(mapAmbientes);
 		
 		when(faixaSalarialManager.findFaixas(eq(empresa), eq(true), anyLong())).thenReturn(new ArrayList<FaixaSalarial>());
 
@@ -419,6 +424,7 @@ public class HistoricoColaboradorEditActionTest
 		
 		historicoColaborador.setFaixaSalarial(FaixaSalarialFactory.getEntity(1L));
 		historicoColaborador.setAreaOrganizacional(AreaOrganizacionalFactory.getEntity(1L));
+		historicoColaborador.setEstabelecimento(EstabelecimentoFactory.getEntity(1L, "Estabelecimento"));
 		historicoColaborador.setColaborador(colaborador);
 		historicoColaborador.setMotivo(MotivoHistoricoColaborador.PROMOCAO);
 		historicoColaborador.setData(new Date());
@@ -447,6 +453,7 @@ public class HistoricoColaboradorEditActionTest
 		
 		historicoColaborador.setFaixaSalarial(FaixaSalarialFactory.getEntity(1L));
 		historicoColaborador.setAreaOrganizacional(AreaOrganizacionalFactory.getEntity(1L));
+		historicoColaborador.setEstabelecimento(EstabelecimentoFactory.getEntity(1L, "Estabelecimento Matriz"));
 		historicoColaborador.setColaborador(colaborador);
 		historicoColaborador.setMotivo(MotivoHistoricoColaborador.PROMOCAO);
 		historicoColaborador.setData(new Date());
@@ -475,6 +482,7 @@ public class HistoricoColaboradorEditActionTest
 		
 		historicoColaborador.setFaixaSalarial(FaixaSalarialFactory.getEntity(1L));
 		historicoColaborador.setAreaOrganizacional(AreaOrganizacionalFactory.getEntity(1L));
+		historicoColaborador.setEstabelecimento(EstabelecimentoFactory.getEntity(1L, "Estabelecimento Matriz"));
 		historicoColaborador.setColaborador(colaborador);
 		historicoColaborador.setMotivo(MotivoHistoricoColaborador.PROMOCAO);
 		historicoColaborador.setData(new Date());
@@ -568,7 +576,7 @@ public class HistoricoColaboradorEditActionTest
 		verify(faixaSalarialManager).findFaixas(eq(empresaDoSistema), eq(Cargo.ATIVO), anyLong());
 		verify(areaOrganizacionalManager).findAllSelectOrderDescricao(eq(empresaDoSistema.getId()), eq(AreaOrganizacional.ATIVA), anyLong(), anyBoolean());
 		verify(funcaoManager).findByEmpresa(eq(action.getEmpresaSistema().getId()));
-		verify(ambienteManager).findByEstabelecimento(historicoColaborador.getEstabelecimento().getId());
+		verify(ambienteManager).montaMapAmbientes(eq(empresaDoSistema.getId()), eq(historicoColaborador.getEstabelecimento().getId()), eq(historicoColaborador.getEstabelecimento().getNome()), eq(historicoColaborador.getData()));
 	}
 	
 	private void assertQueMetodoPrepareFoiChamadoQuandoHouverSolicitacao() throws Exception {
@@ -616,10 +624,12 @@ public class HistoricoColaboradorEditActionTest
 	private void dadoQueExisteUmaSolicitacao() {
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L);
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(1L, "Estabelecimento");
 		
 		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao(1L);
 		solicitacao.setFaixaSalarial(faixaSalarial);
 		solicitacao.setAreaOrganizacional(areaOrganizacional);
+		solicitacao.setEstabelecimento(estabelecimento);
 		
 		action.setSolicitacao(solicitacao);
 		action.setHistoricoColaborador(null);
@@ -629,11 +639,13 @@ public class HistoricoColaboradorEditActionTest
 	}
 
 	private void dadoQueExistemAmbientesCadastrados() {
-		when(ambienteManager.findByEstabelecimento(eq(new Long[]{historicoColaborador.getEstabelecimento().getId()}))).thenReturn(Collections.EMPTY_LIST);
+		Map<String, Collection<Ambiente>> mapAmbientes = new LinkedHashMap<>();
+		when(ambienteManager.montaMapAmbientes(empresaDoSistema.getId(), historicoColaborador.getEstabelecimento().getId(), 
+				historicoColaborador.getEstabelecimento().getNome(), historicoColaborador.getData())).thenReturn(mapAmbientes);
 	}
 
 	private void dadoQueHistoricoDoColaboradorPossuiUmEstabelecimento() {
-		historicoColaborador.setEstabelecimento(EstabelecimentoFactory.getEntity(1L));
+		historicoColaborador.setEstabelecimento(EstabelecimentoFactory.getEntity(1L, "Estabelecimento"));
 	}
 	
 	private void dadoQueExistemFuncoesCadastradas() {

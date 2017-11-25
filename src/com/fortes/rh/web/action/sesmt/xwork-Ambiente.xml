@@ -41,15 +41,8 @@
 		<action name="prepareInsert" class="com.fortes.rh.web.action.sesmt.AmbienteEditAction" method="prepareInsert">
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/ambienteEdit.ftl</result>
 		</action>
-		<action name="prepareUpdate" class="com.fortes.rh.web.action.sesmt.AmbienteEditAction" method="prepareUpdate">
-			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/ambienteEdit.ftl</result>
-		</action>
 		<action name="insert" class="com.fortes.rh.web.action.sesmt.AmbienteEditAction" method="insert">
-			<result name="success" type="redirect">list.action</result>
-			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/ambienteEdit.ftl</result>
-			<result name="error" type="redirect">list.action</result>
-		</action>
-		<action name="update" class="com.fortes.rh.web.action.sesmt.AmbienteEditAction" method="update">
+			<interceptor-ref name="defaultUpdateStack"/>
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/ambienteEdit.ftl</result>
 			<result name="error" type="redirect">list.action</result>

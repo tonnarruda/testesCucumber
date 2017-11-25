@@ -1,6 +1,7 @@
 package com.fortes.rh.test.dao.hibernate.sesmt;
 
 import java.util.Collection;
+import java.util.Date;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
@@ -17,6 +18,7 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Funcao;
+import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 import com.fortes.rh.model.sesmt.MedicaoRisco;
 import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.model.sesmt.RiscoMedicaoRisco;
@@ -24,6 +26,7 @@ import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.AmbienteFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
+import com.fortes.rh.test.factory.cargosalario.HistoricoAmbienteFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.sesmt.MedicaoRiscoFactory;
 import com.fortes.rh.test.factory.sesmt.RiscoFactory;
@@ -165,13 +168,15 @@ public class MedicaoRiscoDaoHibernateTest extends GenericDaoHibernateTest<Medica
 		estabelecimento.setNome("Estabelecimento");
 		estabelecimentoDao.save(estabelecimento);
 		
-		ambiente = AmbienteFactory.getEntity();
-		ambiente.setEmpresa(empresa);
-		ambiente.setEstabelecimento(estabelecimento);
+		ambiente = AmbienteFactory.getEntity("nome", empresa);
 		ambienteDao.save(ambiente);
+		
+		HistoricoAmbiente historicoAmbiente = HistoricoAmbienteFactory.getEntity(ambiente.getNome(), estabelecimento, "Descrição histórico", ambiente, new Date(), "");
+		historicoAmbienteDao.save(historicoAmbiente);
 		
 		medicaoRisco = MedicaoRiscoFactory.getEntity();
 		medicaoRisco.setAmbiente(ambiente);
+		medicaoRisco.setData(new Date());
 		medicaoRiscoDao.save(medicaoRisco);
 		
 		RiscoMedicaoRisco riscoMedicaoRisco = new RiscoMedicaoRisco();

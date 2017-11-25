@@ -1,4 +1,5 @@
 <#assign authz=JspTaglibs["/WEB-INF/tlds/authz.tld"] />
+<#assign frt=JspTaglibs["/WEB-INF/tlds/fortes.tld"] />
 <html>
 <head>
 <@ww.head/>
@@ -23,16 +24,14 @@
 <script language='javascript'>
 	function populaAmbiente(estabelecimentoId)
 	{
-		if(estabelecimentoId != "null")
-		{
-			DWRUtil.useLoadingMessage('Carregando...');
-			AmbienteDWR.getAmbienteByEstabelecimento(createListAmbiente, estabelecimentoId);
-		}
+		DWRUtil.useLoadingMessage('Carregando...');
+		AmbienteDWR.getAmbientes(${empresaSistema.id}, $('#tabelaReajusteColaborador').val(),  estabelecimentoId, $("#estabelecimentoProposto option:selected").text(), createListAmbiente);
 	}
+	
 	function createListAmbiente(data)
 	{
 		DWRUtil.removeAllOptions("ambienteProposto");
-		DWRUtil.addOptions("ambienteProposto", data);
+		addOpGroupByMap('ambienteProposto', data, 'id', 'nome', 'Selecione...');
 	}
 
 	function enviaForm()
@@ -108,14 +107,14 @@
 						<@authz.authorize ifNotGranted="ROLE_COMPROU_SESMT">
 							<#assign funcaoEstabelecimento=""/>
 						</@authz.authorize>
-						<@ww.select label="Estabelecimento" name="reajusteColaborador.estabelecimentoProposto.id" id="estabelecimentoProposto" list="estabelecimentos" listKey="id" listValue="nome" onchange="${funcaoEstabelecimento}"/>
+						<@ww.select label="Estabelecimento" name="reajusteColaborador.estabelecimentoProposto.id" id="estabelecimentoProposto" list="estabelecimentos" listKey="id" listValue="nome" onchange="${funcaoEstabelecimento}" cssStyle="width: 445px;"/>
 						
 						<@ww.select label="Área Organizacional" name="reajusteColaborador.areaOrganizacionalProposta.id" id="areaProposta" required="true" list="areaOrganizacionals" listKey="id" listValue="descricao" headerValue="Selecione..." headerKey=""  onchange="verificaMaternidade(this.value, 'areaProposta');" cssStyle="width:445px;" />
 		
 						<@authz.authorize ifAllGranted="ROLE_COMPROU_SESMT">
-							<@ww.select label="Ambiente" name="reajusteColaborador.ambienteProposto.id" id="ambienteProposto" required="${obrigarAmbienteFuncao?string}" list="ambientes" listKey="id" listValue="nome" headerValue="Nenhum" headerKey="-1"/>
-							<@ww.select label="Cargo/Faixa" name="reajusteColaborador.faixaSalarialProposta.id" id="faixa" required="true" onchange="calculaSalario();" list="faixaSalarials" listKey="id" listValue="descricao"/>
-							<@ww.select label="Função" name="reajusteColaborador.funcaoProposta.id" id="funcaoProposta" required="${obrigarAmbienteFuncao?string}" list="funcaos" listKey="id" listValue="nome" headerValue="Nenhuma" headerKey="-1" />
+							<@frt.selectOpGroup label="Ambiente" name="reajusteColaborador.ambienteProposto.id" id="ambienteProposto" map="ambientes" optionValue="id" optionText="nome" cssStyle="width: 445px;" required="${obrigarAmbienteFuncao?string}"/>
+							<@ww.select label="Cargo/Faixa" name="reajusteColaborador.faixaSalarialProposta.id" id="faixa" required="true" onchange="calculaSalario();" list="faixaSalarials" listKey="id" listValue="descricao" cssStyle="width: 445px;"/>
+							<@ww.select label="Função" name="reajusteColaborador.funcaoProposta.id" id="funcaoProposta" required="${obrigarAmbienteFuncao?string}" list="funcaos" listKey="id" listValue="nome" headerValue="Nenhuma" headerKey="-1" cssStyle="width: 445px;"/>
 						</@authz.authorize>
 						<@authz.authorize ifNotGranted="ROLE_COMPROU_SESMT">
 							<@ww.select label="Cargo/Faixa" name="reajusteColaborador.faixaSalarialProposta.id" id="faixa" required="true" onchange="calculaSalario();" list="faixaSalarials" listKey="id" listValue="descricao"/>

@@ -4,17 +4,21 @@ package com.fortes.rh.web.action.sesmt;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
 
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
+import com.fortes.rh.business.sesmt.HistoricoAmbienteManager;
 import com.fortes.rh.business.sesmt.MedicaoRiscoManager;
 import com.fortes.rh.business.sesmt.RiscoAmbienteManager;
 import com.fortes.rh.business.sesmt.RiscoFuncaoManager;
 import com.fortes.rh.business.sesmt.RiscoMedicaoRiscoManager;
+import com.fortes.rh.model.dicionario.LocalAmbiente;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Funcao;
+import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 import com.fortes.rh.model.sesmt.MedicaoRisco;
 import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.model.sesmt.RiscoMedicaoRisco;
@@ -31,12 +35,14 @@ public class MedicaoRiscoEditAction extends MyActionSupportList
 	private RiscoAmbienteManager riscoAmbienteManager;
 	private RiscoFuncaoManager riscoFuncaoManager;
 	private RiscoMedicaoRiscoManager riscoMedicaoRiscoManager;
+	private HistoricoAmbienteManager historicoAmbienteManager;
 	
 	private Ambiente ambiente = new Ambiente();
 	private Funcao funcao = new Funcao();
 	private MedicaoRisco medicaoRisco = new MedicaoRisco();
 	private Risco risco;
 	private Estabelecimento estabelecimento;
+	private Integer localAmbiente;
 	
 	private char controlaRiscoPor;
 	
@@ -58,14 +64,16 @@ public class MedicaoRiscoEditAction extends MyActionSupportList
 	private Collection<Estabelecimento> estabelecimentos;
 	private Collection<Risco> riscos;
 	private Collection<RiscoMedicaoRisco> riscoMedicaoRiscos = new ArrayList<RiscoMedicaoRisco>();
+	private Map<Integer, String> locaisAmbiente;
 
 	private void prepare() throws Exception
 	{
 		tecnicasUtilizadas = medicaoRiscoManager.getTecnicasUtilizadas(getEmpresaSistema().getId());
 		
-		if (controlaRiscoPor == 'A')
+		if (controlaRiscoPor == 'A'){
+			locaisAmbiente = LocalAmbiente.mapLocalAmbiente();
 			estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
-		
+		}
 		else if (controlaRiscoPor == 'F')
 			funcoes = funcaoManager.findByEmpresa(getEmpresaSistema().getId());
 			
@@ -74,7 +82,6 @@ public class MedicaoRiscoEditAction extends MyActionSupportList
 			if (controlaRiscoPor == 'A')
 			{
 				medicaoRisco = medicaoRiscoManager.findById(medicaoRisco.getId());
-				estabelecimento = medicaoRisco.getAmbiente().getEstabelecimento();
 			}else  if (controlaRiscoPor == 'F')
 			{
 				medicaoRisco = medicaoRiscoManager.getMedicaoRiscoMedicaoPorFuncao(medicaoRisco.getId());
@@ -103,7 +110,7 @@ public class MedicaoRiscoEditAction extends MyActionSupportList
 		desabilitarGravar = false;
 		if (controlaRiscoPor == 'A')
 		{
-			ambientes = ambienteManager.findByEstabelecimento(estabelecimento.getId());
+			ambientes = ambienteManager.findAmbientesPorEstabelecimentoOrAmbientesDeTerceiro(getEmpresaSistema().getId(), estabelecimento.getId(), localAmbiente, data);
 			riscos = riscoAmbienteManager.findRiscosByAmbienteData(ambiente.getId(), data);
 		} 
 		else  if (controlaRiscoPor == 'F')
@@ -144,7 +151,10 @@ public class MedicaoRiscoEditAction extends MyActionSupportList
 		if (controlaRiscoPor == 'A')
 		{
 			ambiente = medicaoRisco.getAmbiente();
-			ambientes = ambienteManager.findByEstabelecimento(estabelecimento.getId());
+			HistoricoAmbiente historicoAmbiente = historicoAmbienteManager.findUltimoHistoricoAteData(ambiente.getId(), medicaoRisco.getData());
+			estabelecimento = historicoAmbiente.getEstabelecimento(); 
+			setLocalAmbiente(historicoAmbiente.getLocalAmbiente());
+			ambientes = ambienteManager.findAmbientesPorEstabelecimentoOrAmbientesDeTerceiro(getEmpresaSistema().getId(), estabelecimento.getId(), historicoAmbiente.getLocalAmbiente(), medicaoRisco.getData());
 			riscos = riscoAmbienteManager.findRiscosByAmbienteData(medicaoRisco.getAmbiente().getId(), medicaoRisco.getData());
 		}
 		else  if (controlaRiscoPor == 'F')
@@ -216,15 +226,6 @@ public class MedicaoRiscoEditAction extends MyActionSupportList
 			medicaoRiscos = medicaoRiscoManager.findAllSelectByFuncao(getEmpresaSistema().getId(), getFuncao().getId());
 		}
 	
-		return SUCCESS;
-	}
-
-	public String listPorAmbiente() throws Exception
-	{
-		ambientes = ambienteManager.findAmbientes(getEmpresaSistema().getId());
-		medicaoRiscos = medicaoRiscoManager.findAllSelectByAmbiente(getEmpresaSistema().getId(), getAmbiente().getId());
-		controlaRiscoPor = 'A';
-		
 		return SUCCESS;
 	}
 
@@ -411,5 +412,22 @@ public class MedicaoRiscoEditAction extends MyActionSupportList
 	public void setRiscoMedicaoRiscoManager(
 			RiscoMedicaoRiscoManager riscoMedicaoRiscoManager) {
 		this.riscoMedicaoRiscoManager = riscoMedicaoRiscoManager;
+	}
+
+	public Map<Integer, String> getLocaisAmbiente() {
+		return locaisAmbiente;
+	}
+
+	public Integer getLocalAmbiente() {
+		return localAmbiente;
+	}
+
+	public void setLocalAmbiente(Integer localAmbiente) {
+		this.localAmbiente = localAmbiente;
+	}
+
+	public void setHistoricoAmbienteManager(
+			HistoricoAmbienteManager historicoAmbienteManager) {
+		this.historicoAmbienteManager = historicoAmbienteManager;
 	}
 }

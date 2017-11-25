@@ -13,12 +13,16 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.model.dicionario.LocalAmbiente;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.security.auditoria.NaoAudita;
 
 @SuppressWarnings("serial")
 @Entity
+@org.hibernate.annotations.Entity(dynamicUpdate = false)
 @SequenceGenerator(name="sequence", sequenceName="ambiente_sequence", allocationSize=1)
 public class Ambiente extends AbstractModel implements Serializable
 {
@@ -27,19 +31,21 @@ public class Ambiente extends AbstractModel implements Serializable
 	@ManyToOne
 	private Empresa empresa;
 	
-	@ManyToOne
-	private Estabelecimento estabelecimento;
-
-	@OneToMany(fetch=FetchType.EAGER, mappedBy="ambiente", cascade=CascadeType.REMOVE)
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="ambiente", cascade=CascadeType.REMOVE)
 	private Collection<HistoricoAmbiente> historicoAmbientes;
 	
 	@OneToMany(mappedBy="ambiente")
 	private Collection<MedicaoRisco> medicaoRiscos;
-	
+
 	@Transient
 	private HistoricoAmbiente historicoAtual;
 	
 	public Ambiente() {
+	}
+	
+	public Ambiente(String nome, Empresa empresa) {
+		setNome(nome);
+		setEmpresa(empresa);
 	}
 	
 	public Ambiente(Long ambienteId, String ambienteNome, String ambienteDescricao, String ambienteTempoExposicao) 
@@ -59,16 +65,6 @@ public class Ambiente extends AbstractModel implements Serializable
 		
 		this.empresa.setId(empresaId);
 	}
-	public void setProjectionEstabelecimentoId(Long estabelecimentoId)
-	{
-		this.estabelecimento = new Estabelecimento();
-		this.estabelecimento.setId(estabelecimentoId);
-	}
-	public void setProjectionEstabelecimentoNome(String estabelecimentoNome)
-	{
-		this.estabelecimento = new Estabelecimento();
-		this.estabelecimento.setNome(estabelecimentoNome);
-	}
 	
     public Empresa getEmpresa()
 	{
@@ -86,13 +82,6 @@ public class Ambiente extends AbstractModel implements Serializable
 	{
 		this.nome = nome;
 	}
-	public String getNomeComEstabelecimento()
-	{
-		String nomeComEstabelecimento = nome;
-		if (estabelecimento != null && estabelecimento.getNome() != null)
-			nomeComEstabelecimento = estabelecimento.getNome() + " - " + nome;
-		return nomeComEstabelecimento;
-	}
 	
 	public Collection<HistoricoAmbiente> getHistoricoAmbientes()
 	{
@@ -102,17 +91,6 @@ public class Ambiente extends AbstractModel implements Serializable
 	{
 		this.historicoAmbientes = historicoAmbientes;
 	}
-
-
-	public Estabelecimento getEstabelecimento() {
-		return estabelecimento;
-	}
-
-
-	public void setEstabelecimento(Estabelecimento estabelecimento) {
-		this.estabelecimento = estabelecimento;
-	}
-
 	
 	/**
 	 * Variável <i>Transiente</i>.
@@ -139,6 +117,11 @@ public class Ambiente extends AbstractModel implements Serializable
 			this.historicoAtual = new HistoricoAmbiente();
 	}
 	
+	public void setHistoricoAmbienteNomeAmbiente(String nomeAmbiente){
+		iniciaHistoricoAmbineteAtual();
+		this.historicoAtual.setNomeAmbiente(nomeAmbiente);
+	}
+	
 	public void setHistoricoAmbienteAtualDescricao(String historicoAmbienteAtualDescricao){
 		iniciaHistoricoAmbineteAtual();
 		this.historicoAtual.setDescricao(historicoAmbienteAtualDescricao);
@@ -152,5 +135,43 @@ public class Ambiente extends AbstractModel implements Serializable
 	public void setHistoricoAmbienteAtualTempoExposicao(String historicoAmbienteAtualTempoExposicao){
 		iniciaHistoricoAmbineteAtual();
 		this.historicoAtual.setTempoExposicao(historicoAmbienteAtualTempoExposicao);
+	}
+	
+	public void setHistoricoAmbienteAtualCnpjEstabTerceiros(String cnpjEstabTerceiros){
+		iniciaHistoricoAmbineteAtual();
+		this.historicoAtual.setCnpjEstabelecimentoDeTerceiros(cnpjEstabTerceiros);
+	}
+	
+	public void setProjectionEstabelecimentoId(Long estabelecimentoId){
+		iniciaHistoricoAmbineteAtual();
+		historicoAtual.setEstabelecimentoId(estabelecimentoId);
+	}
+	
+	public void setProjectionEstabelecimentoNome(String estabelecimentoNome){
+		iniciaHistoricoAmbineteAtual();
+		this.historicoAtual.setEstabelecimentoNome(estabelecimentoNome);
+	}
+	
+	public void setProjectionLocalAmbiente(Integer localAmbiente){
+		iniciaHistoricoAmbineteAtual();
+		this.historicoAtual.setLocalAmbiente(localAmbiente);
+	}
+	
+	public void setEstabelecimentoNomeOrEstabalecimentoDeTerceiro(String estabelecimentoNome){
+		iniciaHistoricoAmbineteAtual();
+		
+		if(StringUtils.isBlank(estabelecimentoNome))
+			this.historicoAtual.setEstabelecimentoNome(LocalAmbiente.ESTABELECIMENTO_DE_TERCEIROS.getDescricao());
+		else
+			this.historicoAtual.setEstabelecimentoNome(estabelecimentoNome);
+	}
+	
+	@NaoAudita
+	public String getNomeComEstabelecimento()
+	{
+		String nomeComEstabelecimento = nome;
+		if (historicoAtual!= null && historicoAtual.getEstabelecimento() != null && historicoAtual.getEstabelecimento().getNome() != null)
+			nomeComEstabelecimento = historicoAtual.getEstabelecimento().getNome() + " - " + nome;
+		return nomeComEstabelecimento;
 	}
 }

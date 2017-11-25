@@ -2,7 +2,6 @@ package com.fortes.rh.test.web.action.cargosalario;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyCollection;
 import static org.mockito.Matchers.anyLong;
@@ -15,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.junit.Before;
@@ -204,6 +204,9 @@ public class ReajusteColaboradorEditActionTest
 	@Test
 	public void testPrepareUpdate() throws Exception
 	{
+		TabelaReajusteColaborador tabelaReajusteColaborador = TabelaReajusteColaboradorFactory.getEntity(1L);
+		tabelaReajusteColaborador.setData(new Date());
+	
 		ReajusteColaborador reajusteColaborador = ReajusteColaboradorFactory.getReajusteColaborador(1L);
 		reajusteColaborador.setAreaOrganizacionalAtual(AreaOrganizacionalFactory.getEntity(1L));
 		reajusteColaborador.setAreaOrganizacionalProposta(AreaOrganizacionalFactory.getEntity(2L));
@@ -211,13 +214,15 @@ public class ReajusteColaboradorEditActionTest
 		reajusteColaborador.setEstabelecimentoProposto(EstabelecimentoFactory.getEntity(2L));
 		reajusteColaborador.setFaixaSalarialAtual(FaixaSalarialFactory.getEntity(1L));
 		reajusteColaborador.setFaixaSalarialProposta(FaixaSalarialFactory.getEntity(2L));
+		reajusteColaborador.setTabelaReajusteColaborador(tabelaReajusteColaborador);
 		
 		reajusteColaborador.setAmbienteAtual(new Ambiente());
 		reajusteColaborador.setFuncaoAtual(new Funcao());
 		
 		Map session = ActionContext.getContext().getSession();
 		action.setReajusteColaborador(reajusteColaborador);
-		
+		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
+	
 		when(manager.getSituacaoReajusteColaborador(eq(1L))).thenReturn(reajusteColaborador);
 		when(indiceManager.findAll(action.getEmpresaSistema())).thenReturn(new ArrayList<Indice>());
 		when(estabelecimentoManager.findAllSelect(eq(action.getEmpresaSistema().getId()))).thenReturn(new ArrayList<Estabelecimento>());
@@ -232,11 +237,16 @@ public class ReajusteColaboradorEditActionTest
 		when(areaOrganizacionalManager.getAreaOrganizacional(anyCollection(), anyLong())).thenReturn(new AreaOrganizacional());
 		
 		when(funcaoManager.findByEmpresa(anyLong())).thenReturn(new ArrayList<Funcao>());
-		when(ambienteManager.findByEstabelecimento(any(Long[].class))).thenReturn(new ArrayList<Ambiente>());
+		when(tabelaReajusteColaboradorManager.findEntidadeComAtributosSimplesById(reajusteColaborador.getTabelaReajusteColaborador().getId())).thenReturn(tabelaReajusteColaborador);
+		when(ambienteManager.montaMapAmbientes(action.getEmpresaSistema().getId(), reajusteColaborador.getEstabelecimentoProposto().getId(), 
+				reajusteColaborador.getEstabelecimentoProposto().getNome(), tabelaReajusteColaborador.getData())).thenReturn(new LinkedHashMap<String, Collection<Ambiente>>()); 
+
 		when(faixaSalarialManager.findFaixas(eq(action.getEmpresaSistema()),eq(Cargo.ATIVO), anyLong())).thenReturn(new ArrayList<FaixaSalarial>());
 		when(manager.calculaSalarioProposto(eq(reajusteColaborador))).thenReturn(1000.0);
 		
 		when(SecurityUtil.getIdUsuarioLoged(session)).thenReturn(1l);
+		
+		assertEquals("success", action.prepareUpdate());
 	}
 	
 	@Test
@@ -258,6 +268,9 @@ public class ReajusteColaboradorEditActionTest
 	@Test
 	public void testUpdateException() throws Exception
 	{
+		TabelaReajusteColaborador tabelaReajusteColaborador = TabelaReajusteColaboradorFactory.getEntity(1L);
+		tabelaReajusteColaborador.setData(new Date());
+		
 		ReajusteColaborador reajusteColaborador = ReajusteColaboradorFactory.getReajusteColaborador(1L);
 		reajusteColaborador.setAreaOrganizacionalAtual(AreaOrganizacionalFactory.getEntity(1L));
 		reajusteColaborador.setAreaOrganizacionalProposta(AreaOrganizacionalFactory.getEntity(2L));
@@ -265,10 +278,12 @@ public class ReajusteColaboradorEditActionTest
 		reajusteColaborador.setEstabelecimentoProposto(EstabelecimentoFactory.getEntity(2L));
 		reajusteColaborador.setFaixaSalarialAtual(FaixaSalarialFactory.getEntity(1L));
 		reajusteColaborador.setFaixaSalarialProposta(FaixaSalarialFactory.getEntity(2L));
+		reajusteColaborador.setTabelaReajusteColaborador(tabelaReajusteColaborador);
 		
 		reajusteColaborador.setAmbienteAtual(new Ambiente());
 		reajusteColaborador.setFuncaoAtual(new Funcao());
 		action.setReajusteColaborador(reajusteColaborador);
+		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
 		
 		when(areaOrganizacionalManager.verificaMaternidade(anyLong(), anyBoolean())).thenReturn(true);
 		
@@ -282,7 +297,9 @@ public class ReajusteColaboradorEditActionTest
 		when(areaOrganizacionalManager.montaFamilia(anyCollection())).thenReturn(new ArrayList<AreaOrganizacional>());
 		when(areaOrganizacionalManager.getAreaOrganizacional(anyCollection(), anyLong())).thenReturn(new AreaOrganizacional());
 		when(funcaoManager.findByEmpresa(anyLong())).thenReturn(new ArrayList<Funcao>());
-		when(ambienteManager.findByEstabelecimento(any(Long[].class))).thenReturn(new ArrayList<Ambiente>());
+		when(tabelaReajusteColaboradorManager.findEntidadeComAtributosSimplesById(reajusteColaborador.getTabelaReajusteColaborador().getId())).thenReturn(tabelaReajusteColaborador);
+		when(ambienteManager.montaMapAmbientes(action.getEmpresaSistema().getId(), reajusteColaborador.getEstabelecimentoProposto().getId(), 
+				reajusteColaborador.getEstabelecimentoProposto().getNome(), tabelaReajusteColaborador.getData())).thenReturn(new LinkedHashMap<String, Collection<Ambiente>>()); 
 		when(faixaSalarialManager.findFaixas(eq(action.getEmpresaSistema()),eq(Cargo.ATIVO), anyLong())).thenReturn(new ArrayList<FaixaSalarial>());
 		when(manager.calculaSalarioProposto(eq(reajusteColaborador))).thenReturn(1500.0);
 		

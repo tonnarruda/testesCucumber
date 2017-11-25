@@ -1,5 +1,6 @@
 <#assign frt=JspTaglibs["/WEB-INF/tlds/fortes.tld"] />
 <#assign authz=JspTaglibs["/WEB-INF/tlds/authz.tld"] />
+<#assign display=JspTaglibs["/WEB-INF/tlds/displaytag.tld"] />
 <html>
 <head>
 <@ww.head/>
@@ -41,6 +42,7 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/formataValores.js?version=${versao}"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/moment.min.2.18.1.js?version=${versao}"/>'></script>
 
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/cssYui/fonts-min.css"/>');
@@ -152,18 +154,29 @@
 			return false;
 		}
 		
-		function populaAmbiente(estabelecimentoId)
+		function populaAmbiente()
 		{
-			if(estabelecimentoId != "null")
+			if(moment($("#dataSol").val(),'DD/MM/YYYY',true).locale('pt-BR').isValid())
+ 				var dataSol = $("#dataSol").val();
+ 			else
+ 				var dataSol = $.datepicker.formatDate('dd/mm/yy', new Date());
+		
+			var estabelecimentoId = $("#estabelecimento").val();
+			if(estabelecimentoId != "null" && estabelecimentoId > 0)
 			{
 				DWRUtil.useLoadingMessage('Carregando...');
-				AmbienteDWR.getAmbienteByEstabelecimento(createListAmbiente, estabelecimentoId);
+				AmbienteDWR.getAmbienteByEstabelecimentoAndAmbientesDeTerceiros(${empresaSistema.id}, estabelecimentoId, $("#estabelecimento option:selected").text(), dataSol, createListAmbiente);
+			}
+			else{
+				$('#ambiente').html("");
+				$('#ambiente').append("<option value='0'>Nenhum</option>");
 			}
 		}
 
 		function createListAmbiente(data)
 		{
-			addOptionsByMap('ambiente', data);
+			DWRUtil.removeAllOptions("ambiente");
+			addOpGroupByMap('ambiente', data, 'id', 'nome', 'Selecione...');
 		}
 			
 		var contador = 0;
@@ -304,6 +317,10 @@
 	</script>
 
 	<#assign validarCampos="return validacaoFormulario(); "/>
+<#assign populaAmbiente="populaAmbiente();"/>
+<@authz.authorize ifNotGranted="ROLE_COMPROU_SESMT">
+		<#assign populaAmbiente=""/>
+</@authz.authorize>
 </head>
 <body>
 	<@ww.actionmessage/>
@@ -323,7 +340,7 @@
 				<img id="dataHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-top: 17px" /></br></br>
 			<#else>
 				<@authz.authorize ifAllGranted="ROLE_EDITA_DATA_SOLICITACAO">
-					<@ww.datepicker label="Data" name="solicitacao.data" required="true" id="dataSol" value="${DataSolicitacao}" cssClass="mascaraData"/>
+				<@ww.datepicker label="Data" name="solicitacao.data" required="true" id="dataSol" value="${DataSolicitacao}" cssClass="mascaraData" onchange="${populaAmbiente}" onblur="${populaAmbiente}"/>
 				</@authz.authorize>
 				<@authz.authorize ifNotGranted="ROLE_EDITA_DATA_SOLICITACAO">
 					<@ww.textfield readonly="true" label="Data" name="solicitacao.data" id="dataSol" value="${DataSolicitacao}" cssClass="mascaraData" cssStyle="background: #EBEBEB;"/>
@@ -339,11 +356,7 @@
 			<@ww.textfield readonly="true" label="Estabelecimento" name="solicitacao.estabelecimento.nome" id="estabelecimento" cssStyle="width: 447px;background: #EBEBEB;"/>
 			<@ww.hidden name="solicitacao.estabelecimento.id"/>
 		<#else>
-			<#assign funcaoEstabelecimento="populaAmbiente(this.value);"/>
-			<@authz.authorize ifNotGranted="ROLE_COMPROU_SESMT">
-					<#assign funcaoEstabelecimento=""/>
-			</@authz.authorize>
-			<@ww.select label="Estabelecimento" name="solicitacao.estabelecimento.id" id="estabelecimento" list="estabelecimentos" onchange="${funcaoEstabelecimento}" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." required="true" cssStyle="width: 447px;"/>
+			<@ww.select label="Estabelecimento" name="solicitacao.estabelecimento.id" id="estabelecimento" list="estabelecimentos" onchange="${populaAmbiente}" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." required="true" cssStyle="width: 447px;"/>
 		</#if>
 
 		<#if !clone && possuiCandidatoSolicitacao && solicitacao.areaOrganizacional?exists && solicitacao.areaOrganizacional.id?exists || somenteLeitura>
@@ -377,7 +390,13 @@
 				<#assign headerValueCargo="Selecione..."/>
 			</#if>
 			<@authz.authorize ifAllGranted="ROLE_COMPROU_SESMT">
-				<@ww.select label="Ambiente" name="solicitacao.ambiente.id" id="ambiente" required="${obrigarAmbienteFuncao?string}" list="ambientes" listKey="id" listValue="nome" headerKey="" headerValue="Nenhum" cssStyle="width: 447px;"/>
+			
+			<#if obrigarAmbienteFuncao>
+				<#assign labelAmbiente="Ambiente:*"/>
+			<#else>
+				<#assign labelAmbiente="Ambiente:"/>
+			</#if>
+				<@frt.selectOpGroup id="ambiente" label="Ambiente" name="solicitacao.ambiente.id" map="ambientes" optionValue="id" optionText="nome" cssStyle="width: 447px;" required="${obrigarAmbienteFuncao?string}"/>
 				<@ww.select label="Cargo/Faixa" name="solicitacao.faixaSalarial.id" onchange="javascript:calculaSalario();populaFuncao(this.value);checaQtdLimiteColaboradorPorCargo();" list="faixaSalarials" id="faixa" listKey="id" headerKey="" headerValue="${headerValueCargo}" listValue="descricao" required="true" cssStyle="width: 447px;"/>
 				<@ww.select label="Função" name="solicitacao.funcao.id" id="funcao" required="${obrigarAmbienteFuncao?string}" list="funcoes" listKey="id" listValue="nome" headerValue="Nenhuma" headerKey="" cssStyle="width: 447px;"/>
 			</@authz.authorize>

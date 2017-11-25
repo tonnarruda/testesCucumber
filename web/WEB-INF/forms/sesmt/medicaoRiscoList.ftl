@@ -48,7 +48,7 @@
 		
 		<#if controlaRiscoPor == 'A'>
 			<@display.column title="Ambiente" property="ambiente.nome" />
-			<@display.column title="Estabelecimento" property="ambiente.estabelecimento.nome" />
+			<@display.column title="Estabelecimento do Ambiente" property="ambiente.historicoAtual.estabelecimento.nome" />
 		<#else>
 			<@display.column title="Função" property="funcao.nome" />
 		</#if>

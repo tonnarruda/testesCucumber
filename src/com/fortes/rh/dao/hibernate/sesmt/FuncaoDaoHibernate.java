@@ -77,6 +77,7 @@ public class FuncaoDaoHibernate extends GenericDaoHibernate<Funcao> implements F
 		criteria.setProjection(p);
 
 		criteria.add(Expression.eq("f.empresa.id", empresaId));
+		criteria.addOrder(Order.asc("f.nome"));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Funcao.class));
 

@@ -21,6 +21,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.HistoricoAmbienteDao;
+import com.fortes.rh.model.dicionario.LocalAmbiente;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 import com.fortes.rh.model.sesmt.Risco;
@@ -84,6 +85,8 @@ public class HistoricoAmbienteDaoHibernate extends GenericDaoHibernate<Historico
 		p.add(Projections.property("ha.data"), "data");
 		p.add(Projections.property("a.id"), "ambienteId");
 		p.add(Projections.property("ra.id"), "ricoAmbienteId");
+		p.add(Projections.property("ha.localAmbiente"), "localAmbiente");
+		p.add(Projections.property("ha.estabelecimento.id"), "estabelecimentoId");
 		criteria.setProjection(p);
 		
 		criteria.add(Expression.eq("a.id", ambienteId));
@@ -186,5 +189,32 @@ public class HistoricoAmbienteDaoHibernate extends GenericDaoHibernate<Historico
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 
 		return (HistoricoAmbiente)criteria.uniqueResult();
+	}
+
+	public boolean existeHistoricoAmbienteByData(Long estabelecimentoId, Long ambienteId, Date data) {
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "ha");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("ha.id"), "id");
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.or(Expression.eq("ha.estabelecimento.id", estabelecimentoId), 
+				Expression.or(Expression.isNull("ha.estabelecimento.id"),Expression.eq("ha.localAmbiente", LocalAmbiente.ESTABELECIMENTO_DE_TERCEIROS.getOpcao()))));
+		criteria.add(Expression.eq("ha.ambiente.id", ambienteId));
+		criteria.add(Expression.le("ha.data", data));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+
+		return criteria.list().size() > 0;
+	}
+
+	
+	public void deleteByEstabelecimentos(Long[] estabelecimentoIds) throws Exception {
+		if(estabelecimentoIds != null && estabelecimentoIds.length > 0)
+		{
+			String hql = "delete HistoricoAmbiente where estabelecimento.id in (:estabelecimentoIds)";
+			Query query = getSession().createQuery(hql);
+			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
+			query.executeUpdate();		
+		}
 	}
 }

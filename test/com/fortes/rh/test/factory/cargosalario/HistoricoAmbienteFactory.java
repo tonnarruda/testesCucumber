@@ -2,6 +2,7 @@ package com.fortes.rh.test.factory.cargosalario;
 
 import java.util.Date;
 
+import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 
@@ -42,5 +43,32 @@ public class HistoricoAmbienteFactory
 		
 		return historicoAmbiente;
 	}
+	
+	public static HistoricoAmbiente getEntity(Estabelecimento estabelecimento, String descricao, Ambiente ambiente, Date data)
+	{
+		HistoricoAmbiente historicoAmbiente = getEntity(descricao, ambiente, data, null);
+		historicoAmbiente.setEstabelecimento(estabelecimento);
+		
+		return historicoAmbiente;
+	}
+	
+	public static HistoricoAmbiente getEntity(String nomeAmbiente, Estabelecimento estabelecimento, String descricao, Ambiente ambiente, Date data, String tempoExposicao)
+	{
+		HistoricoAmbiente historicoAmbiente = getEntity(descricao, ambiente, data, tempoExposicao);
+		historicoAmbiente.setNomeAmbiente(nomeAmbiente);
+		historicoAmbiente.setEstabelecimento(estabelecimento);
+		
+		return historicoAmbiente;
+	}
+	
+	
 
+	public static HistoricoAmbiente getEntity(Date data, String nomeAmbiente, Ambiente ambiente, Estabelecimento estabelecimento, String descricao, Integer localAmbiente)
+	{
+		HistoricoAmbiente historicoAmbiente = getEntity(descricao, ambiente, data, "");
+		historicoAmbiente.setNomeAmbiente(nomeAmbiente);
+		historicoAmbiente.setEstabelecimento(estabelecimento);
+		historicoAmbiente.setLocalAmbiente(localAmbiente);
+		return historicoAmbiente;
+	}
 }

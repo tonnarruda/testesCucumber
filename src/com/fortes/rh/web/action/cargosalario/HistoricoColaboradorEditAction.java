@@ -3,6 +3,7 @@ package com.fortes.rh.web.action.cargosalario;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -65,7 +66,7 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 
 	private Collection<FaixaSalarial> faixaSalarials = new ArrayList<FaixaSalarial>();
 	private Collection<AreaOrganizacional> areaOrganizacionals = new ArrayList<AreaOrganizacional>();
-	private Collection<Ambiente> ambientes = new ArrayList<Ambiente>();
+	public Map<String, Collection<Ambiente>> ambientes = new LinkedHashMap<String, Collection<Ambiente>>();
 	private Collection<Funcao> funcaos = new ArrayList<Funcao>();
 	private Collection<Estabelecimento> estabelecimentos = new ArrayList<Estabelecimento>();
 	private Collection<Indice> indices = new ArrayList<Indice>();
@@ -112,8 +113,7 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 
 		if (historicoColaborador != null) {
 
-			if(historicoColaborador.getEstabelecimento() != null && historicoColaborador.getEstabelecimento().getId() != null)
-				ambientes = ambienteManager.findByEstabelecimento(historicoColaborador.getEstabelecimento().getId());
+			ambientes = ambienteManager.montaMapAmbientes(getEmpresaSistema().getId(), historicoColaborador.getEstabelecimento().getId(), historicoColaborador.getEstabelecimento().getNome(), historicoColaborador.getData());
 
 			salarioProcessado = historicoColaborador.getSalarioCalculado();
 			if (salarioProcessado == null || salarioProcessado == 0) {
@@ -127,7 +127,8 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 			historicoColaborador.setId(null);
 			historicoColaborador.setData(new Date());
 			historicoColaborador.setMotivo(MotivoHistoricoColaborador.SEM_MOTIVO);
-			ambientes = ambienteManager.findByEstabelecimento(historicoColaborador.getEstabelecimento().getId());
+			ambientes = ambienteManager.montaMapAmbientes(getEmpresaSistema().getId(), historicoColaborador.getEstabelecimento().getId(), historicoColaborador.getEstabelecimento().getNome(), historicoColaborador.getData());
+
 		}
 
 		faixaSalarials = faixaSalarialUtil.sortCollectionStringIgnoreCase(faixaSalarialManager.findFaixas(getEmpresaSistema(), Cargo.ATIVO, faixaInativaId), "cargo.nome");
@@ -505,11 +506,6 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 		this.indiceManager = indiceManager;
 	}
 
-	public Collection<Ambiente> getAmbientes()
-	{
-		return ambientes;
-	}
-
 	public Collection<AreaOrganizacional> getAreaOrganizacionals()
 	{
 		return areaOrganizacionals;
@@ -692,5 +688,9 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 
 	public void setDisabledCamposIntegrados(boolean disabledCamposIntegrados) {
 		this.disabledCamposIntegrados = disabledCamposIntegrados;
+	}
+
+	public Map<String, Collection<Ambiente>> getAmbientes() {
+		return ambientes;
 	}
 }

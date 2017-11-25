@@ -11,6 +11,7 @@ import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.relatorio.PppFatorRisco;
 import com.fortes.rh.model.sesmt.Cat;
 import com.fortes.rh.model.sesmt.EngenheiroResponsavel;
+import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
 import com.fortes.rh.model.sesmt.MedicoCoordenador;
 import com.fortes.rh.util.CollectionUtil;
@@ -64,6 +65,8 @@ public class PppRelatorio
 		this.setObservacoes(observacoes);
 		this.setEngenheirosResponsaveis(engenheirosResponsaveis);
 		this.setMedicosCoordenadores(medicosCoordenadores);
+		atualizaNomeFuncaoByData();
+		atualizaNomeAmbienteByData();
 	}
 
 	public void setRespostas(String[] respostas)
@@ -104,6 +107,43 @@ public class PppRelatorio
 		}
 		
 		this.fatoresRiscos = pppFatorRiscosResultado;
+	}
+	
+	private void atualizaNomeFuncaoByData() {
+		Date ultimaDataFuncao;
+		for (HistoricoColaborador historicoColaborador : historicos) {
+			if(historicoColaborador.getFuncao() != null && historicoColaborador.getFuncao().getHistoricoFuncaos() != null){
+				ultimaDataFuncao = null;
+				for (HistoricoFuncao historicoFuncao : historicoColaborador.getFuncao().getHistoricoFuncaos()) {
+					
+					if(historicoFuncao.getData().getTime() <= data.getTime()){
+						if(ultimaDataFuncao == null)
+							ultimaDataFuncao =  historicoFuncao.getData();
+						
+						if(historicoFuncao.getData().getTime() >= ultimaDataFuncao.getTime())
+							historicoColaborador.setFuncaoDescricao(historicoFuncao.getFuncaoNome());
+					}
+				}
+			}
+		}
+	}
+	
+	private void atualizaNomeAmbienteByData() {
+		Date ultimaDataHistoricoAmbiente;
+		for (HistoricoColaborador historicoColaborador : historicos) {
+			if(historicoColaborador.getAmbiente() != null && historicoColaborador.getAmbiente().getHistoricoAmbientes() != null){
+				ultimaDataHistoricoAmbiente = null;
+				for (HistoricoAmbiente historicoAmbiente : historicoColaborador.getAmbiente().getHistoricoAmbientes()) {
+					if(historicoAmbiente.getData().getTime() <= data.getTime()){
+						if(ultimaDataHistoricoAmbiente == null)
+							ultimaDataHistoricoAmbiente =  historicoAmbiente.getData();
+						
+						if(historicoAmbiente.getData().getTime() >= ultimaDataHistoricoAmbiente.getTime())
+							historicoColaborador.setAmbienteDescricao(historicoAmbiente.getNomeAmbiente());
+					}
+				}
+			}
+		}
 	}
 	
 	public Date getData()

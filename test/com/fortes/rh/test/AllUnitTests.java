@@ -157,7 +157,6 @@ import com.fortes.rh.test.business.security.AuditoriaManagerTest;
 import com.fortes.rh.test.business.sesmt.AfastamentoManagerTest;
 import com.fortes.rh.test.business.sesmt.AgendaManagerTest;
 import com.fortes.rh.test.business.sesmt.AmbienteManagerTest;
-import com.fortes.rh.test.business.sesmt.AmbienteManagerTest_JUnit4;
 import com.fortes.rh.test.business.sesmt.AnexoManagerTest;
 import com.fortes.rh.test.business.sesmt.AreaVivenciaManagerTest;
 import com.fortes.rh.test.business.sesmt.AreaVivenciaPcmatManagerTest;
@@ -1234,7 +1233,6 @@ import com.fortes.test.web.tags.LinkTagTest;
 	AmbienteEditActionTest.class,
 	AmbienteDaoHibernateTest.class,
 	AmbienteManagerTest.class,
-	AmbienteManagerTest_JUnit4.class,
 
 	HistoricoAmbienteDaoHibernateTest.class,
 	HistoricoAmbienteManagerTest.class,

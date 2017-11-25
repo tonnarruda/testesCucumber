@@ -2,12 +2,16 @@ package com.fortes.rh.web.action.sesmt;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
+import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.business.sesmt.EpcManager;
 import com.fortes.rh.business.sesmt.HistoricoAmbienteManager;
 import com.fortes.rh.business.sesmt.RiscoManager;
 import com.fortes.rh.exception.FortesException;
+import com.fortes.rh.model.dicionario.LocalAmbiente;
+import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 import com.fortes.rh.model.sesmt.RiscoAmbiente;
@@ -21,6 +25,7 @@ public class HistoricoAmbienteEditAction extends MyActionSupportEdit
 	private static final long serialVersionUID = 1L;
 
 	private HistoricoAmbienteManager historicoAmbienteManager;
+	private EstabelecimentoManager estabelecimentoManager;
 	private EpcManager epcManager;
 	private RiscoManager riscoManager;
 	private AmbienteManager ambienteManager;
@@ -28,14 +33,15 @@ public class HistoricoAmbienteEditAction extends MyActionSupportEdit
 	private HistoricoAmbiente historicoAmbiente;
 	private Ambiente ambiente;
 	
+	private Collection<HistoricoAmbiente> historicoAmbientes = new ArrayList<HistoricoAmbiente>();
 	private Collection<RiscoAmbiente> riscosAmbientes;
+	private Collection<Estabelecimento> estabelecimentos;
 	
 	private Collection<CheckBox> epcCheckList = new ArrayList<CheckBox>();
 	private String[] epcCheck;
 	
 	private String[] riscoChecks;
 	private String[] epcEficazChecks;
-	
 	
 	private void prepare() throws Exception
 	{
@@ -44,6 +50,7 @@ public class HistoricoAmbienteEditAction extends MyActionSupportEdit
 		if(historicoAmbiente != null && historicoAmbiente.getId() != null)
 			historicoAmbiente = historicoAmbienteManager.findById(historicoAmbiente.getId());
 		
+		estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
 		ambiente = ambienteManager.findByIdProjection(ambiente.getId());
 		epcCheckList = CheckListBoxUtil.populaCheckListBox(epcManager.findAllSelect(getEmpresaSistema().getId()), "getId", "getDescricao", null);
 	}
@@ -71,23 +78,12 @@ public class HistoricoAmbienteEditAction extends MyActionSupportEdit
 		return Action.SUCCESS;
 	}
 
-//	private void populaRiscosMarcados() 
-//	{
-//		Collection<Risco> riscos = new ArrayList<Risco>();
-//		for (RiscoAmbiente riscoAmbiente : historicoAmbiente.getRiscoAmbientes())
-//		{
-//			riscos.add(riscoAmbiente.getRisco());
-//		}
-//		
-//		riscoChecks = new CollectionUtil<Risco>().convertCollectionToArrayIds(riscos);
-//	}
-
 	public String insert() throws Exception
 	{
 		try {
 			historicoAmbiente.setAmbiente(ambiente);
-			historicoAmbienteManager.save(historicoAmbiente, riscoChecks, riscosAmbientes, epcCheck);
-	
+			historicoAmbienteManager.saveOrUpdate(historicoAmbiente, riscoChecks, riscosAmbientes, epcCheck);
+			addActionSuccess("Histórico do ambiente cadastrado com sucesso.");
 			return Action.SUCCESS;
 		
 		} catch (FortesException e) {
@@ -96,7 +92,7 @@ public class HistoricoAmbienteEditAction extends MyActionSupportEdit
 			return Action.INPUT;
 		
 		} catch (Exception e) {
-			addActionError("Ocorreu um erro ao gravar o histórico do ambiente");
+			addActionError("Ocorreu um erro ao gravar o histórico do ambiente.");
 			prepareInsert(); 
 			return Action.INPUT;
 		}
@@ -105,8 +101,8 @@ public class HistoricoAmbienteEditAction extends MyActionSupportEdit
 	public String update() throws Exception
 	{
 		try {
-			historicoAmbienteManager.save(historicoAmbiente, riscoChecks, riscosAmbientes, epcCheck);
-	
+			historicoAmbienteManager.saveOrUpdate(historicoAmbiente, riscoChecks, riscosAmbientes, epcCheck);
+			addActionSuccess("Histórico do ambiente atualizado com sucesso.");
 			return Action.SUCCESS;
 		
 		} catch (FortesException e) {
@@ -115,7 +111,7 @@ public class HistoricoAmbienteEditAction extends MyActionSupportEdit
 			return Action.INPUT;
 		
 		} catch (Exception e) {
-			addActionError("Ocorreu um erro ao gravar o histórico do ambiente");
+			addActionError("Ocorreu um erro ao atualizar o histórico do ambiente.");
 			prepareUpdate(); 
 			return Action.INPUT;
 		}
@@ -124,9 +120,17 @@ public class HistoricoAmbienteEditAction extends MyActionSupportEdit
 	public String delete() throws Exception
 	{
 		historicoAmbienteManager.removeCascade(historicoAmbiente.getId());
-
+		addActionSuccess("Histórico do ambiente excluído com sucesso.");
 		return Action.SUCCESS;
 	}
+	
+	
+	public String list(){
+		ambiente = ambienteManager.findEntidadeComAtributosSimplesById(ambiente.getId());
+		historicoAmbientes = historicoAmbienteManager.findToList(new String[]{"id","descricao","data","nomeAmbiente"}, new String[]{"id","descricao","data","nomeAmbiente"}, new String[]{"ambiente.id"}, new Object[]{ambiente.getId()}, new String[]{"data desc"});
+		return Action.SUCCESS;
+	}
+	
 
 	public HistoricoAmbiente getHistoricoAmbiente()
 	{
@@ -206,5 +210,27 @@ public class HistoricoAmbienteEditAction extends MyActionSupportEdit
 
 	public void setRiscosAmbientes(Collection<RiscoAmbiente> riscosAmbientes) {
 		this.riscosAmbientes = riscosAmbientes;
+	}
+	
+	public Collection<HistoricoAmbiente> getHistoricoAmbientes()
+	{
+		return historicoAmbientes;
+	}
+
+	public void setHistoricoAmbientes(Collection<HistoricoAmbiente> historicoAmbientes)
+	{
+		this.historicoAmbientes = historicoAmbientes;
+	}
+
+	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager) {
+		this.estabelecimentoManager = estabelecimentoManager;
+	}
+	
+	public Collection<Estabelecimento> getEstabelecimentos() {
+		return estabelecimentos;
+	}
+
+	public Map<Integer, String> getLocaisAmbiente() {
+		return LocalAmbiente.mapLocalAmbiente();
 	}
 }

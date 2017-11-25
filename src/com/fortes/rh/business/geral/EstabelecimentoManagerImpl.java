@@ -6,6 +6,7 @@ import java.util.Collection;
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.sesmt.AgendaManager;
 import com.fortes.rh.business.sesmt.AmbienteManager;
+import com.fortes.rh.business.sesmt.HistoricoAmbienteManager;
 import com.fortes.rh.dao.geral.EstabelecimentoDao;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -16,6 +17,7 @@ import com.fortes.web.tags.CheckBox;
 public class EstabelecimentoManagerImpl extends GenericManagerImpl<Estabelecimento, EstabelecimentoDao> implements EstabelecimentoManager
 {
 	private AgendaManager agendaManager;
+	private HistoricoAmbienteManager historicoAmbienteManager;
 
 	public boolean remove(String codigo, Long idEmpresa)
 	{
@@ -115,10 +117,10 @@ public class EstabelecimentoManagerImpl extends GenericManagerImpl<Estabelecimen
 
 	//TODO: SEM TESTE
 	public void deleteEstabelecimento(Long[] estabelecimentoIds) throws Exception {
-		
 		if (estabelecimentoIds != null && estabelecimentoIds.length > 0) {
 			AmbienteManager ambienteManager = (AmbienteManager) SpringUtil.getBean("ambienteManager");
-			ambienteManager.deleteByEstabelecimento(estabelecimentoIds);
+			historicoAmbienteManager.deleteByEstabelecimentos(estabelecimentoIds);
+			ambienteManager.deleteAmbienteSemHistorico();
 			agendaManager.deleteByEstabelecimento(estabelecimentoIds);
 			
 			getDao().remove(estabelecimentoIds);
@@ -146,5 +148,9 @@ public class EstabelecimentoManagerImpl extends GenericManagerImpl<Estabelecimen
 	
 	public void setAgendaManager(AgendaManager agendaManager) {
 		this.agendaManager = agendaManager;
+	}
+
+	public void setHistoricoAmbienteManager(HistoricoAmbienteManager historicoAmbienteManager) {
+		this.historicoAmbienteManager = historicoAmbienteManager;
 	}
 }

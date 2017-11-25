@@ -179,6 +179,9 @@
 		<create creator="spring" javascript="FatorDeRiscoDWR">
 			<param name="beanName" value="fatorDeRiscoDWR"/>
 		</create>
+		<create creator="spring" javascript="HistoricoFuncaoDWR">
+			<param name="beanName" value="historicoFuncaoDWR"/>
+		</create>
 		
 		<create creator="spring" javascript="UsuarioAjudaESocialDWR">
 			<param name="beanName" value="usuarioAjudaESocialDWR"/>
@@ -253,6 +256,10 @@
 		<!-- SESMT -->
 		<convert converter="bean" match="com.fortes.rh.model.sesmt.OrdemDeServico">
 			<param name="exclude" value="colaborador"/>
+		</convert>
+		
+		<convert converter="bean" match="com.fortes.rh.model.sesmt.Ambiente">
+			<param name="include" value="id, nome"/>
 		</convert>
 		
 		<convert converter="bean" match="com.fortes.rh.model.sesmt.FatorDeRisco">

@@ -77,28 +77,9 @@ public class PppRelatorioManagerImpl implements PppRelatorioManager
 		Collection<HistoricoFuncao> historicoFuncaos = historicoFuncaoManager.findHistoricoFuncaoColaborador(historicosColaboradorFuncao, data, colaborador.getDataDesligamento());
 		Collection<EngenheiroResponsavel> engenheirosResponsaveis = engenheiroResponsavelManager.findResponsaveisPorEstabelecimento(colaborador, data);
 		Collection<MedicoCoordenador> medicosCoordenadores = medicoCoordenadorManager.findResponsaveisPorEstabelecimento(data, colaborador);
-		atualizaNomeFuncaoByData(historicosDoColaboradors, data);
 		
 		return Arrays.asList(new PppRelatorio(colaborador, estabelecimento, data, respostas, cats, historicosDoColaboradors,
 				historicoFuncaos, pppFatorRiscos, nit, responsavel, observacoes, engenheirosResponsaveis, medicosCoordenadores));
-	}
-	
-	private void atualizaNomeFuncaoByData(Collection<HistoricoColaborador> historicosDoColaboradors, Date data) {
-		Date ultimaDataFuncao;
-		for (HistoricoColaborador historicoColaborador : historicosDoColaboradors) {
-			if(historicoColaborador.getFuncao() != null && historicoColaborador.getFuncao().getHistoricoFuncaos() != null){
-				ultimaDataFuncao = null;
-				for (HistoricoFuncao historicoFuncao : historicoColaborador.getFuncao().getHistoricoFuncaos()) {
-					if(historicoFuncao.getData().getTime() <= data.getTime()){
-						if(ultimaDataFuncao == null)
-							ultimaDataFuncao =  historicoFuncao.getData();
-						
-						if(historicoFuncao.getData().getTime() >= ultimaDataFuncao.getTime())
-							historicoColaborador.getFuncao().setNome(historicoFuncao.getFuncaoNome());
-					}
-				}
-			}
-		}
 	}
 
 	private Collection<PppFatorRisco> populaFatoresDeRiscos(Date data, Collection<HistoricoColaborador> historicosDoColaborador){

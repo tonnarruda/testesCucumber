@@ -47,6 +47,11 @@
     	<name>readonly</name>
     	<required>false</required>
     </attribute>
+    <attribute>
+    	<name>theme</name>
+    	<required>false</required>
+    </attribute>
+    
   </tag>
 
    <tag>
@@ -80,5 +85,56 @@
     	<required>true</required>
     </attribute>
   </tag>
-
+   
+  <tag>
+    <name>selectOpGroup</name>
+    <tagclass>com.fortes.web.tags.SelectOpGroup</tagclass>
+    <bodycontent>JSP</bodycontent>
+    <info>Cria um select com opGroup</info>
+    <attribute>
+    	<name>label</name>
+    	<required>true</required>
+    </attribute>
+    <attribute>
+    	<name>id</name>
+    	<required>true</required>
+    </attribute>
+    <attribute>
+    	<name>name</name>
+    	<required>true</required>
+    </attribute>
+    <attribute>
+    	<name>map</name>
+    	<required>true</required>
+    </attribute>
+    <attribute>
+    	<name>optionValue</name>
+    	<required>true</required>
+    </attribute>
+    <attribute>
+    	<name>optionText</name>
+    	<required>true</required>
+    </attribute>
+    <attribute>
+    	<name>cssStyle</name>
+    	<required>false</required>
+    </attribute>
+    <attribute>
+ 	  	<name>required</name>
+    	<required>false</required>
+    </attribute>
+    <attribute>
+    	<name>onchange</name>
+    	<required>false</required>
+    </attribute>
+    <attribute>
+    	<name>liClass</name>
+    	<required>false</required>
+    </attribute>
+    <attribute>
+    	<name>disabled</name>
+    	<required>false</required>
+    </attribute>
+  </tag>
+  
 </taglib>

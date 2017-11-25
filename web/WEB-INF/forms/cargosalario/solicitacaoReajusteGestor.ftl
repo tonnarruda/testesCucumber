@@ -104,13 +104,12 @@
 			<@authz.authorize ifAllGranted="ROLE_COMPROU_SESMT">
 				if(data.funcaoAtualId != undefined){
 					document.getElementById('funcaoAtual').value = data.funcaoAtualId;
-					document.getElementById('funcaoProposta').value = funcaoId;	
+					document.getElementById('funcaoProposta').value = data.funcaoAtualId;
 				}
 				if(data.ambienteAtualId != undefined)
 					document.getElementById('ambienteAtual').value = data.ambienteAtualId;
 			
-				if (data.estabelecimentoAtualId != "" && data.estabelecimentoAtualId != null && data.estabelecimentoAtualId != "null")
-					populaAmbiente(data.estabelecimentoAtualId, data.ambienteAtualId);	
+				populaAmbiente(data.estabelecimentoAtualId);	
 					
 			</@authz.authorize>
 			
@@ -203,25 +202,28 @@
 		function set(name, valor){
 			document.getElementById(name).innerHTML = valor;
 		}
-
-		function populaAmbiente(estabelecimentoId, ambienteId)
+		
+		function populaAmbiente(estabelecimentoId)
 		{
-			if(estabelecimentoId != "null")
+			if(estabelecimentoId && estabelecimentoId > 0)
 			{
 				DWRUtil.useLoadingMessage('Carregando...');
-				AmbienteDWR.getAmbienteByEstabelecimento(function(data){createListAmbiente(data, ambienteId);
-															}, estabelecimentoId, ambienteId);
+				AmbienteDWR.getAmbientes(${empresaSistema.id}, $('#tabelaReajuste').val(),  estabelecimentoId, $("#estabelecimentoProposto option:selected").text(), createListAmbiente);
+			}
+			else{
+				$('#ambienteProposto').html("");
+				$('#ambienteProposto').append("<option value='0'>Nenhum</option>");
 			}
 		}
-
-		function createListAmbiente(data, ambId)
+		
+		function createListAmbiente(data)
 		{
 			DWRUtil.removeAllOptions("ambienteProposto");
-			DWRUtil.addOptions("ambienteProposto", data);
-
-			if(ambId != null)
-				document.getElementById('ambienteProposto').value = ambId;
+			addOpGroupByMap('ambienteProposto', data, 'id', 'nome', 'Selecione...');
 		}
+		
+		
+		
 
 		function enviaForm()
 		{
@@ -301,7 +303,7 @@
 				<div id="quadro">
 					<h2>Situação proposta</h2>
 					<ul>
-						<#assign funcaoEstabelecimento="populaAmbiente(this.value,null);"/>
+						<#assign funcaoEstabelecimento="populaAmbiente(this.value);"/>
 						<@authz.authorize ifNotGranted="ROLE_COMPROU_SESMT">
 							<#assign funcaoEstabelecimento=""/>
 						</@authz.authorize>
