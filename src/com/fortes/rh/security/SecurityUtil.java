@@ -1,5 +1,6 @@
 package com.fortes.rh.security;
 
+import java.util.Collection;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -190,5 +191,28 @@ public class SecurityUtil
 			}
 		}
 	}
+
+	public static Collection<String> getDialogAJudaVisualisados(Map session)
+	{
+		SecurityContext sc = getSecurityContext(session);
+		if(sc == null)
+			return null;
+
+		return ((UserDetailsImpl) sc.getAuthentication().getPrincipal()).getDialogAJudaVisualisados();
+	}
 	
+	
+	public static boolean setDialogAJudaVisualisados(Map session, Collection<String> dialogAJudaVisualisados)
+	{
+		if (session == null)
+			return false;
+		
+		SecurityContext sc = (SecurityContext) session.get("ACEGI_SECURITY_CONTEXT");
+		if(sc == null)
+			return false;
+		
+		((UserDetailsImpl)sc.getAuthentication().getPrincipal()).setDialogAJudaVisualisados(dialogAJudaVisualisados);
+		
+		return true;
+	}
 }

@@ -10,6 +10,7 @@ import org.springframework.dao.DataAccessException;
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
+import com.fortes.rh.business.geral.UsuarioAjudaESocialManager;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.util.StringUtil;
@@ -19,6 +20,7 @@ public class UserDetailsServiceImpl implements UserDetailsService
 	private UsuarioManager usuarioManager;
 	private ColaboradorManager colaboradorManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	private UsuarioAjudaESocialManager usuarioAjudaESocialManager;
 
 	public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException, DataAccessException
  	{
@@ -34,7 +36,8 @@ public class UserDetailsServiceImpl implements UserDetailsService
 			usuarioManager.setUltimoLogin(user.getId());
 			
 			return new UserDetailsImpl(user.getId(), user.getNome(), login, StringUtil.decodeString(user.getSenha()), user.isSuperAdmin(), user.getUltimoLogin(), 
-										null, user.isAcessoSistema(), true, true, true, null, null, user.getColaborador(), parametrosDoSistemaManager.findByIdProjectionSession(1L));
+										null, user.isAcessoSistema(), true, true, true, null, null,	user.getColaborador(), parametrosDoSistemaManager.findByIdProjectionSession(1L), 
+										usuarioAjudaESocialManager.findByUsuarioId(user.getId()));
 		}
 		else
 			throw new UsernameNotFoundException("Usuário '" + login + "' não cadastrado...");
@@ -52,5 +55,9 @@ public class UserDetailsServiceImpl implements UserDetailsService
 
 	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
 		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
+	}
+
+	public void setUsuarioAjudaESocialManager(UsuarioAjudaESocialManager usuarioAjudaESocialManager) {
+		this.usuarioAjudaESocialManager = usuarioAjudaESocialManager;
 	}
 }

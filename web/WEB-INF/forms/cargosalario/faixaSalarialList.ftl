@@ -12,21 +12,6 @@
 <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UsuarioAjudaESocialDWR.js?version=${versao}"/>'></script>
 
 <script type="text/javascript">
-	$(function() {
-		<#if empresaEstaIntegradaEAderiuAoESocial>
-			setAjudaESocial('Estamos nos adequando as exigências impostas pelo Governo Federal para atender as normas do eSocial.<br><br>'+
-				 'Desta forma, a partir da versão <strong>1.1.184.216</strong>, a inclusão e exclusão das faixas salariais só poderão ser realizadas no Fortes Pessoal.',
-				 '<@ww.url value="/imgs/esocial.png"/>', 'imgAjudaEsocial');
-					 
-										
-			<#if exibeDialogAJuda>
-				dialogAjudaESocial();
-				UsuarioAjudaESocialDWR.saveUsuarioAjuda(${usuarioLogado.id}, "${telaAjuda?string}");
-			</#if>
-		</#if>
-		
-	});
-		
 	function habilitarDesabilitarCamposLinha(campoRisco)
 	{
 		$(campoRisco).parent().parent().find('input, select, textarea').not(campoRisco).attr('disabled', !campoRisco.checked);

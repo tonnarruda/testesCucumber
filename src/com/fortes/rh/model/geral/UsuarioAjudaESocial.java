@@ -18,7 +18,6 @@ public class UsuarioAjudaESocial extends AbstractModel
 	
 	public UsuarioAjudaESocial()
 	{
-		
 	}
 
 	public Usuario getUsuario() {

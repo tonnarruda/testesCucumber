@@ -38,17 +38,6 @@
 				grupoRiscoESocial = '${risco.grupoRiscoESocial}'; 
 			</#if>
 			
-		    setAjudaESocial('Estamos nos adequando as exigências impostas pelo Governo Federal para atender as normas do eSocial.<br><br>'+
-				'Desta forma, a partir da versão <strong>1.1.185.217</strong>, o cadastro de riscos passa a ter dois novos campos:<br><br>' + 
-				'<strong>Tipo de risco eSocial:</strong> Classificação de riscos definida pelo eSocial na tabela 23 de seu leiaute.<br><br>'+
-				'<strong>Fator de risco:</strong> Detalhamento dos riscos de acordo com a classificação do eSocial. Define todos os riscos que o colaborador ' + 
-				'poderá estar exposto.', '<@ww.url value="/imgs/esocial.png"/>', 'imgAjudaEsocial');
-									
-			<#if exibeDialogAJuda>
-				dialogAjudaESocial();
-				UsuarioAjudaESocialDWR.saveUsuarioAjuda(${usuarioLogado.id}, "${telaAjuda?string}");
-			</#if>
-			
 			populaFatoresDeRisco();
 		});
 		

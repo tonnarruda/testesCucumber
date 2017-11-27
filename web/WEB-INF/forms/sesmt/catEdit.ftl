@@ -69,7 +69,6 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EnderecoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CidadeDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/BairroDWR.js?version=${versao}"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UsuarioAjudaESocialDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/abas.js?version=${versao}"/>"></script>
@@ -131,17 +130,6 @@
 			
 			<#if cat?exists && cat.iniciatCAT?exists>
 				$('#iniciatCAT').val(${cat.iniciatCAT});
-			</#if>
-			
-			setAjudaESocial('Estamos nos adequando as exigências impostas pelo Governo Federal para atender as normas do eSocial.<br><br>'+
-				'Desta forma, a partir da versão <strong>1.1.186.218</strong>, o cadastro de CAT passa a ter vários novos campos:<br><br>' + 
-				'<strong>Tipo de risco eSocial:</strong> Classificação de riscos definida pelo eSocial na tabela 23 de seu leiaute.<br><br>'+
-				'<strong>Fator de risco:</strong> Detalhamento dos riscos de acordo com a classificação do eSocial. Define todos os riscos que o colaborador ' + 
-				'poderá estar exposto.', '<@ww.url value="/imgs/esocial.png"/>', 'imgAjudaEsocial');
-		
-			<#if exibeDialogAJuda>
-				dialogAjudaESocial();
-				UsuarioAjudaESocialDWR.saveUsuarioAjuda(${usuarioLogado.id}, "${telaAjuda?string}");
 			</#if>
 		});
 		
@@ -217,7 +205,7 @@
 			}
 			
 			idDiv = "divSelectDialog" + item + count;
-			$('#block' + item).append("<div id='" + idDiv + "' class='divSelectDialog' style='width: 600px;text-align: justify;border: 1px solid #BEBEBE;padding: 10px;margin-bottom: 4px;border-radius: 3px;background-color: #f3f3f3;'>" +
+			$('#block' + item).append("<div id='" + idDiv + "' class='divSelectDialog' style='width: 900px;text-align: justify;border: 1px solid #BEBEBE;padding: 10px;margin-bottom: 4px;border-radius: 3px;background-color: #f3f3f3;'>" +
 										"<span class='openSelectDialog' onclick=\"openSelectDialog('" + titulo + "','" + item + "','" + count + "');\" style='cursor: pointer; color: #1c96e8;'>" +
 											"<i class='fa fa-plus-circle' aria-hidden='true' style='font-size: 16px;'></i>" +
 											" Selecione um Ítem" +
@@ -239,7 +227,7 @@
 			$("#" + id).append("" +
 				"<div class='lateralidade'>" +
 					"</br><Label>Lateralidade:*</label>" +
-					"<select name='lateralidadesSelecionadas' id='select" + id + "' class='selectLateralidade' style='width:590px;'>" +
+					"<select name='lateralidadesSelecionadas' id='select" + id + "' class='selectLateralidade' style='width:890px;'>" +
 					    "<option value=''>Selecione...</option>" +
 					    <#list lateralidades?keys as keyLateralidade>
 					    	"<option value='${keyLateralidade}'>${lateralidades.get(keyLateralidade)}</option>" +
@@ -335,10 +323,8 @@
 		 			
 		 		if($('#tipoInscricao').val() != '' &&  $('#tipoInscricao').val() == 1){
 		 			camposObrigatoriosEsocial.push('cnpjRegistardor');
-		 			camposValidos.push('cnpjRegistardor');
 		 		}else if($('#tipoInscricao').val() != '' &&  $('#tipoInscricao').val() == 2){
 		 			camposObrigatoriosEsocial.push('cpfRegistardor');
-		 			camposValidos.push('cpfRegistardor');
 		 		}
 		 		
 		 		if(($('#obito').val() != '' &&  $('#obito').val() == "true") || ($('#tipo').val() != '' && $('#tipo').val() == 3))
@@ -360,6 +346,11 @@
 		 		camposValidos.push('horaAtendimento');
 		 		camposObrigatorios = camposObrigatorios.concat(camposObrigatoriosEsocial);
 			</#if>
+			
+			if($('#tipoInscricao').val() != '' &&  $('#tipoInscricao').val() == 1)
+	 			camposValidos.push('cnpjRegistardor');
+	 		else if($('#tipoInscricao').val() != '' &&  $('#tipoInscricao').val() == 2)
+	 			camposValidos.push('cpfRegistardor');
 			
 			formularioValidado = validaFormulario('form', camposObrigatorios, camposValidos, true);
 			
@@ -509,7 +500,6 @@
 					<@ww.file label="Foto do acidente" name="fotoAcidente" id="fotoAcidente" cssStyle="width:502px;"/>
 		        </#if>
 				
-				<@ww.select label="Natureza da Lesão" name="cat.naturezaLesao.id" id="naturezaLesao" list="naturezaLesaos" listKey="id" listValue="descricao" headerKey="" headerValue="Selecione..." cssStyle="width:502px;"/>
 				<div style="margin-top: 5px; margin-bottom: 5px;">Qtde de dias debitados: <@ww.textfield label="" id="qtdDiasDebitados" name="cat.qtdDiasDebitados" cssStyle="width:25px;" maxLength="3" onkeypress="return(somenteNumeros(event,''));" theme="simple"/></div>
 				<@ww.checkbox label="Gerou afastamento?" id="gerouAfastamento" name="cat.gerouAfastamento" labelPosition="left" onchange="decideQtdDiasAfastado()"/>
 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Qtde de dias afastados:<@ww.textfield label="" id="qtdDiasAfastado" name="cat.qtdDiasAfastado" cssStyle="width:25px;" maxLength="3" theme="simple"  onkeypress="return(somenteNumeros(event,''));"/>
@@ -528,7 +518,7 @@
 			</div>
 			
 			<div id="content4" class="contents" style="display: none;">
-				<#if !cat.local?exists>
+				<#if cat.local?exists && cat.local != "">
 					<@ww.textfield label="Local do Acidente ${msgEsocial}" id="local" name="cat.local" cssStyle="width:635px;background-color:#F6F6F6" maxLength="100" disabled="true"/>
 					<@ww.hidden name="cat.local" />
 				</#if>
@@ -545,11 +535,11 @@
 			</div>
 			
 			<div id="content5" class="contents" style="display: none;">
-				<#if !cat.parteAtingida?exists>
+				<#if cat.parteAtingida?exists && cat.parteAtingida != "">
 					<@ww.textfield label="Parte do Corpo Atingida ${msgEsocial}" id="parteAtingida" name="cat.parteAtingida" cssStyle="width:620px;background-color:#F6F6F6" maxLength="100" disabled="true"/>
 					<@ww.hidden name="cat.parteAtingida" />
 				</#if>
-				<@frt.selectDialog label="Partes do Corpo Atingida" width="600px" required="${aderiuAoESocial?string}" id="parteCorpoAtingida" name="partesCorpoAtingidaSelecionados" list="partesCorpoAtingida" listKey="id" listValue="codigoDescricao"/>
+				<@frt.selectDialog label="Partes do Corpo Atingida" width="900px" required="${aderiuAoESocial?string}" id="parteCorpoAtingida" name="partesCorpoAtingidaSelecionados" list="partesCorpoAtingida" listKey="id" listValue="codigoDescricao"/>
 				
 				</br>
 				<a href="javascript:;" onclick="javascript:adicionarItem('parteCorpoAtingida', 'Partes do Corpo Atingida');" style="text-decoration: none;margin-left: 5px;">
@@ -559,7 +549,7 @@
 			</div>
 			
 			<div id="content6" class="contents" style="display: none;">
-				<#if !cat.fonteLesao?exists>
+				<#if cat.fonteLesao?exists && cat.fonteLesao != "">
 					<@ww.textfield label="Fonte da Lesão ${msgEsocial}" id="fonteLesao" name="cat.fonteLesao" cssStyle="width:620px;background-color:#F6F6F6" maxLength="100" disabled="true"/>
 					<@ww.hidden name="cat.fonteLesao" />
 				</#if>
@@ -567,14 +557,14 @@
 				<fieldset>
 					<legend>Agente Causador:*</legend>
 				<img id='agenteCausadorHelp' src="<@ww.url value='/imgs/help.gif'/>" width='16' height='16' style='margin-left: 128px;margin-top: -20px;vertical-align: top;' />
-					<@frt.selectDialog label="Acidente de Trabalho" width="600px" id="agenteCausadorAcidenteTrabalho" name="agentesCausadoresAcidenteTrabalhoSelecionados" list="agentesCausadoresAcidenteTrabalho" listKey="id" listValue="codigoDescricao"/>
+					<@frt.selectDialog label="Acidente de Trabalho" width="900px" id="agenteCausadorAcidenteTrabalho" name="agentesCausadoresAcidenteTrabalhoSelecionados" list="agentesCausadoresAcidenteTrabalho" listKey="id" listValue="codigoDescricao"/>
 					</br>
 					<a href="javascript:;" onclick="javascript:adicionarItem('agenteCausadorAcidenteTrabalho', 'Agente Causador do Acidente de Trabalho');" style="text-decoration: none;margin-left: 5px;">
 						<img src='<@ww.url includeParams="none" value="/imgs/add.png"/>'/> 
 						Adicionar agente causador do acidente de trabalho
 					</a> 
 					</br></br>
-					<@frt.selectDialog label="Situação Geradora de Doença Profissional" width="600px" id="situacaoGeradoraDoencaProfissional" name="situacoesGeradoraDoencaProfissionalSelecionados" list="situacoesGeradorasDoencaProfissional" listKey="id" listValue="codigoDescricao" />
+					<@frt.selectDialog label="Situação Geradora de Doença Profissional" width="900px" id="situacaoGeradoraDoencaProfissional" name="situacoesGeradoraDoencaProfissionalSelecionados" list="situacoesGeradorasDoencaProfissional" listKey="id" listValue="codigoDescricao" />
 					</br>
 					<a href="javascript:;" onclick="javascript:adicionarItem('situacaoGeradoraDoencaProfissional', 'Agente Causador/Situação Geradora de Doença Profissional');" style="text-decoration: none;margin-left: 5px;">
 						<img src='<@ww.url includeParams="none" value="/imgs/add.png"/>'/> 
@@ -596,6 +586,7 @@
 					<@ww.textfield cssClass="atestado" label="Duração Estimada do Tratamento, em Dias" id="duracaoTratamentoEmDias" name="cat.atestado.duracaoTratamentoEmDias" cssStyle="width:100px;" maxLength="4"/>
 					<@ww.select cssClass="atestado" label="Houve Afastamento" name="cat.atestado.indicativoAfastamentoString" id="indicativoAfastamento" list=r"#{'true':'Sim','false': 'Não'}" cssStyle="width:135px;"  headerKey="" headerValue="Selecione..."/>
 					<@ww.textfield cssClass="atestado" label="CID" id="codCID" name="cat.atestado.codCID" cssStyle="width:100px;" maxLength="4"/>
+					<@ww.select label="Natureza da Lesão (Este campo não é incluso no cadastro do eSocial)" name="cat.naturezaLesao.id" id="naturezaLesao" list="naturezaLesaos" listKey="id" listValue="descricao" headerKey="" headerValue="Selecione..." cssStyle="width:620px;"/>
 					<@frt.selectDialog label="Descrição da natureza da lesão" width="600px" id="descricaoNaturezaLesao" name="cat.atestado.descricaoNaturezaLesao.id" list="descricoesNaturezaLesoes" listKey="id" listValue="codigoDescricao" addRemover=true/>
 					<@ww.textarea label="Descrição Complementar da Lesão" id="descricaoComplementarLesa" name="cat.atestado.descricaoComplementarLesao" cssStyle="height:50px;width:620px;"/>
 					<@ww.textarea label="Diagnóstico Provável" id="diagnosticoProvavel" name="cat.atestado.diagnosticoProvavel" cssStyle="height:50px;width:620px;"/>

@@ -80,7 +80,6 @@ public class FuncaoEditAction extends MyActionSupportEdit
 	{
 		prepare();
 		riscosFuncoes = riscoManager.findRiscosFuncoesByEmpresa(getEmpresaSistema().getId());
-		setExibeDialogAJuda(!usuarioAjudaESocialManager.verifyExists(new String[]{"usuario.id", "telaAjuda"}, new Object[]{getUsuarioLogado().getId(), TelaAjudaESocial.EDICAO_HISTORICO_FUNCAO}));
 		setTelaAjuda(TelaAjudaESocial.EDICAO_HISTORICO_FUNCAO);
 
 		return Action.SUCCESS;

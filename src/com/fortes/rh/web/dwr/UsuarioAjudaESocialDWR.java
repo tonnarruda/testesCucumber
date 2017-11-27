@@ -14,7 +14,7 @@ public class UsuarioAjudaESocialDWR
 			e.printStackTrace();
 		}
 	}
-
+	
 	public void setUsuarioAjudaESocialManager(UsuarioAjudaESocialManager usuarioAjudaESocialManager) {
 		this.usuarioAjudaESocialManager = usuarioAjudaESocialManager;
 	}

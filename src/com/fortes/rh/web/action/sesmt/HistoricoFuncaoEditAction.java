@@ -5,7 +5,6 @@ import java.util.HashSet;
 
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.geral.CodigoCBOManager;
-import com.fortes.rh.business.geral.UsuarioAjudaESocialManager;
 import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.business.sesmt.ExameManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
@@ -33,7 +32,6 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 	private RiscoManager riscoManager;
 	private CursoManager cursoManager;
 	private CodigoCBOManager codigoCBOManager;
-	private UsuarioAjudaESocialManager usuarioAjudaESocialManager;
 
 	private HistoricoFuncao historicoFuncao = new HistoricoFuncao();
 	private Funcao funcao;
@@ -72,9 +70,7 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 		setCursosCheckList(cursoManager.populaCheckListCurso(getEmpresaSistema().getId()));
 		riscosFuncoes = riscoManager.findRiscosFuncoesByEmpresa(getEmpresaSistema().getId());
 
-		setExibeDialogAJuda(!usuarioAjudaESocialManager.verifyExists(new String[]{"usuario.id", "telaAjuda"}, new Object[]{getUsuarioLogado().getId(), TelaAjudaESocial.EDICAO_HISTORICO_FUNCAO}));
 		setTelaAjuda(TelaAjudaESocial.EDICAO_HISTORICO_FUNCAO);
-
 	}
 
 	public String prepareInsert() throws Exception
@@ -262,10 +258,5 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 
 	public void setFuncaoManager(FuncaoManager funcaoManager) {
 		this.funcaoManager = funcaoManager;
-	}
-
-	public void setUsuarioAjudaESocialManager(
-			UsuarioAjudaESocialManager usuarioAjudaESocialManager) {
-		this.usuarioAjudaESocialManager = usuarioAjudaESocialManager;
 	}
 }

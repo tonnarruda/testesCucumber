@@ -78,17 +78,6 @@
 				$('#descricaoCBO').focus(function() {
 				    $(this).select();
 				});
-			<#else>
-				setAjudaESocial('Estamos nos adequando as exigências impostas pelo Governo Federal para atender as normas do eSocial.<br><br>'+
-						'Desta forma, a partir da versão <strong>1.1.184.216</strong>, a edição dos campos '+ 
-						'<strong>Descrição no Fortes Pessoal</strong> e <strong>CBO</strong> só poderão ser efetuadas pelo Fortes Pessoal.',
-				 '<@ww.url value="/imgs/esocial.png"/>', 'imgAjudaEsocial');
-									
-				<#if exibeDialogAJuda>
-					dialogAjudaESocial();
-					UsuarioAjudaESocialDWR.saveUsuarioAjuda(${usuarioLogado.id}, "${telaAjuda?string}");
-				</#if>
-			
 			</#if>
 		});
 			

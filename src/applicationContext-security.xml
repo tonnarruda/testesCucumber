@@ -12,6 +12,9 @@
 		<property name="parametrosDoSistemaManager">
 			<ref bean="parametrosDoSistemaManager" />
 		</property>
+		<property name="usuarioAjudaESocialManager">
+			<ref bean="usuarioAjudaESocialManager" />
+		</property>
 	</bean>
 
 	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">

@@ -8,6 +8,7 @@ import java.util.Map;
 
 import com.fortes.rh.business.geral.NoticiaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
+import com.fortes.rh.business.geral.UsuarioAjudaESocialManager;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.dicionario.TelaAjudaESocial;
 import com.fortes.rh.model.geral.Colaborador;
@@ -35,7 +36,7 @@ public abstract class MyActionSupport extends ActionSupport
 	private String msgHelp = null;
 	private ParametrosDoSistema parametrosDoSistemaSession;
 	private String telaAjuda;
-	private boolean exibeDialogAJuda = false;
+	private String msgAjudaEsocial = null;
 	
 	public static final String MESSAGE = "message";
 	
@@ -236,12 +237,37 @@ public abstract class MyActionSupport extends ActionSupport
 	public void setTelaAjuda(String telaAjuda) {
 		this.telaAjuda = telaAjuda;
 	}
-
-	public boolean isExibeDialogAJuda() {
-		return exibeDialogAJuda;
+	
+	public void setAjudaEsocial(String telaAjuda) {
+		this.telaAjuda = telaAjuda;
 	}
 
-	public void setExibeDialogAJuda(boolean exibeDialogAJuda) {
-		this.exibeDialogAJuda = exibeDialogAJuda;
+	public boolean getExibeDialogAJuda() {
+		if(this.telaAjuda != null){
+			this.msgAjudaEsocial = TelaAjudaESocial.getMsgAjusdaEsocial(telaAjuda, isEmpresaIntegradaEAderiuAoESocial());
+			if(this.msgAjudaEsocial == null)
+				return false;
+			
+			Collection<String> dialogAJudaVisualisados = SecurityUtil.getDialogAJudaVisualisados(ActionContext.getContext().getSession());
+			if(!dialogAJudaVisualisados.contains(telaAjuda)){
+				try{
+				
+					dialogAJudaVisualisados.add(telaAjuda);
+					SecurityUtil.setDialogAJudaVisualisados(ActionContext.getContext().getSession(), dialogAJudaVisualisados);
+					UsuarioAjudaESocialManager usuarioAjudaESocialManager = (UsuarioAjudaESocialManager) SpringUtil.getBeanOld("usuarioAjudaESocialManager");
+					usuarioAjudaESocialManager.saveUsuarioAjuda(getUsuarioLogado().getId(), telaAjuda);
+
+					return true;
+				} catch (Exception e) {
+					System.out.println("#####Erro ao salvar tela de ajusda do eSocial.#####");
+				}
+			}
+		}
+
+		return false;
+	}
+
+	public String getMsgAjudaEsocial() {
+		return msgAjudaEsocial;
 	}
 }

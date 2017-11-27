@@ -22,19 +22,6 @@
 		$('#descricaoCBO').focus(function() {
 		    $(this).select();
 		});
-		
-		setAjudaESocial('Estamos nos adequando as exigências impostas pelo Governo Federal para atender as normas do eSocial.<br><br>'+
-			 'Desta forma, a partir da versão <strong>1.1.185.217</strong>, o histórico da função passa a contemplar as informações de '+
-			 '<strong>Nome da Função</strong> e <strong>CBO</strong>.',
-				 '<@ww.url value="/imgs/esocial.png"/>', 'imgAjudaEsocial');
-									
-									
-									
-		<#if exibeDialogAJuda>
-			dialogAjudaESocial();
-			UsuarioAjudaESocialDWR.saveUsuarioAjuda(${usuarioLogado.id}, "${telaAjuda?string}");
-		</#if>
-		
 	});
 		
 	function habilitarDesabilitarCamposLinha(campoRisco)

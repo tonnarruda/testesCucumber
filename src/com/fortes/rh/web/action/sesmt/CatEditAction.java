@@ -18,7 +18,6 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.EstadoManager;
-import com.fortes.rh.business.geral.UsuarioAjudaESocialManager;
 import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.business.sesmt.CatManager;
 import com.fortes.rh.business.sesmt.EpiManager;
@@ -88,7 +87,6 @@ public class CatEditAction extends MyActionSupportList
 	private AcPessoalClientSistema acPessoalClientSistema;
 	private EmpresaManager empresaManager;
 	private CidadeManager cidadeManager;
-	private UsuarioAjudaESocialManager usuarioAjudaESocialManager;
 
 	private Colaborador colaborador;
 	private Cat cat;
@@ -254,10 +252,11 @@ public class CatEditAction extends MyActionSupportList
 		Empresa empresa = empresaManager.findByIdProjection(getEmpresaSistema().getId());
 		if(empresa.isAcIntegra())
 			aderiuAoESocial = acPessoalClientSistema.isAderiuAoESocial(empresa);
-		aderiuAoESocial = true;
+		//aderiuAoESocial = true;
 		
-		setExibeDialogAJuda(!usuarioAjudaESocialManager.verifyExists(new String[]{"usuario.id", "telaAjuda"}, new Object[]{getUsuarioLogado().getId(), TelaAjudaESocial.EDICAO_CAT}));
-		setTelaAjuda(TelaAjudaESocial.EDICAO_CAT);
+		
+		
+		setAjudaEsocial(TelaAjudaESocial.EDICAO_CAT);
 	}
 
 	public String prepareInsert() throws Exception
@@ -863,11 +862,6 @@ public class CatEditAction extends MyActionSupportList
 
 	public Collection<Cidade> getCidades() {
 		return cidades;
-	}
-
-	public void setUsuarioAjudaESocialManager(
-			UsuarioAjudaESocialManager usuarioAjudaESocialManager) {
-		this.usuarioAjudaESocialManager = usuarioAjudaESocialManager;
 	}
 
 	public LinkedHashMap<Long, String> getLateralidades() {

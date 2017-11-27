@@ -1643,8 +1643,8 @@ function getCookieProcessando() {
 })(jQuery);
 
 
-function setAjudaESocial(msg, img, idImg){
-	$('#waDivTitulo').append('<span style="margin-top: -9px;"><img id='+idImg+' class="imgAjudaEsocial" onclick="javascript:dialogAjudaESocial();" src="' + img + '" style="cursor:pointer;" title="eSocial"></span>');
+function setAjudaESocial(msg, img){
+	$('#waDivTitulo').append('<span style="margin-top: -9px;"><img id="imgAjudaEsocial" class="imgAjudaEsocial" onclick="javascript:dialogAjudaESocial();" src="' + img + '" style="cursor:pointer;" title="eSocial"></span>');
 	$('#waDivTitulo').append('<div id="formAjudaESocial" style="display: none;"><div id="ajuda">' + msg + '</div></div>');
 }
 

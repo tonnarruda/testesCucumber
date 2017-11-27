@@ -24,6 +24,7 @@
 		<#if pgInicial?exists && pgInicial>
 			pgInicial = true;
 		</#if>
+
 	</script>
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-1.4.4.min.js"/>'></script>
@@ -152,9 +153,9 @@
 		<br /><br />
 	</div>
 </body>
-<#if msgHelp?exists>
-	<script>
-		$(document).ready(function($){
+<script type="text/javascript">
+	$(document).ready(function($){
+		<#if msgHelp?exists>
 			$('#tooltipHelp').qtip({
 				content: '${msgHelp}',
 				position: {
@@ -175,7 +176,14 @@
 					name: 'light'
 				}
 			});
-		});
-	</script>
-</#if>	
+		</#if>	
+
+		<#if exibeDialogAJuda>
+			setAjudaESocial('${msgAjudaEsocial}', '<@ww.url value="/imgs/esocial.png"/>');
+			dialogAjudaESocial();
+		<#elseif msgAjudaEsocial?exists>
+			setAjudaESocial('${msgAjudaEsocial}', '<@ww.url value="/imgs/esocial.png"/>');
+		</#if>
+	});
+</script>
 </html>

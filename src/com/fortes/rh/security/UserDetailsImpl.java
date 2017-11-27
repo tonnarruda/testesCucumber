@@ -1,5 +1,6 @@
 package com.fortes.rh.security;
 
+import java.util.Collection;
 import java.util.Date;
 
 import org.acegisecurity.GrantedAuthority;
@@ -25,6 +26,7 @@ public class UserDetailsImpl implements UserDetails
 	private boolean accountNonLocked;
 	private boolean credentialsNonExpired; 
 	private boolean enabled;
+	private Collection<String> dialogAJudaVisualisados;
 	private String menuFormatado;
 	private Empresa empresa;
 	private Colaborador colaborador;
@@ -33,7 +35,7 @@ public class UserDetailsImpl implements UserDetails
 
 	public UserDetailsImpl(Long id, String nome, String username, String password, boolean superAdmin, Date ultimoLogin, 
 			GrantedAuthority[] authorities, boolean accountNonExpired, boolean accountNonLocked, boolean credentialsNonExpired, boolean enabled, 
-			String menuFormatado, Empresa empresa, Colaborador colaborador, ParametrosDoSistema parametrosDoSistema)
+			String menuFormatado, Empresa empresa, Colaborador colaborador, ParametrosDoSistema parametrosDoSistema, Collection<String> dialogAJudaVisualisados)
 	{
 		this.id = id;
 		this.nome = nome;
@@ -50,6 +52,7 @@ public class UserDetailsImpl implements UserDetails
 		this.empresa = empresa;
 		this.colaborador = colaborador;
 		this.parametrosDoSistema = parametrosDoSistema;
+		this.dialogAJudaVisualisados = dialogAJudaVisualisados;
 	}
 
 	public GrantedAuthority[] getAuthorities()
@@ -190,5 +193,14 @@ public class UserDetailsImpl implements UserDetails
 
 	public void setParametrosDoSistema(ParametrosDoSistema parametrosDoSistema) {
 		this.parametrosDoSistema = parametrosDoSistema;
+	}
+
+	public Collection<String> getDialogAJudaVisualisados() {
+		return dialogAJudaVisualisados;
+	}
+
+	public void setDialogAJudaVisualisados(
+			Collection<String> dialogAJudaVisualisados) {
+		this.dialogAJudaVisualisados = dialogAJudaVisualisados;
 	}
 }

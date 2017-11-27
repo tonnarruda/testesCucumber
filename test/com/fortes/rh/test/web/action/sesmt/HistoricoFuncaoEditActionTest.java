@@ -13,7 +13,6 @@ import org.junit.Test;
 
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.geral.CodigoCBOManager;
-import com.fortes.rh.business.geral.UsuarioAjudaESocialManager;
 import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.business.sesmt.ExameManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
@@ -43,7 +42,6 @@ public class HistoricoFuncaoEditActionTest
 	private EpiManager epiManager;
 	private FuncaoManager funcaoManager;
 	private CodigoCBOManager codigoCBOManager;
-	private UsuarioAjudaESocialManager usuarioAjudaESocialManager;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -69,9 +67,6 @@ public class HistoricoFuncaoEditActionTest
 		
 		codigoCBOManager = mock(CodigoCBOManager.class);
 		action.setCodigoCBOManager(codigoCBOManager);
-		
-		usuarioAjudaESocialManager= mock(UsuarioAjudaESocialManager.class);
-		action.setUsuarioAjudaESocialManager(usuarioAjudaESocialManager);
 	}
 	
 	@Before
