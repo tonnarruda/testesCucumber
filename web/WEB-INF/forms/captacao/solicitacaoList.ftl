@@ -50,8 +50,10 @@
 		<#assign dataEncerramentoFim = dataEncerramentoFim?date/>
 	<#else>
 		<#assign dataEncerramentoFim = ""/>
-	<#assign origemDocumento = origemAnexo/>
 	</#if>
+	
+	<#assign origemDocumento = origemAnexo/>
+	
 	<script type='text/javascript'>
 		$(function() {
 			var obj = document.getElementById("legendas");

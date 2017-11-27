@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
 	<Versao id="1.1.186.218" db="" data="23/11/2017">
+		<Item visivel="S" motivo="P17110000248"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Pesquisar: Ajuste de inconsistência ao realizar pesquisa utilizando o campo "Período de Encerramento da Solicitação".]]></Item>
 		<Item visivel="S" motivo="P17110000212"><![CDATA[SESMT > Relatórios > PPP: Ajuste de inconsistência ao emitir o PPP.]]></Item>
 		<Item visivel="N" motivo="P17110000197"><![CDATA[Sistema: Ajuste na tabela de histórico de função.]]></Item>
 	</Versao>
