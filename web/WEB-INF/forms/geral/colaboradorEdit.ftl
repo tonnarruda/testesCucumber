@@ -1161,6 +1161,7 @@
 		<@ww.hidden name="colaborador.dataSolicitacaoDesligamento"/>
 		<@ww.hidden name="colaborador.dataSolicitacaoDesligamentoAc"/>
 		<@ww.hidden name="candidatoSolicitacaoId"/>
+		
 		<@ww.hidden name="dadosIntegradosAtualizados" id="dadosIntegradosAtualizados" value="${dadosIntegradosAtualizados}"/>
 		<@ww.hidden name="dataAlteracao" id="dataAlteracao"/>
 		

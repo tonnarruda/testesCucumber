@@ -105,7 +105,7 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 		this.areaOrganizacional = new AreaOrganizacional(areaOrganizacional);
 	}
 
-	public HistoricoColaborador(Long id, Double salario, Date data, String gfip, String motivo, Double quantidadeIndice, int tipoSalario, int status,
+	public HistoricoColaborador(Long id, Double salario, Date data, String gfip, String motivo, Double quantidadeIndice, int tipoSalario, int status, Long candidatoSolicitacaoId,
 			Long empresaId, Long colaboradorId, String colaboradorNomeComercial, String colaboradorNome, String colaboradorCodigoAC, boolean colaboradorNaoIntegraAc,
 			Date colaboradorDataDesligamento, Long indiceId, String indiceNome, Double indiceHistoricoValor, Long areaId, String areaNome, Long ambienteId,
 			String ambienteNome, Long funcaoId, String funcaoNome, Long faixaSalarialId, String faixaSalarialNome,
@@ -121,6 +121,7 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 		setQuantidadeIndice(quantidadeIndice);
 		setTipoSalario(tipoSalario);
 		setStatus(status);
+		setcandidatoSolicitacaoId(candidatoSolicitacaoId);
 		setEmpresaId(empresaId);
 		setEstabelecimentoCodigoAC(estabelecimentoCodigoAc);
 		setColaboradorId(colaboradorId);
