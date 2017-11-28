@@ -133,8 +133,12 @@ public class ExameDaoHibernateTest extends GenericDaoHibernateTest<Exame>
 		exames.add(exame1);
 		exames.add(exame2);
 
+		Funcao funcao = FuncaoFactory.getEntity();
+		funcaoDao.save(funcao);
+		
 		HistoricoFuncao historicoFuncao = HistoricoFuncaoFactory.getEntity();
 		historicoFuncao.setExames(exames);
+		historicoFuncao.setFuncao(funcao);
 		historicoFuncao = historicoFuncaoDao.save(historicoFuncao);
 
 		Collection<Exame> examesRetorno = exameDao.findByHistoricoFuncao(historicoFuncao.getId());

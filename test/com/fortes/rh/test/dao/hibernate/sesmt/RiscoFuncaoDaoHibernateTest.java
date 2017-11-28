@@ -44,7 +44,11 @@ public class RiscoFuncaoDaoHibernateTest extends GenericDaoHibernateTest<RiscoFu
 
 	public void testRemoveByHistoricoFuncao()
 	{
+		Funcao funcao = FuncaoFactory.getEntity();
+		funcaoDao.save(funcao);
+		
 		HistoricoFuncao historicoFuncao = HistoricoFuncaoFactory.getEntity();
+		historicoFuncao.setFuncao(funcao);
 		historicoFuncaoDao.save(historicoFuncao);
 		
 		RiscoFuncao riscoFuncao = RiscoFuncaoFactory.getEntity();

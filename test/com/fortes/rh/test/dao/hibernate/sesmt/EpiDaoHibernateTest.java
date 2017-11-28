@@ -319,8 +319,12 @@ public class EpiDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<Epi>
 		epis.add(epi1);
 		epis.add(epi2);
 
+		Funcao funcao = FuncaoFactory.getEntity();
+		funcaoDao.save(funcao);
+		
 		HistoricoFuncao historicoFuncao = HistoricoFuncaoFactory.getEntity();
 		historicoFuncao.setEpis(epis);
+		historicoFuncao.setFuncao(funcao);
 		historicoFuncao = historicoFuncaoDao.save(historicoFuncao);
 
 		Collection<Epi> episRetorno = epiDao.findByHistoricoFuncao(historicoFuncao.getId());

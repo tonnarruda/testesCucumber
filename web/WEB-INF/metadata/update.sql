@@ -29110,3 +29110,65 @@ alter table historicoFuncao alter column funcaonome set not null; --.go
 insert into migrations values('20171114074625');--.go
 
 update parametrosdosistema set appversao = '1.1.186.218', quantidadeConstraints = 433, versaoimportador = '1.64.0';--.go
+-- versao 1.1.187.219
+
+
+ALTER TABLE ONLY medicocoordenador_estabelecimento DROP CONSTRAINT IF EXISTS medicocoordenador_estabelecimento_medicocoordenador_fk;--.go
+ALTER TABLE ONLY medicocoordenador_estabelecimento ADD CONSTRAINT medicocoordenador_estabelecimento_medicocoordenador_fk FOREIGN KEY (medicocoordenador_id) REFERENCES medicocoordenador(id);--.go
+
+ALTER TABLE ONLY medicocoordenador_estabelecimento DROP CONSTRAINT IF EXISTS medicocoordenador_estabelecimento_estabelecimento_fk;--.go
+ALTER TABLE ONLY medicocoordenador_estabelecimento ADD CONSTRAINT medicocoordenador_estabelecimento_estabelecimento_fk FOREIGN KEY (estabelecimentos_id) REFERENCES estabelecimento(id);--.go
+
+ALTER TABLE engenheiroresponsavel DROP COLUMN IF EXISTS estabelecimentoResponsavel;--.go
+ALTER TABLE engenheiroresponsavel ADD COLUMN estabelecimentoResponsavel CHARACTER VARYING(6) DEFAULT 'TODOS';--.go
+
+ALTER TABLE ONLY engenheiroresponsavel_estabelecimento DROP CONSTRAINT IF EXISTS engenheiroresponsavel_estabelecimento_engenheiroresponsavel_fk;--.go
+ALTER TABLE ONLY engenheiroresponsavel_estabelecimento ADD CONSTRAINT engenheiroresponsavel_estabelecimento_engenheiroresponsavel_fk FOREIGN KEY (engenheiroresponsavel_id) REFERENCES engenheiroresponsavel(id);--.go
+
+ALTER TABLE ONLY engenheiroresponsavel_estabelecimento DROP CONSTRAINT IF EXISTS engenheiroresponsavel_estabelecimento_estabelecimento_fk;--.go
+ALTER TABLE ONLY engenheiroresponsavel_estabelecimento ADD CONSTRAINT engenheiroresponsavel_estabelecimento_estabelecimento_fk FOREIGN KEY (estabelecimentos_id) REFERENCES estabelecimento(id);--.go
+
+insert into migrations values('20171122170755');--.go
+delete from riscofuncao where historicofuncao_id in (select id from historicofuncao where funcao_id is null);--.go
+delete from historicofuncao_curso where historicofuncao_id in (select id from historicofuncao where funcao_id is null);--.go
+delete from historicofuncao_epi where historicofuncao_id in (select id from historicofuncao where funcao_id is null);--.go
+delete from historicofuncao_exame where historicofuncao_id in (select id from historicofuncao where funcao_id is null);--.go
+delete  from historicofuncao where funcao_id is null;--.go
+
+alter table historicoFuncao alter column id set not null;--.go
+insert into migrations values('20171123085027');--.go
+CREATE OR REPLACE FUNCTION insertCandidatoSolicitacaoInHistoricoColaborador() RETURNS void AS $$ 
+DECLARE  
+mv RECORD;  
+BEGIN 
+	FOR mv IN  select distinct cs.id as candidatoSolicitacao_id, hc.id as historico_id
+		from colaborador c
+		join historicocolaborador hc on hc.colaborador_id = c.id
+		join candidatosolicitacao cs on cs.candidato_id = c.candidato_id
+		join solicitacao s on s.id = cs.solicitacao_id
+
+		where cs.status = 'P' or cs.status = 'C' and datacontratacaoorpromocao is not null
+		and hc.candidatosolicitacao_id is null
+
+		and hc.data = (select min(hc2.data) from historicocolaborador hc2 
+					where hc2.data >= s.data 
+					and hc2.estabelecimento_id = s.estabelecimento_id   
+					and hc2.areaorganizacional_id = s.areaorganizacional_id  
+					and hc2.faixasalarial_id = s.faixasalarial_id
+					and hc2.colaborador_id = c.id 
+				)
+		and hc.estabelecimento_id = s.estabelecimento_id
+		and hc.areaorganizacional_id = s.areaorganizacional_id  
+		and hc.faixasalarial_id = s.faixasalarial_id
+		order by hc.id
+	LOOP  
+		UPDATE historicocolaborador hc set candidatosolicitacao_id = mv.candidatoSolicitacao_id where hc.id = mv.historico_id; 
+	END LOOP;  
+END;  
+$$ LANGUAGE plpgsql;--.go
+select insertCandidatoSolicitacaoInHistoricoColaborador();--.go
+drop FUNCTION insertCandidatoSolicitacaoInHistoricoColaborador();--.go
+insert into migrations values('20171128112142');--.go
+alter table historicoFuncao alter column funcao_id set not null;--.go
+insert into migrations values('20171128121442');--.go
+update parametrosdosistema set appversao = '1.1.187.219', quantidadeConstraints = 433, versaoimportador = '1.64.0';--.go

@@ -52,12 +52,15 @@ public class HistoricoFuncaoDaoHibernateTest extends GenericDaoHibernateTest_JUn
 
 	public HistoricoFuncao getEntity()
 	{
+		Funcao funcao = FuncaoFactory.getEntity();
+		funcaoDao.save(funcao);
+		
 		HistoricoFuncao historicoFuncao = HistoricoFuncaoFactory.getEntity();
 
 		historicoFuncao.setId(1L);
 		historicoFuncao.setDescricao("asd");
 		historicoFuncao.setData(new Date());
-		historicoFuncao.setFuncao(null);
+		historicoFuncao.setFuncao(funcao);
 
 		return historicoFuncao;
 	}

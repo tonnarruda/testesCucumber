@@ -14,6 +14,7 @@ public class HistoricoFuncaoFactory
 		HistoricoFuncao historicoFuncao = new HistoricoFuncao();
 		historicoFuncao.setId(null);
 		historicoFuncao.setFuncaoNome("Função");
+		historicoFuncao.setCodigoCbo("001");
 
 		return historicoFuncao;
 	}
