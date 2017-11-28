@@ -29,6 +29,7 @@ import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.util.ComparatorString;
 import com.fortes.rh.util.LongUtil;
+import com.fortes.rh.util.ModelUtil;
 @SuppressWarnings("rawtypes")
 public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<ColaboradorQuestionario, ColaboradorQuestionarioDao> implements ColaboradorQuestionarioManager
 {
@@ -462,10 +463,10 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 	}
 	
 	public ColaboradorQuestionario findByColaboradorAvaliacao(Colaborador colaborador, Avaliacao avaliacao) {
-		if (colaborador != null && colaborador.getId() != null && avaliacao != null && avaliacao.getId() != null)
-			return getDao().findByColaboradorAvaliacao(colaborador.getId(), avaliacao.getId());
+		if (ModelUtil.hasNull("getId()", colaborador,avaliacao))
+			return null;
 		
-		return null;
+		return getDao().findByColaboradorAvaliacao(colaborador.getId(), avaliacao.getId());
 	}
 
 	public ColaboradorQuestionario findByColaboradorAvaliacaoCurso(Long colaboradorId, Long avaliacaoCursoId, Long turmaId) 

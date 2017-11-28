@@ -55,6 +55,7 @@ import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
+import com.fortes.rh.util.ModelUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.fortes.rh.web.action.captacao.RelatorioCandidatoSolicitacaoList;
@@ -511,12 +512,16 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	public String prepareInsertAvaliacaoExperiencia()
 	{
 		ColaboradorQuestionario colaboradorQuestionarioTemp = colaboradorQuestionarioManager.findByColaboradorAvaliacao(colaboradorQuestionario.getColaborador(), colaboradorQuestionario.getAvaliacao());
-		if (colaboradorQuestionarioTemp != null)
-		{	
+		if (colaboradorQuestionarioTemp != null) {
 			colaboradorQuestionario = colaboradorQuestionarioTemp;
 			return prepareUpdateAvaliacaoExperiencia();
 		}
 		
+		if (ModelUtil.hasNotNull("getAvaliacao().getId()", colaboradorQuestionario)) {
+			Avaliacao avaliacao = avaliacaoManager.findEntidadeComAtributosSimplesById(colaboradorQuestionario.getAvaliacao().getId());
+			colaboradorQuestionario.setAvaliacao(avaliacao);
+		}
+
 		colaborador = colaboradorManager.findByIdProjectionEmpresa(colaboradorQuestionario.getColaborador().getId());
 		
 		Colaborador colaboradorLogado = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession());
@@ -573,7 +578,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	
 	private void montaPerguntasRespostas() {		
 		perguntas = new ArrayList<Pergunta>();
-		if (colaboradorQuestionario.getAvaliacao() != null && colaboradorQuestionario.getAvaliacao().getId() != null)
+		if (ModelUtil.hasNotNull("getAvaliacao().getId()", colaboradorQuestionario))
 			perguntas = perguntaManager.getPerguntasRespostaByQuestionarioAgrupadosPorAspecto(colaboradorQuestionario.getAvaliacao().getId(), ordenarPorAspecto);
 		
 		for (Pergunta pergunta : perguntas){

@@ -105,9 +105,6 @@
 		}
 	</script>
 	
-	<#if colaboradorQuestionario?exists && colaboradorQuestionario.id?exists >
-		<#assign respostasCompactas=colaboradorQuestionario.avaliacao.respostasCompactas />
-	</#if>
 </head>
 <body>
 	<@ww.actionerror />
@@ -117,6 +114,10 @@
 		<#assign class="divInfo"/>
 	<#else>
 		<#assign class=""/>
+	</#if>
+
+	<#if colaboradorQuestionario?exists && colaboradorQuestionario.avaliacao?exists && colaboradorQuestionario.avaliacao.respostasCompactas?exists >
+		<#assign respostasCompactas = colaboradorQuestionario.avaliacao.respostasCompactas />
 	</#if>
 	
 	<#if colaboradorQuestionario?exists && colaboradorQuestionario.respondida && !roleEditar?exists>

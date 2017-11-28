@@ -626,6 +626,7 @@ import com.fortes.rh.test.web.action.geral.UsuarioMensagemListActionTest;
 import com.fortes.rh.test.web.action.pesquisa.AspectoEditActionTest;
 import com.fortes.rh.test.web.action.pesquisa.AspectoListActionTest;
 import com.fortes.rh.test.web.action.pesquisa.ColaboradorQuestionarioEditActionTest;
+import com.fortes.rh.test.web.action.pesquisa.ColaboradorQuestionarioEditActionTest_JUnit4;
 import com.fortes.rh.test.web.action.pesquisa.ColaboradorQuestionarioListActionTest;
 import com.fortes.rh.test.web.action.pesquisa.ColaboradorQuestionarioListActionTest_JUnit4;
 import com.fortes.rh.test.web.action.pesquisa.ColaboradorRespostaEditActionTest;
@@ -1192,7 +1193,9 @@ import com.fortes.test.web.tags.LinkTagTest;
 	ColaboradorQuestionarioDaoHibernateTest_JUnit4.class,
 	ColaboradorQuestionarioManagerTest.class,
 	ColaboradorQuestionarioListActionTest.class,
+	ColaboradorQuestionarioListActionTest_JUnit4.class,
 	ColaboradorQuestionarioEditActionTest.class,
+	ColaboradorQuestionarioEditActionTest_JUnit4.class,
 	EntrevistaDaoHibernateTest.class,
 	EntrevistaManagerTest.class,
 	EntrevistaListActionTest.class,
@@ -1202,7 +1205,6 @@ import com.fortes.test.web.tags.LinkTagTest;
 	FichaMedicaEditActionTest.class,
 	ResultadoQuestionarioTest.class,
 	ColaboradorRespostaEditActionTest_JUnit4.class,
-	ColaboradorQuestionarioListActionTest_JUnit4.class,
 
     //SESMT
 	NaturezaLesaoDaoHibernateTest.class,

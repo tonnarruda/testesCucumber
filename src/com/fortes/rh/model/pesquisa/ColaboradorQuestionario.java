@@ -17,7 +17,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
-import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang3.BooleanUtils;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.avaliacao.Avaliacao;
@@ -233,11 +233,11 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
     	newAvaliacao();    	
     	this.avaliacao.setAvaliarCompetenciasCargo(projectionAvaliacaoAvaliarCompetenciasCargo == null ? false : projectionAvaliacaoAvaliarCompetenciasCargo); 	
     }
-    
-    public void setProjectionAvaliacaoRespostasCompactas(Boolean projectionAvaliacaoRespostasCompactas)
+
+    public void setProjectionAvaliacaoRespostasCompactas(Boolean respostasCompactas)
     {
     	newAvaliacao();    	
-    	this.avaliacao.setRespostasCompactas(projectionAvaliacaoRespostasCompactas == null ? false : projectionAvaliacaoRespostasCompactas); 	
+    	this.avaliacao.setRespostasCompactas(BooleanUtils.isTrue(respostasCompactas)); 	
     }
    
     public void setProjectionAvaliacaoDesempenhoId(Long projectionAvaliacaoDesempenhoId)

@@ -42,7 +42,7 @@
 					<#assign pesoResposta="0"/>
 				</#if>
 				<input type="radio" peso="${pesoResposta}" class="opcaoResposta${pergunta.id}, radio objetiva pergunta" name="perguntas[${i}].colaboradorRespostas[0].resposta.id" value="${resposta.id}" id="${resposta.id}" <#if perguntas[i].colaboradorRespostas[0].temResposta() && (resposta.id == perguntas[i].colaboradorRespostas[0].resposta.id)>checked</#if>/><label class="labelResposta" for="${resposta.id}">${resposta.texto}</label>
-				<#if respostasCompactas?exists && !respostasCompactas><br></#if>
+				<#if respostasCompactas?exists && !respostasCompactas><br /></#if>
 				<#assign h = h + 1 >
 				<#if respostasCompactas?exists && respostasCompactas && h%5 == 0 >
 					<div style="clear: both;"></div>
