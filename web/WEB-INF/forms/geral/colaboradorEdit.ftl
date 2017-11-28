@@ -883,7 +883,7 @@
 			
 			<@ww.datepicker label="Encerramento do Contrato" name="colaborador.dataEncerramentoContrato" value="${dataEncerramentoContrato}" id="dt_encerramentoContrato" cssClass="mascaraData" liClass="campo"/>
 			
-			<@ww.textfield label="Regime de Revezamento (PPP)" liClass="campo" name="colaborador.regimeRevezamento" id="regimeRevezamento" cssStyle="width:353px;" maxLength="255"/>
+			<@ww.textfield label="Regime de Revezamento (PPP)" liClass="campo" name="colaborador.regimeRevezamento" id="regimeRevezamento" cssStyle="width:353px;" maxLength="255"/></br>
 
 			<li>
 				<@ww.div cssClass="divInfo" >
