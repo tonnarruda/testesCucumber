@@ -71,12 +71,14 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<Usua
 	}
 
 	@Test
-	public void testFindByLoginNull()
+	public void testFindByLoginQuandoLoginInseridoErradoDeveRetornarVazio()
 	{
 		Usuario usuario = new Usuario();
-		usuario.setLogin("erro");
+		usuario.setLogin("@Fortes123");
+		usuario.setSenha("1234");
+		usuarioDao.save(usuario);
 
-		assertNull(usuarioDao.findByLogin(usuario.getLogin()));
+		assertNull(usuarioDao.findByLogin("@Fortes1234"));
 	}
 	
 	@Test

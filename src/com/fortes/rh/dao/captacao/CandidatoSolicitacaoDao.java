@@ -36,4 +36,6 @@ public interface CandidatoSolicitacaoDao extends GenericDao<CandidatoSolicitacao
 	CandidatoSolicitacao findByHistoricoColaboradorId(Long historicoColaboradorId);
 	void updateStatusParaIndiferenteEmSolicitacoesEmAndamento(Long candidatoId);
 	public void updateStatusSolicitacoesEmAndamentoByColaboradorId(Character status, Long[] colaboradoresIds);
+	Collection<CandidatoSolicitacao> listarSolicitacoesEmAbertoCandidato(Long candidatoId, Date dataSolicitacaoExameOuAtual);
+	Collection<CandidatoSolicitacao> listarSolicitacoesEmAbertoColaborador(Long candidatoId, Date dataSolicitacaoExameOuAtual);
 }

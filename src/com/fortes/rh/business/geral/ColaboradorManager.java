@@ -267,4 +267,5 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public void updateVinculo(String categoriaESocial, String colaboradorCodigoAC, String empresaCodigoAC, String grupoAC);
 	public Colaborador setDadosIntegrados(Colaborador colaborador);
 	public void updateDddCelularAndUFHabilitacao();
+	public Colaborador findByData(Long colaboradorId, Date data);
 }

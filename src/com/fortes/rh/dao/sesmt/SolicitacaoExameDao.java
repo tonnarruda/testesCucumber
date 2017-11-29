@@ -26,4 +26,5 @@ public interface SolicitacaoExameDao extends GenericDao<SolicitacaoExame>
 	public void removeByColaborador(Long colaboradorId);
 	public Integer findProximaOrdem(Date data);
 	public void ajustaOrdem(Date data, Integer ordemInicial, Integer ordemFinal, Integer ajuste);
+	public void vincularSolicitacaoExameAoColaborador(Long candidatoSolicitacaoId ,Long colaboradorId);
 }

@@ -1,13 +1,20 @@
 package com.fortes.rh.test.business.captacao;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -23,10 +30,23 @@ import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.dao.captacao.CandidatoSolicitacaoDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.avaliacao.Avaliacao;
+import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
+import com.fortes.rh.model.dicionario.TipoPessoa;
+import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.sesmt.SolicitacaoExame;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
+import com.fortes.rh.test.factory.captacao.CandidatoFactory;
+import com.fortes.rh.test.factory.captacao.CandidatoSolicitacaoFactory;
+import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
+import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
+import com.fortes.rh.test.factory.sesmt.SolicitacaoExameFactory;
+import com.fortes.rh.util.CollectionUtil;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.SpringUtil;
 
@@ -144,4 +164,181 @@ public class CandidatoSolicitacaoManagerTest_JUnit4
     	verify(colaboradorQuestionarioManager).updateByCandidatoSolicitacaoAndSoclicitacaoOrigemAndDestino(candidatoSolicitacaoIds, solicitacaoOrigem.getId(), solicitacaoDestino.getId());
     	verify(candidatoSolicitacaoDao).updateSolicitacaoCandidatos(solicitacaoDestino, candidatoSolicitacaoIds);
     }
+    
+//    @Test
+//	public void testListarSolicitacoesEmAbertoCandidatoCasoVinculoForCandidato(){
+//	
+//		TipoPessoa tipoPessoa=TipoPessoa.CANDIDATO;
+//		Candidato candidato = CandidatoFactory.getCandidato(1l);
+//		
+//		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao(1l);
+//		solicitacao.setData(new Date());
+//		
+//		Solicitacao solicitacaoEncerrada = SolicitacaoFactory.getSolicitacao(2l);
+//		solicitacaoEncerrada.setData(new Date());
+//		solicitacaoEncerrada.setEncerrada(true);
+//		solicitacaoEncerrada.setDataEncerramento(new Date());
+//
+//		CandidatoSolicitacao candidatoSolicitacao = CandidatoSolicitacaoFactory.getEntity(1l);
+//		candidatoSolicitacao.setCandidato(candidato);
+//		candidatoSolicitacao.setSolicitacao(solicitacao);
+//		
+//		CandidatoSolicitacao candidatoSolicitacao2 = CandidatoSolicitacaoFactory.getEntity(1l);
+//		candidatoSolicitacao2.setCandidato(candidato);
+//		candidatoSolicitacao2.setSolicitacao(solicitacaoEncerrada);
+//		
+//		Collection<Solicitacao> solicitacoes  = Arrays.asList(solicitacaoEncerrada,solicitacao);
+//		CollectionUtil<Solicitacao> collectionUtil = new CollectionUtil<Solicitacao>();
+//		
+//		solicitacoes=collectionUtil.sortCollectionBoolean(solicitacoes,"encerrada","asc");
+//		
+//		when(solicitacaoDao.listarSolicitacoesEmAbertoCandidato(eq(candidato.getId()), any(Date.class))).thenReturn(solicitacoes);
+//		
+//		Collection<Solicitacao> listarSolicitacoesEmAbertoCandidatoOuColaborador = solicitacaoManager.listarSolicitacoesEmAbertoCandidatoOuColaborador(tipoPessoa, candidato.getId(),new Date());
+//		
+//		assertEquals(2, listarSolicitacoesEmAbertoCandidatoOuColaborador.size());
+//		assertFalse(((Solicitacao)listarSolicitacoesEmAbertoCandidatoOuColaborador.toArray()[0]).isEncerrada());
+//		assertTrue(((Solicitacao)listarSolicitacoesEmAbertoCandidatoOuColaborador.toArray()[1]).isEncerrada());
+//		
+//		verify(solicitacaoDao,never()).listarSolicitacoesEmAbertoColaborador(candidato.getId(), new Date());	
+//	}
+//	
+//	@Test
+//	public void testListarSolicitacoesEmAbertoCandidatoCasoVinculoForCandidatoComSolicitacaoExameSemData(){
+//		
+//		TipoPessoa tipoPessoa=TipoPessoa.CANDIDATO;
+//		Candidato candidato = CandidatoFactory.getCandidato(1l);
+//		
+//		SolicitacaoExame solicitacaoExame = SolicitacaoExameFactory.getEntity(1l);
+//		solicitacaoExame.setData(null);
+//		
+//		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao(1l);
+//		solicitacao.setData(new Date());
+//		
+//		Solicitacao solicitacaoEncerrada = SolicitacaoFactory.getSolicitacao(2l);
+//		solicitacaoEncerrada.setData(new Date());
+//		solicitacaoEncerrada.setEncerrada(true);
+//		solicitacaoEncerrada.setDataEncerramento(new Date());
+//		
+//		CandidatoSolicitacao candidatoSolicitacao = CandidatoSolicitacaoFactory.getEntity(1l);
+//		candidatoSolicitacao.setCandidato(candidato);
+//		candidatoSolicitacao.setSolicitacao(solicitacao);
+//		
+//		CandidatoSolicitacao candidatoSolicitacao2 = CandidatoSolicitacaoFactory.getEntity(1l);
+//		candidatoSolicitacao2.setCandidato(candidato);
+//		candidatoSolicitacao2.setSolicitacao(solicitacaoEncerrada);
+//		
+//		Collection<Solicitacao> solicitacoes  = Arrays.asList(solicitacaoEncerrada,solicitacao);
+//		CollectionUtil<Solicitacao> collectionUtil = new CollectionUtil<Solicitacao>();
+//		
+//		solicitacoes=collectionUtil.sortCollectionBoolean(solicitacoes,"encerrada","asc");
+//		
+//		when(solicitacaoDao.listarSolicitacoesEmAbertoCandidato(eq(candidato.getId()), any(Date.class))).thenReturn(solicitacoes);
+//		
+//		Collection<Solicitacao> listarSolicitacoesEmAbertoCandidatoOuColaborador = solicitacaoManager.listarSolicitacoesEmAbertoCandidatoOuColaborador(tipoPessoa, candidato.getId(), solicitacaoExame.getData());
+//		
+//		assertEquals(2, listarSolicitacoesEmAbertoCandidatoOuColaborador.size());
+//		assertFalse(((Solicitacao)listarSolicitacoesEmAbertoCandidatoOuColaborador.toArray()[0]).isEncerrada());
+//		assertTrue(((Solicitacao)listarSolicitacoesEmAbertoCandidatoOuColaborador.toArray()[1]).isEncerrada());
+//		
+//		verify(solicitacaoDao,never()).listarSolicitacoesEmAbertoColaborador(candidato.getId(), new Date());	
+//	}
+//	
+//	@Test
+//	public void testListarSolicitacoesEmAbertoColaboradorCasoVinculoForColaborador(){
+//		
+//		TipoPessoa tipoPessoa=TipoPessoa.COLABORADOR;
+//		
+//		SolicitacaoExame solicitacaoExame = SolicitacaoExameFactory.getEntity(1l);
+//		solicitacaoExame.setData(new Date());
+//		
+//		Candidato candidato = CandidatoFactory.getCandidato(1l);
+//		
+//		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao(1l);
+//		solicitacao.setData(DateUtil.retornaDataDiaAnterior(solicitacaoExame.getData()));
+//		
+//		Solicitacao solicitacaoEncerrada = SolicitacaoFactory.getSolicitacao(2l);
+//		solicitacaoEncerrada.setData(DateUtil.retornaDataDiaAnterior(solicitacaoExame.getData()));
+//		solicitacaoEncerrada.setEncerrada(true);
+//		solicitacaoEncerrada.setDataEncerramento(new Date());
+//
+//		CandidatoSolicitacao candidatoSolicitacao = CandidatoSolicitacaoFactory.getEntity(1l);
+//		candidatoSolicitacao.setCandidato(candidato);
+//		candidatoSolicitacao.setSolicitacao(solicitacao);
+//		candidatoSolicitacao.setStatus(StatusCandidatoSolicitacao.APROMOVER);
+//		
+//		CandidatoSolicitacao candidatoSolicitacao2 = CandidatoSolicitacaoFactory.getEntity(1l);
+//		candidatoSolicitacao2.setCandidato(candidato);
+//		candidatoSolicitacao2.setSolicitacao(solicitacaoEncerrada);
+//		candidatoSolicitacao2.setStatus(StatusCandidatoSolicitacao.APROMOVER);
+//		
+//		Colaborador colaborador = ColaboradorFactory.getEntity(1l);
+//		colaborador.setCandidato(candidato);
+//		
+//		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1l, colaborador);
+//		historicoColaborador.setCandidatoSolicitacao(candidatoSolicitacao);
+//		
+//		Collection<Solicitacao> solicitacoes = Arrays.asList(solicitacaoEncerrada,solicitacao);
+//		CollectionUtil<Solicitacao> collectionUtil = new CollectionUtil<Solicitacao>();
+//		
+//		solicitacoes=collectionUtil.sortCollectionBoolean(solicitacoes,"encerrada","asc");
+//		
+//		when(solicitacaoDao.listarSolicitacoesEmAbertoColaborador(colaborador.getCandidato().getId(), solicitacaoExame.getData())).thenReturn(solicitacoes);
+//		
+//		Collection<Solicitacao> listarSolicitacoesEmAbertoColaborador = solicitacaoManager.listarSolicitacoesEmAbertoCandidatoOuColaborador(tipoPessoa, colaborador.getCandidato().getId(), solicitacaoExame.getData());
+//		
+//		assertEquals(2, listarSolicitacoesEmAbertoColaborador.size());
+//		assertFalse(((Solicitacao)listarSolicitacoesEmAbertoColaborador.toArray()[0]).isEncerrada());
+//		assertTrue(((Solicitacao)listarSolicitacoesEmAbertoColaborador.toArray()[1]).isEncerrada());
+//		
+//		verify(solicitacaoDao,never()).listarSolicitacoesEmAbertoCandidato(candidato.getId(), new Date());	
+//	}
+//	
+//	@Test
+//	public void testListarSolicitacoesEmAbertoColaboradorCasoVinculoForColaboradorSemSolicitacaoExame(){
+//		
+//		TipoPessoa tipoPessoa=TipoPessoa.COLABORADOR;
+//		
+//		Candidato candidato = CandidatoFactory.getCandidato(1l);
+//		
+//		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao(1l);
+//		solicitacao.setData(new Date());
+//		
+//		Solicitacao solicitacaoEncerrada = SolicitacaoFactory.getSolicitacao(2l);
+//		solicitacaoEncerrada.setData(DateUtil.retornaDataDiaAnterior(new Date()));
+//		solicitacaoEncerrada.setEncerrada(true);
+//		solicitacaoEncerrada.setDataEncerramento(new Date());
+//		
+//		CandidatoSolicitacao candidatoSolicitacao = CandidatoSolicitacaoFactory.getEntity(1l);
+//		candidatoSolicitacao.setCandidato(candidato);
+//		candidatoSolicitacao.setSolicitacao(solicitacao);
+//		candidatoSolicitacao.setStatus(StatusCandidatoSolicitacao.APROMOVER);
+//		
+//		CandidatoSolicitacao candidatoSolicitacao2 = CandidatoSolicitacaoFactory.getEntity(1l);
+//		candidatoSolicitacao2.setCandidato(candidato);
+//		candidatoSolicitacao2.setSolicitacao(solicitacaoEncerrada);
+//		candidatoSolicitacao2.setStatus(StatusCandidatoSolicitacao.APROMOVER);
+//		
+//		Colaborador colaborador = ColaboradorFactory.getEntity(1l);
+//		colaborador.setCandidato(candidato);
+//		
+//		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1l, colaborador);
+//		historicoColaborador.setCandidatoSolicitacao(candidatoSolicitacao);
+//		
+//		Collection<Solicitacao> solicitacoes = Arrays.asList(solicitacaoEncerrada,solicitacao);
+//		CollectionUtil<Solicitacao> collectionUtil = new CollectionUtil<Solicitacao>();
+//		
+//		solicitacoes=collectionUtil.sortCollectionBoolean(solicitacoes,"encerrada","asc");
+//		
+//		when(solicitacaoDao.listarSolicitacoesEmAbertoColaborador(eq(colaborador.getCandidato().getId()), any(Date.class))).thenReturn(solicitacoes);
+//		
+//		Collection<Solicitacao> listarSolicitacoesEmAbertoColaborador = solicitacaoManager.listarSolicitacoesEmAbertoCandidatoOuColaborador(tipoPessoa, colaborador.getCandidato().getId(), null);
+//		
+//		assertEquals(2, listarSolicitacoesEmAbertoColaborador.size());
+//		assertFalse(((Solicitacao)listarSolicitacoesEmAbertoColaborador.toArray()[0]).isEncerrada());
+//		assertTrue(((Solicitacao)listarSolicitacoesEmAbertoColaborador.toArray()[1]).isEncerrada());
+//		
+//		verify(solicitacaoDao,never()).listarSolicitacoesEmAbertoCandidato(candidato.getId(), new Date());	
+//	}
+    
 }

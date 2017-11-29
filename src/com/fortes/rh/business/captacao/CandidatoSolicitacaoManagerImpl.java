@@ -22,6 +22,7 @@ import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.dicionario.StatusAutorizacaoGestor;
 import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
+import com.fortes.rh.model.dicionario.TipoPessoa;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -251,6 +252,13 @@ public class CandidatoSolicitacaoManagerImpl extends GenericManagerImpl<Candidat
 		
 		CandidatoManager candidatoManager = (CandidatoManager) SpringUtil.getBeanOld("candidatoManager");
 		candidatoManager.updateDisponivelAndContratadoByColaborador(true, false, colaboradorId);
+	}
+	
+	public Collection<CandidatoSolicitacao> listarSolicitacoesEmAbertoCandidatoOuColaborador(TipoPessoa tipoPessoa, Long candidatoId, Date dataSolicitacaoExameOuAtual) {
+		if(tipoPessoa.equals(TipoPessoa.CANDIDATO)) 
+			return getDao().listarSolicitacoesEmAbertoCandidato(candidatoId, dataSolicitacaoExameOuAtual);
+		
+		return getDao().listarSolicitacoesEmAbertoColaborador(candidatoId, dataSolicitacaoExameOuAtual);
 	}
 
 	public void updateStatusSolicitacoesEmAndamentoByColaboradorId(Character status, Long... colaboradoresIds) {

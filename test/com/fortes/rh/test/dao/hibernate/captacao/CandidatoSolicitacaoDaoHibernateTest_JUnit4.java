@@ -1,7 +1,10 @@
 package com.fortes.rh.test.dao.hibernate.captacao;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 import java.util.Date;
@@ -210,6 +213,77 @@ public class CandidatoSolicitacaoDaoHibernateTest_JUnit4 extends GenericDaoHiber
 		assertEquals(etapaSeletiva1, candidatoSolicitacaoTmp.getEtapaSeletiva());
 	}
 	
+	@Test
+	public void testListarSolicitacoesEmAbertoCandidato(){
+		
+		Candidato candidato = CandidatoFactory.getCandidato();
+		candidatoDao.save(candidato);
+
+		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
+		solicitacaoDao.save(solicitacao);
+
+		Solicitacao solicitacaoEncerrada = SolicitacaoFactory.getSolicitacao();
+		solicitacaoEncerrada.setEncerrada(true);
+		solicitacaoEncerrada.setDataEncerramento(new Date());
+		solicitacaoDao.save(solicitacaoEncerrada);
+
+		CandidatoSolicitacao candidatoSolicitacao = CandidatoSolicitacaoFactory.getEntity();
+		candidatoSolicitacao.setCandidato(candidato);
+		candidatoSolicitacao.setTriagem(true);
+		candidatoSolicitacao.setSolicitacao(solicitacao);
+		candidatoSolicitacaoDao.save(candidatoSolicitacao);
+		
+		CandidatoSolicitacao candidatoSolicitacao2 = CandidatoSolicitacaoFactory.getEntity();
+		candidatoSolicitacao2.setCandidato(candidato);
+		candidatoSolicitacao2.setSolicitacao(solicitacaoEncerrada);
+		candidatoSolicitacaoDao.save(candidatoSolicitacao2);
+		
+		Collection<CandidatoSolicitacao> listarSolicitacoesEmAbertoCandidato = candidatoSolicitacaoDao.listarSolicitacoesEmAbertoCandidato(candidato.getId(), new Date());
+		
+		assertEquals(2, listarSolicitacoesEmAbertoCandidato.size());
+		assertFalse(((CandidatoSolicitacao)listarSolicitacoesEmAbertoCandidato.toArray()[0]).getSolicitacao().isEncerrada());
+		assertTrue(((CandidatoSolicitacao)listarSolicitacoesEmAbertoCandidato.toArray()[1]).getSolicitacao().isEncerrada());
+	}
+
+	@Test
+	public void testListarSolicitacoesEmAbertoColaborador(){
+		
+		Candidato candidato = CandidatoFactory.getCandidato();
+		candidatoDao.save(candidato);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setCandidato(candidato);
+		colaboradorDao.save(colaborador);
+		
+		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
+		solicitacaoDao.save(solicitacao);
+		
+		Solicitacao solicitacaoEncerrada = SolicitacaoFactory.getSolicitacao();
+		solicitacaoEncerrada.setEncerrada(true);
+		solicitacaoEncerrada.setDataEncerramento(new Date());
+		solicitacaoDao.save(solicitacaoEncerrada);
+		
+		CandidatoSolicitacao candidatoSolicitacao = CandidatoSolicitacaoFactory.getEntity();
+		candidatoSolicitacao.setCandidato(candidato);
+		candidatoSolicitacao.setTriagem(true);
+		candidatoSolicitacao.setStatus(StatusCandidatoSolicitacao.APROMOVER);
+		candidatoSolicitacao.setSolicitacao(solicitacao);
+		candidatoSolicitacaoDao.save(candidatoSolicitacao);
+		
+		CandidatoSolicitacao candidatoSolicitacao2 = CandidatoSolicitacaoFactory.getEntity();
+		candidatoSolicitacao2.setCandidato(candidato);
+		candidatoSolicitacao2.setSolicitacao(solicitacaoEncerrada);
+		candidatoSolicitacao2.setStatus(StatusCandidatoSolicitacao.APROMOVER);
+		candidatoSolicitacaoDao.save(candidatoSolicitacao2);
+		
+		Collection<CandidatoSolicitacao> listarSolicitacoesEmAbertoColaborador = candidatoSolicitacaoDao.listarSolicitacoesEmAbertoColaborador(colaborador.getCandidato().getId(), new Date());
+		
+		assertEquals(2, listarSolicitacoesEmAbertoColaborador.size());
+		assertFalse(((CandidatoSolicitacao)listarSolicitacoesEmAbertoColaborador.toArray()[0]).getSolicitacao().isEncerrada());
+		assertTrue(((CandidatoSolicitacao)listarSolicitacoesEmAbertoColaborador.toArray()[1]).getSolicitacao().isEncerrada());
+		assertNotNull(((CandidatoSolicitacao)listarSolicitacoesEmAbertoColaborador.toArray()[1]).getSolicitacao());
+		
+	}
 	private Candidato criaCandidato(){
 		Candidato candidato = CandidatoFactory.getCandidato();
 		candidatoDao.save(candidato);

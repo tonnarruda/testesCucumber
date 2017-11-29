@@ -9,6 +9,8 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 
 import com.fortes.rh.business.captacao.CandidatoManager;
+import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
+import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.sesmt.ClinicaAutorizadaManager;
 import com.fortes.rh.business.sesmt.ExameManager;
@@ -18,8 +20,12 @@ import com.fortes.rh.business.sesmt.RealizacaoExameManager;
 import com.fortes.rh.business.sesmt.SolicitacaoExameManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.captacao.Candidato;
+import com.fortes.rh.model.captacao.CandidatoSolicitacao;
+import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.MotivoSolicitacaoExame;
 import com.fortes.rh.model.dicionario.ResultadoExame;
+import com.fortes.rh.model.dicionario.TipoPessoa;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.ClinicaAutorizada;
 import com.fortes.rh.model.sesmt.Exame;
@@ -30,6 +36,7 @@ import com.fortes.rh.model.sesmt.SolicitacaoExame;
 import com.fortes.rh.model.sesmt.relatorio.SolicitacaoExameRelatorio;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.ModelUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
@@ -47,6 +54,8 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 	private ClinicaAutorizadaManager clinicaAutorizadaManager;
 	private ExameSolicitacaoExameManager exameSolicitacaoExameManager;
 	private RealizacaoExameManager realizacaoExameManager;
+	private FaixaSalarialManager faixaSalarialManager;
+	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
 
 	private SolicitacaoExame solicitacaoExame;
 	private Collection<Exame> exames;
@@ -81,6 +90,7 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 	private String[] observacoes;
 	private String[] selectResultados;
 	private Date[] datasRealizacaoExames;
+	private Collection<CandidatoSolicitacao> listaSolicitacoesPessoalEmAberto;
 
 	private boolean gravarEImprimir = false;
 
@@ -104,6 +114,8 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 	private Date dataAnterior;
 	
 	private char situacao;
+
+	private Collection<FaixaSalarial> faixas;
 	
 	//p/ não deixar repetido (hardcoded) no ftl
 	public String getMotivoDEMISSIONAL()
@@ -128,7 +140,7 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 		Date hoje = new Date();
 		motivos = MotivoSolicitacaoExame.getInstance();
 
-		if(solicitacaoExame != null && solicitacaoExame.getId() != null)
+		if(ModelUtil.hasNotNull("getId()", solicitacaoExame))
 		{
 			solicitacaoExame = solicitacaoExameManager.findByIdProjection(solicitacaoExame.getId());
 			colaborador = solicitacaoExame.getColaborador();
@@ -138,13 +150,25 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 			dataAnterior = solicitacaoExame.getData();
 		}
 
+		Date dataSolicitacaoExameOuAtual= ModelUtil.hasNotNull("getId()", solicitacaoExame) && ModelUtil.hasNotNull("getData()", solicitacaoExame)? solicitacaoExame.getData(): new Date();
 		medicoCoordenadors = medicoCoordenadorManager.findByEmpresa(getEmpresaSistema().getId());
 		clinicaAutorizadas = clinicaAutorizadaManager.findByDataEmpresa(getEmpresaSistema().getId(), hoje, true);
 
-		if (colaborador != null && colaborador.getId() != null)
+		if (ModelUtil.hasNotNull("getId()", colaborador)){
 			exames = exameManager.findPriorizandoExameRelacionado(getEmpresaSistema().getId(), colaborador.getId());
-		else if (candidato != null && candidato.getId() != null)
+			
+			if(ModelUtil.hasNotNull("getId()", solicitacaoExame) && ModelUtil.hasNotNull("getData()", solicitacaoExame))
+				colaborador = colaboradorManager.findByData(colaborador.getId(), dataAnterior);
+			else
+				colaborador = colaboradorManager.findByData(colaborador.getId(), new Date());
+			
+			setaFaixasOuSolicitacoesColaborador(dataSolicitacaoExameOuAtual);
+		}
+		else if (ModelUtil.hasNotNull("getId()", candidato)){
 			exames = exameManager.findByEmpresaComAsoPadrao(getEmpresaSistema().getId());
+			faixas=faixaSalarialManager.findFaixas(getEmpresaSistema(), Cargo.ATIVO, null);
+			listaSolicitacoesPessoalEmAberto = candidatoSolicitacaoManager.listarSolicitacoesEmAbertoCandidatoOuColaborador(TipoPessoa.CANDIDATO, candidato.getId(), dataSolicitacaoExameOuAtual);
+		}
 
 		if (exames != null)
 		{
@@ -167,6 +191,18 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 				i++;
 			}
 		}
+	}
+	private void setaFaixasOuSolicitacoesColaborador(Date dataSolicitacaoExameOuAtual) {
+		
+		faixas = new ArrayList<FaixaSalarial>();
+		
+		if(ModelUtil.hasNotNull("getCandidato().getId()", colaborador))
+			listaSolicitacoesPessoalEmAberto=candidatoSolicitacaoManager.listarSolicitacoesEmAbertoCandidatoOuColaborador(TipoPessoa.COLABORADOR, colaborador.getCandidato().getId(), dataSolicitacaoExameOuAtual);
+		else if (!colaborador.isDesligado())
+			faixas=faixaSalarialManager.findFaixas(getEmpresaSistema(), Cargo.ATIVO, null);
+
+		if(colaborador.getFaixaSalarial()!=null)
+			faixas.add(colaborador.getFaixaSalarial());
 	}
 
 	public String prepareInsert() throws Exception
@@ -207,6 +243,9 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 		prepare();
 		examesId = exameManager.findBySolicitacaoExame(solicitacaoExame.getId());
 		exameSolicitacaoExames = exameSolicitacaoExameManager.findBySolicitacaoExame(solicitacaoExame.getId(), null);
+		if(colaborador.getId()!=null)
+			solicitacaoExame = solicitacaoExameManager.findByIdProjection(solicitacaoExame.getId());
+	
 		boolean temResultado = exameSolicitacaoExameManager.verificaExisteResultado(exameSolicitacaoExames);
 
 		if (temResultado)
@@ -721,5 +760,20 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 	}
 	public void setTipoDeImpressao(String tipoDeImpressao) {
 		this.tipoDeImpressao = tipoDeImpressao;
+	}
+	public Collection<FaixaSalarial> getFaixas() {
+		return faixas;
+	}
+	public void setFaixas(Collection<FaixaSalarial> faixas) {
+		this.faixas = faixas;
+	}
+	public void setFaixaSalarialManager(FaixaSalarialManager faixaSalarialManager) {
+		this.faixaSalarialManager = faixaSalarialManager;
+	}
+	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager) {
+		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
+	}
+	public Collection<CandidatoSolicitacao> getListaSolicitacoesPessoalEmAberto() {
+		return listaSolicitacoesPessoalEmAberto;
 	}
 }

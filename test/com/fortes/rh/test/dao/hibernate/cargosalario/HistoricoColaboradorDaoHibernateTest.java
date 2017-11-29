@@ -1235,7 +1235,8 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		assertEquals("colaboradorIndice", resultadoColabIndice.getColaborador().getNome());
 		assertEquals(24.00, resultadoColabIndice.getSalarioCalculado());
 
-		assertTrue(historicoColaboradorDao.findByCargoEstabelecimento(DateUtil.criarDataMesAno(20, 2, 1900), null, null, dataConsulta, null, null, "E", null).isEmpty());
+		Collection<HistoricoColaborador> historicos = historicoColaboradorDao.findByCargoEstabelecimento(DateUtil.criarDataMesAno(20, 2, 1900), null, null, dataConsulta, null, null, "E", empresa.getId());
+		assertTrue(historicos.isEmpty());
 
 		//desatualizados a partir de 01/07/2010 para tras
 		Date dataAtualizacao = DateUtil.criarDataMesAno(1, 7, 2010);

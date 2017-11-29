@@ -19,13 +19,9 @@ import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.dicionario.MotivoSolicitacaoExame;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.model.sesmt.ClinicaAutorizada;
-import com.fortes.rh.model.sesmt.Exame;
 import com.fortes.rh.model.sesmt.MedicoCoordenador;
 import com.fortes.rh.model.sesmt.SolicitacaoExame;
 import com.fortes.rh.model.sesmt.relatorio.SolicitacaoExameRelatorio;
-import com.fortes.rh.test.factory.captacao.CandidatoFactory;
-import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.geral.CidadeFactory;
 import com.fortes.rh.test.factory.sesmt.SolicitacaoExameFactory;
@@ -79,32 +75,6 @@ public class SolicitacaoExameEditActionTest extends MockObjectTestCase
 		action = null;
 		exameManager = null;
 		Mockit.restoreAllOriginalDefinitions();
-	}
-	
-	public void testPrepareInsertColaborador() throws Exception
-	{
-		Empresa empresa = EmpresaFactory.getEmpresa(1L);
-		action.setEmpresaSistema(empresa);
-		action.setColaborador(ColaboradorFactory.getEntity(1L));
-		
-		medicoCoordenadorManager.expects(once()).method("findByEmpresa").will(returnValue(new ArrayList<MedicoCoordenador>()));
-		clinicaAutorizadaManager.expects(once()).method("findByDataEmpresa").will(returnValue(new ArrayList<ClinicaAutorizada>()));
-		exameManager.expects(once()).method("findPriorizandoExameRelacionado").will(returnValue(new ArrayList<Exame>()));
-		
-		assertEquals("success",action.prepareInsert());
-	}
-	
-	public void testPrepareInsertCandidato() throws Exception
-	{
-		Empresa empresa = EmpresaFactory.getEmpresa(1L);
-		action.setEmpresaSistema(empresa);
-		action.setCandidato(CandidatoFactory.getCandidato(1L));
-		
-		medicoCoordenadorManager.expects(once()).method("findByEmpresa").will(returnValue(new ArrayList<MedicoCoordenador>()));
-		clinicaAutorizadaManager.expects(once()).method("findByDataEmpresa").will(returnValue(new ArrayList<ClinicaAutorizada>()));
-		exameManager.expects(once()).method("findByEmpresaComAsoPadrao").will(returnValue(new ArrayList<Exame>()));
-		
-		assertEquals("success",action.prepareInsert());
 	}
 	
 	public void testImprimirSolicitacaoExames() throws Exception

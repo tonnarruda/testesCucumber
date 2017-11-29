@@ -21,10 +21,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
 import org.apache.commons.codec.binary.Base64;
-
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.Predicate;
-
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -79,7 +76,6 @@ import com.fortes.rh.model.captacao.TituloEleitoral;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
-import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.dicionario.CategoriaESocial;
 import com.fortes.rh.model.dicionario.Entidade;
 import com.fortes.rh.model.dicionario.Escolaridade;
@@ -308,6 +304,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		// garante que erro no banco do RH levantará uma Exception antes de alterar o outro banco.
 		getDao().getHibernateTemplateByGenericDao().flush();
 
+		solicitacaoExameManager.vincularSolicitacaoExameAoColaborador(candidatoSolicitacaoId, colaborador.getId());
+		
 		if (!colaborador.isNaoIntegraAc() && empresa.isAcIntegra())
 			contratarColaboradorNoAC(colaborador, historico, empresa, true);
 		else 
@@ -3373,5 +3371,10 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public Colaborador findByData(Long colaboradorId, Date data) {
+		Colaborador colaborador = getDao().findByData(colaboradorId, data);
+		return colaborador!=null? colaborador:new Colaborador();
 	}
 }

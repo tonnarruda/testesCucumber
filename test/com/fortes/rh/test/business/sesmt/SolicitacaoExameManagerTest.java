@@ -35,6 +35,7 @@ import com.fortes.rh.business.sesmt.RiscoFuncaoManager;
 import com.fortes.rh.business.sesmt.SolicitacaoExameManagerImpl;
 import com.fortes.rh.dao.sesmt.SolicitacaoExameDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.GrupoRisco;
 import com.fortes.rh.model.dicionario.MotivoSolicitacaoExame;
@@ -48,6 +49,7 @@ import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.model.sesmt.SolicitacaoExame;
 import com.fortes.rh.model.sesmt.relatorio.AsoRelatorio;
+import com.fortes.rh.test.factory.captacao.CandidatoSolicitacaoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.AmbienteFactory;
@@ -427,5 +429,17 @@ public class SolicitacaoExameManagerTest
 		
 		assertEquals(solicitacaoExame.getColaborador(), asoRelatorio.getPessoa());
 		assertEquals(asoRelatorio.getGrpRiscoAcidente()+asoRelatorio.getGrpRiscoBiologico()+asoRelatorio.getGrpRiscoErgonomico()+asoRelatorio.getGrpRiscoFisico()+asoRelatorio.getGrpRiscoQuimico(), StringUtils.EMPTY);
+	}
+	
+	@Test
+	public void testVincularSolicitacaoExameAoColaborador(){
+		Colaborador colaborador= ColaboradorFactory.getEntity(1l);
+		
+		CandidatoSolicitacao candidatoSolicitacao = CandidatoSolicitacaoFactory.getEntity(1l);
+		candidatoSolicitacao.setColaboradorId(colaborador.getId());
+		
+		solicitacaoExameManager.vincularSolicitacaoExameAoColaborador(candidatoSolicitacao.getId(),colaborador.getId());
+		
+		verify(solicitacaoExameDao).vincularSolicitacaoExameAoColaborador(candidatoSolicitacao.getId(),colaborador.getId());
 	}
 }

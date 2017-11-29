@@ -494,6 +494,7 @@ import com.fortes.rh.test.util.BooleanUtilTest;
 import com.fortes.rh.test.util.CheckListBoxUtilTest;
 import com.fortes.rh.test.util.CnpjUtilTest;
 import com.fortes.rh.test.util.CollectionUtilTest;
+import com.fortes.rh.test.util.CollectionUtilTest_JUnit4;
 import com.fortes.rh.test.util.ComparatorStringTest;
 import com.fortes.rh.test.util.ConverterUtilTest;
 import com.fortes.rh.test.util.DateUtilTest;
@@ -706,6 +707,7 @@ import com.fortes.rh.test.web.action.sesmt.SolicitacaoEpiEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.SolicitacaoEpiListActionTest;
 import com.fortes.rh.test.web.action.sesmt.SolicitacaoEpiListActionTest_Junit4;
 import com.fortes.rh.test.web.action.sesmt.SolicitacaoExameEditActionTest;
+import com.fortes.rh.test.web.action.sesmt.SolicitacaoExameEditActionTest_JUnit4;
 import com.fortes.rh.test.web.action.sesmt.SolicitacaoExameListActionTest;
 import com.fortes.rh.test.web.action.sesmt.TamanhoEPIListActionTest;
 import com.fortes.rh.test.web.action.sesmt.TamanhoEpiEditActionTest;
@@ -740,6 +742,7 @@ import com.fortes.rh.test.web.dwr.ExtintorDWRTest;
 import com.fortes.rh.test.web.dwr.FaixaSalarialDWRTest;
 import com.fortes.rh.test.web.dwr.GrupoOcupacionalDWRTest;
 import com.fortes.rh.test.web.dwr.HistoricoCandidatoDWRTest;
+import com.fortes.rh.test.web.dwr.HistoricoColaboradorDWRTest;
 import com.fortes.rh.test.web.dwr.ListaPresencaDWRTest;
 import com.fortes.rh.test.web.dwr.MorroDWRTest;
 import com.fortes.rh.test.web.dwr.OcorrenciaDWRTest;
@@ -1276,6 +1279,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	ExameManagerTest_JUnit4.class,
 	SolicitacaoExameListActionTest.class,
 	SolicitacaoExameEditActionTest.class,
+	SolicitacaoExameEditActionTest_JUnit4.class,
 	SolicitacaoExameDWRTest.class,
 
 	ExameSolicitacaoExameDaoHibernateTest.class,
@@ -1493,6 +1497,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	CheckListBoxUtilTest.class,
 	CnpjUtilTest.class,
 	CollectionUtilTest.class,
+	CollectionUtilTest_JUnit4.class,
 	ComparatorStringTest.class,
 	ConverterUtilTest.class,
 	DateUtilTest.class,
@@ -1622,6 +1627,7 @@ import com.fortes.test.web.tags.LinkTagTest;
 	lntDWRTest.class,
 	ParticipanteCursoLntDWRTest.class,
 	EmpresaDWRTest.class,
+	HistoricoColaboradorDWRTest.class,
 
     //MODEL
 	HistoricoColaboradorTest.class,

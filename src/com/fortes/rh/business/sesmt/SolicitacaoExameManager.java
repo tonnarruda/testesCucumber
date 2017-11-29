@@ -33,4 +33,5 @@ public interface SolicitacaoExameManager extends GenericManager<SolicitacaoExame
 	Integer findProximaOrdem(Date data);
 	void ajustaOrdemDoList(Date data, Integer ordem) throws Exception;
 	void ajustaOrdem(Date dataAnterior, Date dataAtual, Integer ordemAnterior, Integer novaOrdem) throws Exception;
+	void vincularSolicitacaoExameAoColaborador(Long candidatoSolicitacaoId ,Long colaboradorId);
 }

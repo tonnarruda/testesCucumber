@@ -5815,4 +5815,34 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		criteria.add(Expression.eq("cq.avaliacaoDesempenho.id", avaliacaoDesempenhoId));
 		return criteria;
 	}
+	
+	public Colaborador findByData(Long colaboradorId, Date data) {
+		DetachedCriteria subQueryHc = montaSubQueryHistoricoColaborador(data, StatusRetornoAC.CONFIRMADO);
+		
+		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
+		criteria.createCriteria("c.historicoColaboradors", "hc");
+		criteria.createCriteria("hc.faixaSalarial", "fs");
+		criteria.createCriteria("fs.cargo", "car");
+		criteria.createCriteria("c.candidato", "ca",Criteria.LEFT_JOIN);
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("c.id"), "id");
+		p.add(Projections.property("c.desligado"), "desligado");
+		p.add(Projections.property("ca.id"), "candidatoId");
+		
+		p.add(Projections.property("car.id"), "cargoIdProjection");
+		p.add(Projections.property("car.nome"), "cargoNomeProjection");
+		
+		p.add(Projections.property("fs.id"), "faixaSalarialIdProjection");
+		p.add(Projections.property("fs.nome"), "faixaSalarialNomeProjection");
+		
+		criteria.add(Expression.eq("c.id", colaboradorId));
+		criteria.add(Subqueries.propertyEq("hc.data", subQueryHc));
+		criteria.setProjection(p);
+		
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
+		
+		return (Colaborador) criteria.uniqueResult();
+	}
 }

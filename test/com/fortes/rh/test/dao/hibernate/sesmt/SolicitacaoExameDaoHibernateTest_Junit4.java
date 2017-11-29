@@ -1,9 +1,12 @@
 package com.fortes.rh.test.dao.hibernate.sesmt;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertNotNull;
+
 import java.util.Collection;
 import java.util.Date;
 
-import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -219,6 +222,40 @@ public class SolicitacaoExameDaoHibernateTest_Junit4 extends GenericDaoHibernate
 		SolicitacaoExameRelatorio SEResult1 = ((SolicitacaoExameRelatorio) solicitacaoexames1.toArray()[0]);
 		assertEquals("Candidato",SEResult1.getCandidatoNome());
 		assertEquals(funcao2.getNome(), SEResult1.getCandidatoFuncao());
+	}
+	
+	@Test
+	public void testVincularSolicitacaoExameAoColaborador(){
+		Empresa empresa = EmpresaFactory.getEmpresa(1l);
+		empresaDao.save(empresa);
+		
+		Candidato candidato = CandidatoFactory.getCandidato(1l);
+		candidatoDao.save(candidato);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1l);
+		colaborador.setCandidato(candidato);
+		colaboradorDao.save(colaborador);
+		
+		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao(1l);
+		solicitacaoDao.save(solicitacao);
+		
+		CandidatoSolicitacao candidatoSolicitacao = CandidatoSolicitacaoFactory.getEntity(1l);
+		candidatoSolicitacao.setCandidato(candidato);
+		candidatoSolicitacao.setSolicitacao(solicitacao);
+		candidatoSolicitacaoDao.save(candidatoSolicitacao);
+	
+		SolicitacaoExame solicitacaoExame = SolicitacaoExameFactory.getEntity(1l);
+		solicitacaoExame.setCandidatoSolicitacao(candidatoSolicitacao);
+		
+		solicitacaoExameDao.save(solicitacaoExame);
+		
+		solicitacaoExameDao.vincularSolicitacaoExameAoColaborador(candidatoSolicitacao.getId(), colaborador.getId());
+		
+		SolicitacaoExame solicitacaoExameQuery = solicitacaoExameDao.findByIdProjection(solicitacaoExame.getId());
+
+		assertEquals(solicitacaoExameQuery.getColaborador(),colaborador);
+		assertEquals(solicitacaoExameQuery.getCandidatoSolicitacao(),candidatoSolicitacao);
+		assertNull(solicitacaoExameQuery.getCandidato().getId());
 	}
 
 	private SolicitacaoExame saveSolicitacaoExame(Candidato candidato, Colaborador colaborador, Empresa empresa, Date data, MedicoCoordenador medico, String motivoSolicitacaoExame){

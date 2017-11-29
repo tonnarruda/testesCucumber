@@ -222,6 +222,12 @@ public class SolicitacaoExameManagerImpl extends GenericManagerImpl<SolicitacaoE
 		if (empresaId != null && candidatoId != null && colaboradorId != null)
 			getDao().transferirColaboradorToCandidato(empresaId, candidatoId, colaboradorId);
 	}
+	
+	
+	public void vincularSolicitacaoExameAoColaborador(Long candidatoSolicitacaoId ,Long colaboradorId)
+	{
+		getDao().vincularSolicitacaoExameAoColaborador(candidatoSolicitacaoId, colaboradorId);
+	}
 
 	public void setRealizacaoExameManager(RealizacaoExameManager realizacaoExameManager)
 	{
@@ -294,5 +300,4 @@ public class SolicitacaoExameManagerImpl extends GenericManagerImpl<SolicitacaoE
 	public void setRiscoFuncaoManager(RiscoFuncaoManager riscoFuncaoManager) {
 		this.riscoFuncaoManager = riscoFuncaoManager;
 	}
-	
 }

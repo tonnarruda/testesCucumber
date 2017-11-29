@@ -310,6 +310,18 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable,
 		iniciaSolicitacao();
 		solicitacao.setData(solicitacaoData);
 	}
+	
+	public void setSolicitacaoDataEncerramento(Date dataEncerramento)
+	{
+		iniciaSolicitacao();
+		solicitacao.setDataEncerramento(dataEncerramento);
+	}
+	
+	public void setSolicitacaoEncerrada(boolean solicitacaoEncerrada)
+	{
+		iniciaSolicitacao();
+		solicitacao.setEncerrada(solicitacaoEncerrada);
+	}
 
 	public void setCandidatoPessoalCpf(String cpf)
 	{

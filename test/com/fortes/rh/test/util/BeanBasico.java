@@ -8,6 +8,7 @@ public class BeanBasico
 	private Integer ordem;
 	private String nome;
 	private Date data;
+	private Boolean ativo;
 
 	public Long getId()
 	{
@@ -40,5 +41,11 @@ public class BeanBasico
 	public void setData(Date data)
 	{
 		this.data = data;
+	}
+	public Boolean getAtivo() {
+		return ativo;
+	}
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
 	}
 }

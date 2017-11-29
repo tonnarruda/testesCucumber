@@ -1,10 +1,14 @@
 package com.fortes.rh.test.business.captacao;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -12,35 +16,50 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
-import mockit.Mockit;
-
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.captacao.SolicitacaoManagerImpl;
 import com.fortes.rh.dao.captacao.SolicitacaoDao;
 import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.captacao.Candidato;
+import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.MotivoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
+import com.fortes.rh.model.dicionario.TipoPessoa;
 import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.model.sesmt.SolicitacaoExame;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
+import com.fortes.rh.test.factory.captacao.CandidatoFactory;
+import com.fortes.rh.test.factory.captacao.CandidatoSolicitacaoFactory;
+import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.MotivoSolicitacaoFactory;
 import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
+import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
-import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
-import com.fortes.rh.test.util.mockObjects.MockSpringUtil;
+import com.fortes.rh.test.factory.sesmt.SolicitacaoExameFactory;
 import com.fortes.rh.test.util.mockObjects.MockSpringUtilJUnit4;
+import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.SpringUtil;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({SpringUtil.class,SecurityUtil.class})
 public class SolicitacaoManagerTest_Junit4
 {
 	private SolicitacaoManagerImpl solicitacaoManager = new SolicitacaoManagerImpl();
@@ -54,8 +73,8 @@ public class SolicitacaoManagerTest_Junit4
 		solicitacaoManager.setDao(solicitacaoDao);
 		usuarioManager = mock(UsuarioManager.class);
 		
-		Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
-		Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
+		PowerMockito.mockStatic(SpringUtil.class);
+		PowerMockito.mockStatic(SecurityUtil.class);
 	}
 	
 	@Test

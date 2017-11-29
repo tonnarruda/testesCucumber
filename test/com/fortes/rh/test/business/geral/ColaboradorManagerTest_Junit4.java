@@ -52,6 +52,7 @@ import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.avaliacao.relatorio.AcompanhamentoExperienciaColaborador;
 import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.CategoriaESocial;
 import com.fortes.rh.model.dicionario.Escolaridade;
@@ -76,6 +77,7 @@ import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
+import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.geral.CidadeFactory;
 import com.fortes.rh.test.factory.geral.EstadoFactory;
@@ -1026,5 +1028,40 @@ public class ColaboradorManagerTest_Junit4
     	Colaborador colaborador = ColaboradorFactory.getEntity();
 		when(colaboradorDao.findColaboradorById(colaborador.getId())).thenReturn(colaborador);
 		assertNotNull(colaboradorManager.setDadosIntegrados(colaborador));
+    }
+    
+    @Test
+    public void testFindColaboradorByData() {
+    	Colaborador colaborador = ColaboradorFactory.getEntity(1l);
+    	FaixaSalarial faixaSalarialComCargo = FaixaSalarialFactory.getEntity("1", CargoFactory.getEntity());
+    	Date data = new Date();
+    	
+    	HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1l);
+    	historicoColaborador.setColaborador(colaborador);
+    	historicoColaborador.setFaixaSalarial(faixaSalarialComCargo);
+    	
+    	colaborador.setHistoricoColaborador(historicoColaborador);
+
+		when(colaboradorDao.findByData(colaborador.getId(),data)).thenReturn(colaborador);
+    	
+    	Colaborador colaboradorResultado = colaboradorManager.findByData(colaborador.getId(),data);
+    	
+    	assertNotNull(colaboradorResultado.getId());
+    	assertNotNull(colaboradorResultado.getHistoricoColaborador());
+    	assertEquals(colaboradorResultado.getHistoricoColaborador().getFaixaSalarial(), faixaSalarialComCargo);
+    	
+    }
+    
+    @Test
+    public void testFindColaboradorByDataDeveRetornarUmColaboradorVazio() {
+    	Colaborador colaborador = ColaboradorFactory.getEntity(1l);
+    	Date data = new Date();
+
+    	when(colaboradorDao.findByData(colaborador.getId(),data)).thenReturn(null);
+    	
+    	Colaborador colaboradorResultado = colaboradorManager.findByData(colaborador.getId(),data);
+    	
+    	assertNotNull(colaboradorResultado);
+    	assertNull(colaboradorResultado.getId());
     }
 }

@@ -31,6 +31,7 @@ import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.web.tags.CheckBox;
@@ -463,6 +464,11 @@ public class ColaboradorDWR
 	public Colaborador getColaboradorById (Long colaboradorId) {
 		return  colaboradorManager.findColaboradorByIdProjection(colaboradorId);
     }
+	
+	public Colaborador findByData (Long colaboradorId,String dataDiaMesAno) {
+		Date data = DateUtil.criarDataDiaMesAno(dataDiaMesAno);
+		return  colaboradorManager.findByData(colaboradorId, data);
+	}
     
 	public void setColaboradorManager(ColaboradorManager colaboradorManager)
 	{

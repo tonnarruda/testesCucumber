@@ -8,6 +8,7 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
+import org.hibernate.criterion.Conjunction;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Expression;
@@ -709,5 +710,67 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
 		query.setBoolean("encerrada", false);
 		
 		query.executeUpdate();
+	}
+	
+	public Collection<CandidatoSolicitacao> listarSolicitacoesEmAbertoCandidato(Long candidatoId, Date dataSolicitacaoExameOuAtual) {
+		
+		Criteria criteria = getSession().createCriteria(CandidatoSolicitacao.class, "cs");
+		criteria.createCriteria("cs.solicitacao", "so");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.alias(Projections.groupProperty("cs.id"), "id"));
+		p.add(Projections.alias(Projections.groupProperty("so.id"), "solicitacaoId"));
+		p.add(Projections.alias(Projections.groupProperty("so.descricao"), "projectionSolicitacaoDescricao"));
+		p.add(Projections.alias(Projections.groupProperty("so.data"), "solicitacaoData"));
+		p.add(Projections.alias(Projections.groupProperty("so.encerrada"), "solicitacaoEncerrada"));
+		
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("cs.candidato.id", candidatoId));
+		criteria.add(Expression.le("so.data", dataSolicitacaoExameOuAtual));
+		
+		criteria.addOrder(Order.asc("so.descricao"));
+		criteria.addOrder(Order.asc("so.encerrada"));
+		
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(CandidatoSolicitacao.class));
+		
+		return criteria.list();
+	}
+	
+	public Collection<CandidatoSolicitacao> listarSolicitacoesEmAbertoColaborador(Long candidatoId, Date dataSolicitacaoExameOuAtual) {
+		
+		Criteria criteria = getSession().createCriteria(CandidatoSolicitacao.class, "cs");
+		criteria.createCriteria("cs.candidato", "ca");
+		criteria.createCriteria("ca.colaborador", "co");
+		criteria.createCriteria("cs.solicitacao", "so");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.alias(Projections.property("cs.id"), "id"));
+		p.add(Projections.alias(Projections.property("so.id"), "solicitacaoId"));
+		p.add(Projections.alias(Projections.property("so.descricao"), "projectionSolicitacaoDescricao"));
+		p.add(Projections.alias(Projections.property("so.data"), "solicitacaoData"));
+		p.add(Projections.alias(Projections.property("so.encerrada"), "solicitacaoEncerrada"));
+		p.add(Projections.alias(Projections.property("so.dataEncerramento"), "solicitacaoDataEncerramento"));
+		
+		criteria.setProjection(p);
+
+		criteria.add(Expression.eq("cs.status", "A"));
+		criteria.add(Expression.eq("cs.candidato.id", candidatoId));
+		criteria.add(Expression.le("so.data", dataSolicitacaoExameOuAtual));
+		
+		Conjunction primeiraExpressao = Expression.conjunction();
+		Conjunction segundaExpressao = Expression.conjunction();
+		
+		criteria.add(Expression.or(primeiraExpressao.add(Expression.isNull("co.dataDesligamento")).add(Expression.geProperty("so.data", "co.dataAdmissao")), 
+				segundaExpressao.add(Expression.ltProperty("so.data", "co.dataDesligamento")).add(Expression.geProperty("so.data", "co.dataAdmissao"))));
+		
+		criteria.addOrder(Order.asc("so.descricao"));
+		criteria.addOrder(Order.asc("so.encerrada"));
+		
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(CandidatoSolicitacao.class));
+		
+		return criteria.list();
 	}
 }

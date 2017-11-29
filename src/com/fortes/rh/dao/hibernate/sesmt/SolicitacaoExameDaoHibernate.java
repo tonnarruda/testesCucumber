@@ -299,6 +299,9 @@ public class SolicitacaoExameDaoHibernate extends GenericDaoHibernate<Solicitaca
 		criteria.createCriteria("se.candidato", "ca", CriteriaSpecification.LEFT_JOIN);
 		criteria.createCriteria("se.medicoCoordenador", "medico", CriteriaSpecification.LEFT_JOIN);
 		criteria.createCriteria("se.empresa", "emp", CriteriaSpecification.LEFT_JOIN);
+		
+		criteria.createCriteria("se.candidatoSolicitacao", "cs", CriteriaSpecification.LEFT_JOIN);
+		criteria.createCriteria("se.faixaSalarial", "fs", CriteriaSpecification.LEFT_JOIN);
 
 		ProjectionList projectionList = Projections.projectionList().create();
 		projectionList.add(Projections.property("se.id"), "id");
@@ -314,6 +317,8 @@ public class SolicitacaoExameDaoHibernate extends GenericDaoHibernate<Solicitaca
 		projectionList.add(Projections.property("col.nome"), "colaboradorNome");
 		projectionList.add(Projections.property("col.nomeComercial"), "colaboradorNomeComercial");
 		projectionList.add(Projections.property("emp.id"), "empresaId");
+		projectionList.add(Projections.property("cs.id"), "candidatoSolicitacaoId");
+		projectionList.add(Projections.property("se.faixaSalarial.id"), "faixaSalarialId");
 		criteria.setProjection(projectionList);
 
 		criteria.add(Expression.eq("se.id" , id));
@@ -369,6 +374,14 @@ public class SolicitacaoExameDaoHibernate extends GenericDaoHibernate<Solicitaca
 		if (ordemFinal != null)
 			query.setInteger("ordemFinal", ordemFinal);
 
+		query.executeUpdate();
+	}
+	
+	public void vincularSolicitacaoExameAoColaborador(Long candidatoSolicitacaoId ,Long colaboradorId) {
+		String hql = "update SolicitacaoExame set colaborador_id = :colaboradorId, candidato_id = null where candidatoSolicitacao_id = :candidatoSolicitacaoId ";
+		Query query = getSession().createQuery(hql);
+		query.setLong("colaboradorId", colaboradorId);
+		query.setLong("candidatoSolicitacaoId", candidatoSolicitacaoId);
 		query.executeUpdate();
 	}
 }

@@ -9,6 +9,7 @@ import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.dicionario.TipoPessoa;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
@@ -48,4 +49,5 @@ public interface CandidatoSolicitacaoManager extends GenericManager<CandidatoSol
 	CandidatoSolicitacao findByHistoricoColaboradorId(Long historicoColaboradorId);
 	void updateStatusCandidatoAoCancelarContratacao(CandidatoSolicitacao candidatoSolicitacao, Long colaboradorId);
 	public void updateStatusSolicitacoesEmAndamentoByColaboradorId(Character status, Long... colaboradorId);
+	Collection<CandidatoSolicitacao> listarSolicitacoesEmAbertoCandidatoOuColaborador(TipoPessoa candidato, Long id, Date dataSolicitacaoExameOuAtual);
 }

@@ -1,20 +1,27 @@
 package com.fortes.rh.web.dwr;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.fortes.rh.business.captacao.AnuncioManager;
+import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.MotivoSolicitacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoAvaliacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
+import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.QuantidadeLimiteColaboradoresPorCargoManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
+import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.MotivoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.SolicitacaoAvaliacao;
 import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
+import com.fortes.rh.model.dicionario.TipoPessoa;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.QuantidadeLimiteColaboradoresPorCargo;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
@@ -23,11 +30,13 @@ import com.fortes.rh.util.DateUtil;
 public class SolicitacaoDWR {
 
 	private SolicitacaoManager solicitacaoManager;
+	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
 	private SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager;
 	private AnuncioManager anuncioManager;
 	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
 	private MotivoSolicitacaoManager motivoSolicitacaoManager;
 	private QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager;
+	private ColaboradorManager colaboradorManager;
 
 	public Map<Long, String> getSolicitacoes(Long empresaId) 
 	{
@@ -139,6 +148,21 @@ public class SolicitacaoDWR {
 		
 		return stringBuilder;
 	}
+
+	public Collection<CandidatoSolicitacao> getSolicitacoesCandidatoColaborador(String tipoPessoaChave, String dataSolicitacaoExame, Long colaboradorOuCandidatoId ){
+		Date data = DateUtil.criarDataDiaMesAno(dataSolicitacaoExame);
+		TipoPessoa tipoPessoa = TipoPessoa.valueOf(tipoPessoaChave);
+		Collection<CandidatoSolicitacao> listarSolicitacoesEmAbertoCandidatoOuColaborador = new ArrayList<CandidatoSolicitacao>();
+	
+		if(tipoPessoa.equals(TipoPessoa.COLABORADOR)){
+			Colaborador colaborador = colaboradorManager.findByData(colaboradorOuCandidatoId, data);
+			listarSolicitacoesEmAbertoCandidatoOuColaborador = candidatoSolicitacaoManager.listarSolicitacoesEmAbertoCandidatoOuColaborador(tipoPessoa, colaborador.getCandidato().getId(), data);
+		}
+		else{
+			listarSolicitacoesEmAbertoCandidatoOuColaborador = candidatoSolicitacaoManager.listarSolicitacoesEmAbertoCandidatoOuColaborador(tipoPessoa, colaboradorOuCandidatoId, data);
+		}
+		return listarSolicitacoesEmAbertoCandidatoOuColaborador;
+	}
 	
 	public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager) 
 	{
@@ -165,5 +189,13 @@ public class SolicitacaoDWR {
 
 	public void setQuantidadeLimiteColaboradoresPorCargoManager(QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager) {
 		this.quantidadeLimiteColaboradoresPorCargoManager = quantidadeLimiteColaboradoresPorCargoManager;
+	}
+
+	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
+		this.colaboradorManager = colaboradorManager;
+	}
+
+	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager) {
+		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
 	}
 }

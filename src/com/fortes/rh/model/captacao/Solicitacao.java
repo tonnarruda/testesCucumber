@@ -27,6 +27,7 @@ import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
+import com.fortes.rh.model.dicionario.TipoPessoa;
 import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Bairro;
@@ -600,7 +601,7 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 		String data = DateUtil.formataDate(this.getData(),"dd/MM/yyyy");
 		String descricaoDaAreaOrg = this.getDescricaoDaAreaOrganizacional();
 		
-		return codigo +" - " + this.descricao + " - " + nomeDoCargo +" - "+ data +" - " + descricaoDaAreaOrg;
+		return codigo +" - " + this.descricao + " - " + nomeDoCargo +" - " + data +" - " + descricaoDaAreaOrg;
 	}
 
 	public String getCodigoMaisDescricaoFormatada()
@@ -732,6 +733,15 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 		}
 		return "";
 	}
+	
+	@NaoAudita
+	public String getDescricaoFormatadaSolicitacao(){
+    	String codigo = getId().toString();
+		String data = DateUtil.formataDate(this.getData(),"dd/MM/yyyy");
+		
+		return codigo + " - " + data +  " - " + descricao;
+	}
+	
 
 	public Anuncio getAnuncio()
 	{

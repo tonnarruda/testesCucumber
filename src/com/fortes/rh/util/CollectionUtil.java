@@ -292,6 +292,23 @@ public final class CollectionUtil<T>
 		
 		return col;
 	}
+	
+	public Collection<T> sortCollectionBoolean(Collection<T> col, String ordenarPor, final String ascOrDesc)
+	{
+		Comparator comp = new BeanComparator(ordenarPor, new Comparator() {
+			public int compare(Object o1, Object o2)
+			{
+				if(ascOrDesc.equals("asc"))
+					return ((Boolean)o1).compareTo((Boolean)o2);
+				else
+					return ((Boolean)o2).compareTo((Boolean)o1);
+			}
+		});
+		
+		Collections.sort((List) col, comp);
+		
+		return col;
+	}
 
 	public Collection<T> sortCollectionDate(Collection<T> col, String ordenarPor, final String ascOrDesc)
 	{

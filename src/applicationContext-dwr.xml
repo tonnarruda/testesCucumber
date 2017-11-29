@@ -104,6 +104,8 @@
 		<property name="colaboradorQuestionarioManager" ref="colaboradorQuestionarioManager"/>
 		<property name="motivoSolicitacaoManager" ref="motivoSolicitacaoManager"/>
 		<property name="quantidadeLimiteColaboradoresPorCargoManager" ref="quantidadeLimiteColaboradoresPorCargoManager"/>
+		<property name="colaboradorManager" ref="colaboradorManager"/>
+		<property name="candidatoSolicitacaoManager" ref="candidatoSolicitacaoManager"/>
 	</bean>
 	<bean id="conhecimentoDWR" class="com.fortes.rh.web.dwr.ConhecimentoDWR">
 		<property name="conhecimentoManager" ref="conhecimentoManager"/>
@@ -234,5 +236,9 @@
 	</bean>	
 	<bean id="usuarioAjudaESocialDWR" class="com.fortes.rh.web.dwr.UsuarioAjudaESocialDWR">
 		<property name="usuarioAjudaESocialManager" ref="usuarioAjudaESocialManager"/>
+	</bean>	
+	<bean id="historicoColaboradorDWR" class="com.fortes.rh.web.dwr.HistoricoColaboradorDWR">
+		<property name="colaboradorManager" ref="colaboradorManager"/>
+		<property name="faixaSalarialManager" ref="faixaSalarialManager"/>
 	</bean>	
 </beans>

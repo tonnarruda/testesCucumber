@@ -184,6 +184,10 @@
 			<param name="beanName" value="usuarioAjudaESocialDWR"/>
 		</create>
 		
+		<create creator="spring" javascript="HistoricoColaboradorDWR">
+			<param name="beanName" value="historicoColaboradorDWR"/>
+		</create>
+		
 		<convert converter="bean" match="com.opensymphony.xwork.ValidationAwareSupport"/>
 		
 		<!-- UTIL -->
@@ -199,7 +203,7 @@
 		<!-- GERAL -->
 		<convert converter="bean" match="com.fortes.rh.model.geral.Pessoa"/>
 		<convert converter="bean" match="com.fortes.rh.model.geral.Colaborador">
-			<param name="include" value="id, nome, nomeComercial, iscritoNaTurma, dataAdmissaoFormatada"/>
+			<param name="include" value="id, nome, nomeComercial, iscritoNaTurma, dataAdmissaoFormatada,faixaSalarial"/>
 		</convert>
 		<convert converter="bean" match="com.fortes.rh.model.geral.TipoDespesa"/>
 		<convert converter="bean" match="com.fortes.rh.model.geral.TurmaTipoDespesa"/>
@@ -212,6 +216,7 @@
 		
 		<!-- CARGO E SALARIO -->
 		<convert converter="bean" match="com.fortes.rh.model.cargosalario.Cargo"/>
+		<convert converter="bean" match="com.fortes.rh.model.cargosalario.HistoricoColaborador"/>
 		<convert converter="bean" match="com.fortes.rh.model.cargosalario.FaixaSalarial">
 			<param name="include" value="id, descricao"/>
 		</convert>
@@ -223,7 +228,10 @@
 		<convert converter="bean" match="com.fortes.rh.model.captacao.NivelCompetencia"/>
 		<convert converter="bean" match="com.fortes.rh.model.captacao.SolicitacaoAvaliacao"/>
 		<convert converter="bean" match="com.fortes.rh.model.captacao.Solicitacao">
-			<param name="include" value="id, descricao"/>
+			<param name="include" value="id, descricao, descricaoFormatadaSolicitacao"/>
+		</convert>
+		<convert converter="bean" match="com.fortes.rh.model.captacao.CandidatoSolicitacao">
+			<param name="include" value="id, solicitacao"/>
 		</convert>
 		
 		<!-- PESQUISA -->

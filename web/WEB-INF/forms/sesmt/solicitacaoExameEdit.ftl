@@ -3,7 +3,6 @@
 <html>
 <head>
 <@ww.head/>
-
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
 		
@@ -26,13 +25,16 @@
 	</#if>
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/SolicitacaoExameDWR.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/SolicitacaoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/HistoricoColaboradorDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 
 	<script>
 		var examesAsoPadrao = ${action.getExameAsosJson()};
 		const COLABORADOR = 'C';
+		var isDataSolicitacaoMenorQueAdmissao=false;
 		
 		$(function() {
 			<#if primeiraExecucao && vinculo?exists && (vinculo == "COLABORADOR" || vinculo == 'TODOS')>
@@ -56,9 +58,42 @@
 			
 			<#if !edicao && !primeiraExecucao>
 				findProxOrdem();
+				if($('#data').val()!= undefined)
+					getSolicitacoesOuFaixas($('#data').val());		
 			</#if>
 			
 			$('#observacaoTooltipHelp').qtip({content: 'A observação inserida será apresentada ao "Imprimir a Solicitação de Exames".'});
+			
+			
+			$('#faixaEscolha').change(function(){
+				var opcao = $(this).val();
+				$('.faixaOuSolicitacao').show();
+				
+				var divFaixaOuSolicitacao = $('.faixaOuSolicitacao').children();
+					if(opcao==='CARGO'){
+						divFaixaOuSolicitacao.eq(0).show();
+						divFaixaOuSolicitacao.eq(1).hide();
+						
+						$('#solicitacoesPessoalCandidatoOuColaborador').removeAttr('name');
+						$('#faixa').attr('name','solicitacaoExame.faixaSalarial.id');
+						
+						getSolicitacoesOuFaixas($('#data').val());
+						setaFaixaColaboradorCasoExista();	
+					}
+					else if(opcao === 'SOLICITACAO'){
+						divFaixaOuSolicitacao.eq(0).hide();
+						divFaixaOuSolicitacao.eq(1).show();
+
+						$('#faixa').removeAttr('name');
+						$('#solicitacoesPessoalCandidatoOuColaborador').attr('name','solicitacaoExame.candidatoSolicitacao.id');
+					}
+					else{
+						$('#faixa').removeAttr('name');
+						$('#solicitacoesPessoalCandidatoOuColaborador').removeAttr('name');
+						$('.faixaOuSolicitacao').hide();
+					}
+			});
+			
 		});
 		
 		function findProxOrdem()
@@ -81,14 +116,17 @@
 	                    var partesDataSolicitacao  = data.split('/');
 						var dataSolicitacao = new Date(partesDataSolicitacao[2],partesDataSolicitacao[1]-1,partesDataSolicitacao[0]);
 	                    
-	                    if(colaborador.dataAdmissaoFormatada &&  dataSolicitacao.getTime() < dataAdmissao.getTime())
+	                    if(colaborador.dataAdmissaoFormatada &&  dataSolicitacao.getTime() < dataAdmissao.getTime()){
 	                        jAlert("Data solicitação não pode ser menor que a data de admissão. \n Data admissão:  " + colaborador.dataAdmissaoFormatada);
-	                    else
+	                        isDataSolicitacaoMenorQueAdmissao=true;
+                        }
+	                    else{
+	                    	isDataSolicitacaoMenorQueAdmissao=false;
 	                        retorno = true;
+                        }
 	                }
 	            });
 	        }
-            
             return retorno;
 		} 
 	
@@ -159,7 +197,12 @@
 		}
 		
 		function validaform(){
-			return validaFormulario('form', new Array('data','ordem','motivoExame','medico'), new Array('data'));
+			if($('#faixa').val() != undefined && $('#faixa').attr('name') != "" ){
+				return validaFormulario('form', new Array('data','ordem','motivoExame','medico','faixa'), new Array('data'));
+			}
+			else{
+				return validaFormulario('form', new Array('data','ordem','motivoExame','medico','solicitacoesPessoalCandidatoOuColaborador'), new Array('data'));
+			}
 		}
 
 		function desabilitaPeriodicidade(value,checked)
@@ -170,7 +213,6 @@
 			
 			$("#periodicidadeId" + value).attr('disabled', desabilitado);
 		}
-	
 	
 		function marcarDesmarcar(frm)
 		{
@@ -281,7 +323,7 @@
 				$('#colaboradorId').val(selecionadoId);
 			else if (tipo == 'CA')
 				$('#candidatoId').val(selecionadoId);
-
+			
 			validaFormulario('formFiltro', null, null);
 		}
 		
@@ -290,6 +332,64 @@
 			$('#colaboradorId, #candidatoId').val('');
 			validaFormulario('formFiltro', null, null);
 		}
+		
+		function setaFaixaColaboradorCasoExista()
+		{
+			if(!isDataSolicitacaoMenorQueAdmissao){
+				<#if colaborador?exists && colaborador.id?exists>
+					ColaboradorDWR.findByData($('#colaboradorId').val(),$('#data').val(), function(colaborador) {
+						$('#faixa').val(colaborador.faixaSalarial.id);
+						<#if solicitacaoExame.faixaSalarial?exists && solicitacaoExame.faixaSalarial.id?exists> 
+							$('#faixa').val(${solicitacaoExame.faixaSalarial.id});
+						</#if> 
+					});
+		 		</#if>
+		 	}
+		}
+		
+		function getSolicitacoesOuFaixas(dataSolicitacaoExame){
+			var opcao = $('#faixaEscolha').val();
+			var candidatoOuColaboradorId= $('#colaboradorId').val() ? $('#colaboradorId').val() : $('#candidatoId').val();
+ 			var tipoPessoa = 'CANDIDATO';
+ 			<#if colaborador?exists && colaborador.id?exists>
+ 				tipoPessoa = 'COLABORADOR';
+ 			</#if>
+ 			
+ 			if(!isDataSolicitacaoMenorQueAdmissao){
+		 		
+		 		SolicitacaoDWR.getSolicitacoesCandidatoColaborador(tipoPessoa,dataSolicitacaoExame,candidatoOuColaboradorId, function(candidatoSolicitacoes) {
+					$('#solicitacoesPessoalCandidatoOuColaborador').find('option').remove().end();
+					
+					if(candidatoSolicitacoes.length>0){
+		   				for(var index in candidatoSolicitacoes){
+		   					var candidatoSolicitacao =candidatoSolicitacoes[index];
+		   					$('#solicitacoesPessoalCandidatoOuColaborador').append('<option value="'+ candidatoSolicitacao.id +'">' +  candidatoSolicitacao.solicitacao.descricaoFormatadaSolicitacao+ '</option>')
+		   				}
+		   				
+					}
+					else{
+						$('#solicitacoesPessoalCandidatoOuColaborador').append('<option value="">Não há solicitações</option>')
+					}
+				});
+					
+				HistoricoColaboradorDWR.getFaixas(tipoPessoa,dataSolicitacaoExame,candidatoOuColaboradorId,$('#empresaId').val(), function(faixas){
+					$('#faixa').find('option').remove().end();
+					if(faixas.length>0){
+		   				for(var index in faixas){
+		   					var faixa =faixas[index];
+		   					
+		   					$('#faixa').append('<option value="'+ faixa.id +'">' +  faixa.descricao + '</option>')
+		   				}
+		   				setaFaixaColaboradorCasoExista();
+					}
+					else{
+						$('#faixa').append('<option value="">Não há cargo.</option>')
+					}
+					
+				});
+ 			}	
+		}
+		
 	</script>
 	
 	<style type="text/css">
@@ -310,6 +410,7 @@
 
 	<#include "../util/topFiltro.ftl" />
 	<@ww.form name="formFiltro" action="filtroSolicitacaoExames.action" method="POST" >
+		<@ww.hidden id="empresaId" name="empresaSistema.id" />
 		<@ww.select label="Exames para" name="examesPara" id="examesPara" list=r"#{'C':'Colaborador','A':'Candidato'}" onchange="filtrarOpcao();" />
 		<span id="divCandidato" style="display:''">
 			<@ww.textfield label="Nome" name="candidato.nome" id="nomeCandidato" cssStyle="width: 300px;"/>
@@ -365,13 +466,30 @@
 			</#if>
 	
 			<#if (listaExames?exists && listaExames?size > 0)>
-				<@ww.datepicker label="Data" id="data" name="solicitacaoExame.data" required="true" cssClass="mascaraData" value="${data}" liClass="liLeft" onchange="findProxOrdem(),validaDatasColaborador()" onblur="findProxOrdem(),validaDatasColaborador()"/>
+				<@ww.datepicker label="Data" id="data" name="solicitacaoExame.data" required="true" cssClass="mascaraData" value="${data}" liClass="liLeft" onchange="findProxOrdem(),validaDatasColaborador(),getSolicitacoesOuFaixas(this.value),setaFaixaColaboradorCasoExista()" onblur="findProxOrdem(),validaDatasColaborador(),getSolicitacoesOuFaixas(this.value),setaFaixaColaboradorCasoExista()"/>
 				<@ww.textfield label="Ordem de Atendimento" name="solicitacaoExame.ordem" id="ordem" maxLength="2" size="3" onkeypress="return somenteNumeros(event,'')" required="true" cssStyle="text-align:right;"/>
 					<@ww.select label="Motivo do Atendimento" name="solicitacaoExame.motivo" id="motivoExame" list="motivos" headerKey="" headerValue="Selecione..." required="true" cssStyle="width:300px;" onchange="validaDatasColaborador();configuraCampos();" onblur="validaDatasColaborador();configuraCampos();"/>
 				 	<@ww.select label="Médico Coordenador" name="solicitacaoExame.medicoCoordenador.id" id="medico" list="medicoCoordenadors" required="true" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." cssStyle="width:300px;" />
-			
 					<@ww.textfield label="Observação" name="solicitacaoExame.observacao" id="observacao" maxLength="100" cssClass="inputNome"/>
-					<img id="observacaoTooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin:-40px 0 35px 85px;"/>
+					<img id="observacaoTooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin:-40px 0 0 85px; float:left;"/>
+					
+					<#if (listaSolicitacoesPessoalEmAberto?exists && listaSolicitacoesPessoalEmAberto?size > 0)>
+						<#if ((colaboradors?exists && colaboradors?size > 0) || (solicitacaoExame.colaborador?exists && solicitacaoExame.colaborador.id?exists))>
+							<@ww.select label="Qual tipo" id="faixaEscolha" list=r"#{'':'Selecione...','CARGO':'Cargo','SOLICITACAO':'Solicitação'}"/>
+							<div class="faixaOuSolicitacao" style="display:none">
+								<@ww.select label="Cargo / Faixa" name="solicitacaoExame.faixaSalarial.id" id="faixa" list="faixas" listKey="id" listValue="descricao" headerKey="" cssStyle="width: 355px;"/>
+								<@ww.select label="Solicitações" name="solicitacaoExame.candidatoSolicitacao.id" id="solicitacoesPessoalCandidatoOuColaborador" list="listaSolicitacoesPessoalEmAberto" listKey="id" listValue="solicitacao.descricaoFormatadaSolicitacao" required="true" headerKey="" headerValue="Selecione..." cssStyle="width: 355px;" />
+					 		</div>
+						<#else>
+							<@ww.select label="Solicitações" name="solicitacaoExame.candidatoSolicitacao.id" id="solicitacoesPessoalCandidatoOuColaborador" list="listaSolicitacoesPessoalEmAberto" listKey="id" listValue="solicitacao.descricaoFormatadaSolicitacao" required="true" headerKey="" headerValue="Selecione..." cssStyle="width: 355px;" />
+						</#if>
+					<#else>
+						<#if (candidatos?exists && candidatos?size > 0)  || ((colaboradors?exists && colaboradors?size > 0) && !colaborador.desligado)>
+							<@ww.select label="Cargo / Faixa" name="solicitacaoExame.faixaSalarial.id" id="faixa" list="faixas" listKey="id" listValue="descricao" required="true" headerKey="" headerValue="Selecione..." cssStyle="width: 355px;" />
+						<#else>
+							<@ww.select label="Cargo / Faixa" name="solicitacaoExame.faixaSalarial.id" id="faixa" list="faixas" listKey="id" listValue="descricao" required="true" headerKey="" cssStyle="width: 355px;"  />
+						</#if>
+					</#if>
 					
 					<@ww.hidden name="ordemAnterior" id="ordemAnterior"/>
 					<@ww.hidden name="dataAnterior" id="dataAnterior"/>

@@ -19,6 +19,8 @@ import org.apache.commons.lang.StringUtils;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.captacao.Candidato;
+import com.fortes.rh.model.captacao.CandidatoSolicitacao;
+import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.MotivoSolicitacaoExame;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -49,6 +51,10 @@ public class SolicitacaoExame extends AbstractModel implements Serializable
     private Empresa empresa;
     @ManyToOne
     private MedicoCoordenador medicoCoordenador;
+    @ManyToOne
+    private CandidatoSolicitacao candidatoSolicitacao;
+    @ManyToOne
+    private FaixaSalarial faixaSalarial;
 
     @OneToMany(fetch = LAZY, mappedBy="solicitacaoExame")
     private Collection<ExameSolicitacaoExame> exameSolicitacaoExames;
@@ -59,6 +65,7 @@ public class SolicitacaoExame extends AbstractModel implements Serializable
     private boolean muitasClinicas;
     @Transient
     private String cargoNome;
+    
     
     public SolicitacaoExame()	{ }
 
@@ -266,6 +273,15 @@ public class SolicitacaoExame extends AbstractModel implements Serializable
     	}
     }
 
+    
+	public void setFaixaSalarialId(Long faixaSalarialId)
+	{
+		if (this.faixaSalarial == null)
+			this.faixaSalarial = new FaixaSalarial();
+		
+		this.faixaSalarial.setId(faixaSalarialId);
+	}
+
     public Candidato getCandidato()
     {
         return candidato;
@@ -361,6 +377,29 @@ public class SolicitacaoExame extends AbstractModel implements Serializable
 		this.muitasClinicas = muitasClinicas;
 	}
 	
+	public FaixaSalarial getFaixaSalarial() {
+		return faixaSalarial;
+	}
+
+	public void setFaixaSalarial(FaixaSalarial faixaSalarial) {
+		this.faixaSalarial = faixaSalarial;
+	}
+	
+	public CandidatoSolicitacao getCandidatoSolicitacao() {
+		return candidatoSolicitacao;
+	}
+	
+	public void setCandidatoSolicitacao(CandidatoSolicitacao candidatoSolicitacao) {
+		this.candidatoSolicitacao = candidatoSolicitacao;
+	}
+	
+	public void setCandidatoSolicitacaoId(Long candidatoSolicitacaoId) {
+	    if (this.candidatoSolicitacao == null)
+            this.candidatoSolicitacao = new CandidatoSolicitacao();
+
+        this.candidatoSolicitacao.setId(candidatoSolicitacaoId);
+	}
+
 	@NaoAudita
 	@ChaveDaAuditoria
 	public String getChaveAuditoria() {

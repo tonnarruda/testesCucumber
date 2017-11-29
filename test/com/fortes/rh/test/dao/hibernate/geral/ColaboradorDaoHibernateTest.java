@@ -7629,4 +7629,35 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest_JUnit4<
 		assertEquals("85", colaboradorDoBanco.getContato().getDddCelular());
 		assertEquals(new Long(1L), colaboradorDoBanco.getHabilitacao().getUfHab().getId());
 	}
+	
+    @Test
+    public void testFindColaboradorByData() {
+    	Candidato candidato = CandidatoFactory.getCandidato();
+    	candidatoDao.save(candidato);
+    	
+    	Colaborador colaborador = ColaboradorFactory.getEntity();
+    	colaborador.setCandidato(candidato);
+    	colaboradorDao.save(colaborador);
+    	
+		Cargo cargo = CargoFactory.getEntity("Cargo");
+		cargoDao.save(cargo);
+		
+		FaixaSalarial faixa1 = FaixaSalarialFactory.getEntity("I", cargo);
+		faixaSalarialDao.save(faixa1);
+    	
+    	Date data = new Date();
+    	
+    	HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1l);
+    	historicoColaborador.setColaborador(colaborador);
+    	historicoColaborador.setFaixaSalarial(faixa1);
+    	historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
+    	historicoColaborador.setData(data);
+    	historicoColaboradorDao.save(historicoColaborador);
+    	
+    	Colaborador colaboradorResultado = colaboradorDao.findByData(colaborador.getId(), data);
+    	
+    	assertEquals(colaborador.getId(), colaboradorResultado.getId());
+    	assertEquals(historicoColaborador.getFaixaSalarial(), colaboradorResultado.getFaixaSalarial());
+    	assertEquals(historicoColaborador.getFaixaSalarial().getCargo(), colaboradorResultado.getFaixaSalarial().getCargo());
+    }
 }

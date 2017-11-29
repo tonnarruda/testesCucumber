@@ -13,23 +13,32 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.MotivoSolicitacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoAvaliacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
+import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.QuantidadeLimiteColaboradoresPorCargoManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
+import com.fortes.rh.model.captacao.Candidato;
+import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.MotivoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.SolicitacaoAvaliacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
+import com.fortes.rh.model.dicionario.TipoPessoa;
 import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.QuantidadeLimiteColaboradoresPorCargo;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
+import com.fortes.rh.test.factory.captacao.CandidatoFactory;
+import com.fortes.rh.test.factory.captacao.CandidatoSolicitacaoFactory;
+import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.MotivoSolicitacaoFactory;
 import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
@@ -47,6 +56,8 @@ public class SolicitacaoDWRTest
 	private SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager;
 	private MotivoSolicitacaoManager motivoSolicitacaoManager;
 	private QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager;
+	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
+	private ColaboradorManager colaboradorManager;
 
 	@Before
 	public void setUp() throws Exception
@@ -67,6 +78,12 @@ public class SolicitacaoDWRTest
 		
 		quantidadeLimiteColaboradoresPorCargoManager = mock(QuantidadeLimiteColaboradoresPorCargoManager.class);
 		solicitacoaDWR.setQuantidadeLimiteColaboradoresPorCargoManager(quantidadeLimiteColaboradoresPorCargoManager);
+		
+		candidatoSolicitacaoManager = mock(CandidatoSolicitacaoManager.class);
+		solicitacoaDWR.setCandidatoSolicitacaoManager(candidatoSolicitacaoManager);
+		
+		colaboradorManager = mock(ColaboradorManager.class);
+		solicitacoaDWR.setColaboradorManager(colaboradorManager);
 	}
 	
 	@Test
@@ -302,6 +319,48 @@ public class SolicitacaoDWRTest
 				+ "Atualmente não existe vaga disponível para este cargo e esta solicitação de pessoal está disponibilizando "+solicitacao.getQuantidade()+" vaga(s).<br /><br />"
 				+ "Caso continue o processo de seleção, não será possível realizar contratações acima das vagas disponíveis.", retorno);
 
+	}
+	
+	@Test
+	public void testGetSolicitacoesCandidato(){
+		String tipoPessoaChave="CANDIDATO";
+		String dataSolicitacaoExame="10/03/2014";
+		Collection<CandidatoSolicitacao> candidatoSolicitacaos = new ArrayList<CandidatoSolicitacao>();		
+		
+		Candidato candidato = CandidatoFactory.getCandidato(1l);
+		CandidatoSolicitacao candidatoSolicitacao = CandidatoSolicitacaoFactory.getEntity();
+		candidatoSolicitacao.setCandidato(candidato);
+		
+		candidatoSolicitacaos.add(candidatoSolicitacao);
+
+		when(candidatoSolicitacaoManager.listarSolicitacoesEmAbertoCandidatoOuColaborador(TipoPessoa.CANDIDATO, candidato.getId(), DateUtil.criarDataDiaMesAno(dataSolicitacaoExame))).thenReturn(candidatoSolicitacaos);	
+		
+		Collection<CandidatoSolicitacao> listaResultado = solicitacoaDWR.getSolicitacoesCandidatoColaborador(tipoPessoaChave, dataSolicitacaoExame, candidato.getId());
+
+		assertEquals(1,listaResultado.size());
+	}
+	
+	@Test
+	public void testGetSolicitacoesColaborador(){
+		String tipoPessoaChave="COLABORADOR";
+		String dataSolicitacaoExame="10/03/2014";
+		Collection<CandidatoSolicitacao> candidatoSolicitacaos = new ArrayList<CandidatoSolicitacao>();		
+		
+		Candidato candidato = CandidatoFactory.getCandidato(1l);
+		
+		Colaborador colaborador =ColaboradorFactory.getEntity(1l);
+		colaborador.setCandidato(candidato);
+		
+		CandidatoSolicitacao candidatoSolicitacao = CandidatoSolicitacaoFactory.getEntity();
+		candidatoSolicitacao.setCandidato(candidato);;
+		
+		candidatoSolicitacaos.add(candidatoSolicitacao);
+
+		when(colaboradorManager.findByData(colaborador.getId(), DateUtil.criarDataDiaMesAno(dataSolicitacaoExame))).thenReturn(colaborador);	
+		when(candidatoSolicitacaoManager.listarSolicitacoesEmAbertoCandidatoOuColaborador(TipoPessoa.COLABORADOR, colaborador.getId(), DateUtil.criarDataDiaMesAno(dataSolicitacaoExame))).thenReturn(Arrays.asList(candidatoSolicitacao));	
+		
+		Collection<CandidatoSolicitacao> listaResultado = solicitacoaDWR.getSolicitacoesCandidatoColaborador(tipoPessoaChave, dataSolicitacaoExame, colaborador.getId());
+		assertEquals(1, listaResultado.size());
 	}
 }
 	
