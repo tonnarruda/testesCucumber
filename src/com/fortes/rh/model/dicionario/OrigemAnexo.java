@@ -8,6 +8,9 @@ import com.fortes.rh.security.SecurityUtil;
 @SuppressWarnings({ "serial", "rawtypes" })
 public class OrigemAnexo extends LinkedHashMap
 {
+	/*
+	 * Caso seja inserido um novo tipo, deverá ser criado uma nova instrução "DELETE" no delete de empresa referente a este novo tipo.
+	 */
 	public static final char LTCAT = 'A';
 	public static final char PPRA = 'B';
 	public static final char CANDIDATO = 'C';
