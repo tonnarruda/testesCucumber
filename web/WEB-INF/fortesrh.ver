@@ -3,6 +3,7 @@
 	<Versao id="1.1.187.219" db="" data="28/11/2017">
 		<Item visivel="S" motivo="P17110000248"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Pesquisar: Ajuste de inconsistência ao realizar pesquisa utilizando o campo "Período de Encerramento da Solicitação".]]></Item>
 		<Item visivel="S" motivo="P17110000239"><![CDATA[R&S > Relatórios > Duração para Preenchimento de Vagas: Ajuste de inconsistência ao contabilizar colaboradores que foram contratados.]]></Item>
+		<Item visivel="S" motivo="P17110000284"><![CDATA[C&S > Movimentações > Solicitação de Realinhamento para Colaborador: Ajuste na inconsistência ao selecionar colaborador.]]></Item>
 		<Item visivel="S" motivo="P17110000252"><![CDATA[Aval. Desempenho > Movimentações > Acompanhamento do Período de Experiência > Inserir: Ajuste na inconsistência do posicionamento incorreto das respostas.]]></Item>
 	</Versao>
 	<Versao id="1.1.186.218" db="" data="23/11/2017">

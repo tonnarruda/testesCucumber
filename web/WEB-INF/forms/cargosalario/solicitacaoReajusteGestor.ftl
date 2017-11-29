@@ -104,7 +104,7 @@
 			<@authz.authorize ifAllGranted="ROLE_COMPROU_SESMT">
 				if(data.funcaoAtualId != undefined){
 					document.getElementById('funcaoAtual').value = data.funcaoAtualId;
-					document.getElementById('funcaoProposta').value = funcaoId;	
+					document.getElementById('funcaoProposta').value = data.funcaoAtualId;
 				}
 				if(data.ambienteAtualId != undefined)
 					document.getElementById('ambienteAtual').value = data.ambienteAtualId;
